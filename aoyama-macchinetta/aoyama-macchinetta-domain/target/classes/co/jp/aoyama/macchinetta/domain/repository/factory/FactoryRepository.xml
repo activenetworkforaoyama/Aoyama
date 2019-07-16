@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="co.jp.aoyama.macchinetta.domain.repository.factory.FactoryRepository">
+
+	<resultMap id="factoryResultMap" type="Factory">
+		<id property="factoryCode" column="factory_code" />
+		<result property="makerCode" column="maker_code" />
+		<result property="factoryName" column="factory_name" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+		<result property="createdUserId" column="created_user_id" />
+		<result property="updatedUserId" column="updated_user_id" />
+	</resultMap>
+
+	<select id="findOne" parameterType="string" resultType="Factory">
+	<![CDATA[        
+ 		SELECT
+            factory_code, 
+            maker_code, 
+            factory_name, 
+            created_at,
+            updated_at,
+            created_user_id,
+            updated_user_id 
+        FROM
+            mtb_factory 
+        WHERE
+            factory_code = #{factoryCode}
+	  ]]> 
+	</select>
+
+	<select id="findAll" resultMap="factoryResultMap">
+    <![CDATA[
+        SELECT
+            factory_code, 
+            maker_code, 
+            factory_name, 
+            created_at,
+            updated_at,
+            created_user_id,
+            updated_user_id
+        FROM
+            mtb_factory ORDER by factory_code
+    ]]>
+	</select>
+
+	<!--複数データを追加 -->
+	<insert id="insertFactoryBykey" parameterType="java.util.List">
+		INSERT INTO mtb_factory
+		(factory_code,maker_code,factory_name,created_at,updated_at,created_user_id,updated_user_id) values
+		<foreach collection="factoryInsertList" item="item"
+			index="index" separator=",">
+			(#{item.factoryCode},
+			#{item.makerCode},#{item.factoryName},#{item.createdAt},#{item.updatedAt},#{item.createdUserId},#{item.updatedUserId})
+		</foreach>
+	</insert>
+
+	<!--複数データを更新 -->
+	<update id="updateFactoryByKey" parameterType="java.util.List">
+		<foreach collection="factoryUpdList" item="item" index="index"
+			open="" close="" separator=";">
+			UPDATE
+			mtb_factory
+			<set>
+				factory_code = #{item.factoryCode},
+				maker_code = #{item.makerCode},
+				factory_name = #{item.factoryName},
+				updated_at = #{item.updatedAt},
+				updated_user_id = #{item.updatedUserId}
+			</set>
+			WHERE
+			factory_code = #{item.factoryCode}
+		</foreach>
+	</update>
+
+	<!--複数データを削除 -->
+	<delete id="deleteFactoryBykey" parameterType="java.util.List">
+		<foreach collection="factorydelList" item="item" index="index"
+			open="" separator=";" close="">
+			DELETE FROM mtb_factory WHERE
+			factory_code = #{item.factoryCode}
+		</foreach>
+	</delete>
+
+	<select id="fuzzyQuery" parameterType="string"
+		resultMap="factoryResultMap">
+
+		SELECT
+		factory_code,
+		maker_code,
+		factory_name,
+		created_at,
+		updated_at,
+		created_user_id,
+        updated_user_id
+		FROM
+		mtb_factory
+		WHERE
+		<if test="factoryCode!=null and factoryCode!=''">
+			factory_code LIKE '%${factoryCode}%' and
+		</if>
+		<if test="factoryName!=null and factoryName!=''">
+			factory_name LIKE '%${factoryName}%' and
+		</if>
+		1 = 1 ORDER by factory_code
+	</select>
+
+
+
+</mapper>

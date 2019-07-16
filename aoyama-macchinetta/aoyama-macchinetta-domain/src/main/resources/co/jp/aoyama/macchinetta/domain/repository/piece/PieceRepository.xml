@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.piece.PieceRepository" >
+
+  <resultMap id="PieceResultMap" type="Piece" >
+    <id column="factory_code" property="factoryCode" jdbcType="VARCHAR" />
+    <id column="item_code" property="itemCode" jdbcType="CHAR" />
+    <result column="dollar_exchange" property="dollarExchange" jdbcType="NUMERIC" />
+    <result column="product_tariff" property="productTariff" jdbcType="NUMERIC" />
+    <result column="product_shipping" property="productShipping" jdbcType="INTEGER" />
+    <result column="shipping_error" property="shippingError" jdbcType="INTEGER" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="pieceQueryAll" resultMap="PieceResultMap" >
+    select 
+    	mtb_wholesale_piece.factory_code, 
+    	item_code, 
+    	dollar_exchange, 
+    	product_tariff, 
+    	product_shipping, 
+    	shipping_error, 
+    	mtb_wholesale_piece.created_at, 
+    	mtb_wholesale_piece.updated_at,
+    	mtb_wholesale_piece.created_user_id, 
+    	mtb_wholesale_piece.updated_user_id
+    from 
+    	mtb_wholesale_piece
+    order by
+    	mtb_wholesale_piece.factory_code, 
+    	item_code
+  </select>
+
+  <select id="pieceQueryByPrimaryKey" resultMap="PieceResultMap" >
+    select 
+    	mtb_wholesale_piece.factory_code,
+    	item_code, 
+    	dollar_exchange, 
+    	product_tariff, 
+    	product_shipping, 
+    	shipping_error, 
+    	mtb_wholesale_piece.created_at, 
+    	mtb_wholesale_piece.updated_at,
+    	mtb_wholesale_piece.created_user_id, 
+    	mtb_wholesale_piece.updated_user_id
+    from 
+    	mtb_wholesale_piece
+    where 
+    	factory_code = #{factoryCode,jdbcType=VARCHAR} and 
+    	item_code = #{itemCode,jdbcType=CHAR}
+  </select>
+  
+  <select id="pieceQueryFuzzy" parameterType="string" resultMap="PieceResultMap">	
+	SELECT 
+		mtb_wholesale_piece.factory_code,
+    	item_code, 
+    	dollar_exchange, 
+    	product_tariff, 
+    	product_shipping, 
+    	shipping_error, 
+    	mtb_wholesale_piece.created_at, 
+    	mtb_wholesale_piece.updated_at,
+    	mtb_wholesale_piece.created_user_id, 
+    	mtb_wholesale_piece.updated_user_id
+	FROM
+        mtb_wholesale_piece
+	WHERE
+		<if test="factoryCode!=null and factoryCode!=''">
+			factory_code LIKE '%${factoryCode}%' and
+		</if>
+		<if test="itemCode!=null and itemCode!=''">
+			item_code LIKE '%${itemCode}%' and
+		</if>
+		1 = 1 
+	ORDER by
+		mtb_wholesale_piece.factory_code, 
+    	item_code
+	</select>
+    
+  <insert id="insertPieceByPrimaryKey"  parameterType="java.util.List">
+    insert 
+    into 
+    	mtb_wholesale_piece 
+    	(factory_code, 
+    	item_code, 
+    	dollar_exchange, 
+    	product_tariff,
+    	product_shipping, 
+    	shipping_error, 
+    	created_at, 
+    	updated_at,
+    	created_user_id, 
+    	updated_user_id)
+    values
+    <foreach collection="pieceInsertList" item="item" index="index" separator=","> 
+		(#{item.factoryCode,jdbcType=VARCHAR},
+		#{item.itemCode,jdbcType=CHAR}, 
+		#{item.dollarExchange,jdbcType=NUMERIC}, 
+      	#{item.productTariff,jdbcType=NUMERIC}, 
+      	#{item.productShipping,jdbcType=INTEGER}, 
+      	#{item.shippingError,jdbcType=INTEGER}, 
+      	#{item.createdAt,jdbcType=TIMESTAMP}, 
+      	#{item.updatedAt,jdbcType=TIMESTAMP},
+      	#{item.createdUserId,jdbcType=VARCHAR}, 
+      	#{item.updatedUserId,jdbcType=VARCHAR})
+	</foreach>
+  </insert>
+  
+  <update id="updatePieceByPrimaryKey" parameterType="java.util.List" >
+	<foreach collection="pieceUpdateList" item="item" index="index" open="" close="" separator=";">
+    update 
+    	mtb_wholesale_piece
+    set 
+    	dollar_exchange = #{item.dollarExchange,jdbcType=NUMERIC},
+		product_tariff = #{item.productTariff,jdbcType=NUMERIC},
+      	product_shipping = #{item.productShipping,jdbcType=INTEGER},
+      	shipping_error = #{item.shippingError,jdbcType=INTEGER},
+      	updated_at = #{item.updatedAt,jdbcType=TIMESTAMP},
+      	updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR}
+    where 
+    	factory_code = #{item.factoryCode,jdbcType=VARCHAR} and 
+    	item_code = #{item.itemCode,jdbcType=CHAR}
+	</foreach>
+  </update>
+  
+  <delete id="deletePieceByPrimaryKey" parameterType="java.util.List" >
+  	<foreach collection="pieceDeleteList" item="item" index="index" open="" separator=";" close="">
+    delete 
+    from 
+    	mtb_wholesale_piece
+    where 
+    	factory_code = #{item.factoryCode,jdbcType=VARCHAR} and 
+    	item_code = #{item.itemCode,jdbcType=CHAR}
+    </foreach>
+  </delete>
+  
+	<select id="pieceFactoryCodeQuery" resultType="integer">
+		SELECT COUNT(1)
+		FROM
+			mtb_factory
+		WHERE
+			factory_code = #{factoryCode,jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="pieceItemCodeQuery" resultType="integer">
+		SELECT COUNT(1)
+		FROM
+			mtb_item
+		WHERE
+			item_code = #{itemCode,jdbcType=CHAR} 
+	</select>
+</mapper>

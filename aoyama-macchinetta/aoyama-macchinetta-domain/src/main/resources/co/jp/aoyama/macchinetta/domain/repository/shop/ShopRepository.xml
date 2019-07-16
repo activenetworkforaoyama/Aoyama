@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="co.jp.aoyama.macchinetta.domain.repository.shop.ShopRepository">
+
+	<resultMap id="shopResultMap" type="Shop">
+		<id property="shopCode" column="shop_code" />
+		<result property="shopName" column="shop_name" />
+		<result property="storeBrandCode" column="store_brand_code" />
+		<result property="createdUserId" column="created_user_id" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedUserId" column="updated_user_id" />
+		<result property="updatedAt" column="updated_at" />
+	</resultMap>
+
+
+	<select id="findAllShop" resultMap="shopResultMap">
+		SELECT
+			shop_code,
+			shop_name,
+			store_brand_code,
+			created_user_id,
+			created_at,
+			updated_user_id,
+			updated_at
+		FROM
+			mtb_shop order by shop_code
+	</select>
+
+	<select id="findShopByPk" parameterType="string" resultType="Shop">
+		SELECT
+			shop_code,
+			shop_name,
+			store_brand_code,
+			created_user_id,
+			created_at,
+			updated_user_id,
+			updated_at
+		FROM
+			mtb_shop
+		WHERE
+			shop_code = #{shopCode}
+	</select>
+
+	<insert id="insertShopByPk">
+		INSERT
+		INTO
+		mtb_shop(shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at)
+		VALUES(#{shopCode},#{shopName},#{storeBrandCode},#{createdUserId},#{createdAt},#{updatedUserId},#{updatedAt})
+	</insert>
+	
+	<insert id="insertAllShopByPk" parameterType="java.util.List">
+		INSERT INTO mtb_shop (shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at) values
+		<foreach collection="shopList" item="item" index="index" separator=",">
+            (#{item.shopCode},#{item.shopName},#{item.storeBrandCode},#{item.createdUserId},#{item.createdAt},#{item.updatedUserId},#{item.updatedAt})
+        </foreach>
+	</insert>
+	
+	<update id="updateAllShopByPk" parameterType="java.util.List">
+		<foreach collection="shopUpdList" item="item" index="index" open="" close="" separator=";">
+		UPDATE
+            mtb_shop 
+        <set>
+        	shop_code = #{item.shopCode}, 
+            shop_name = #{item.shopName},
+            store_brand_code = #{item.storeBrandCode},
+            updated_user_id = #{item.updatedUserId},
+            updated_at = #{item.updatedAt}
+        </set>
+        WHERE
+            shop_code = #{item.shopCode}
+		</foreach>
+	</update>
+	<select id="fuzzyQuery" parameterType="string" resultMap="shopResultMap">
+	
+		SELECT shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at FROM mtb_shop 
+		WHERE
+		<if test="shopCode!=null and shopCode!=''">
+			shop_code LIKE '%${shopCode}%' and
+		</if>
+		<if test="shopName!=null and shopName!=''">
+			shop_name LIKE '%${shopName}%' and
+		</if>
+		<if test="storeBrandCode!=null and storeBrandCode!=''">
+			store_brand_code = '${storeBrandCode}' and
+		</if>
+		1 = 1 ORDER by shop_code
+	</select>
+	
+	<delete id="deleteAllShopByPk" parameterType="java.util.List">
+		<foreach collection="shopDelList" item="item" index="index" open="" separator=";" close="">
+			DELETE FROM mtb_shop WHERE shop_code = #{item.shopCode}
+		</foreach>
+	</delete>
+</mapper>

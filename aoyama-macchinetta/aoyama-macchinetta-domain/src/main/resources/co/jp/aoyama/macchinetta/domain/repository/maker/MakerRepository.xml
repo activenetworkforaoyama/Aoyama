@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="co.jp.aoyama.macchinetta.domain.repository.maker.MakerRepository">
+
+	<resultMap id="makerResultMap" type="Maker">
+		<id property="makerCode" column="maker_code" />
+		<result property="makerName" column="maker_name" />
+		<result property="makerId" column="maker_id" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+		<result property="createdUserId" column="created_user_id" />
+		<result property="updatedUserId" column="updated_user_id" />
+	</resultMap>
+
+	<select id="findOne" parameterType="string" resultType="Maker">
+		SELECT
+		maker_code,
+		maker_name,
+		maker_id,
+		created_at,
+		updated_at,
+		created_user_id,
+		updated_user_id
+		FROM
+		mtb_maker
+		WHERE
+		maker_code = #{makerCode}
+
+	</select>
+
+	<select id="findAll" resultMap="makerResultMap">
+		SELECT
+		maker_code,
+		maker_name,
+		maker_id,
+		created_at,
+		updated_at,
+		created_user_id,
+		updated_user_id
+		FROM
+		mtb_maker ORDER by maker_code
+
+	</select>
+
+	<select id="fuzzyQuery" parameterType="string"
+		resultMap="makerResultMap">
+		SELECT
+		maker_code,
+		maker_name,
+		maker_id,
+		created_at,
+		updated_at,
+		created_user_id,
+		updated_user_id
+		FROM
+		mtb_maker
+		WHERE
+		<if test="makerCode != null and makerCode != ''">
+			maker_code like '%${makerCode}%' AND
+		</if>
+		<if test="makerName != null and makerName != ''">
+			maker_name like '%${makerName}%' AND
+		</if>
+		1=1 ORDER by maker_code
+	</select>
+
+	<delete id="deleteMakerByKey" parameterType="java.util.List">
+		<foreach collection="makerDelList" item="item" index="index"
+			open="" separator=";" close="">
+			DELETE FROM mtb_maker WHERE
+			maker_code =
+			#{item.makerCode}
+		</foreach>
+	</delete>
+
+	<!--複数データを追加 -->
+	<insert id="insertMakerByKey" parameterType="java.util.List">
+		INSERT INTO mtb_maker
+		(maker_code,maker_name,maker_id,created_at,updated_at,created_user_id,updated_user_id) VALUES
+		<foreach collection="makerInsertList" item="item"
+			index="index" open="" separator="," close="">
+			(#{item.makerCode},#{item.makerName},#{item.makerId},#{item.createdAt},#{item.updatedAt},#{item.createdUserId},#{item.updatedUserId})
+		</foreach>
+	</insert>
+	
+	<update id="updateMakerByKey" parameterType="java.util.List">
+		<foreach collection="makerUpdList" item="item"
+			index="index" open="" separator=";" close="">
+			UPDATE 
+			mtb_maker
+			<set>
+			maker_code = #{item.makerCode},
+			maker_name = #{item.makerName},
+			maker_id = #{item.makerId},
+			updated_at = #{item.updatedAt},
+			updated_user_id = #{item.updatedUserId}
+			</set>
+			WHERE 
+			maker_code = #{item.makerCode}
+		</foreach>
+	</update>
+</mapper>

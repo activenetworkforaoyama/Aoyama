@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.order.OptionBranchDetailRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail" >
+    <id column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <id column="sub_item_code" property="subItemCode" jdbcType="VARCHAR" />
+    <id column="option_code" property="optionCode" jdbcType="VARCHAR" />
+    <id column="option_branch_code" property="optionBranchCode" jdbcType="VARCHAR" />
+    <id column="option_branch_detail_code" property="optionBranchDetailCode" jdbcType="VARCHAR" />
+    <result column="standard_available" property="standardAvailable" jdbcType="VARCHAR" />
+    <result column="tuxedo_available" property="tuxedoAvailable" jdbcType="VARCHAR" />
+    <result column="washable_available" property="washableAvailable" jdbcType="VARCHAR" />
+    <result column="option_branch_name" property="optionBranchName" jdbcType="VARCHAR" />
+    <result column="option_branch_detail_name" property="optionBranchDetailName" jdbcType="VARCHAR" />
+    <result column="option_branch_price" property="optionBranchPrice" jdbcType="INTEGER" />
+    <result column="option_branch_double_price" property="optionBranchDoublePrice" jdbcType="INTEGER" />
+    <result column="display_order" property="displayOrder" jdbcType="SMALLINT" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from mtb_option_branch_detail
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and option_code = #{optionCode,jdbcType=VARCHAR}
+      and option_branch_code = #{optionBranchCode,jdbcType=VARCHAR}
+      and option_branch_detail_code = #{optionBranchDetailCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail" >
+    insert into mtb_option_branch_detail (order_pattern, sub_item_code, option_code, 
+      option_branch_code, option_branch_detail_code, 
+      standard_available, tuxedo_available, washable_available, 
+      option_branch_name, option_branch_detail_name, 
+      option_branch_price, option_branch_double_price, 
+      display_order, created_user_id, created_at, 
+      updated_user_id, updated_at)
+    values (#{orderPattern,jdbcType=VARCHAR}, #{subItemCode,jdbcType=VARCHAR}, #{optionCode,jdbcType=VARCHAR}, 
+      #{optionBranchCode,jdbcType=VARCHAR}, #{optionBranchDetailCode,jdbcType=VARCHAR}, 
+      #{standardAvailable,jdbcType=VARCHAR}, #{tuxedoAvailable,jdbcType=VARCHAR}, #{washableAvailable,jdbcType=VARCHAR}, 
+      #{optionBranchName,jdbcType=VARCHAR}, #{optionBranchDetailName,jdbcType=VARCHAR}, 
+      #{optionBranchPrice,jdbcType=INTEGER}, #{optionBranchDoublePrice,jdbcType=INTEGER}, 
+      #{displayOrder,jdbcType=SMALLINT}, #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail" >
+    update mtb_option_branch_detail
+    set standard_available = #{standardAvailable,jdbcType=VARCHAR},
+      tuxedo_available = #{tuxedoAvailable,jdbcType=VARCHAR},
+      washable_available = #{washableAvailable,jdbcType=VARCHAR},
+      option_branch_name = #{optionBranchName,jdbcType=VARCHAR},
+      option_branch_detail_name = #{optionBranchDetailName,jdbcType=VARCHAR},
+      option_branch_price = #{optionBranchPrice,jdbcType=INTEGER},
+      option_branch_double_price = #{optionBranchDoublePrice,jdbcType=INTEGER},
+      display_order = #{displayOrder,jdbcType=SMALLINT},
+      created_user_id = #{createdUserId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and option_code = #{optionCode,jdbcType=VARCHAR}
+      and option_branch_code = #{optionBranchCode,jdbcType=VARCHAR}
+      and option_branch_detail_code = #{optionBranchDetailCode,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select order_pattern, sub_item_code, option_code, option_branch_code, option_branch_detail_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_detail_name, 
+    option_branch_price, option_branch_double_price, display_order, created_user_id, 
+    created_at, updated_user_id, updated_at
+    from mtb_option_branch_detail
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and option_code = #{optionCode,jdbcType=VARCHAR}
+      and option_branch_code = #{optionBranchCode,jdbcType=VARCHAR}
+      and option_branch_detail_code = #{optionBranchDetailCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select order_pattern, sub_item_code, option_code, option_branch_code, option_branch_detail_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_detail_name, 
+    option_branch_price, option_branch_double_price, display_order, created_user_id, 
+    created_at, updated_user_id, updated_at
+    from mtb_option_branch_detail
+  </select>
+  
+  <select id="getStandardButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code, option_branch_detail_name
+    from mtb_option_branch_detail 
+    where sub_item_code=#{subItemCode}
+    	and option_branch_code=#{optionBranchCode}
+    	and standard_available = '1'
+    	and order_pattern = #{orderPattern}
+    	and option_code = #{optionCode}
+  </select>
+  <select id="getTuxedoButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code, option_branch_detail_name
+    from mtb_option_branch_detail 
+    where sub_item_code=#{subItemCode}
+    	and option_branch_code=#{optionBranchCode}
+    	and tuxedo_available = '1'
+    	and order_pattern = #{orderPattern}
+  </select>
+  <select id="getWashableButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code, option_branch_detail_name
+    from mtb_option_branch_detail 
+    where sub_item_code=#{subItemCode}
+    	and option_branch_code=#{optionBranchCode}
+    	and washable_available = '1'
+    	and order_pattern = #{orderPattern}
+  </select>
+  
+  <select id="getAllOption" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select order_pattern, sub_item_code, option_code, option_branch_code, option_branch_detail_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_detail_name, 
+    option_branch_price, option_branch_double_price
+    from mtb_option_branch_detail where order_pattern = #{orderPattern} order by display_order
+  </select>
+  
+</mapper>

@@ -1,0 +1,35 @@
+date:2019-03-06 11:32:05	thread:main	X-Track:	level:INFO 	logger:c.j.a.m.app.rest.api.member.Application         	message:Starting Application on ANCC-171 with PID 388 (D:\OrderMade_Tool\workspace\aoyama-macchinetta\aoyama-macchinetta-web\target\classes started by liuzhenyu in D:\OrderMade_Tool\workspace\aoyama-macchinetta\aoyama-macchinetta-web)
+date:2019-03-06 11:32:05	thread:main	X-Track:	level:DEBUG	logger:c.j.a.m.app.rest.api.member.Application         	message:Running with Spring Boot v1.5.7.RELEASE, Spring v4.3.14.RELEASE
+date:2019-03-06 11:32:05	thread:main	X-Track:	level:INFO 	logger:c.j.a.m.app.rest.api.member.Application         	message:No active profile set, falling back to default profiles: default
+date:2019-03-06 11:32:07	thread:main	X-Track:	level:WARN 	logger:o.h.v.m.ParameterMessageInterpolator            	message:HV000184: ParameterMessageInterpolator has been chosen, EL interpolation will not be supported
+date:2019-03-06 11:32:07	thread:main	X-Track:	level:WARN 	logger:o.s.b.c.e.AnnotationConfigEmbeddedWebApplicationContext	message:Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'memberRestController': Unsatisfied dependency expressed through field 'aoyamaService'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'co.jp.aoyama.macchinetta.domain.service.AoyamaService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.inject.Inject()}
+date:2019-03-06 11:32:08	thread:main	X-Track:	level:ERROR	logger:o.s.b.diagnostics.LoggingFailureAnalysisReporter	message:
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field aoyamaService in co.jp.aoyama.macchinetta.app.rest.api.member.MemberRestController required a bean of type 'co.jp.aoyama.macchinetta.domain.service.AoyamaService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'co.jp.aoyama.macchinetta.domain.service.AoyamaService' in your configuration.
+
+date:2019-03-06 13:43:17	thread:main	X-Track:	level:INFO 	logger:co.jp.aoyama.macchinetta.app.welcome.Application	message:Starting Application on ANCC-171 with PID 5012 (D:\OrderMade_Tool\workspace\aoyama-macchinetta\aoyama-macchinetta-web\target\classes started by liuzhenyu in D:\OrderMade_Tool\workspace\aoyama-macchinetta\aoyama-macchinetta-web)
+date:2019-03-06 13:43:17	thread:main	X-Track:	level:DEBUG	logger:co.jp.aoyama.macchinetta.app.welcome.Application	message:Running with Spring Boot v1.5.7.RELEASE, Spring v4.3.14.RELEASE
+date:2019-03-06 13:43:17	thread:main	X-Track:	level:INFO 	logger:co.jp.aoyama.macchinetta.app.welcome.Application	message:No active profile set, falling back to default profiles: default
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.w.s.m.m.a.RequestMappingHandlerAdapter      	message:Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@43301423: startup date [Wed Mar 06 13:43:18 CST 2019]; root of context hierarchy
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.w.s.m.m.a.RequestMappingHandlerMapping      	message:Mapped "{[/aoyama/update],methods=[GET || POST]}" onto public java.lang.String co.jp.aoyama.macchinetta.app.welcome.HelloController.update(java.util.Locale,org.springframework.ui.Model)
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.w.s.m.m.a.RequestMappingHandlerMapping      	message:Mapped "{[/aoyama/hello],methods=[GET || POST]}" onto public java.lang.String co.jp.aoyama.macchinetta.app.welcome.HelloController.home(java.util.Locale,org.springframework.ui.Model)
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.w.s.m.m.a.RequestMappingHandlerMapping      	message:Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.w.s.m.m.a.RequestMappingHandlerMapping      	message:Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.web.servlet.handler.SimpleUrlHandlerMapping 	message:Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.web.servlet.handler.SimpleUrlHandlerMapping 	message:Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+date:2019-03-06 13:43:20	thread:main	X-Track:	level:INFO 	logger:o.s.web.servlet.handler.SimpleUrlHandlerMapping 	message:Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+date:2019-03-06 13:43:21	thread:main	X-Track:	level:INFO 	logger:co.jp.aoyama.macchinetta.app.welcome.Application	message:Started Application in 3.721 seconds (JVM running for 4.632)
+date:2019-03-06 13:44:35	thread:http-nio-8080-exec-2	X-Track:	level:INFO 	logger:o.springframework.web.servlet.DispatcherServlet 	message:FrameworkServlet 'dispatcherServlet': initialization started
+date:2019-03-06 13:44:35	thread:http-nio-8080-exec-2	X-Track:	level:INFO 	logger:o.springframework.web.servlet.DispatcherServlet 	message:FrameworkServlet 'dispatcherServlet': initialization completed in 26 ms
+date:2019-03-06 14:00:19	thread:RMI TCP Connection(21)-127.0.0.1	X-Track:	level:WARN 	logger:o.s.j.export.annotation.AnnotationMBeanExporter 	message:Could not unregister MBean [org.apache.commons.dbcp2:name=dataSource,type=BasicDataSource] as said MBean is not registered (perhaps already unregistered by an external process)

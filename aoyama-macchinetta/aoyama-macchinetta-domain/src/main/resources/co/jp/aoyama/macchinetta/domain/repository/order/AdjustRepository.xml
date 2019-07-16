@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.order.AdjustRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.Adjust" >
+    <id column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <id column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <id column="sub_item_code" property="subItemCode" jdbcType="VARCHAR" />
+    <id column="adjuste_class" property="adjusteClass" jdbcType="VARCHAR" />
+    <result column="adjuste_max" property="adjusteMax" jdbcType="NUMERIC" />
+    <result column="adjuste_min" property="adjusteMin" jdbcType="NUMERIC" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="display_order" property="displayOrder" jdbcType="SMALLINT" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from mtb_adjust
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and adjuste_class = #{adjusteClass,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.Adjust" >
+    insert into mtb_adjust (order_pattern, item_code, sub_item_code, 
+      adjuste_class, adjuste_max, adjuste_min, 
+      description, display_order, created_user_id, 
+      created_at, updated_user_id, updated_at
+      )
+    values (#{orderPattern,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{subItemCode,jdbcType=VARCHAR}, 
+      #{adjusteClass,jdbcType=VARCHAR}, #{adjusteMax,jdbcType=NUMERIC}, #{adjusteMin,jdbcType=NUMERIC}, 
+      #{description,jdbcType=VARCHAR}, #{displayOrder,jdbcType=SMALLINT}, #{createdUserId,jdbcType=VARCHAR}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="co.jp.aoyama.macchinetta.domain.model.Adjust" >
+    update mtb_adjust
+    set adjuste_max = #{adjusteMax,jdbcType=NUMERIC},
+      adjuste_min = #{adjusteMin,jdbcType=NUMERIC},
+      description = #{description,jdbcType=VARCHAR},
+      display_order = #{displayOrder,jdbcType=SMALLINT},
+      created_user_id = #{createdUserId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and adjuste_class = #{adjusteClass,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select order_pattern, item_code, sub_item_code, adjuste_class, adjuste_max, adjuste_min, 
+    description, display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_adjust
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and adjuste_class = #{adjusteClass,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select order_pattern, item_code, sub_item_code, adjuste_class, adjuste_max, adjuste_min, 
+    description, display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_adjust
+  </select>
+  
+  <select id="getAllAdjust" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select order_pattern, item_code, sub_item_code, adjuste_class, adjuste_max, adjuste_min, 
+    description, display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_adjust where order_pattern = #{orderPattern}
+  </select>
+</mapper>

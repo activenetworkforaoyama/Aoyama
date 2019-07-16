@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="co.jp.aoyama.macchinetta.domain.repository.detail.OrderDetailRepository">
+
+	<resultMap id="orderDetailResultMap" type="OrderDetail">
+		<result property="actualStock" column="actualStock" />
+		<result property="fabricId" column="fabricId" />
+	</resultMap>
+
+	<select id="selectActualStock" resultType="OrderDetail">
+ 		select ms.actual_stock as actualStock,
+ 			   ms.fabric_id as fabricId
+ 		from mtb_stock as ms,mtb_fabric as mf
+		where ms.fabric_id = mf.fabric_id 
+			  and mf.fabric_no = #{arg0}
+			  and mf.order_pattern = 'PO'
+	</select>
+	
+	<update id="updateActualStock" >
+			UPDATE
+			mtb_stock
+			<set>
+				actual_stock = #{arg1},
+				updated_user_id = #{arg2},
+				updated_at = #{arg3}
+			</set>
+			WHERE
+				fabric_id = #{arg0}
+	</update>
+</mapper>

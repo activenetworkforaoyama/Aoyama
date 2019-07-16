@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.order.ModelRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.Model" >
+    <id column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <id column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <id column="sub_item_code" property="subItemCode" jdbcType="VARCHAR" />
+    <id column="model_code" property="modelCode" jdbcType="VARCHAR" />
+    <result column="support_factorys" property="supportFactorys" jdbcType="VARCHAR" />
+    <result column="style_name" property="styleName" jdbcType="VARCHAR" />
+    <result column="display_order" property="displayOrder" jdbcType="SMALLINT" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map" >
+    delete from mtb_model
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and model_code = #{modelCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.Model" >
+    insert into mtb_model (order_pattern, item_code, sub_item_code, 
+      model_code, support_factorys, style_name, 
+      display_order, created_user_id, created_at, 
+      updated_user_id, updated_at)
+    values (#{orderPattern,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{subItemCode,jdbcType=VARCHAR}, 
+      #{modelCode,jdbcType=VARCHAR}, #{supportFactorys,jdbcType=VARCHAR}, #{styleName,jdbcType=VARCHAR}, 
+      #{displayOrder,jdbcType=SMALLINT}, #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="co.jp.aoyama.macchinetta.domain.model.Model" >
+    update mtb_model
+    set support_factorys = #{supportFactorys,jdbcType=VARCHAR},
+      style_name = #{styleName,jdbcType=VARCHAR},
+      display_order = #{displayOrder,jdbcType=SMALLINT},
+      created_user_id = #{createdUserId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and model_code = #{modelCode,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="map" >
+    select order_pattern, item_code, sub_item_code, model_code, support_factorys, style_name, 
+    display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_model
+    where order_pattern = #{orderPattern,jdbcType=VARCHAR}
+      and item_code = #{itemCode,jdbcType=VARCHAR}
+      and sub_item_code = #{subItemCode,jdbcType=VARCHAR}
+      and model_code = #{modelCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select order_pattern, item_code, sub_item_code, model_code, support_factorys, style_name, 
+    display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_model
+  </select>
+  
+  <select id="getAllModel" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select order_pattern, item_code, sub_item_code, model_code, support_factorys, style_name, 
+    display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_model where order_pattern=#{orderPattern}
+  </select>
+</mapper>
