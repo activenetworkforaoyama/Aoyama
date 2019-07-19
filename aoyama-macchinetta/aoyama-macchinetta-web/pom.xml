@@ -65,7 +65,6 @@
             </dependencies>
         </profile>
     </profiles>
-
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -171,12 +170,6 @@
            <artifactId>dozer</artifactId>
            <version>5.5.1</version>
         </dependency>
-<!--  		<dependency>
-           <groupId>coreports</groupId>
-           <artifactId>coreports</artifactId>
-           <version>trial</version>
-        </dependency> -->
-        
 		<!-- 2019/3/26 JinYunFei ADD END -->
         <dependency>
             <groupId>org.hamcrest</groupId>

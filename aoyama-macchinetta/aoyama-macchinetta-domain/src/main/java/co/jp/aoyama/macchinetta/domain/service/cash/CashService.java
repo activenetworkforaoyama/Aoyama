@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import co.jp.aoyama.macchinetta.domain.model.Cash;
+import co.jp.aoyama.macchinetta.domain.model.CashInfo;
 
 public interface CashService {
 
@@ -16,11 +17,11 @@ public interface CashService {
 	
 	Cash selectOrderByOrderId(String orderId);
 	
-	Boolean updateCashByPrimaryKey(List<Cash> cashList);
-	
 	void insertCash(Cash cash);
 	
 	void updateCash(Cash cash);
 	
 	void updateCashStatus(String cashId,String cashStatus,String updatedUserId,Date updatedAt);
+	
+	Boolean updateCashInfoByPrimaryKey(List<CashInfo> cashInfoList);
 }

@@ -11,4 +11,6 @@ public interface CashInfoService {
 	List<CashInfo> selectOrderByCashId(String cashId);
 
 	void updateOrderByOrderId(CashInfo cashInfo);
+	
+	Boolean updateCashInfoByPrimaryKey(List<CashInfo> cashInfoList);
 }

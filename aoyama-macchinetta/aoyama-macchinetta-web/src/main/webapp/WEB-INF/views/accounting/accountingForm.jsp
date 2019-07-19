@@ -36,8 +36,6 @@ a:link{color:blue;}
 		<div class="card" id="nav1_custom_div">
 			<div class="card-body">
 				<!-- 検索条件部分 End -->
-				<form action="" id="frmSearch" method="post"
-					enctype="multipart/form-data" class="form-horizontal">
 					<div class="row">
 						<!-- 左側項目 -->
 						<div class="col col-lg-6">
@@ -168,8 +166,6 @@ a:link{color:blue;}
 					<br/>
 					<!-- 制御ボタン部分 End -->
 
-				</form>
-
 			</div>
 			<!-- card body -->
 		</div>
@@ -251,9 +247,6 @@ var sortcol = "cashId";
 var sortdir = 1;
 var contextPath = $("meta[name='contextPath']").attr("content");
 var Row;
-var sumAccount = 0;
-var sumPoint = 0;
-var sumAmount = 0;
 
 function  addmulMonth(dtstr,n){   // n个月后 
 	   var s=dtstr.split("-");
@@ -300,7 +293,17 @@ function gotoAccount(cashId){
 	localStorage.setItem("key", "cashLink");
 	window.location.href= contextPath + "/cash/goToAccountingLink/"+cashId;
 }
-
+//CSRF令牌
+$(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = $("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = $("meta[name='_csrf']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 $(document).ready(function(){
 	var authority = '${sessionContent.authority}';
 	if(authority == "02"){
@@ -378,7 +381,7 @@ $(document).ready(function() {
 	  	{id: 'shop_name', name: '店舗名', field: 'shopName', formatter: mineFormatter, sortable: true},
 	    {id: 'cash_id', name: '会計NO.', field: 'cashId', formatter: mineFormatter, sortable: true},
 	    {id: 'product_orderd_date', name: '承り日', field: 'productOrderdDate', formatter: mineFormatter, sortable: true},
-	    {id: 'order_amount', name: '点数', field: 'orderAmount', formatter: mineFormatter, sortable: true},
+	    {id: 'order_amount', name: '点数', field: 'orderAmount', formatter: mineFormatter, cssClass: "cell-money", sortable: true},
 	    {id: 'cash_except_tax_price', name: '商品金額', field: 'cashExceptTaxPrice', formatter: mineFormatter, cssClass: "cell-money", sortable: true},
 	    {id: 'store_staff_nm', name: '営業担当者', field: 'storeStaffNm', formatter: mineFormatter, sortable: true}
  ];
@@ -404,11 +407,11 @@ $(document).ready(function() {
 		appendAlertDel('errorMassageIno');
 	});
 	$("#select_button").click(function(){
-		sumAccount = 0;
-		sumPoint = 0;
-		sumAmount = 0;
+		var sumAccount = 0;
+		var sumPoint = 0;
+		var sumAmount = 0;
 		appendAlertDel('errorMassageIno');
-		  $("#areaResult").show();
+		  
 		  var custCd = $("#custCd").val();
 		  var storeStaffNm = $("#storeStaffNm").val();
 		  var productOrderdDateFromStr = $("#productOrderdDateFromStr").val();
@@ -447,7 +450,7 @@ $(document).ready(function() {
 					&& !(startCompare <= endCompare)){
 				//承り日fromが承り日toより小さくない
 				//msg068 = {0}は{1}以降の日付を入力してください。
-				appendAlert('errorMassageIno', getMsgByTwoArgs('msg068', '承り日to', '承り日from'));
+				appendAlert('errorMassageIno', getMsgByTwoArgs('msg068', '承り日TO', '承り日FROM'));
 				// (4) SlickGridテーブルを作成
 				dataView = new Slick.Data.DataView();
 				grid = new Slick.Grid("#myGrid", dataView,columns, options);
@@ -480,10 +483,12 @@ $(document).ready(function() {
 						  "cashStatus":cashStatus,"storeBrandCode":storeBrandCode,"shopCode":shopCode}
 			}).then(function(result) {
 					if(Object.keys(result).length  == 0){
+						$("#areaResult").hide();
 						//alert("検索結果が0件でした。条件を変更して再検索してください。");
 						appendAlert("errorMassageIno",getMsgByOneArg('msg031'));
 					}else{
 						$("#doKoShin").show();
+						$("#areaResult").show();
 					}
 						for(var i = 0; i < result.length; i++) {
 							var d = (data[i] = {});

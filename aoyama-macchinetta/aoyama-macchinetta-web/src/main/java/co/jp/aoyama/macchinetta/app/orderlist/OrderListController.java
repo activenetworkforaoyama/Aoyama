@@ -3,6 +3,7 @@ package co.jp.aoyama.macchinetta.app.orderlist;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -98,6 +99,15 @@ public class OrderListController {
 	//工場ステータス   生産終了
 	public static final String MAKER_FACTORY_STATUS_F2 = "F2";
 	
+	// 工場自動連携ステータス 送信前
+	private static final String SEND2FACTORY_STATUS0 = "0";
+	
+	// 取り消しフラグ 取り消しではない
+	private static final String IS_NOT_CANCELLED = "0";
+	
+	// 在庫チェックなし
+	private static final String IS_NOT_THEORETICAL_STOCKCECK = "0";
+	
     private static final Logger logger = LoggerFactory
             .getLogger(OrderListController.class);
     
@@ -149,9 +159,10 @@ public class OrderListController {
 	public List<Order> FindAllOrderByCondition(@Validated OrderListForm orderListForm,
             BindingResult result,
             Model model) {
-		
+
 		orderListForm.setAuthority(sessionContent.getAuthority());
 		orderListForm.setBelongCode(sessionContent.getBelongCode());
+		orderListForm.setCategory(sessionContent.getCategory());
 		//検索条件bean
 		OrderCondition orderCondition = beanMapper.map(orderListForm,OrderCondition.class);
 		//検索結果list
@@ -168,8 +179,8 @@ public class OrderListController {
      * @param Model model
      * @return String　遷移Controller
      */
-	@RequestMapping(value = "/goToOrderLink/{orderId}",method =RequestMethod.GET) 
-	public String goToOrderLink(@PathVariable(value ="orderId") String orderId,
+	@RequestMapping(value = "/gotoOrderPoLink/{orderId}",method =RequestMethod.GET) 
+	public String gotoOrderPoLink(@PathVariable(value ="orderId") String orderId,
 	                            Model model) {
 		String authority = sessionContent.getAuthority();
 		String shopCode = sessionContent.getBelongCode();
@@ -178,11 +189,9 @@ public class OrderListController {
 		
 			Order order= orderListService.findOrderByPk(orderId);
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
-
-			if (measuring == null) {
-				return "redirect:/orderlist/gotoOrderlistError";
-			}
-
+			/*
+			 * if (measuring == null) { return "redirect:/orderlist/gotoOrderlistError"; }
+			 */
 			model.addAttribute("order", order);
 			model.addAttribute("measuring", measuring);
 			model.addAttribute("authority", authority);
@@ -190,34 +199,35 @@ public class OrderListController {
 			model.addAttribute("orderFlag", orderFlag);
 			//本店オーダー 、商品部の場合
 			//店舗の場合
-			if (authority.equals(AUTHORITY_01)) {
-				//本店の生産開始前の場合、登録画面へ遷移
-				if (order.getMakerFactoryStatus() != null && order.getShopCode() != null && order.getIsCancelled() != null) {
+			if (order.getMakerFactoryStatus() != null &&
+				order.getShopCode() != null && 
+				order.getIsCancelled() != null) {
+				if (authority.equals(AUTHORITY_01)) {
+					//本店の生産開始前の場合、登録画面へ遷移
 					if (order.getShopCode().equals(shopCode) && 
 						order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
 						order.getIsCancelled().equals("0")) {
 						return "forward:/order/orderPoUpdate"; 
 					}
-				}else {
-					return "redirect:/orderlist/gotoOrderlistError";
 				}
-			}
-			//商品部の場合
-			if (authority.equals(AUTHORITY_02)) {
-				//会計前の場合、登録画面へ遷移
-				if (order.getTscStatus() != null && order.getIsCancelled() != null) {
-					if (order.getTscStatus().equals(TSC_STATUS_T0) 
-						|| order.getTscStatus().equals(TSC_STATUS_T1) 
-						|| order.getTscStatus().equals(TSC_STATUS_T2)
-						&& order.getIsCancelled().equals("0")) {
+				//商品部の場合
+				if (authority.equals(AUTHORITY_02)) {
+					//会計前の場合、登録画面へ遷移
+					if ((order.getTscStatus() == null ||
+							order.getTscStatus().equals("") ||
+							order.getTscStatus().equals(TSC_STATUS_T0) || 
+							order.getTscStatus().equals(TSC_STATUS_T1) || 
+							order.getTscStatus().equals(TSC_STATUS_T2))
+							&& order.getIsCancelled().equals("0")) {
 						return "forward:/order/orderPoUpdate"; 
 					}
-				}else {
-					return "redirect:/orderlist/gotoOrderlistError";
 				}
+				//明細画面へ遷移
+				return "forward:/orderDetail/orderPoDetail";
+			}else {
+		    	return "redirect:/orderlist/gotoOrderlistError";
 			}
-			//明細画面へ遷移
-			return "forward:/orderDetail/orderDetail";
+			
 		}catch (BusinessException e) {
 	    		// メッセージリスト
 		    	ResultMessages messages = e.getResultMessages();
@@ -239,6 +249,84 @@ public class OrderListController {
 	    }
 	}
 
+    /**
+     * orderIdのリンクのメソッド
+     * @param orderId 注文ID
+     * @param authority 権限
+     * @param shopCode 店舗コード
+     * @param Model model
+     * @return String　遷移Controller
+     */
+	@RequestMapping(value = "/gotoOrderCoLink/{orderId}",method =RequestMethod.GET)
+	public String gotoOrderCoLink(@PathVariable(value ="orderId") String orderId,
+	                            Model model) {
+		String authority = sessionContent.getAuthority();
+		String shopCode = sessionContent.getBelongCode();
+		
+		try {
+		
+			Order order= orderListService.findOrderByPk(orderId);
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			/*
+			 * if (measuring == null) { return "redirect:/orderlist/gotoOrderlistError"; }
+			 */
+			model.addAttribute("order", order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("authority", authority);
+			String orderFlag = "orderLink";
+			model.addAttribute("orderFlag", orderFlag);
+			//本店オーダー 、商品部の場合
+			//店舗の場合
+			if (order.getMakerFactoryStatus() != null &&
+				order.getShopCode() != null && 
+				order.getIsCancelled() != null) {
+				if (authority.equals(AUTHORITY_01)) {
+					//本店の生産開始前の場合、登録画面へ遷移
+					if (order.getShopCode().equals(shopCode) && 
+						order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
+						order.getIsCancelled().equals("0")) {
+						return "forward:/order/orderCoUpdate"; 
+					}
+				}
+				//商品部の場合
+				if (authority.equals(AUTHORITY_02)) {
+					//会計前の場合、登録画面へ遷移
+					if ((order.getTscStatus() == null ||
+						order.getTscStatus().equals("") ||
+						order.getTscStatus().equals(TSC_STATUS_T0) || 
+						order.getTscStatus().equals(TSC_STATUS_T1) || 
+						order.getTscStatus().equals(TSC_STATUS_T2))
+						&& order.getIsCancelled().equals("0")) {
+						return "forward:/order/orderCoUpdate"; 
+					}
+				}
+				//明細画面へ遷移
+				return "forward:/orderDetail/orderCoDetail";
+			}else {
+		    	return "redirect:/orderlist/gotoOrderlistError";
+			}
+			
+		}catch (BusinessException e) {
+	    		// メッセージリスト
+		    	ResultMessages messages = e.getResultMessages();
+		    	messages.add(MessageKeys.E021, orderId);
+				// エラーメッセージ
+		    	model.addAttribute("resultMessages", messages);
+		    	// ログを出力
+		    	logger.error(messages.toString());
+		    	return "redirect:/orderlist/gotoOrderlistError";
+	    } catch (ResourceNotFoundException e) {
+	    		// メッセージリスト
+		    	ResultMessages messages = e.getResultMessages();
+		    	messages.add(MessageKeys.E021, orderId);
+				// エラーメッセージ
+		    	model.addAttribute("resultMessages", messages);
+		    	// ログを出力
+		    	logger.error(messages.toString());
+		    	return "redirect:/orderlist/gotoOrderlistError";
+	    }
+	}
+	
 	@RequestMapping(value = "/goToOrderDivert/{orderId}",method =RequestMethod.GET)
 	public String goToOrderDivert(@PathVariable(value ="orderId") String orderId,
 	                       Model model) {
@@ -246,14 +334,64 @@ public class OrderListController {
 		Order order= orderListService.findOrderByPk(orderId);
 		Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 		String belongCode = sessionContent.getBelongCode();
-		String maxOrderId = orderService.selectMaxOrderId(belongCode, type);
+		String orderIdCheckCd = belongCode.concat("1");
+		String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, type);
 		if (maxOrderId == null) {
-			orderId = belongCode + "00000001";
+			orderId = belongCode.concat("10000001");
 		} else {
 			long parseLong = Long.parseLong(maxOrderId)+1;
 			orderId = String.format("%012d",parseLong);
 		}
 		order.setOrderId(orderId);
+		//TSCステータス
+		order.setTscStatus("");
+		//オーダーパターン
+		order.setOrderPattern(type);
+		//業態
+		order.setStoreBrandCode(sessionContent.getStoreBrandCode());
+		// 店舗コード
+		order.setShopCode(belongCode);
+		//商品情報_工場
+		order.setProductFactoryCd("");
+		//商品情報_メーカーコード
+		order.setProductMakerCode("");
+		//注文承り日
+		order.setProductOrderdDate(new Date());
+		//理論生地使用量
+		order.setTheoryFabricUsedMount(new BigDecimal(0));
+		//工場ステータス
+		order.setMakerFactoryStatus(MAKER_FACTORY_STATUS_F0);
+		//工場自動連携ステータス
+		order.setSend2factoryStatus(SEND2FACTORY_STATUS0);
+		//取り消しフラグ
+		order.setIsCancelled(IS_NOT_CANCELLED);
+		//理論在庫チェック
+		order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+		//登録者
+		order.setCreatedUserId(sessionContent.getUserId());
+		//登録日時
+		order.setCreatedAt(new Date());
+		//最終更新者
+		order.setUpdatedUserId(sessionContent.getUserId());
+		//最終更新日時
+		order.setUpdatedAt(new Date());
+		
+		order.setVersion((short)0);
+		
+		orderService.insertOrder(order);
+		
+		measuring.setOrderId(orderId);
+		
+		measuring.setCreatedUserId(sessionContent.getUserId());
+		
+		measuring.setCreatedAt(new Date());
+		
+		measuring.setUpdatedUserId(sessionContent.getUserId());
+		
+		measuring.setUpdatedAt(new Date());
+		
+		measuringService.insertMeasuring(measuring);
+		
 		model.addAttribute("order", order);
 		model.addAttribute("measuring", measuring);
 		String orderFlag = "orderDivert";

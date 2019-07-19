@@ -65,7 +65,7 @@ public class PasswordController {
      * @return ユーザー情報リスト
      */
     @ResponseBody
-    @RequestMapping(value = "selectAllUser", method = RequestMethod.POST)
+    @RequestMapping(value = "selectAllUser", method = RequestMethod.GET)
     public List<PasswordForm> selectAllUser() {
     	
     	List<MineUser> shopList = userService.findAll();

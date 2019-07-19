@@ -18,6 +18,7 @@ public class Piece implements Serializable {
     private Date updatedAt;
     private String createdUserId;
     private String updatedUserId;
+    private Short version;
     
     private boolean delType;
     private String optionType;
@@ -100,6 +101,14 @@ public class Piece implements Serializable {
 
 	public void setUpdatedUserId(String updatedUserId) {
 		this.updatedUserId = updatedUserId;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 	public boolean getDelType() {

@@ -14,6 +14,8 @@ public class Model implements Serializable {
     private String subItemCode;
 
     private String modelCode;
+    
+    private String modelName;
 
     private String supportFactorys;
 
@@ -29,7 +31,15 @@ public class Model implements Serializable {
 
     private Date updatedAt;
 
-    public String getOrderPattern() {
+    public String getModelName() {
+		return modelName;
+	}
+
+	public void setModelName(String modelName) {
+		this.modelName = modelName;
+	}
+
+	public String getOrderPattern() {
         return orderPattern;
     }
 

@@ -37,4 +37,15 @@ public class CashInfoServiceImpl implements CashInfoService {
 		return cashInfoList;
 	}
 
+	@Override
+	public Boolean updateCashInfoByPrimaryKey(List<CashInfo> cashInfoList) {
+		// TODO Auto-generated method stub
+		if(cashInfoList.size() != 0) {
+			cashInfoRepository.updateCashInfoByPrimaryKey(cashInfoList);
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }

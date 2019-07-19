@@ -60,6 +60,8 @@ public class Cash implements Serializable {
     private String tscStatus;
     
     private String makerFactoryStatus;
+    
+    private Short version;
 
 	public String getCashId() {
 		return cashId;
@@ -275,6 +277,14 @@ public class Cash implements Serializable {
 
 	public void setMakerFactoryStatus(String makerFactoryStatus) {
 		this.makerFactoryStatus = makerFactoryStatus;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 }

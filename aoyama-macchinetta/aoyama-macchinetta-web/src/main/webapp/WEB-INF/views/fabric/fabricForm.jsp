@@ -52,10 +52,9 @@ $(document).ready(function(){
 	jQuery("#confirmUpload").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg025', "生地情報"),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})
@@ -77,42 +76,11 @@ function updateFabric(){
 	$("#messagesPanel").attr("style","display:none");
 	var suffixType = checkFileTxt();
 
-	//var file = $("#file").val();
-	/* var file = document.getElementById('file').files[0];
-	var fileOriginalName = file.name;
-	var fileOriginalURL = getObjectURL(file);
-	var presentFile = fileOriginalURL+"/"+fileOriginalName; */
-
-	/* var file_upl = document.getElementById('file');
-	file_upl.select();
-	var realpath = document.selection.createRange().text; */
-
-	/* var file_upl = document.getElementById('file');
-	alert(file_upl);
-	file_upl.select();
-	alert(file_upl.select());
-	var realpath = document.selection.createRange().text;
-	alert(realpath); */
-
-	//window.location.href = contextPath + "/fabric/checkFileExist?presentFile="+presentFile;
-	/* $("#updateFabricForm").attr("action","${pageContext.request.contextPath}/fabric/checkFileExist?presentFile="+presentFile);
-	$("#updateFabricForm").submit(); */
-
-	/* var fso,s = fileOriginalURL;
-	//fso = new ActiveXObject("Scripting.FileSystemObject");
-	if (fso.FileExists(fileOriginalURL+"/"+fileOriginalName)){
-		s += " exists.";
-	}else{
-		s += " doesn't exist.";
-	}
-	alert(s); */
-	
-	//$('#imgContainer').html("<img src='" + objURL + "' alt='Alternate Text' width='640px' height='350px' id='target' />"); 
-    
 	if(suffixType == 1){
 		//ｔｘｔです
 		$("#updateFabricForm").attr("action","${pageContext.request.contextPath}/fabric/fabricUpload");
 		$("#updateFabricForm").submit();
+
 	}else if(suffixType == -1){
 		//ｔｘｔではない
 		appendAlert("errorMessage", getMsg('msg036'));
@@ -121,21 +89,6 @@ function updateFabric(){
 		appendAlert("errorMessage", getMsg('msg037'));
 	}
 }
-
-/* function getObjectURL(file) { 
-    var url = null; 
-    if(window.createObjcectURL != undefined) { 
-        url = window.createOjcectURL(file); 
-        //alert("createObjcectURL-"+url);
-    }else if(window.URL != undefined) { 
-        url = window.URL.createObjectURL(file); 
-        //alert("URL--------------"+url);
-    }else if(window.webkitURL != undefined) { 
-    	//alert("webkitURL--------"+url);
-        url = window.webkitURL.createObjectURL(file); 
-    } 
-    return url; 
-} */
 
 /**
  * ファイルの形式を検査する
@@ -177,30 +130,41 @@ function checkFileTxt(){
 	</div>
 	
 	<form id="updateFabricForm" action="#" method="post" enctype="multipart/form-data">
+	<sec:csrfInput />
 	
-	<div id="inputAreaClothUpload" class="">
-		<br>
-		<div class="col col-md-2" style="background:#fcf8e3">CSVアップロード</div>
-		<div class="col-12 col-md-9">
-			<input class=" float-left" id="file" name="file" type="file">
-			<!-- <span class="btn btn-success fileinput-button">
-		        <span>ファイルを選択</span>
+	<div class="card">
+	<div class="card-body">
+		<div>
+			<br>
+			<div class="col col-md-2" style="font-weight:bold;">CSVアップロード</div>
+			<div class="col-12 col-md-9">
 				<input class=" float-left" id="file" name="file" type="file">
-	        </span> -->
+				<!-- <span class="btn btn-success fileinput-button">
+			        <span>ファイルを選択</span>
+					<input class=" float-left" id="file" name="file" type="file">
+		        </span> -->
+			</div>
+			<br><br>
+			<div class="col col-md-2"></div>
+			<div class="col-12 col-md-3">
+				<button id="confirmUpload" class="btn btn-danger btn-block"><i class="fa fa-check-circle"></i>生地情報を更新する</button>
+			</div>
+			<br><br>
 		</div>
-		<br><br>
-		<div class="col col-md-3">
-			<button id="confirmUpload" class="btn btn-danger btn-block"><i class="fa fa-check-circle"></i>生地情報を更新する</button>
-		</div>
-		<br><br>
+	</div>
 	</div>
 	<br>
 	
-	<div class=""><br>
-		<div class="col col-md-4">
-			<button id="fabricDownload" type="button" class="btn btn-primary btn-block" ><i class="fa fa-check-circle"></i>生地情報をダウンロードする</button>
+	<div class="card">
+	<div class="card-body">
+		<div class=""><br>
+			<div class="col col-md-2"></div>
+			<div class="col col-md-4">
+				<button id="fabricDownload" type="button" class="btn btn-primary btn-block" ><i class="fa fa-check-circle"></i>生地情報をダウンロードする</button>
+			</div>
+			<br><br>
 		</div>
-		<br><br>
+	</div>
 	</div>
 	<br><br>
 	 

@@ -10,6 +10,7 @@ public class ShopForm implements Serializable{
 	private String shopCode;
 	private String shopName;
 	private String storeBrandCode;
+	private String version;
 	private String createdUserId;
 	private String updatedUserId;
 	private Date createdAt;
@@ -99,6 +100,12 @@ public class ShopForm implements Serializable{
 	}
 	public void setDisplayIdentify(Boolean displayIdentify) {
 		this.displayIdentify = displayIdentify;
+	}
+	public String getVersion() {
+		return version;
+	}
+	public void setVersion(String version) {
+		this.version = version;
 	}
 	
 }

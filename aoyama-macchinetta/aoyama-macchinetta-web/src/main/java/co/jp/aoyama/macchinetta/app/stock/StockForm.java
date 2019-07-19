@@ -25,6 +25,8 @@ public class StockForm implements Serializable {
 	private Integer retailPrice;
 	
 	private Integer retailPriceTo;
+	
+	private BigDecimal reservationStock;
 
 	private BigDecimal theoreticalStock;
 
@@ -105,6 +107,14 @@ public class StockForm implements Serializable {
 	public Integer getRetailPriceTo() {
 		return retailPriceTo;
 	}
+	
+	public BigDecimal getReservationStock() {
+		return reservationStock;
+	}
+
+	public void setReservationStock(BigDecimal reservationStock) {
+		this.reservationStock = reservationStock;
+	}
 
 	public void setRetailPriceTo(Integer retailPriceTo) {
 		this.retailPriceTo = retailPriceTo;
@@ -157,6 +167,4 @@ public class StockForm implements Serializable {
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
 	}
-
-	
 }

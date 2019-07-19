@@ -33,6 +33,8 @@ public class FabricBrandForm implements Serializable {
 	private String isNewData;
 	
 	private String updateFlag;
+	
+	private String updateFailure;
 
 	public String getFablicBrandNo() {
 		return fablicBrandNo;
@@ -128,6 +130,14 @@ public class FabricBrandForm implements Serializable {
 
 	public void setUpdateFlag(String updateFlag) {
 		this.updateFlag = updateFlag;
+	}
+
+	public String getUpdateFailure() {
+		return updateFailure;
+	}
+
+	public void setUpdateFailure(String updateFailure) {
+		this.updateFailure = updateFailure;
 	}
 
 }

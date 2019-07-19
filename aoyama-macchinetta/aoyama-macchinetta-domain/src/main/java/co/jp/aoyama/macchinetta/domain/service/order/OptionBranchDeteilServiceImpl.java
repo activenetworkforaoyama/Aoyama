@@ -18,19 +18,19 @@ public class OptionBranchDeteilServiceImpl implements OptionBranchDeailService {
 	OptionBranchDetailRepository optionBranchDetailRepository;
 
 	@Override
-	public List<OptionBranchDetail> getStandardButtons(String subItemCode, String opButton, String orderPattern,String optionCode) {
+	public List<OptionBranchDetail> getStandardButtons(String itemCode,String subItemCode, String opButton, String orderPattern,String optionCode) {
 		
-		return optionBranchDetailRepository.getStandardButtons(subItemCode,opButton,orderPattern,optionCode);
+		return optionBranchDetailRepository.getStandardButtons(itemCode,subItemCode,opButton,orderPattern,optionCode);
 	}
 
 	@Override
-	public List<OptionBranchDetail> getTuxedoButtons(String subItemCode, String tpButton, String orderPattern) {
-		return optionBranchDetailRepository.getTuxedoButtons(subItemCode,tpButton,orderPattern);
+	public List<OptionBranchDetail> getTuxedoButtons(String itemCode,String subItemCode, String tpButton, String orderPattern) {
+		return optionBranchDetailRepository.getTuxedoButtons(itemCode,subItemCode,tpButton,orderPattern);
 	}
 
 	@Override
-	public List<OptionBranchDetail> getWashableButtons(String subItemCode, String wpButton, String orderPattern) {
-		return optionBranchDetailRepository.getWashableButtons(subItemCode,wpButton,orderPattern);
+	public List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern) {
+		return optionBranchDetailRepository.getWashableButtons(itemCode,subItemCode,wpButton,orderPattern);
 	}
 
 	@Override

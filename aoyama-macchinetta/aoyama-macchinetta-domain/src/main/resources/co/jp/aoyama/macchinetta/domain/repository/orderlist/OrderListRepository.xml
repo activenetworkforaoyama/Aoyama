@@ -50,6 +50,8 @@
     <result column="product_spare_pants_ws_wage" jdbcType="NUMERIC" property="productSparePantsWsWage" />
     <result column="product_spare_pants_ws_price" jdbcType="INTEGER" property="productSparePantsWsPrice" />
     <result column="product_fabric_no" jdbcType="VARCHAR" property="productFabricNo" />
+    <result column="fabric_color" jdbcType="VARCHAR" property="fabricColor" />
+    <result column="fabric_pattern" jdbcType="VARCHAR" property="fabricPattern" />
     <result column="product_category" jdbcType="VARCHAR" property="productCategory" />
     <result column="product_brand_type" jdbcType="VARCHAR" property="productBrandType" />
     <result column="product_brand_nm" jdbcType="VARCHAR" property="productBrandNm" />
@@ -1243,6 +1245,7 @@
     <result column="send2factory_status" jdbcType="VARCHAR" property="send2factoryStatus" />
     <result column="is_cancelled" jdbcType="VARCHAR" property="isCancelled" />
     <result column="theoretical_stock_check" jdbcType="VARCHAR" property="theoreticalStockCheck" />
+    <result column="version" property="version" jdbcType="SMALLINT" />
     <result column="created_user_id" jdbcType="VARCHAR" property="createdUserId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_user_id" jdbcType="VARCHAR" property="updatedUserId" />
@@ -1261,7 +1264,7 @@
 		    cust_remark, product_item, product_item_displaycode, product_is_3piece, product_is_3piece_rt_price, 
 		    product_is_3piece_ws_wage, product_is_3piece_ws_price, product_spare_pants_class, 
 		    product_spare_pants_rt_price, product_spare_pants_ws_wage, product_spare_pants_ws_price, 
-		    product_fabric_no, product_category, product_brand_type, product_brand_nm, product_fabric_nm_necessity, 
+		    product_fabric_no, fabric_color, fabric_pattern, product_category, product_brand_type, product_brand_nm, product_fabric_nm_necessity, 
 		    product_embroidery_necessity, product_embroidery_nm, product_embroidery_font, product_embroidery_thread_color, 
 		    product_embroidery_gazette, product_embroidery_gazette_rt_price, product_embroidery_gazette_ws_wage, 
 		    product_embroidery_gazette_ws_price, product_embroidery_nm_pos, product_embroidery_nm_pos_rt_price, 
@@ -1553,8 +1556,8 @@
 		    host_transmit_item_cd, host_transmit_maker_cd, host_transmit_nenki_cd, host_transmit_color_cd, 
 		    host_transmit_size, host_transmit_maker_product, factory_shipping_method, shipping_date, 
 		    loading_date, fabric_used_mount, theory_fabric_used_mount, tsc_status, maker_factory_status, 
-		    send2factory_status, is_cancelled, theoretical_stock_check, dtb_order.created_user_id, dtb_order.created_at, 
-		    dtb_order.updated_user_id, dtb_order.updated_at
+		    send2factory_status, is_cancelled, theoretical_stock_check, version,
+		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at
     </sql>
 
     <select id="findOrderByPk" parameterType="string" resultMap="OrderResultMap">
@@ -1610,7 +1613,9 @@
     
     <sql id="OrderCondition">
         WHERE 
-        1=1
+        
+        order_pattern = #{condition.category}
+        
         <if test="condition.orderId != null and condition.orderId != ''">
         <![CDATA[
         AND
@@ -1636,7 +1641,7 @@
         <if test="condition.storeStaffNm != null and condition.storeStaffNm != ''">
         <![CDATA[
         AND
-            store_staff_nm LIKE '%${condition.storeStaffNm}%'
+            cust_staff LIKE '%${condition.storeStaffNm}%'
         ]]>
         </if>
         
@@ -1683,6 +1688,13 @@
         <![CDATA[
         AND
             product_orderd_date >= #{condition.productOrderdDate2From}
+        AND
+            (tsc_status = 'T2' OR
+             tsc_status = 'T3' OR
+             tsc_status = 'T4' OR 
+             tsc_status = 'T5' OR 
+             tsc_status = 'T6' OR 
+             tsc_status = 'T7' )
         ]]>    
         </if>
         
@@ -1690,6 +1702,13 @@
         <![CDATA[
         AND
             product_orderd_date <= #{condition.productOrderdDate2To}
+        AND
+            (tsc_status = 'T2' OR
+             tsc_status = 'T3' OR
+             tsc_status = 'T4' OR 
+             tsc_status = 'T5' OR 
+             tsc_status = 'T6' OR 
+             tsc_status = 'T7' )
         ]]>    
         </if>
         
@@ -1800,7 +1819,7 @@
         <if test="condition.isSendFailure">
         <![CDATA[
         AND
-            send2factory_status = '2'
+            send2factory_status = '4'
         ]]>
         </if>
 
@@ -1819,10 +1838,12 @@
 			<set>
 				tsc_status = #{arg1},
 				updated_user_id = #{arg2},
-				updated_at = #{arg3}
+				updated_at = #{arg3},
+				version = #{arg4} + 1
 			</set>
 			WHERE
 				order_id = #{arg0}
+				and version = #{arg4}
 	</update>
     
     <update id="updateSaveValue" >
@@ -1848,10 +1869,12 @@
 				loading_date = #{arg3},
 				maker_factory_status = #{arg4},
 				updated_user_id = #{arg5},
-				updated_at = #{arg6}
+				updated_at = #{arg6},
+				version = #{arg7} + 1
 			</set>
 			WHERE
 				order_id = #{arg0}
+				and version = #{arg7}
 	</update>
 	
 	<update id="updateNextGeneration" >
@@ -1860,9 +1883,22 @@
 			<set>
 				ws_price = #{arg1},
 				updated_user_id = #{arg2},
-				updated_at = #{arg3}
+				updated_at = #{arg3},
+				version = #{arg4} + 1
 			</set>
 			WHERE
 				order_id = #{arg0}
+				and version = #{arg4}
+	</update>
+	<update id="updateActualStock" >
+			UPDATE
+			mtb_stock
+			<set>
+				actual_stock = #{arg1},
+				updated_user_id = #{arg2},
+				updated_at = #{arg3}
+			</set>
+			WHERE
+				fabric_no = #{arg0}
 	</update>
 </mapper>

@@ -1,4 +1,18 @@
-<form:form id="idForm" action="${pageContext.request.contextPath}/cashConfirm/cashReFormInDb" method="post" modelAttribute="cashForm" class="form-horizontal">
+<style>
+.alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #ffffff;
+}
+.alert-error {
+    background: #fff1f0;
+    color: #d85030;
+    border-color: rgba(216, 80, 48, 0.3);
+    width:800px;
+}
+</style>
 <div class="breadcrumbs">
 	<div class="col-sm-4">
 		<div class="page-header float-left">
@@ -8,15 +22,13 @@
 		</div>
 	</div>
 </div>
-
+<form:form id="idForm" action="${pageContext.request.contextPath}/cashConfirm/cashReFormInDb" method="post" modelAttribute="cashForm" class="form-horizontal">
 <div class="content mt-3">
+<t:messagesPanel  messagesAttributeName="resultMessages"/>
 	<div class="animated fadeIn">
 
 		<div class="card" id="nav1_custom_div" style="margin-bottom: 0.5em;">
 			<div class="card-body">
-				<!-- 検索条件部分 End -->
-				<form action="" id="frmSearch" method="post"
-					enctype="multipart/form-data" class="form-horizontal">
 						<!-- 左側項目 -->
 						<div class="col col-lg-6">
 							<div class="row">
@@ -76,7 +88,6 @@
 							</div>
 						</div>
 						<!-- 検索条件部分 End -->
-				</form>
 
 			</div>
 			<!-- card body -->
@@ -168,6 +179,17 @@
 </form:form>
 <script type="text/javascript">
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
+//CSRF令牌
+jQuery(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = jQuery("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = jQuery("meta[name='_csrf']").attr("content");
+    jQuery(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 
 var list = ${json};
 var sendData = JSON.stringify(list);

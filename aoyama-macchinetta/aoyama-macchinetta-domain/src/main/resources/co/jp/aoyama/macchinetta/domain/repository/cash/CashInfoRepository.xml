@@ -24,6 +24,7 @@
     <result column="product_orderd_date" property="productOrderdDate" jdbcType="DATE" />
     <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" /> 
+    <result column="version" property="version" jdbcType="SMALLINT" />
   </resultMap>
   <select id="selectOrderByOrderId" resultType="CashInfo" parameterType="java.lang.String" >
     SELECT
@@ -41,6 +42,7 @@
        store_staff_nm,
        cust_staff,
        product_orderd_date,
+       version,
        cash_contail_tax_product_price
 	FROM   
 		dtb_order  
@@ -51,15 +53,16 @@
     UPDATE 
       dtb_order
     SET
-      cash_id = #{cashId},
+      cash_id = #{cashId,jdbcType=VARCHAR},
       cash_discount_price = #{cashDiscountPrice,jdbcType=VARCHAR},
       cash_product_price = #{cashProductPrice,jdbcType=VARCHAR},
       cash_contail_tax_product_price = #{cashContailTaxProductPrice,jdbcType=VARCHAR},
       updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP},
-      tsc_status = #{tscStatus}
+      version = #{version,jdbcType=SMALLINT} + 1,
+      tsc_status = #{tscStatus,jdbcType=VARCHAR}
     WHERE 
-    	order_id = #{orderId,jdbcType=VARCHAR}
+    	order_id = #{orderId,jdbcType=VARCHAR} and version = #{version,jdbcType=SMALLINT}
   </update>
   <select id="selectOrderByCashId" resultType="CashInfo" parameterType="java.lang.String" >
     SELECT
@@ -78,7 +81,8 @@
        ord.is_cancelled,
        ord.cust_staff,
        ord.product_orderd_date,
-       ord.cash_contail_tax_product_price
+       ord.cash_contail_tax_product_price,
+       ord.version
 	FROM   
 		dtb_order  ord,
        	dtb_cash  cash   
@@ -86,4 +90,22 @@
 	AND ord.cash_id = cash.cash_id
 	ORDER by ord.order_id
   </select>
+  <update id="updateCashInfoByPrimaryKey" parameterType="java.util.List" >
+    <foreach collection="cashInfoUpdList" item="item" index="index" open="" close="" separator=";">
+    UPDATE 
+      dtb_order
+    <set>
+      cash_id = #{item.cashId,jdbcType=VARCHAR},
+      cash_discount_price = #{item.cashDiscountPrice,jdbcType=VARCHAR},
+      cash_product_price = #{item.cashProductPrice,jdbcType=VARCHAR},
+      cash_contail_tax_product_price = #{item.cashContailTaxProductPrice,jdbcType=VARCHAR},
+      updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{item.updatedAt,jdbcType=TIMESTAMP},
+      version = #{item.version,jdbcType=SMALLINT} + 1,
+      tsc_status = #{item.tscStatus,jdbcType=VARCHAR}
+    </set> 
+    WHERE 
+      order_id = #{item.orderId,jdbcType=VARCHAR} and version = #{item.version,jdbcType=SMALLINT}
+    </foreach>
+  </update>
 </mapper>

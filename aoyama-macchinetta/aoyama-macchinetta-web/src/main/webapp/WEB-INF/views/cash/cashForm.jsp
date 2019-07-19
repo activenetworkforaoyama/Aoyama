@@ -22,6 +22,13 @@ table.dataTable tbody td {
 	disabled: true;
 }
 
+.alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #ffffff;
+}
 .alert-error {
 	background: #fff1f0;
 	color: #d85030;
@@ -75,15 +82,16 @@ table.dataTable tbody td {
 		</div>
 	</div>
 </div>
-<div class="alert alert-error" id="errormssage" style="display:none"></div>
-<div class="alert alert-success" id="successmssage" style="display:none"></div>
+
 <form:form id="formId" action="${pageContext.request.contextPath}/cash/cashReconfirm" method="post" modelAttribute="cashForm" class="form-horizontal">
 	<div class="content mt-3">
+	<div class="alert alert-error" id="errormssage" style="display:none"></div>
+	<div class="alert alert-success" id="successmssage" style="display:none"></div>
+	<t:messagesPanel  messagesAttributeName="resultMessages"/>
 		<div class="animated fadeIn">
 			<div class="card" id="nav1_custom_div" style="margin-bottom: 0.5em;">
 				<div class="card-body" style="padding-bottom: 0;">
 					<!-- 検索条件部分 End -->
-					<form action="" id="frmSearch" method="post" enctype="multipart/form-data" class="form-horizontal">
 						<!-- 左側項目 -->
 						<div class="col col-lg-6">
 							<div class="row">
@@ -192,7 +200,6 @@ table.dataTable tbody td {
 						</c:when>
 						</c:choose>
 						<!-- 検索条件部分 End -->
-					</form>
 				</div>
 				<!-- card body -->
 			</div>
@@ -267,12 +274,14 @@ table.dataTable tbody td {
 									</th>
 								</tr>
 							</thead>
+							<c:forEach var="order" items="${cashForm.orderIdList}" varStatus="row">
+								<c:if test="${order.isCancelled == '1'  && cashForm.cashStatus == '03'}">
+									<p style="font-size:20px;color:red">注文${order.orderId }が取り消したため、会計を再確認してください。</p>
+								</c:if>	
+							</c:forEach>
 							<c:forEach var="cash" items="${cashForm.helpCashForm}" varStatus="row">
 								<tbody>
 									<tr>
-										<c:if test="${cash.isCancelled == '1'  && cashForm.cashStatus == '03'}">
-										<p style="font-size:20px;color:red">注文${cash.orderId }が取り消したため、会計を再確認してください</p>
-										</c:if>
 										<td style="width:25%;"><input id="orderId"
 											name="helpCashForm[${row.index}].orderId"
 											value="${cash.orderId }" readonly
@@ -642,13 +651,14 @@ jQuery('#deleteButton').on('click', function() {
 	// 確認ダイアログ表示
 	swal({
 		text:"会計を取消してもよろしいですか？",
-		icon:"warning",
-		buttons:true
+		icon:"info",
+		buttons: ["キャンセル", true],
 	}).then((willDelete) => {
 		if (willDelete) {
 			// OK押下時は会計一覧へ
+			var version = "${cashForm.version}";
 			var cashId = jQuery("#cashId").val();
-			window.location.href = contextPath + "/cashConfirm/updateCash/"+cashId;
+			window.location.href = contextPath + "/cashConfirm/updateCash?cashId=" + cashId + "&version=" + version;
 		} else {
 			// Cancel押下時は何もしない
 		}
@@ -657,8 +667,14 @@ jQuery('#deleteButton').on('click', function() {
 
 jQuery('#backButton').on('click', function() {
 
-	window.history.back();
-	
+	//window.history.back();
+	var status = "${cashForm.tscStatus}";
+	if(status == "T2"){
+		window.location.href= contextPath + "/orderlist/init";
+		}
+	else{
+		window.location.href= contextPath + "/accounting/init";
+		}
 });
 //金額フォーマット
 function formatMoney(number, places, symbol, thousand, decimal) {

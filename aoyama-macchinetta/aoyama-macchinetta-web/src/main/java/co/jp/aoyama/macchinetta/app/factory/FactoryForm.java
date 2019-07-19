@@ -22,6 +22,7 @@ public class FactoryForm implements Serializable {
 	private String num;
 	private String updateFlag;
     private String isNewData;
+    private String version;
     
     private Boolean displayIdentify;
 
@@ -127,6 +128,14 @@ public class FactoryForm implements Serializable {
 
 	public void setDisplayIdentify(Boolean displayIdentify) {
 		this.displayIdentify = displayIdentify;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

@@ -31,6 +31,10 @@ public class FabricBrand implements Serializable {
 	private String isNewData;
 	
 	private Boolean displayIdentify;
+	
+	private Boolean updateFlag;
+	
+	private String updateFailure;
 
 	public String getFablicBrandNo() {
 		return fablicBrandNo;
@@ -118,6 +122,22 @@ public class FabricBrand implements Serializable {
 
 	public void setDisplayIdentify(Boolean displayIdentify) {
 		this.displayIdentify = displayIdentify;
+	}
+
+	public Boolean getUpdateFlag() {
+		return updateFlag;
+	}
+
+	public void setUpdateFlag(Boolean updateFlag) {
+		this.updateFlag = updateFlag;
+	}
+
+	public String getUpdateFailure() {
+		return updateFailure;
+	}
+
+	public void setUpdateFailure(String updateFailure) {
+		this.updateFailure = updateFailure;
 	}
 
 }

@@ -1,4 +1,15 @@
 <style>
+
+.col-grid {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-left: 15px;
+	-ms-flex: 0 0 99%;
+	flex: 0 0 99%;
+	max-width: 99%
+}
+
 .slick-cell.selected {
 	background-color: #FBB;
 }
@@ -99,8 +110,6 @@
 		<div class="card" id="nav1_custom_div">
 			<div class="card-body">
 				<!-- 検索条件部分 End -->
-				<form action="" id="frmSearch" method="post"
-					enctype="multipart/form-data" class="form-horizontal">
 					<div class="row">
 						<!-- 左側項目 -->
 						<div class="col col-lg-6">
@@ -128,6 +137,8 @@
 									</select>
 								</div>
 							</div>
+							<c:choose>
+							<c:when test="${sessionContent.authority == '01' || sessionContent.authority == '02'}">
 							<div class="row form-group">
 								<div class="col col-md-4">
 									<label class=" form-control-label">メーカー</label>
@@ -138,6 +149,19 @@
 									</select>
 								</div>
 							</div>
+							</c:when>
+							<c:when test="${sessionContent.authority == '03'}">
+							<div class="row form-group">
+								<div class="col col-md-4">
+									<label class=" form-control-label">メーカー</label>
+								</div>
+								<div class="col-12 col-md-8">
+									<select id="makerName" name="makerName" class="form-control-sm form-control" disabled>
+									</select>
+								</div>
+							</div>
+							</c:when>
+        					</c:choose> 
 						</div>
 						<!-- 右側項目 -->
 						<div class="col col-lg-6">
@@ -145,7 +169,7 @@
 								<div class="col col-md-4">
 									<label class=" form-control-label"> </label>
 								</div>
-								<div class="col-12 col-md-8"></div>
+								<div class="col-12 col-md-8"> </div>
 							</div>
 							<c:choose>
 								<c:when test="${sessionContent.authority != '03'}">
@@ -155,9 +179,9 @@
 										</div>
 										<div class="col-12 col-md-8">
 											<div class="form-check-inline form-check">
-												<input type="text" id="retailPrice" name="retailPrice" placeholder="" class="input-sm form-control-sm form-control col-md-5">
+												<input type="text" id="retailPrice" name="retailPrice" placeholder="" class="input-sm form-control-sm form-control col-md-5" maxlength = "9" oninput="this.value=this.value.replace(/[^\d]/g,'')">
 												&nbsp;～&nbsp; 
-												<input type="text" id="retailPriceTo" name="retailPriceTo" placeholder="" class="input-sm form-control-sm form-control col-md-5">
+												<input type="text" id="retailPriceTo" name="retailPriceTo" placeholder="" class="input-sm form-control-sm form-control col-md-5" maxlength = "9" oninput="this.value=this.value.replace(/[^\d]/g,'')">
 											</div>
 										</div>
 									</div>
@@ -194,30 +218,37 @@
 						<div class="col"></div>
 					</div>
 					<!-- 制御ボタン部分 End -->
-
-				</form>
 			</div>
 			<!-- card body -->
 		</div>
 		<!-- card -->
 	</div>
+	<div id="slick" style="display: none">
+	<div class="row">
+			<div class="col-grid">
+				<div id="gridContainer">
+					<div id="myGrid" style="width: 100%"></div>
+				</div>
+			</div>
+		</div>
+		</div>
 </div>
 <!-- .animated -->
-	<div id="slick" style="display: none">
+	<!-- <div id="slick" style="display: none">
 	
 		<div class="content container" style="float: left">
 			<div class="row">
 				<div class="col-12">
 					<div id="gridContainer">
-						<!-- SlickGridテーブルの表示領域となる要素 -->
+						SlickGridテーブルの表示領域となる要素
 						<div id="myGrid" style="width: 100%;"></div>
 					</div>
 				</div>
-				<!-- <div class="col-3">
-				</div> -->
+				<div class="col-3">
+				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 
 <!-- 依存ライブラリの読み込み -->
@@ -352,7 +383,8 @@ function requiredtheoreticalStock(value) {
 		$("#clear_button").attr("disabled",true);
  		//$("#update").attr("disabled",true);
 		return {valid: false};
-	}else if (!(/^\d{0,3}(\.\d{0,2})?$/.test(value))){
+	}else if (!(/^\d{1,3}$|^\d{1,3}\.\d{1,2}$/.test(value))){
+		//(/^\d{0,3}(\.\d{0,2})?$/.test(value))
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByOneArg('msg098', '理論在庫'));
@@ -375,7 +407,7 @@ function requiredactualStock(value) {
 		$("#clear_button").attr("disabled",true);
  		//$("#update").attr("disabled",true);
 		return {valid: false};
-	}else if(!(/^\d{0,3}(\.\d{0,2})?$/.test(value))){
+	}else if(!(/^\d{1,3}$|^\d{1,3}\.\d{1,2}$/.test(value))){
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByOneArg('msg098', '実在庫'));
@@ -391,19 +423,16 @@ function requiredactualStock(value) {
 
 function judge(e){
 	if(e && e.target==e.currentTarget){
-		// 点击事件由用户点击触发
 	}else {
-		// 点击事件由程序调用触发
 		appendAlertDel('successMessage');
 	}
 }
 
 function update_button(j){
 	swal({
-		  title: "確認",
 		  text: getMsgByOneArg('msg025', '在庫情報'),
 		  icon: "info",
-		  buttons: true,
+		  buttons: ["キャンセル", true],
 		  dangerMode: true,
 		  closeOnEsc: false,
 		  }).then((isConfirm) => {
@@ -421,6 +450,7 @@ function update_button(j){
 					for(var i=0;i<obj.length;i++){
 						if(j==obj[i].num){
 							obj[i].retailPrice=obj[i].retailPrice.replace(",","");
+							obj[i].theoreticalStock= Number(obj[i].reservationStock) + Number(obj[i].theoretical);
 							updData = obj[i];
 						}
 					}
@@ -454,7 +484,17 @@ function update_button(j){
 			});
 		
 } 
-
+//CSRF令牌
+$(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = $("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = $("meta[name='_csrf']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 $(document).ready(function() {
 	$.ajax({
 		type:"get",
@@ -467,7 +507,7 @@ $(document).ready(function() {
 		});
 	$.ajax({
 		type:"get",
-	    url:contextPath + "/stock/selectMaker"}).then(function(result){
+	    url:contextPath + "/stock/selectMaker",async:false}).then(function(result){
 	    	$("#makerName").empty();
 	    	$("#makerName").append(jQuery('<option />').val("").text(""));
 	    	for (var key in result) {
@@ -476,14 +516,13 @@ $(document).ready(function() {
 		});
 	$.ajax({
 		type:"get",
-	    url:contextPath + "/stock/selectfactoryName"}).then(function(result){
+	    url:contextPath + "/stock/selectfactoryName",async:false}).then(function(result){
 	    	$("#factoryName").empty();
 	    	$("#factoryName").append(jQuery('<option />').val("").text(""));
 	    	for (var key in result) {
 	    		$("#factoryName").append(jQuery('<option />').val(result[key].factoryCode).text(result[key].factoryName));
 			 }
-		});		
-
+		});
 	jQuery("#makerName").change(function(){
 		var makerName = jQuery("#makerName").val();
 		$.ajax({
@@ -498,25 +537,39 @@ $(document).ready(function() {
 				 }
 			});	
 		});
+	
+
+	var authority = '${sessionContent.authority}';
+	if(authority == "03"){
+		var makerName = '${sessionContent.belongCode}';
+		jQuery("#makerName").val(makerName);
+		jQuery("#makerName").change();
+	}else{
+		var makerName = $("#makerName").val();
+	}
 
 	$("#clear_button").click(function(){
 		$("#fabricNo").val("");
 		$("#color").val("");
 		$("#pattern").val("");
 		$("#brandName").val("");
-		$("#makerName").val("");
+		//$("#makerName").val("");
 		$("#factoryName").val("");
 		$("#retailPrice").val("");
 		$("#retailPriceTo").val("");
-		$.ajax({
-			type:"get",
-		    url:contextPath + "/stock/selectfactoryName"}).then(function(result){
-		    	$("#factoryName").empty();
-		    	$("#factoryName").append(jQuery('<option />').val("").text(""));
-		    	for (var key in result) {
-		    		$("#factoryName").append(jQuery('<option />').val(result[key].factoryCode).text(result[key].factoryName));
-				 }
-			});	
+		if(authority != "03"){
+			$("#makerName").val("");
+			$.ajax({
+				type:"get",
+			    url:contextPath + "/stock/selectfactoryName"}).then(function(result){
+			    	$("#factoryName").empty();
+			    	$("#factoryName").append(jQuery('<option />').val("").text(""));
+			    	for (var key in result) {
+			    		$("#factoryName").append(jQuery('<option />').val(result[key].factoryCode).text(result[key].factoryName));
+					 }
+				});	
+			}
+		
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 	});
@@ -530,22 +583,24 @@ $(document).ready(function() {
   if(${sessionContent.authority == '01'}){
 	  columns = [
 			{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
-		    {id: 'fabric_no', name: '生地品番', field: 'fabricNo',formatter: colorFormatter, width: 110, sortable: true},
-		    {id: 'brand_name', name: '生地ブランド', field: 'brandName',formatter: colorFormatter, width: 100, sortable: true},
+		    {id: 'fabric_no', name: '生地品番', field: 'fabricNoCP',formatter: colorFormatter, width: 171, sortable: true},
+		    {id: 'brand_name', name: '生地ブランド名', field: 'brandName',formatter: colorFormatter, width: 171, sortable: true},
 		    {id: 'factory_name', name: '工場', field: 'factoryName',formatter: colorFormatter, sortable: true},
 		    {id: 'retail_price', name: '上代', field: 'retailPrice',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
-		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoreticalStock',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
+		    {id: 'reservation_stock', name: '予約生地量', field: 'reservationStock',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
+		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoretical',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
 		  ];
 	  }
   //'02'商品
   if(${sessionContent.authority == '02'}){
 	  columns = [
 			{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
-		    {id: 'fabric_no', name: '生地品番', field: 'fabricNo',formatter: colorFormatter, width: 110, sortable: true},
-		    {id: 'brand_name', name: '生地ブランド', field: 'brandName',formatter: colorFormatter, width: 100, sortable: true},
+		    {id: 'fabric_no', name: '生地品番', field: 'fabricNoCP',formatter: colorFormatter, width: 141, sortable: true},
+		    {id: 'brand_name', name: '生地ブランド名', field: 'brandName',formatter: colorFormatter, width: 141, sortable: true},
 		    {id: 'factory_name', name: '工場', field: 'factoryName',formatter: colorFormatter, sortable: true},
 		    {id: 'retail_price', name: '上代', field: 'retailPrice',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
-		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoreticalStock',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredtheoreticalStock, cssClass: "cell-money"},
+		    {id: 'reservation_stock', name: '予約生地量', field: 'reservationStock',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
+		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoretical',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredtheoreticalStock, cssClass: "cell-money"},
 		    {id: 'actual_stock', name: '実在庫', field: 'actualStock',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredactualStock, cssClass: "cell-money"},
 		    {id: "updType", name: "", height:30,width: 70, minWidth: 60, maxWidth: 70, cssClass: "cell-upd-type", field: "updType", formatter: mineFormatter, cannotTriggerInsert: true, sortable: false}
 		  ];
@@ -554,10 +609,11 @@ $(document).ready(function() {
   if(${sessionContent.authority == '03'}){
 	  columns = [
 			{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
-		    {id: 'fabric_no', name: '生地品番', field: 'fabricNo',formatter: colorFormatter, width: 110, sortable: true},
-		    {id: 'brand_name', name: '生地ブランド', field: 'brandName',formatter: colorFormatter, width: 100, sortable: true},
+		    {id: 'fabric_no', name: '生地品番', field: 'fabricNoCP',formatter: colorFormatter, width: 141, sortable: true},
+		    {id: 'brand_name', name: '生地ブランド名', field: 'brandName',formatter: colorFormatter, width: 141, sortable: true},
 		    {id: 'factory_name', name: '工場', field: 'factoryName',formatter: colorFormatter, sortable: true},
-		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoreticalStock',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
+		    {id: 'reservation_stock', name: '予約生地量', field: 'reservationStock',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
+		    {id: 'theoretical_stock', name: '理論在庫', field: 'theoretical',formatter: colorFormatter, sortable: true, cssClass: "cell-money"},
 		    {id: 'actual_stock', name: '実在庫', field: 'actualStock',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredactualStock, cssClass: "cell-money"},
 		    {id: "updType", name: "", height:30, width: 70, minWidth: 60, maxWidth: 70, cssClass: "cell-upd-type", field: "updType", formatter: mineFormatter, cannotTriggerInsert: true, sortable: false}
 		  ];
@@ -575,7 +631,7 @@ $(document).ready(function() {
 	};
 
 	$("#select_button").click(function() {
-		$("#slick").show();
+		
 		changeRowNum.length = 0;
 		cRNum = 0;
 		errorRowNum.length = 0;
@@ -596,18 +652,19 @@ $(document).ready(function() {
 		}).then(function(result) {
 			appendAlertDel('errorMassageIno');
 			if(Object.keys(result).length  == 0){
+				$("#slick").hide();
 				//alert("検索結果が0件でした。条件を変更して再検索してください。");
 				appendAlert("errorMassageIno",getMsgByOneArg('msg031'));
 				appendAlertDel('successMessage');
 			}else{
-				
+				$("#slick").show();
 			}
 				for(var i = 0; i < result.length; i++) {
 					var d = (data[i] = {});
 					d["id"] = "id_" + i;
 					d["num"] = i + 1;
-					d["fabricId"] = result[i].fabricId;
-					d["fabricNo"] = result[i].fabricNo+ "-" + result[i].color + result[i].pattern;
+					d["fabricNo"] = result[i].fabricNo;
+					d["fabricNoCP"] = result[i].fabricNo+ "-" + result[i].color + result[i].pattern;
 					d["brandName"] = result[i].brandName;
 					d["factoryName"] = result[i].factoryName;
 					/* d["retailPrice"] = result[i].retailPrice; */
@@ -616,6 +673,8 @@ $(document).ready(function() {
 					}else{
 						d["retailPrice"] = formatMoney(result[i].retailPrice, 0, "");
 					}
+					d["reservationStock"] = result[i].reservationStock;
+					d["theoretical"] = result[i].theoreticalStock - result[i].reservationStock;
 					d["theoreticalStock"] = result[i].theoreticalStock;
 					d["actualStock"] = result[i].actualStock;
 					d["createdAt"] = result[i].createdAt;
@@ -632,7 +691,7 @@ $(document).ready(function() {
 					grid.setActiveCell(0,0);
 					grid.setSelectionModel(new Slick.RowSelectionModel());
  					grid.onAddNewRow.subscribe(function(e,args) {
-						var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)),"fabric_no" : "","brand_name" : "","factory_name" : "","retail_price" : "","theoretical_stock" : "","actual_stock" : "", "updType": "","optionType": "2", "isNewData": "1"};
+						var item = {"num": data.length, "id": "new_" + (Math.round(Math.random() * 10000)),"fabric_no" : "","brand_name" : "","factory_name" : "","retail_price" : "","reservation_stock" : "","theoretical_stock" : "","actual_stock" : "", "updType": "","optionType": "2", "isNewData": "1"};
 						$.extend(item,args.item);
  						dataView.addItem(item);						
 					});

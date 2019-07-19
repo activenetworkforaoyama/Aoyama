@@ -9,8 +9,6 @@ public class Stock implements Serializable {
 
 	private static final long serialVersionUID = 3117939473881415294L;
 	
-	private String fabricId;
-	
 	private String fabricNo;
 	
 	private String color;
@@ -46,14 +44,6 @@ public class Stock implements Serializable {
     private String optionType;
     
     private String fablicBrandNo;
-
-	public String getFabricId() {
-		return fabricId;
-	}
-
-	public void setFabricId(String fabricId) {
-		this.fabricId = fabricId;
-	}
 
 	public String getFabricNo() {
 		return fabricNo;

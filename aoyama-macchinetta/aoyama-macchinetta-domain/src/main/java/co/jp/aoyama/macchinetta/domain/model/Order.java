@@ -91,6 +91,10 @@ public class Order implements Serializable {
     private Integer productSparePantsWsPrice;
 
     private String productFabricNo;
+    
+    private String fabricColor;
+    
+    private String fabricPattern;
 
     private String productCategory;
 
@@ -2477,6 +2481,8 @@ public class Order implements Serializable {
     private String isCancelled;
 
     private String theoreticalStockCheck;
+    
+    private Short version;
 
     private String createdUserId;
 
@@ -12815,7 +12821,29 @@ public class Order implements Serializable {
 				+ send2factoryStatus + "\"\t\"" + isCancelled + "\"\t\"" + theoreticalStockCheck + "\"\t\""
 				+ createdUserId + "\"\t\"" + createdAt + "\"\t\"" + updatedUserId + "\"\t\"" + updatedAt + "\"}";
 	}
+
+    public String getFabricColor() {
+        return fabricColor;
+    }
+
+    public void setFabricColor(String fabricColor) {
+        this.fabricColor = fabricColor == null ? null : fabricColor.trim();
+    }
+
+    public String getFabricPattern() {
+        return fabricPattern;
+    }
+
+    public void setFabricPattern(String fabricPattern) {
+        this.fabricPattern = fabricPattern == null ? null : fabricPattern.trim();
+    }
     
-	
+	public Short getVersion() {
+        return version;
+    }
+
+    public void setVersion(Short version) {
+        this.version = version;
+    }
     
 }

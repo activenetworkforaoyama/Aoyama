@@ -2,17 +2,32 @@ package co.jp.aoyama.macchinetta.domain.model;
 
 public class OrderPrice {
 	private String branchItemCode;
+	private String branchSubItemCode;
 	private String branchModelCode;
 	private String branchOptionCode;
 	private String optinBranchCode;
 	private Integer optionBranchPrice;
 	private Integer optionBranchDoublePrice;
 	private String detailItemCode;
+	private String detailSubItemCode;
 	private String detailOptionCode;
 	private String detailOptionBranchCode;
 	private String optionBranchDetailCode;
 	private Integer detailBranchPrice;
 	private Integer detailBranchDoublePrice;
+	
+	public String getBranchSubItemCode() {
+		return branchSubItemCode;
+	}
+	public void setBranchSubItemCode(String branchSubItemCode) {
+		this.branchSubItemCode = branchSubItemCode;
+	}
+	public String getDetailSubItemCode() {
+		return detailSubItemCode;
+	}
+	public void setDetailSubItemCode(String detailSubItemCode) {
+		this.detailSubItemCode = detailSubItemCode;
+	}
 	public String getBranchItemCode() {
 		return branchItemCode;
 	}

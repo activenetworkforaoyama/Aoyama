@@ -30,7 +30,6 @@
 		<result property="brandName" column="brand_name" />
 		<result property="color" column="color" />
 		<result property="pattern" column="pattern" />
-		
 		<result property="retailPrice" column="retail_price" />
 		<result property="additionalPantsRate" column="additional_pants_rate" />
 		<result property="additionalSingleGiletRate" column="additional_single_gilet_rate" />
@@ -50,7 +49,6 @@
 		<result property="colorAoyama" column="color_aoyama" />
 		<result property="patternAoyama" column="pattern_aoyama" />
 		<result property="reservationStock" column="reservation_stock" />
-		
 		<result property="coatSingleOnlyRate" column="coat_single_only_rate" />
 		<result property="coatDoubleOnlyRate" column="coat_double_only_rate" />
 		<result property="jkSingleOnlyPlusAlphaPrice" column="jk_single_only_plus_alpha_price" />
@@ -60,17 +58,20 @@
 		<result property="ptOnlyPlusAlphaPrice" column="pt_only_plus_alpha_price" />
 		<result property="ctSingleOnlyPlusAlphaPrice" column="ct_single_only_plus_alpha_price" />
 		<result property="ctDoubleOnlyPlusAlphaPrice" column="ct_double_only_plus_alpha_price" />
+		<result property="fabricNameExis" column="fabric_name_exist" />
 		
    </resultMap>
 
 	<resultMap id="OrderPriceResultMap" type="OrderPrice">
 		<result property="branchItemCode" column="branchItemCode" />
+		<result property="branchSubItemCode" column="branchSubItemCode" />
 		<result property="branchModelCode" column="branchModelCode" />
 		<result property="branchOptionCode" column="branchOptionCode" />
 		<result property="optinBranchCode" column="optinBranchCode" />
 		<result property="optionBranchPrice" column="optionBranchPrice" />
 		<result property="optionBranchDoublePrice" column="optionBranchDoublePrice" />
 		<result property="detailItemCode" column="detailItemCode" />
+		<result property="detailSubItemCode" column="detailSubItemCode" />
 		<result property="detailOptionCode" column="detailOptionCode" />
 		<result property="detailOptionBranchCode" column="detailOptionBranchCode" />
 		<result property="optionBranchDetailCode" column="optionBranchDetailCode" />
@@ -81,6 +82,7 @@
 	<select id="getOrderFabric" resultMap="OrderFabricResultMap"
 		parameterType="java.lang.String">
 		select
+		mf.fabric_name_exist,
 		ms.reservation_stock,
 		mf.coat_single_only_rate,
 		mf.coat_double_only_rate,
@@ -116,14 +118,10 @@
 		mf.spinning_limit_date,
 		mf.color_aoyama,
 		mf.pattern_aoyama
-		from mtb_fabric mf,mtb_stock ms,mtb_fabric_brand mfb,
-		(select
-		fabric_id,fablic_brand_no from mtb_fabric where fabric_no = #{arg0})
-		sf
+		from mtb_fabric mf,mtb_stock ms,mtb_fabric_brand mfb
 		where
-		mf.fabric_id = sf.fabric_id
-		and mf.fabric_id = ms.fabric_id
-		and mf.fablic_brand_no = sf.fablic_brand_no
+		mf.fabric_no = #{arg0}
+		and mf.fabric_no = ms.fabric_no
 		and mf.fablic_brand_no = mfb.fablic_brand_no
 		and order_pattern = #{arg1}
 	</select>
@@ -131,13 +129,15 @@
 	<select id="getOrderPrice" resultMap="OrderPriceResultMap"
 		parameterType="java.lang.String">
 		select
-		mob.sub_item_code as branchItemCode,
+		mob.item_code as branchItemCode,
+		mob.sub_item_code as branchSubItemCode,
 		mob.model_code as branchModelCode ,
 		mob.option_code as branchOptionCode,
 		mob.option_branch_code as optinBranchCode,
 		COALESCE(mob.option_branch_price, 0) as optionBranchprice,
 		COALESCE(mob.option_branch_double_price, 0) as optionBranchDoublePrice,
-		mobd.sub_item_code as detailItemCode,
+		mobd.item_code as detailItemCode,
+		mobd.sub_item_code as detailSubItemCode,
 		mobd.option_code as detailOptionCode,
 		mobd.option_branch_code as
 		detailOptionBranchCode,
@@ -149,7 +149,8 @@
 		mtb_option_branch mob left join
 		mtb_option_branch_detail mobd
 		on
-		mob.sub_item_code = mob.sub_item_code
+		mob.item_code = mobd.item_code
+		and mob.sub_item_code = mobd.sub_item_code
 		and mob.option_code = mobd.option_code
 		and mob.option_branch_code = mobd.option_branch_code
 		and mob.order_pattern = mobd.order_pattern
@@ -175,49 +176,49 @@
       product_is_3piece_ws_price, product_spare_pants_class, 
       product_spare_pants_rt_price, product_spare_pants_ws_wage, 
       product_spare_pants_ws_price, product_fabric_no, 
-      product_category, product_brand_type, product_brand_nm, 
-      product_fabric_nm_necessity, product_embroidery_necessity, 
-      product_embroidery_nm, product_embroidery_font, 
-      product_embroidery_thread_color, product_embroidery_gazette, 
-      product_embroidery_gazette_rt_price, product_embroidery_gazette_ws_wage, 
-      product_embroidery_gazette_ws_price, product_embroidery_nm_pos, 
-      product_embroidery_nm_pos_rt_price, product_embroidery_nm_pos_ws_wage, 
-      product_embroidery_nm_pos_ws_price, product_embroidery_length, 
-      product_embroidery_width, product_remaining_cloth_type, 
-      product_remaining_cloth_nm, product_fabric_brand_nm, 
-      product_service_nm, product_compos_frt_fabric, 
-      product_compos_body_liner, product_compos_sleeve_liner, 
-      product_notice, product_factory_cd, product_maker_code, 
-      product_orderd_date, jk_model_cd, jk_model_nm, 
-      jk_model_rt_price, jk_model_ws_wage, jk_model_ws_price, 
-      jk_frt_btn_cd, jk_frt_btn_nm, jk_frt_btn_rt_price, 
-      jk_frt_btn_ws_wage, jk_frt_btn_ws_price, jk_lapel_design_cd, 
-      jk_lapel_design_nm, jk_lapel_design_rt_price, 
-      jk_lapel_design_ws_wage, jk_lapel_design_ws_price, 
-      jk_lapel_model_cd, jk_lapel_model_nm, jk_lapel_model_rt_price, 
-      jk_lapel_model_ws_wage, jk_lapel_model_ws_price, 
-      jk_grade_cd, jk_grade_nm, jk_grade_rt_price, 
-      jk_grade_ws_wage, jk_grade_ws_price, jk_inner_cloth_cd, 
-      jk_inner_cloth_nm, jk_inner_cloth_rt_price, jk_inner_cloth_ws_wage, 
-      jk_inner_cloth_ws_price, jk_daiba_cd, jk_daiba_nm, 
-      jk_daiba_rt_price, jk_daiba_ws_wage, jk_daiba_ws_price, 
-      jk_look_cloth_cd, jk_look_cloth_nm, jk_look_cloth_rt_price, 
-      jk_look_cloth_ws_wage, jk_look_cloth_ws_price, 
-      jk_collar_inner_cd, jk_collar_inner_nm, jk_collar_inner_rt_price, 
-      jk_collar_inner_ws_wage, jk_collar_inner_ws_price, 
-      jk_collar_hang_cd, jk_collar_hang_nm, jk_collar_hang_rt_price, 
-      jk_collar_hang_ws_wage, jk_collar_hang_ws_price, 
-      jk_lapel_width_cd, jk_lapel_width_nm, jk_lapel_width_rt_price, 
-      jk_lapel_width_ws_wage, jk_lapel_width_ws_price, 
-      jk_flower_hole_cd, jk_flower_hole_nm, jk_flower_hole_rt_price, 
-      jk_flower_hole_ws_wage, jk_flower_hole_ws_price, 
-      jk_breast_pkt_cd, jk_breast_pkt_nm, jk_breast_pkt_rt_price, 
-      jk_breast_pkt_ws_wage, jk_breast_pkt_ws_price, 
-      jk_waist_pkt_cd, jk_waist_pkt_nm, jk_waist_pkt_rt_price, 
-      jk_waist_pkt_ws_wage, jk_waist_pkt_ws_price, jk_chg_pkt_cd, 
-      jk_chg_pkt_nm, jk_chg_pkt_rt_price, jk_chg_pkt_ws_wage, 
-      jk_chg_pkt_ws_price, jk_slanted_pkt_cd, jk_slanted_pkt_nm, 
-      jk_slanted_pkt_rt_price, jk_slanted_pkt_ws_wage, 
+      fabric_color, fabric_pattern, product_category, 
+      product_brand_type, product_brand_nm, product_fabric_nm_necessity, 
+      product_embroidery_necessity, product_embroidery_nm, 
+      product_embroidery_font, product_embroidery_thread_color, 
+      product_embroidery_gazette, product_embroidery_gazette_rt_price, 
+      product_embroidery_gazette_ws_wage, product_embroidery_gazette_ws_price, 
+      product_embroidery_nm_pos, product_embroidery_nm_pos_rt_price, 
+      product_embroidery_nm_pos_ws_wage, product_embroidery_nm_pos_ws_price, 
+      product_embroidery_length, product_embroidery_width, 
+      product_remaining_cloth_type, product_remaining_cloth_nm, 
+      product_fabric_brand_nm, product_service_nm, 
+      product_compos_frt_fabric, product_compos_body_liner, 
+      product_compos_sleeve_liner, product_notice, 
+      product_factory_cd, product_maker_code, product_orderd_date, 
+      jk_model_cd, jk_model_nm, jk_model_rt_price, 
+      jk_model_ws_wage, jk_model_ws_price, jk_frt_btn_cd, 
+      jk_frt_btn_nm, jk_frt_btn_rt_price, jk_frt_btn_ws_wage, 
+      jk_frt_btn_ws_price, jk_lapel_design_cd, jk_lapel_design_nm, 
+      jk_lapel_design_rt_price, jk_lapel_design_ws_wage, 
+      jk_lapel_design_ws_price, jk_lapel_model_cd, jk_lapel_model_nm, 
+      jk_lapel_model_rt_price, jk_lapel_model_ws_wage, 
+      jk_lapel_model_ws_price, jk_grade_cd, jk_grade_nm, 
+      jk_grade_rt_price, jk_grade_ws_wage, jk_grade_ws_price, 
+      jk_inner_cloth_cd, jk_inner_cloth_nm, jk_inner_cloth_rt_price, 
+      jk_inner_cloth_ws_wage, jk_inner_cloth_ws_price, 
+      jk_daiba_cd, jk_daiba_nm, jk_daiba_rt_price, 
+      jk_daiba_ws_wage, jk_daiba_ws_price, jk_look_cloth_cd, 
+      jk_look_cloth_nm, jk_look_cloth_rt_price, jk_look_cloth_ws_wage, 
+      jk_look_cloth_ws_price, jk_collar_inner_cd, jk_collar_inner_nm, 
+      jk_collar_inner_rt_price, jk_collar_inner_ws_wage, 
+      jk_collar_inner_ws_price, jk_collar_hang_cd, jk_collar_hang_nm, 
+      jk_collar_hang_rt_price, jk_collar_hang_ws_wage, 
+      jk_collar_hang_ws_price, jk_lapel_width_cd, jk_lapel_width_nm, 
+      jk_lapel_width_rt_price, jk_lapel_width_ws_wage, 
+      jk_lapel_width_ws_price, jk_flower_hole_cd, jk_flower_hole_nm, 
+      jk_flower_hole_rt_price, jk_flower_hole_ws_wage, 
+      jk_flower_hole_ws_price, jk_breast_pkt_cd, jk_breast_pkt_nm, 
+      jk_breast_pkt_rt_price, jk_breast_pkt_ws_wage, 
+      jk_breast_pkt_ws_price, jk_waist_pkt_cd, jk_waist_pkt_nm, 
+      jk_waist_pkt_rt_price, jk_waist_pkt_ws_wage, jk_waist_pkt_ws_price, 
+      jk_chg_pkt_cd, jk_chg_pkt_nm, jk_chg_pkt_rt_price, 
+      jk_chg_pkt_ws_wage, jk_chg_pkt_ws_price, jk_slanted_pkt_cd, 
+      jk_slanted_pkt_nm, jk_slanted_pkt_rt_price, jk_slanted_pkt_ws_wage, 
       jk_slanted_pkt_ws_price, jk_shinobi_pkt_cd, jk_shinobi_pkt_nm, 
       jk_shinobi_pkt_rt_price, jk_shinobi_pkt_ws_wage, 
       jk_shinobi_pkt_ws_price, jk_sleeve_type_cd, jk_sleeve_type_nm, 
@@ -656,8 +657,8 @@
       shipping_date, loading_date, fabric_used_mount, 
       theory_fabric_used_mount, tsc_status, maker_factory_status, 
       send2factory_status, is_cancelled, theoretical_stock_check, 
-      created_user_id, created_at, updated_user_id, 
-      updated_at)
+      version, created_user_id, created_at, 
+      updated_user_id, updated_at)
     values (#{orderId,jdbcType=VARCHAR}, #{orderPattern,jdbcType=VARCHAR}, #{storeBrandCode,jdbcType=VARCHAR}, 
       #{shopCode,jdbcType=VARCHAR}, #{billingAmount,jdbcType=INTEGER}, #{productPrice,jdbcType=INTEGER}, 
       #{optionPrice,jdbcType=INTEGER}, #{totalPrice,jdbcType=INTEGER}, #{consumptionTaxAmount,jdbcType=INTEGER}, 
@@ -674,49 +675,49 @@
       #{productIs3pieceWsPrice,jdbcType=INTEGER}, #{productSparePantsClass,jdbcType=VARCHAR}, 
       #{productSparePantsRtPrice,jdbcType=INTEGER}, #{productSparePantsWsWage,jdbcType=NUMERIC}, 
       #{productSparePantsWsPrice,jdbcType=INTEGER}, #{productFabricNo,jdbcType=VARCHAR}, 
-      #{productCategory,jdbcType=VARCHAR}, #{productBrandType,jdbcType=VARCHAR}, #{productBrandNm,jdbcType=VARCHAR}, 
-      #{productFabricNmNecessity,jdbcType=VARCHAR}, #{productEmbroideryNecessity,jdbcType=VARCHAR}, 
-      #{productEmbroideryNm,jdbcType=VARCHAR}, #{productEmbroideryFont,jdbcType=VARCHAR}, 
-      #{productEmbroideryThreadColor,jdbcType=VARCHAR}, #{productEmbroideryGazette,jdbcType=VARCHAR}, 
-      #{productEmbroideryGazetteRtPrice,jdbcType=INTEGER}, #{productEmbroideryGazetteWsWage,jdbcType=NUMERIC}, 
-      #{productEmbroideryGazetteWsPrice,jdbcType=INTEGER}, #{productEmbroideryNmPos,jdbcType=VARCHAR}, 
-      #{productEmbroideryNmPosRtPrice,jdbcType=INTEGER}, #{productEmbroideryNmPosWsWage,jdbcType=NUMERIC}, 
-      #{productEmbroideryNmPosWsPrice,jdbcType=INTEGER}, #{productEmbroideryLength,jdbcType=NUMERIC}, 
-      #{productEmbroideryWidth,jdbcType=NUMERIC}, #{productRemainingClothType,jdbcType=VARCHAR}, 
-      #{productRemainingClothNm,jdbcType=VARCHAR}, #{productFabricBrandNm,jdbcType=VARCHAR}, 
-      #{productServiceNm,jdbcType=VARCHAR}, #{productComposFrtFabric,jdbcType=VARCHAR}, 
-      #{productComposBodyLiner,jdbcType=VARCHAR}, #{productComposSleeveLiner,jdbcType=VARCHAR}, 
-      #{productNotice,jdbcType=VARCHAR}, #{productFactoryCd,jdbcType=VARCHAR}, #{productMakerCode,jdbcType=VARCHAR}, 
-      #{productOrderdDate,jdbcType=DATE}, #{jkModelCd,jdbcType=VARCHAR}, #{jkModelNm,jdbcType=VARCHAR}, 
-      #{jkModelRtPrice,jdbcType=INTEGER}, #{jkModelWsWage,jdbcType=NUMERIC}, #{jkModelWsPrice,jdbcType=INTEGER}, 
-      #{jkFrtBtnCd,jdbcType=VARCHAR}, #{jkFrtBtnNm,jdbcType=VARCHAR}, #{jkFrtBtnRtPrice,jdbcType=INTEGER}, 
-      #{jkFrtBtnWsWage,jdbcType=NUMERIC}, #{jkFrtBtnWsPrice,jdbcType=INTEGER}, #{jkLapelDesignCd,jdbcType=VARCHAR}, 
-      #{jkLapelDesignNm,jdbcType=VARCHAR}, #{jkLapelDesignRtPrice,jdbcType=INTEGER}, 
-      #{jkLapelDesignWsWage,jdbcType=NUMERIC}, #{jkLapelDesignWsPrice,jdbcType=INTEGER}, 
-      #{jkLapelModelCd,jdbcType=VARCHAR}, #{jkLapelModelNm,jdbcType=VARCHAR}, #{jkLapelModelRtPrice,jdbcType=INTEGER}, 
-      #{jkLapelModelWsWage,jdbcType=NUMERIC}, #{jkLapelModelWsPrice,jdbcType=INTEGER}, 
-      #{jkGradeCd,jdbcType=VARCHAR}, #{jkGradeNm,jdbcType=VARCHAR}, #{jkGradeRtPrice,jdbcType=INTEGER}, 
-      #{jkGradeWsWage,jdbcType=NUMERIC}, #{jkGradeWsPrice,jdbcType=INTEGER}, #{jkInnerClothCd,jdbcType=VARCHAR}, 
-      #{jkInnerClothNm,jdbcType=VARCHAR}, #{jkInnerClothRtPrice,jdbcType=INTEGER}, #{jkInnerClothWsWage,jdbcType=NUMERIC}, 
-      #{jkInnerClothWsPrice,jdbcType=INTEGER}, #{jkDaibaCd,jdbcType=VARCHAR}, #{jkDaibaNm,jdbcType=VARCHAR}, 
-      #{jkDaibaRtPrice,jdbcType=INTEGER}, #{jkDaibaWsWage,jdbcType=NUMERIC}, #{jkDaibaWsPrice,jdbcType=INTEGER}, 
-      #{jkLookClothCd,jdbcType=VARCHAR}, #{jkLookClothNm,jdbcType=VARCHAR}, #{jkLookClothRtPrice,jdbcType=INTEGER}, 
-      #{jkLookClothWsWage,jdbcType=NUMERIC}, #{jkLookClothWsPrice,jdbcType=INTEGER}, 
-      #{jkCollarInnerCd,jdbcType=VARCHAR}, #{jkCollarInnerNm,jdbcType=VARCHAR}, #{jkCollarInnerRtPrice,jdbcType=INTEGER}, 
-      #{jkCollarInnerWsWage,jdbcType=NUMERIC}, #{jkCollarInnerWsPrice,jdbcType=INTEGER}, 
-      #{jkCollarHangCd,jdbcType=VARCHAR}, #{jkCollarHangNm,jdbcType=VARCHAR}, #{jkCollarHangRtPrice,jdbcType=INTEGER}, 
-      #{jkCollarHangWsWage,jdbcType=NUMERIC}, #{jkCollarHangWsPrice,jdbcType=INTEGER}, 
-      #{jkLapelWidthCd,jdbcType=VARCHAR}, #{jkLapelWidthNm,jdbcType=VARCHAR}, #{jkLapelWidthRtPrice,jdbcType=INTEGER}, 
-      #{jkLapelWidthWsWage,jdbcType=NUMERIC}, #{jkLapelWidthWsPrice,jdbcType=INTEGER}, 
-      #{jkFlowerHoleCd,jdbcType=VARCHAR}, #{jkFlowerHoleNm,jdbcType=VARCHAR}, #{jkFlowerHoleRtPrice,jdbcType=INTEGER}, 
-      #{jkFlowerHoleWsWage,jdbcType=NUMERIC}, #{jkFlowerHoleWsPrice,jdbcType=INTEGER}, 
-      #{jkBreastPktCd,jdbcType=VARCHAR}, #{jkBreastPktNm,jdbcType=VARCHAR}, #{jkBreastPktRtPrice,jdbcType=INTEGER}, 
-      #{jkBreastPktWsWage,jdbcType=NUMERIC}, #{jkBreastPktWsPrice,jdbcType=INTEGER}, 
-      #{jkWaistPktCd,jdbcType=VARCHAR}, #{jkWaistPktNm,jdbcType=VARCHAR}, #{jkWaistPktRtPrice,jdbcType=INTEGER}, 
-      #{jkWaistPktWsWage,jdbcType=NUMERIC}, #{jkWaistPktWsPrice,jdbcType=INTEGER}, #{jkChgPktCd,jdbcType=VARCHAR}, 
-      #{jkChgPktNm,jdbcType=VARCHAR}, #{jkChgPktRtPrice,jdbcType=INTEGER}, #{jkChgPktWsWage,jdbcType=NUMERIC}, 
-      #{jkChgPktWsPrice,jdbcType=INTEGER}, #{jkSlantedPktCd,jdbcType=VARCHAR}, #{jkSlantedPktNm,jdbcType=VARCHAR}, 
-      #{jkSlantedPktRtPrice,jdbcType=INTEGER}, #{jkSlantedPktWsWage,jdbcType=NUMERIC}, 
+      #{fabricColor,jdbcType=VARCHAR}, #{fabricPattern,jdbcType=VARCHAR}, #{productCategory,jdbcType=VARCHAR}, 
+      #{productBrandType,jdbcType=VARCHAR}, #{productBrandNm,jdbcType=VARCHAR}, #{productFabricNmNecessity,jdbcType=VARCHAR}, 
+      #{productEmbroideryNecessity,jdbcType=VARCHAR}, #{productEmbroideryNm,jdbcType=VARCHAR}, 
+      #{productEmbroideryFont,jdbcType=VARCHAR}, #{productEmbroideryThreadColor,jdbcType=VARCHAR}, 
+      #{productEmbroideryGazette,jdbcType=VARCHAR}, #{productEmbroideryGazetteRtPrice,jdbcType=INTEGER}, 
+      #{productEmbroideryGazetteWsWage,jdbcType=NUMERIC}, #{productEmbroideryGazetteWsPrice,jdbcType=INTEGER}, 
+      #{productEmbroideryNmPos,jdbcType=VARCHAR}, #{productEmbroideryNmPosRtPrice,jdbcType=INTEGER}, 
+      #{productEmbroideryNmPosWsWage,jdbcType=NUMERIC}, #{productEmbroideryNmPosWsPrice,jdbcType=INTEGER}, 
+      #{productEmbroideryLength,jdbcType=NUMERIC}, #{productEmbroideryWidth,jdbcType=NUMERIC}, 
+      #{productRemainingClothType,jdbcType=VARCHAR}, #{productRemainingClothNm,jdbcType=VARCHAR}, 
+      #{productFabricBrandNm,jdbcType=VARCHAR}, #{productServiceNm,jdbcType=VARCHAR}, 
+      #{productComposFrtFabric,jdbcType=VARCHAR}, #{productComposBodyLiner,jdbcType=VARCHAR}, 
+      #{productComposSleeveLiner,jdbcType=VARCHAR}, #{productNotice,jdbcType=VARCHAR}, 
+      #{productFactoryCd,jdbcType=VARCHAR}, #{productMakerCode,jdbcType=VARCHAR}, #{productOrderdDate,jdbcType=DATE}, 
+      #{jkModelCd,jdbcType=VARCHAR}, #{jkModelNm,jdbcType=VARCHAR}, #{jkModelRtPrice,jdbcType=INTEGER}, 
+      #{jkModelWsWage,jdbcType=NUMERIC}, #{jkModelWsPrice,jdbcType=INTEGER}, #{jkFrtBtnCd,jdbcType=VARCHAR}, 
+      #{jkFrtBtnNm,jdbcType=VARCHAR}, #{jkFrtBtnRtPrice,jdbcType=INTEGER}, #{jkFrtBtnWsWage,jdbcType=NUMERIC}, 
+      #{jkFrtBtnWsPrice,jdbcType=INTEGER}, #{jkLapelDesignCd,jdbcType=VARCHAR}, #{jkLapelDesignNm,jdbcType=VARCHAR}, 
+      #{jkLapelDesignRtPrice,jdbcType=INTEGER}, #{jkLapelDesignWsWage,jdbcType=NUMERIC}, 
+      #{jkLapelDesignWsPrice,jdbcType=INTEGER}, #{jkLapelModelCd,jdbcType=VARCHAR}, #{jkLapelModelNm,jdbcType=VARCHAR}, 
+      #{jkLapelModelRtPrice,jdbcType=INTEGER}, #{jkLapelModelWsWage,jdbcType=NUMERIC}, 
+      #{jkLapelModelWsPrice,jdbcType=INTEGER}, #{jkGradeCd,jdbcType=VARCHAR}, #{jkGradeNm,jdbcType=VARCHAR}, 
+      #{jkGradeRtPrice,jdbcType=INTEGER}, #{jkGradeWsWage,jdbcType=NUMERIC}, #{jkGradeWsPrice,jdbcType=INTEGER}, 
+      #{jkInnerClothCd,jdbcType=VARCHAR}, #{jkInnerClothNm,jdbcType=VARCHAR}, #{jkInnerClothRtPrice,jdbcType=INTEGER}, 
+      #{jkInnerClothWsWage,jdbcType=NUMERIC}, #{jkInnerClothWsPrice,jdbcType=INTEGER}, 
+      #{jkDaibaCd,jdbcType=VARCHAR}, #{jkDaibaNm,jdbcType=VARCHAR}, #{jkDaibaRtPrice,jdbcType=INTEGER}, 
+      #{jkDaibaWsWage,jdbcType=NUMERIC}, #{jkDaibaWsPrice,jdbcType=INTEGER}, #{jkLookClothCd,jdbcType=VARCHAR}, 
+      #{jkLookClothNm,jdbcType=VARCHAR}, #{jkLookClothRtPrice,jdbcType=INTEGER}, #{jkLookClothWsWage,jdbcType=NUMERIC}, 
+      #{jkLookClothWsPrice,jdbcType=INTEGER}, #{jkCollarInnerCd,jdbcType=VARCHAR}, #{jkCollarInnerNm,jdbcType=VARCHAR}, 
+      #{jkCollarInnerRtPrice,jdbcType=INTEGER}, #{jkCollarInnerWsWage,jdbcType=NUMERIC}, 
+      #{jkCollarInnerWsPrice,jdbcType=INTEGER}, #{jkCollarHangCd,jdbcType=VARCHAR}, #{jkCollarHangNm,jdbcType=VARCHAR}, 
+      #{jkCollarHangRtPrice,jdbcType=INTEGER}, #{jkCollarHangWsWage,jdbcType=NUMERIC}, 
+      #{jkCollarHangWsPrice,jdbcType=INTEGER}, #{jkLapelWidthCd,jdbcType=VARCHAR}, #{jkLapelWidthNm,jdbcType=VARCHAR}, 
+      #{jkLapelWidthRtPrice,jdbcType=INTEGER}, #{jkLapelWidthWsWage,jdbcType=NUMERIC}, 
+      #{jkLapelWidthWsPrice,jdbcType=INTEGER}, #{jkFlowerHoleCd,jdbcType=VARCHAR}, #{jkFlowerHoleNm,jdbcType=VARCHAR}, 
+      #{jkFlowerHoleRtPrice,jdbcType=INTEGER}, #{jkFlowerHoleWsWage,jdbcType=NUMERIC}, 
+      #{jkFlowerHoleWsPrice,jdbcType=INTEGER}, #{jkBreastPktCd,jdbcType=VARCHAR}, #{jkBreastPktNm,jdbcType=VARCHAR}, 
+      #{jkBreastPktRtPrice,jdbcType=INTEGER}, #{jkBreastPktWsWage,jdbcType=NUMERIC}, 
+      #{jkBreastPktWsPrice,jdbcType=INTEGER}, #{jkWaistPktCd,jdbcType=VARCHAR}, #{jkWaistPktNm,jdbcType=VARCHAR}, 
+      #{jkWaistPktRtPrice,jdbcType=INTEGER}, #{jkWaistPktWsWage,jdbcType=NUMERIC}, #{jkWaistPktWsPrice,jdbcType=INTEGER}, 
+      #{jkChgPktCd,jdbcType=VARCHAR}, #{jkChgPktNm,jdbcType=VARCHAR}, #{jkChgPktRtPrice,jdbcType=INTEGER}, 
+      #{jkChgPktWsWage,jdbcType=NUMERIC}, #{jkChgPktWsPrice,jdbcType=INTEGER}, #{jkSlantedPktCd,jdbcType=VARCHAR}, 
+      #{jkSlantedPktNm,jdbcType=VARCHAR}, #{jkSlantedPktRtPrice,jdbcType=INTEGER}, #{jkSlantedPktWsWage,jdbcType=NUMERIC}, 
       #{jkSlantedPktWsPrice,jdbcType=INTEGER}, #{jkShinobiPktCd,jdbcType=VARCHAR}, #{jkShinobiPktNm,jdbcType=VARCHAR}, 
       #{jkShinobiPktRtPrice,jdbcType=INTEGER}, #{jkShinobiPktWsWage,jdbcType=NUMERIC}, 
       #{jkShinobiPktWsPrice,jdbcType=INTEGER}, #{jkSleeveTypeCd,jdbcType=VARCHAR}, #{jkSleeveTypeNm,jdbcType=VARCHAR}, 
@@ -1155,8 +1156,8 @@
       #{shippingDate,jdbcType=DATE}, #{loadingDate,jdbcType=DATE}, #{fabricUsedMount,jdbcType=NUMERIC}, 
       #{theoryFabricUsedMount,jdbcType=NUMERIC}, #{tscStatus,jdbcType=VARCHAR}, #{makerFactoryStatus,jdbcType=VARCHAR}, 
       #{send2factoryStatus,jdbcType=VARCHAR}, #{isCancelled,jdbcType=VARCHAR}, #{theoreticalStockCheck,jdbcType=VARCHAR}, 
-      #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedUserId,jdbcType=VARCHAR}, 
-      #{updatedAt,jdbcType=TIMESTAMP})
+      #{version,jdbcType=SMALLINT} + 1, #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
 	
 	<update id="updateOrder" parameterType="co.jp.aoyama.macchinetta.domain.model.Order" >
@@ -1202,6 +1203,8 @@
       product_spare_pants_ws_wage = #{productSparePantsWsWage,jdbcType=NUMERIC},
       product_spare_pants_ws_price = #{productSparePantsWsPrice,jdbcType=INTEGER},
       product_fabric_no = #{productFabricNo,jdbcType=VARCHAR},
+      fabric_color = #{fabricColor,jdbcType=VARCHAR},
+      fabric_pattern = #{fabricPattern,jdbcType=VARCHAR},
       product_category = #{productCategory,jdbcType=VARCHAR},
       product_brand_type = #{productBrandType,jdbcType=VARCHAR},
       product_brand_nm = #{productBrandNm,jdbcType=VARCHAR},
@@ -2395,11 +2398,12 @@
       send2factory_status = #{send2factoryStatus,jdbcType=VARCHAR},
       is_cancelled = #{isCancelled,jdbcType=VARCHAR},
       theoretical_stock_check = #{theoreticalStockCheck,jdbcType=VARCHAR},
+      version = #{version,jdbcType=SMALLINT} + 1,
       created_user_id = #{createdUserId,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
-    where order_id = #{orderId,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR} and version = #{version,jdbcType=SMALLINT}
   </update>
 	
     <select id="selectMaxOrderId" resultType="java.lang.String">
@@ -2408,7 +2412,7 @@
     
     <select id="getStock" resultMap="stockResultMap" parameterType="co.jp.aoyama.macchinetta.domain.model.Stock">
     	SELECT 
-		        fabric_id, 
+		    fabric_no, 
             theoretical_stock, 
             actual_stock,
             reservation_stock,
@@ -2418,7 +2422,7 @@
             updated_at
         FROM
             mtb_stock 
-		WHERE fabric_id = (select fabric_id from mtb_fabric where fabric_no = #{arg0} and order_pattern = #{arg1})
+		WHERE fabric_no = #{arg0}
     </select>
     
     <update id="updateStockByPk" parameterType="co.jp.aoyama.macchinetta.domain.model.Stock" >
@@ -2430,7 +2434,7 @@
       created_at = #{createdAt,jdbcType=TIMESTAMP},
       updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
       updated_at = #{updatedAt,jdbcType=TIMESTAMP}
-     where fabric_id = #{fabricId,jdbcType=VARCHAR}
+     where fabric_no = #{fabricNo,jdbcType=VARCHAR}
     </update>
     
     <select id="getShopDeliveryOn" resultType="java.lang.String">
@@ -2445,6 +2449,18 @@
     
     <select id="getSameCash" resultType="java.lang.Integer" parameterType="java.lang.String">
     	select count(1) from dtb_order where cash_id LIKE '%${_parameter}%' and is_cancelled = '0'
+    </select>
+    
+    <select id="getFactories" resultType="java.lang.String">
+    	select support_factorys from mtb_model where 
+    	order_pattern = #{arg0} 
+    	and item_code = #{arg1} 
+    	and sub_item_code = #{arg3} 
+    	and model_code = #{arg2}
+    </select>
+    
+    <select id="findOrderVersion" resultType="java.lang.Short">
+    	select version from dtb_order where order_id  = #{arg0}
     </select>
     
 </mapper>

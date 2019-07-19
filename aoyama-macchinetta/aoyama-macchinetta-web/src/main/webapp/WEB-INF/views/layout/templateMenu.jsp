@@ -9,6 +9,7 @@
 <c:set var="titleKey">
     <tiles:insertAttribute name="title" ignore="true" />
 </c:set>
+<sec:csrfMetaTags />
 <title><spring:message code="${titleKey}" text="受発注システム" /></title>
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -72,17 +73,23 @@
 
                 <div class="col-sm-5">
                     <div class="user-area float-right">
-                        <a href="${pageContext.request.contextPath}/logout" ><i class="fa fa-power-off"></i> ログアウト</a>
+                    	<form id="logoutForm" action="${pageContext.request.contextPath}/logout" method="post">
+                        	<a href="javascript:logoutSubmit()" style="color:black"><i class="fa fa-power-off"></i> ログアウト</a>
+                        	<sec:csrfInput />
+                        </form>
                     </div>
                 </div>
             </div>
 
         </header>
  
-        
 		<tiles:insertAttribute name="body" />
 
     </div>
-
+	<script>
+        function logoutSubmit() {
+            document.getElementById("logoutForm").submit();
+        }
+	</script>
 </body>
 </html>

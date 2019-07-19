@@ -204,6 +204,12 @@ public class OrderForm implements Serializable {
 	//更新確認
 	private String isUpdate;
 	
+	//生地_色
+	private String fabricColor;
+	
+	//生地_柄
+	private String fabricPattern;
+	
 	//商品情報_工場
 	private String productFactoryCd;
 		
@@ -213,10 +219,18 @@ public class OrderForm implements Serializable {
 	//保存flag
 	private String saveFlag;
 	
-	//
 	private String orderFlag;
 	
+	private String version;
 	
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public String getOrderFlag() {
 		return orderFlag;
 	}
@@ -705,6 +719,21 @@ public class OrderForm implements Serializable {
 	public void setIsUpdate(String isUpdate) {
 		this.isUpdate = isUpdate;
 	}
-	
+
+	public String getFabricColor() {
+		return fabricColor;
+	}
+
+	public void setFabricColor(String fabricColor) {
+		this.fabricColor = fabricColor;
+	}
+
+	public String getFabricPattern() {
+		return fabricPattern;
+	}
+
+	public void setFabricPattern(String fabricPattern) {
+		this.fabricPattern = fabricPattern;
+	}
 	
 }

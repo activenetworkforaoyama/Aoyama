@@ -1,8 +1,5 @@
 package co.jp.aoyama.macchinetta.domain.service.detail;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -22,11 +19,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		
 		OrderDetail selectActualStock = orderDetailRepository.selectActualStock(fabricNo);
 		return selectActualStock;
-	}
-	@Override
-	public void updateActualStock(String fabricId, BigDecimal remainActualStock,String updatedUserId,Date updatedAt) {
-		
-		orderDetailRepository.updateActualStock(fabricId, remainActualStock,updatedUserId,updatedAt);
 	}
 
 }

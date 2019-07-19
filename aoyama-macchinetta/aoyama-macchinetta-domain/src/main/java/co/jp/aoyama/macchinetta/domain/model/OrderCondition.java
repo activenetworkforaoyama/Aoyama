@@ -72,6 +72,8 @@ public class OrderCondition implements Serializable {
     
     private String fablicImporter;
     
+    private String category;
+    
     
     private List<Order> orderList;
 
@@ -325,6 +327,14 @@ public class OrderCondition implements Serializable {
 
 	public void setFablicImporter(String fablicImporter) {
 		this.fablicImporter = fablicImporter;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 }

@@ -251,7 +251,15 @@
 
 	//工場コードを検査する
 	function requiredFactoryCodeValidator(value){
-		if (value == "" || value == null || value == undefined || !(/^[A-Za-z0-9]{1,6}$/.test(value))) {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', '工場コード'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(/^[A-Za-z0-9]{1,6}$/.test(value))) {
 			appendAlert("errorMessage", getMsgByThreeArgs('msg075', '工場コード', "6", "英字"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -264,7 +272,21 @@
 
 	//アイテムコードを検査する
 	function requiredItemCodeValidator(value){
-		if (value == "" || value == null || value == undefined || !(/^[0-9]{2}$/.test(value))) {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', 'アイテムコード'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if (isNumeric(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', 'アイテムコード', '半角数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(/^[0-9]{2}$/.test(value))) {
 			appendAlert("errorMessage", getMsgByThreeArgs('msg010', 'アイテムコード', "2", "整数"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -277,7 +299,21 @@
 	
 	//ドル為替を検査する
 	function requiredDollarExchangeValidator(value){
-		if (value == "" || value == null || value == undefined || !(/^\d{1,3}$|^\d{1,3}\.\d{1}$/.test(value))) {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', 'ドル為替（円）'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if (isNumericDecimal(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', 'ドル為替（円）', '半角数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(/^\d{1,3}$|^\d{1,3}\.\d{1}$/.test(value))) {
 			appendAlert("errorMessage", getMsgByOneArg('msg034', 'ドル為替（円）'));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -290,7 +326,21 @@
 
 	//製品関税を検査する
 	function requiredProductTariffValidator(value){
-		if (value == "" || value == null || value == undefined || !(/^\d{1,3}$|^\d{1,3}\.\d{1}$/.test(value))) {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', '製品関税（％）'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if (isNumericDecimal(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', '製品関税（％）', '半角数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(/^\d{1,3}$|^\d{1,3}\.\d{1}$/.test(value))) {
 			appendAlert("errorMessage", getMsgByOneArg('msg034', '製品関税（％）'));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -303,8 +353,22 @@
 
 	//製品運賃を検査する
 	function requiredProductShippingValidator(value){
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
 		var integerCheck = Number(value);
-		if (value == "" || value == null || value == undefined || !(Math.floor(integerCheck)===integerCheck && 0<=integerCheck)) {
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', '製品運賃（円）'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if (isNumericDecimal(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', '製品運賃（円）', '半角数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(Math.floor(integerCheck)===integerCheck && 0<=integerCheck)) {
 			appendAlert("errorMessage", getMsgByThreeArgs('msg012', '製品運賃（円）', "負でない整数"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -317,8 +381,22 @@
 
 	//運賃誤差を検査する
 	function requiredShippingErrorValidator(value){
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
 		var integerCheck = Number(value);
-		if (value == "" || value == null || value == undefined || !(Math.floor(integerCheck)===integerCheck && 0<=integerCheck)) {
+		if (value == "" || value == null || value == undefined){
+			appendAlert("errorMessage", getMsgByOneArg('msg001', '運賃誤差（円）'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if (isNumericDecimal(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', '運賃誤差（円）', '半角数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(Math.floor(integerCheck)===integerCheck && 0<=integerCheck)) {
 			appendAlert("errorMessage", getMsgByThreeArgs('msg012', '運賃誤差（円）', "負でない整数"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
@@ -346,6 +424,14 @@
 		}
 		return rtn;
 	}
+
+	$(function () {
+	    var headerName = $("meta[name='_csrf_header']").attr("content");
+	    var tokenValue = $("meta[name='_csrf']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        xhr.setRequestHeader(headerName, tokenValue);
+	    });
+	});
 
 	$(document).ready(function() {
 	
@@ -383,10 +469,9 @@
 		jQuery("#cancelButton").click(function(){
 			// 確認メッセージ
 			swal({
-				title: "確認",
-				text: getMsgByOneArg('msg023', "下代価格"),
+				text: getMsgByOneArg('msg017', "編集内容"),
 				icon: "info",
-				buttons: true,
+				buttons: ["キャンセル", true],
 				dangerMode: true,
 				closeOnEsc: false,
 			})
@@ -416,7 +501,7 @@
 			eRNum = 0;
 			changeRowNumGray.length = 0;
 			cRNumG = 0;
-			$("#shopListDiv").show();
+			
 			var factoryCodeInput = $("#factoryCodeInput").val();
 			var itemCodeInput = $("#itemCodeInput").val();
 			
@@ -430,9 +515,12 @@
 				appendAlertDel('successMessage');
 				if(Object.keys(result).length  == 0){
 					$("#doKoShin").hide();
-					appendAlert("errorMessage",getMsgByOneArg('msg031'));
+					$("#shopListDiv").hide();
+					//検索結果が0件でした。条件を変更して再検索してください。
+					appendAlert("errorMessage",getMsg('msg031'));
 				}else{
 					$("#doKoShin").show();
+					$("#shopListDiv").show();
 				}
 				
 				for (var i = 0; i < result.length; i++) {
@@ -445,6 +533,7 @@
 					d["productTariff"] = result[i].productTariff;
 					d["productShipping"] = result[i].productShipping;
 					d["shippingError"] = result[i].shippingError;
+					d["version"] = result[i].version;
 					d["createdUserId"] = result[i].createdUserId;
 					d["updatedUserId"] = result[i].updatedUserId;
 					d["delType"] = false;
@@ -539,10 +628,9 @@
 		$("#updateButton").click(function(){
 			// 確認メッセージ
 			swal({
-				title: "確認",
-				text: getMsgByOneArg('msg025', "下代価格"),
+				text: getMsgByOneArg('msg025', "下代価格情報"),
 				icon: "info",
-				buttons: true,
+				buttons: ["キャンセル", true],
 				dangerMode: true,
 				closeOnEsc: false,
 			})
@@ -618,23 +706,36 @@
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
+										//{0}はすでに存在している。確認して再入力してください。
 							    		appendAlert("errorMessage",getMsgByOneArg('msg061', '下代価格の主キー'));
 									}else if("-2" == result[i].updateFailure){
 										//工場コードは工場マスタに存在しません、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
+										//{0}は{1}に存在しません。確認して再入力してください。
 							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', "工場コード", "工場マスタ"));
 									}else if("-3" == result[i].updateFailure){
 										//アイテムコードはアイテムマスタに存在しません、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
+										//{0}は{1}に存在しません。確認して再入力してください。
 							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', "アイテムコード", "アイテムマスタ"));
 									}else if("-4" == result[i].updateFailure){
 										//下代価格の主キーはすでに存在しません
-										//このような状況は修正時に発生します。
-										//現在のすべての変更されたデータは、すべてデータベースから呼び出しされますので、下代価格の主キーが存在しない場合はありません。
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//{0}の更新が失敗しました。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg064', "下代価格情報"));
+										updateFlag = false;
+									}else if("-5" == result[i].updateFailure){
+										//バージョン番号が不正です
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "下代価格情報"));
+										updateFlag = false;
 									}
 								}
 
@@ -661,6 +762,7 @@
 									d["productTariff"] = result[i].productTariff;
 									d["productShipping"] = result[i].productShipping;
 									d["shippingError"] = result[i].shippingError;
+									d["version"] = result[i].version;
 									d["createdUserId"] = result[i].createdUserId;
 									d["updatedUserId"] = result[i].updatedUserId;
 									d["delType"] = result[i].delType;
@@ -678,7 +780,8 @@
 
 						    	if(dSuccessTemp == true && $("#errorMessage").text() == ""){
 									// 更新します
-							    	appendAlert("successMessage",getMsgByOneArg('msg044', "下代価額情報"));
+									//{0}の更新が完了しました。
+							    	appendAlert("successMessage",getMsgByOneArg('msg044', "下代価格情報"));
 								}
 							    
 						    	// (4) SlickGridテーブルを作成

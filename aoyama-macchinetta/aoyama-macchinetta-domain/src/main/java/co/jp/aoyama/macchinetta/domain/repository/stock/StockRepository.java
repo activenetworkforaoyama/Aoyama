@@ -11,7 +11,7 @@ public interface StockRepository {
 	 
 	List<Stock> findAllStock();  
 	
-	Stock findStockByPk(@Param("fabricId")String fabricId);
+	Stock findStockByPk(@Param("fabricNo")String fabricNo);
 
 	void updateStockByPk(@Param("stockUpd") List<Stock> stockUpd);
 	

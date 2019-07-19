@@ -42,6 +42,8 @@ public class NextGenerationPrice implements Serializable {
 	private String keyItemCode;
 	// 生地代
 	private Integer fabricPrice;
+	//下代調整金
+	private Integer wsPriceAdjust;
 	// 工場コード
 	private String mfaFactoryCode;
 	// 基本工賃価格 (単位は＄で設定)
@@ -117,7 +119,7 @@ public class NextGenerationPrice implements Serializable {
 	private Double marginRate;
 	
 	public String getKeyCode() {
-		return keyCode;
+		return keyCode==null ? "" : keyCode;
 	}
 
 	public void setKeyCode(String keyCode) {
@@ -125,7 +127,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobSubItemCode() {
-		return mobSubItemCode;
+		return mobSubItemCode==null ? "" : mobSubItemCode;
 	}
 
 	public void setMobSubItemCode(String mobSubItemCode) {
@@ -133,7 +135,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobOptionCode() {
-		return mobOptionCode;
+		return mobOptionCode==null ? "" : mobOptionCode;
 	}
 
 	public void setMobOptionCode(String mobOptionCode) {
@@ -141,7 +143,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobOptionBranchCode() {
-		return mobOptionBranchCode;
+		return mobOptionBranchCode==null ? "" : mobOptionBranchCode;
 	}
 
 	public void setMobOptionBranchCode(String mobOptionBranchCode) {
@@ -149,7 +151,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoapSubItemCode() {
-		return moapSubItemCode;
+		return moapSubItemCode==null ? "" : moapSubItemCode;
 	}
 
 	public void setMoapSubItemCode(String moapSubItemCode) {
@@ -157,7 +159,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoapOptionCode() {
-		return moapOptionCode;
+		return moapOptionCode==null ? "" : moapOptionCode;
 	}
 
 	public void setMoapOptionCode(String moapOptionCode) {
@@ -165,7 +167,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoapOptionBranchCode() {
-		return moapOptionBranchCode;
+		return moapOptionBranchCode==null ? "" : moapOptionBranchCode;
 	}
 
 	public void setMoapOptionBranchCode(String moapOptionBranchCode) {
@@ -173,7 +175,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoapPrice() {
-		return moapPrice;
+		return moapPrice==null ? 0 : moapPrice;
 	}
 
 	public void setMoapPrice(Integer moapPrice) {
@@ -181,7 +183,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoapDoublePrice() {
-		return moapDoublePrice;
+		return moapDoublePrice==null ? 0 : moapDoublePrice;
 	}
 
 	public void setMoapDoublePrice(Integer moapDoublePrice) {
@@ -189,7 +191,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMowSubItemCode() {
-		return mowSubItemCode;
+		return mowSubItemCode==null ? "" : mowSubItemCode;
 	}
 
 	public void setMowSubItemCode(String mowSubItemCode) {
@@ -197,7 +199,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMowOptionCode() {
-		return mowOptionCode;
+		return mowOptionCode==null ? "" : mowOptionCode;
 	}
 
 	public void setMowOptionCode(String mowOptionCode) {
@@ -205,7 +207,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMowOptionBranchCode() {
-		return mowOptionBranchCode;
+		return mowOptionBranchCode==null ? "" : mowOptionBranchCode;
 	}
 
 	public void setMowOptionBranchCode(String mowOptionBranchCode) {
@@ -213,7 +215,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public BigDecimal getMowWage() {
-		return mowWage;
+		return mowWage==null ? new BigDecimal(0.0) : mowWage;
 	}
 
 	public void setMowWage(BigDecimal mowWage) {
@@ -221,7 +223,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getKeyItemCode() {
-		return keyItemCode;
+		return keyItemCode==null ? "" : keyItemCode;
 	}
 
 	public void setKeyItemCode(String keyItemCode) {
@@ -229,7 +231,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getFabricPrice() {
-		return fabricPrice;
+		return fabricPrice==null ? 0 : fabricPrice;
 	}
 
 	public void setFabricPrice(Integer fabricPrice) {
@@ -237,7 +239,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMfaFactoryCode() {
-		return mfaFactoryCode;
+		return mfaFactoryCode==null ? "" : mfaFactoryCode;
 	}
 
 	public void setMfaFactoryCode(String mfaFactoryCode) {
@@ -245,7 +247,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public BigDecimal getMbwWage() {
-		return mbwWage;
+		return mbwWage==null ? new BigDecimal(0.0) : mbwWage;
 	}
 
 	public void setMbwWage(BigDecimal mbwWage) {
@@ -253,7 +255,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public BigDecimal getMdbwWage() {
-		return mdbwWage;
+		return mdbwWage==null ? new BigDecimal(0.0) : mdbwWage;
 	}
 
 	public void setMdbwWage(BigDecimal mdbwWage) {
@@ -261,7 +263,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMnapPrice() {
-		return mnapPrice;
+		return mnapPrice==null ? 0 : mnapPrice;
 	}
 
 	public void setMnapPrice(Integer mnapPrice) {
@@ -269,7 +271,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMdbapPrice() {
-		return mdbapPrice;
+		return mdbapPrice==null ? 0 : mdbapPrice;
 	}
 
 	public void setMdbapPrice(Integer mdbapPrice) {
@@ -277,7 +279,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMbwItemCode() {
-		return mbwItemCode;
+		return mbwItemCode==null ? "" : mbwItemCode;
 	}
 
 	public void setMbwItemCode(String mbwItemCode) {
@@ -285,7 +287,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMdbwSubItemCode() {
-		return mdbwSubItemCode;
+		return mdbwSubItemCode==null ? "" : mdbwSubItemCode;
 	}
 
 	public void setMdbwSubItemCode(String mdbwSubItemCode) {
@@ -293,7 +295,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getKeyDetailCode() {
-		return keyDetailCode;
+		return keyDetailCode==null ? "" : keyDetailCode;
 	}
 
 	public void setKeyDetailCode(String keyDetailCode) {
@@ -301,7 +303,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobdSubItemCode() {
-		return mobdSubItemCode;
+		return mobdSubItemCode==null ? "" : mobdSubItemCode;
 	}
 
 	public void setMobdSubItemCode(String mobdSubItemCode) {
@@ -309,7 +311,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobdOptionCode() {
-		return mobdOptionCode;
+		return mobdOptionCode==null ? "" : mobdOptionCode;
 	}
 
 	public void setMobdOptionCode(String mobdOptionCode) {
@@ -317,7 +319,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMobdOptionBranchCode() {
-		return mobdOptionBranchCode;
+		return mobdOptionBranchCode==null ? "" : mobdOptionBranchCode;
 	}
 
 	public void setMobdOptionBranchCode(String mobdOptionBranchCode) {
@@ -325,7 +327,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoapOptionCodeT() {
-		return moapOptionCodeT;
+		return moapOptionCodeT==null ? "" : moapOptionCodeT;
 	}
 
 	public void setMoapOptionCodeT(String moapOptionCodeT) {
@@ -333,7 +335,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoapOptionBranchCodeT() {
-		return moapOptionBranchCodeT;
+		return moapOptionBranchCodeT==null ? "" : moapOptionBranchCodeT;
 	}
 
 	public void setMoapOptionBranchCodeT(String moapOptionBranchCodeT) {
@@ -341,7 +343,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoapPriceT() {
-		return moapPriceT;
+		return moapPriceT==null ? 0 : moapPriceT;
 	}
 
 	public void setMoapPriceT(Integer moapPriceT) {
@@ -349,7 +351,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoapDoublePriceT() {
-		return moapDoublePriceT;
+		return moapDoublePriceT==null ? 0 : moapDoublePriceT;
 	}
 
 	public void setMoapDoublePriceT(Integer moapDoublePriceT) {
@@ -357,7 +359,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMowOptionCodeT() {
-		return mowOptionCodeT;
+		return mowOptionCodeT==null ? "" : mowOptionCodeT;
 	}
 
 	public void setMowOptionCodeT(String mowOptionCodeT) {
@@ -365,7 +367,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMowOptionBranchCodeT() {
-		return mowOptionBranchCodeT;
+		return mowOptionBranchCodeT==null ? "" : mowOptionBranchCodeT;
 	}
 
 	public void setMowOptionBranchCodeT(String mowOptionBranchCodeT) {
@@ -373,7 +375,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public BigDecimal getMowWageT() {
-		return mowWageT;
+		return mowWageT==null ? new BigDecimal(0.0) : mowWageT;
 	}
 
 	public void setMowWageT(BigDecimal mowWageT) {
@@ -381,7 +383,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getMoadpOptionBranchDetailCode() {
-		return moadpOptionBranchDetailCode;
+		return moadpOptionBranchDetailCode==null ? "" : moadpOptionBranchDetailCode;
 	}
 
 	public void setMoadpOptionBranchDetailCode(String moadpOptionBranchDetailCode) {
@@ -389,7 +391,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoadpPrice() {
-		return moadpPrice;
+		return moadpPrice==null ? 0 : moadpPrice;
 	}
 
 	public void setMoadpPrice(Integer moadpPrice) {
@@ -397,7 +399,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getMoadpDoublePrice() {
-		return moadpDoublePrice;
+		return moadpDoublePrice==null ? 0 : moadpDoublePrice;
 	}
 
 	public void setMoadpDoublePrice(Integer moadpDoublePrice) {
@@ -405,7 +407,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getNomalFabricAmount() {
-		return nomalFabricAmount;
+		return nomalFabricAmount==null ? 0 : nomalFabricAmount;
 	}
 
 	public void setNomalFabricAmount(Integer nomalFabricAmount) {
@@ -413,7 +415,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getDoubleBreastedFabricAmount() {
-		return doubleBreastedFabricAmount;
+		return doubleBreastedFabricAmount==null ? 0 : doubleBreastedFabricAmount;
 	}
 
 	public void setDoubleBreastedFabricAmount(Integer doubleBreastedFabricAmount) {
@@ -421,7 +423,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getSubItemCode() {
-		return subItemCode;
+		return subItemCode==null ? "" : subItemCode;
 	}
 
 	public void setSubItemCode(String subItemCode) {
@@ -429,7 +431,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public String getWholesaleKeyCode() {
-		return wholesaleKeyCode;
+		return wholesaleKeyCode==null ? "" : wholesaleKeyCode;
 	}
 
 	public void setWholesaleKeyCode(String wholesaleKeyCode) {
@@ -437,7 +439,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public BigDecimal getDollarExchange() {
-		return dollarExchange;
+		return dollarExchange==null ? new BigDecimal(0.0) : dollarExchange;
 	}
 
 	public void setDollarExchange(BigDecimal dollarExchange) {
@@ -445,7 +447,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Double getProductTariff() {
-		return productTariff;
+		return productTariff==null ? 0.0 : productTariff;
 	}
 
 	public void setProductTariff(Double productTariff) {
@@ -453,7 +455,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getProductShipping() {
-		return productShipping;
+		return productShipping==null ? 0 : productShipping;
 	}
 
 	public void setProductShipping(Integer productShipping) {
@@ -461,7 +463,7 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Integer getShippingError() {
-		return shippingError;
+		return shippingError==null ? 0 : shippingError;
 	}
 
 	public void setShippingError(Integer shippingError) {
@@ -469,11 +471,19 @@ public class NextGenerationPrice implements Serializable {
 	}
 
 	public Double getMarginRate() {
-		return marginRate;
+		return marginRate==null ? 0.0 : marginRate;
 	}
 
 	public void setMarginRate(Double marginRate) {
 		this.marginRate = marginRate;
+	}
+
+	public Integer getWsPriceAdjust() {
+		return wsPriceAdjust==null ? 0 : wsPriceAdjust;
+	}
+
+	public void setWsPriceAdjust(Integer wsPriceAdjust) {
+		this.wsPriceAdjust = wsPriceAdjust;
 	}
 
 }

@@ -10,7 +10,7 @@ public interface FabricRepository {
 	
 	List<Fabric> fabricQueryAll();
 	
-	Fabric fabricQueryByPrimaryKey(@Param("orderPattern") String orderPattern, @Param("fabricId") String fabricId);
+	Fabric fabricQueryByPrimaryKey(@Param("orderPattern") String orderPattern, @Param("fabricNo") String fabricNo);
 	
 	void fabricInsertByPrimaryKey(@Param("fabricInsertList") List<Fabric> fabricInsertList);
 

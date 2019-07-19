@@ -17,4 +17,6 @@ public interface ShopService {
 	List<Shop> fuzzyQuery(Shop shop);
 	
 	public Boolean shopIsExist(String shopCode);
+
+	List<Shop> findUnlessShop(String belongCode);
 }

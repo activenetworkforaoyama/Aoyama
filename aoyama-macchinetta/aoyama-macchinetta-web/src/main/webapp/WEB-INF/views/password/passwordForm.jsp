@@ -166,10 +166,9 @@ jQuery(document).ready(function() {
 
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: msginfo,
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})
@@ -202,7 +201,7 @@ jQuery(document).ready(function() {
 		 obj.add(new Option("",""));
 	        jQuery.ajax({
 	            url: contextPath + "/password/selectAllUser",
-	            type: 'post',
+	            type: 'get',
 	            async:false,
 	            success: function(data){
 	               jQuery.each(data, function (index, e) {

@@ -9,9 +9,9 @@ public class Fabric implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 5179047345861032110L;
-	private String fabricId;
     private String orderPattern;
     private String fabricNo;
+    private String materialNo;
     private String fablicBrandNo;
     private String storeBrand;
     private String season;
@@ -64,7 +64,11 @@ public class Fabric implements Serializable {
     private String updatedUserId;
     private Date updatedAt;
     
+    private Short fabricVersion;
+    private Short stockVersion;
+    
     private BigDecimal theoreticalStock;
+    private BigDecimal reservationStock;
     private String handleDiscriminate;
     private String[] errorArr;
     
@@ -73,14 +77,6 @@ public class Fabric implements Serializable {
 	private String updateFailure;
 	private String num;
     private String isNewData;
-
-    public String getFabricId() {
-        return fabricId;
-    }
-
-    public void setFabricId(String fabricId) {
-        this.fabricId = fabricId == null ? null : fabricId.trim();
-    }
 
     public String getOrderPattern() {
         return orderPattern;
@@ -98,7 +94,15 @@ public class Fabric implements Serializable {
         this.fabricNo = fabricNo == null ? null : fabricNo.trim();
     }
 
-    public String getFablicBrandNo() {
+    public String getMaterialNo() {
+		return materialNo;
+	}
+
+	public void setMaterialNo(String materialNo) {
+		this.materialNo = materialNo;
+	}
+
+	public String getFablicBrandNo() {
         return fablicBrandNo;
     }
 
@@ -506,12 +510,36 @@ public class Fabric implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+	public Short getFabricVersion() {
+		return fabricVersion;
+	}
+
+	public void setFabricVersion(Short fabricVersion) {
+		this.fabricVersion = fabricVersion;
+	}
+
+	public Short getStockVersion() {
+		return stockVersion;
+	}
+
+	public void setStockVersion(Short stockVersion) {
+		this.stockVersion = stockVersion;
+	}
+
 	public BigDecimal getTheoreticalStock() {
 		return theoreticalStock;
 	}
 
 	public void setTheoreticalStock(BigDecimal theoreticalStock) {
 		this.theoreticalStock = theoreticalStock;
+	}
+
+	public BigDecimal getReservationStock() {
+		return reservationStock;
+	}
+
+	public void setReservationStock(BigDecimal reservationStock) {
+		this.reservationStock = reservationStock;
 	}
 
 	public String getHandleDiscriminate() {

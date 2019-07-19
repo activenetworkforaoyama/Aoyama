@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.hibernate.validator.internal.util.privilegedactions.GetAnnotationParameter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +83,7 @@ public class ShopDeliveryServiceImpl implements ShopDeliveryService {
 	}
 	
 	/**
-	 * 承り日FROMより早く、承り日FROMから一番近い合法な日付を設定します
+	 * 承り日FROMより早く、承り日FROMから一番近い合法な日付を設定します 
 	 */
 	@Override
 	public List<Date> orderOnStartDateQuery(ShopDelivery shopDelivery) {
@@ -100,4 +99,5 @@ public class ShopDeliveryServiceImpl implements ShopDeliveryService {
 		List<Date> orderOnEndDateQuery = shopDeliveryRepository.orderOnEndDateQuery(shopDelivery);
 		return orderOnEndDateQuery;
 	}
+	
 }

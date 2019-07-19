@@ -15,6 +15,9 @@ public class ShopDeliveryForm implements Serializable{
     private Date createdAt;
     private String updatedUserId;
     private Date updatedAt;
+    private Short version;
+    
+    private String codeName;
     
     private String orderOnStartDateStr;
     private String orderOnEndDateStr;
@@ -94,6 +97,22 @@ public class ShopDeliveryForm implements Serializable{
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
+	}
+
+	public String getCodeName() {
+		return codeName;
+	}
+
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
+	}
 
 	public Boolean getDelType() {
 		return delType;

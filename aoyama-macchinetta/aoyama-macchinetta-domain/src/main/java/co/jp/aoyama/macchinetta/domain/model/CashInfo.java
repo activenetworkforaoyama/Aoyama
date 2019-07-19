@@ -40,6 +40,8 @@ public class CashInfo implements Serializable {
     
     private String isCancelled;
     
+    private Short version;
+    
     private Date productOrderdDate;
     
     private String updatedUserId;
@@ -164,6 +166,14 @@ public class CashInfo implements Serializable {
 
 	public void setIsCancelled(String isCancelled) {
 		this.isCancelled = isCancelled;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 	public Date getProductOrderdDate() {

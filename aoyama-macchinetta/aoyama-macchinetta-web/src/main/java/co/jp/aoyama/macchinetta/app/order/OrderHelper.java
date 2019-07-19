@@ -2,6 +2,7 @@ package co.jp.aoyama.macchinetta.app.order;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -603,9 +604,10 @@ public class OrderHelper {
 			for (OrderPrice detail : priceList) {
 
 				OrderCodePrice price = new OrderCodePrice();
-
-				//オプション選択肢:sub_item_code
+				//オプション選択肢:item_code
 				String branchItemCode = detail.getBranchItemCode();
+				//オプション選択肢:sub_item_code
+				String branchSubItemCode = detail.getBranchSubItemCode();
 				//オプション選択肢:model_code 
 				String branchModelCode = detail.getBranchModelCode();
 				//オプション選択肢:option_code 
@@ -613,14 +615,17 @@ public class OrderHelper {
 				//オプション選択肢:option_branch_code
 				String optinBranchCode = detail.getOptinBranchCode();
 
-				String key = branchItemCode + branchModelCode + branchOptionCode + optinBranchCode;
+				String key = branchItemCode.concat(branchSubItemCode).concat(branchModelCode).concat(branchOptionCode).concat(optinBranchCode);
+				//branchItemCode + branchSubItemCode + branchModelCode + branchOptionCode + optinBranchCode;
 
 				price.setOrderKeyCode(key);
 				price.setOrderBranchPrice(detail.getOptionBranchPrice().toString());
 				price.setOrderBranchDoublePrice(detail.getOptionBranchDoublePrice().toString());
 
-				//オプション選択肢詳細:sub_item_code
+				//オプション選択肢詳細:item_code
 				String detailItemCode = detail.getDetailItemCode();
+				//オプション選択肢詳細:sub_item_code
+				String detailSubItemCode = detail.getDetailSubItemCode();
 				//オプション選択肢詳細:option_code
 				String detailOptionCode = detail.getDetailOptionCode();
 				//オプション選択肢詳細:option_branch_code
@@ -628,11 +633,15 @@ public class OrderHelper {
 				//オプション選択肢詳細:option_branch_detail_code
 				String optionBranchDetailCode = detail.getOptionBranchDetailCode();
 
-				if (detailItemCode != null && detailOptionCode != null && detailOptionBranchCode != null
+				if (detailItemCode != null &&detailSubItemCode !=null && detailOptionCode != null && detailOptionBranchCode != null
 						&& optionBranchDetailCode != null) {
 					
-					String detailKey = detailItemCode + branchModelCode + detailOptionCode + detailOptionBranchCode
-							+ optionBranchDetailCode;
+					String detailKey = detailItemCode.concat(detailSubItemCode).concat(branchModelCode).concat(detailOptionCode)
+							.concat(detailOptionBranchCode).concat(optionBranchDetailCode);
+							
+//					detailItemCode + detailSubItemCode + branchModelCode + detailOptionCode + detailOptionBranchCode
+//							+ optionBranchDetailCode;
+					
 					price.setOrderDetailKeyCode(detailKey);
 					price.setOrderBranchDetailPrice(detail.getDetailBranchPrice().toString());
 					price.setOrderBranchDetailDoublePrice(detail.getDetailBranchDoublePrice().toString());
@@ -960,16 +969,16 @@ public class OrderHelper {
 		for (Model model : modelList) {
 			if (model.getSubItemCode().equals("02")) {
 				ojJacketModelMap.put("", "モデル選択");
-				ojJacketModelMap.put(model.getModelCode(), model.getModelCode());
+				ojJacketModelMap.put(model.getModelCode(), model.getModelName());
 			} else if (model.getSubItemCode().equals("03")) {
 				opPantsModelMap.put("", "モデル選択");
-				opPantsModelMap.put(model.getModelCode(), model.getModelCode());
+				opPantsModelMap.put(model.getModelCode(), model.getModelName());
 			} else if (model.getSubItemCode().equals("04")) {
 				ogGiletModelMap.put("", "モデル選択");
-				ogGiletModelMap.put(model.getModelCode(), model.getModelCode());
+				ogGiletModelMap.put(model.getModelCode(), model.getModelName());
 			} else if (model.getSubItemCode().equals("07")) {
 				op2PantsModelMap.put("", "モデル選択");
-				op2PantsModelMap.put(model.getModelCode(), model.getModelCode());
+				op2PantsModelMap.put(model.getModelCode(), model.getModelName());
 			}
 		}
 		orderForm.getOptionGiletStandardInfo().setOgGiletModelMap(ogGiletModelMap);
@@ -1130,7 +1139,7 @@ public class OrderHelper {
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderMappingPo(OrderForm orderForm, Order order,String userId,OrderFindFabric findStock,Order orderId,String findMakerId) {
+	public void orderMappingPo(OrderForm orderForm, Order order,String userId,OrderFindFabric findStock,Order orderId,String findMakerId,Map<String, Integer> retailPriceRelatedMap) {
 		
 		//オーダーパターン
 		order.setOrderPattern(orderForm.getOrderPattern());
@@ -1172,6 +1181,14 @@ public class OrderHelper {
 		//商品情報_メーカーコード
 		String productMakerCode = findStock.getMakerCode();
 		order.setProductMakerCode(productMakerCode);
+		
+		//生地_色
+		String fabricColor = findStock.getColor();
+		order.setFabricColor(fabricColor);
+		
+		//生地_柄
+		String fabricPattern = findStock.getPattern();
+		order.setFabricPattern(fabricPattern);
 		
 		//ホスト連携_店コード
 		order.setHostTransmitStoreCd(orderForm.getShopCode());
@@ -1286,39 +1303,184 @@ public class OrderHelper {
 			order.setPt2DblWidthWsWage(null);
 			order.setPt2DblWidthWsPrice(null);
 		}
+		
+		if("01".equals(orderItemCd) || "03".equals(orderItemCd)) {
+			
+			//PANTS_股下右_グロス
+			String corPtRightinseamGross = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamGross();
+			if(corPtRightinseamGross == null || "".equals(corPtRightinseamGross)) {
+				order.setCorPtRightinseamGross(new BigDecimal(0.0));
+			}
+			
+			//PANTS_股下左_グロス
+			String corPtLeftinseamGross = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamGross();
+			if(corPtLeftinseamGross == null || "".equals(corPtLeftinseamGross)) {
+				order.setCorPtLeftinseamGross(new BigDecimal(0.0));
+			}
+			
+		}
+		
+		//スペアパンツは有り
+		String productYes = "0009902";
+		String productSparePantsClass = orderForm.getProductSparePantsClass();
+		
+		if("01".equals(orderItemCd) && productYes.equals(productSparePantsClass)) {
+			
+			//2PANTS_股下右_グロス
+			String corPt2RightinseamGross = orderForm.getAdjustPants2StandardInfo().getCorPt2RightinseamGross();
+			if(corPt2RightinseamGross == null || "".equals(corPt2RightinseamGross)) {
+				order.setCorPt2RightinseamGross(new BigDecimal(0.0));
+			}
+			
+			//2PANTS_股下左_グロス
+			String corPt2LeftinseamGross = orderForm.getAdjustPants2StandardInfo().getCorPt2LeftinseamGross();
+			if(corPt2LeftinseamGross == null || "".equals(corPt2LeftinseamGross)) {
+				order.setCorPt2LeftinseamGross(new BigDecimal(0.0));
+			}
+			
+		}
+		
+		//JACKET_モデル_上代
+		Integer doubleJacketPrice = retailPriceRelatedMap.get("doubleJACKET");
+		Integer singleDoubleJacketPrice = retailPriceRelatedMap.get("singleDoubleJACKET");
+		String productItem = orderForm.getProductItem();
+		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
+		if("0000105".equals(ojFrontBtnCnt)) {
+			if("01".equals(productItem)) {
+				if(doubleJacketPrice != null) {
+					order.setJkModelRtPrice(doubleJacketPrice);
+				}
+				else {
+					order.setJkModelRtPrice(0);
+				}
+			}
+			else if("02".equals(productItem)) {
+				if(singleDoubleJacketPrice != null) {
+					order.setJkModelRtPrice(singleDoubleJacketPrice);
+	 			}
+				else {
+					order.setJkModelRtPrice(0);
+				}
+			}
+		}
+		else {
+			order.setJkModelRtPrice(0);
+		}
+		
+		//お客様情報_お客様氏名
+		order.setCustNm(null);
+		//お客様情報_フリガナ
+		order.setCustKanaNm(null);
+	}
+	
+	/**
+	 * 更新のみのデータ
+	 * @param selectExistOrder
+	 * @param order
+	 */
+	public void onlyUpdateItem(Order selectExistOrder,Order order) {
+		//売上金額
+		Integer salesAmount = selectExistOrder.getSalesAmount();
+		order.setSalesAmount(salesAmount);
+		//会計ID
+		String cashId = selectExistOrder.getCashId();
+		order.setCashId(cashId);
+		//値引き後金額
+		Integer cashDiscountPrice = selectExistOrder.getCashDiscountPrice();
+		order.setCashDiscountPrice(cashDiscountPrice);
+		//会計後商品金額（税抜き）
+		Integer cashProductPrice = selectExistOrder.getCashProductPrice();
+		order.setCashProductPrice(cashProductPrice);
+		//会計後商品金額（税込み）
+		Integer cashContailTaxProductPrice = selectExistOrder.getCashContailTaxProductPrice();
+		order.setCashContailTaxProductPrice(cashContailTaxProductPrice);
+		//店舗・担当_店舗名
+		String storeNm = selectExistOrder.getStoreNm();
+		order.setStoreNm(storeNm);
+		//店舗・担当_営業担当者
+		String storeStaffNm = selectExistOrder.getStoreStaffNm();
+		order.setStoreStaffNm(storeStaffNm);
+		//証紙印字情報_お客様名ローマ字
+		String printoutCustRomaNm = selectExistOrder.getPrintoutCustRomaNm();
+		order.setPrintoutCustRomaNm(printoutCustRomaNm);
+		//証紙印字情報_営業担当者ローマ字
+		String printoutStoreStaffRomaNm = selectExistOrder.getPrintoutStoreStaffRomaNm();
+		order.setPrintoutStoreStaffRomaNm(printoutStoreStaffRomaNm);
+		//お客様情報_お客様氏名
+		String custNm = selectExistOrder.getCustNm();
+		order.setCustNm(custNm);
+		//お客様情報_フリガナ
+		String custKanaNm = selectExistOrder.getCustKanaNm();
+		order.setCustKanaNm(custKanaNm);
+		//お客様情報_お客様備考
+		String custRemark = selectExistOrder.getCustRemark();
+		order.setCustRemark(custRemark);
+		//ホスト連携_A行
+		String hostTransmitARow = selectExistOrder.getHostTransmitARow();
+		order.setHostTransmitARow(hostTransmitARow);
+		//出荷番号
+		String shippingNumber = selectExistOrder.getShippingNumber();
+		order.setShippingNumber(shippingNumber);
 	}
 	
 	/**
 	 * オーダー内容確認画面のMapの値とorderの対応フィールドのマッピング
 	 * @param orderForm
 	 * @param order
+	 * @param authority 
 	 */
-	public void orderMappingLogOn(OrderForm orderForm, Order order,String userId) {
+	public void orderMappingLogOn(OrderForm orderForm, Order order,String userId,Order orderIsExist, String authority) {
+		
+		if("02".equals(authority)) {
+			//業態
+			order.setStoreBrandCode(orderIsExist.getStoreBrandCode());
+			//店舗コード
+			order.setShopCode(orderIsExist.getShopCode());
+			
+		}
+		//お客様氏名
+		order.setCustNm(null);
+		
+		//お客様情報_フリガナ
+		order.setCustKanaNm(null);
+		
+		//order.setVersion(orderIsExist.getVersion());
 		
 		//オーダーパターン
-		order.setOrderPattern(orderForm.getOrderPattern());
+		order.setOrderPattern(orderIsExist.getOrderPattern());
+		
+		//お客様備考
+		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n",""));
 		
 		//注文承り日
 		order.setProductOrderdDate(new Date());
 		
-		//TSCステータス
-		order.setTscStatus(orderForm.getStatus());
-		
 		//取り消しフラグ
-		order.setIsCancelled("0");
+		order.setIsCancelled(orderIsExist.getIsCancelled());
 		
 		//最終更新者
 		order.setUpdatedUserId(userId);
 		
 		//工場ステータス 生産開始前
-		order.setMakerFactoryStatus("F0");
+		order.setMakerFactoryStatus(orderIsExist.getMakerFactoryStatus());
 		
-		//取り消しフラグ 取り消しではない
-		order.setIsCancelled("0");
+		//登録日時
+		order.setCreatedAt(orderIsExist.getCreatedAt());
+		
+		//登録者
+		order.setCreatedUserId(orderIsExist.getCreatedUserId());
+		
+		//工場自動連携ステータス
+		order.setSend2factoryStatus(orderIsExist.getSend2factoryStatus());
+		
+		//理論在庫チェック
+		order.setTheoreticalStockCheck(orderIsExist.getTheoreticalStockCheck());
 		
 		//最終更新日時
-		Date updatedAt = new Date();
-		order.setUpdatedAt(updatedAt);
+		order.setUpdatedAt(new Date());
+		
+		//最終更新者
+		order.setUpdatedUserId(userId);
 		
 		//商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
@@ -1350,7 +1512,7 @@ public class OrderHelper {
 	}
 	
    /**
-              * 空とnullの変換
+    * 空とnullの変換
     * @param measuring
     * @return
     */
@@ -1366,8 +1528,9 @@ public class OrderHelper {
 	 * オーダー内容確認画面のメジャーリングの値とmeasuringの対応フィールドのマッピング
 	 * @param orderForm
 	 * @param  measuring
+	 * @param userId 
 	 */
-	public void measuringMapping(OrderForm orderForm,Measuring measuring) {
+	public void measuringMapping(OrderForm orderForm,Measuring measuring, String userId) {
 		
 		// 注文ID
 		measuring.setOrderId(orderForm.getCustomerMessageInfo().getOrderId());
@@ -1399,6 +1562,10 @@ public class OrderHelper {
 		measuring.setCalfLeft(convertBigDecimal(orderForm.getMeasuringInfo().getCalfLeft()));
 	 	// ネック
 		measuring.setNeck(convertBigDecimal(orderForm.getMeasuringInfo().getNeck()));
+		
+		measuring.setUpdatedUserId(userId);
+		
+		measuring.setUpdatedAt(new Date());
 	}
 
 	/**
@@ -1570,6 +1737,7 @@ public class OrderHelper {
 	 */
 	public void orderJacketPrice(OrderForm orderForm,Order order) {
 		
+		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_JACKET.getValue();
 		String branchModelCode = orderForm.getOptionJacketStandardInfo().getOjJacketModel();
@@ -1600,9 +1768,9 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(),argsTwo);
 				}
 				
-				String orderKeyCode = item + branchModelCode + key + result;
+				String orderKeyCode = orderItemCode + item + branchModelCode + key + result;
 				
-				String orderDetailKeyCode = item + branchModelCode + key + result + resultTwo;
+				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + result + resultTwo;
 				
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 				for (OrderCodePrice orderCodePrice : orderCodePriceList) {
@@ -1727,6 +1895,7 @@ public class OrderHelper {
 	 */
 	public void orderGiletPrice(OrderForm orderForm,Order order) {
 		
+		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_GILET.getValue();
 		String branchModelCode = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
@@ -1756,12 +1925,12 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(),argsTwo);
 				}
 				
-				String orderKeyCode = item + branchModelCode + key + resultOne;
-				String orderDetailKeyCode = item + branchModelCode + key + resultOne + resultTwo;
+				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
+				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
 				
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
-					if (orderForm.getOptionGiletStandardInfo().getOgGiletModel().equals("CH14-D")) {
+					if ("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode()) 
 								&& orderCodePrice.getOrderDetailKeyCode() == null) {
 							if (orderCodePrice.getOrderBranchDoublePrice() == null) {
@@ -1882,6 +2051,7 @@ public class OrderHelper {
 	 */
 	public void orderPantsPrice(OrderForm orderForm,Order order) {
 		
+		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS.getValue();
 		String branchModelCode = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
@@ -1911,8 +2081,8 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPantsStandardInfo(),argsTwo);
 				}
 				
-				String orderKeyCode = item + branchModelCode + key + resultOne;
-				String orderDetailKeyCode = item + branchModelCode + key + resultOne + resultTwo;
+				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
+				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
 				
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
@@ -1982,6 +2152,7 @@ public class OrderHelper {
 	 */
 	public void orderPants2Price(OrderForm orderForm,Order order) {
 		
+		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS2.getValue();
 		String branchModelCode = orderForm.getOptionPants2StandardInfo().getOp2PantsModel();
@@ -2011,8 +2182,8 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPants2StandardInfo(),argsTwo);
 				}
 				
-				String orderKeyCode = item + branchModelCode + key + resultOne;
-				String orderDetailKeyCode = item + branchModelCode + key + resultOne + resultTwo;
+				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
+				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
 				
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
@@ -2330,6 +2501,8 @@ public class OrderHelper {
 	 */
 	public void getJkNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
@@ -2355,12 +2528,12 @@ public class OrderHelper {
 					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(),args);
 				}
 				
-				String keyCode = subItemCode + key + resultOne;
+				String keyCode = itemCode + subItemCode + key + resultOne;
 				
 				for(NextGenerationPrice jkNextGenerationPrice : optionNextGenerationPriceList) {
 					if(keyCode.equals(jkNextGenerationPrice.getKeyCode())) {
 						//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-						if(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt().equals("0000105")) {
+						if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
@@ -2431,6 +2604,8 @@ public class OrderHelper {
 	 */
 	public void getGlNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
 
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
@@ -2456,11 +2631,11 @@ public class OrderHelper {
 					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(),args);
 				}
 				
-				String keyCode = subItemCode + key + resultOne;
+				String keyCode = itemCode + subItemCode + key + resultOne;
 				
 				for(NextGenerationPrice glNextGenerationPrice : optionNextGenerationPriceList) {
 					if(keyCode.equals(glNextGenerationPrice.getKeyCode())) {
-						if(orderForm.getOptionGiletStandardInfo().getOgGiletModel().equals("CH14-D")) {
+						if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
@@ -2530,6 +2705,8 @@ public class OrderHelper {
 	 */
 	public void getPtNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfoの取得
@@ -2555,7 +2732,7 @@ public class OrderHelper {
 					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPantsStandardInfo(),args);
 				}
 				
-				String keyCode = subItemCode + key + resultOne;
+				String keyCode = itemCode + subItemCode + key + resultOne;
 				
 				for(NextGenerationPrice ptNextGenerationPrice : optionNextGenerationPriceList) {
 					if(keyCode.equals(ptNextGenerationPrice.getKeyCode())) {
@@ -2609,6 +2786,8 @@ public class OrderHelper {
 	 */
 	public void getPt2NextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfoの取得
@@ -2634,7 +2813,7 @@ public class OrderHelper {
 					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPants2StandardInfo(),args);
 				}
 				
-				String keyCode = subItemCode + key + resultOne;
+				String keyCode = itemCode + subItemCode + key + resultOne;
 				
 				for(NextGenerationPrice pt2NextGenerationPrice : optionNextGenerationPriceList) {
 					if(keyCode.equals(pt2NextGenerationPrice.getKeyCode())) {
@@ -2687,6 +2866,8 @@ public class OrderHelper {
 	 */
 	public void getJkDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
@@ -2720,11 +2901,11 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(),argsTwo);
 				}
 				
-				String keyDetailCode = subItemCode + key + resultOne + resultTwo;
+				String keyDetailCode = itemCode + subItemCode + key + resultOne + resultTwo;
 				for(NextGenerationPrice detailNextGenerationPrice :detailNextGenerationPriceList) {
 					if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
 						//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-						if(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt().equals("0000105")) {
+						if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
@@ -2797,6 +2978,8 @@ public class OrderHelper {
 	 */
 	public void getGlDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		//co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
@@ -2829,11 +3012,11 @@ public class OrderHelper {
 					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(),argsTwo);
 				}
 				
-				String keyDetailCode = subItemCode + key + resultOne + resultTwo;
+				String keyDetailCode = itemCode + subItemCode + key + resultOne + resultTwo;
 				for(NextGenerationPrice detailNextGenerationPrice :detailNextGenerationPriceList) {
 					if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
 						//GILETモデルはCH14-Dの場合、該当itemはダブル
-						if(orderForm.getOptionGiletStandardInfo().getOgGiletModel().equals("CH14-D")) {
+						if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
@@ -2906,6 +3089,8 @@ public class OrderHelper {
 	 */
 	public void getPtDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		
@@ -2913,7 +3098,7 @@ public class OrderHelper {
 		String optionBranchCode = orderForm.getOptionPantsStandardInfo().getOpButton();
 		String optionBranchDetailCode = orderForm.getOptionPantsStandardInfo().getOpBtnMateStkNo();
 		
-		String keyDetailCode = subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
+		String keyDetailCode = itemCode + subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
 		for(NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
 			if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
 				//オプション工賃 
@@ -2943,31 +3128,33 @@ public class OrderHelper {
 	 */
 	public void getPt2DetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
-			String optionCode = "00033";		
-			String optionBranchCode = orderForm.getOptionPants2StandardInfo().getOp2Button();
-			String optionBranchDetailCode = orderForm.getOptionPants2StandardInfo().getOp2BtnMateStkNo();
-			
-			String keyDetailCode = subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
-			for(NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
-				if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
-					//オプション工賃 
-					BigDecimal mowWageT = detailNextGenerationPrice.getMowWageT();
-					BigDecimal nextGenerationWageValue = mowWageT;
-					//オプション付属 + オプション付属詳細
-					Integer moapPriceT = detailNextGenerationPrice.getMoapPriceT();
-					Integer moadpPrice = detailNextGenerationPrice.getMoadpPrice();
-					Integer nextGenerationPriceValue = moapPriceT + moadpPrice;
-					order.setPt2BtnMaterialWsWage(nextGenerationWageValue);
-					order.setPt2BtnMaterialWsPrice(nextGenerationPriceValue);
-					break;
-				}
-				else {
-					order.setPt2BtnMaterialWsWage(new BigDecimal(0.0));
-					order.setPt2BtnMaterialWsPrice(0);
-				}
+		String optionCode = "00033";		
+		String optionBranchCode = orderForm.getOptionPants2StandardInfo().getOp2Button();
+		String optionBranchDetailCode = orderForm.getOptionPants2StandardInfo().getOp2BtnMateStkNo();
+		
+		String keyDetailCode = itemCode + subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
+		for(NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
+			if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+				//オプション工賃 
+				BigDecimal mowWageT = detailNextGenerationPrice.getMowWageT();
+				BigDecimal nextGenerationWageValue = mowWageT;
+				//オプション付属 + オプション付属詳細
+				Integer moapPriceT = detailNextGenerationPrice.getMoapPriceT();
+				Integer moadpPrice = detailNextGenerationPrice.getMoadpPrice();
+				Integer nextGenerationPriceValue = moapPriceT + moadpPrice;
+				order.setPt2BtnMaterialWsWage(nextGenerationWageValue);
+				order.setPt2BtnMaterialWsPrice(nextGenerationPriceValue);
+				break;
 			}
+			else {
+				order.setPt2BtnMaterialWsWage(new BigDecimal(0.0));
+				order.setPt2BtnMaterialWsPrice(0);
+			}
+		}
 	}
 	
 	/**
@@ -2977,6 +3164,9 @@ public class OrderHelper {
 	 * 
 	 */
 	public void order3PiecePrice(OrderForm orderForm,Order order) {
+		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		//modelCodeの取得
@@ -2986,7 +3176,7 @@ public class OrderHelper {
 		//optionBranchCodeの取得
 		String optionBranchCode = orderForm.getProductIs3Piece();
 		
-		String keyCode = subItemCode + branchModelCode + optionCode + optionBranchCode;
+		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
 		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 		for(OrderCodePrice orderCodePrice : orderCodePriceList) {
 			if(keyCode.equals(orderCodePrice.getOrderKeyCode())) {
@@ -3013,6 +3203,8 @@ public class OrderHelper {
 	 * @param order
 	 */
 	public void orderSparePantsPrice(OrderForm orderForm,Order order) {
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		//modelCodeの取得
@@ -3022,7 +3214,7 @@ public class OrderHelper {
 		//optionBranchCodeの取得
 		String optionBranchCode = orderForm.getProductSparePantsClass();
 		
-		String keyCode = subItemCode + branchModelCode + optionCode + optionBranchCode;
+		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
 		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 		for(OrderCodePrice orderCodePrice : orderCodePriceList) {
 			if(keyCode.equals(orderCodePrice.getOrderKeyCode())) {
@@ -3052,16 +3244,18 @@ public class OrderHelper {
 	 */
 	public void getGl3PieceNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> optionNextGenerationPriceList) {
 		
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		
 		String optionCode = "00099";
 		String optionBranchCode = orderForm.getProductIs3Piece();
 		
-		String keyCode = subItemCode + optionCode + optionBranchCode;
+		String keyCode = itemCode + subItemCode + optionCode + optionBranchCode;
 		for(NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
 			if(keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
-				if(orderForm.getOptionGiletStandardInfo().getOgGiletModel().equals("CH14-D")) {
+				if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 					BigDecimal mowWage = optionNextGenerationPrice.getMowWage();
 					BigDecimal nextGenerationWageValue = mowWage;
 					
@@ -3096,13 +3290,15 @@ public class OrderHelper {
 	 */
 	public void getSparePantsNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> optionNextGenerationPriceList) {
  
+		//itemCodeの取得
+		String itemCode = orderForm.getProductItem();
 		//subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		
 		String optionCode = "00099";		
 		String optionBranchCode = orderForm.getProductSparePantsClass();
 		
-		String keyCode = subItemCode + optionCode + optionBranchCode;
+		String keyCode = itemCode + subItemCode + optionCode + optionBranchCode;
 		for(NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
 			if(keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
 				
@@ -4187,6 +4383,9 @@ public class OrderHelper {
 		//下代関連計算方法の生地代
 		Integer fabricPrice = priceCode.getFabricPrice();
 		
+		//下代関連計算方法の下代調整金
+		Integer wsPriceAdjust = priceCode.getWsPriceAdjust();
+		
 		//下代関連計算方法の為替
 		BigDecimal dollarExchange = this.getDollarExchange(order, wholesalePieceList, priceCode);
 		
@@ -4210,7 +4409,7 @@ public class OrderHelper {
 				+ (基本付属代 ＋ オプション付属)									
 			   )*製品関税										
 			) ＋ 製品運賃＋運賃誤差											
-		  )*メーカーマージン												
+		  )*メーカーマージン+ 下代調整金												
 		*/
 		
 		//生地代×要尺
@@ -4223,8 +4422,10 @@ public class OrderHelper {
 		BigDecimal productShippingShippingError = BigDecimalCommonTransfer(productShipping + shippingError);
 		//メーカーマージン
 		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate/100));
+		//下代調整金
+		BigDecimal wsPriceAdjustTransfer = BigDecimalCommonTransfer(wsPriceAdjust);
 		
-		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer);												
+		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);												
 		Integer convertNumber = this.convertNumber(nextGenerationRelationCount);
 		return convertNumber;
 	}
@@ -4283,6 +4484,9 @@ public class OrderHelper {
 		//下代関連計算方法の生地代
 		Integer fabricPrice = priceCode.getFabricPrice();
 		
+		//下代関連計算方法の下代調整金
+		Integer wsPriceAdjust = priceCode.getWsPriceAdjust();
+		
 		//下代関連計算方法の為替
 		BigDecimal dollarExchange = this.getDollarExchange(orderForm, wholesalePieceList, priceCode);
 		
@@ -4306,7 +4510,7 @@ public class OrderHelper {
 				+ (基本付属代 ＋ オプション付属)									
 			   )*製品関税										
 			) ＋ 製品運賃＋運賃誤差											
-		  )*メーカーマージン												
+		  )*メーカーマージン + 下代調整金												
 		*/
 		
 		//(生地代×要尺)
@@ -4319,7 +4523,9 @@ public class OrderHelper {
 		BigDecimal productShippingShippingError = BigDecimalCommonTransfer(productShipping + shippingError);
 		//メーカーマージン
 		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate/100));
-		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer);												
+		//下代調整金
+		BigDecimal wsPriceAdjustTransfer = BigDecimalCommonTransfer(wsPriceAdjust);
+		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);												
 		Integer convertNumber = this.convertNumber(nextGenerationRelationCount);
 		order.setWsPrice(convertNumber);
 	}
@@ -4329,7 +4535,7 @@ public class OrderHelper {
 	 * @return 
 	 */
 	public Integer convertNumber(BigDecimal nextGenerationRelationCount) {
-		BigDecimal nextGenerationCount = nextGenerationRelationCount.setScale(0, BigDecimal.ROUND_HALF_DOWN);
+		BigDecimal nextGenerationCount = nextGenerationRelationCount.setScale(0, RoundingMode.DOWN);
 		Integer nextGeneration = Integer.parseInt(nextGenerationCount.toString());
 		nextGeneration = nextGeneration-(nextGeneration % 10);
 		return nextGeneration;
@@ -4664,5 +4870,45 @@ public class OrderHelper {
 	public void getYield(List<Yield> yieldList, OrderForm orderForm) {
 		orderForm.setYield(new Gson().toJson(yieldList));
 	}
-
+	
+	/**
+	 * 
+	 * @param orderFabric
+	 * @return 
+	 */
+	public Map<String, Integer> getRetailPriceRelated(OrderFindFabric orderFabric) {
+		
+		Map<String,Integer> priceMap = new HashMap<String,Integer>();
+		//上代
+		Integer retailPrice = orderFabric.getRetailPrice();
+		//ダブルJACKET増額率
+		Integer additionalDoubleJacketRate = orderFabric.getAdditionalDoubleJacketRate();
+		//シングルGILET追加増額率
+		Integer additionalSingleGiletRate = orderFabric.getAdditionalSingleGiletRate();
+		//PANTS追加増額率
+		Integer additionalPantsRate = orderFabric.getAdditionalPantsRate();
+		//上代*シングルGILET追加増額率/100
+		Integer single3PieceRetailPrice = retailPrice * additionalSingleGiletRate/100;
+		//上代*PANTS追加増額率/100
+		Integer sparePantsPrice = retailPrice * additionalPantsRate/100;
+		//ダブルJACKET単品率
+		Integer doubleJacketOnlyRate = orderFabric.getDoubleJacketOnlyRate();
+		//ダブルJacketの単品購買追加金額
+		Integer jkDoubleOnlyPlusAlphaPrice = orderFabric.getJkDoubleOnlyPlusAlphaPrice();
+		//シングルJACKET単品率
+		Integer singleJacketOnlyRate = orderFabric.getSingleJacketOnlyRate();
+		//シングルJacketの単品購買追加金額
+		Integer jkSingleOnlyPlusAlphaPrice = orderFabric.getJkSingleOnlyPlusAlphaPrice();
+		//(上代*ダブルJACKET単品率/100+「ダブルJacketの単品購買追加金額」) -　(上代*シングルJACKET単品率/100+「シングルJacketの単品購買追加金額」)
+		Integer singleJacketDoublePrice =(retailPrice * doubleJacketOnlyRate/100 + jkDoubleOnlyPlusAlphaPrice)-(retailPrice * singleJacketOnlyRate/100 + jkSingleOnlyPlusAlphaPrice);
+		
+		
+		priceMap.put("doubleJACKET", additionalDoubleJacketRate);
+		priceMap.put("price3Piece", single3PieceRetailPrice);
+		priceMap.put("sparePants", sparePantsPrice);
+		priceMap.put("singleDoubleJACKET", singleJacketDoublePrice);
+		
+		return priceMap;
+		
+	}
 }

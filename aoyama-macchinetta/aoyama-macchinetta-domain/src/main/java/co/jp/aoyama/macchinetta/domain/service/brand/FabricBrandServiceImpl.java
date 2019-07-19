@@ -43,6 +43,7 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 	public List<FabricBrand> updateFabricBrandByPk(List<FabricBrand> fabricBrandList) {
 		List<FabricBrand> fabricBrandInsertList = new ArrayList<FabricBrand>();
 		List<FabricBrand> fabricBrandUpdList = new ArrayList<FabricBrand>();
+		boolean falg = true;
 		int num = 1;
 		for(int i=0;i<fabricBrandList.size();i++) {
 			FabricBrand fabricBrand = fabricBrandList.get(i);
@@ -53,13 +54,17 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 					fabricBrand.setUpdatedAt(new Date());
 					fabricBrandUpdList.add(fabricBrand);
 				}else {
-					ResultMessages messages = ResultMessages.error();
-					
-		            messages.add("E014", fabricBrand.getFablicBrandNo());
-		            
-		            logger.error(messages.toString());
-
-		            throw new ResourceNotFoundException(messages);
+					/*
+					 * ResultMessages messages = ResultMessages.error();
+					 * 
+					 * messages.add("E014", fabricBrand.getFablicBrandNo());
+					 * 
+					 * logger.error(messages.toString());
+					 * 
+					 * throw new ResourceNotFoundException(messages);
+					 */
+					fabricBrandList.get(i).setUpdateFailure("-1");
+					falg = false;
 				}
 			}
 			//　"2"は挿入区分
@@ -94,12 +99,14 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 				}
 			}
 		}
-		if(fabricBrandInsertList.size()!=0) {
-			fabricBrandRepository.insertFabricBrandByKey(fabricBrandInsertList);
-		}
-		
-		if(fabricBrandUpdList.size()!=0) {
-			fabricBrandRepository.updateFabricBrandByKey(fabricBrandUpdList);
+		if(falg) {
+			if(fabricBrandUpdList.size()!=0 && fabricBrandUpdList.size()!=0) {
+				fabricBrandRepository.updateFabricBrandByKey(fabricBrandUpdList);
+			}
+			
+			if(fabricBrandInsertList.size()!=0) {
+				fabricBrandRepository.insertFabricBrandByKey(fabricBrandInsertList);
+			}
 		}
 		return fabricBrandList;
 	}

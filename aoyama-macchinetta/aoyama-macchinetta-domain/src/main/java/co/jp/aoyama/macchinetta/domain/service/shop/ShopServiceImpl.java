@@ -97,4 +97,10 @@ public class ShopServiceImpl implements ShopService {
 		return true;
 	}
 
+	@Override
+	public List<Shop> findUnlessShop(String belongCode) {
+		List<Shop> shopList = shopRepository.findUnlessShop(belongCode);
+		return shopList;
+	}
+
 }

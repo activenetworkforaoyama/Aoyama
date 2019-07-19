@@ -15,6 +15,7 @@ public class Maker implements Serializable {
 	private String createdUserId;
 	private String updatedUserId;
 	private String optionType;
+	private Short version;
 
 	public String getMakerCode() {
 		return makerCode;
@@ -78,6 +79,14 @@ public class Maker implements Serializable {
 
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 }

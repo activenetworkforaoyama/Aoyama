@@ -85,12 +85,36 @@ public class PieceController {
 		List<Piece> pieceDeleteList = new ArrayList<Piece>();
 		//戻り先
 		List<PieceForm> pieceFormListReturn = new ArrayList<PieceForm>();
+		//本方法では、データが間違っていると記録されている表示
+		boolean failureTemp = false;
 		
 		for (int i = 0; i < pieceFormList.size(); i++) {
+			PieceForm pieceFormGet = pieceFormList.get(i);
 			if(pieceFormList.get(i).getDelType()) {
 				//削除の操作
-				Piece piece = beanMapper.map(pieceFormList.get(i), Piece.class);
+				Piece piece = beanMapper.map(pieceFormGet, Piece.class);
 				pieceDeleteList.add(piece);
+				
+				Piece pieceQueryByPrimaryKey = pieceService.pieceQueryByPrimaryKey(piece);
+				if(pieceQueryByPrimaryKey != null) {
+					if(piece.getVersion().equals(pieceQueryByPrimaryKey.getVersion())) {
+						//バージョン番号が正しいです、削除の作業
+						pieceDeleteList.add(piece);
+						pieceFormListReturn.add(pieceFormGet);
+					}else {
+						//バージョン番号が不正です
+						//setUpdateFailure("-5")：バージョン番号が不正です
+						pieceFormGet.setUpdateFailure("-5");
+						failureTemp = true;
+						pieceFormListReturn.add(pieceFormGet);
+					}
+				}else {
+					//下代価格の主キーはすでに存在しない。確認して再入力してください。
+		            //setUpdateFailure("-4")：削除のエラーが存在する場合
+					pieceFormGet.setUpdateFailure("-4");
+					failureTemp = true;
+					pieceFormListReturn.add(pieceFormGet);
+				}
 			}else{
 				//新規または修正の操作
 				Piece piece = beanMapper.map(pieceFormList.get(i), Piece.class);
@@ -99,18 +123,28 @@ public class PieceController {
 					//為替情報の有無の照会
 					Piece pieceQueryByPrimaryKey = pieceService.pieceQueryByPrimaryKey(piece);
 					if(pieceQueryByPrimaryKey != null) {
-						//為替情報が存在し、修正の作業
-						piece.setUpdatedAt(new Date());
-						piece.setUpdatedUserId(sessionContent.getUserId());
-						pieceUpdateList.add(piece);
-						//setUpdateFailure("0")：エラーが存在しない場合
-						pieceFormList.get(i).setUpdateFailure("0");
-						pieceFormListReturn.add(pieceFormList.get(i));
+						//為替情報が存在し
+						if(piece.getVersion().equals(pieceQueryByPrimaryKey.getVersion())) {
+							//バージョン番号が正しいです、修正の作業
+							piece.setUpdatedAt(new Date());
+							piece.setUpdatedUserId(sessionContent.getUserId());
+							pieceUpdateList.add(piece);
+							//setUpdateFailure("0")：エラーが存在しない場合
+							pieceFormGet.setUpdateFailure("0");
+							pieceFormListReturn.add(pieceFormGet);
+						}else {
+							//バージョン番号が不正です
+							//setUpdateFailure("-5")：バージョン番号が不正です
+							pieceFormGet.setUpdateFailure("-5");
+							failureTemp = true;
+							pieceFormListReturn.add(pieceFormGet);
+						}
 					}else {
 						//下代価格の主キーはすでに存在しません。確認して再入力してください。
 			            //setUpdateFailure("-4"):下代価格の主キーはすでに存在しません
-			            pieceFormList.get(i).setUpdateFailure("-4");
-			            pieceFormListReturn.add(pieceFormList.get(i));
+						pieceFormGet.setUpdateFailure("-4");
+			            failureTemp = true;
+			            pieceFormListReturn.add(pieceFormGet);
 					}
 				}else if("2".equals(piece.getOptionType())) {
 					//"2"は新規区分
@@ -121,18 +155,21 @@ public class PieceController {
 					if(pieceQueryByPrimaryKey != null) {
 						//下代価格の主キーはすでに存在している。確認して再入力してください。
 						//setUpdateFailure("-1"):下代価格の主キーはすでに存在している
-						pieceFormList.get(i).setUpdateFailure("-1");
-			            pieceFormListReturn.add(pieceFormList.get(i));
+						pieceFormGet.setUpdateFailure("-1");
+			            failureTemp = true;
+			            pieceFormListReturn.add(pieceFormGet);
 					}else if(pieceFactoryCodeQuery == 0) {
 						//工場コードは工場マスタに存在しません。確認して再入力してください。
 						//setUpdateFailure("-2"):工場コードは工場マスタに存在しません
-						pieceFormList.get(i).setUpdateFailure("-2");
-			            pieceFormListReturn.add(pieceFormList.get(i));
+						pieceFormGet.setUpdateFailure("-2");
+			            failureTemp = true;
+			            pieceFormListReturn.add(pieceFormGet);
 					}else if(pieceItemCodeQuery == 0) {
 						//アイテムコードはアイテムマスタに存在しません。確認して再入力してください。
 						//setUpdateFailure("-3"):アイテムコードはアイテムマスタに存在しません
-						pieceFormList.get(i).setUpdateFailure("-3");
-			            pieceFormListReturn.add(pieceFormList.get(i));
+						pieceFormGet.setUpdateFailure("-3");
+			            failureTemp = true;
+			            pieceFormListReturn.add(pieceFormGet);
 					}else {
 						//条件を満たす
 						piece.setCreatedAt(new Date());
@@ -141,27 +178,59 @@ public class PieceController {
 						piece.setUpdatedUserId(sessionContent.getUserId());
 						pieceInsertList.add(piece);
 						//setUpdateFailure("0")：エラーが存在しない場合
-						pieceFormList.get(i).setUpdateFailure("0");
-						pieceFormList.get(i).setDisplayIdentify(true);
-			            pieceFormListReturn.add(pieceFormList.get(i));
+						pieceFormGet.setUpdateFailure("0");
+						pieceFormListReturn.add(pieceFormGet);
 					}
 				}
 			}
 		}
 		
-		if(pieceInsertList.size() != 0) {
-			//新規の数はではありません
-			pieceService.insertPieceByPrimaryKey(pieceInsertList);
-		}
-		
-		if(pieceUpdateList.size() != 0) {
-			//修正の数はではありません
-			pieceService.updatePieceByPrimaryKey(pieceUpdateList);
-		}
-		
-		if(pieceDeleteList.size() != 0) {
-			//削除の数はではありません
-			pieceService.deletePieceByPrimaryKey(pieceDeleteList);
+		//すべてのデータに誤りがないので、新規、修正、削除の操作を開始します
+		if(failureTemp == false) {
+			//画面に表示されているデータのバージョン番号の変更を返します
+			for (int i = 0; i < pieceFormListReturn.size(); i++) {
+				if(pieceFormListReturn.get(i).getVersion() == null) {
+					Short s1 = 1;
+					pieceFormListReturn.get(i).setVersion(s1);
+				}else {
+					Short version = pieceFormListReturn.get(i).getVersion();
+					pieceFormListReturn.get(i).setVersion(++version);
+				}
+			}
+			
+			if(pieceInsertList.size() != 0) {
+				//新規の数はではありません
+				//新規された場合、バージョン番号は１に設定されます
+				for (int i = 0; i < pieceInsertList.size(); i++) {
+					Short s1 = 1;
+					pieceInsertList.get(i).setVersion(s1);
+				}
+				
+				pieceService.insertPieceByPrimaryKey(pieceInsertList);
+			}
+			if(pieceUpdateList.size() != 0) {
+				//修正の数はではありません
+				//修正の場合、バージョン番号は１から増加します
+				for (int i = 0; i < pieceUpdateList.size(); i++) {
+					Short version = pieceUpdateList.get(i).getVersion();
+					pieceUpdateList.get(i).setVersion(++version);
+				}
+				
+				pieceService.updatePieceByPrimaryKey(pieceUpdateList);
+			}
+			if(pieceDeleteList.size() != 0) {
+				//削除の数はではありません
+				//戻ったりリストから消去したデータを削除します
+				for (int i = 0, length = pieceFormListReturn.size(); i < length; i++) {
+					if (pieceFormListReturn.get(i).getDelType() == true) {
+						pieceFormListReturn.remove(pieceFormListReturn.get(i));
+						length--;
+						i--;
+					}
+				}
+				
+				pieceService.deletePieceByPrimaryKey(pieceDeleteList);
+			}
 		}
 		
 		return pieceFormListReturn;

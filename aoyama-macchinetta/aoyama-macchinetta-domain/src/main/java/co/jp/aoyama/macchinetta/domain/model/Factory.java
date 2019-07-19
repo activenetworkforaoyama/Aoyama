@@ -16,6 +16,7 @@ public class Factory implements Serializable {
 	private boolean finished;
 	private boolean delType;
 	private String optionType;
+	private Short version;
 
 	public boolean getDelType() {
 		return delType;
@@ -95,6 +96,14 @@ public class Factory implements Serializable {
 
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 }

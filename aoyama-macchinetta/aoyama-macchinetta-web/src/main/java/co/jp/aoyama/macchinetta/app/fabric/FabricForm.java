@@ -11,102 +11,54 @@ public class FabricForm implements Serializable {
 	 */
 	private static final long serialVersionUID = 7017730261186350195L;
 
-	private String fabricId;
-
     private String orderPattern;
-
     private String fabricNo;
-
+    private String materialNo;
     private String fablicBrandNo;
-
     private String storeBrand;
-
     private String season;
-
     private String color;
-
     private String pattern;
-
     private String colorAoyama;
-
     private String patternAoyama;
-
     private String materialName;
-
     private String itemClass;
-
     private String coatAvailable;
-
     private String compositionLabel;
-
     private String factoryCode;
-
     private String makerCode;
-
     private String lcrSewingAvailable;
-
     private Integer retailPrice;
-
     private Integer additionalPantsRate;
-
     private Integer additionalSingleGiletRate;
-
     private Integer additionalDoubleGiletRate;
-
     private Integer additionalDoubleJacketRate;
-
     private Integer singleJacketOnlyRate;
-
     private Integer doubleJacketOnlyRate;
-
     private Integer pantOnlyRate;
-
     private Integer singleGiletOnlyRate;
-
     private Integer doubleGiletOnlyRate;
-
     private Integer coatSingleOnlyRate;
-
     private Integer coatDoubleOnlyRate;
-
     private Integer jkSingleOnlyPlusAlphaPrice;
-
     private Integer jkDoubleOnlyPlusAlphaPrice;
-
     private Integer glSingleOnlyPlusAlphaPrice;
-
     private Integer glDoubleOnlyPlusAlphaPrice;
-
     private Integer ptOnlyPlusAlphaPrice;
-
     private Integer ctSingleOnlyPlusAlphaPrice;
-
     private Integer ctDoubleOnlyPlusAlphaPrice;
-
     private Integer fabricPrice;
-
     private String washableAvailable;
-
     private String tuxedoAvailable;
-
     private Integer wsPriceAdjust;
-
     private String contractNo;
-
     private Date spinningLimitDate;
-
     private String fablicImporter;
-
     private String fullHairclothAvailable;
-
     private String shirtSleeveAvailable;
-
     private String storeDelvNormal;
-
     private String storeDelvEarly;
-
     private String storeDelvCoat;
-
     private String handlingCaution;
 
     private String fabricNameExist;
@@ -115,7 +67,11 @@ public class FabricForm implements Serializable {
     private String updatedUserId;
     private Date updatedAt;
     
+    private Short fabricVersion;
+    private Short stockVersion;
+    
     private BigDecimal theoreticalStock;
+    private BigDecimal reservationStock;
     private String handleDiscriminate;
     private String[] errorArr;
     
@@ -124,14 +80,6 @@ public class FabricForm implements Serializable {
 	private String updateFailure;
 	private String num;
     private String isNewData;
-
-    public String getFabricId() {
-        return fabricId;
-    }
-
-    public void setFabricId(String fabricId) {
-        this.fabricId = fabricId == null ? null : fabricId.trim();
-    }
 
     public String getOrderPattern() {
         return orderPattern;
@@ -149,7 +97,15 @@ public class FabricForm implements Serializable {
         this.fabricNo = fabricNo == null ? null : fabricNo.trim();
     }
 
-    public String getFablicBrandNo() {
+    public String getMaterialNo() {
+		return materialNo;
+	}
+
+	public void setMaterialNo(String materialNo) {
+		this.materialNo = materialNo;
+	}
+
+	public String getFablicBrandNo() {
         return fablicBrandNo;
     }
 
@@ -557,12 +513,36 @@ public class FabricForm implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+	public Short getFabricVersion() {
+		return fabricVersion;
+	}
+
+	public void setFabricVersion(Short fabricVersion) {
+		this.fabricVersion = fabricVersion;
+	}
+
+	public Short getStockVersion() {
+		return stockVersion;
+	}
+
+	public void setStockVersion(Short stockVersion) {
+		this.stockVersion = stockVersion;
+	}
+
 	public BigDecimal getTheoreticalStock() {
 		return theoreticalStock;
 	}
 
 	public void setTheoreticalStock(BigDecimal theoreticalStock) {
 		this.theoreticalStock = theoreticalStock;
+	}
+
+	public BigDecimal getReservationStock() {
+		return reservationStock;
+	}
+
+	public void setReservationStock(BigDecimal reservationStock) {
+		this.reservationStock = reservationStock;
 	}
 
 	public String getHandleDiscriminate() {

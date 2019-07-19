@@ -24,7 +24,7 @@ public interface OrderRepository {
 
 	String selectMaxOrderId(@Param("belongCode")String belongCode, @Param("type")String type);
 
-	Stock getStock(String productFabricNo, String orderPattern);
+	Stock getStock(String productFabricNo);
 
 	void updateStockByPk(Stock stock);
 
@@ -33,5 +33,9 @@ public interface OrderRepository {
 	void deletOrderByOrderId(String orderId);
 
 	int getSameCash(@Param("cashId")String cashId);
+
+	String getFactories(String orderPattern,String itemCode, String jkModel, String subItemCode);
+
+	Short findOrderVersion(String orderId);
 
 }

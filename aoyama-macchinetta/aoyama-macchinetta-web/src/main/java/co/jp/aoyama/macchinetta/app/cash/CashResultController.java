@@ -25,6 +25,12 @@ public class CashResultController {
 		return cashForm;
 	}
 	
+	/**
+	 * 「会計結果」画面へ遷移する
+	 * @param model
+	 * @param sessionStatus
+	 * @return
+	 */
 	@RequestMapping(value = "cashResultForm")
 	public String toCashResultForm(Model model,SessionStatus sessionStatus) {
 		sessionStatus.setComplete();

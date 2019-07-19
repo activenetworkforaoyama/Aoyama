@@ -307,11 +307,21 @@ function requiredShopCodeValidator(value) {
 	if(contains){
 		appendAlertDel('errorMessage');
 		appendAlertDel('successMessage');
-		appendAlert('errorMessage', getMsg('msg060'));
+		appendAlert('errorMessage', getMsgByOneArg('msg104', '店舗コード'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);
 		return {valid: false};
+	}
+	//nullチェック
+	else if (value == "") {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		appendAlert('errorMessage', getMsgByOneArg('msg001', '店舗コード'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+	    return {valid: false};
 	}
 	//半角数字チェック
 	else if (isNumeric(value)) {
@@ -323,9 +333,8 @@ function requiredShopCodeValidator(value) {
 		$("#update_button").attr("disabled",true);
 	    return {valid: false};
 	  }
-	
 	//4桁数字チェック
-	else if (value == "" || value.length != 4) {
+	else if (value.length != 4) {
 		appendAlertDel('errorMessage');
 		appendAlertDel('successMessage');
 		appendAlert('errorMessage', getMsgByTwoArgs('msg011', '店舗コード', '4'));
@@ -358,8 +367,18 @@ function requiredShopNameValidator(value) {
 
 //入力の業態のチェック
 function requiredStoreBrandCodeValidator(value) {
+	//nullチェック
+	if (value == "") {
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		appendAlert('errorMessage', getMsgByOneArg('msg001', '業態'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+	    return {valid: false};
+	}
 	//半角数字チェック
-	if (isNumeric(value)) {
+	else if (isNumeric(value)) {
 		appendAlertDel('errorMessage');
 		appendAlertDel('successMessage');
 		appendAlert('errorMessage', getMsgByTwoArgs('msg012', '業態', '半角数字'));
@@ -368,9 +387,8 @@ function requiredStoreBrandCodeValidator(value) {
 		$("#update_button").attr("disabled",true);
 	    return {valid: false};
 	  }
-	
 	//2桁数字チェック
-	else if (value == "" || value.length != 2) {
+	else if (value.length != 2) {
 		appendAlertDel('errorMessage');
 		appendAlertDel('successMessage');
 		appendAlert('errorMessage', getMsgByTwoArgs('msg011', '業態', '2'));
@@ -429,6 +447,17 @@ function colorFormatter(row, cell, value, columnDef, dataContext) {
 	return rtn;
 }
 
+//CSRF令牌
+$(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = $("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = $("meta[name='_csrf']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 $(document).ready(function() {
 
   $("#shopListDiv").hide();	
@@ -468,7 +497,6 @@ $(document).ready(function() {
 		  eRNum = 0;
 		  changeRowNumGray.length = 0;
 		  cRNumG = 0;
-		  $("#shopListDiv").show();
 		  var shopCode = $("#shopCode").val();
 		  var shopName = $("#shopName").val();
 		  var storeBrandCode = $("#storeBrandCode").val();
@@ -483,8 +511,10 @@ $(document).ready(function() {
 					if(Object.keys(result).length  == 0){
 						//更新、キャンセルはできません
 						$("#doKoShin").hide();
-						appendAlert("errorMessage",getMsgByOneArg('msg031'));;
+						$("#shopListDiv").hide();
+						appendAlert("errorMessage",getMsgByOneArg('msg031'));
 					}else{
+						$("#shopListDiv").show();
 						$("#doKoShin").show();
 					}
 					for(var i = 0; i < result.length; i++) {
@@ -494,6 +524,7 @@ $(document).ready(function() {
 						d["shopCode"] = result[i].shopCode;
 						d["shopName"] = result[i].shopName;
 						d["storeBrandCode"] = result[i].storeBrandCode;
+						d["version"] = result[i].version;
 						d["delType"] = false;
 						d["optionType"] = "1";
 						d["isNewData"] = "0";
@@ -506,7 +537,7 @@ $(document).ready(function() {
 					grid = new Slick.Grid("#myGrid", dataView, columns, options);
 					grid.setSelectionModel(new Slick.RowSelectionModel());
 					grid.onAddNewRow.subscribe(function (e, args) {
-						var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "shopCode": "","shopName":"","storeBrandCode":"", "delType": false, "optionType": "2", "isNewData": "1","displayIdentify":false};
+						var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "shopCode": "","shopName":"","storeBrandCode":"","version":"1","delType": false, "optionType": "2", "isNewData": "1","displayIdentify":false};
 					    $.extend(item, args.item);
 					    dataView.addItem(item);
 					});
@@ -597,10 +628,9 @@ $(document).ready(function() {
 	$("#update_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg025','店舗情報'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})
@@ -663,11 +693,32 @@ $(document).ready(function() {
 										updateSuccessFlag = 2;
 									}
 									if (result[i].updateFlag == 3){
-										//nullの場合、行号を記録する
+										//店舗コードnullの場合、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
-										//更新失敗(一意制約) 
+										//更新失敗(店舗コードnull) 
 										updateSuccessFlag = 3;
+									}
+									if (result[i].updateFlag == 4){
+										//店舗名nullの場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(店舗名null) 
+										updateSuccessFlag = 4;
+									}
+									if (result[i].updateFlag == 5){
+										//業態nullの場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(業態null)
+										updateSuccessFlag = 5;
+									}
+									if (result[i].updateFlag == 6){
+										//バージョン不正の場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(バージョン不正)
+										updateSuccessFlag = 6;
 									}
 								}
 								//更新成功
@@ -676,15 +727,27 @@ $(document).ready(function() {
 								}
 								//更新失敗(その他)
 							    if(updateSuccessFlag == 1){
-							    	appendAlert("errorMessage",getMsg('msg064'));
+							    	appendAlert("errorMessage",getMsg('msg105'));
 								}
 								//更新失敗(一意制約) 
 							    if(updateSuccessFlag == 2){
 							    	appendAlert("errorMessage",getMsg('msg060'));
 								}
-								//更新失敗(null) 
+								//更新失敗(店舗コードnull) 
 							    if(updateSuccessFlag == 3){
-							    	appendAlert("errorMessage",getMsgByThreeArgs('msg081', '店舗コード', '店舗名', '業態'));
+							    	appendAlert("errorMessage",getMsgByOneArg('msg001', '店舗コード'));
+								}
+								//更新失敗(店舗名null)
+							    if(updateSuccessFlag == 4){
+							    	appendAlert("errorMessage",getMsgByTwoArgs('msg097', '店舗名', '20'));
+								}
+								//更新失敗(業態null)
+							    if(updateSuccessFlag == 5){
+							    	appendAlert("errorMessage",getMsgByOneArg('msg001', '業態'));
+								}
+							  	//更新失敗(バージョン不正)
+							    if(updateSuccessFlag == 6){
+							    	appendAlert("errorMessage",getMsg('msg105'));
 								}
 
 							    for(var i = 0; i < result.length; i++) {
@@ -694,6 +757,7 @@ $(document).ready(function() {
 									d["shopCode"] = result[i].shopCode;
 									d["shopName"] = result[i].shopName;
 									d["storeBrandCode"] = result[i].storeBrandCode;
+									d["version"] = result[i].version;
 									d["delType"] = result[i].delType;
 									if (updateSuccessFlag == 0){
 										//更新成功
@@ -712,7 +776,7 @@ $(document).ready(function() {
 								grid = new Slick.Grid("#myGrid", dataView, columns, options);
 								grid.setSelectionModel(new Slick.RowSelectionModel());
 								grid.onAddNewRow.subscribe(function (e, args) {
-									var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "shopCode": "","shopName":"","storeBrandCode":"", "delType": false, "optionType": "2", "isNewData": "1","displayIdentify":false};
+									var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "shopCode": "","shopName":"","storeBrandCode":"","version":"1", "delType": false, "optionType": "2", "isNewData": "1","displayIdentify":false};
 								    $.extend(item, args.item);
 								    dataView.addItem(item);
 								});
@@ -792,10 +856,9 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg017','編集内容'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})

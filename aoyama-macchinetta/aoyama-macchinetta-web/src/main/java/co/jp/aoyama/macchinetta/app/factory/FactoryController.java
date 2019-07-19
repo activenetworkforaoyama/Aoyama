@@ -19,6 +19,7 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Factory;
 import co.jp.aoyama.macchinetta.domain.service.factory.FactoryService;
+import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
 
 @Controller
 @RequestMapping(value = "/factory")
@@ -29,6 +30,9 @@ public class FactoryController {
 	
 	@Inject
 	FactoryService factoryService;
+	
+	@Inject
+	MakerService makerService;
 
 	private FactoryForm factoryForm = new FactoryForm();
 
@@ -64,7 +68,15 @@ public class FactoryController {
 
 		return "factory/factoryForm";
 	}
-
+	
+	public String versionIncrease(String version) {
+		short versionToShort = Short.parseShort(version);
+		short versionAdd = 1;
+		Short versionResult = (short)(versionToShort + versionAdd);
+		String returnVersion = versionResult.toString();
+		return returnVersion;
+	}
+	
 	// 複数データを更新する
 	@RequestMapping(value = "/update", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
@@ -74,16 +86,39 @@ public class FactoryController {
 		// 更新失敗flag
 		boolean updateSuccess = true;
 		for (int i = 0; i < factoryFormList.size(); i++) {
-
-			if (factoryFormList.get(i).getFactoryCode() == null || "".equals(factoryFormList.get(i).getFactoryCode()) ||
-					factoryFormList.get(i).getMakerCode() == null || "".equals(factoryFormList.get(i).getMakerCode()) ||
-					factoryFormList.get(i).getFactoryName() == null || "".equals(factoryFormList.get(i).getFactoryName())) {
+			
+			String makerCode = factoryFormList.get(i).getMakerCode();
+			Boolean makerIsExist = makerService.makerIsExist(makerCode);
+			if (factoryFormList.get(i).getFactoryCode() == null || "".equals(factoryFormList.get(i).getFactoryCode())) {
 				
-				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null)     3 : 更新失敗(null) 
+				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null)  3 : 更新失敗(null)  4: 更新失敗(null)  5: 更新失敗(null)
 				factoryFormList.get(i).setUpdateFlag("3");
 				//nullのせいで、更新失敗
 				updateSuccess = false;
 				
+			}
+			else if (factoryFormList.get(i).getMakerCode() == null || "".equals(factoryFormList.get(i).getMakerCode())) {
+				
+				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null)  3 : 更新失敗(null)  4: 更新失敗(null)  5: 更新失敗(null)
+				factoryFormList.get(i).setUpdateFlag("4");
+				//nullのせいで、更新失敗
+				updateSuccess = false;
+				
+			}
+			else if (factoryFormList.get(i).getFactoryName() == null || "".equals(factoryFormList.get(i).getFactoryName())) {
+				
+				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null)  3 : 更新失敗(null)  4: 更新失敗(null)  5: 更新失敗(null)
+				factoryFormList.get(i).setUpdateFlag("5");
+				//nullのせいで、更新失敗
+				updateSuccess = false;
+				
+			}
+			else if(!makerIsExist && "2".equals(factoryFormList.get(i).getOptionType())) {
+				
+				//updateFlag  7 : 入力されたメーカーコードはメーカーマスタに存在しません
+				factoryFormList.get(i).setUpdateFlag("7");
+				//nullのせいで、更新失敗
+				updateSuccess = false;
 			}
 			else {
 				if (factoryFormList.get(i).getDelType()) {
@@ -99,23 +134,36 @@ public class FactoryController {
 
 					// 更新する前のチェック
 					Boolean factoryIsExist = factoryService.factoryIsExist(factoryFormList.get(i).getFactoryCode());
+					try {
+						Factory findOne = factoryService.findOne(factoryFormList.get(i).getFactoryCode());
+						String version = findOne.getVersion().toString();
+						if(findOne != null && !version.equals(factoryFormList.get(i).getVersion())) {
+							//updateFlag  0 : 更新成功       1 :更新失敗(その他)  2 : 更新失敗(一意制約)  6: 更新失敗(バージョン不正) 
+							factoryFormList.get(i).setUpdateFlag("6");
+							//更新失敗
+							updateSuccess = false;
+						}
+					} catch (ResourceNotFoundException e) {
+						e.printStackTrace();
+					}
+					
 					//データなし、OptionTypeは「更新」の場合
 					if (!factoryIsExist && "1".equals(factory.getOptionType())) {
-						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約) 
+						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)  6: 更新失敗(バージョン不正) 
 						factoryFormList.get(i).setUpdateFlag("1");
 						//更新失敗
 						updateSuccess = false;
 					}
 					//データがあり、OptionTypeは「挿入」の場合
 					if (factoryIsExist && "2".equals(factory.getOptionType())) {
-						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約) 
+						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)  6: 更新失敗(バージョン不正) 
 						factoryFormList.get(i).setUpdateFlag("2");
 						//一意制約のせいで、更新失敗
 						updateSuccess = false;
 					}
 					//データが無し、OptionTypeは「挿入」の場合
 					if (!factoryIsExist && "2".equals(factory.getOptionType())) {
-						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約) 
+						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)  3: 更新失敗(バージョン不正) 
 						factoryFormList.get(i).setUpdateFlag("0");
 						factoryFormList.get(i).setDisplayIdentify(true);
 					}
@@ -136,7 +184,16 @@ public class FactoryController {
 					}
 				}
 			}
-			factoryService.updateFactoryByKey(factoryList);
+			Boolean updateFactoryByKey = factoryService.updateFactoryByKey(factoryList);
+			if(updateFactoryByKey) {
+				for(int j = 0;j<factoryFormList.size();j++) {
+					if(!"2".equals(factoryFormList.get(j).getOptionType())) {
+						String version = factoryFormList.get(j).getVersion();
+						String versionIncrease = versionIncrease(version);
+						factoryFormList.get(j).setVersion(versionIncrease);	
+					}
+				}
+			}
 		}
 		return factoryFormList;
 	}

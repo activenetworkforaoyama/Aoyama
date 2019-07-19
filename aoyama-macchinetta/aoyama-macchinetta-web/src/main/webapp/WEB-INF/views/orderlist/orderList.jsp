@@ -271,9 +271,11 @@
 									</div>
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
-											<form:checkbox path="isCancelled" id="isCancelled"
-												onclick="checkboxOnclick(this)" class="form-check-input" />
-											&nbsp;取消の注文を含む
+											<label for="isCancelled" class="form-check-label">
+												<form:checkbox path="isCancelled" id="isCancelled"
+													onclick="checkboxOnclick(this)" class="form-check-input" />
+												取消の注文を含む
+											</label>
 										</div>
 									</div>
 								</div>
@@ -290,7 +292,7 @@
 									</div>
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
-											<label for="chkViewCancelOrder" class="form-check-label">
+											<label for="isCancelled" class="form-check-label">
 												<form:checkbox path="isCancelled" id="isCancelled"
 													onclick="checkboxOnclick(this)" class="form-check-input" />
 												取消の注文を含む
@@ -311,7 +313,7 @@
 									</div>
 									<div class="col-12 col-md-6">
 										<div class="form-check-inline form-check">
-											<label for="chkAvoidMakerRel" class="form-check-label">
+											<label for="isSendFailure" class="form-check-label">
 												<form:checkbox path="isSendFailure" id="isSendFailure"
 													onclick="checkboxOnclick(this)" class="form-check-input" />
 												工場自動連携失敗のみ
@@ -433,7 +435,7 @@
 												<c:when
 													test="${sessionContent.authority == '01' or sessionContent.authority == '02'}">
 													<!-- 店舗、 商品部　登録の場合　 　　「未会計のみ」を表示する-->
-													<label for="chkViewYetOrder" class="form-check-label">
+													<label for="isAccount" class="form-check-label">
 														<form:checkbox path="isAccount" id="isAccount"
 															onclick="checkboxOnclick(this)" placeholder=""
 															class="form-check-input" />
@@ -449,7 +451,7 @@
 												<c:when
 													test="${sessionContent.authority == '02' or sessionContent.authority == '03'}">
 													<!-- 商品部、メーカー　登録の場合　 　　「未承認のみ」を表示する-->
-													<label for="chkViewYetCheck" class="form-check-label">
+													<label for="isConfirm" class="form-check-label">
 														<form:checkbox path="isConfirm" id="isConfirm"
 															onclick="checkboxOnclick(this)" placeholder=""
 															class="form-check-input" /> 未承認のみ
@@ -475,7 +477,7 @@
 									<!-- 店舗 登録の場合　 　　「他店舗の注文を含む（参照のみ）」を表示する-->
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
-											<label for="chkViewOtherOrder" class="form-check-label">
+											<label for="isOtherShop" class="form-check-label">
 												<form:checkbox path="isOtherShop" id="isOtherShop"
 													onclick="checkboxOnclick(this)" placeholder=""
 													class="form-check-input" /> 他店舗の注文を含む（参照のみ）
@@ -506,7 +508,7 @@
 		</div><!-- card body -->
         </div><!-- card -->
         </div><!-- animated -->
-        
+
         <!-- 制御ボタン部分 Start -->
         <div class="row">
             <div class="col">　</div>
@@ -519,7 +521,7 @@
             <div class="col">　</div>
         </div>
         <!-- 制御ボタン部分 End -->
-                
+
 	</div><!-- conditionDiv -->	
 
     <!-- 表示変更部 Start -->
@@ -530,7 +532,7 @@
         </div>
     </div>
     <!-- 表示変更部 End -->
-    
+
 	<!-- 検索結果のdiv -->
 	<div id="orderListDiv" style="display:none;">
 		<div id="AccountOrConfirm" style="visibility:hidden;">
@@ -554,16 +556,16 @@
 				</c:choose>
 			</div>
 		</div>
+		
 		<div class="row">
 			<div class="col-grid">
 				<div id="gridContainer">
-					<!-- SlickGridテーブルの表示領域となる要素 -->
 					<div id="myGrid" style="width: 100%"></div>
-					<!-- SlickGridページネーションコントロールの表示領域となる要素 -->
 					<div id="pager" style="width: 100%"></div>
 				</div>
 			</div>
-		</div>	
+		</div>
+	
 		<div class="row form-group"></div>
 		<div class="row form-group">
 		    <c:choose>
@@ -641,6 +643,8 @@ itemMap.set("06","COAT");
 
 //登録権限を取得
 var authority = "${sessionContent.authority}";
+//co/poを取得
+var orderPattern = "${sessionContent.category}";
 //店舗コードを取得
 var shopCode = "none";
 if (authority == '01'){
@@ -693,8 +697,8 @@ function resizeToFitBrowserWindow(grid, gridId, gridContainerId) {
 			grid.resizeCanvas();
 		}
 	}
+    $("#pager").width($("#myGrid").width() + 2);
 }
-
 
 $(document).ready(function () {
 	closeAlert('errorMessage', 'msg_oneShop');
@@ -776,7 +780,7 @@ function searchOrder(){
 		closeAlert('errorMessage', 'msg_noResult');
 		closeAlert('errorMessage', 'msg_noConfirm');
 		closeAlert('errorMessage', 'msg_dataError');
-		$("#orderListDiv").show();
+		//$("#orderListDiv").show();
 		//authority      店舗 : 1       商品部 : 2      メーカー : 3      工場 : 4      倉庫 : 5
 		switch(authority){
 			//店舗
@@ -954,6 +958,7 @@ function searchOrder(){
 				if (result.length == 0){
 					searchNum = 0;
 					addAlert('errorMessage', 'msg_noResult', getMsg('msg031'));
+					$("#orderListDiv").hide();
 				} else{
 					searchNum = result.length;
 					closeAlert('errorMessage', 'msg_oneShop');
@@ -962,6 +967,7 @@ function searchOrder(){
 					closeAlert('errorMessage', 'msg_noResult');
 					closeAlert('errorMessage', 'msg_noConfirm');
 					closeAlert('errorMessage', 'msg_dataError');
+					$("#orderListDiv").show();
 				}
 				//authority      店舗 : 1       商品部 : 2      メーカー : 3      工場 : 4      倉庫 : 5
 				switch(authority){
@@ -980,7 +986,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    d["cust_cd"] = result[i].custCd;
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
@@ -991,6 +1000,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;    
+								d["shop_code"] = result[i].shopCode;    
 						   }
 						   //結果があるの場合、
 						   if (result.length != 0){
@@ -1012,7 +1022,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    d["cust_cd"] = result[i].custCd;
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
@@ -1024,6 +1037,7 @@ function searchOrder(){
 								d["goto_order"] = "<button id='goto_order' class='btn_off btn_brown' onclick='gotoOrderDivert(\"" + result[i].orderId + "\")' ><font size='3'>流用</font> </button>";	    
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 					      }
 						   //「会計を纏める」ボタンを表示しない
 						  document.getElementById("AccountOrConfirm").style.visibility="hidden";
@@ -1045,7 +1059,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    if (result[i].wsPrice == null){
 							    	d["ws_price"] = "￥0";
 								}else{
@@ -1061,6 +1078,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 						   }
 					       //結果があるの場合、
 						   if (result.length != 0){
@@ -1083,7 +1101,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    if (result[i].wsPrice == null){
 							    	d["ws_price"] = "￥0";
 								}else{
@@ -1099,6 +1120,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 						   }
 						   //結果があるの場合、
 						   if (result.length != 0){
@@ -1120,7 +1142,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    if (result[i].wsPrice == null){
 							    	d["ws_price"] = "￥0";
 								}else{
@@ -1136,6 +1161,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;	    
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 				          }
 				    	    //「会計を纏める」ボタン、「一括承認」ボタンを表示しない
 						    document.getElementById("AccountOrConfirm").style.visibility="hidden";
@@ -1158,7 +1184,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    if (result[i].wsPrice == null){
 							    	d["ws_price"] = "￥0";
 								}else{
@@ -1174,6 +1203,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 						   }
 						   //結果があるの場合、
 						   if (result.length != 0){
@@ -1195,7 +1225,10 @@ function searchOrder(){
 								}else{
 									d["product_item"] = itemMap.get(result[i].productItem);
 								}
-							    d["product_fabric_no"] = result[i].productFabricNo;
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 							    if (result[i].wsPrice == null){
 							    	d["ws_price"] = "￥0";
 								}else{
@@ -1211,6 +1244,7 @@ function searchOrder(){
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
 					      }
 						　　//「一括承認」ボタンを表示しない
 						  document.getElementById("AccountOrConfirm").style.visibility="hidden";
@@ -1229,7 +1263,10 @@ function searchOrder(){
 							}else{
 								d["product_item"] = itemMap.get(result[i].productItem);
 							}
-						    d["product_fabric_no"] = result[i].productFabricNo;
+						    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+						    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+						    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+						    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
 						    d["cust_cd"] = result[i].custCd;
 						    d["store_staff_nm"] = result[i].custStaff;
 						    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
@@ -1240,6 +1277,7 @@ function searchOrder(){
 						    d["updated_at"] = result[i].updatedAt == null ? "" : ChangeTimeFormatYMDHM(result[i].updatedAt);
 							d["send2factory_status"] = result[i].send2factoryStatus;
 							d["is_cancelled"] = result[i].isCancelled;   
+							d["shop_code"] = result[i].shopCode;    
 					   }			      
 				   break;
 		      }
@@ -1297,7 +1335,7 @@ function searchOrder(){
 				//固定column : 1
 				grid.setOptions({ 'frozenColumn': 1 });
 			}
-			
+
 		    dataView.onRowCountChanged.subscribe(function (e, args) {
 		        grid.updateRowCount();
 		        grid.render();
@@ -1311,14 +1349,17 @@ function searchOrder(){
 		    // initialize the model after all the events have been hooked up
 		    dataView.beginUpdate();
 		    dataView.setItems(data);
-			dataView.endUpdate();	
-			attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");	  
+			dataView.endUpdate();
+			attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");
+			//attachAutoResizeDataPager(pager,dataView, "pager", "pagerContainer");
 		      });
+
+      //alert($("#myGrid").width());
 }
 
 //時間格式を変更
-function ChangeTimeFormatYMD(nS) 
-{     
+function ChangeTimeFormatYMD(nS)
+{
 	var timestamp4 = new Date(nS);
 	//var aa = timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8)
   var aa = timestamp4.toLocaleDateString().replace(/\//g, "/")
@@ -1327,7 +1368,7 @@ function ChangeTimeFormatYMD(nS)
 }
 
 //時間格式を変更
-function ChangeTimeFormatYMDHM(nS) 
+function ChangeTimeFormatYMDHM(nS)
 {     
 	var timestamp4 = new Date(nS);
 	var aa = timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 5);
@@ -1338,7 +1379,12 @@ function ChangeTimeFormatYMDHM(nS)
 
 //通用  Link
 function gotoOrderLink(orderId){
-	window.location.href= contextPath + "/orderlist/goToOrderLink/" + orderId;
+	if (orderPattern == "CO"){
+		window.location.href= contextPath + "/orderlist/gotoOrderCoLink/" + orderId;
+	}
+	if (orderPattern == "PO"){
+		window.location.href= contextPath + "/orderlist/gotoOrderPoLink/" + orderId;
+	}
 }
 //流用 Divert
 function gotoOrderDivert(orderId){
@@ -1408,10 +1454,9 @@ function csvDownload(){
 	if (searchNum != 0){
 
 		swal({
-			  title: "確認",
 			  text: getMsg('msg032'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})
@@ -1439,15 +1484,17 @@ function gotoAccountCheck(){
 	var orderListString = JSON.stringify(dataView.getItems());
 	var orderLength = eval('('+ orderListString +')');
 	var orderIdArray = new Array();
+	var shopCodeArray = new Array();
 	for (var i = 0; i < orderLength.length; i++) {
 		if(orderLength[i].account_kubun){
 			var length = orderLength[i].order_id.length;
 			orderIdArray.push(orderLength[i].order_id.substring(length-23, length-11));
+			shopCodeArray.push(orderLength[i].shop_code);
 		}
 	}
-	if (orderIdArray.length != 0){
-		for (var i = 1; i < orderIdArray.length; i++){
-			 if (orderIdArray[i-1].substring(0, 3) != orderIdArray[i].substring(0, 3)){
+	if (shopCodeArray.length != 0){
+		for (var i = 1; i < shopCodeArray.length; i++){
+			 if (shopCodeArray[i-1] != shopCodeArray[i]){
 				 oneShopFlag = false;
 			 }
 		}
@@ -1468,10 +1515,9 @@ function gotoAccount(){
 
 	// 確認メッセージ
 	swal({
-		  title: "確認",
 		  text: getMsg('msg088'),
 		  icon: "info",
-		  buttons: true,
+		  buttons: ["キャンセル", true],
 		  dangerMode: true,
 		  closeOnEsc: false,
 		})
@@ -1530,10 +1576,9 @@ function gotoConfirm(){
 
 	// 確認メッセージ
 	swal({
-		  title: "確認",
 		  text: getMsg('msg087'),
 		  icon: "info",
-		  buttons: true,
+		  buttons: ["キャンセル", true],
 		  dangerMode: true,
 		  closeOnEsc: false,
 		})
@@ -1553,7 +1598,7 @@ function gotoConfirm(){
 			localStorage.setItem("key", "orderButton");
 			var orderIdString = orderIdArray.join(',');
 			window.location.href= contextPath + "/orderlist/gotoConfirm/" + orderIdString;
-		  }
+		  } 
 		});
 }
 

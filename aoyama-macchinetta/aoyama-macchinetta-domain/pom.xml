@@ -87,6 +87,11 @@
             <artifactId>tomcat-embed-el</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		    <groupId>hos</groupId>
+		    <artifactId>hos.coreports</artifactId>
+		    <version>1.0</version>
+		</dependency>
         <!--  REMOVE THIS LINE IF YOU USE Spring Test DBUnit
         <dependency>
             <groupId>org.dbunit</groupId>

@@ -14,9 +14,9 @@ public class MessageKeys {
     public static final String E004 = "E004";
     /** E005=[E005] CSVファイルの項目数が不正です。行数＝{0} */
     public static final String E005 = "E005";
-    /** E006=[E006] 修正されたデータは存在しません。行数＝{0}*/
+    /** E006=[E006] 生地マスタに存在しない生地IDのため更新できません。オーダーパターン＝{0}，生地ID＝{1}，生地品番＝{2}，処理区分＝{3}，行数＝{4} */
     public static final String E006 = "E006";
-    /** E007=[E007] 生地ブランド管理番号は存在しません。行数＝{0} */
+    /** E007=[E007] 生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝{0}，生地ID＝{1}，生地ブランド管理番号＝{2}，行数＝{3} */
     public static final String E007 = "E007";
     /** E008=[E008] 新たに追加されたデータはすでに存在する。行数＝{0} */
     public static final String E008 = "E008";
@@ -42,6 +42,8 @@ public class MessageKeys {
     public static final String E020 = "E020";
     /** E021=[E021] 画面遷移が失敗しました。*/
     public static final String E021 = "E021";
+    /** E022=[E022] 生地IDは既に生地マスタに存在するため更新できません。オーダーパターン＝{0}，生地ID＝{1}，生地品番＝{2}，処理区分＝{3}，行数＝{4} */
+    public static final String E022 = "E022";
     /** E500=[E500] System error occurred. */
     public static final String E500 = "E500";
     /** E999=[E999] Error occurred. Caused by : {0} */

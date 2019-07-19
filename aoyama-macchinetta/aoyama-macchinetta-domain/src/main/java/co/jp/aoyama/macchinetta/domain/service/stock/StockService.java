@@ -13,8 +13,8 @@ public interface StockService {
 	
 	Boolean updateStockByPk(List<Stock> stockList);  
 	
-	void updateStockValue(String fabricId,BigDecimal theoreticalStockUpdate,BigDecimal reservationStockUpdate);
+	void updateStockValue(String fabricNo,BigDecimal theoreticalStockUpdate,BigDecimal reservationStockUpdate);
 	
-	void updateTheoreticalStock(String fabricId,BigDecimal theoreticalStockUpdate);
+	void updateTheoreticalStock(String fabricNo,BigDecimal theoreticalStockUpdate);
 
 }

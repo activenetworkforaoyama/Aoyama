@@ -47,7 +47,7 @@ public class StockServiceImpl implements StockService {
 			Stock stock = stockList.get(i);
 			// "1"は更新区分
 			if("1".equals(stock.getOptionType())) {
-				Stock stockFind = stockRepository.findStockByPk(stock.getFabricId());
+				Stock stockFind = stockRepository.findStockByPk(stock.getFabricNo());
 				if(stockFind != null) {
 					stock.setTheoreticalStock(stock.getTheoreticalStock());
 					stock.setActualStock(stock.getActualStock());
@@ -57,7 +57,7 @@ public class StockServiceImpl implements StockService {
 				}else {
 					ResultMessages messages = ResultMessages.error();
 					// 該当在庫のデータがありません。
-		            messages.add("E015", stock.getFabricId());
+		            messages.add("E015", stock.getFabricNo());
 		            
 		            logger.error(messages.toString());
 
@@ -75,14 +75,14 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public void updateStockValue(String fabricId, BigDecimal theoreticalStockUpdate,
+	public void updateStockValue(String fabricNo, BigDecimal theoreticalStockUpdate,
 			BigDecimal reservationStockUpdate) {
-		stockRepository.updateStockValue(fabricId, theoreticalStockUpdate, reservationStockUpdate);
+		stockRepository.updateStockValue(fabricNo, theoreticalStockUpdate, reservationStockUpdate);
 	}
 
 	@Override
-	public void updateTheoreticalStock(String fabricId, BigDecimal theoreticalStockUpdate) {
-		stockRepository.updateTheoreticalStock(fabricId, theoreticalStockUpdate);
+	public void updateTheoreticalStock(String fabricNo, BigDecimal theoreticalStockUpdate) {
+		stockRepository.updateTheoreticalStock(fabricNo, theoreticalStockUpdate);
 	}
 
 }

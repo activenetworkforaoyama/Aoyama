@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Maker;
@@ -70,6 +71,14 @@ public class MakerController {
 
 	}
 	
+	public String versionIncrease(String version) {
+		short versionToShort = Short.parseShort(version);
+		short versionAdd = 1;
+		Short versionResult = (short)(versionToShort + versionAdd);
+		String returnVersion = versionResult.toString();
+		return returnVersion;
+	}
+	
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ResponseBody
 	public List<MakerForm> updateMakerByKey(@RequestBody List<MakerForm> makerFormList){
@@ -78,15 +87,30 @@ public class MakerController {
 		//更新失敗flag
 		boolean updateSuccess = true;
 		for(int i = 0 ; i < makerFormList.size() ; i++) {
-			if (makerFormList.get(i).getMakerCode() == null || "".equals(makerFormList.get(i).getMakerCode()) ||
-					makerFormList.get(i).getMakerName() == null || "".equals(makerFormList.get(i).getMakerName()) ||
-					makerFormList.get(i).getMakerId() == null || "".equals(makerFormList.get(i).getMakerId())) {
+			if (makerFormList.get(i).getMakerCode() == null || "".equals(makerFormList.get(i).getMakerCode()) ) {
 				
-					//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null)     3 : 更新失敗(null) 
+					//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null) 3 : 更新失敗(makerCodenull) 4 : 更新失敗(makerNamenull) 5 : 更新失敗(makerIdnull)
 					makerFormList.get(i).setUpdateFlag("3");
 					//nullのせいで、更新失敗
 					updateSuccess = false;
-		}else {
+		}
+			else if(makerFormList.get(i).getMakerName() == null || "".equals(makerFormList.get(i).getMakerName()) ) {
+				
+				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null) 3 : 更新失敗(null) 4 : 更新失敗(makerNamenull) 5 : 更新失敗(makerIdnull)
+				makerFormList.get(i).setUpdateFlag("4");
+				//nullのせいで、更新失敗
+				updateSuccess = false;
+				
+			}
+			else if(makerFormList.get(i).getMakerId() == null || "".equals(makerFormList.get(i).getMakerId())) {
+				
+				//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 ＆ null) 3 : 更新失敗(null) 4 : 更新失敗(makerNamenull) 5 : 更新失敗(makerIdnull)
+				makerFormList.get(i).setUpdateFlag("5");
+				//nullのせいで、更新失敗
+				updateSuccess = false;
+				
+			}
+			else {
 			if(makerFormList.get(i).getDelType()) {
 				//削除の場合
 				Maker maker = beanMapper.map(makerFormList.get(i), Maker.class);
@@ -101,6 +125,20 @@ public class MakerController {
 				
 				//更新する前のチェック
 				boolean makerIsExist = makerService.makerIsExist(makerFormList.get(i).getMakerCode());
+				try {
+					Maker findOne = makerService.findOne(makerFormList.get(i).getMakerCode());
+					String version = findOne.getVersion().toString();
+					if(findOne != null && !version.equals(makerFormList.get(i).getVersion())) {
+						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)	6 : 更新失敗(バージョン不正)
+						makerFormList.get(i).setUpdateFlag("6");
+						//更新失敗
+						updateSuccess = false;
+					}
+					
+				} catch (ResourceNotFoundException e) {
+					e.printStackTrace();
+				}
+				
 				//データなし、OptionTypeは「更新」の場合
 				if (!makerIsExist && "1".equals(maker.getOptionType())) {
 					//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約) 
@@ -137,10 +175,17 @@ public class MakerController {
 					}
 				}
 			}
-			makerService.updateMakerByKey(makerList);
+			Boolean updateMakerByKey = makerService.updateMakerByKey(makerList);
+			if(updateMakerByKey) {
+				for(int j = 0;j<makerFormList.size();j++) {
+					if(!"2".equals(makerFormList.get(j).getOptionType())) {
+						String version = makerFormList.get(j).getVersion();
+						String versionIncrease = versionIncrease(version);
+						makerFormList.get(j).setVersion(versionIncrease);	
+					}
+				}
+			}
 		}
-		
-		
 		return makerFormList;
 	}
 }

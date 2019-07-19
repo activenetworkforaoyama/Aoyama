@@ -9,6 +9,7 @@ public class Shop implements Serializable{
 	private String shopCode;
 	private String shopName;
 	private String storeBrandCode;
+	private Short version;
 	private String createdUserId;
 	private String updatedUserId;
 	private Date createdAt;
@@ -61,6 +62,12 @@ public class Shop implements Serializable{
 	}
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
+	}
+	public Short getVersion() {
+		return version;
+	}
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 	
 }

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import co.jp.aoyama.macchinetta.domain.model.CashInfo;
-import co.jp.aoyama.macchinetta.domain.model.Order;
 
 public class CashForm implements Serializable {
 
@@ -65,7 +64,11 @@ public class CashForm implements Serializable {
     
     private List<CashInfo> helpCashForm;
     
+    private List<CashInfo> orderIdList;
+    
     private String backFlag;
+    
+    private String version;
 
 	public String getOrderId() {
 		return orderId;
@@ -289,6 +292,22 @@ public class CashForm implements Serializable {
 
 	public void setBackFlag(String backFlag) {
 		this.backFlag = backFlag;
+	}
+
+	public List<CashInfo> getOrderIdList() {
+		return orderIdList;
+	}
+
+	public void setOrderIdList(List<CashInfo> orderIdList) {
+		this.orderIdList = orderIdList;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 }

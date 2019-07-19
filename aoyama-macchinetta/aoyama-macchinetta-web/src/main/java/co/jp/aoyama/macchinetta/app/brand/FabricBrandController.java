@@ -101,12 +101,12 @@ public class FabricBrandController {
 				}
 			}
 		}
-		List<FabricBrand> fabricBrandNumList = null;
+		List<FabricBrand> fabricBrandNumList = new ArrayList<FabricBrand>();
 		try {
 			fabricBrandNumList = fabricBrandService.updateFabricBrandByPk(fabricBrandList);
 		}
 		catch (ResourceNotFoundException e){
-			e.printStackTrace();
+			e.getResultMessages();
 		}
 		return fabricBrandNumList;
 	}

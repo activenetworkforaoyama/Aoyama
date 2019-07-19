@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 
+import co.jp.aoyama.macchinetta.domain.model.Maker;
 import co.jp.aoyama.macchinetta.domain.model.Shop;
 import co.jp.aoyama.macchinetta.domain.service.shop.ShopService;
 
@@ -55,6 +57,14 @@ public class ShopController {
 		return ShopFormList;
 	}
 	
+	public String versionIncrease(String version) {
+		short versionToShort = Short.parseShort(version);
+		short versionAdd = 1;
+		Short versionResult = (short)(versionToShort + versionAdd);
+		String returnVersion = versionResult.toString();
+		return returnVersion;
+	} 
+	
     /**
      * 店舗更新.
      * @param shopFormList 画面Form
@@ -70,16 +80,28 @@ public class ShopController {
 		boolean updateSuccess = true;
 		for (int i = 0; i < shopFormList.size(); i++) {
 			
-			if (shopFormList.get(i).getShopCode() == null || "".equals(shopFormList.get(i).getShopCode()) ||
-					shopFormList.get(i).getShopName() == null || "".equals(shopFormList.get(i).getShopName()) ||
-					shopFormList.get(i).getStoreBrandCode() == null || "".equals(shopFormList.get(i).getStoreBrandCode())) {
+			if (shopFormList.get(i).getShopCode() == null || "".equals(shopFormList.get(i).getShopCode())) {
 				
-					//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 )     3 : 更新失敗(null)
+					//updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 )     3 : 更新失敗(店舗コードnull) 4: 更新失敗(店舗名null)  5: 更新失敗(業態null)
 					shopFormList.get(i).setUpdateFlag("3");
-					//nullのせいで、更新失敗
+					//店舗コードnullのせいで、更新失敗
 					updateSuccess = false;
+			}
+			else if (shopFormList.get(i).getShopName() == null || "".equals(shopFormList.get(i).getShopName())) {
 
-			}else {
+				    //updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 )     3 : 更新失敗(店舗コードnull) 4: 更新失敗(店舗名null)  5: 更新失敗(業態null)
+					shopFormList.get(i).setUpdateFlag("4");
+					//店舗名nullのせいで、更新失敗
+					updateSuccess = false;
+			}
+			else if (shopFormList.get(i).getStoreBrandCode() == null || "".equals(shopFormList.get(i).getStoreBrandCode())) {
+
+				    //updateFlag  0 : 更新成功          1 :更新失敗(その他)    2 : 更新失敗(一意制約 )     3 : 更新失敗(店舗コードnull) 4: 更新失敗(店舗名null)  5: 更新失敗(業態null)
+					shopFormList.get(i).setUpdateFlag("5");
+					//業態nullのせいで、更新失敗
+					updateSuccess = false;
+			}
+			else {
 				
 				if(shopFormList.get(i).getDelType()) {
 					//削除の場合
@@ -90,7 +112,20 @@ public class ShopController {
 						//更新、挿入の場合
 						Shop shop = beanMapper.map(shopFormList.get(i), Shop.class);
 						shopList.add(shop);
-		
+						
+						try {
+							Shop findOne = shopService.findShopByPk(shopFormList.get(i).getShopCode());
+							String version = findOne.getVersion().toString();
+							if(findOne != null && !version.equals(shopFormList.get(i).getVersion())) {
+								//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)	6 : 更新失敗(バージョン不正)
+								shopFormList.get(i).setUpdateFlag("6");
+								//更新失敗
+								updateSuccess = false;
+							}
+						} catch (ResourceNotFoundException e) {
+							e.printStackTrace();
+						}
+						
 						//更新する前のチェック
 						boolean shopIsExist = shopService.shopIsExist(shopFormList.get(i).getShopCode());
 						//データなし、OptionTypeは「更新」の場合
@@ -130,7 +165,16 @@ public class ShopController {
 					}
 				}
 			}
-			shopService.updateShopByPk(shopList);
+			Boolean updateShopByPk = shopService.updateShopByPk(shopList);
+			if(updateShopByPk) {
+				for(int j = 0;j<shopFormList.size();j++) {
+					if(!"2".equals(shopFormList.get(j).getOptionType())) {
+						String version = shopFormList.get(j).getVersion();
+						String versionIncrease = versionIncrease(version);
+						shopFormList.get(j).setVersion(versionIncrease);	
+					}
+				}
+			}
 		}
 
 		return shopFormList;

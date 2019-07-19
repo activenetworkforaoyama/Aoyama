@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.terasoluna.gfw.common.exception.BusinessException;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
-import org.terasoluna.gfw.common.message.ResultMessages;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
-import co.jp.aoyama.macchinetta.app.message.MessageKeys;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Todo;
 import co.jp.aoyama.macchinetta.domain.model.TodoCriteria;
@@ -30,6 +30,7 @@ import co.jp.aoyama.macchinetta.domain.service.todo.TodoService;
 
 @Controller
 @RequestMapping(value = "/todo")
+@TransactionTokenCheck("todo")
 public class TodoController {
 
     @Inject
@@ -52,6 +53,7 @@ public class TodoController {
 	  }
 
 	  @RequestMapping(value = "select/{todoId}", method = RequestMethod.GET)
+	  @TransactionTokenCheck(type = TransactionTokenType.BEGIN)
 	  public String createForm(@PathVariable("todoId") String todoId, Model model) {
 		  try {
 			  Todo todo = aoyamaService.findOne(todoId);
@@ -69,6 +71,7 @@ public class TodoController {
 	  }
 	  
 	  @RequestMapping(value = "confirm", method = RequestMethod.POST)
+	  @TransactionTokenCheck(type = TransactionTokenType.IN)
 	  public String confirm(@Validated TodoForm form, BindingResult result) { // (5)
 	    if (result.hasErrors()) {
 	      return "todo/todoForm";
@@ -78,6 +81,7 @@ public class TodoController {
 	  }
 	  
 	  @RequestMapping(value = "create", method = RequestMethod.POST, params = "form")
+	  @TransactionTokenCheck(type = TransactionTokenType.IN)
 	  public String create(@Validated TodoForm form, BindingResult result, Model model) { // (5)
 	    if (result.hasErrors()) {
 	      return "todo/todoForm";

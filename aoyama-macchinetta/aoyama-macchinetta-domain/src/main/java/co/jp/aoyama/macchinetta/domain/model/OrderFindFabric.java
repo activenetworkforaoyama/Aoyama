@@ -6,6 +6,9 @@ import java.util.Date;
 public class OrderFindFabric implements Serializable {
 
 	private static final long serialVersionUID = 2138047466949116046L;
+	
+	//生地ネーム有無
+	private String fabricNameExis;
 
 	// 手帳(貿易)期限
 	private Date spinningLimitDate;
@@ -112,6 +115,14 @@ public class OrderFindFabric implements Serializable {
 	//予約生地量
 	private String reservationStock;
 	
+	public String getFabricNameExis() {
+		return fabricNameExis;
+	}
+
+	public void setFabricNameExis(String fabricNameExis) {
+		this.fabricNameExis = fabricNameExis;
+	}
+
 	public String getReservationStock() {
 		return reservationStock;
 	}
@@ -129,7 +140,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getRetailPrice() {
-		return retailPrice;
+		return retailPrice == null?0:retailPrice;
 	}
 
 	public void setRetailPrice(Integer retailPrice) {
@@ -137,7 +148,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalPantsRate() {
-		return additionalPantsRate;
+		return additionalPantsRate == null?0:additionalPantsRate;
 	}
 
 	public void setAdditionalPantsRate(Integer additionalPantsRate) {
@@ -145,7 +156,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalSingleGiletRate() {
-		return additionalSingleGiletRate;
+		return additionalSingleGiletRate == null?0:additionalSingleGiletRate;
 	}
 
 	public void setAdditionalSingleGiletRate(Integer additionalSingleGiletRate) {
@@ -153,7 +164,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalDoubleGiletRate() {
-		return additionalDoubleGiletRate;
+		return additionalDoubleGiletRate == null?0:additionalDoubleGiletRate;
 	}
 
 	public void setAdditionalDoubleGiletRate(Integer additionalDoubleGiletRate) {
@@ -161,7 +172,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalDoubleJacketRate() {
-		return additionalDoubleJacketRate;
+		return additionalDoubleJacketRate == null ?0:additionalDoubleJacketRate;
 	}
 
 	public void setAdditionalDoubleJacketRate(Integer additionalDoubleJacketRate) {
@@ -169,7 +180,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getSingleJacketOnlyRate() {
-		return singleJacketOnlyRate;
+		return singleJacketOnlyRate == null ?0:singleJacketOnlyRate;
 	}
 
 	public void setSingleJacketOnlyRate(Integer singleJacketOnlyRate) {
@@ -177,7 +188,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getDoubleJacketOnlyRate() {
-		return doubleJacketOnlyRate;
+		return doubleJacketOnlyRate == null ?0:doubleJacketOnlyRate;
 	}
 
 	public void setDoubleJacketOnlyRate(Integer doubleJacketOnlyRate) {
@@ -185,7 +196,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getPantOnlyRate() {
-		return pantOnlyRate;
+		return pantOnlyRate == null ?0:pantOnlyRate;
 	}
 
 	public void setPantOnlyRate(Integer pantOnlyRate) {
@@ -193,7 +204,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getSingleGiletOnlyRate() {
-		return singleGiletOnlyRate;
+		return singleGiletOnlyRate == null ?0:singleGiletOnlyRate;
 	}
 
 	public void setSingleGiletOnlyRate(Integer singleGiletOnlyRate) {
@@ -201,7 +212,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getDoubleGiletOnlyRate() {
-		return doubleGiletOnlyRate;
+		return doubleGiletOnlyRate == null ?0:doubleGiletOnlyRate;
 	}
 
 	public void setDoubleGiletOnlyRate(Integer doubleGiletOnlyRate) {
@@ -209,7 +220,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCoatSingleOnlyRate() {
-		return coatSingleOnlyRate;
+		return coatSingleOnlyRate == null ?0:coatSingleOnlyRate;
 	}
 
 	public void setCoatSingleOnlyRate(Integer coatSingleOnlyRate) {
@@ -217,7 +228,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCoatDoubleOnlyRate() {
-		return coatDoubleOnlyRate;
+		return coatDoubleOnlyRate == null ?0:coatDoubleOnlyRate;
 	}
 
 	public void setCoatDoubleOnlyRate(Integer coatDoubleOnlyRate) {
@@ -225,7 +236,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getJkSingleOnlyPlusAlphaPrice() {
-		return jkSingleOnlyPlusAlphaPrice;
+		return jkSingleOnlyPlusAlphaPrice == null ?0:jkSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setJkSingleOnlyPlusAlphaPrice(Integer jkSingleOnlyPlusAlphaPrice) {
@@ -233,7 +244,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getJkDoubleOnlyPlusAlphaPrice() {
-		return jkDoubleOnlyPlusAlphaPrice;
+		return jkDoubleOnlyPlusAlphaPrice == null ?0:jkDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setJkDoubleOnlyPlusAlphaPrice(Integer jkDoubleOnlyPlusAlphaPrice) {
@@ -241,7 +252,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getGlSingleOnlyPlusAlphaPrice() {
-		return glSingleOnlyPlusAlphaPrice;
+		return glSingleOnlyPlusAlphaPrice == null ?0:glSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setGlSingleOnlyPlusAlphaPrice(Integer glSingleOnlyPlusAlphaPrice) {
@@ -249,7 +260,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getGlDoubleOnlyPlusAlphaPrice() {
-		return glDoubleOnlyPlusAlphaPrice;
+		return glDoubleOnlyPlusAlphaPrice == null ?0:glDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setGlDoubleOnlyPlusAlphaPrice(Integer glDoubleOnlyPlusAlphaPrice) {
@@ -257,7 +268,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getPtOnlyPlusAlphaPrice() {
-		return ptOnlyPlusAlphaPrice;
+		return ptOnlyPlusAlphaPrice == null ?0:ptOnlyPlusAlphaPrice;
 	}
 
 	public void setPtOnlyPlusAlphaPrice(Integer ptOnlyPlusAlphaPrice) {
@@ -265,7 +276,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCtSingleOnlyPlusAlphaPrice() {
-		return ctSingleOnlyPlusAlphaPrice;
+		return ctSingleOnlyPlusAlphaPrice == null ?0:ctSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setCtSingleOnlyPlusAlphaPrice(Integer ctSingleOnlyPlusAlphaPrice) {
@@ -273,7 +284,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCtDoubleOnlyPlusAlphaPrice() {
-		return ctDoubleOnlyPlusAlphaPrice;
+		return ctDoubleOnlyPlusAlphaPrice == null ?0:ctDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setCtDoubleOnlyPlusAlphaPrice(Integer ctDoubleOnlyPlusAlphaPrice) {

@@ -10,6 +10,7 @@
 		<id property="factoryCode" column="factory_code" />
 		<result property="makerCode" column="maker_code" />
 		<result property="factoryName" column="factory_name" />
+		<result property="version" column="version" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
 		<result property="createdUserId" column="created_user_id" />
@@ -22,6 +23,7 @@
             factory_code, 
             maker_code, 
             factory_name, 
+            version,
             created_at,
             updated_at,
             created_user_id,
@@ -39,6 +41,7 @@
             factory_code, 
             maker_code, 
             factory_name, 
+            version,
             created_at,
             updated_at,
             created_user_id,
@@ -51,11 +54,11 @@
 	<!--複数データを追加 -->
 	<insert id="insertFactoryBykey" parameterType="java.util.List">
 		INSERT INTO mtb_factory
-		(factory_code,maker_code,factory_name,created_at,updated_at,created_user_id,updated_user_id) values
+		(factory_code,maker_code,factory_name,version,created_at,updated_at,created_user_id,updated_user_id) values
 		<foreach collection="factoryInsertList" item="item"
 			index="index" separator=",">
 			(#{item.factoryCode},
-			#{item.makerCode},#{item.factoryName},#{item.createdAt},#{item.updatedAt},#{item.createdUserId},#{item.updatedUserId})
+			#{item.makerCode},#{item.factoryName},#{item.version},#{item.createdAt},#{item.updatedAt},#{item.createdUserId},#{item.updatedUserId})
 		</foreach>
 	</insert>
 
@@ -69,11 +72,12 @@
 				factory_code = #{item.factoryCode},
 				maker_code = #{item.makerCode},
 				factory_name = #{item.factoryName},
+				version = #{item.version} + 1,
 				updated_at = #{item.updatedAt},
 				updated_user_id = #{item.updatedUserId}
 			</set>
 			WHERE
-			factory_code = #{item.factoryCode}
+			factory_code = #{item.factoryCode} and version = #{item.version}
 		</foreach>
 	</update>
 
@@ -93,6 +97,7 @@
 		factory_code,
 		maker_code,
 		factory_name,
+		version,
 		created_at,
 		updated_at,
 		created_user_id,

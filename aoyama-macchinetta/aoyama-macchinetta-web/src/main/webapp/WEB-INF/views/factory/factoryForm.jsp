@@ -107,7 +107,7 @@
 								<label class=" form-control-label">工場名</label>
 							</div>
 							<div class="col-12 col-md-8">
-								<input type="text" id="factoryName" name="factoryName" placeholder="" class="input-sm form-control-sm form-control">
+								<input type="text" id="factoryName" name="factoryName" placeholder="" class="input-sm form-control-sm form-control" maxlength="20">
 							</div>
 						</div>
 					</div>
@@ -292,11 +292,21 @@ function requiredFactoryCodeValidator(value) {
 	if(contains){
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		appendAlert('errorMassageIno', getMsgByOneArg('msg030', '工場コード'));
+		appendAlert('errorMassageIno', getMsgByOneArg('msg104', '工場コード'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);
 		return {valid: false};
+		}
+	//nullチェック
+	else if(value == ""){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByOneArg('msg001', '工場コード'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+	    return {valid: false};
 		}
 	//半角英数字チェック
 	else if (isAlphabetNumeric(value)) {
@@ -309,7 +319,7 @@ function requiredFactoryCodeValidator(value) {
 	    return {valid: false};
 	  }
 	//5桁数字チェック
-	else if (value == "" || value.length != 5) {
+	else if (value.length != 5) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg011', '工場コード','5'));
@@ -325,8 +335,19 @@ function requiredFactoryCodeValidator(value) {
 
 //入力のメーカーコードの判定
 function requiredMakerCodeValidator(value) {
+
+	//nullチェック
+	if(value == ""){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByOneArg('msg001', 'メーカーコード'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+	    return {valid: false};
+		}
 	//半角英数字チェック
-	if (isAlphabetNumeric(value)) {
+	else if(isAlphabetNumeric(value)) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg012', 'メーカーコード', '半角英数字'));
@@ -336,7 +357,7 @@ function requiredMakerCodeValidator(value) {
 	    return {valid: false};
 	  }
 	//6桁数字チェック
-	else if (value == "" || value.length != 6) {
+	else if (value.length != 6) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg011', 'メーカーコード','6'));
@@ -385,11 +406,23 @@ function colorFormatter(row, cell, value, columnDef, dataContext) {
 	if (changeRowNum.includes(dataContext.num)) {
 	    rtn.addClasses = "yellow";
     }
-	else if(deleteRowNum.includes(dataContext.num)){
+	if(deleteRowNum.includes(dataContext.num)){
     	rtn.addClasses = "gray";
         }
 	return rtn;
 }
+
+//CSRF令牌
+$(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = $("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = $("meta[name='_csrf']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 
 $(document).ready(function() {
 
@@ -427,7 +460,6 @@ $(document).ready(function() {
 		  eRNum = 0;
 		  deleteRowNum.length = 0;
 		  dRNum = 0;
-		$("#factoryListDiv").show();
 		  var factoryCode = $("#factoryCode").val();
 		  var factoryName = $("#factoryName").val();
 		  var data = [];
@@ -439,9 +471,11 @@ $(document).ready(function() {
 					appendAlertDel('successMessage');
 					if(Object.keys(result).length  == 0){
 						$("#doKoShin").hide();
+						$("#factoryListDiv").hide();
 						appendAlert("errorMassageIno",getMsgByOneArg('msg031'));
 					}else{
 						$("#doKoShin").show();
+						$("#factoryListDiv").show();
 					}
 						for(var i = 0; i < result.length; i++) {
 							var d = (data[i] = {});
@@ -450,6 +484,7 @@ $(document).ready(function() {
 							d["factoryCode"] = result[i].factoryCode;
 							d["makerCode"] = result[i].makerCode;
 							d["factoryName"] = result[i].factoryName;
+							d["version"] = result[i].version;
 							d["delType"] = false;
 							d["optionType"] = "1";
 							d["isNewData"] = "0";
@@ -463,7 +498,7 @@ $(document).ready(function() {
 						
 						grid.setSelectionModel(new Slick.RowSelectionModel());
 						grid.onAddNewRow.subscribe(function (e, args) {
-							var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "factoryCode": "","makerCode":"","factoryName":"", "delType": false,"optionType":"2" ,"isNewData": "1","displayIdentify":false};
+							var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "factoryCode": "","makerCode":"","factoryName":"","version":"1", "delType": false,"optionType":"2" ,"isNewData": "1","displayIdentify":false};
 						    $.extend(item, args.item);
 						    dataView.addItem(item);
 						});
@@ -542,10 +577,9 @@ $(document).ready(function() {
 	$("#update_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg025', '工場情報'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			}).then((isConfirm) => {
@@ -558,6 +592,8 @@ $(document).ready(function() {
 					cRNum = 0;
 					errorRowNum.length = 0;
 					eRNum = 0;
+					deleteRowNum.length = 0;
+					dRNum = 0;
 					var sendData = JSON.stringify(dataView.getItems());
 					var obj = eval("("+ sendData +")");
 
@@ -607,8 +643,36 @@ $(document).ready(function() {
 										//nullの場合、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
-										//更新失敗(一意制約) 
+										//更新失敗(null) 
 										updateSuccessFlag = 3;
+									}
+									if (result[i].updateFlag == 4){
+										//nullの場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(null) 
+										updateSuccessFlag = 4;
+									}
+									if (result[i].updateFlag == 5){
+										//nullの場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(null) 
+										updateSuccessFlag = 5;
+									}
+									if (result[i].updateFlag == 6){
+										//バージョン不正の場合、行号を記録する
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(バージョン不正) 
+										updateSuccessFlag = 6;
+									}
+									if (result[i].updateFlag == 7){
+										//入力されたメーカーコードはメーカーマスタに存在しません
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										//更新失敗(入力されたメーカーコードはメーカーマスタに存在しません) 
+										updateSuccessFlag = 7;
 									}
 								}
 								//更新成功
@@ -617,7 +681,7 @@ $(document).ready(function() {
 								}
 								//更新失敗(その他)
 							    if(updateSuccessFlag == 1){
-							    	appendAlert("errorMassageIno",getMsg('msg079'));
+							    	appendAlert("errorMassageIno",getMsg('msg107'));
 								}
 								//更新失敗(一意制約) 
 							    if(updateSuccessFlag == 2){
@@ -625,7 +689,23 @@ $(document).ready(function() {
 								}
 								//更新失敗(null) 
 							    if(updateSuccessFlag == 3){
-							    	appendAlert("errorMassageIno",getMsgByThreeArgs('msg081','工場コード','メーカーコード','工場名'));
+							    	appendAlert("errorMassageIno",getMsgByOneArg('msg001','工場コード'));
+								}
+							  	//更新失敗(null) 
+							    if(updateSuccessFlag == 4){
+							    	appendAlert("errorMassageIno",getMsgByOneArg('msg001','メーカーコード'));
+								}
+							  	//更新失敗(null) 
+							    if(updateSuccessFlag == 5){
+							    	appendAlert("errorMassageIno",getMsgByTwoArgs('msg097', '工場名','20'));
+								}
+							  	//更新失敗(null) 
+							    if(updateSuccessFlag == 6){
+							    	appendAlert("errorMassageIno",getMsg('msg107'));
+								}
+							  	//更新失敗(入力されたメーカーコードはメーカーマスタに存在しません) 
+							    if(updateSuccessFlag == 7){
+							    	appendAlert("errorMassageIno",getMsgByTwoArgs('msg083', 'メーカーコード','メーカーマスタ'));
 								}
 
 							    for(var i = 0; i < result.length; i++) {
@@ -635,6 +715,7 @@ $(document).ready(function() {
 									d["factoryCode"] = result[i].factoryCode;
 									d["makerCode"] = result[i].makerCode;
 									d["factoryName"] = result[i].factoryName;
+									d["version"] = result[i].version;
 									d["delType"] = result[i].delType;
 									if (updateSuccessFlag == 0){
 										//更新成功
@@ -654,7 +735,7 @@ $(document).ready(function() {
 								
 								grid.setSelectionModel(new Slick.RowSelectionModel());
 								grid.onAddNewRow.subscribe(function (e, args) {
-									var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "factoryCode": "","makerCode":"","factoryName":"", "delType": false,"optionType":"2","isNewData": "1","displayIdentify":false};
+									var item = {"num": data.length+1, "id": "new_" + (Math.round(Math.random() * 10000)), "factoryCode": "","makerCode":"","factoryName":"","version":"1", "delType": false,"optionType":"2","isNewData": "1","displayIdentify":false};
 								    $.extend(item, args.item);
 								    dataView.addItem(item);
 								});
@@ -743,10 +824,9 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg017','編集内容'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})

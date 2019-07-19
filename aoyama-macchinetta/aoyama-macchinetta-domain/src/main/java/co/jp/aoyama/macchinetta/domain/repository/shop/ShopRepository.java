@@ -20,4 +20,6 @@ public interface ShopRepository {
 
 	List<Shop> fuzzyQuery(@Param("shopCode")String shopCode, @Param("shopName")String shopName, @Param("storeBrandCode")String storeBrandCode);
 
+	List<Shop> findUnlessShop(String belongCode);
+
 }

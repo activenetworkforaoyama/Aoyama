@@ -306,7 +306,8 @@ function requiredBrandNameValidator(value) {
 	if (value == "" || value == null) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		appendAlert('errorMassageIno', getMsgByOneArg('msg001', '生地ブランド名'));
+		//appendAlert('errorMassageIno', getMsgByOneArg('msg001', '生地ブランド名'));
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '生地ブランド名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
@@ -329,7 +330,8 @@ function requiredCountryNameValidator(value) {
 	if (value == "" || value == null) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		appendAlert('errorMassageIno', getMsgByOneArg('msg001', '国名'));
+		//appendAlert('errorMassageIno', getMsgByOneArg('msg001', '国名'));
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '国名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
@@ -383,10 +385,9 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg017','編集内容'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			})
@@ -402,7 +403,17 @@ $(document).ready(function() {
 	});
 	
 });
-
+//CSRF令牌
+$(function () {
+	// CSRFトークン値を連携するためのリクエストヘッダ名を取得する
+    var headerName = $("meta[name='_csrf_header']").attr("content");
+    // CSRFトークン値を取得する
+    var tokenValue = $("meta[name='_csrf']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        // リクエストヘッダにCSRFトークン値を設定する
+        xhr.setRequestHeader(headerName, tokenValue);
+    });
+});
 $(document).ready(function() {
 	$("#slick").hide();	
   // (1) SlickGridのカラム定義
@@ -436,7 +447,7 @@ $(document).ready(function() {
 		  eRNum = 0;
 		  changeRowNumGray.length = 0;
 		  cRNumG = 0;
-		  $("#slick").show();
+		  
 		  var brandName = $("#brandName").val();
 		  var countryName = $("#countryName").val();
 		  var data = [];
@@ -448,9 +459,11 @@ $(document).ready(function() {
 					appendAlertDel('successMessage');
 					if(Object.keys(result).length  == 0){
 						$("#doKoShin").hide();
+						$("#slick").hide();	
 						//alert("検索結果が0件でした。条件を変更して再検索してください。");
 						appendAlert("errorMassageIno",getMsgByOneArg('msg031'));
 					}else{
+						$("#slick").show();
 						$("#doKoShin").show();
 					}
 						for(var i = 0; i < result.length; i++) {
@@ -460,6 +473,7 @@ $(document).ready(function() {
 							d["fablicBrandNo"] =result[i].fablicBrandNo;
 							d["brandName"] = result[i].brandName;
 							d["countryName"] = result[i].countryName;
+							d["version"] = result[i].version;
 							d["delType"] = false;
 							d["optionType"] = "1";
 							d["isNewData"] = "0";
@@ -549,10 +563,9 @@ $(document).ready(function() {
 		});
 	$("#update_button").click(function(){
 		swal({
-			  title: "確認",
 			  text: getMsgByOneArg('msg025', '生地ブランド'),
 			  icon: "info",
-			  buttons: true,
+			  buttons: ["キャンセル", true],
 			  dangerMode: true,
 			  closeOnEsc: false,
 			  }).then((isConfirm) => {
@@ -564,10 +577,10 @@ $(document).ready(function() {
 						cRNum = 0;
 						errorRowNum.length = 0;
 						eRNum = 0;
-						/* var data = []; */
+						changeRowNumGray.length = 0;
+						cRNumG = 0;
 						var sendData = JSON.stringify(dataView.getItems());
 						var obj = eval('('+ sendData +')');
-						/* var status = true; */
 						var checkStatus = 0;
 
 						//表示されたデータをすべてループします
@@ -584,13 +597,12 @@ $(document).ready(function() {
 						
 						for(var i=0; i < obj.length; i ++){
 							if(!(obj[i].brandName) || !(obj[i].countryName)){
-								/* status = false; */
 								checkStatus += 1;
 								if(!(obj[i].brandName)){
-									appendAlert('errorMassageIno', getMsgByOneArg('msg001', '生地ブランド名 ')); 
+									appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '生地ブランド名', '50'));
 									}
 								if(!(obj[i].countryName)){
-									 appendAlert('errorMassageIno', getMsgByOneArg('msg001', ' 国名')); 
+									 appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '国名', '50'));
 									}
 								}
 							}
@@ -607,39 +619,12 @@ $(document).ready(function() {
 							    	updateSuccessFlag = 0;
 							    	updateFlag = true;
 							    	for(var i = 0; i < result.length; i++) {
-										if (result[i].updateFailure){
+										if (result[i].updateFailure == '-1'){
 											//一意制約の場合、行号を記録する
-											errorRowNum[eRNum] = result[i].num;
-											eRNum++;
+											/* errorRowNum[eRNum] = result[i].num;
+											eRNum++; */
 											updateFlag = false;
 										}
-									}
-							    	for(var i = 0; i < result.length; i++) {
-										if (result[i].updateFlag == 1){
-											//更新失敗(その他)
-											updateSuccessFlag = 1;
-										}
-										if (result[i].updateFlag == 2){
-											//一意制約の場合、行号を記録する
-											errorRowNum[eRNum] = result[i].num;
-											eRNum++;
-											//更新失敗(一意制約) 
-											updateSuccessFlag = 2;
-										}
-										if (result[i].updateFlag == 3){
-											//nullの場合、行号を記録する
-											errorRowNum[eRNum] = result[i].num;
-											eRNum++;
-											//更新失敗(一意制約) 
-											updateSuccessFlag = 3;
-										}
-									}
-							    	//更新失敗(その他)
-								    if(updateSuccessFlag == 1){
-								    	appendAlert("errorMassageIno",getMsg('msg033'));
-									}
-							    	if(!updateFlag){
-								    	appendAlert("errorMassageIno",getMsg('msg033'));
 									}
 							    	var dSuccessTemp = true;
 							    	for(var i = 0; i < result.length; i++) {
@@ -649,6 +634,7 @@ $(document).ready(function() {
 										d["fablicBrandNo"] =result[i].fablicBrandNo;
 										d["brandName"] = result[i].brandName;
 										d["countryName"] = result[i].countryName;
+										d["version"] = result[i].version;
 										d["delType"] = result[i].delType;
 										if (updateFlag == true){
 											//更新成功
@@ -665,7 +651,9 @@ $(document).ready(function() {
 							    	if(dSuccessTemp == true && $("#errorMassageIno").text() == ""){
 										// 更新します
 								    	appendAlert("successMessage",getMsgByOneArg('msg044', "生地ブランド情報"));
-									}
+									}else{
+										appendAlert("errorMassageIno",getMsg('msg101'));
+										}
 							    	// SlickGridテーブルを作成
 									dataView = new Slick.Data.DataView();
 									

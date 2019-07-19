@@ -67,20 +67,15 @@
 							<div class="col col-md-4">
 								<label class=" form-control-label">店着納期区分</label>
 							</div>
-								<div class="col-12 col-md-8">
-									<select name="shopDeliveryClassInput" id="shopDeliveryClassInput" 
-										class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
-										<option value="全区分">全区分</option>
-										<option value="01">01</option>
-										<option value="02">02</option>
-										<option value="03">03</option>
-										<option value="04">04</option>
-										<option value="05">05</option>
-										<option value="06">06</option>
-										<option value="07">07</option>
-										<option value="08">08</option>
-										<option value="09">09</option>
-									</select>
+							<div class="col-12 col-md-8">
+								<select name="shopDeliveryClassInput" id="shopDeliveryClassInput" 
+									class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
+									<option value="全区分">全区分</option>
+									<c:forEach items="${generalCodeList }" var="i" varStatus="generalCode">
+										<c:set var="current" value="${generalCode.current }"/>
+										<option value="${current.codeValue }">${current.codeName }</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -316,6 +311,14 @@
 		return rtn;
 	}
 
+	$(function () {
+	    var headerName = $("meta[name='_csrf_header']").attr("content");
+	    var tokenValue = $("meta[name='_csrf']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        xhr.setRequestHeader(headerName, tokenValue);
+	    });
+	});
+
 	$(document).ready(function() {
 	
 		$("#shopListDiv").hide();	
@@ -342,7 +345,7 @@
 		$("#clearButton").click(function(){
 			$("#orderOnStartDateInput").val("");
 			$("#orderOnEndDateInput").val("");
-			$("#shopDeliveryClassInput").val("");
+			$("#shopDeliveryClassInput").val("全区分");
 			appendAlertDel('errorMessage');
 			appendAlertDel('successMessage');
 		})
@@ -351,10 +354,9 @@
 		jQuery("#cancelButton").click(function(){
 			// 確認メッセージ
 			swal({
-				title: "確認",
 				text: getMsg('msg082'),
 				icon: "info",
-				buttons: true,
+				buttons: ["キャンセル", true],
 				dangerMode: true,
 				closeOnEsc: false,
 			})
@@ -385,7 +387,6 @@
 			eRNum = 0;
 			changeRowNumGray.length = 0;
 			cRNumG = 0;
-			$("#shopListDiv").show();
 			
 			var shopDeliveryClassInput = $("#shopDeliveryClassInput").val();
 			var orderOnStartDateInput = $("#orderOnStartDateInput").val();
@@ -416,9 +417,9 @@
 			if(!(orderOnStartDateInput == "" || orderOnStartDateInput == null || orderOnStartDateInput == undefined) 
 					&& !(orderOnEndDateInput == "" || orderOnEndDateInput == null || orderOnEndDateInput == undefined) 
 					&& !(startCompare <= endCompare)){
-				//承り日fromが承り日toより小さくない
+				//承り日FROMが承り日TOより小さくない
 				//msg068 = {0}は{1}以降の日付を入力してください。
-				appendAlert('errorMessage', getMsgByTwoArgs('msg068', '承り日to', '承り日from'));
+				appendAlert('errorMessage', getMsgByTwoArgs('msg068', '承り日TO', '承り日FROM'));
 				
 				var data = [];
 				// (4) SlickGridテーブルを作成
@@ -443,19 +444,22 @@
 					appendAlertDel('successMessage');
 					if(Object.keys(result).length  == 0){
 						$("#doKoShin").hide();
+						$("#shopListDiv").hide();
 						appendAlert("errorMessage",getMsg('msg031'));
 					}else{
 						$("#doKoShin").show();
+						$("#shopListDiv").show();
 					}
-					
+
 					for (var i = 0; i < result.length; i++) {
 						var d = (data[i] = {});
 						d["id"] = "id_" + i;
 						d["num"] = i + 1;
-						d["shopDeliveryClass"] = result[i].shopDeliveryClass;
+						d["shopDeliveryClass"] = result[i].codeName;
 						d["orderOnStartDateStr"] = result[i].orderOnStartDateStr;
 						d["orderOnEndDateStr"] = result[i].orderOnEndDateStr;
 						d["shopDeliveryOnStr"] = result[i].shopDeliveryOnStr;
+						d["version"] = result[i].version;
 						d["createdUserId"] = result[i].createdUserId;
 						d["shippingError"] = result[i].createdAt;
 						d["updatedUserId"] = result[i].updatedUserId;
@@ -551,10 +555,9 @@
 		$("#updateButton").click(function(){
 			// 確認メッセージ
 			swal({
-				title: "確認",
 				text: getMsgByOneArg('msg025', "納期情報"),
 				icon: "info",
-				buttons: true,
+				buttons: ["キャンセル", true],
 				dangerMode: true,
 				closeOnEsc: false,
 			})
@@ -582,12 +585,12 @@
 							checkStatus += 1;
 							//msg001 = {0}を入力して下さい。
 							appendAlert('errorMessage', getMsgByOneArg('msg001', '店着日'));
-						}else if(!(endCompare <= onCompare)){
+						}else if(!(endCompare <= onCompare) && obj[i].delType == false){
 							//日付変数に変換
-							//承り日toが店着日より小さくない
+							//承り日TOが店着日より小さくない
 							checkStatus += 1;
 							//msg068 = {0}は{1}以降の日付を入力してください。
-							appendAlert('errorMessage', getMsgByTwoArgs('msg068', '店着日', '承り日to'));
+							appendAlert('errorMessage', getMsgByTwoArgs('msg068', '店着日', '承り日TO'));
 						}
 					}
 
@@ -601,27 +604,52 @@
 						    contentType:"application/json",
 						    success:function(result){
 						    	updateFlag = true;
-								for(var i = 0; i < result.length; i++) {
-									if (result[i].updateFailure != "0"){
-										//一意制約の場合、行号を記録する
+						    	for(var i = result.length-1; i >= 0; i--) {
+									if ("-1" == result[i].updateFailure){
+										//新規のエラーが存在する場合
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
+										//{0}の更新が失敗しました。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg064', "納期情報"));
+									}else if("-2" == result[i].updateFailure){
+										//修正のエラーが存在する場合
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										updateFlag = false;
+										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
+									}else if("-3" == result[i].updateFailure){
+										//削除のエラーが存在する場合
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										updateFlag = false;
+										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
+									}else if("-4" == result[i].updateFailure){
+										//バージョン番号が不正です
+										errorRowNum[eRNum] = result[i].num;
+										eRNum++;
+										updateFlag = false;
+										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
 									}
 								}
-							    if(updateFlag == false){
+								
+							    /* if(updateFlag == false){
 							    	appendAlert("errorMessage",getMsg('msg060'));
-								}
+								} */
 
 								var dSuccessTemp = true;
 						    	for(var i = 0; i < result.length; i++) {
 									var d = (data[i] = {});
 									d["id"] = "id_" + i;
 									d["num"] = result[i].num;
-									d["shopDeliveryClass"] = result[i].shopDeliveryClass;
+									d["shopDeliveryClass"] = result[i].codeName;
 									d["orderOnStartDateStr"] = result[i].orderOnStartDateStr;
 									d["orderOnEndDateStr"] = result[i].orderOnEndDateStr;
 									d["shopDeliveryOnStr"] = result[i].shopDeliveryOnStr;
+									d["version"] = result[i].version;
 									d["createdUserId"] = result[i].createdUserId;
 									d["shippingError"] = result[i].createdAt;
 									d["updatedUserId"] = result[i].updatedUserId;
@@ -735,10 +763,9 @@
 		$("#addButton").click(function(){
 			// 確認メッセージ
 			swal({
-				title: "確認",
 				text: getMsg('msg067'),
 				icon: "info",
-				buttons: true,
+				buttons: ["キャンセル", true],
 				dangerMode: true,
 				closeOnEsc: false,
 			})
@@ -787,9 +814,9 @@
 						//msg001 = {0}を入力して下さい。
 						appendAlert('errorMessage', getMsgByOneArg('msg001', '店着納期区分'));
 					}else if(!(startCompare <= endCompare)){
-						//承り日fromが承り日toより小さくない
+						//承り日FROMが承り日TOより小さくない
 						//msg068 = {0}は{1}以降の日付を入力してください。
-						appendAlert('errorMessage', getMsgByTwoArgs('msg068', '承り日to', '承り日from'));
+						appendAlert('errorMessage', getMsgByTwoArgs('msg068', '承り日TO', '承り日FROM'));
 					}else{
 						$.ajax({
 						    url:contextPath + "/delivery/shopDeliveryQueryIntersection",
@@ -798,11 +825,15 @@
 								"orderOnEndDateStr" : endDateD},
 						    contentType:"application/json",
 						    success:function(result){
-						    	if(Object.keys(result).length  == 0){
+						    	appendAlertDel('errorMessage');
+								appendAlertDel('successMessage');
+								if(Object.keys(result).length  == 0){
 									$("#doKoShin").hide();
+									$("#shopListDiv").hide();
 									appendAlert("errorMessage",getMsg('msg031'));
 								}else{
 									$("#doKoShin").show();
+									$("#shopListDiv").show();
 								}
 								
 							    var isQueryIntersection = false;
@@ -822,8 +853,8 @@
 										attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");
 										
 										//errorIdentification="-1"：エラーが存在する場合
-										//msg069 = 店着納期区分{0}は既に同じ承り日を登録しました！
-										appendAlert('errorMessage', getMsgByOneArg('msg069', result[i].shopDeliveryClass));
+										//msg069 = 店着納期区分{0}に既に同じ承り日{1}が登録されました。
+										appendAlert('errorMessage', getMsgByOneArg('msg069', result[i].codeName));
 										isQueryIntersection = true;
 										break;
 									}
@@ -838,7 +869,7 @@
 										var d = (data[0] = {});
 										d["id"] = "id_" + 0;
 										d["num"] = 0 + 1;
-										d["shopDeliveryClass"] = shopDeliveryClassInput;
+										d["shopDeliveryClass"] = result[0].codeName;
 										d["orderOnStartDateStr"] = startDateD;
 										d["orderOnEndDateStr"] = endDateD;
 										d["shopDeliveryOnStr"] = "";
@@ -847,11 +878,11 @@
 										d["isNewData"] = "0";
 									}else{
 										//店着納期区分は全区分です、ループして、すべての店着納期区分のデータを設定します
-										for (var i = 0; i < 9; i++) {
+										for (var i = 0; i < result.length; i++) {
 											var d = (data[i] = {});
 											d["id"] = "id_" + i;
 											d["num"] = i + 1;
-											d["shopDeliveryClass"] = "0" + (i+1).toString();
+											d["shopDeliveryClass"] = result[i].codeName;
 											d["orderOnStartDateStr"] = startDateD;
 											d["orderOnEndDateStr"] = endDateD;
 											d["shopDeliveryOnStr"] = "";
@@ -1006,7 +1037,7 @@
 										if(htmlTempStart != "" || htmlTempEnd != ""){
 											//前の空白区間、後の空白区間は少なくとも一つが空いていません。この店着納期区分は空白の区間を示します
 											//msg084 = 店着納期区分{0}は、{1}{2}店着日の値がありません。
-											htmlTempAll = htmlTempAll+getMsgByThreeArgs('msg084', result[i].shopDeliveryClass, htmlTempStart, htmlTempEnd);
+											htmlTempAll = htmlTempAll+getMsgByThreeArgs('msg084', result[i].codeName, htmlTempStart, htmlTempEnd);
 											htmlTempAll = htmlTempAll + " \n ";
 										}
 									}
@@ -1015,10 +1046,8 @@
 										htmlTempAll = getMsg('msg100') + " \n " + htmlTempAll;
 										// 確認メッセージ
 										swal({
-											title: "確認",
 											text: htmlTempAll,
 											icon: "info",
-											buttons: true,
 											dangerMode: true,
 											closeOnEsc: false,
 										})

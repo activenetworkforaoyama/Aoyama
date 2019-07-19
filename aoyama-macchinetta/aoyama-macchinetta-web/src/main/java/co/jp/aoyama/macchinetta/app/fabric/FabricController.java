@@ -2,7 +2,6 @@ package co.jp.aoyama.macchinetta.app.fabric;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -52,11 +51,10 @@ public class FabricController {
 	
 	//1：CSVファイルの項目数が不正です。行数＝「エラー発生の第一番目の行数」
 	private static final String NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT = "1";
-	//2：生地マスタに存在しない生地IDのため更新できません。オーダーパターン＝「エラー発生行目のオーダーパターン」，
-	//2：生地ID＝「エラー発生行目の生地ID」，生地品番＝「エラー発生行目の生地品番」，処理区分＝「エラー発生行目のタイプ」，行数＝「一個目のエラーの行数」
+	//2.1：生地品番は既に生地マスタに存在するため登録できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
+	//2.2：生地マスタに存在しない生地品番のため更新できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
 	private static final String PROCESSING_SEPARATION_IS_INCORRECT = "2";
-	//3：生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝「エラー発生行目のオーダーパターン」，
-	//3：生地ID＝「エラー発生行目の生地ID」，生地ブランド管理番号＝「エラー発生行目の生地ブランド番号」，行数＝「一個目のエラーの行数」
+	//3：生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝{0}，生地品番＝{1}，生地ブランド管理番号＝{2}，行数＝{3}
 	private static final String MANAGEMENT_NUMBER_DOES_NOT_EXIST = "3";
 	//4：「一個目のエラーの行数」行目の「エラー発生の項目名」は必須です
 	private static final String PROJECT_NAME_IS_EMPTY = "4";
@@ -114,7 +112,7 @@ public class FabricController {
 		String dateToday = dateFormat.format(dateNow); 
 		
 		//表示項目名を定義する
-		String[] title = {"処理区分","オーダーパターン","生地ID","生地品番","生地ブランド管理番号",
+		String[] title = {"処理区分","オーダーパターン","生地品番","素材品番","生地ブランド管理番号",
 				"業態","年季","色","柄","色(青山表記)",
 				"柄(青山表記)","素材ネーム","アイテム区分","コート可否","組成表示",
 				"工場コード","メーカーコード","LCR縫製可否","上代","PANTS追加増額率",
@@ -131,11 +129,11 @@ public class FabricController {
 			//読み出した情報を文字列配列に変換する
 			Fabric fabric = new Fabric();	
 			fabric = fabricList.get(i);
-			//処理区分,オーダーパターン,生地ID,生地品番,生地ブランド管理番号
+			//処理区分,オーダーパターン,生地品番,素材品番,生地ブランド管理番号
 			content[i][0] = "";
 			content[i][1] = setUpEmptyString(String.valueOf(fabric.getOrderPattern()));
-			content[i][2] = setUpEmptyString(String.valueOf(fabric.getFabricId()));
-			content[i][3] = setUpEmptyString(String.valueOf(fabric.getFabricNo()));
+			content[i][2] = setUpEmptyString(String.valueOf(fabric.getFabricNo()));
+			content[i][3] = setUpEmptyString(String.valueOf(fabric.getMaterialNo()));
 			content[i][4] = setUpEmptyString(String.valueOf(fabric.getFablicBrandNo()));
 			
 			//業態,年季,色,柄,色(青山表記)
@@ -229,19 +227,6 @@ public class FabricController {
         return new ResponseEntity(HttpStatus.OK);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "checkFileExist" , method = RequestMethod.POST)
-	public ResponseEntity judeFileExists(HttpServletRequest request) {
-		String presentFile = request.getParameter("presentFile");
-		File file = new File(presentFile);
-		if (file.exists() == true) {
-			System.out.println("file exists");
-		} else {
-			System.out.println("file not exists, create it ...");
-		}
-		return new ResponseEntity(HttpStatus.OK);
-	}
-	
 	/**
 	 * アップロードの方法
 	 * @param file　ユーザーがアップロードのファイル
@@ -252,9 +237,6 @@ public class FabricController {
 	 */
 	@RequestMapping(value = "fabricUpload" , method = RequestMethod.POST)
 	public String fabricUpload(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest req) throws IllegalStateException, IOException {
-		if(file == null) {
-			System.out.println("gheruiojioejf");
-		}
 		//strArr：エラー発生の第一番目の情報
 		//strArr「０」：エラー発生の第一番目の行数。 strArr「１」：エラー発生の項目名。 strArr「２」：エラー発生のタイプ。
 		String[] strArr = new String[3];
@@ -277,21 +259,8 @@ public class FabricController {
 					fabricError = fabricFor;
 					break;
 				}
-				
-				//更新操作を行う
-				fabricUpdate = fabricService.fabricUpdate(fabricList);
-				
 			}
-			
-			if(strArr[0] == null) {
-				//エラーメッセージがないの場合
-				//更新成功のメッセージボックスは設ける
-				ResultMessages messagesSuccess = ResultMessages.success();
-				//fabricUpdate「０」：登録件数；　fabricUpdate「１」：更新件数；　fabricUpdate「２」：削除件数
-				messagesSuccess.add(MessageKeys.I002, fabricUpdate[0], fabricUpdate[1], fabricUpdate[2]); 
-				model.addAttribute("resultMessages", messagesSuccess);
-			}
-			
+
 			if(strArr[0] != null) {
 				//エラーがあつた場合
 				//エラーメッセージがフロントに提示される
@@ -305,19 +274,23 @@ public class FabricController {
 					//エラーの場合の仮処理区分を正常な処理区分に変換します
 					if("X".equals(fabricError.getHandleDiscriminate())) {
 						temporaryHandleDiscriminate = "I";
+						//2.1：生地品番は既に生地マスタに存在するため登録できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
+						messagesError.add(MessageKeys.E022, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
+								temporaryHandleDiscriminate, strArr[0]); 
 					}else if("Y".equals(fabricError.getHandleDiscriminate())) {
 						temporaryHandleDiscriminate = "U";
+						//2.2：生地マスタに存在しない生地品番のため更新できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
+						messagesError.add(MessageKeys.E006, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
+								temporaryHandleDiscriminate, strArr[0]); 
 					}else if("Z".equals(fabricError.getHandleDiscriminate())) {
 						temporaryHandleDiscriminate = "D";
+						//2.2：生地マスタに存在しない生地品番のため更新できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
+						messagesError.add(MessageKeys.E006, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
+								temporaryHandleDiscriminate, strArr[0]); 
 					}
-					//2：生地マスタに存在しない生地IDのため更新できません。オーダーパターン＝「エラー発生行目のオーダーパターン」，
-					//2：生地ID＝「エラー発生行目の生地ID」，生地品番＝「エラー発生行目の生地品番」，処理区分＝「エラー発生行目のタイプ」，行数＝「一個目のエラーの行数」
-					messagesError.add(MessageKeys.E006, fabricError.getOrderPattern(), fabricError.getFabricId(),
-							fabricError.getFabricNo(), temporaryHandleDiscriminate, strArr[0]); 
 				}else if(MANAGEMENT_NUMBER_DOES_NOT_EXIST.equals(strArr[2])) {
-					//3：生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝「エラー発生行目のオーダーパターン」，
-					//3：生地ID＝「エラー発生行目の生地ID」，生地ブランド管理番号＝「エラー発生行目の生地ブランド番号」，行数＝「一個目のエラーの行数」
-					messagesError.add(MessageKeys.E007, fabricError.getOrderPattern(), fabricError.getFabricId(),
+					//3：生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝{0}，生地品番＝{1}，生地ブランド管理番号＝{2}，行数＝{3}
+					messagesError.add(MessageKeys.E007, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 							fabricError.getFablicBrandNo(), strArr[0]); 
 				}else if(PROJECT_NAME_IS_EMPTY.equals(strArr[2])) {
 					//4：「一個目のエラーの行数」行目の「エラー発生の項目名」は必須です
@@ -331,6 +304,16 @@ public class FabricController {
 				}
 				//フロントでエラーメッセージを提示する
 				model.addAttribute("resultMessages", messagesError);
+			}else {
+				//エラーメッセージがないの場合
+				//更新操作を行う
+				fabricUpdate = fabricService.fabricUpdate(fabricList);
+				
+				//更新成功のメッセージボックスは設ける
+				ResultMessages messagesSuccess = ResultMessages.success();
+				//fabricUpdate「０」：登録件数；　fabricUpdate「１」：更新件数；　fabricUpdate「２」：削除件数
+				messagesSuccess.add(MessageKeys.I002, fabricUpdate[0], fabricUpdate[1], fabricUpdate[2]); 
+				model.addAttribute("resultMessages", messagesSuccess);
 			}
 			
 		} catch (MultipartException | IOException e) {
@@ -379,7 +362,8 @@ public class FabricController {
 				String dataWhetherConform = null;
 				
 				//検査項目数
-				if(data.length != 52) {
+				if(("I".equals(data[0]) || "U".equals(data[0]) || "D".equals(data[0])) 
+						&& (data.length != 52)) {
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "", NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT));
 					break;
 				}
@@ -391,17 +375,20 @@ public class FabricController {
 					//検査オーダーバターン、特殊のチェック
 					if("CO".equals(data[1]) || "PO".equals(data[1])){
 						fabric.setOrderPattern(data[1]);
+					}else if("".equals(data[1])){
+						fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "オーダーパターン", PROJECT_NAME_IS_EMPTY));
+						break;
 					}else{
 						fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "オーダーパターン", VALUE_IS_INCORRECT));
 						break;
 					}
 					
-					//検査生地ID
-					dataWhetherConform = stringHalfAngleCheck(data[2], 10);
+					//生地品番
+					dataWhetherConform = stringHalfAngleCheck(data[2], 20);
 					if(dataWhetherConform == MEET_THE_REQUIREMENT){
-						fabric.setFabricId(data[2]);
+						fabric.setFabricNo(data[2]);
 					}else{
-						setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "生地ID");
+						setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "生地品番");
 						break;
 					}
 					
@@ -435,6 +422,8 @@ public class FabricController {
 						boolean fabricCheckExistence = fabricService.fabricCheckExistence(data[1], data[2]);
 						if(fabricCheckExistence == true) {
 							fabric.setHandleDiscriminate(data[0]);
+							fabricList.add(fabric);
+							continue;
 						}else {
 							//エラー場合、Dの代わりにZを使います
 							fabric.setHandleDiscriminate("Z");
@@ -447,12 +436,12 @@ public class FabricController {
 					continue;
 				}
 				
-				//生地品番
-				dataWhetherConform = stringHalfAngleCheck(data[3], 20);
+				//検査素材品番
+				dataWhetherConform = stringHalfAngleCheck(data[3], 30);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
-					fabric.setFabricNo(data[3]);
+					fabric.setMaterialNo(data[3]);
 				}else{
-					setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "生地品番");
+					setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "素材品番");
 					break;
 				}
 				
@@ -1119,11 +1108,7 @@ public class FabricController {
 			//空
 			return PROJECT_NAME_IS_EMPTY;
 		}else {
-			String halfAngleCheck = englishHalfAngleCheck(str);
-			if(halfAngleCheck == VALUE_IS_INCORRECT) {
-				//全角です
-	        	return FULL_ANGLE;
-	        }else if(!(matcherTwo.matches())) {
+			if(!(matcherTwo.matches())) {
 	        	//タイプが正しくない
 				return VALUE_IS_INCORRECT;
 			}else if(!(matcher.matches())) {
@@ -1143,7 +1128,7 @@ public class FabricController {
 	 * @return VALUE_IS_INCORRECT:要求にそぐわない;  MEET_THE_REQUIREMENT:要求にかなう
 	 */
 	private String englishHalfAngleCheck(String str) {
-		String regEx = "^[\\x00-\\xff]+$";
+		String regEx = "^[A-Za-z0-9]+$";
 		Pattern pattern = Pattern.compile(regEx);
 		Matcher matcher = pattern.matcher(str);
 		

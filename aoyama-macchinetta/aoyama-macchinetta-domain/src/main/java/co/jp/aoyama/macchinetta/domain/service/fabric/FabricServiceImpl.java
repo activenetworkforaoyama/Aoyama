@@ -1,5 +1,6 @@
 package co.jp.aoyama.macchinetta.domain.service.fabric;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,17 @@ public class FabricServiceImpl  implements FabricService {
 	@Override
 	public List<Fabric> fabricQueryAll() {
 		List<Fabric> fabricList = fabricRepository.fabricQueryAll();
+		//予約在庫の取得
+		for (int i = 0; i < fabricList.size(); i++) {
+			if(fabricList.get(i).getReservationStock() == null) {
+				BigDecimal bigDecimal = new BigDecimal("0");
+				fabricList.get(i).setReservationStock(bigDecimal);
+			}
+			BigDecimal theoreticalStock = new BigDecimal(String.valueOf(fabricList.get(i).getTheoreticalStock()));
+			BigDecimal reservationStock = new BigDecimal(String.valueOf(fabricList.get(i).getReservationStock()));
+			//ユーザが見た値＝理論在庫-予約在庫
+			fabricList.get(i).setTheoreticalStock(theoreticalStock.subtract(reservationStock));
+		}
 		return fabricList;
 	}
 
@@ -85,6 +97,14 @@ public class FabricServiceImpl  implements FabricService {
 		
 		if(fabricInsertList.size() != 0) {
 			//新規リストの長さが０でない場合
+			
+			//新規された場合、バージョン番号は１に設定されます
+			for (int i = 0; i < fabricInsertList.size(); i++) {
+				Short s1 = 1;
+				fabricInsertList.get(i).setFabricVersion(s1);
+				fabricInsertList.get(i).setStockVersion(s1);
+			}
+			
 			//データベースのfabric表にデータを追加する
 			fabricRepository.fabricInsertByPrimaryKey(fabricInsertList);
 			//データベースのstock表にデータを追加する
@@ -93,6 +113,27 @@ public class FabricServiceImpl  implements FabricService {
 		
 		if(fabricUpdateList.size() != 0) {
 			//修正リストの長さが０でない場合
+			
+			for (int i = 0; i < fabricUpdateList.size(); i++) {
+				Fabric fabricQueryByPrimaryKey = fabricRepository.fabricQueryByPrimaryKey(
+						fabricUpdateList.get(i).getOrderPattern(), fabricUpdateList.get(i).getFabricNo());
+				//修正の場合、バージョン番号は１から増加します
+				Short versionFabric =fabricQueryByPrimaryKey.getFabricVersion();
+				fabricUpdateList.get(i).setFabricVersion(++versionFabric);
+				Short versionStock =fabricQueryByPrimaryKey.getStockVersion();
+				fabricUpdateList.get(i).setStockVersion(++versionStock);
+				
+				//予約在庫の取得
+				if(fabricQueryByPrimaryKey.getReservationStock() == null) {
+					BigDecimal bigDecimal = new BigDecimal("0");
+					fabricQueryByPrimaryKey.setReservationStock(bigDecimal);
+				}
+				BigDecimal theoreticalStock = new BigDecimal(String.valueOf(fabricUpdateList.get(i).getTheoreticalStock()));
+				BigDecimal reservationStock = new BigDecimal(String.valueOf(fabricQueryByPrimaryKey.getReservationStock()));
+				//理論在庫＝ユーザが入力した値＋予約在庫
+				fabricUpdateList.get(i).setTheoreticalStock(theoreticalStock.add(reservationStock));
+			}
+			
 			//データベースのfabric表にデータを修正する
 			fabricRepository.fabricUpdateByPrimaryKey(fabricUpdateList);
 			//データベースのstock表にデータを修正する
@@ -119,8 +160,8 @@ public class FabricServiceImpl  implements FabricService {
 	 * 主キーから生地情報が存在するかどうかを調べる
 	 */
 	@Override
-	public boolean fabricCheckExistence(String orderPattern, String fabricId) {
-		Fabric fabricQueryByPrimaryKey = fabricRepository.fabricQueryByPrimaryKey(orderPattern, fabricId);
+	public boolean fabricCheckExistence(String orderPattern, String fabricNo) {
+		Fabric fabricQueryByPrimaryKey = fabricRepository.fabricQueryByPrimaryKey(orderPattern, fabricNo);
 		if(fabricQueryByPrimaryKey == null) {
 			//生地存在しない
 			return false;

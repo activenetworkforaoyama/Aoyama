@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +62,14 @@ public class CashController {
 	public String PageSearch(Model model) {
 		return "cash/cashForm";
 	}
+	
+	/**
+	 * 「会計登録画面」に遷移する。
+	 * @param cashForm
+	 * @param model
+	 * @param sessionStatus
+	 * @return
+	 */
 	@RequestMapping(value = "goBack")
 	public String goBack(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model,SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
@@ -79,6 +86,13 @@ public class CashController {
 		return "cash/cashForm";
 	}
 	
+	/**
+	 * 「会計登録画面」に遷移する。
+	 * @param orderIdArray
+	 * @param model
+	 * @param sessionStatus
+	 * @return
+	 */
 	@RequestMapping(value = "/gotoCash/{orderIdArray}",method = { RequestMethod.POST, RequestMethod.GET }) 
 	public String gotoCash(@PathVariable(value ="orderIdArray") String orderIdArray, Model model,SessionStatus sessionStatus) { 
 		sessionStatus.setComplete();
@@ -86,6 +100,7 @@ public class CashController {
 		Arrays.sort(strs); 
 		List<CashInfo> helpCashForm = new ArrayList<CashInfo>();
 		Long[] arr = new Long[strs.length];
+		//会計の注文の件数
 		Short amount = (short) strs.length;
 		for(int i=0;i<strs.length;i++){
 			CashInfo cashinfo = cashInfoService.selectOrderByOrderId(strs[i]);
@@ -95,6 +110,7 @@ public class CashController {
 		Arrays.sort(arr); 
 		cashForm.setHelpCashForm(helpCashForm);
 		Cash cash = cashService.selectOrderByOrderId(strs[0].toString());
+		//会計No.採番ルール:YYMMDDhhmmssSSS＋"－"＋店（４桁）
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
 		String cashId = sdf.format(new Date()) + "-" + cash.getShopCode();
 		String flag = "orderFrom";
@@ -102,7 +118,6 @@ public class CashController {
 		cash.setCashId(cashId);
 		cash.setOrderAmount(amount);
 		cash.setCashStatus("01");
-		//cash.setProductOrderdDate(productOrderdDate);
 		beanMapper.map(cash, cashForm);
 		Date date = new Date();
 		// 消費税を取得
@@ -114,18 +129,38 @@ public class CashController {
 		return "cash/cashForm";
 	}
 	
+	/**
+	 * 「会計登録画面」に遷移する。
+	 * @param cashId
+	 * @param model
+	 * @param sessionStatus
+	 * @return
+	 */
 	@RequestMapping(value = "/goToAccountingLink/{cashId}",method = { RequestMethod.POST, RequestMethod.GET })
 	public String goToAccountingLink(@PathVariable(value ="cashId") String cashId,Model model,SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
+		// 会計IDによって 会計を取得
 		Cash cash = cashService.selectByPrimaryKey(cashId);
 		List<Cash> cashList = cashService.selectOrderByCashId(cash.getCashId());
-		List<CashInfo> helpCashForm = cashInfoService.selectOrderByCashId(cashId);
+		// 会計IDによって 注文を取得
+		List<CashInfo> cashInfoList = cashInfoService.selectOrderByCashId(cashId);
+		List<CashInfo> orderIdList = new ArrayList<CashInfo>();
+		List<CashInfo> helpCashForm = new ArrayList<CashInfo>();
+		for(int i = 0 ;i < cashInfoList.size();i ++) {
+			if ("1".equals(cashInfoList.get(i).getIsCancelled())) {
+				orderIdList.add(cashInfoList.get(i));
+			}
+			if ("0".equals(cashInfoList.get(i).getIsCancelled())) {
+				helpCashForm.add(cashInfoList.get(i));
+			}
+		}
 		List<String> factoryStatus=new ArrayList<>();
 		for(int i = 0;i<cashList.size();i++) {
 			factoryStatus.add(cashList.get(i).getMakerFactoryStatus());
 		}
 		//F0 ：生産開始前
 		if(factoryStatus.contains("F0") || factoryStatus.contains("f0")) {
+			cashForm.setOrderIdList(orderIdList);
 			cashForm.setHelpCashForm(helpCashForm);
 			String flag = "cashInit";
 			cashForm.setBackFlag(flag);
@@ -149,6 +184,13 @@ public class CashController {
 		}
 	}
 	
+	/**
+	 * 「会計内容確認」画面に遷移する。
+	 * @param cashForm
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "cashReconfirm", method ={RequestMethod.POST})
 	public String toCashReconfirm(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model, HttpServletRequest request) {
 		request.getSession().setAttribute("cashForm", cashForm);

@@ -19,9 +19,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.order.OrderHelper;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
+import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderDetail;
@@ -168,8 +171,8 @@ public class OrderDetailController {
      * @param form 画面Form
      * @return 注文情報リスト
      */
-	@RequestMapping(value = "/orderDetail")
-	public String FindAllOrderByCondition(Model model,Map<String, Object> map) {
+	@RequestMapping(value = "/orderPoDetail")
+	public String orderPoDetail(Model model,Map<String, Object> map) {
 		// 店舗を取得
 		List<Shop> shopList = shopService.findAllShop();
 		
@@ -178,8 +181,27 @@ public class OrderDetailController {
 			mapShop.put(shop.getShopCode(), shop.getShopName());
 		}
 		map.put("mapShop", mapShop);
-		return "detail/orderDetail";
+		return "detail/orderPoDetail";
 	}
+	
+    /**
+   	* 全部注文を条件検索.
+     * @param form 画面Form
+     * @return 注文情報リスト
+     */
+	@RequestMapping(value = "/orderCoDetail")
+	public String orderCoDetail(Model model,Map<String, Object> map) {
+		// 店舗を取得
+		List<Shop> shopList = shopService.findAllShop();
+		
+		Map<String, String> mapShop = new HashMap<String,String>();
+		for (Shop shop : shopList) {
+			mapShop.put(shop.getShopCode(), shop.getShopName());
+		}
+		map.put("mapShop", mapShop);
+		return "detail/orderCoDetail";
+	}
+	
 	
 	/**
 	 *「お渡し時再補正入力」画面へ遷移する
@@ -202,19 +224,32 @@ public class OrderDetailController {
 	 * @param changeTscStatus
 	 * @return
 	 */
-	@RequestMapping(value = "/changeStatus/{orderId}/{changeTscStatus}")
+	@RequestMapping(value = "/changeStatus/{orderId}/{changeTscStatus}/{orderVersion}")
 	public String changeStatus(@PathVariable(value ="orderId") String orderId,
-							   @PathVariable(value ="changeTscStatus") String changeTscStatus,Model model) {
+							   @PathVariable(value ="changeTscStatus") String changeTscStatus,
+							   @PathVariable(value = "orderVersion") String orderVersion,Model model) {
 		
 		//最終更新者
 		String updatedUserId = sessionContent.getUserId();
 		//最終更新日時
 		Date updatedAt = new Date();
-		orderListService.updateTscStatus(orderId,changeTscStatus,updatedUserId,updatedAt);
+		Short orderVersionS = Short.parseShort(orderVersion);
+		try {
+			orderListService.updateTscStatus(orderId,changeTscStatus,updatedUserId,updatedAt,orderVersionS);
+			String isUpdate = "1";
+			model.addAttribute("isUpdate",isUpdate);
+			return "order/orderPoLoginResultForm";
+		} catch (ResourceNotFoundException e) {
+			String authority = sessionContent.getAuthority();
+			Order order= orderListService.findOrderByPk(orderId);
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			model.addAttribute("resultMessages", e.getResultMessages());
+			model.addAttribute("order",order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("authority", authority);
+			return "detail/orderPoDetail";
+		}
 		
-		String isUpdate = "1";
-		model.addAttribute("isUpdate",isUpdate);
-		return "order/orderPoLoginResultForm";
 	}
 	
 	/**
@@ -227,7 +262,7 @@ public class OrderDetailController {
 	 * @return
 	 */
 	@RequestMapping(value = "/saveValue")
-	public String saveValue(String orderId,String fabricNo,String fabricUsedMount,String shippingDate,String loadingDate,Model model) {
+	public String saveValue(String orderId,String fabricNo,String fabricUsedMount,String shippingDate,String loadingDate,String orderVersion,Model model) {
 		
 		BigDecimal fabricUsedMountD;
 		if(fabricUsedMount == null || "".equals(fabricUsedMount)) {
@@ -256,15 +291,24 @@ public class OrderDetailController {
 			String updatedUserId = sessionContent.getUserId();
 			//最終更新日時
 			Date updatedAt = new Date();
-			orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt);
+			Short orderVersionS = Short.parseShort(orderVersion);
+			orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
+		} catch (ResourceNotFoundException e) {
+			String authority = sessionContent.getAuthority();
+			Order order= orderListService.findOrderByPk(orderId);
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			model.addAttribute("resultMessages", e.getResultMessages());
+			model.addAttribute("order",order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("authority", authority);
+			return "detail/orderPoDetail";
 		}
 		
 		OrderDetail selectActualStock = orderDetailService.selectActualStock(fabricNo);
 		BigDecimal actualStock = selectActualStock.getActualStock();
-		String fabricId = selectActualStock.getFabricId();
 		BigDecimal remainActualStock;
 		if(fabricUsedMountD == null || "".equals(fabricUsedMount)) {
 			remainActualStock =actualStock.subtract(new BigDecimal(0.0));
@@ -277,7 +321,7 @@ public class OrderDetailController {
 		String updatedUserId = sessionContent.getUserId();
 		//最終更新日時
 		Date updatedAt = new Date();
-		orderDetailService.updateActualStock(fabricId, remainActualStock,updatedUserId,updatedAt);
+		orderListService.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
 		
 		String isUpdate = "1";
 		model.addAttribute("isUpdate",isUpdate);
@@ -293,13 +337,14 @@ public class OrderDetailController {
 	 * @param makerFactoryStatus
 	 * @return
 	 */
-	@RequestMapping(value = "/saveOrChangeValue/{orderId}/{fabricNo}/{fabricUsedMount}/{shippingDate}/{loadingDate}/{makerFactoryStatus}")
+	@RequestMapping(value = "/saveOrChangeValue/{orderId}/{fabricNo}/{fabricUsedMount}/{shippingDate}/{loadingDate}/{makerFactoryStatus}/{orderVersion}")
 	public String saveOrChangeValue(@PathVariable(value ="orderId") String orderId,
 									@PathVariable(value ="fabricNo") String fabricNo,
 									@PathVariable(value ="fabricUsedMount") String fabricUsedMount,
 									@PathVariable(value ="shippingDate") String shippingDate,
 									@PathVariable(value ="loadingDate") String loadingDate,
-									@PathVariable(value ="makerFactoryStatus") String makerFactoryStatus,Model model) {
+									@PathVariable(value ="makerFactoryStatus") String makerFactoryStatus,
+									@PathVariable(value ="orderVersion") String orderVersion,Model model) {
 		
 		BigDecimal fabricUsedMountD = new BigDecimal(fabricUsedMount);
 		SimpleDateFormat  sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -312,21 +357,30 @@ public class OrderDetailController {
 			String updatedUserId = sessionContent.getUserId();
 			//最終更新日時
 			Date updatedAt = new Date();
-			orderListService.updateSaveOrChangeValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt);
+			Short orderVersionS = Short.parseShort(orderVersion);
+			orderListService.updateSaveOrChangeValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS);
 		} catch (ParseException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
+		}catch(ResourceNotFoundException e) {
+			String authority = sessionContent.getAuthority();
+			Order order= orderListService.findOrderByPk(orderId);
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			model.addAttribute("resultMessages", e.getResultMessages());
+			model.addAttribute("order",order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("authority", authority);
+			return "detail/orderPoDetail";
 		}
 		
 		OrderDetail selectActualStock = orderDetailService.selectActualStock(fabricNo);
 		BigDecimal actualStock = selectActualStock.getActualStock();
-		String fabricId = selectActualStock.getFabricId();
 		BigDecimal remainActualStock =actualStock.subtract(fabricUsedMountD);
 		//最終更新者
 		String updatedUserId = sessionContent.getUserId();
 		//最終更新日時
 		Date updatedAt = new Date();
-		orderDetailService.updateActualStock(fabricId, remainActualStock,updatedUserId,updatedAt);
+		orderListService.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
 		
 		String isUpdate = "1";
 		model.addAttribute("isUpdate",isUpdate);
@@ -340,18 +394,35 @@ public class OrderDetailController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "nextGenerationCount")
-	public Integer saveOrChangeValue(String orderId) {
+	public String saveOrChangeValue(String orderId, Model model) {
 		OrderHelper orderHelper = new OrderHelper();
-		Order order= orderListService.findOrderByPk(orderId);
+		ResultMessages resultMessages = null;
+		try {
+			Order order= orderListService.findOrderByPk(orderId);
+			List<NextGenerationPrice> yieldList = this.getYieldList();
+			List<NextGenerationPrice> wholesalePieceList = this.getWholesalePieceList(order);
+			List<NextGenerationPrice> basicNextGenerationPriceList = this.basicNextGenerationPrice(order);
+			NextGenerationPrice marginRate = this.getMarginRate(order);
+			NextGenerationPrice priceCode = this.getPriceCode(order);
+			
+			String nextGenerationRelationCount = orderHelper.nextGenerationRelationCount(order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate).toString();
+			return nextGenerationRelationCount;
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+			resultMessages = e.getResultMessages();
+		}
 		
-		List<NextGenerationPrice> yieldList = this.getYieldList();
-		List<NextGenerationPrice> wholesalePieceList = this.getWholesalePieceList(order);
-		List<NextGenerationPrice> basicNextGenerationPriceList = this.basicNextGenerationPrice(order);
-		NextGenerationPrice marginRate = this.getMarginRate(order);
-		NextGenerationPrice priceCode = this.getPriceCode(order);
+		if(resultMessages==null) {
+			return "";
+		}else {
+			String code = resultMessages.getList().get(0).getCode();
+			if("E020".equals(code)) {
+				return "1";
+			}else {
+				return "2";
+			}
+		}
 		
-		Integer nextGenerationRelationCount = orderHelper.nextGenerationRelationCount(order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate);
-		return nextGenerationRelationCount;
 	}
 	
 	/**
@@ -360,20 +431,34 @@ public class OrderDetailController {
 	 * @param nextGenerationPrice
 	 * @return
 	 */
-	@RequestMapping(value = "/nextGenerationPrice/{orderId}/{nextGenerationPrice}")
+	@RequestMapping(value = "/nextGenerationPrice/{orderId}/{nextGenerationPrice}/{orderVersion}")
 	public String nextGenerationSave(@PathVariable(value ="orderId") String orderId,
-									 @PathVariable(value ="nextGenerationPrice") String nextGenerationPrice,Model model) {
+									 @PathVariable(value ="nextGenerationPrice") String nextGenerationPrice,
+									 @PathVariable(value = "orderVersion") String orderVersion,Model model) {
 		
 		Integer nextGenerationP = Integer.parseInt(nextGenerationPrice);
 		//最終更新者
 		String updatedUserId = sessionContent.getUserId();
 		//最終更新日時
 		Date updatedAt = new Date();
-		orderListService.updateNextGeneration(orderId,nextGenerationP,updatedUserId,updatedAt);
+		Short orderVersionS = Short.parseShort(orderVersion);
+		try {
+			orderListService.updateNextGeneration(orderId,nextGenerationP,updatedUserId,updatedAt,orderVersionS);
+			String isUpdate = "1";
+			model.addAttribute("isUpdate",isUpdate);
+			return "order/orderPoLoginResultForm";
+		} catch (ResourceNotFoundException e) {
+			String authority = sessionContent.getAuthority();
+			Order order= orderListService.findOrderByPk(orderId);
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			model.addAttribute("resultMessages", e.getResultMessages());
+			model.addAttribute("order",order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("authority", authority);
+			return "detail/orderPoDetail";
+			
+		}
 		
-		String isUpdate = "1";
-		model.addAttribute("isUpdate",isUpdate);
-		return "order/orderPoLoginResultForm";
 	}
 	
 	/**
@@ -401,10 +486,9 @@ public class OrderDetailController {
 			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal actualStockAddOrder = actualStock.add(fabricUsedMountOrder);
-			String fabricId = selectActualStock.getFabricId();
 			String updatedUserId = sessionContent.getUserId();
 			Date updatedAt = new Date();
-			orderDetailService.updateActualStock(fabricId,actualStockAddOrder,updatedUserId,updatedAt);
+			orderListService.updateActualStock(productFabricNo,actualStockAddOrder,updatedUserId,updatedAt);
 			
 			OrderDetail selectRecoveryActualStock = orderDetailService.selectActualStock(productFabricNo);
 			BigDecimal recoveryActualStock = selectRecoveryActualStock.getActualStock();
