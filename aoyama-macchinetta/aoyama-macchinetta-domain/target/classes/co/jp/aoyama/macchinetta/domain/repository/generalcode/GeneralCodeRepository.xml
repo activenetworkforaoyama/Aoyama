@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.generalcode.GeneralCodeRepository" >
+  <resultMap id="GeneralCodeResultMap" type="GeneralCode" >
+    <id column="code_type" property="codeType" jdbcType="VARCHAR" />
+    <id column="code_value" property="codeValue" jdbcType="VARCHAR" />
+    <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+    <result column="display_order" property="displayOrder" jdbcType="SMALLINT" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="selectGeneralCodeByCodeType" resultMap="GeneralCodeResultMap">
+    SELECT 
+    	code_type, 
+    	code_value, 
+    	code_name, 
+    	display_order, 
+    	created_user_id, 
+    	created_at, 
+    	updated_user_id, 
+    	updated_at
+    FROM 
+    	mtb_general_code
+	WHERE
+		code_type = #{generalCode.codeType,jdbcType=VARCHAR} 
+   	ORDER BY
+    	display_order ASC
+  </select>
+  
+</mapper>

@@ -1135,6 +1135,94 @@ public class OrderHelper {
 	}
 	
 	/**
+	 * 
+	 * @param productItem
+	 * @param productIs3Piece
+	 * @param productSparePantsClass
+	 * @param ojFrontBtnCnt
+	 * @return
+	 */
+	public String getHostTransmitMakerProductMapKey(String productItem,String productIs3Piece,String productSparePantsClass,String ojFrontBtnCnt) {
+		//スペアパンツは有り
+		String productSparePantsClassYes = "0009902";
+		//３Pieceは有り
+		String productIs3PieceYes = "0009902";
+		//フロント釦数はダブル
+		String ojFrontBtnCntDouble = "0000105";
+		//SUIT:01 JACKET:02 PANTS:03 GILET:04
+		String suitItemCd = "01";
+		String jacketItemCd = "02";
+		
+		String itemAnd = "";
+		String is3PieceAnd = "";
+		String sparePantsClassAnd = "";
+		String ojFrontBtnCntAnd = "";
+		
+		if(suitItemCd.equals(productItem)) {
+			//２Pシングル  
+			if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+			}
+			//２Pダブル
+			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				ojFrontBtnCntAnd = "0000105";
+			}
+			//２PPシングル
+			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				sparePantsClassAnd = "030009902";
+			}
+			//２PPダブル 
+			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				sparePantsClassAnd = "030009902";
+				ojFrontBtnCntAnd = "0000105";
+			}
+			//３Pシングル 
+			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+			}
+			//３Pダブル
+			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				ojFrontBtnCntAnd = "0000105";
+			}
+			//３P２PPシングル　
+			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				sparePantsClassAnd = "030009902";
+			}
+			//３P２PPダブル
+			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				sparePantsClassAnd = "030009902";
+				ojFrontBtnCntAnd = "0000105";
+			}
+		}
+		else if(jacketItemCd.equals(productItem)) {
+			//J　ジャケット
+			if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
+				itemAnd = "02";
+			}
+			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
+				itemAnd = "02";
+				ojFrontBtnCntAnd = "0000105";
+			}
+		}
+		else {
+			itemAnd = productItem;
+		}
+		String hostTransmitMakerProductKey = itemAnd + is3PieceAnd + sparePantsClassAnd + ojFrontBtnCntAnd;
+		return hostTransmitMakerProductKey;
+	}
+	
+	
+	/**
 	 * オーダー内容確認画面のMapの値とorderの対応フィールドのマッピング
 	 * @param orderForm
 	 * @param order
@@ -1194,21 +1282,40 @@ public class OrderHelper {
 		order.setHostTransmitStoreCd(orderForm.getShopCode());
 		
 		//ホスト連携_品名コード
-		Map<String,String> hostTransmitItemCdMap = new HashMap<String,String>();
-		/*
+		Map<String,String> hostTransmitItemCd03Map = new HashMap<String,String>();
+		Map<String,String> hostTransmitItemCd01Map = new HashMap<String,String>();
+		
+		/*業態がTSC(03)の場合
 		  061　スーツ		01 SUIT 
 		  062　ジャケット	02 JACKET 
 		  063　パンツ		03 PANTS 
 		  064　ジレ		04 GILET
 		*/
-		hostTransmitItemCdMap.put("01", "061");
-		hostTransmitItemCdMap.put("02", "062");
-		hostTransmitItemCdMap.put("03", "063");
-		hostTransmitItemCdMap.put("04", "064");
+		hostTransmitItemCd03Map.put("01", "061");
+		hostTransmitItemCd03Map.put("02", "062");
+		hostTransmitItemCd03Map.put("03", "063");
+		hostTransmitItemCd03Map.put("04", "064");
+		/*業態がTSC(01)の場合
+		  061　スーツ		01 SUIT 
+		  062　ジャケット	02 JACKET 
+		  063　パンツ		03 PANTS 
+		  067　ジレ		04 GILET
+		*/
+		hostTransmitItemCd01Map.put("01", "061");
+		hostTransmitItemCd01Map.put("02", "062");
+		hostTransmitItemCd01Map.put("03", "063");
+		hostTransmitItemCd01Map.put("04", "067");
 		
 		String hostTransmitItemCdKey = orderForm.getProductItem();
-		String hostTransmitItemCdValue = hostTransmitItemCdMap.get(hostTransmitItemCdKey);
-		order.setHostTransmitItemCd(hostTransmitItemCdValue);
+		String storeBrandCode = order.getStoreBrandCode();
+		if("01".equals(storeBrandCode)) {
+			String hostTransmitItemCdValue = hostTransmitItemCd01Map.get(hostTransmitItemCdKey);
+			order.setHostTransmitItemCd(hostTransmitItemCdValue);
+		}
+		else if("03".equals(storeBrandCode)) {
+			String hostTransmitItemCdValue = hostTransmitItemCd03Map.get(hostTransmitItemCdKey);
+			order.setHostTransmitItemCd(hostTransmitItemCdValue);
+		}
 		
 		//ホスト連携_メーカーコード
 		order.setHostTransmitMakerCd(findMakerId);
@@ -1276,6 +1383,60 @@ public class OrderHelper {
 			order.setHostTransmitSize(hostTransmitSize);
 		}
 		
+		//ホスト連携_メーカー品番
+		/*生地品番(8)＋色(1)＋柄(1)＋区分(1)
+		　　色、柄：TSC表記
+		　　区分：　　　SUIT　　　　　　　　　　　　　　　単品
+		　　　　　　　1　２Pシングル  　　　　　　　   J　ジャケット
+		　　　　　　　2　２Pダブル 　　　　　　　　　W ダブルジャケット
+		　　　　　　　3　２PPシングル  　　　　　　　G　ジレ
+		　　　　　　　4　２PPダブル  　　　　　　　　V　ダブルジレ
+		　　　　　　　5　３Pシングル  　　　　　　　　P　パンツ
+		　　　　　　　6　３Pダブル 　　　　 　　　　　D　ドレスシャツ
+		　　　　　　　7　３P２PPシングル　 　　　　   C　シングルコート
+		　　　　　　　8　３P２PPダブル　　　　　　    A　ダブルコート
+		*/
+		Map<String,String> hostTransmitMakerProductMap = new HashMap<String,String>();
+		//1　２Pシングル 
+		hostTransmitMakerProductMap.put("01", "1");
+		//2　２Pダブル 
+		hostTransmitMakerProductMap.put("010000105", "2");
+		//3　２PPシングル 
+		hostTransmitMakerProductMap.put("01030009902", "3");
+		//4　２PPダブル
+		hostTransmitMakerProductMap.put("010300099020000105", "4");
+		//5　３Pシングル
+		hostTransmitMakerProductMap.put("01040009902", "5");
+		//6　３Pダブル
+		hostTransmitMakerProductMap.put("010400099020000105", "6");
+		//7　３P２PPシングル
+		hostTransmitMakerProductMap.put("01040009902030009902", "7");
+		//8　３P２PPダブル
+		hostTransmitMakerProductMap.put("010400099020300099020000105", "8");
+		//J　ジャケット
+		hostTransmitMakerProductMap.put("02", "J");
+		//W ダブルジャケット
+		hostTransmitMakerProductMap.put("020000105", "W");
+		//G　ジレ
+		hostTransmitMakerProductMap.put("04", "G");
+		//P　パンツ
+		hostTransmitMakerProductMap.put("03", "P");
+		
+		//商品情報_ITEM
+		String productItem = orderForm.getProductItem();
+		// 商品情報_３Piece
+		String productIs3Piece = orderForm.getProductIs3Piece(); 
+		// 商品情報_スペアパンツ
+		String productSparePantsClass = orderForm.getProductSparePantsClass();
+		//フロント釦数
+		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
+		String hostTransmitMakerProductMapKey = getHostTransmitMakerProductMapKey(productItem,productIs3Piece,productSparePantsClass,ojFrontBtnCnt);
+		
+		String productFabricNo = orderForm.getProductFabricNo();
+		String hostTransmitMakerProductMapValue = hostTransmitMakerProductMap.get(hostTransmitMakerProductMapKey);
+		String hostTransmitMakerProductValue = productFabricNo + fabricColor + fabricPattern + hostTransmitMakerProductMapValue;
+		order.setHostTransmitMakerProduct(hostTransmitMakerProductValue);
+		
 		//商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
 		if("0".equals(productEmbroideryNecessity)) {
@@ -1322,7 +1483,7 @@ public class OrderHelper {
 		
 		//スペアパンツは有り
 		String productYes = "0009902";
-		String productSparePantsClass = orderForm.getProductSparePantsClass();
+//		String productSparePantsClass = orderForm.getProductSparePantsClass();
 		
 		if("01".equals(orderItemCd) && productYes.equals(productSparePantsClass)) {
 			
@@ -1343,8 +1504,8 @@ public class OrderHelper {
 		//JACKET_モデル_上代
 		Integer doubleJacketPrice = retailPriceRelatedMap.get("doubleJACKET");
 		Integer singleDoubleJacketPrice = retailPriceRelatedMap.get("singleDoubleJACKET");
-		String productItem = orderForm.getProductItem();
-		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
+//		String productItem = orderForm.getProductItem();
+//		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
 		if("0000105".equals(ojFrontBtnCnt)) {
 			if("01".equals(productItem)) {
 				if(doubleJacketPrice != null) {

@@ -171,6 +171,7 @@ public class OrderController {
 			orderHelper.getOptionWashableData(washableOptionList, orderForm);
 
 		} catch (Exception e) {
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return "order/orderCoForm";
@@ -312,6 +313,7 @@ public class OrderController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		return "order/orderPoForm";
 	}
@@ -375,6 +377,7 @@ public class OrderController {
 			orderService.updateOrder(order);
 		}catch(ResourceNotFoundException re) {
 			resultMessages = re.getResultMessages();
+			logger.error(re.toString());
 		}
 		if(resultMessages == null) {
 			model.addAttribute("isUpdate", IS_UPDATE1);
@@ -498,12 +501,6 @@ public class OrderController {
 		
 		Short version = Short.parseShort(orderForm.getVersion());
 		
-//		if("".equals(version)||version == null) {
-//			versionDb = orderIsExist.getVersion();
-//		}else {
-//			versionDb = new Short(version);
-//		}
-		
 
 		Measuring measuringIsExist = measuringService
 				.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
@@ -513,14 +510,10 @@ public class OrderController {
 		
 		order.setVersion(version);
 
-//		measuringService.updateByPrimaryKey(measuring);
-//		orderService.updateOrder(order);
 		ResultMessages resultMessages = null;
 		try {
-			orderService.deletOrderByOrderId(order.getOrderId(),version);
-			orderService.insertOrder(order);
-			orderService.deleteByOrderId(measuring.getOrderId());
-			orderService.insertMeasuring(measuring);
+			orderService.deletOrder(order,version);
+			orderService.deleteMeasuring(measuring);
 			return "true";
 		}catch(ResourceNotFoundException re) {
 			resultMessages = re.getResultMessages();
@@ -536,11 +529,6 @@ public class OrderController {
 		}else {
 			return "true";
 		}
-//		orderService.deletOrderByOrderId(order.getOrderId(),version);
-//		orderService.insertOrder(order);
-//		orderService.deleteByOrderId(measuring.getOrderId());
-//		orderService.insertMeasuring(measuring);
-//		return "0";
 		
 	}
 
@@ -705,12 +693,8 @@ public class OrderController {
 				// 生地品番が無しの場合
 				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-//					measuringService.updateByPrimaryKey(measuring);
-//					orderService.updateOrder(order);
-					orderService.deletOrderByOrderId(order.getOrderId());
-					orderService.deleteByOrderId(order.getOrderId());
-					orderService.insertOrder(order);
-					orderService.insertMeasuring(measuring);
+					orderService.deleteOrder(order);
+					orderService.deleteMeasuring(measuring);
 				}
 				// 生地品番が有りの場合
 				else {
@@ -720,28 +704,16 @@ public class OrderController {
 					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
 					stock.setUpdatedUserId(sessionContent.getUserId());
 					stock.setUpdatedAt(new Date());
-					orderService.updateStockByPk(stock);
-
 					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deletOrderByOrderId(order.getOrderId());
-					orderService.deleteByOrderId(order.getOrderId());
-					orderService.insertOrder(order);
-					orderService.insertMeasuring(measuring);
-//					measuringService.updateByPrimaryKey(measuring);
-//					orderService.updateOrder(order);
+					orderService.deleteOrderAndStock(order,stock,measuring);
 				}
 				// 理論在庫チェック値が１の場合
 			} else if (IS_THEORETICAL_STOCKCECK.equals(isCheck)) {
 				// 生地品番が無しの場合
 				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
-
 					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-					orderService.deletOrderByOrderId(order.getOrderId());
-					orderService.deleteByOrderId(order.getOrderId());
-					orderService.insertOrder(order);
-					orderService.insertMeasuring(measuring);
-//					measuringService.updateByPrimaryKey(measuring);
-//					orderService.updateOrder(order);
+					orderService.deleteOrder(order);
+					orderService.deleteMeasuring(measuring);
 				}
 				// 生地品番が有りの場合
 				else {
@@ -751,15 +723,8 @@ public class OrderController {
 					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
 					stock.setUpdatedUserId(sessionContent.getUserId());
 					stock.setUpdatedAt(new Date());
-					orderService.updateStockByPk(stock);
-
 					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deletOrderByOrderId(order.getOrderId());
-					orderService.deleteByOrderId(order.getOrderId());
-					orderService.insertOrder(order);
-					orderService.insertMeasuring(measuring);
-//					measuringService.updateByPrimaryKey(measuring);
-//					orderService.updateOrder(order);
+					orderService.deleteOrderAndStock(order,stock,measuring);
 				}
 			}
 			return "true";
@@ -791,8 +756,7 @@ public class OrderController {
 			// tscステータスが無しの場合 注文物理削除
 			if ("".equals(order.getTscStatus()) || order.getTscStatus() == null) {
 				if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-					orderService.deletOrderByOrderId(orderId,order.getVersion());
-					orderService.deleteByOrderId(orderId);
+					orderService.deleteMeasuringBothOrder(orderId);
 				} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 					// 生地の論理在庫を戻る
 					Stock stock = orderService.getStock(order.getProductFabricNo());
@@ -801,9 +765,7 @@ public class OrderController {
 					stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
 					stock.setUpdatedUserId(sessionContent.getUserId());
 					stock.setUpdatedAt(new Date());
-					orderService.updateStockByPk(stock);
-					orderService.deletOrderByOrderId(order.getOrderId(),order.getVersion());
-					orderService.deleteByOrderId(order.getOrderId());
+					orderService.physicalDeleteOrder(stock,orderId);
 				}
 
 			} else {
@@ -811,8 +773,7 @@ public class OrderController {
 				if (TSC_STATUST0.equals(order.getTscStatus()) || TSC_STATUST1.equals(order.getTscStatus())) {
 					// 理論在庫チェックなしの場合
 					if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-						orderService.deletOrderByOrderId(orderId,order.getVersion());
-						orderService.deleteByOrderId(orderId);
+						orderService.deleteMeasuringBothOrder(orderId);
 						// 理論在庫チェックありの場合
 					} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 						// 生地の論理在庫を戻る
@@ -822,9 +783,7 @@ public class OrderController {
 						stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
 						stock.setUpdatedUserId(sessionContent.getUserId());
 						stock.setUpdatedAt(new Date());
-						orderService.updateStockByPk(stock);
-						orderService.deletOrderByOrderId(order.getOrderId(),order.getVersion());
-						orderService.deleteByOrderId(order.getOrderId());
+						orderService.physicalDeleteOrder(stock,orderId);
 					}
 				}
 			}
@@ -842,7 +801,7 @@ public class OrderController {
 	 * @param orderId
 	 * 
 	 */
-	@RequestMapping(value = "/logicalDeletion", method = RequestMethod.GET)
+	@RequestMapping(value = "/logicalDelete", method = RequestMethod.GET)
 	public String logicalDeletion(String orderId,String version, Model model) {
 
 		Order order = orderListService.findOrderByPk(orderId);

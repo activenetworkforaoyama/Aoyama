@@ -91,27 +91,29 @@ public class ShopDeliveryController {
 			//日付書式の変更:string-->date
 			shopDeliveryFormGet = stringToDate(shopDeliveryFormGet);
 			if(shopDeliveryFormGet.getDelType() == true) {
-				//削除の操作
-				ShopDelivery shopDelivery = beanMapper.map(shopDeliveryFormGet, ShopDelivery.class);
-				ShopDelivery shopDeliveryQueryByPrimaryKey = shopDeliveryService.shopDeliveryQueryByPrimaryKey(shopDelivery);
-				if(shopDeliveryQueryByPrimaryKey != null) {
-					if(shopDelivery.getVersion().equals(shopDeliveryQueryByPrimaryKey.getVersion())) {
-						//バージョン番号が正しいです、削除の作業
-						shopDeliveryDeleteList.add(shopDelivery);
-						shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+				if("1".equals(shopDeliveryFormGet.getOptionType())) {
+					//削除の操作
+					ShopDelivery shopDelivery = beanMapper.map(shopDeliveryFormGet, ShopDelivery.class);
+					ShopDelivery shopDeliveryQueryByPrimaryKey = shopDeliveryService.shopDeliveryQueryByPrimaryKey(shopDelivery);
+					if(shopDeliveryQueryByPrimaryKey != null) {
+						if(shopDelivery.getVersion().equals(shopDeliveryQueryByPrimaryKey.getVersion())) {
+							//バージョン番号が正しいです、削除の作業
+							shopDeliveryDeleteList.add(shopDelivery);
+							shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+						}else {
+							//バージョン番号が不正です
+							//setUpdateFailure("-4")：バージョン番号が不正です
+							shopDeliveryFormGet.setUpdateFailure("-4");
+							failureTemp = true;
+							shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+						}
 					}else {
-						//バージョン番号が不正です
-						//setUpdateFailure("-4")：バージョン番号が不正です
-						shopDeliveryFormGet.setUpdateFailure("-4");
+						//納期情報の主キーはすでに存在しない。確認して再入力してください。
+			            //setUpdateFailure("-3")：削除のエラーが存在する場合
+						shopDeliveryFormGet.setUpdateFailure("-3");
 						failureTemp = true;
-						shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+			            shopDeliveryFormListReturn.add(shopDeliveryFormGet);
 					}
-				}else {
-					//納期情報の主キーはすでに存在しない。確認して再入力してください。
-		            //setUpdateFailure("-3")：削除のエラーが存在する場合
-					shopDeliveryFormGet.setUpdateFailure("-3");
-					failureTemp = true;
-		            shopDeliveryFormListReturn.add(shopDeliveryFormGet);
 				}
 			}else{
 				//新規または修正の操作

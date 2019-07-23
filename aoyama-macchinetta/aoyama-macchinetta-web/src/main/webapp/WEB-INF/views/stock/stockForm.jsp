@@ -462,8 +462,11 @@ function update_button(j){
 					    dataType:"json",
 					    contentType:"application/json",
 					    success:function(result){
-						if(result == false){
+						if(result == "1"){
 							appendAlert("errorMassageIno",getMsg('msg033'));
+							}
+						else if(result == "0"){
+							appendAlert("errorMassageIno",getMsgByTwoArgs('msg108',"在庫情報","在庫情報"));
 							}
 						else{
 							if($("#errorMassageIno").text() == ""){
@@ -677,6 +680,7 @@ $(document).ready(function() {
 					d["theoretical"] = result[i].theoreticalStock - result[i].reservationStock;
 					d["theoreticalStock"] = result[i].theoreticalStock;
 					d["actualStock"] = result[i].actualStock;
+					d["version"] = result[i].version;
 					d["createdAt"] = result[i].createdAt;
 					d["updatedAt"] = result[i].updatedAt;
 					d["updType"] = "<button id='update' class='btn_off btn_blue' onclick='update_button("+(i+1)+")'><font size='3'>更新</font></button>";

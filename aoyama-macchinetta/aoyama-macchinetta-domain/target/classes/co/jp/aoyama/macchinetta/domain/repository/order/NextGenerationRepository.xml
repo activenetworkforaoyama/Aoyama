@@ -17,6 +17,7 @@
     <result column="mowWage" property="mowWage"/>
     <result column="keyItemCode" property="keyItemCode"/>
     <result column="fabricPrice" property="fabricPrice"/>
+    <result column="wsPriceAdjust" property="wsPriceAdjust"/>
     <result column="mfaFactoryCode" property="mfaFactoryCode"/>
     <result column="mbwWage" property="mbwWage"/>
     <result column="mdbwWage" property="mdbwWage"/>
@@ -50,7 +51,7 @@
   </resultMap>
   
   <select id="selectOptionNextGenerationPrice" resultMap="NextGenerationResultMap">
-	select mob.sub_item_code || mob.option_code || mob.option_branch_code as keyCode,		
+	select mob.item_code || mob.sub_item_code || mob.option_code || mob.option_branch_code as keyCode,		
        mob.sub_item_code as mobSubItemCode,		
        mob.option_code as mobOptionCode,		
        mob.option_branch_code as mobOptionBranchCode,		
@@ -66,11 +67,15 @@
 	from  mtb_option_branch as mob		
       left join mtb_option_wage as mow on mob.sub_item_code =  mow.sub_item_code 
       									  and mob.option_code =  mow.option_code 
-      									  and mob.option_branch_code = mow.option_branch_code		
+      									  and mob.option_branch_code = mow.option_branch_code	
+      									  and mob.item_code = mow.item_code
+      									  and mow.factory_code = #{arg4}
       left join mtb_option_accessory_price as moap on mob.sub_item_code =  moap.sub_item_code 
       									   and mob.option_code =  moap.option_code 
-      									   and mob.option_branch_code = moap.option_branch_code		
-	where order_pattern = 'PO' 	
+      									   and mob.option_branch_code = moap.option_branch_code	
+      									   and mob.item_code = moap.item_code
+      									   and moap.factory_code = #{arg4}	
+	where mob.order_pattern = 'PO' and mob.item_code = #{arg5}
 	<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4!=null and param4!=''">	
       and mob.sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3})	
 	</if>
@@ -118,7 +123,6 @@
        and mbw.item_code = mdbap.item_code
        and mdbw.sub_item_code = mdbap.sub_item_code
        and mnap.order_pattern = mdbap.order_pattern
-       and mfa.order_pattern = 'PO'
        and mfa.fabric_no = #{arg5}
        and mbw.item_code = #{arg4}
        and mnap.order_pattern = 'PO'
@@ -146,7 +150,7 @@
   </select>
   
   <select id="selectDetailNextGenerationPrice" resultMap="NextGenerationResultMap">
-  	select mobd.sub_item_code || mobd.option_code || mobd.option_branch_code || moadp.option_branch_detail_code as keyDetailCode,
+  	select mobd.item_code || mobd.sub_item_code || mobd.option_code || mobd.option_branch_code || moadp.option_branch_detail_code as keyDetailCode,
        mobd.sub_item_code as mobdSubItemCode,
        mobd.option_code as mobdOptionCode,
        mobd.option_branch_code as mobdOptionBranchCode, 
@@ -161,11 +165,23 @@
        COALESCE(moadp.price, 0) as moadpPrice,
        COALESCE(moadp.double_price, 0) as moadpDoublePrice
 	from  mtb_option_branch_detail as mobd
-      left join mtb_option_wage as mow on mobd.sub_item_code =  mow.sub_item_code and mobd.option_code =  mow.option_code and mobd.option_branch_code = mow.option_branch_code
-      left join mtb_option_accessory_price as moap on mobd.sub_item_code =  moap.sub_item_code and mobd.option_code =  moap.option_code and mobd.option_branch_code = moap.option_branch_code
-      left join mtb_option_accessory_detail_price as moadp on mobd.sub_item_code =  moadp.sub_item_code and mobd.option_code =  moadp.option_code and mobd.option_branch_code = moadp.option_branch_code and 
-      mobd.option_branch_detail_code = moadp.option_branch_detail_code
-	where order_pattern = 'PO'
+      left join mtb_option_wage as mow on mobd.sub_item_code =  mow.sub_item_code 
+      								  and mobd.option_code =  mow.option_code 
+      								  and mobd.option_branch_code = mow.option_branch_code
+      								  and mobd.item_code = mow.item_code
+      								  and mow.factory_code = #{arg4}
+      left join mtb_option_accessory_price as moap on mobd.sub_item_code =  moap.sub_item_code 
+      									          and mobd.option_code =  moap.option_code 
+      									          and mobd.option_branch_code = moap.option_branch_code 
+      									          and mobd.item_code = moap.item_code
+      									          and moap.factory_code = #{arg4}
+      left join mtb_option_accessory_detail_price as moadp on mobd.sub_item_code =  moadp.sub_item_code 
+      													  and mobd.option_code =  moadp.option_code 
+      													  and mobd.option_branch_code = moadp.option_branch_code 
+      													  and mobd.option_branch_detail_code = moadp.option_branch_detail_code 
+      													  and mobd.item_code = moadp.item_code
+      													  and moadp.factory_code = #{arg4}
+	where mobd.order_pattern = 'PO' and mobd.item_code = #{arg5}
 		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4!=null and param4!=''">	
        		and mobd.sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3})	
 	   </if>
@@ -204,22 +220,23 @@
  	  from mtb_wholesale_piece as mwp,
       		mtb_fabric as mfa
  	  where mwp.factory_code = mfa.factory_code
-	       and mfa.order_pattern = 'PO'
 	       and mfa.fabric_no = #{arg0}
+	       and mfa.order_pattern = 'PO'
   </select>
   <select id="selectMarginRate" resultMap="NextGenerationResultMap">
 	  select margin_rate as marginRate
 	  from mtb_maker_margin as mmm,
 		   mtb_fabric as mfa
 	  where mmm.maker_code = mfa.maker_code
-       		and mfa.order_pattern = 'PO'
 	        and mfa.fabric_no = #{arg0}
+	        and mfa.order_pattern = 'PO'
   </select>
   <select id="selectFactoryCode" resultMap="NextGenerationResultMap">
 	  select mfa.factory_code as mfaFactoryCode,
-	  		 COALESCE(mfa.fabric_price, 0) as fabricPrice
+	  		 COALESCE(mfa.fabric_price, 0) as fabricPrice,
+	  		 COALESCE(mfa.ws_price_adjust, 0) as wsPriceAdjust
 	  from mtb_fabric as mfa
-	  where mfa.order_pattern = 'PO'
-	        and mfa.fabric_no = #{arg0}
+	  where mfa.fabric_no = #{arg0}
+	  		and mfa.order_pattern = 'PO'
   </select>
  </mapper>

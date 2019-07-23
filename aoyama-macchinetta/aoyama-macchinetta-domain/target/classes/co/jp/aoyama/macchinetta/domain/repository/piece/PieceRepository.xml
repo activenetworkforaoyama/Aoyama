@@ -9,6 +9,7 @@
     <result column="product_tariff" property="productTariff" jdbcType="NUMERIC" />
     <result column="product_shipping" property="productShipping" jdbcType="INTEGER" />
     <result column="shipping_error" property="shippingError" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="SMALLINT" />
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
     <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
@@ -23,6 +24,7 @@
     	product_tariff, 
     	product_shipping, 
     	shipping_error, 
+    	version, 
     	mtb_wholesale_piece.created_at, 
     	mtb_wholesale_piece.updated_at,
     	mtb_wholesale_piece.created_user_id, 
@@ -42,6 +44,7 @@
     	product_tariff, 
     	product_shipping, 
     	shipping_error, 
+    	version, 
     	mtb_wholesale_piece.created_at, 
     	mtb_wholesale_piece.updated_at,
     	mtb_wholesale_piece.created_user_id, 
@@ -61,6 +64,7 @@
     	product_tariff, 
     	product_shipping, 
     	shipping_error, 
+    	version, 
     	mtb_wholesale_piece.created_at, 
     	mtb_wholesale_piece.updated_at,
     	mtb_wholesale_piece.created_user_id, 
@@ -90,6 +94,7 @@
     	product_tariff,
     	product_shipping, 
     	shipping_error, 
+    	version, 
     	created_at, 
     	updated_at,
     	created_user_id, 
@@ -102,6 +107,7 @@
       	#{item.productTariff,jdbcType=NUMERIC}, 
       	#{item.productShipping,jdbcType=INTEGER}, 
       	#{item.shippingError,jdbcType=INTEGER}, 
+      	#{item.version,jdbcType=SMALLINT}, 
       	#{item.createdAt,jdbcType=TIMESTAMP}, 
       	#{item.updatedAt,jdbcType=TIMESTAMP},
       	#{item.createdUserId,jdbcType=VARCHAR}, 
@@ -118,6 +124,7 @@
 		product_tariff = #{item.productTariff,jdbcType=NUMERIC},
       	product_shipping = #{item.productShipping,jdbcType=INTEGER},
       	shipping_error = #{item.shippingError,jdbcType=INTEGER},
+      	version = #{item.version,jdbcType=SMALLINT}, 
       	updated_at = #{item.updatedAt,jdbcType=TIMESTAMP},
       	updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR}
     where 

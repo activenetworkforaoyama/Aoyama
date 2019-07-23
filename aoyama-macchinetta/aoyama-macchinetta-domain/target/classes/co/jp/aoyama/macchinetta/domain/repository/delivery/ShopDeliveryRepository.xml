@@ -10,6 +10,7 @@
     <id column="order_on_start_date" property="orderOnStartDate" jdbcType="DATE" />
     <id column="order_on_end_date" property="orderOnEndDate" jdbcType="DATE" />
     <result column="shop_delivery_on" property="shopDeliveryOn" jdbcType="DATE" />
+    <result column="version" property="version" jdbcType="SMALLINT" />
     <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
     <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
     <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
@@ -22,6 +23,7 @@
 		order_on_start_date,
     	order_on_end_date, 
     	shop_delivery_on, 
+    	version, 
     	created_user_id, 
     	created_at, 
     	updated_user_id, 
@@ -43,6 +45,7 @@
 		order_on_start_date,
     	order_on_end_date, 
     	shop_delivery_on, 
+    	version, 
     	created_user_id, 
     	created_at, 
     	updated_user_id, 
@@ -83,6 +86,7 @@
 		order_on_start_date,
     	order_on_end_date, 
     	shop_delivery_on, 
+    	version, 
     	created_user_id, 
     	created_at, 
     	updated_user_id, 
@@ -93,6 +97,7 @@
 		#{item.orderOnStartDate,jdbcType=DATE}, 
 		#{item.orderOnEndDate,jdbcType=DATE}, 
       	#{item.shopDeliveryOn,jdbcType=DATE}, 
+      	#{item.version,jdbcType=SMALLINT}, 
       	#{item.createdUserId,jdbcType=VARCHAR}, 
       	#{item.createdAt,jdbcType=TIMESTAMP}, 
       	#{item.updatedUserId,jdbcType=VARCHAR}, 
@@ -106,6 +111,7 @@
     	mtb_shop_delivery
     SET 
     	shop_delivery_on = #{item.shopDeliveryOn,jdbcType=DATE},
+    	version = #{item.version,jdbcType=SMALLINT}, 
       	updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR},
       	updated_at = #{item.updatedAt,jdbcType=TIMESTAMP}
     WHERE 

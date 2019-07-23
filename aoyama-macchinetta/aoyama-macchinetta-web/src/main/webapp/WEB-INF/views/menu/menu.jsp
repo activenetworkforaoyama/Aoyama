@@ -75,9 +75,6 @@
 		        <a href="${pageContext.request.contextPath}/password/init"> <i class="menu-icon fa fa-lock"></i>パスワード管理</a>
 		    </li>
 		    <li>
-		        <a href="${pageContext.request.contextPath}/maker/init"> <i class="menu-icon fa fa-info-circle"></i>メーカー管理</a>
-		    </li>
-		    <li>
 		        <a href="${pageContext.request.contextPath}/stock/init"> <i class="menu-icon fa fa-list"></i>在庫管理</a>
 		    </li>
 		</c:when>

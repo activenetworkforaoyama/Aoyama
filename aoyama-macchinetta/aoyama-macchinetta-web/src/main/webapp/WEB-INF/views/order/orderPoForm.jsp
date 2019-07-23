@@ -30,7 +30,9 @@ select.hidedown {
 	border-color: #c3e6cb;
 	width:800px;
 }
-
+#custRemark {
+	font-size:.875rem;
+}
 </style>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/chosen.css" type="text/css">
@@ -4600,7 +4602,7 @@ jQuery(document).ready(function(){
 			    	//ステータス設定
 					jQuery("#status").empty();
 					jQuery("#status").html("一時保存");
-				   	appendAlert('successmssage', getMsg('msg015'));
+				   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
 				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
 					version = version.responseText;
 					jQuery("#version").val(version);
@@ -4647,7 +4649,7 @@ jQuery(document).ready(function(){
 			  	    //ステータス設定
 				   	jQuery("#status").empty();
 				   	jQuery("#status").html("取り置き");
-				  	appendAlert('successmssage', getMsg('msg058'));
+				   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
 				  	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
 					version = version.responseText;
 					jQuery("#version").val(version);
@@ -4667,7 +4669,7 @@ jQuery(document).ready(function(){
 	jQuery('#deleteButton').on('click', function(){
 		// 確認ダイアログ表示
 		swal({
-			text:getMsgByOneArg('msg021','注文'),
+			text:getMsg('msg110'),
 			icon:"info",
 			buttons: ["キャンセル", true],
 		}).then((willDelete) => {
@@ -4688,7 +4690,7 @@ jQuery(document).ready(function(){
 	jQuery('#cancelButton').on('click', function() {
 		// 確認ダイアログ表示
 		swal({
-			text:getMsgByOneArg('msg023','注文'),
+			text:getMsg('msg111'),
 			icon:"info",
 			buttons: ["キャンセル", true],
 		}).then((willDelete) => {
@@ -4696,7 +4698,7 @@ jQuery(document).ready(function(){
 				// OK押下時は注文一覧へ
 				var orderId = jQuery('#orderId').val();
 				var version = jQuery("#version").val();
-				window.location.href= contextPath + "/order/logicalDeletion?orderId=" + orderId + "&version=" + version;
+				window.location.href= contextPath + "/order/logicalDelete?orderId=" + orderId + "&version=" + version;
 			} else {
 				// Cancel押下時は何もしない
 			}
@@ -6930,7 +6932,7 @@ function mateInit(){
 			subItemCode = "03";
 			itemCode = item;
 			category = jQuery("#category").val();
-			if(category=="1"){
+			if(category=="0"){
 				initPtStandard(itemCode,subItemCode);
 			}
 			jQuery("#category").change(function(){
@@ -9052,7 +9054,7 @@ function imageCheck(){
     if(item=='01'&&threePiece=='0009901'&&twoPants=='0009901'){
     	var jacketModel = jQuery("#jacketModel").val();
     	if(isEmpty(jacketModel)){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9062,7 +9064,7 @@ function imageCheck(){
 		var jkNumber = jQuery("#selectJacketNumber").val();
 
 		if(isEmpty(jkFigure)||isEmpty(jkNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9078,7 +9080,7 @@ function imageCheck(){
 
     	var pantsModel = jQuery("#op_pantsModel").val();
     	if(pantsModel==""||pantsModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9088,7 +9090,7 @@ function imageCheck(){
 		var ptNumber = jQuery("#selectPantsNumber").val();
 
     	if(isEmpty(ptFigure)||isEmpty(ptNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9100,7 +9102,7 @@ function imageCheck(){
     if(item=='01'&&threePiece=='0009902'&&twoPants=='0009901'){
     	var jacketModel = jQuery("#jacketModel").val();
     	if(jacketModel==""||jacketModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9110,7 +9112,7 @@ function imageCheck(){
 		var jkNumber = jQuery("#selectJacketNumber").val();
 
 		if(isEmpty(jkFigure)||isEmpty(jkNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9118,7 +9120,7 @@ function imageCheck(){
 
 		//ラペルデザイン
 		if (!jQuery("input[name='optionJacketStandardInfo.ojLapelDesign']").is(":checked")) {
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'ラペルデザイン'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'ラペルデザイン'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9126,7 +9128,7 @@ function imageCheck(){
 		
     	var pantsModel = jQuery("#op_pantsModel").val();
     	if(pantsModel==""||pantsModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9136,7 +9138,7 @@ function imageCheck(){
 		var ptNumber = jQuery("#selectPantsNumber").val();
 
     	if(isEmpty(ptFigure)||isEmpty(ptNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9144,7 +9146,7 @@ function imageCheck(){
 
     	var giletModel = jQuery("#giletModel").val();
     	if(giletModel==""||giletModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'GILET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'GILET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9154,7 +9156,7 @@ function imageCheck(){
 		var glNumber = jQuery("#selectGiletNumber").val();
 
     	if(isEmpty(glFigure)||isEmpty(glNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'GILETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'GILETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9165,7 +9167,7 @@ function imageCheck(){
     if(item=='01'&&threePiece=='0009901'&&twoPants=='0009902'){
     	var jacketModel = jQuery("#jacketModel").val();
     	if(jacketModel==""||jacketModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9175,7 +9177,7 @@ function imageCheck(){
 		var jkNumber = jQuery("#selectJacketNumber").val();
 
 		if(isEmpty(jkFigure)||isEmpty(jkNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9191,7 +9193,7 @@ function imageCheck(){
 		
     	var pantsModel = jQuery("#op_pantsModel").val();
     	if(pantsModel==""||pantsModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9201,7 +9203,7 @@ function imageCheck(){
 		var ptNumber = jQuery("#selectPantsNumber").val();
 
     	if(isEmpty(ptFigure)||isEmpty(ptNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9209,7 +9211,7 @@ function imageCheck(){
 
     	var pants2Model = jQuery("#op2_pantsModel").val();
     	if(pants2Model==""||pants2Model==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS（2本目）モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS（2本目）モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9219,7 +9221,7 @@ function imageCheck(){
 		var pt2Number = jQuery("#selectPants2Number").val();
 
     	if(isEmpty(pt2Figure)||isEmpty(pt2Number)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9230,7 +9232,7 @@ function imageCheck(){
     if(item=='01'&&threePiece=='0009902'&&twoPants=='0009902'){
     	var jacketModel = jQuery("#jacketModel").val();
     	if(jacketModel==""||jacketModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9240,7 +9242,7 @@ function imageCheck(){
 		var jkNumber = jQuery("#selectJacketNumber").val();
 
 		if(isEmpty(jkFigure)||isEmpty(jkNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9258,7 +9260,7 @@ function imageCheck(){
 		var ptNumber = jQuery("#selectPantsNumber").val();
 
     	if(isEmpty(ptFigure)||isEmpty(ptNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9266,7 +9268,7 @@ function imageCheck(){
 		
     	var pantsModel = jQuery("#op_pantsModel").val();
     	if(pantsModel==""||pantsModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9274,7 +9276,7 @@ function imageCheck(){
 
     	var pants2Model = jQuery("#op2_pantsModel").val();
     	if(pants2Model==""||pants2Model==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS（2本目）モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS（2本目）モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9284,7 +9286,7 @@ function imageCheck(){
 		var pt2Number = jQuery("#selectPants2Number").val();
 
     	if(isEmpty(pt2Figure)||isEmpty(pt2Number)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9292,7 +9294,7 @@ function imageCheck(){
 
     	var giletModel = jQuery("#giletModel").val();
     	if(giletModel==""||giletModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'GILET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'GILET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9302,7 +9304,7 @@ function imageCheck(){
 		var glNumber = jQuery("#selectGiletNumber").val();
 
     	if(isEmpty(glFigure)||isEmpty(glNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'GILETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'GILETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9312,7 +9314,7 @@ function imageCheck(){
     if(item=='02'){
     	var jacketModel = jQuery("#jacketModel").val();
     	if(jacketModel==""||jacketModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9322,7 +9324,7 @@ function imageCheck(){
 		var jkNumber = jQuery("#selectJacketNumber").val();
 
 		if(isEmpty(jkFigure)||isEmpty(jkNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'JACKETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'JACKETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9341,7 +9343,7 @@ function imageCheck(){
     if(item=='03'){
     	var pantsModel = jQuery("#op_pantsModel").val();
     	if(pantsModel==""||pantsModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTS モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9350,7 +9352,7 @@ function imageCheck(){
 		var ptNumber = jQuery("#selectPantsNumber").val();
 
     	if(isEmpty(ptFigure)||isEmpty(ptNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9360,7 +9362,7 @@ function imageCheck(){
     if(item=='04'){
     	var giletModel = jQuery("#giletModel").val();
     	if(giletModel==""||giletModel==null){
-    		appendAlert('errormssage', getMsgByOneArg('msg003', 'GILET モデル'));
+    		appendAlert('errormssage', getMsgByOneArg('msg066', 'GILET モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
@@ -9370,7 +9372,7 @@ function imageCheck(){
 		var glNumber = jQuery("#selectGiletNumber").val();
 
     	if(isEmpty(glFigure)||isEmpty(glNumber)){
-			appendAlert('errormssage', getMsgByOneArg('msg003', 'GILETサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'GILETサイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -10008,13 +10010,6 @@ function stockCheck(){
 					    	versionFlag = "1";
 						}
 				    });
-				/* if(versionFlag == "0"){
-					var version = jQuery("#version").val();
-					version = Number(version)+1;
-					jQuery("#version").val(version);
-				}else{
-					jQuery("#version").val(jQuery("#version").val());
-				} */
 			}
 			//生地によって、商品を表示
 			if(checkResult == "0"||checkResult == "2"){
@@ -10249,16 +10244,18 @@ function fabricView(item,productFabricNo){
 				 //理論在庫を表示
 				 jQuery("#fabric_brand_nm_p").html(result.brandName);
 				 jQuery("#service_nm_p").html(result.materialName);
-			     if(result.compositionLabel.indexOf("/") != -1 ){
+				 
+				 //組成表示　表地
 				 jQuery("#compos_frt_fabric_p").empty();
-				 var labelArray = new Array();
-				 labelArray = result.compositionLabel.split("/");
-				 	for (i=0; i<labelArray.length; i++ ){
-						jQuery("#compos_frt_fabric_p").append(labelArray[i]+"%").append("<Br>");
-					}
-				 }else{
-				     	jQuery("#compos_frt_fabric_p").html(result.compositionLabel+"%");
+				 var compositionLabel = result.compositionLabel;
+				 compositionLabel = compositionLabel.split("%");
+				 for (i=0; i<compositionLabel.length; i++ ){
+						if(compositionLabel[i]!=""){
+							jQuery("#compos_frt_fabric_p").append(compositionLabel[i]+"%").append("<Br>");
+						}
 				 }
+
+				 
 				 jQuery("#notice").html(result.handlingCaution);
 				 allPrice();
 			 }

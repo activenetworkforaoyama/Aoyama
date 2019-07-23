@@ -2687,19 +2687,17 @@ function clearNoNum(obj) {
     if(obj.value.indexOf(".")==-1){
 		obj.value = obj.value.substring(0,3);
 	}
-} 
+}
 
 //組成表示　表地
+jQuery("#composFrtFabric").empty();
 var result = "${order.productComposFrtFabric}";
-if(result.indexOf("/") != -1 ){
-	 var labelArray = new Array();
-	 labelArray = result.split("/");
-	 for (i=0; i<labelArray.length; i++ ){
-		 jQuery("#composFrtFabric").append(labelArray[i]+"%").append("<Br>");
-	 }
- 	 }else{
-	 	 jQuery("#composFrtFabric").html(result +"%");
- 	 }
+var compositionLabel = result.split("%");
+for (i=0; i<compositionLabel.length; i++ ){
+		if(compositionLabel[i]!=""){
+			jQuery("#composFrtFabric").append(compositionLabel[i]+"%").append("<Br>");
+		}
+}
 
 //組成表示　胴裏地
 var result = "${order.productComposBodyLiner}";

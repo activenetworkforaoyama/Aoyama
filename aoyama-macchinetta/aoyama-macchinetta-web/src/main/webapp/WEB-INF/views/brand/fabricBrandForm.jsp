@@ -624,7 +624,11 @@ $(document).ready(function() {
 											/* errorRowNum[eRNum] = result[i].num;
 											eRNum++; */
 											updateFlag = false;
+											appendAlert("errorMassageIno",getMsg('msg101'));
 										}
+										if(result[i].updateFailure == '-2'){
+											appendAlert("errorMassageIno",getMsgByTwoArgs('msg108',"生地ブランド","生地ブランド"));
+											}
 									}
 							    	var dSuccessTemp = true;
 							    	for(var i = 0; i < result.length; i++) {
@@ -652,7 +656,7 @@ $(document).ready(function() {
 										// 更新します
 								    	appendAlert("successMessage",getMsgByOneArg('msg044', "生地ブランド情報"));
 									}else{
-										appendAlert("errorMassageIno",getMsg('msg101'));
+										//appendAlert("errorMassageIno",getMsg('msg101'));
 										}
 							    	// SlickGridテーブルを作成
 									dataView = new Slick.Data.DataView();

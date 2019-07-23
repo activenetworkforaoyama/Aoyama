@@ -50,17 +50,17 @@ public class CashReconfirmController {
 	
 	Cash cash = new Cash();
 	
-	private CashForm cashForm = new  CashForm();
+	//private CashForm cashForm = new  CashForm();
 		
 
 	@ModelAttribute(value = "cashForm")
 	public CashForm setupCashForm() {
-		return cashForm;
+		return new  CashForm();
 	}
 
 	@RequestMapping(value = "cashReForm")
-	public String toCashReForm(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model,HttpServletRequest req) {
-		this.cashForm = (CashForm) req.getSession().getAttribute("cashForm");
+	public String toCashReForm(Model model,HttpServletRequest req) {
+		CashForm cashForm = (CashForm) req.getSession().getAttribute("cashForm");
 		return "cash/cashReconfirmForm";
 		
 	}
@@ -73,12 +73,13 @@ public class CashReconfirmController {
 	 * @return
 	 */
 	@RequestMapping(value = "cashReFormInDb", method = RequestMethod.POST)
-	public String cashReFormInDb(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model, HttpServletRequest request) {
-		this.cashForm = (CashForm)request.getSession().getAttribute("cashForm");
+	public String cashReFormInDb(CashForm cashForm,Model model, HttpServletRequest request) {
+//		CashForm cashForm = new CashForm();
+		cashForm = (CashForm)request.getSession().getAttribute("cashForm");
 		//JSPversion
-		String cashFormVersion = this.cashForm.getVersion();
-		cash.setCashId(this.cashForm.getCashId());
-		cash.setShopCode(this.cashForm.getShopCode());
+		String cashFormVersion = cashForm.getVersion();
+		cash.setCashId(cashForm.getCashId());
+		cash.setShopCode(cashForm.getShopCode());
 		//注文合計
 		String cashTotalPrice = cashForm.getCashTotalPrice().replace(",","");
 		cash.setCashTotalPrice(Integer.parseInt(cashTotalPrice));
@@ -89,15 +90,15 @@ public class CashReconfirmController {
 		String cashTaxAmount = cashForm.getCashTaxAmount().replace(",","");
 		cash.setCashTaxAmount(Integer.parseInt(cashTaxAmount));
 		//オーダーパターン
-		cash.setOrderPattern(this.cashForm.getOrderPattern());
+		cash.setOrderPattern(cashForm.getOrderPattern());
 		//業態
-		cash.setStoreBrandCode(this.cashForm.getStoreBrandCode());
+		cash.setStoreBrandCode(cashForm.getStoreBrandCode());
 		//営業担当者
-		cash.setStoreStaffNm(this.cashForm.getCustStaff());
-		cash.setProductOrderdDate(this.cashForm.getProductOrderdDate());
-		cash.setCustCd(this.cashForm.getCustCd());
-		cash.setOrderAmount(this.cashForm.getOrderAmount());
-		List<CashInfo> cashInfoList = this.cashForm.getHelpCashForm();
+		cash.setStoreStaffNm(cashForm.getCustStaff());
+		cash.setProductOrderdDate(cashForm.getProductOrderdDate());
+		cash.setCustCd(cashForm.getCustCd());
+		cash.setOrderAmount(cashForm.getOrderAmount());
+		List<CashInfo> cashInfoList = cashForm.getHelpCashForm();
 		String json = new Gson().toJson(cashInfoList);
 		List<CashInfo> cashInfoUpdList = new ArrayList<CashInfo>();
 		long totalPrice= Long.parseLong(cashTotalPrice);
@@ -107,7 +108,7 @@ public class CashReconfirmController {
 		for(int i = 0;i<cashInfoList.size();i++) {
 			discountPrice += cashInfoList.get(i).getCashDiscountPrice();
 		}
-		Cash cashId = cashService.selectByPrimaryKey(this.cashForm.getCashId());
+		Cash cashId = cashService.selectByPrimaryKey(cashForm.getCashId());
 		// 新規会計の場合
 		if(cashId == null) {
 			for(int i = 0;i<cashForm.getHelpCashForm().size();i++) {
@@ -120,7 +121,7 @@ public class CashReconfirmController {
 				}else {
 					cashInfo.setCashContailTaxProductPrice(0);
 				}
-				if(cashInfo.getVersion() == cashInfoList.get(i).getVersion()) {
+				if(cashInfo.getVersion().equals(cashInfoList.get(i).getVersion())) {
 					//値引き後金額
 					cashInfo.setCashDiscountPrice(cashInfoList.get(i).getCashDiscountPrice());
 					//会計ID
@@ -142,7 +143,7 @@ public class CashReconfirmController {
 				}
 			}
 			if(cashInfoUpdList.size() == cashInfoList.size()) {
-				cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
+				//cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
 				// 01：会計済
 				cash.setCreatedAt(new Date());
 				cash.setCreatedUserId(sessionContent.getUserId());
@@ -150,9 +151,11 @@ public class CashReconfirmController {
 				cash.setUpdatedUserId(sessionContent.getUserId());
 				cash.setCashStatus(CASH_STATUST01);
 				cash.setVersion(version);
-				cashService.insertCash(cash);
+				//cashService.insertCash(cash);
+				cashService.insertCashUpdateCashInfo(cashInfoUpdList, cash);
 			}
 			model.addAttribute("status","fromOrderList");
+			model.addAttribute("cashId",cashForm.getCashId());
 		}
 		//会計修正更新の場合
 		else {
@@ -167,7 +170,7 @@ public class CashReconfirmController {
 				}else {
 					cashInfo.setCashContailTaxProductPrice(0);
 				}
-				if(cashInfo.getVersion() == cashInfoList.get(i).getVersion()) {
+				if(cashInfo.getVersion().equals(cashInfoList.get(i).getVersion())) {
 					//値引き後金額
 					cashInfo.setCashDiscountPrice(cashInfoList.get(i).getCashDiscountPrice());
 					//会計ID
@@ -188,7 +191,7 @@ public class CashReconfirmController {
 			}
 			//排他制御
 			if(cashFormVersion.equals(nowVersion) && cashInfoUpdList.size() == cashInfoList.size()) {
-				cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
+				//cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
 				cashId.setUpdatedAt(new Date());
 				cashId.setUpdatedUserId(sessionContent.getUserId());
 				//注文合計
@@ -197,7 +200,8 @@ public class CashReconfirmController {
 				cashId.setCashExceptTaxPrice(Integer.parseInt(cashExceptTaxPrice));
 				//内消費税
 				cashId.setCashTaxAmount(Integer.parseInt(cashTaxAmount));
-				cashService.updateCash(cashId);
+				//cashService.updateCash(cashId);
+				cashService.updateAll(cashInfoUpdList, cashId);
 			}else {
 				ResultMessages messages = ResultMessages.error();
 	            messages.add("E025", cashId.getVersion());
@@ -205,7 +209,7 @@ public class CashReconfirmController {
 	            model.addAttribute("json", json);
 	            return "cash/cashReconfirmForm";
 			}
-			
+			model.addAttribute("cashId",cashForm.getCashId());
 			model.addAttribute("status","fromAccounting");
 		}
 		return "forward:/cashResult/cashResultForm";
@@ -227,7 +231,7 @@ public class CashReconfirmController {
 		List<CashInfo> cashInfoUpdList = new ArrayList<CashInfo>();
 		for(int i = 0; i < CashInfoList.size(); i ++) {
 			CashInfo cashInfo = cashInfoService.selectOrderByOrderId(CashInfoList.get(i).getOrderId());
-			if(cashInfo.getVersion() == CashInfoList.get(i).getVersion()) {
+			if(cashInfo.getVersion().equals(CashInfoList.get(i).getVersion())) {
 				// T2 ：登録済（会計済->登録済)
 				cashInfo.setTscStatus(TSC_STATUST2);
 				cashInfo.setUpdatedAt(new Date());
@@ -255,8 +259,9 @@ public class CashReconfirmController {
 			cash.setCashStatus(CASH_STATUST02);
 			cash.setUpdatedAt(new Date());
 			cash.setUpdatedUserId(sessionContent.getUserId());
-			cashService.updateCash(cash);
-			cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
+//			cashService.updateCash(cash);
+//			cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
+			cashService.updateAll(cashInfoUpdList, cash);
 		}else {
 			ResultMessages messages = ResultMessages.error();
             messages.add("E025", cash.getVersion());
@@ -266,6 +271,7 @@ public class CashReconfirmController {
 		}
 		String status = cash.getCashStatus();
 		model.addAttribute("status",status);
+		model.addAttribute("cashId",cashId);
 		return "forward:/cashResult/cashResultForm";
 	}
 }

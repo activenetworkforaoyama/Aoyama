@@ -610,28 +610,28 @@
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
-										//{0}の更新が失敗しました。
-										appendAlert("errorMessage",getMsgByTwoArgs('msg064', "納期情報"));
+										//{0}の更新ができませんでした。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg109', "納期情報"));
 									}else if("-2" == result[i].updateFailure){
 										//修正のエラーが存在する場合
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
-										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										//msg108 = 別の端末で{0}が変更されています。最新の{0}を検索し直してください。
 										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
 									}else if("-3" == result[i].updateFailure){
 										//削除のエラーが存在する場合
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
-										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										//msg108 = 別の端末で{0}が変更されています。最新の{0}を検索し直してください。
 										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
 									}else if("-4" == result[i].updateFailure){
 										//バージョン番号が不正です
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
-										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										//msg108 = 別の端末で{0}が変更されています。最新の{0}を検索し直してください。
 										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "納期情報"));
 									}
 								}
@@ -667,8 +667,8 @@
 								}
 						    	
 								if(dSuccessTemp == true && $("#errorMessage").text() == ""){
-									// 更新します
-									appendAlert("successMessage",getMsgByOneArg('msg044', "納期情報"));
+									// msg026 = {0}を更新しました。
+									appendAlert("successMessage",getMsgByOneArg('msg026', "納期情報"));
 								}
 
 						    	// (4) SlickGridテーブルを作成

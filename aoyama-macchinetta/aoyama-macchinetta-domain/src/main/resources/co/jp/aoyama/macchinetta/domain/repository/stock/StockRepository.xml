@@ -17,6 +17,7 @@
         <result property="retailPrice" column="retail_price" />
         <result property="actualStock" column="actual_stock" />
         <result property="reservationStock" column="reservation_stock" />
+        <result property="version" column="version" />
         <result property="createdAt" column="created_at" />
         <result property="createdUserId" column="created_user_id" />
         <result property="updatedAt" column="updated_at" />
@@ -35,7 +36,8 @@
 			a.retail_price,
 			d.Theoretical_stock,
 			d.actual_stock,
-			d.fabric_no
+			d.fabric_no,
+			d.version
 		FROM
      		mtb_fabric AS a,mtb_fabric_brand AS b,mtb_factory AS c,mtb_stock AS d
  		WHERE 
@@ -49,7 +51,8 @@
 		SELECT 
 		    fabric_no, 
             theoretical_stock, 
-            actual_stock, 
+            actual_stock,
+            version, 
             created_at,
             updated_at 
         FROM
@@ -69,7 +72,8 @@
 			d.reservation_stock,
 			d.Theoretical_stock,
 			d.actual_stock,
-			d.fabric_no
+			d.fabric_no,
+			d.version
 		FROM
      		mtb_fabric AS a,mtb_fabric_brand AS b,mtb_factory AS c,mtb_stock AS d,mtb_maker e
  		WHERE
@@ -112,11 +116,12 @@
         	fabric_no = #{item.fabricNo},
             theoretical_stock = #{item.theoreticalStock}, 
             actual_stock = #{item.actualStock},
+            version = #{item.version} + 1,
             created_user_id =#{item.createdUserId},
             updated_user_id =#{item.updatedUserId},
             updated_at = #{item.updatedAt} 
         WHERE
-            fabric_no = #{item.fabricNo}
+            fabric_no = #{item.fabricNo} and version = #{item.version}
 		</foreach>
     </update>
     

@@ -28,4 +28,6 @@ public interface OrderListRepository {
 	void updateNextGeneration(String orderId,Integer nextGenerationP,String updatedUserId,Date updatedAt,Short orderVersion);
 	
 	void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt);
+	
+	List<Order> fuzzyQuery(@Param("condition") OrderCondition condition);
 }

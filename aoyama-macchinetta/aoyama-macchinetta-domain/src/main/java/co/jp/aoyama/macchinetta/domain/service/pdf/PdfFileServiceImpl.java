@@ -131,13 +131,13 @@ public class PdfFileServiceImpl implements PdfFileService{
                 	//名簿納期
             		form.getField("Cust_deliver_date_data").setData(dateChange(order.getCustDeliverDate()));
                 	//組成
-                	form.getField("Product_compos_data").setData(order.getProductComposFrtFabric()+","+order.getProductComposBodyLiner()+","+order.getProductComposSleeveLiner());
+                	form.getField("Product_compos_data").setData(stringChange(order.getProductComposFrtFabric())+","+stringChange(order.getProductComposBodyLiner())+","+stringChange(order.getProductComposSleeveLiner()));
                 	//お客様備考
                 	form.getField("Cust_remark_data").setData(stringChange(order.getCustRemark()));
                 	//A行
-                	form.getField("Host_transmit_A_row_data").setData("4906500000303");
+                	form.getField("Host_transmit_A_row_data").setData(stringChange(order.getHostTransmitARow()));
                 	//出荷番号
-                	form.getField("Shipping_no_data").setData("A31800000203987001A");
+                	form.getField("Shipping_no_data").setData("A"+stringChange(order.getShippingNumber())+"A");
                 	insertPoOrderData(form, order);
                 	insertPoMeasuringData(form, measuring);
     			}else if("2".equals(sign)) {
@@ -147,7 +147,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     				//名簿納期
     				form.getField("Cust_deliver_date_data").setData(dateChange(order.getCustDeliverDate()));
     				//組成
-    				form.getField("Data106").setData(order.getProductComposFrtFabric()+","+order.getProductComposBodyLiner()+","+order.getProductComposSleeveLiner());
+    				form.getField("Data106").setData(stringChange(order.getProductComposFrtFabric())+","+stringChange(order.getProductComposBodyLiner())+","+stringChange(order.getProductComposSleeveLiner()));
     				//お客様備考
     				form.getField("Data107").setData(stringChange(order.getCustRemark()));
     				insertPoOrderData(form, order);
@@ -159,7 +159,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     				//お渡し日
     				form.getField("Cust_shop_delivery_date_data").setData(dateChange(order.getCustShopDeliveryDate()));
     				//組成
-    				form.getField("Product_compos_data").setData(order.getProductComposFrtFabric()+","+order.getProductComposBodyLiner()+","+order.getProductComposSleeveLiner());
+    				form.getField("Product_compos_data").setData(stringChange(order.getProductComposFrtFabric())+","+stringChange(order.getProductComposBodyLiner())+","+stringChange(order.getProductComposSleeveLiner()));
     				//お客様備考
     				form.getField("Cust_remark_data").setData(stringChange(order.getCustRemark()));
     				insertPoOrderData(form, order);
@@ -491,8 +491,6 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Pt_hem_up_data").setData(stringChange(order.getPtHemUpNm()));
 		//ダブル幅
 		form.getField("Pt_dbl_width_data").setData(stringChange(order.getPtDblWidthNm()));
-		//AMFステッチ
-		//form.getField("Pt_amf_color_type_data").setData(stringChange(order.getPtAmfStitchNm()));
 		//釦素材
 		form.getField("Pt_btn_material_data").setData(stringChange(order.getPtBtnMaterialNm()));
 		//エイト（滑り止め）
@@ -515,8 +513,6 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Pt_hem_up_data2").setData(stringChange(order.getPt2HemUpNm()));
 		//ダブル幅
 		form.getField("Pt_dbl_width_data2").setData(stringChange(order.getPt2DblWidthNm()));
-		//AMFステッチ
-		//form.getField("Pt2_amf_color_type_data2").setData(stringChange(order.getPt2AmfStitchNm()));
 		//釦素材
 		form.getField("Pt_btn_material_data2").setData(stringChange(order.getPt2BtnMaterialNm()));
 		//エイト（滑り止め）

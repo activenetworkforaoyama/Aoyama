@@ -25,4 +25,6 @@ public interface OrderListService {
 	
 	void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt);
 	
+	List<Order> fuzzyQuery(OrderCondition condition);
+	
 }

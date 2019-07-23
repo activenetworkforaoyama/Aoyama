@@ -83,24 +83,24 @@
   </select>
   
   <select id="getStandardOption" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select order_pattern, sub_item_code, option_code, option_branch_code, 
-    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_price, option_branch_double_price,
+    select DISTINCT order_pattern, sub_item_code, option_code, option_branch_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name,
     display_order, created_user_id, created_at, updated_user_id, updated_at
     from mtb_option_branch where standard_available = '1' 
-    and order_pattern = #{orderPattern} order by display_order,option_code,option_branch_code
+    and order_pattern = #{orderPattern} order by display_order
   </select>
   
   <select id="getTuxedoOption" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select order_pattern, sub_item_code, option_code, option_branch_code, 
-    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_price, option_branch_double_price,
+    select DISTINCT order_pattern, sub_item_code, option_code, option_branch_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name,
     display_order, created_user_id, created_at, updated_user_id, updated_at
     from mtb_option_branch where tuxedo_available = '1'
     and order_pattern = #{orderPattern} order by display_order
   </select>
   
   <select id="getWashableOption" resultMap="BaseResultMap" parameterType="java.lang.String">
-    select order_pattern, sub_item_code, option_code, option_branch_code, 
-    standard_available, tuxedo_available, washable_available, option_branch_name, option_branch_price, option_branch_double_price,
+    select DISTINCT order_pattern, sub_item_code, option_code, option_branch_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name,
     display_order, created_user_id, created_at, updated_user_id, updated_at
     from mtb_option_branch where washable_available = '1' 
     and order_pattern = #{orderPattern} order by display_order

@@ -20,6 +20,7 @@ public class OptionJacketTuxedoInfo implements Serializable{
     private String tjGrade;
 
     private Map<String,String> tjGradeMap;
+    
     //裏仕様
   	private String tjBackSpec;
       

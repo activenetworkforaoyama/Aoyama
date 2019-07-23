@@ -306,23 +306,6 @@ public class OrderDetailController {
 			model.addAttribute("authority", authority);
 			return "detail/orderPoDetail";
 		}
-		
-		OrderDetail selectActualStock = orderDetailService.selectActualStock(fabricNo);
-		BigDecimal actualStock = selectActualStock.getActualStock();
-		BigDecimal remainActualStock;
-		if(fabricUsedMountD == null || "".equals(fabricUsedMount)) {
-			remainActualStock =actualStock.subtract(new BigDecimal(0.0));
-		}
-		else {
-			remainActualStock =actualStock.subtract(fabricUsedMountD);
-		}
-		
-		//最終更新者
-		String updatedUserId = sessionContent.getUserId();
-		//最終更新日時
-		Date updatedAt = new Date();
-		orderListService.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
-		
 		String isUpdate = "1";
 		model.addAttribute("isUpdate",isUpdate);
 		return "order/orderPoLoginResultForm";
@@ -372,16 +355,6 @@ public class OrderDetailController {
 			model.addAttribute("authority", authority);
 			return "detail/orderPoDetail";
 		}
-		
-		OrderDetail selectActualStock = orderDetailService.selectActualStock(fabricNo);
-		BigDecimal actualStock = selectActualStock.getActualStock();
-		BigDecimal remainActualStock =actualStock.subtract(fabricUsedMountD);
-		//最終更新者
-		String updatedUserId = sessionContent.getUserId();
-		//最終更新日時
-		Date updatedAt = new Date();
-		orderListService.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
-		
 		String isUpdate = "1";
 		model.addAttribute("isUpdate",isUpdate);
 		return "order/orderPoLoginResultForm";

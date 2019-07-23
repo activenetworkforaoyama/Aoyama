@@ -44,28 +44,28 @@
 							<c:if test="${isUpdate == '2'}">
 							<div class="row">
 								<div class="col col-md-12">
-									<strong><output>注文削除を受け付けました。</output></strong>
+									<strong><output>注文を削除しました。</output></strong>
 								</div>
 							</div>
 							</c:if>
 							<c:if test="${isUpdate == '3'}">
 							<div class="row">
 								<div class="col col-md-12">
-									<strong><output>注文取消を受け付けました。</output></strong>
+									<strong><output>注文を取り消しました。</output></strong>
 								</div>
 							</div>
 							</c:if>
 							<c:if test="${isFailure == '1'}">
 							<div class="row">
 								<div class="col col-md-12">
-									<strong><output>オーダー登録が失敗しました。</output></strong>
+									<strong><output>オーダー登録ができませんでした。</output></strong>
 								</div>
 							</div>
 							</c:if>
 							<c:if test="${isFailure == '2'}">
 							<div class="row">
 								<div class="col col-md-12">
-									<strong><output>オーダー更新が失敗しました。</output></strong>
+									<strong><output>オーダー更新ができませんでした。</output></strong>
 								</div>
 							</div>
 							</c:if>

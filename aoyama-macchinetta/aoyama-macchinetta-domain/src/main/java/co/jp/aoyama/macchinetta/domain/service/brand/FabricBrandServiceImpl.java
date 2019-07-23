@@ -44,26 +44,21 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 		List<FabricBrand> fabricBrandInsertList = new ArrayList<FabricBrand>();
 		List<FabricBrand> fabricBrandUpdList = new ArrayList<FabricBrand>();
 		boolean falg = true;
+		short version = 1;
 		int num = 1;
 		for(int i=0;i<fabricBrandList.size();i++) {
 			FabricBrand fabricBrand = fabricBrandList.get(i);
 			// "1"は更新区分
 			if("1".equals(fabricBrand.getOptionType())) {
 				FabricBrand fabricBrandFind = fabricBrandRepository.findFabricBrandByPk(fabricBrand.getFablicBrandNo());
-				if(fabricBrandFind != null) {
+				if(fabricBrandFind != null && fabricBrand.getVersion().equals(fabricBrandFind.getVersion()) ) {
 					fabricBrand.setUpdatedAt(new Date());
 					fabricBrandUpdList.add(fabricBrand);
-				}else {
-					/*
-					 * ResultMessages messages = ResultMessages.error();
-					 * 
-					 * messages.add("E014", fabricBrand.getFablicBrandNo());
-					 * 
-					 * logger.error(messages.toString());
-					 * 
-					 * throw new ResourceNotFoundException(messages);
-					 */
+				}else if(fabricBrandFind == null){
 					fabricBrandList.get(i).setUpdateFailure("-1");
+					falg = false;
+				}else {
+					fabricBrandList.get(i).setUpdateFailure("-2");
 					falg = false;
 				}
 			}
@@ -83,6 +78,7 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 				}
 				FabricBrand fabricBrandFind = fabricBrandRepository.findFabricBrandByPk(fabricBrand.getFablicBrandNo());
 				if(fabricBrandFind == null) {
+					fabricBrand.setVersion(version);
 					fabricBrand.setCreatedAt(new Date()); 
 					fabricBrand.setUpdatedAt(new Date());
 					fabricBrand.setCreatedUserId(fabricBrand.getUpdatedUserId());
@@ -106,6 +102,16 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 			
 			if(fabricBrandInsertList.size()!=0) {
 				fabricBrandRepository.insertFabricBrandByKey(fabricBrandInsertList);
+			}
+			for(int i = 0 ;i<fabricBrandList.size();i++) {
+				if("1".equals(fabricBrandList.get(i).getOptionType())) {
+					short ver = fabricBrandList.get(i).getVersion();
+					fabricBrandList.get(i).setVersion(++ver);
+				}
+				if("2".equals(fabricBrandList.get(i).getOptionType())) {
+					short ver = 1;
+					fabricBrandList.get(i).setVersion(ver);
+				}
 			}
 		}
 		return fabricBrandList;

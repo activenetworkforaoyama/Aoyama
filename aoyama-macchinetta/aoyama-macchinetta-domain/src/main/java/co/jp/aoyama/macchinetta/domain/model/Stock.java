@@ -44,6 +44,8 @@ public class Stock implements Serializable {
     private String optionType;
     
     private String fablicBrandNo;
+    
+    private Short version;
 
 	public String getFabricNo() {
 		return fabricNo;
@@ -187,6 +189,14 @@ public class Stock implements Serializable {
 
 	public void setFablicBrandNo(String fablicBrandNo) {
 		this.fablicBrandNo = fablicBrandNo;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
     
 }

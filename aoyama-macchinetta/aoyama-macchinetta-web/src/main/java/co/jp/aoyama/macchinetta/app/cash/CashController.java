@@ -45,9 +45,7 @@ public class CashController {
 	ConsumptionService consumptionService;
 
 	
-	private Cash cash = new Cash();
-	
-	private CashForm cashForm = new  CashForm();
+	//private Cash cash = new Cash();
 	
 	
 	@Inject
@@ -55,7 +53,7 @@ public class CashController {
 	
 	@ModelAttribute(value = "cashForm")
 	public CashForm setupCashForm() {
-		return cashForm;
+		return new CashForm();
 	}
 	
 	@RequestMapping(value = "init")
@@ -71,8 +69,7 @@ public class CashController {
 	 * @return
 	 */
 	@RequestMapping(value = "goBack")
-	public String goBack(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model,SessionStatus sessionStatus) {
-		sessionStatus.setComplete();
+	public String goBack(@ModelAttribute(value = "cashForm")CashForm cashForm,Model model) {
 		Date date = new Date();
 		// 消費税を取得
 		int taxRate = consumptionService.getTaxRate(date);
@@ -94,8 +91,8 @@ public class CashController {
 	 * @return
 	 */
 	@RequestMapping(value = "/gotoCash/{orderIdArray}",method = { RequestMethod.POST, RequestMethod.GET }) 
-	public String gotoCash(@PathVariable(value ="orderIdArray") String orderIdArray, Model model,SessionStatus sessionStatus) { 
-		sessionStatus.setComplete();
+	public String gotoCash(CashForm cashForm,@PathVariable(value ="orderIdArray") String orderIdArray, Model model) {
+//		CashForm cashForm = new CashForm();
 		String[] strs = orderIdArray.split(",");
 		Arrays.sort(strs); 
 		List<CashInfo> helpCashForm = new ArrayList<CashInfo>();
@@ -137,8 +134,9 @@ public class CashController {
 	 * @return
 	 */
 	@RequestMapping(value = "/goToAccountingLink/{cashId}",method = { RequestMethod.POST, RequestMethod.GET })
-	public String goToAccountingLink(@PathVariable(value ="cashId") String cashId,Model model,SessionStatus sessionStatus) {
-		sessionStatus.setComplete();
+	public String goToAccountingLink(CashForm cashForm,@PathVariable(value ="cashId") String cashId,Model model,SessionStatus sessionStatus) {
+//		CashForm cashForm = new CashForm();
+//		sessionStatus.setComplete();
 		// 会計IDによって 会計を取得
 		Cash cash = cashService.selectByPrimaryKey(cashId);
 		List<Cash> cashList = cashService.selectOrderByCashId(cash.getCashId());

@@ -10,6 +10,7 @@
 		<id property="shopCode" column="shop_code" />
 		<result property="shopName" column="shop_name" />
 		<result property="storeBrandCode" column="store_brand_code" />
+		<result property="version" column="version" />
 		<result property="createdUserId" column="created_user_id" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedUserId" column="updated_user_id" />
@@ -22,12 +23,30 @@
 			shop_code,
 			shop_name,
 			store_brand_code,
+			version,
 			created_user_id,
 			created_at,
 			updated_user_id,
 			updated_at
 		FROM
-			mtb_shop order by shop_code
+			mtb_shop 
+			order by shop_code
+	</select>
+	
+	<select id="findUnlessShop" resultMap="shopResultMap">
+		SELECT
+			shop_code,
+			shop_name,
+			store_brand_code,
+			version,
+			created_user_id,
+			created_at,
+			updated_user_id,
+			updated_at
+		FROM
+			mtb_shop 
+			where <![CDATA[ shop_code <> #{id} ]]>
+			order by shop_code
 	</select>
 
 	<select id="findShopByPk" parameterType="string" resultType="Shop">
@@ -35,6 +54,7 @@
 			shop_code,
 			shop_name,
 			store_brand_code,
+			version,
 			created_user_id,
 			created_at,
 			updated_user_id,
@@ -48,14 +68,14 @@
 	<insert id="insertShopByPk">
 		INSERT
 		INTO
-		mtb_shop(shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at)
-		VALUES(#{shopCode},#{shopName},#{storeBrandCode},#{createdUserId},#{createdAt},#{updatedUserId},#{updatedAt})
+		mtb_shop(shop_code,shop_name,store_brand_code,version,created_user_id,created_at,updated_user_id,updated_at)
+		VALUES(#{shopCode},#{shopName},#{storeBrandCode},#{version},#{createdUserId},#{createdAt},#{updatedUserId},#{updatedAt})
 	</insert>
 	
 	<insert id="insertAllShopByPk" parameterType="java.util.List">
-		INSERT INTO mtb_shop (shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at) values
+		INSERT INTO mtb_shop (shop_code,shop_name,store_brand_code,version,created_user_id,created_at,updated_user_id,updated_at) values
 		<foreach collection="shopList" item="item" index="index" separator=",">
-            (#{item.shopCode},#{item.shopName},#{item.storeBrandCode},#{item.createdUserId},#{item.createdAt},#{item.updatedUserId},#{item.updatedAt})
+            (#{item.shopCode},#{item.shopName},#{item.storeBrandCode},#{item.version},#{item.createdUserId},#{item.createdAt},#{item.updatedUserId},#{item.updatedAt})
         </foreach>
 	</insert>
 	
@@ -67,16 +87,17 @@
         	shop_code = #{item.shopCode}, 
             shop_name = #{item.shopName},
             store_brand_code = #{item.storeBrandCode},
+            version = #{item.version} + 1,
             updated_user_id = #{item.updatedUserId},
             updated_at = #{item.updatedAt}
         </set>
         WHERE
-            shop_code = #{item.shopCode}
+            shop_code = #{item.shopCode} and version = #{item.version}
 		</foreach>
 	</update>
 	<select id="fuzzyQuery" parameterType="string" resultMap="shopResultMap">
 	
-		SELECT shop_code,shop_name,store_brand_code,created_user_id,created_at,updated_user_id,updated_at FROM mtb_shop 
+		SELECT shop_code,shop_name,store_brand_code,version,created_user_id,created_at,updated_user_id,updated_at FROM mtb_shop 
 		WHERE
 		<if test="shopCode!=null and shopCode!=''">
 			shop_code LIKE '%${shopCode}%' and

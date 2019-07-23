@@ -40,6 +40,8 @@ public class StockForm implements Serializable {
 	
 	private String optionType;
 	
+	private String version;
+	
 	public String getFabricId() {
 		return fabricId;
 	}
@@ -167,4 +169,13 @@ public class StockForm implements Serializable {
 	public void setOptionType(String optionType) {
 		this.optionType = optionType;
 	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+	
 }

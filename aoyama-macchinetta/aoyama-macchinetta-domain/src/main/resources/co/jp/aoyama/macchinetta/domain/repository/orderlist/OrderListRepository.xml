@@ -1556,7 +1556,7 @@
 		    host_transmit_item_cd, host_transmit_maker_cd, host_transmit_nenki_cd, host_transmit_color_cd, 
 		    host_transmit_size, host_transmit_maker_product, factory_shipping_method, shipping_date, 
 		    loading_date, fabric_used_mount, theory_fabric_used_mount, tsc_status, maker_factory_status, 
-		    send2factory_status, is_cancelled, theoretical_stock_check, version,
+		    send2factory_status, is_cancelled, theoretical_stock_check, dtb_order.version,
 		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at
     </sql>
 
@@ -1614,7 +1614,7 @@
     <sql id="OrderCondition">
         WHERE 
         
-        order_pattern = #{condition.category}
+        dtb_order.order_pattern = #{condition.category}
         
         <if test="condition.orderId != null and condition.orderId != ''">
         <![CDATA[
@@ -1901,4 +1901,39 @@
 			WHERE
 				fabric_no = #{arg0}
 	</update>
+	<select id="fuzzyQuery" resultMap="OrderResultMap">
+      SELECT 
+        order_id,
+        dtb_order.order_pattern, 
+        shop_code,
+        product_item,
+        product_item_displaycode,
+        product_fabric_no,
+        fabric_color,
+        fabric_pattern,
+        product_category,
+        ws_price,
+        cust_cd,
+        cust_staff,
+        store_nm, 
+        store_staff_nm,
+        tsc_status,
+        maker_factory_status,
+        product_orderd_date,
+        cust_shop_delivery_date,
+        cust_deliver_date,
+        send2factory_status,
+        is_cancelled
+        FROM dtb_order
+        <if test="condition.fablicImporter != null and condition.fablicImporter != ''">
+        <![CDATA[
+	        LEFT JOIN mtb_fabric
+	        ON dtb_order.product_fabric_no = mtb_fabric.fabric_no
+	        AND dtb_order.order_pattern = mtb_fabric.order_pattern 
+        ]]>
+        </if>
+        <include refid="OrderCondition" />
+        ORDER BY
+            dtb_order.updated_at desc
+    </select>
 </mapper>

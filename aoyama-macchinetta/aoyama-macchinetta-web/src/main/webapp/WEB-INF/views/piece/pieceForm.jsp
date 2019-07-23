@@ -259,8 +259,14 @@
 			$("#selectButton").attr("disabled",true);
 			$("#updateButton").attr("disabled",true);
 		    return {valid: false};
-		}else if(!(/^[A-Za-z0-9]{1,6}$/.test(value))) {
-			appendAlert("errorMessage", getMsgByThreeArgs('msg075', '工場コード', "6", "英字"));
+		}else if (isAlphabetNumeric(value)) {
+			appendAlert('errorMessage', getMsgByTwoArgs('msg012', '工場コード', '半角英数字'));
+			$("#clearButton").attr("disabled",true);
+			$("#selectButton").attr("disabled",true);
+			$("#updateButton").attr("disabled",true);
+		    return {valid: false};
+		}else if(!(/^[A-Za-z0-9]{5}$/.test(value))) {
+			appendAlert("errorMessage", getMsgByTwoArgs('msg011', '工場コード', "5"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
 			$("#updateButton").attr("disabled",true);
@@ -287,7 +293,7 @@
 			$("#updateButton").attr("disabled",true);
 		    return {valid: false};
 		}else if(!(/^[0-9]{2}$/.test(value))) {
-			appendAlert("errorMessage", getMsgByThreeArgs('msg010', 'アイテムコード', "2", "整数"));
+			appendAlert("errorMessage", getMsgByTwoArgs('msg011', 'アイテムコード', "2"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
 			$("#updateButton").attr("disabled",true);
@@ -469,7 +475,7 @@
 		jQuery("#cancelButton").click(function(){
 			// 確認メッセージ
 			swal({
-				text: getMsgByOneArg('msg017', "編集内容"),
+				text: getMsgByOneArg('msg017', "編集"),
 				icon: "info",
 				buttons: ["キャンセル", true],
 				dangerMode: true,
@@ -707,33 +713,33 @@
 										eRNum++;
 										updateFlag = false;
 										//{0}はすでに存在している。確認して再入力してください。
-							    		appendAlert("errorMessage",getMsgByOneArg('msg061', '下代価格の主キー'));
+							    		appendAlert("errorMessage",getMsg('msg061'));
 									}else if("-2" == result[i].updateFailure){
 										//工場コードは工場マスタに存在しません、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
 										//{0}は{1}に存在しません。確認して再入力してください。
-							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', "工場コード", "工場マスタ"));
+							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', result[i].factoryCode, "工場マスタ"));
 									}else if("-3" == result[i].updateFailure){
 										//アイテムコードはアイテムマスタに存在しません、行号を記録する
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
 										updateFlag = false;
 										//{0}は{1}に存在しません。確認して再入力してください。
-							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', "アイテムコード", "アイテムマスタ"));
+							    		appendAlert("errorMessage",getMsgByTwoArgs('msg062', result[i].itemCode, "アイテムマスタ"));
 									}else if("-4" == result[i].updateFailure){
 										//下代価格の主キーはすでに存在しません
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
-										//{0}の更新が失敗しました。
-										appendAlert("errorMessage",getMsgByTwoArgs('msg064', "下代価格情報"));
+										//{0}の更新ができませんでした。
+										appendAlert("errorMessage",getMsgByTwoArgs('msg109', "下代価格情報"));
 										updateFlag = false;
 									}else if("-5" == result[i].updateFailure){
 										//バージョン番号が不正です
 										errorRowNum[eRNum] = result[i].num;
 										eRNum++;
-										//msg108 = {0}が変更されています。最新の{0}を検索し直してください。
+										//msg108 = 別の端末で{0}が変更されています。最新の{0}を検索し直してください。
 										appendAlert("errorMessage",getMsgByTwoArgs('msg108', "下代価格情報"));
 										updateFlag = false;
 									}

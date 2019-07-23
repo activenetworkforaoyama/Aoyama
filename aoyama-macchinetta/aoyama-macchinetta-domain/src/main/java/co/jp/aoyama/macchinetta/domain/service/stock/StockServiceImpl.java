@@ -48,16 +48,24 @@ public class StockServiceImpl implements StockService {
 			// "1"は更新区分
 			if("1".equals(stock.getOptionType())) {
 				Stock stockFind = stockRepository.findStockByPk(stock.getFabricNo());
-				if(stockFind != null) {
+				if(stockFind != null && stock.getVersion().equals(stockFind.getVersion())) {
 					stock.setTheoreticalStock(stock.getTheoreticalStock());
 					stock.setActualStock(stock.getActualStock());
 					stock.setUpdatedAt(new Date());
 					stock.setUpdatedUserId(stock.getUpdatedUserId());
 					stockUpd.add(stock);
-				}else {
+				}else if(stockFind == null){
 					ResultMessages messages = ResultMessages.error();
 					// 該当在庫のデータがありません。
 		            messages.add("E015", stock.getFabricNo());
+		            
+		            logger.error(messages.toString());
+
+		            throw new ResourceNotFoundException(messages);
+				}else {
+					ResultMessages messages = ResultMessages.error();
+					// 該当在庫のデータがありません。
+		            messages.add("E026", stock.getVersion());
 		            
 		            logger.error(messages.toString());
 

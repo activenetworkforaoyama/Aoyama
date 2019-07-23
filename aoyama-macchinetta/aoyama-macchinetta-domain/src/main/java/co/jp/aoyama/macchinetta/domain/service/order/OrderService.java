@@ -30,8 +30,6 @@ public interface OrderService {
 
 	String getShopDeliveryOn(Date nowDate, String storeDelvNormal);
 
-	void deletOrderByOrderId(String orderId, Short version);
-
 	int getSameCash(String cashId);
 
 	String getFactories(String orderPattern,String itemCode, String jkModel, String subItemCode);
@@ -42,9 +40,21 @@ public interface OrderService {
 
 	void insertMeasuring(Measuring measuring);
 
-	void deleteByOrderId(String orderId);
-
 	Short findOrderVersion(String orderId);
+
+	void deletOrder(Order order, Short version);
+
+	void deleteMeasuring(Measuring measuring);
+
+	void deleteMeasuringOrderId(String orderId);
+
+	void deleteOrderAndStock(Order order, Stock stock, Measuring measuring);
+
+	void deleteOrder(Order order);
+
+	void physicalDeleteOrder(Stock stock, String orderId);
+
+	void deleteMeasuringBothOrder(String orderId);
 
 
 }

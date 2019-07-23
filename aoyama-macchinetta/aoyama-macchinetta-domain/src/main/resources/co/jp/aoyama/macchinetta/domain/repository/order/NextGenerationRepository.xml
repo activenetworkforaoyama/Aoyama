@@ -221,6 +221,7 @@
       		mtb_fabric as mfa
  	  where mwp.factory_code = mfa.factory_code
 	       and mfa.fabric_no = #{arg0}
+	       and mfa.order_pattern = 'PO'
   </select>
   <select id="selectMarginRate" resultMap="NextGenerationResultMap">
 	  select margin_rate as marginRate
@@ -228,6 +229,7 @@
 		   mtb_fabric as mfa
 	  where mmm.maker_code = mfa.maker_code
 	        and mfa.fabric_no = #{arg0}
+	        and mfa.order_pattern = 'PO'
   </select>
   <select id="selectFactoryCode" resultMap="NextGenerationResultMap">
 	  select mfa.factory_code as mfaFactoryCode,
@@ -235,5 +237,6 @@
 	  		 COALESCE(mfa.ws_price_adjust, 0) as wsPriceAdjust
 	  from mtb_fabric as mfa
 	  where mfa.fabric_no = #{arg0}
+	  		and mfa.order_pattern = 'PO'
   </select>
  </mapper>

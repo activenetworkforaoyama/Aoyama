@@ -17,14 +17,14 @@
 				<c:when test="${status == 'fromAccounting' || status == 'fromOrderList'}">
 				<div class="row">
 					<div class="col col-md-12">
-						<strong><output>会計登録を受け付けました。</output></strong>
+						<strong><output>会計(No.${cashId})を登録しました。</output></strong>
 					</div>
 				</div>
 				</c:when>
 				<c:when test="${status == '02'}">
 				<div class="row">
 					<div class="col col-md-12">
-						<strong><output>会計取消を受け付けました。</output></strong>
+						<strong><output>会計(No.${cashId})を取消しました。</output></strong>
 					</div>
 				</div>
 				</c:when>

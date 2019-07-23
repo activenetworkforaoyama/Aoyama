@@ -16,6 +16,8 @@ public class FabricBrand implements Serializable {
 	
 	private String countryName;
 	
+	private Short version;
+	
 	private String createdUserId;
 	
 	private Date createdAt;
@@ -58,6 +60,14 @@ public class FabricBrand implements Serializable {
 
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
+	}
+
+	public Short getVersion() {
+		return version;
+	}
+
+	public void setVersion(Short version) {
+		this.version = version;
 	}
 
 	public String getCreatedUserId() {

@@ -24,4 +24,8 @@ public interface CashService {
 	void updateCashStatus(String cashId,String cashStatus,String updatedUserId,Date updatedAt);
 	
 	Boolean updateCashInfoByPrimaryKey(List<CashInfo> cashInfoList);
+	
+	void updateAll(List<CashInfo> cashInfoList, Cash cash);
+	
+	void insertCashUpdateCashInfo(List<CashInfo> cashInfoList, Cash cash);
 }

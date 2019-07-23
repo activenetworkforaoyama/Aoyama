@@ -73,5 +73,21 @@ public class CashServiceImpl implements CashService {
 			return false;
 		}
 	}
+
+	@Override
+	public void updateAll(List<CashInfo> cashInfoList, Cash cash) {
+		// TODO Auto-generated method stub
+		cashRepository.updateCash(cash);
+		cashInfoRepository.updateCashInfoByPrimaryKey(cashInfoList);
+		
+	}
+
+	@Override
+	public void insertCashUpdateCashInfo(List<CashInfo> cashInfoList, Cash cash) {
+		// TODO Auto-generated method stub
+		cashRepository.insertCash(cash);
+		cashInfoRepository.updateCashInfoByPrimaryKey(cashInfoList);
+		
+	}
 	
 }

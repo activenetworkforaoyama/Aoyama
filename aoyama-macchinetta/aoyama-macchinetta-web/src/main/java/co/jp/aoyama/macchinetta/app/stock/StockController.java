@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.brand.FabricBrandForm;
 import co.jp.aoyama.macchinetta.app.factory.FactoryForm;
@@ -30,6 +33,7 @@ import co.jp.aoyama.macchinetta.domain.service.stock.StockService;
 @Controller
 @RequestMapping(value = "/stock")
 public class StockController {
+	private static final Logger logger = LoggerFactory.getLogger(StockController.class);
 
     @Inject
     SessionContent sessionContent;
@@ -123,7 +127,7 @@ public class StockController {
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Boolean updateStockByPk(@RequestBody List<StockForm> stockFormList) {
+	public String updateStockByPk(@RequestBody List<StockForm> stockFormList) {
 		List<Stock> stockList = new ArrayList<Stock>();
 		for(int i = 0; i < stockFormList.size(); i ++ ) {
 			Stock stock = beanMapper.map(stockFormList.get(i), Stock.class);
@@ -133,11 +137,23 @@ public class StockController {
 			stockList.add(stock);
 		}
 		Boolean result = false;
+		ResultMessages resultMessages = null;
 		try {
 			result = stockService.updateStockByPk(stockList);
 		}catch (ResourceNotFoundException e){
-			e.printStackTrace();
+			resultMessages = e.getResultMessages();
+			logger.error(e.toString());
 		}
-		return result;
+		if(resultMessages != null && !result) {
+			String errorCode = resultMessages.getList().get(0).getCode();
+			if("E015".equals(errorCode)) {
+				return "1";
+			}else if("E026".equals(errorCode)) {
+				return "0";
+			}else {
+				return "2";
+			}
+		}
+		return "2";
 	}
 }

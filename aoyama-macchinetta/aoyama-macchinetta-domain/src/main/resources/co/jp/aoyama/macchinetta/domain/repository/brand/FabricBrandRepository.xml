@@ -10,6 +10,7 @@
 		<id property="fablicBrandNo" column="fablic_brand_no" />
 		<result property="brandName" column="brand_name" />
 		<result property="countryName" column="country_name" />
+		<result property="version" column="version" />
 		<result property="createdUserId" column="created_user_id" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedUserId" column="updated_user_id" />
@@ -22,7 +23,8 @@
         SELECT
             fablic_brand_no, 
             brand_name, 
-            country_name, 
+            country_name,
+            version, 
             created_user_id,
             created_at,
             updated_user_id,
@@ -34,7 +36,7 @@
 	
 	<select id="fuzzyQuery" parameterType="string" resultMap="fabricBrandResultMap">
 	
-		SELECT fablic_brand_no,brand_name,country_name,created_user_id,created_at,updated_user_id,updated_at FROM mtb_fabric_brand 
+		SELECT fablic_brand_no,brand_name,country_name,version,created_user_id,created_at,updated_user_id,updated_at FROM mtb_fabric_brand 
 		WHERE
 		<if test="brandName!=null and brandName!=''">
 			brand_name LIKE '%${brandName}%' and
@@ -49,7 +51,8 @@
         SELECT
             fablic_brand_no, 
             brand_name, 
-            country_name, 
+            country_name,
+            version, 
             created_user_id,
             created_at,
             updated_user_id,
@@ -68,9 +71,9 @@
 	</select>
 	
 	<insert id="insertFabricBrandByKey" parameterType="java.util.List">
-		INSERT INTO mtb_fabric_brand (fablic_brand_no,brand_name,country_name,created_user_id,created_at,updated_user_id,updated_at) values
+		INSERT INTO mtb_fabric_brand (fablic_brand_no,brand_name,country_name,version,created_user_id,created_at,updated_user_id,updated_at) values
 		<foreach collection="fabricBrandInsertList" item="item" index="index" separator=",">
-            (#{item.fablicBrandNo},#{item.brandName},#{item.countryName},#{item.createdUserId},#{item.createdAt},#{item.updatedUserId},#{item.updatedAt})
+            (#{item.fablicBrandNo},#{item.brandName},#{item.countryName},#{item.version},#{item.createdUserId},#{item.createdAt},#{item.updatedUserId},#{item.updatedAt})
         </foreach>
 	</insert>
 	
@@ -82,12 +85,13 @@
     		fablic_brand_no = #{item.fablicBrandNo},
     		brand_name = #{item.brandName},
       		country_name = #{item.countryName},
+      		version = #{item.version} + 1,
       		created_user_id = #{item.createdUserId},
       		updated_user_id = #{item.updatedUserId},
       		updated_at = #{item.updatedAt}
      	</set> 
     	WHERE 
-			fablic_brand_no = #{item.fablicBrandNo}
+			fablic_brand_no = #{item.fablicBrandNo} and version = #{item.version}
     	</foreach>
    </update>
    

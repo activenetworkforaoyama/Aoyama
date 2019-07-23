@@ -114,11 +114,12 @@ public class OrderServiceImpl  implements OrderService {
 
 
 	@Override
-	public void deletOrderByOrderId(String orderId,Short version) {
-		Order order = orderListRepository.findOrderByPk(orderId);
-		Short orderVersion = order.getVersion();
-		if(version.equals(orderVersion)) {
-			orderRepository.deletOrderByOrderId(orderId);
+	public void deletOrder(Order order,Short version) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		Short orderDbVersion = orderDb.getVersion();
+		if(version.equals(orderDbVersion)) {
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrder(order);
 		}else {
 			//BusinessException businessException = new BusinessException();
 			ResultMessages messages = ResultMessages.error();
@@ -163,8 +164,9 @@ public class OrderServiceImpl  implements OrderService {
 
 
 	@Override
-	public void deleteByOrderId(String orderId) {
-		measuringRepository.deleteByPrimaryKey(orderId);
+	public void deleteMeasuring(Measuring measuring) {
+		measuringRepository.deleteByPrimaryKey(measuring.getOrderId());
+		measuringRepository.insert(measuring);
 	}
 
 
@@ -172,6 +174,44 @@ public class OrderServiceImpl  implements OrderService {
 	public Short findOrderVersion(String orderId) {
 		Short version = orderRepository.findOrderVersion(orderId);
 		return version;
+	}
+
+
+
+	@Override
+	public void deleteMeasuringOrderId(String orderId) {
+		measuringRepository.deleteByPrimaryKey(orderId);
+	}
+
+
+	@Override
+	public void deleteOrderAndStock(Order order, Stock stock,Measuring measuring) {
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrder(order);
+		this.deleteMeasuring(measuring);
+	}
+
+
+	@Override
+	public void deleteOrder(Order order) {
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrder(order);
+	}
+
+
+	@Override
+	public void physicalDeleteOrder(Stock stock, String orderId) {
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(orderId);
+		measuringRepository.deleteByPrimaryKey(orderId);
+	}
+
+
+	@Override
+	public void deleteMeasuringBothOrder(String orderId) {
+		orderRepository.deletOrderByOrderId(orderId);
+		measuringRepository.deleteByPrimaryKey(orderId);
 	}
 
 

@@ -21,13 +21,17 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
+import co.jp.aoyama.macchinetta.domain.model.OrderDetail;
 import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
+import co.jp.aoyama.macchinetta.domain.service.detail.OrderDetailService;
 
 @Service
 @Transactional
 public class OrderListServiceImpl implements OrderListService {
 	@Inject
 	OrderListRepository orderListRepository;
+	@Inject
+	OrderDetailService orderDetailService;
 
 	@Override
 	public List<Order> findAllOrder() {
@@ -120,9 +124,31 @@ public class OrderListServiceImpl implements OrderListService {
 	@Override
 	public void updateSaveValue(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,String updatedUserId,Date updatedAt,Short orderVersion) {
 		Order order = orderListRepository.findOrderByPk(orderId);
+		String productFabricNo = order.getProductFabricNo();
+		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		Short version = order.getVersion();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveValue(orderId, fabricUsedMount, shippingDate, loadingDate,updatedUserId,updatedAt,orderVersion);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			BigDecimal actualStock = selectActualStock.getActualStock();
+			BigDecimal remainActualStock;
+			if(fabricUsedMountOld == null) {
+				if(fabricUsedMount == null) {
+					remainActualStock =actualStock.subtract(new BigDecimal(0.0));
+				}
+				else {
+					remainActualStock =actualStock.subtract(fabricUsedMount);
+				}
+			}
+			else{
+				if(fabricUsedMount == null) {
+					remainActualStock = actualStock.add(fabricUsedMountOld).subtract(new BigDecimal(0.0));
+				}
+				else {
+					remainActualStock =actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
+				}
+			}
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -130,16 +156,29 @@ public class OrderListServiceImpl implements OrderListService {
 	            logger.error(messages.toString());
 	            throw new ResourceNotFoundException(messages);
 		}
-		
 	}
 
 	@Override
 	public void updateSaveOrChangeValue(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,
 			String makerFactoryStatus,String updatedUserId,Date updatedAt,Short orderVersion) {
+		
 		Order order = orderListRepository.findOrderByPk(orderId);
 		Short version = order.getVersion();
+		String productFabricNo = order.getProductFabricNo();
+		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveOrChangeValue(orderId, fabricUsedMount, shippingDate, loadingDate, makerFactoryStatus,updatedUserId,updatedAt,orderVersion);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			BigDecimal actualStock = selectActualStock.getActualStock();
+			BigDecimal remainActualStock;
+			if(fabricUsedMountOld == null) {
+				remainActualStock = actualStock.subtract(fabricUsedMount);
+			}
+			else {
+				remainActualStock = actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
+			}
+			
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -170,6 +209,53 @@ public class OrderListServiceImpl implements OrderListService {
 	public void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt) {
 		
 		orderListRepository.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
+	}
+
+	@Override
+	public List<Order> fuzzyQuery(OrderCondition condition) {
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
+		try {
+			if ( !"".equals(condition.getProductOrderdDateFrom()) && condition.getProductOrderdDateFrom() != null) {
+			   condition.setProductOrderdDate2From(format.parse(condition.getProductOrderdDateFrom()));
+			}
+			if ( !"".equals(condition.getProductOrderdDateTo()) && condition.getProductOrderdDateTo() != null) {
+			   condition.setProductOrderdDate2To(format.parse(condition.getProductOrderdDateTo()));
+			}
+			if ( !"".equals(condition.getCustShopDeliveryDateFrom()) && condition.getCustShopDeliveryDateFrom() != null) {
+			   condition.setCustShopDeliveryDate2From(format.parse(condition.getCustShopDeliveryDateFrom()));
+			}
+			if ( !"".equals(condition.getCustShopDeliveryDateTo()) && condition.getCustShopDeliveryDateTo() != null) {
+			   condition.setCustShopDeliveryDate2To(format.parse(condition.getCustShopDeliveryDateTo()));
+			}
+			if ( !"".equals(condition.getUpdatedAtFrom()) && condition.getUpdatedAtFrom() != null) {
+			   condition.setUpdatedAt2From(format.parse(condition.getUpdatedAtFrom()));
+			}
+			if ( !"".equals(condition.getUpdatedAtTo()) && condition.getUpdatedAtTo() != null) {
+				Calendar calendar = new GregorianCalendar(); 
+				calendar.setTime(format.parse(condition.getUpdatedAtTo())); 
+				calendar.add(5,1);
+				calendar.add(14,-1);
+				condition.setUpdatedAt2To(calendar.getTime());
+			}
+			if ( !"".equals(condition.getCustDeliverDateFrom()) && condition.getCustDeliverDateFrom() != null) {
+			   condition.setCustDeliverDate2From(format.parse(condition.getCustDeliverDateFrom()));
+			}
+			if ( !"".equals(condition.getCustDeliverDateTo()) && condition.getCustDeliverDateTo() != null) {
+			   condition.setCustDeliverDate2To(format.parse(condition.getCustDeliverDateTo()));
+			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+        long total = orderListRepository.countOrderByCondition(condition);
+        List<Order> orderList;
+        if (0 < total) {
+        	orderList = orderListRepository.fuzzyQuery(condition);
+        } else {
+        	orderList = Collections.emptyList();
+        }
+        return orderList;
 	}
 
 }

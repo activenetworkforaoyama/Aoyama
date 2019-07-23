@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -166,7 +167,7 @@ public class OrderListController {
 		//検索条件bean
 		OrderCondition orderCondition = beanMapper.map(orderListForm,OrderCondition.class);
 		//検索結果list
-    	List<Order> orderList = orderListService.findOrderByCondition(orderCondition);
+    	List<Order> orderList = orderListService.fuzzyQuery(orderCondition);
     	orderListForm.setOrderList(orderList);
 		return orderList;
 	}
@@ -420,8 +421,14 @@ public class OrderListController {
 		
 		String fileName = "orderlist_"+simpleDateFormat.format(date) + ".txt";
 		
-		List<Order> orderList = orderListForm.getOrderList();
+		List<Order> orderList = new ArrayList<Order>();
 		
+		for(int i = 0; i < orderListForm.getOrderList().size(); i ++) {
+			String orderId = orderListForm.getOrderList().get(i).getOrderId();
+			Order order= orderListService.findOrderByPk(orderId);
+			orderList.add(order);
+		}
+
 		String authority = orderListForm.getAuthority();
 		
 		if(authority.equals(AUTHORITY_02)) {

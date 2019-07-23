@@ -77,12 +77,12 @@ function updateFabric(){
 	var suffixType = checkFileTxt();
 
 	if(suffixType == 1){
-		//ｔｘｔです
+		//CSVです
 		$("#updateFabricForm").attr("action","${pageContext.request.contextPath}/fabric/fabricUpload");
 		$("#updateFabricForm").submit();
 
 	}else if(suffixType == -1){
-		//ｔｘｔではない
+		//CSVではない
 		appendAlert("errorMessage", getMsg('msg036'));
 	}else if(suffixType == 0){
 		//ファイルがない
@@ -92,7 +92,7 @@ function updateFabric(){
 
 /**
  * ファイルの形式を検査する
- * return：　１：ｔｘｔです　０：ファイルがない　－１：ｔｘｔではない
+ * return：　１：CSVです　０：ファイルがない　－１：CSVではない
  */
 function checkFileTxt(){
 	var file = $("#file").val();
@@ -102,11 +102,11 @@ function checkFileTxt(){
 	}
 	var pos = file.lastIndexOf("\.");
 	var fileName = file.substring(pos + 1);  
-	 if("txt" == fileName){
-		//ｔｘｔです
+	 if("csv" == fileName){
+		//CSVです
 		return 1;
 	}else{
-		//ｔｘｔではない
+		//CSVではない
 		return -1;
 	}
 }
@@ -138,7 +138,7 @@ function checkFileTxt(){
 			<br>
 			<div class="col col-md-2" style="font-weight:bold;">CSVアップロード</div>
 			<div class="col-12 col-md-9">
-				<input class=" float-left" id="file" name="file" type="file">
+				<input class="float-left col-md-9" id="file" name="file" type="file">
 				<!-- <span class="btn btn-success fileinput-button">
 			        <span>ファイルを選択</span>
 					<input class=" float-left" id="file" name="file" type="file">

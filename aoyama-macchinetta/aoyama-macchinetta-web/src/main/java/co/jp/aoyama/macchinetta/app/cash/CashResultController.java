@@ -17,12 +17,10 @@ public class CashResultController {
 	@Inject
 	Mapper beanMapper;
 	
-	private CashForm cashForm = new  CashForm();
-	
 
 	@ModelAttribute
 	public CashForm setupCashForm() {
-		return cashForm;
+		return  new  CashForm();
 	}
 	
 	/**

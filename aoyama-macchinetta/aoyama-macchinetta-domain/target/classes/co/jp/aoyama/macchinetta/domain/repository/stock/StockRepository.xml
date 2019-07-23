@@ -8,8 +8,7 @@
 
 
     <resultMap id="stockResultMap" type="Stock">
-        <id property="fabricId" column="fabric_id" />
-        <result property="fabricNo" column="fabric_no" />
+        <id property="fabricNo" column="fabric_no" />
         <result property="color" column="color" />
         <result property="pattern" column="pattern" />
         <result property="brandName" column="brand_name" />
@@ -18,6 +17,7 @@
         <result property="retailPrice" column="retail_price" />
         <result property="actualStock" column="actual_stock" />
         <result property="reservationStock" column="reservation_stock" />
+        <result property="version" column="version" />
         <result property="createdAt" column="created_at" />
         <result property="createdUserId" column="created_user_id" />
         <result property="updatedAt" column="updated_at" />
@@ -36,27 +36,29 @@
 			a.retail_price,
 			d.Theoretical_stock,
 			d.actual_stock,
-			d.fabric_id
+			d.fabric_no,
+			d.version
 		FROM
      		mtb_fabric AS a,mtb_fabric_brand AS b,mtb_factory AS c,mtb_stock AS d
  		WHERE 
  			a.fablic_brand_no = b.fablic_brand_no
  		AND a.factory_code = c.factory_code
- 		AND a.fabric_id = d.fabric_id
+ 		AND a.fabric_no = d.fabric_no
  		ORDER by a.fabric_no
     </select>
     
     <select id="findStockByPk" resultMap="stockResultMap">
 		SELECT 
-		    fabric_id, 
+		    fabric_no, 
             theoretical_stock, 
-            actual_stock, 
+            actual_stock,
+            version, 
             created_at,
             updated_at 
         FROM
             mtb_stock  
 		WHERE
-			fabric_id = #{fabricId}
+			fabric_no = #{fabricNo}
 	</select>
 	
 	<select id="fuzzyQuery" parameterType="string" resultMap="stockResultMap">
@@ -67,9 +69,11 @@
 			b.brand_name,
 			c.factory_name,
 			a.retail_price,
+			d.reservation_stock,
 			d.Theoretical_stock,
 			d.actual_stock,
-			d.fabric_id
+			d.fabric_no,
+			d.version
 		FROM
      		mtb_fabric AS a,mtb_fabric_brand AS b,mtb_factory AS c,mtb_stock AS d,mtb_maker e
  		WHERE
@@ -99,7 +103,7 @@
 		</if>
 		a.fablic_brand_no = b.fablic_brand_no
  		AND a.factory_code = c.factory_code
- 		AND a.fabric_id = d.fabric_id
+ 		AND a.fabric_no = d.fabric_no
  		And c.maker_code = e.maker_code
  		ORDER by a.fabric_no
 	</select>
@@ -109,14 +113,15 @@
         UPDATE
             mtb_stock 
         SET
-        	fabric_id = #{item.fabricId},
+        	fabric_no = #{item.fabricNo},
             theoretical_stock = #{item.theoreticalStock}, 
             actual_stock = #{item.actualStock},
+            version = #{item.version} + 1,
             created_user_id =#{item.createdUserId},
             updated_user_id =#{item.updatedUserId},
             updated_at = #{item.updatedAt} 
         WHERE
-            fabric_id = #{item.fabricId}
+            fabric_no = #{item.fabricNo} and version = #{item.version}
 		</foreach>
     </update>
     
@@ -127,7 +132,7 @@
             theoretical_stock = #{arg1}, 
             reservation_stock = #{arg2}
         WHERE
-            fabric_id = #{arg0}
+            fabric_no = #{arg0}
     </update>
     
     <update id="updateTheoreticalStock">
@@ -136,7 +141,7 @@
         SET
             theoretical_stock = #{arg1}
         WHERE
-            fabric_id = #{arg0}
+            fabric_no = #{arg0}
     </update>
 
 </mapper>

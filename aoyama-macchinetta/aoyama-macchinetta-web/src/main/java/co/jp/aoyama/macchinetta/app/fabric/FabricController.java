@@ -210,7 +210,7 @@ public class FabricController {
 		//タイトルと内容をバイト出力ストリーム書き込みます
 		writeByteArrayOutputStream(output, title, content);
 		
-		String fileNameDefault = "生地情報ダウンロード"+dateToday+".txt";
+		String fileNameDefault = "生地情報ダウンロード"+dateToday+".csv";
 		try {
 			response.addHeader("Content-Type", "application/force-download");
 			//デフォルトのダウンロードファイル名を設定する
@@ -293,13 +293,13 @@ public class FabricController {
 					messagesError.add(MessageKeys.E007, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 							fabricError.getFablicBrandNo(), strArr[0]); 
 				}else if(PROJECT_NAME_IS_EMPTY.equals(strArr[2])) {
-					//4：「一個目のエラーの行数」行目の「エラー発生の項目名」は必須です
+					//4：「一個目のエラーの行数」行目の「エラー発生の項目名」は入力必須です。
 					messagesError.add(MessageKeys.E008, strArr[0], strArr[1]); 
 				}else if(VALUE_IS_INCORRECT.equals(strArr[2])) {
-					//5：「エラー発生の第一番目の行数」行目の「エラー発生の項目名」の値が不正です。
+					//5：「エラー発生の第一番目の行数」行目の「エラー発生の項目名」の値に誤りがあります。
 					messagesError.add(MessageKeys.E010, strArr[0], strArr[1]); 
 				}else if(NUMBER_OF_BITS_IS_INCORRECT.equals(strArr[2])) {
-					//6：「エラー発生の第一番目の行数」の「エラー発生の項目名」の桁数が不正です。
+					//6：「エラー発生の第一番目の行数」行目の「エラー発生の項目名」の桁数が異なります。
 					messagesError.add(MessageKeys.E011, strArr[0], strArr[1]); 
 				}
 				//フロントでエラーメッセージを提示する
@@ -356,7 +356,7 @@ public class FabricController {
 	        for (String string : list) {
 	        	countErrorLine = countErrorLine + 1;
 	        	Fabric fabric = new Fabric();
-				String[] data = string.split("\t");
+				String[] data = string.split(",");
 
 				//属性値が要求を満たしているかどうか
 				String dataWhetherConform = null;
@@ -402,7 +402,7 @@ public class FabricController {
 						}else {
 							//エラー場合、Iの代わりにXを使います
 							fabric.setHandleDiscriminate("X");
-							fabric.setFabricNo(data[3]);
+							fabric.setMaterialNo(data[3]);
 							fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "処理区分", PROCESSING_SEPARATION_IS_INCORRECT));
 							break;
 						}
@@ -414,7 +414,7 @@ public class FabricController {
 						}else {
 							//エラー場合、Uの代わりにYを使います
 							fabric.setHandleDiscriminate("Y");
-							fabric.setFabricNo(data[3]);
+							fabric.setMaterialNo(data[3]);
 							fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "処理区分", PROCESSING_SEPARATION_IS_INCORRECT));
 							break;
 						}
@@ -427,7 +427,7 @@ public class FabricController {
 						}else {
 							//エラー場合、Dの代わりにZを使います
 							fabric.setHandleDiscriminate("Z");
-							fabric.setFabricNo(data[3]);
+							fabric.setMaterialNo(data[3]);
 							fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "処理区分", PROCESSING_SEPARATION_IS_INCORRECT));
 							break;
 						}
@@ -447,7 +447,10 @@ public class FabricController {
 				
 				//生地ブランド管理番号、特殊のチェック
 				boolean fablicBrandNoCheckExistence = fabricService.fablicBrandNoCheckExistence(data[4]);
-				if(fablicBrandNoCheckExistence == false) {
+				if("".equals(data[4])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "生地ブランド管理番号", PROJECT_NAME_IS_EMPTY));
+					break;
+				}else if(fablicBrandNoCheckExistence == false) {
 					//生地ブランド管理番号存在しない、まちがった生地ブランド管理番号を書き入れる
 					fabric.setFablicBrandNo(data[4]);
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "生地ブランド管理番号", MANAGEMENT_NUMBER_DOES_NOT_EXIST));
@@ -534,6 +537,9 @@ public class FabricController {
 				//アイテム区分、特殊のチェック
 				if("01".equals(data[12]) || "02".equals(data[12]) || "05".equals(data[12]) || "06".equals(data[12])){
 					fabric.setItemClass(data[12]);
+				}else if("".equals(data[12])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "アイテム区分", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "アイテム区分", VALUE_IS_INCORRECT));
 					break;
@@ -542,6 +548,9 @@ public class FabricController {
 				//コート可否、特殊のチェック
 				if("1".equals(data[13]) || "0".equals(data[13])){
 					fabric.setCoatAvailable(data[13]);
+				}else if("".equals(data[13])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "コート可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "コート可否", VALUE_IS_INCORRECT));
 					break;
@@ -577,6 +586,9 @@ public class FabricController {
 				//LCR縫製可否、特殊のチェック
 				if("1".equals(data[17]) || "0".equals(data[17])){
 					fabric.setLcrSewingAvailable(data[17]);
+				}else if("".equals(data[17])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "LCR縫製可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "LCR縫製可否", VALUE_IS_INCORRECT));
 					break;
@@ -765,6 +777,9 @@ public class FabricController {
 				//ウォッシャブル可否、特殊のチェック
 				if("1".equals(data[38]) || "0".equals(data[38])){
 					fabric.setWashableAvailable(data[38]);
+				}else if("".equals(data[38])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "ウォッシャブル可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "ウォッシャブル可否", VALUE_IS_INCORRECT));
 					break;
@@ -773,6 +788,9 @@ public class FabricController {
 				//タキシード可否、特殊のチェック
 				if("1".equals(data[39]) || "0".equals(data[39])){
 					fabric.setTuxedoAvailable(data[39]);
+				}else if("".equals(data[39])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "タキシード可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "タキシード可否", VALUE_IS_INCORRECT));
 					break;
@@ -832,6 +850,9 @@ public class FabricController {
 				//フル毛芯仕様可否、特殊のチェック
 				if("1".equals(data[44]) || "0".equals(data[44])){
 					fabric.setFullHairclothAvailable(data[44]);
+				}else if("".equals(data[44])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "フル毛芯仕様可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "フル毛芯仕様可否", VALUE_IS_INCORRECT));
 					break;
@@ -840,6 +861,9 @@ public class FabricController {
 				//シャツ仕様可否、特殊のチェック
 				if("1".equals(data[45]) || "0".equals(data[45])){
 					fabric.setShirtSleeveAvailable(data[45]);
+				}else if("".equals(data[45])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "シャツ仕様可否", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "シャツ仕様可否", VALUE_IS_INCORRECT));
 					break;
@@ -885,6 +909,9 @@ public class FabricController {
 				//生地ネーム有無、特殊のチェック
 				if("1".equals(data[50]) || "0".equals(data[50])){
 					fabric.setFabricNameExist(data[50]);
+				}else if("".equals(data[50])){
+					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "生地ネーム有無", PROJECT_NAME_IS_EMPTY));
+					break;
 				}else{
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "生地ネーム有無", VALUE_IS_INCORRECT));
 					break;
@@ -1169,7 +1196,7 @@ public class FabricController {
 			if(i == title.length-1) {
 				sbTitle.append(title[i]).append("\r\n");
 			}else {
-				sbTitle.append(title[i]).append("\t");
+				sbTitle.append(title[i]).append(",");
 			}
 		}
 		
@@ -1182,7 +1209,7 @@ public class FabricController {
 				if(j == content[i].length-1) {
 					sbBody.append(content[i][j]).append("\r\n");
 				}else {
-					sbBody.append(content[i][j]).append("\t");
+					sbBody.append(content[i][j]).append(",");
 				}
 			}
 			

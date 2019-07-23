@@ -99,7 +99,7 @@
 								<label class=" form-control-label">工場コード</label>
 							</div>
 							<div class="col-12 col-md-8">
-								<input type="text" id="factoryCode" name="factoryCode" placeholder="" class="input-sm form-control-sm form-control" maxlength="5">
+								<input type="text" id="factoryCode" name="factoryCode" placeholder="" class="input-sm form-control-sm form-control" maxlength="6">
 							</div>
 						</div>
 						<div class="row form-group">
@@ -318,11 +318,11 @@ function requiredFactoryCodeValidator(value) {
 		$("#update_button").attr("disabled",true);
 	    return {valid: false};
 	  }
-	//5桁数字チェック
-	else if (value.length != 5) {
+	//6桁数字チェック
+	else if (value.length != 6) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		appendAlert('errorMassageIno', getMsgByTwoArgs('msg011', '工場コード','5'));
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg011', '工場コード','6'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);

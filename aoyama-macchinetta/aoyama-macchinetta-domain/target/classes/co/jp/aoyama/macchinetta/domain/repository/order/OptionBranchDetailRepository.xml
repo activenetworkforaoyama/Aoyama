@@ -87,24 +87,27 @@
   <select id="getStandardButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
   	select option_branch_detail_code, option_branch_detail_name
     from mtb_option_branch_detail 
-    where sub_item_code=#{subItemCode}
+    where item_code = #{itemCode}
+    	and sub_item_code=#{subItemCode}
     	and option_branch_code=#{optionBranchCode}
     	and standard_available = '1'
     	and order_pattern = #{orderPattern}
     	and option_code = #{optionCode}
   </select>
   <select id="getTuxedoButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
-  	select option_branch_detail_code, option_branch_detail_name
+  	select DISTINCT option_branch_detail_code, option_branch_detail_name
     from mtb_option_branch_detail 
-    where sub_item_code=#{subItemCode}
+    where item_code = #{itemCode}
+    	and sub_item_code=#{subItemCode}
     	and option_branch_code=#{optionBranchCode}
     	and tuxedo_available = '1'
     	and order_pattern = #{orderPattern}
   </select>
   <select id="getWashableButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
-  	select option_branch_detail_code, option_branch_detail_name
+  	select DISTINCT option_branch_detail_code, option_branch_detail_name
     from mtb_option_branch_detail 
-    where sub_item_code=#{subItemCode}
+    where item_code = #{itemCode}
+    	and sub_item_code=#{subItemCode}
     	and option_branch_code=#{optionBranchCode}
     	and washable_available = '1'
     	and order_pattern = #{orderPattern}

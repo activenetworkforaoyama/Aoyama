@@ -418,10 +418,7 @@ public class OrderReconfirmController {
 			Order selectExistOrder = this.selectExistOrder(orderForm);
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedProjects(orderForm);
 		
-			//在庫チェック
-			this.updateFabric(orderForm);
-			//会計ステータスを更新
-			this.updateCashStatus(orderForm);
+			
 			//商品情報_３Piece上代
 			orderHelper.order3PiecePrice(orderForm, order);
 			//スペアパンツ上代
@@ -556,6 +553,10 @@ public class OrderReconfirmController {
 			else {
 				try {
 					orderService.updateOrder(order);
+					//在庫チェック
+					this.updateFabric(orderForm);
+					//会計ステータスを更新
+					this.updateCashStatus(orderForm);
 				} catch (ResourceNotFoundException e) {
 					model.addAttribute("resultMessages", e.getResultMessages());
 					Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
