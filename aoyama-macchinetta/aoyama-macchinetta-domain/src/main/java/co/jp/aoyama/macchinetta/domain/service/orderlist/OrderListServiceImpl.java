@@ -157,6 +157,43 @@ public class OrderListServiceImpl implements OrderListService {
 	            throw new ResourceNotFoundException(messages);
 		}
 	}
+	
+	@Override
+	public void updateSaveValueAndStatus(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,String updatedUserId,Date updatedAt,Short orderVersion,String shippingTransmitStatus) {
+		Order order = orderListRepository.findOrderByPk(orderId);
+		String productFabricNo = order.getProductFabricNo();
+		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
+		Short version = order.getVersion();
+		if(version.equals(orderVersion)) {
+			orderListRepository.updateSaveValueAndStatus(orderId, fabricUsedMount, shippingDate, loadingDate,updatedUserId,updatedAt,orderVersion,shippingTransmitStatus);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			BigDecimal actualStock = selectActualStock.getActualStock();
+			BigDecimal remainActualStock;
+			if(fabricUsedMountOld == null) {
+				if(fabricUsedMount == null) {
+					remainActualStock =actualStock.subtract(new BigDecimal(0.0));
+				}
+				else {
+					remainActualStock =actualStock.subtract(fabricUsedMount);
+				}
+			}
+			else{
+				if(fabricUsedMount == null) {
+					remainActualStock = actualStock.add(fabricUsedMountOld).subtract(new BigDecimal(0.0));
+				}
+				else {
+					remainActualStock =actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
+				}
+			}
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+		}
+		else {
+			 ResultMessages messages = ResultMessages.error();
+	            messages.add("E023", orderId);
+	            logger.error(messages.toString());
+	            throw new ResourceNotFoundException(messages);
+		}
+	}
 
 	@Override
 	public void updateSaveOrChangeValue(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,
@@ -188,6 +225,37 @@ public class OrderListServiceImpl implements OrderListService {
 		}
 		
 	}
+	
+	@Override
+	public void updateSaveOrChangeValueAndStatus(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,
+			String makerFactoryStatus,String updatedUserId,Date updatedAt,Short orderVersion,String shippingTransmitStatus) {
+		
+		Order order = orderListRepository.findOrderByPk(orderId);
+		Short version = order.getVersion();
+		String productFabricNo = order.getProductFabricNo();
+		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
+		if(version.equals(orderVersion)) {
+			orderListRepository.updateSaveOrChangeValueAndStatus(orderId, fabricUsedMount, shippingDate, loadingDate, makerFactoryStatus,updatedUserId,updatedAt,orderVersion,shippingTransmitStatus);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			BigDecimal actualStock = selectActualStock.getActualStock();
+			BigDecimal remainActualStock;
+			if(fabricUsedMountOld == null) {
+				remainActualStock = actualStock.subtract(fabricUsedMount);
+			}
+			else {
+				remainActualStock = actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
+			}
+			
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+		}
+		else {
+			 ResultMessages messages = ResultMessages.error();
+	            messages.add("E023", orderId);
+	            logger.error(messages.toString());
+	            throw new ResourceNotFoundException(messages);
+		}
+		
+	}
 
 	@Override
 	public void updateNextGeneration(String orderId, Integer nextGenerationP,String updatedUserId,Date updatedAt,Short orderVersion) {
@@ -195,6 +263,22 @@ public class OrderListServiceImpl implements OrderListService {
 		Short version = order.getVersion();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateNextGeneration(orderId, nextGenerationP,updatedUserId,updatedAt,orderVersion);
+		}
+		else {
+			 ResultMessages messages = ResultMessages.error();
+	            messages.add("E023", orderId);
+	            logger.error(messages.toString());
+	            throw new ResourceNotFoundException(messages);
+		}
+		
+	}
+	
+	@Override
+	public void updateNextGenerationAndStatus(String orderId, Integer nextGenerationP,String updatedUserId,Date updatedAt,Short orderVersion,String scheduleDataTransmitStatus) {
+		Order order = orderListRepository.findOrderByPk(orderId);
+		Short version = order.getVersion();
+		if(version.equals(orderVersion)) {
+			orderListRepository.updateNextGenerationAndStatus(orderId, nextGenerationP,updatedUserId,updatedAt,orderVersion,scheduleDataTransmitStatus);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();

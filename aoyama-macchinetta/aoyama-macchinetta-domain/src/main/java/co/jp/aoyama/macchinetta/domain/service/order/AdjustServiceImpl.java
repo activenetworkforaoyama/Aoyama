@@ -20,5 +20,10 @@ public class AdjustServiceImpl implements AdjustService{
 		List<Adjust> allAdjust = adjustRepository.getAllAdjust(type);
 		return allAdjust;
 	}
+	@Override
+	public List<Adjust> getAdjustByItem(String orderPattern, String itemCode) {
+		List<Adjust> adjustList = adjustRepository.getAdjustByItem(orderPattern,itemCode);
+		return adjustList;
+	}
 
 }

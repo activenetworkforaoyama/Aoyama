@@ -9,5 +9,7 @@ public interface ModelService {
 
 	List<Model> getAllModel(String type);
 
+	List<Model> getModel(String orderPattern, String itemCode);
+
 
 }

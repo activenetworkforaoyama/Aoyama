@@ -22,8 +22,8 @@
 				</div>
 			</div>
 		</div>
-	<div class="col-md-4">
-	</div>
+		<div class="col-md-4">
+		</div>
 	<div class="col-md-8">
 		<c:if test="${authority == '01'}">
 			<c:if test="${order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
@@ -170,10 +170,25 @@
 						<div class="col col-md-4">
 							<label class=" form-control-label">お客様名</label>
 						</div>
-
+						<c:if test="${order.custNm != null && order.custKanaNm != null}">
 						<div class="col-12 col-md-8">
 							<label class=" form-control-label-value">${f:h(order.custNm)}(${f:h(order.custKanaNm)})</label>様
 						</div>
+						</c:if>
+						<c:if test="${order.custNm != null && order.custKanaNm == null}">
+						<div class="col-12 col-md-8">
+							<label class=" form-control-label-value">${f:h(order.custNm)}</label>様
+						</div>
+						</c:if>
+						<c:if test="${order.custNm != null && order.custKanaNm == null}">
+						<div class="col-12 col-md-8">
+							<label class=" form-control-label-value">(${f:h(order.custKanaNm)})</label>様
+						</div>
+						</c:if>
+						<c:if test="${order.custNm == null && order.custKanaNm == null}">
+						<div class="col-12 col-md-8">
+						</div>
+						</c:if>
 					</div>
 				</c:if>
 				<div class="row">
@@ -652,7 +667,7 @@
 							<label class=" form-control-label">組成表示　表地</label>
 						</div>
 						<div class="col-12 col-md-9">
-							<strong><label class=" form-control-label-value" id="composFrtFabric"></label></strong>
+							<strong><label class=" form-control-label-value" id="composFrtFabric">${order.productComposFrtFabric}</label></strong>
 						</div>
 					</div>
 					<div class="row">
@@ -2409,6 +2424,8 @@ jQuery("#saveValue").click(function(){
 	var shippingDate = new Date(jQuery("#shippingDate").val()); 
 	//積載日
 	var loadingDate = new Date(jQuery("#loadingDate").val()); 
+	//出荷日（初期値）
+	var oldShippingDate = "${order.shippingDate}";
 
 	if(shippingDate!=""&&loadingDate!=""&& loadingDate <shippingDate){ 
 		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','積載日')); 
@@ -2422,6 +2439,11 @@ jQuery("#saveValue").click(function(){
 		appendAlert('errormssage', getMsgByTwoArgs('msg095','積載日','お渡し日')); 
 		return false;
 	}
+	else if(oldShippingDate != "" && shippingDate == "Invalid Date"){
+		appendAlert('errormssage', getMsgByOneArg('msg001', '出荷日'));
+		return false;
+		}
+	
 	
 	//生地使用量
 	var orderId = "${order.orderId}";
@@ -2607,7 +2629,8 @@ jQuery("#nextGenerationSave").on('click', function(){
 	//バージョン
 	var orderVersion = "${order.version}";
 	var nextGenerationPrice = jQuery("#nextGenerationDisplay").val();
-	window.location.href= contextPath + "/orderDetail/nextGenerationPrice/" + orderId + "/" + nextGenerationPrice + "/" + orderVersion;
+	var status = "${order.tscStatus}";
+	window.location.href= contextPath + "/orderDetail/nextGenerationPrice/" + orderId + "/" + nextGenerationPrice + "/" + orderVersion + "/" + status;
 		
 })
 
@@ -2687,16 +2710,6 @@ function clearNoNum(obj) {
     if(obj.value.indexOf(".")==-1){
 		obj.value = obj.value.substring(0,3);
 	}
-}
-
-//組成表示　表地
-jQuery("#composFrtFabric").empty();
-var result = "${order.productComposFrtFabric}";
-var compositionLabel = result.split("%");
-for (i=0; i<compositionLabel.length; i++ ){
-		if(compositionLabel[i]!=""){
-			jQuery("#composFrtFabric").append(compositionLabel[i]+"%").append("<Br>");
-		}
 }
 
 //組成表示　胴裏地
@@ -2797,7 +2810,44 @@ else{
 
 function pdfDownload(sign){
 	var orderId = "${order.orderId}";
-	window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+	var authority = "${authority}";
+
+	jQuery.ajax({
+	    url:contextPath + "/pdfFile/poPdfFileCheck",
+	    type:"get",
+	    data:{"orderId" : orderId},
+	    contentType:"application/json",
+	    success:function(result){
+	    	var shippingNumber = result.shippingNumber;
+	    	var hostTransmitARow = result.hostTransmitARow;
+	    	if((shippingNumber == null || "" == shippingNumber) && sign == "1"){
+	    		//msg113 = {0}が未連携のためＰＤＦを生成できません。
+				appendAlert('errormssage', getMsgByOneArg('msg113', '出荷番号'));
+		    }else if((hostTransmitARow == null || "" == hostTransmitARow) && sign == "1"){
+		    	//msg113 = {0}が未連携のためＰＤＦを生成できません。
+				appendAlert('errormssage', getMsgByOneArg('msg113', 'A行'));
+			}else{
+				if("01" == authority || "02" == authority){
+					// 確認メッセージ
+					swal({
+						// 注文確定が完了していない場合、PDFと注文内容に差異が出る可能性があります。PDF出力後、速やかに注文確定を行ってください。
+						text: getMsg('msg112'),
+						icon: "info",
+						dangerMode: true,
+						closeOnEsc: false,
+					})
+					.then((isConfirm) => {
+						if (isConfirm) {
+							window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+						}
+					});
+				}else{
+					window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+				}
+			}
+	    }
+	});
+
 }
 </script>
 

@@ -210,14 +210,14 @@ public class FabricController {
 		//タイトルと内容をバイト出力ストリーム書き込みます
 		writeByteArrayOutputStream(output, title, content);
 		
-		String fileNameDefault = "生地情報ダウンロード"+dateToday+".csv";
+		String fileNameDefault = "生地情報ダウンロード_"+dateToday+".csv";
 		try {
 			response.addHeader("Content-Type", "application/force-download");
 			//デフォルトのダウンロードファイル名を設定する
 			response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
 			response.getOutputStream().write(output.toByteArray());
 			response.setStatus(200);
-			logger.info("done");
+			logger.info("Download is OK");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.info(e.toString());
@@ -384,7 +384,7 @@ public class FabricController {
 					}
 					
 					//生地品番
-					dataWhetherConform = stringHalfAngleCheck(data[2], 20);
+					dataWhetherConform = stringCheckIsHalfAngle(data[2], 20);
 					if(dataWhetherConform == MEET_THE_REQUIREMENT){
 						fabric.setFabricNo(data[2]);
 					}else{
@@ -437,8 +437,8 @@ public class FabricController {
 				}
 				
 				//検査素材品番
-				dataWhetherConform = stringHalfAngleCheck(data[3], 30);
-				if(dataWhetherConform == MEET_THE_REQUIREMENT){
+				dataWhetherConform = stringCheckIsHalfAngle(data[3], 30);
+				if(dataWhetherConform == MEET_THE_REQUIREMENT){ 
 					fabric.setMaterialNo(data[3]);
 				}else{
 					setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "素材品番");
@@ -456,7 +456,7 @@ public class FabricController {
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "生地ブランド管理番号", MANAGEMENT_NUMBER_DOES_NOT_EXIST));
 					break;
 				}
-				dataWhetherConform = englishHalfAngleCheck(data[4]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[4]);
 				//5桁以下の正の整数
 				String regEx = "^\\d{1,5}$";
 				Pattern pattern = Pattern.compile(regEx);
@@ -472,7 +472,7 @@ public class FabricController {
 				}
 				
 				//業態
-				dataWhetherConform = stringHalfAngleCheck(data[5], 6);
+				dataWhetherConform = stringCheckIsHalfAngle(data[5], 6);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setStoreBrand(data[5]);
 				}else{
@@ -481,7 +481,7 @@ public class FabricController {
 				}
 				
 				//年季
-				dataWhetherConform = stringHalfAngleCheck(data[6], 2);
+				dataWhetherConform = stringCheckIsHalfAngle(data[6], 2);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setSeason(data[6]);
 				}else{
@@ -490,7 +490,7 @@ public class FabricController {
 				}
 				
 				//色
-				dataWhetherConform = stringHalfAngleCheck(data[7], 1);
+				dataWhetherConform = stringCheckIsHalfAngle(data[7], 1);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setColor(data[7]);
 				}else{
@@ -499,7 +499,7 @@ public class FabricController {
 				}
 				
 				//柄
-				dataWhetherConform = stringHalfAngleCheck(data[8], 1);
+				dataWhetherConform = stringCheckIsHalfAngle(data[8], 1);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setPattern(data[8]);
 				}else{
@@ -508,7 +508,7 @@ public class FabricController {
 				}
 				
 				//色(青山表記)
-				dataWhetherConform = stringHalfAngleCheck(data[9], 1);
+				dataWhetherConform = stringCheckIsHalfAngle(data[9], 1);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setColorAoyama(data[9]);
 				}else{
@@ -517,7 +517,7 @@ public class FabricController {
 				}
 				
 				//柄(青山表記)
-				dataWhetherConform = stringHalfAngleCheck(data[10], 1);
+				dataWhetherConform = stringCheckIsHalfAngle(data[10], 1);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setPatternAoyama(data[10]);
 				}else{
@@ -526,7 +526,7 @@ public class FabricController {
 				}
 				
 				//素材ネーム
-				dataWhetherConform = stringCheck(data[11], 50);
+				dataWhetherConform = stringCheckNoAngle(data[11], 50);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setMaterialName(data[11]);
 				}else{
@@ -557,7 +557,7 @@ public class FabricController {
 				}
 				
 				//組成表示
-				dataWhetherConform = stringCheck(data[14], 300);
+				dataWhetherConform = stringCheckNoAngle(data[14], 300);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setCompositionLabel(data[14]);
 				}else{
@@ -566,7 +566,7 @@ public class FabricController {
 				}
 				
 				//工場コード
-				dataWhetherConform = stringHalfAngleCheck(data[15], 6);
+				dataWhetherConform = stringCheckIsHalfAngle(data[15], 6);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setFactoryCode(data[15]);
 				}else{
@@ -575,7 +575,7 @@ public class FabricController {
 				}
 				
 				//メーカーコード
-				dataWhetherConform = stringHalfAngleCheck(data[16], 6);
+				dataWhetherConform = stringCheckIsHalfAngle(data[16], 6);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setMakerCode(data[16]);
 				}else{
@@ -595,7 +595,7 @@ public class FabricController {
 				}
 				
 				//上代
-				dataWhetherConform = integerCheck(data[18]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[18]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setRetailPrice(Integer.parseInt(data[18]));
 				}else{
@@ -604,7 +604,7 @@ public class FabricController {
 				}
 				
 				//PANTS追加増額率
-				dataWhetherConform = integerCheck(data[19]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[19]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setAdditionalPantsRate(Integer.parseInt(data[19]));
 				}else{
@@ -613,7 +613,7 @@ public class FabricController {
 				}
 				
 				//シングルGILET追加増額率
-				dataWhetherConform = integerCheck(data[20]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[20]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setAdditionalSingleGiletRate(Integer.parseInt(data[20]));
 				}else{
@@ -622,7 +622,7 @@ public class FabricController {
 				}
 				
 				//ダブルGILET追加増額率
-				dataWhetherConform = integerCheck(data[21]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[21]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setAdditionalDoubleGiletRate(Integer.parseInt(data[21]));
 				}else{
@@ -631,7 +631,7 @@ public class FabricController {
 				}
 				
 				//ダブルJACKET増額率
-				dataWhetherConform = integerCheck(data[22]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[22]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setAdditionalDoubleJacketRate(Integer.parseInt(data[22]));
 				}else{
@@ -640,7 +640,7 @@ public class FabricController {
 				}
 				
 				//シングルJACKET単品率
-				dataWhetherConform = integerCheck(data[23]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[23]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setSingleJacketOnlyRate(Integer.parseInt(data[23]));
 				}else{
@@ -649,7 +649,7 @@ public class FabricController {
 				}
 				
 				//ダブルJACKET単品率
-				dataWhetherConform = integerCheck(data[24]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[24]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setDoubleJacketOnlyRate(Integer.parseInt(data[24]));
 				}else{
@@ -658,7 +658,7 @@ public class FabricController {
 				}
 				
 				//PANTS単品率
-				dataWhetherConform = integerCheck(data[25]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[25]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setPantOnlyRate(Integer.parseInt(data[25]));
 				}else{
@@ -667,7 +667,7 @@ public class FabricController {
 				}
 				
 				//シングルGILET単品率
-				dataWhetherConform = integerCheck(data[26]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[26]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setSingleGiletOnlyRate(Integer.parseInt(data[26]));
 				}else{
@@ -676,7 +676,7 @@ public class FabricController {
 				}
 				
 				//ダブルGILET単品率
-				dataWhetherConform = integerCheck(data[27]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[27]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setDoubleGiletOnlyRate(Integer.parseInt(data[27]));
 				}else{
@@ -685,7 +685,7 @@ public class FabricController {
 				}
 	        	
 				//シングルコート単品率
-				dataWhetherConform = integerCheck(data[28]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[28]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setCoatSingleOnlyRate(Integer.parseInt(data[28]));
 				}else{
@@ -694,7 +694,7 @@ public class FabricController {
 				}
 				
 				//ダブルコート単品率
-				dataWhetherConform = integerCheck(data[29]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[29]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setCoatDoubleOnlyRate(Integer.parseInt(data[29]));
 				}else{
@@ -703,7 +703,7 @@ public class FabricController {
 				}
 				
 				//シングルJacketの単品購買追加金額
-				dataWhetherConform = integerCheck(data[30]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[30]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setJkSingleOnlyPlusAlphaPrice(Integer.parseInt(data[30]));
 				}else{
@@ -712,7 +712,7 @@ public class FabricController {
 				}
 				
 				//ダブルJacketの単品購買追加金額
-				dataWhetherConform = integerCheck(data[31]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[31]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setJkDoubleOnlyPlusAlphaPrice(Integer.parseInt(data[31]));
 				}else{
@@ -721,7 +721,7 @@ public class FabricController {
 				}
 				
 				//シングルGiletの単品購買追加金額
-				dataWhetherConform = integerCheck(data[32]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[32]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setGlSingleOnlyPlusAlphaPrice(Integer.parseInt(data[32]));
 				}else{
@@ -730,7 +730,7 @@ public class FabricController {
 				}
 				
 				//ダブルGiletの単品購買追加金額
-				dataWhetherConform = integerCheck(data[33]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[33]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setGlDoubleOnlyPlusAlphaPrice(Integer.parseInt(data[33]));
 				}else{
@@ -739,7 +739,7 @@ public class FabricController {
 				}
 				
 				//Pantsの単品購買追加金額
-				dataWhetherConform = integerCheck(data[34]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[34]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setPtOnlyPlusAlphaPrice(Integer.parseInt(data[34]));
 				}else{
@@ -748,7 +748,7 @@ public class FabricController {
 				}
 				
 				//シングルCoatの単品購買追加金額
-				dataWhetherConform = integerCheck(data[35]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[35]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setCtSingleOnlyPlusAlphaPrice(Integer.parseInt(data[35]));
 				}else{
@@ -757,7 +757,7 @@ public class FabricController {
 				}
 				
 				//ダブルCoatの単品購買追加金額
-				dataWhetherConform = integerCheck(data[36]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[36]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setCtDoubleOnlyPlusAlphaPrice(Integer.parseInt(data[36]));
 				}else{
@@ -766,7 +766,7 @@ public class FabricController {
 				}
 				
 				//生地代
-				dataWhetherConform = integerCheck(data[37]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[37]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setFabricPrice(Integer.parseInt(data[37]));
 				}else{
@@ -797,7 +797,7 @@ public class FabricController {
 				}
 				
 				//下代調整金
-				dataWhetherConform = integerCheck(data[40]);
+				dataWhetherConform = integerCheckIsHalfAngle(data[40]);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setWsPriceAdjust(Integer.parseInt(data[40]));
 				}else{
@@ -806,8 +806,8 @@ public class FabricController {
 				}
 				
 				//契約No
-				dataWhetherConform = stringHalfAngleCheck(data[41], 20);
-				if(dataWhetherConform == MEET_THE_REQUIREMENT){
+				dataWhetherConform = stringCheckIsHalfAngle(data[41], 20);
+				if(dataWhetherConform == MEET_THE_REQUIREMENT || dataWhetherConform == PROJECT_NAME_IS_EMPTY){
 					fabric.setContractNo(data[41]);
 				}else{
 					setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "契約No");
@@ -815,7 +815,7 @@ public class FabricController {
 				}
 				
 				//手帳(貿易)期限、特殊のチェック
-				dataWhetherConform = stringHalfAngleCheck(data[42], 20);
+				dataWhetherConform = stringCheckIsHalfAngle(data[42], 20);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					boolean convertSuccess = true;
 					SimpleDateFormat spinningLimitDateSDF = new SimpleDateFormat("yyyyMMdd");
@@ -839,7 +839,7 @@ public class FabricController {
 				}
 				
 				//生地インポーター
-				dataWhetherConform = stringHalfAngleCheck(data[43], 2);
+				dataWhetherConform = stringCheckIsHalfAngle(data[43], 2);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setFablicImporter(data[43]);
 				}else{
@@ -870,7 +870,7 @@ public class FabricController {
 				}
 				
 				//店着納期区分（通常）
-				dataWhetherConform = stringHalfAngleCheck(data[46], 2);
+				dataWhetherConform = stringCheckIsHalfAngle(data[46], 2);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setStoreDelvNormal(data[46]);
 				}else{
@@ -879,7 +879,7 @@ public class FabricController {
 				}
 				
 				//店着納期区分（早割）
-				dataWhetherConform = stringHalfAngleCheck(data[47], 2);
+				dataWhetherConform = stringCheckIsHalfAngle(data[47], 2);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setStoreDelvEarly(data[47]);
 				}else{
@@ -888,7 +888,7 @@ public class FabricController {
 				}
 				
 				//店着納期区分（コート専用）
-				dataWhetherConform = stringHalfAngleCheck(data[48], 2);
+				dataWhetherConform = stringCheckIsHalfAngle(data[48], 2);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){
 					fabric.setStoreDelvCoat(data[48]);
 				}else{
@@ -898,8 +898,8 @@ public class FabricController {
 				
 				
 				//取扱注意
-				dataWhetherConform = stringCheck(data[49], 50);
-				if(dataWhetherConform == MEET_THE_REQUIREMENT){
+				dataWhetherConform = stringCheckNoAngle(data[49], 50);
+				if(dataWhetherConform == MEET_THE_REQUIREMENT || dataWhetherConform == PROJECT_NAME_IS_EMPTY){
 					fabric.setHandlingCaution(data[49]);
 				}else{
 					setErrorArrayToFabricList(fabricList, fabric, dataWhetherConform, countErrorLine, "取扱注意");
@@ -1004,7 +1004,7 @@ public class FabricController {
 	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空;　NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない; 
 	 * @return MEET_THE_REQUIREMENT:要求にかなう
 	 */
-	private String stringCheck(String str, int i) {
+	private String stringCheckNoAngle(String str, int i) {
 		if("null".equals(str) || str == null || "".equals(str)){
 			//空
 			return PROJECT_NAME_IS_EMPTY;
@@ -1025,13 +1025,16 @@ public class FabricController {
 	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空;　NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない; 
 	 * @return MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
 	 */
-	private String stringHalfAngleCheck(String str, int i) {
+	private String stringCheckIsHalfAngle(String str, int i) {
+		String regEx = "^[A-Za-z0-9]+$";
+		Pattern pattern = Pattern.compile(regEx);
+		Matcher matcher = pattern.matcher(str);
+		
 		if("null".equals(str) || str == null || "".equals(str)){
 			//空
 			return PROJECT_NAME_IS_EMPTY;
 		}else{
-			String halfAngleCheck = englishHalfAngleCheck(str);
-	        if(halfAngleCheck == VALUE_IS_INCORRECT) {
+	        if(!(matcher.matches())) {
 	        	//全角です
 	        	return FULL_ANGLE;
 	        }else if(str.length() <= i){
@@ -1045,50 +1048,13 @@ public class FabricController {
 	}
 	
 	/**
-	 * チェックinteger型
+	 * チェックinteger型、半角でなければなりません
 	 * @param str　検査の内容を準備する
 	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空; VALUE_IS_INCORRECT:タイプが正しくない;　
 	 * @return NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない;  MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
 	 */
-	private String integerCheck(String str) {
-		//2000000000以下の正の整数
-//		String regEx = "^\\d{1,9}$||^[1]\\d{1,9}$||^[2][0][0][0][0][0][0][0][0][0]$";
-//		Pattern pattern = Pattern.compile(regEx);
-//		Matcher matcher = pattern.matcher(str);
-		
-		boolean digits = NumberUtils.isDigits(str);
-		if("null".equals(str) || str == null || "".equals(str)){
-			//空
-			return PROJECT_NAME_IS_EMPTY;
-		}else{
-			String halfAngleCheck = englishHalfAngleCheck(str);
-	        if(halfAngleCheck == VALUE_IS_INCORRECT) {
-	        	//全角です
-	        	return FULL_ANGLE;
-	        }else if(digits != true) {
-	        	//タイプが正しくない
-				return VALUE_IS_INCORRECT;
-			}else {
-				//要求にかなう
-				return MEET_THE_REQUIREMENT;
-			}
-	        
-//	        else if(!(matcher.matches())){
-//				//桁が正しくない
-//				return NUMBER_OF_BITS_IS_INCORRECT;
-//			}
-		}
-	}
-
-	/**
-	 * チェックshort型
-	 * @param str　検査の内容を準備する
-	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空; VALUE_IS_INCORRECT:タイプが正しくない;　
-	 * @return NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない;  MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
-	 */
-	private String shortCheck(String str) {
-		//32767以下の正の整数
-		String regEx = "^\\d{1,4}$||^[1-2]\\d{1,4}$||^3[0-1]\\d{1,3}$||^32[0-6]\\d{1,2}$||^327[0-5]\\d$||^3276[0-7]$";
+	private String integerCheckIsHalfAngle(String str) {
+		String regEx = "^[0-9]+$";
 		Pattern pattern = Pattern.compile(regEx);
 		Matcher matcher = pattern.matcher(str);
 		
@@ -1097,25 +1063,21 @@ public class FabricController {
 			//空
 			return PROJECT_NAME_IS_EMPTY;
 		}else{
-			String halfAngleCheck = englishHalfAngleCheck(str);
-	        if(halfAngleCheck == VALUE_IS_INCORRECT) {
+	        if(!(matcher.matches())) {
 	        	//全角です
 	        	return FULL_ANGLE;
 	        }else if(digits != true) {
 	        	//タイプが正しくない
 				return VALUE_IS_INCORRECT;
-			}else if(!(matcher.matches())) {
-				//桁が正しくない
-				return NUMBER_OF_BITS_IS_INCORRECT;
 			}else {
 				//要求にかなう
 				return MEET_THE_REQUIREMENT;
 			}
 		}
 	}
-	
+
 	/**
-	 * チェックbigDecimal型
+	 * チェックbigDecimal型、半角でなければなりません
 	 * @param str　検査の内容を準備する
 	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空; VALUE_IS_INCORRECT:タイプが正しくない;　
 	 * @return NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない;  MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
@@ -1150,25 +1112,6 @@ public class FabricController {
 	}
 	
 	/**
-	 * 半角英文チェック
-	 * @param str　検査の内容を準備する
-	 * @return VALUE_IS_INCORRECT:要求にそぐわない;  MEET_THE_REQUIREMENT:要求にかなう
-	 */
-	private String englishHalfAngleCheck(String str) {
-		String regEx = "^[A-Za-z0-9]+$";
-		Pattern pattern = Pattern.compile(regEx);
-		Matcher matcher = pattern.matcher(str);
-		
-		if(matcher.matches()) {
-			//半角です
-			return MEET_THE_REQUIREMENT;
-		}else {
-			//全角です
-			return VALUE_IS_INCORRECT;
-		}
-	}
-	
-	/**
 	 * ダウンロード時、値が空かどうかを判断する
 	 * @param str　入力値
 	 * @return
@@ -1180,6 +1123,43 @@ public class FabricController {
 		}else {
 			//ダウンロードの値は空です、空の文字列に設定
 			return "";
+		}
+	}
+	
+	/**
+	 * チェックshort型
+	 * @param str　検査の内容を準備する
+	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空; VALUE_IS_INCORRECT:タイプが正しくない;　
+	 * @return NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない;  MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
+	 */
+	private String shortCheck(String str) {
+		//32767以下の正の整数
+		String regEx = "^\\d{1,4}$||^[1-2]\\d{1,4}$||^3[0-1]\\d{1,3}$||^32[0-6]\\d{1,2}$||^327[0-5]\\d$||^3276[0-7]$";
+		Pattern pattern = Pattern.compile(regEx);
+		Matcher matcher = pattern.matcher(str);
+		
+		String regExTwo = "^[0-9]+$";
+		Pattern patternTwo = Pattern.compile(regExTwo);
+		Matcher matcherTwo = patternTwo.matcher(str);
+		
+		boolean digits = NumberUtils.isDigits(str);
+		if("null".equals(str) || str == null || "".equals(str)){
+			//空
+			return PROJECT_NAME_IS_EMPTY;
+		}else{
+	        if(!(matcherTwo.matches())) {
+	        	//全角です
+	        	return FULL_ANGLE;
+	        }else if(digits != true) {
+	        	//タイプが正しくない
+				return VALUE_IS_INCORRECT;
+			}else if(!(matcher.matches())) {
+				//桁が正しくない
+				return NUMBER_OF_BITS_IS_INCORRECT;
+			}else {
+				//要求にかなう
+				return MEET_THE_REQUIREMENT;
+			}
 		}
 	}
 	
@@ -1201,6 +1181,7 @@ public class FabricController {
 		}
 		
 		byte[] a = String.valueOf(sbTitle).getBytes();
+		//output.write('\ufeff');
 		output.write(a);
 		
 		for(int i=0;i<content.length;i++){

@@ -55,18 +55,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * pdfファイルの書き方
 	 */
 	@Override
-	public ByteArrayOutputStream outputSamplePoPdf(String sign, String orderId) throws Exception{
-		//orderIdでorderオブジェクトを取得します
-		Order order = orderListRepository.findOrderByPk(orderId);
-		//orderIdでmeasuringオブジェクトを取得します
-    	Measuring measuring = measuringRepository.selectByPrimaryKey(orderId);
-    	if(order == null) {
-    		logger.info("order対象はnullです。");
-    	}
-    	if(measuring == null) {
-    		logger.info("measuring対象はnullです。");
-    	}
-    	
+	public ByteArrayOutputStream outputSamplePoPdf(String sign, Order order, Measuring measuring) throws Exception{
 		@SuppressWarnings("resource")
 		//xmlファイルの読む込み
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
@@ -100,19 +89,19 @@ public class PdfFileServiceImpl implements PdfFileService{
             	//注文内容確認書(SUIT)_工場向
             	doc.setDocumentName("注文内容確認書(SUIT)_工場向");
             	Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-            			+ "confirmationBookSuit-Factory.cfx");
+            			+ "po" + File.separator + "confirmationBookSuit-Factory.cfx");
             	form = CrForm.open(draw, resource.getInputStream());
 			}else if("2".equals(sign)) {
 				//注文内容確認書(SUIT)_お客様向
 				doc.setDocumentName("注文内容確認書(SUIT)_お客様向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-						+ "confirmationBookSuit-Guest.cfx");
+						+ "po" + File.separator + "confirmationBookSuit-Guest.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("3".equals(sign)) {
 				//工場指示書(SUIT)
 				doc.setDocumentName("工場指示書(SUIT)");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-						+ "factoryInstructionsSuit.cfx");
+						+ "po" + File.separator + "factoryInstructionsSuit.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else{
 				logger.info("このスタイルはありません");

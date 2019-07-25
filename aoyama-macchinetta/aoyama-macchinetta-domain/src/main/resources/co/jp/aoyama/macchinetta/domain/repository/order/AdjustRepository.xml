@@ -69,4 +69,14 @@
     description, display_order, created_user_id, created_at, updated_user_id, updated_at
     from mtb_adjust where order_pattern = #{orderPattern}
   </select>
+  
+  <select id="getAdjustByItem" resultMap="BaseResultMap">
+    select item_code, sub_item_code, adjuste_class, adjuste_max, adjuste_min, 
+    display_order
+    from mtb_adjust where 
+    order_pattern = #{orderPattern} 
+    and item_code = #{itemCode}
+    order by display_order
+  </select>
+  
 </mapper>

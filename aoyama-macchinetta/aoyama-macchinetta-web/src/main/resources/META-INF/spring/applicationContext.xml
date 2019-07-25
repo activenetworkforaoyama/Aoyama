@@ -1,63 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-    ">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd    
+    "
+	xmlns:p="http://www.springframework.org/schema/p">
 
-    <import resource="classpath:/META-INF/spring/aoyama-macchinetta-domain.xml" />
+	<import
+		resource="classpath:/META-INF/spring/aoyama-macchinetta-domain.xml" />
 
-    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-    <context:property-placeholder
-        location="classpath*:/META-INF/spring/*.properties" />
+	<context:property-placeholder
+		location="classpath*:/META-INF/spring/*.properties" />
 
-    <bean id="beanMapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
-        <property name="mappingFiles"
-            value="classpath*:/META-INF/dozer/**/*-mapping.xml" />
-    </bean>
+	<bean id="beanMapper"
+		class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles"
+			value="classpath*:/META-INF/dozer/**/*-mapping.xml" />
+	</bean>
 
-    <!-- Message -->
-    <bean id="messageSource"
-        class="org.springframework.context.support.ResourceBundleMessageSource">
-        <property name="basenames">
-            <list>
-                <value>i18n/application-messages</value>
-            </list>
-        </property>
-        <property name="defaultEncoding" value="UTF-8" />
-    </bean>
+	<!-- Message -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>i18n/application-messages</value>
+			</list>
+		</property>
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
 
-    <!-- Exception Code Resolver. -->
-    <bean id="exceptionCodeResolver"
-        class="org.terasoluna.gfw.common.exception.SimpleMappingExceptionCodeResolver">
-        <!-- Setting and Customization by project. -->
-        <property name="exceptionMappings">
-            <map>
-                <entry key="ResourceNotFoundException" value="e.05.fw.5001" />
-                <!-- 2019/3/25 JinYunFei ADD START -->
-                <entry key="MultipartException" value="e.06.fw.6001" />
-                <!-- 2019/3/25 JinYunFei ADD END -->
-                <entry key="InvalidTransactionTokenException" value="e.07.fw.7001" />
-                <entry key="BusinessException" value="e.08.fw.8001" />
-                <entry key=".DataAccessException" value="e.09.fw.9002" />
-            </map>
-        </property>
-        <property name="defaultExceptionCode" value="e.09.fw.9001" />
-    </bean>
+	<!-- Exception Code Resolver. -->
+	<bean id="exceptionCodeResolver"
+		class="org.terasoluna.gfw.common.exception.SimpleMappingExceptionCodeResolver">
+		<!-- Setting and Customization by project. -->
+		<property name="exceptionMappings">
+			<map>
+				<entry key="ResourceNotFoundException" value="e.05.fw.5001" />
+				<!-- 2019/3/25 JinYunFei ADD START -->
+				<entry key="MultipartException" value="e.06.fw.6001" />
+				<!-- 2019/3/25 JinYunFei ADD END -->
+				<entry key="InvalidTransactionTokenException"
+					value="e.07.fw.7001" />
+				<entry key="BusinessException" value="e.08.fw.8001" />
+				<entry key=".DataAccessException" value="e.09.fw.9002" />
+			</map>
+		</property>
+		<property name="defaultExceptionCode" value="e.09.fw.9001" />
+	</bean>
 
-    <!-- Exception Logger. -->
-    <bean id="exceptionLogger"
-        class="org.terasoluna.gfw.common.exception.ExceptionLogger">
-        <property name="exceptionCodeResolver" ref="exceptionCodeResolver" />
-    </bean>
+	<!-- Exception Logger. -->
+	<bean id="exceptionLogger"
+		class="org.terasoluna.gfw.common.exception.ExceptionLogger">
+		<property name="exceptionCodeResolver"
+			ref="exceptionCodeResolver" />
+	</bean>
 
-    <!-- Filter. -->
-    <bean id="exceptionLoggingFilter"
-        class="org.terasoluna.gfw.web.exception.ExceptionLoggingFilter" >
-        <property name="exceptionLogger" ref="exceptionLogger" />
-    </bean>
+	<!-- Filter. -->
+	<bean id="exceptionLoggingFilter"
+		class="org.terasoluna.gfw.web.exception.ExceptionLoggingFilter">
+		<property name="exceptionLogger" ref="exceptionLogger" />
+	</bean>
+
+
+
+
+ <!-- <bean id="jedisConnFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.host}"
+          p:port="${redis.port}"
+          p:password="${redis.auth}"
+          p:use-pool="true"
+    />
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connection-factory-ref="jedisConnFactory"/> -->
+     <!-- Spring-redis连接池管理工厂 -->
+	<!-- <bean
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:host-name="${redis.host}" p:port="${redis.port}"
+		p:password="${redis.auth}">
+
+	</bean> -->
+
+	<!-- 将session放入redis -->
+	<!--<bean id="redisHttpSessionConfiguration"
+		class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration">
+		<property name="maxInactiveIntervalInSeconds" value="1800" />
+	</bean>-->
+
+	<!-- redis缓存配置 -->
+	<!--<bean id="jedisPoolConfig"
+		class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="300" />
+		<property name="maxTotal" value="60000" />
+		<property name="testOnBorrow" value="true" />
+	</bean>-->
+	<!--连接池 -->
+	<!--<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig" />
+		<constructor-arg index="1" value="${redis.hostName}"
+			type="java.lang.String" />
+		<constructor-arg index="2" value="${redis.port}"
+			type="int" />
+	</bean>-->
 
 </beans>

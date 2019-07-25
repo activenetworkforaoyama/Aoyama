@@ -184,7 +184,7 @@
 											<form:option value="32">SUIT(3P2PP)</form:option>
 											<form:option value="02">JACKET</form:option>
 											<form:option value="03">PANTS</form:option>
-											<form:option value="04">GILLET</form:option>
+											<form:option value="04">GILET</form:option>
 											<form:option value="06">COAT</form:option>
 											<form:option value="05">SHIRT</form:option>
 										</form:select>
@@ -206,7 +206,7 @@
 											<form:option value="32">SUIT(3P2PP)</form:option>
 											<form:option value="02">JACKET</form:option>
 											<form:option value="03">PANTS</form:option>
-											<form:option value="04">GILLET</form:option>
+											<form:option value="04">GILET</form:option>
 										</form:select>
 									</div>
 								</c:when>
@@ -637,7 +637,7 @@ itemMap.set("31","SUIT(3P)");
 itemMap.set("32","SUIT(3P2PP)");
 itemMap.set("02","JACKET");
 itemMap.set("03","PANTS");
-itemMap.set("04","GILLET");
+itemMap.set("04","GILET");
 itemMap.set("05","SHIRT");
 itemMap.set("06","COAT");
 

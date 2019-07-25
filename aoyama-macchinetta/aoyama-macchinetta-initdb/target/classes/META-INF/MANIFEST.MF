@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: aoyama-macchinetta-initdb
 Implementation-Version: 1.0.0-SNAPSHOT
-Built-By: gaoxiang-pc
+Built-By: liuzhenyu
 Implementation-Vendor-Id: co.jp.aoyama.macchinetta
 Build-Jdk: 1.8.0_202-ea
 Created-By: Maven Integration for Eclipse

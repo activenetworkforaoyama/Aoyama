@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.cash.DtbCashRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.DtbCash" >
+    <id column="cash_id" property="cashId" jdbcType="VARCHAR" />
+    <result column="cash_status" property="cashStatus" jdbcType="VARCHAR" />
+    <result column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <result column="store_brand_code" property="storeBrandCode" jdbcType="VARCHAR" />
+    <result column="shop_code" property="shopCode" jdbcType="VARCHAR" />
+    <result column="store_staff_nm" property="storeStaffNm" jdbcType="VARCHAR" />
+    <result column="cust_cd" property="custCd" jdbcType="VARCHAR" />
+    <result column="product_orderd_date" property="productOrderdDate" jdbcType="DATE" />
+    <result column="order_amount" property="orderAmount" jdbcType="SMALLINT" />
+    <result column="cash_total_price" property="cashTotalPrice" jdbcType="INTEGER" />
+    <result column="cash_except_tax_price" property="cashExceptTaxPrice" jdbcType="INTEGER" />
+    <result column="cash_tax_amount" property="cashTaxAmount" jdbcType="INTEGER" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dtb_cash
+    where cash_id = #{cashId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.DtbCash" >
+    insert into dtb_cash (cash_id, cash_status, order_pattern, 
+      store_brand_code, shop_code, store_staff_nm, 
+      cust_cd, product_orderd_date, order_amount, 
+      cash_total_price, cash_except_tax_price, cash_tax_amount, 
+      created_user_id, created_at, updated_user_id, 
+      updated_at)
+    values (#{cashId,jdbcType=VARCHAR}, #{cashStatus,jdbcType=VARCHAR}, #{orderPattern,jdbcType=VARCHAR}, 
+      #{storeBrandCode,jdbcType=VARCHAR}, #{shopCode,jdbcType=VARCHAR}, #{storeStaffNm,jdbcType=VARCHAR}, 
+      #{custCd,jdbcType=VARCHAR}, #{productOrderdDate,jdbcType=DATE}, #{orderAmount,jdbcType=SMALLINT}, 
+      #{cashTotalPrice,jdbcType=INTEGER}, #{cashExceptTaxPrice,jdbcType=INTEGER}, #{cashTaxAmount,jdbcType=INTEGER}, 
+      #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedUserId,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="co.jp.aoyama.macchinetta.domain.model.DtbCash" >
+    update dtb_cash
+    set cash_status = #{cashStatus,jdbcType=VARCHAR},
+      order_pattern = #{orderPattern,jdbcType=VARCHAR},
+      store_brand_code = #{storeBrandCode,jdbcType=VARCHAR},
+      shop_code = #{shopCode,jdbcType=VARCHAR},
+      store_staff_nm = #{storeStaffNm,jdbcType=VARCHAR},
+      cust_cd = #{custCd,jdbcType=VARCHAR},
+      product_orderd_date = #{productOrderdDate,jdbcType=DATE},
+      order_amount = #{orderAmount,jdbcType=SMALLINT},
+      cash_total_price = #{cashTotalPrice,jdbcType=INTEGER},
+      cash_except_tax_price = #{cashExceptTaxPrice,jdbcType=INTEGER},
+      cash_tax_amount = #{cashTaxAmount,jdbcType=INTEGER},
+      created_user_id = #{createdUserId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where cash_id = #{cashId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select cash_id, cash_status, order_pattern, store_brand_code, shop_code, store_staff_nm, 
+    cust_cd, product_orderd_date, order_amount, cash_total_price, cash_except_tax_price, 
+    cash_tax_amount, created_user_id, created_at, updated_user_id, updated_at
+    from dtb_cash
+    where cash_id = #{cashId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select cash_id, cash_status, order_pattern, store_brand_code, shop_code, store_staff_nm, 
+    cust_cd, product_orderd_date, order_amount, cash_total_price, cash_except_tax_price, 
+    cash_tax_amount, created_user_id, created_at, updated_user_id, updated_at
+    from dtb_cash
+  </select>
+  
+  
+  <update id="updateByCashIds" parameterType="co.jp.aoyama.macchinetta.domain.dto.CashUpdateCondition" >
+    update dtb_cash
+    <set>
+        <if test="condition.cashStatus != null and condition.cashStatus != '' ">
+            cash_status = #{condition.cashStatus,jdbcType=VARCHAR},
+        </if>
+            updated_user_id = #{condition.updatedUserId,jdbcType=VARCHAR},
+            updated_at = #{condition.updatedAt,jdbcType=TIMESTAMP}
+    </set>
+    where cash_id in 
+    <foreach collection="list" index="index" item="cashId" open="(" separator="," close=")">
+      #{cashId}
+    </foreach>
+  </update>
+</mapper>

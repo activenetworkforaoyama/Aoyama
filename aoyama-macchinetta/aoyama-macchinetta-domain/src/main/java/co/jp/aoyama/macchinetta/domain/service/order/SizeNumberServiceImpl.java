@@ -20,5 +20,11 @@ public class SizeNumberServiceImpl implements SizeNumberService{
 		List<SizeNumber> numberList = sizeNumberRepository.getNumberList(poType);
 		return numberList;
 	}
+	@Override
+	public List<SizeNumber> getSizeNumberByItem(String orderPattern, String itemCode, String subItemCode,
+			String modelCode) {
+		List<SizeNumber> numberList = sizeNumberRepository.getSizeNumberByItem(orderPattern,itemCode,subItemCode,modelCode);
+		return numberList;
+	}
 
 }

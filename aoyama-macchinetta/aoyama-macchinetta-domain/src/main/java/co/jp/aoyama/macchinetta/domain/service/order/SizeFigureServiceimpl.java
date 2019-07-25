@@ -22,4 +22,10 @@ public class SizeFigureServiceimpl implements SizeFigureService{
 		return figureList;
 	}
 
+	@Override
+	public List<SizeFigure> getSizeFigureByItem(String orderPattern, String itemCode, String subItemCode, String modelCode) {
+		List<SizeFigure> figureList = sizeFigureRepository.getSizeFigureByItem(orderPattern,itemCode,subItemCode,modelCode);
+		return figureList;
+	}
+
 }

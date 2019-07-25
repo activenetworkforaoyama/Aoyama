@@ -17,4 +17,9 @@ public interface SizeNumberRepository {
     int updateByPrimaryKey(SizeNumber record);
 
 	List<SizeNumber> getNumberList(String poType);
+
+	List<SizeNumber> getSizeNumberByItem(@Param("orderPattern")String orderPattern, 
+			@Param("itemCode")String itemCode, 
+			@Param("subItemCode")String subItemCode, 
+			@Param("modelCode")String modelCode);
 }

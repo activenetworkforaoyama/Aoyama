@@ -2482,6 +2482,10 @@ public class Order implements Serializable {
 
     private String theoreticalStockCheck;
     
+    private String scheduleDataTransmitStatus;
+    
+    private String shippingTransmitStatus;
+    
     private Short version;
 
     private String createdUserId;
@@ -12845,5 +12849,21 @@ public class Order implements Serializable {
     public void setVersion(Short version) {
         this.version = version;
     }
+
+	public String getScheduleDataTransmitStatus() {
+		return scheduleDataTransmitStatus;
+	}
+
+	public void setScheduleDataTransmitStatus(String scheduleDataTransmitStatus) {
+		this.scheduleDataTransmitStatus = scheduleDataTransmitStatus;
+	}
+
+	public String getShippingTransmitStatus() {
+		return shippingTransmitStatus;
+	}
+
+	public void setShippingTransmitStatus(String shippingTransmitStatus) {
+		this.shippingTransmitStatus = shippingTransmitStatus;
+	}
     
 }

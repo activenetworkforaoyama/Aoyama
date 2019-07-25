@@ -16,4 +16,7 @@ public interface AdjustRepository {
     int updateByPrimaryKey(Adjust record);
 
 	List<Adjust> getAllAdjust(@Param("orderPattern") String type);
+
+	List<Adjust> getAdjustByItem(@Param("orderPattern")String orderPattern, 
+			@Param("itemCode")String itemCode);
 }

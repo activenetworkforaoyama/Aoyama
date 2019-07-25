@@ -8,4 +8,6 @@ public interface SizeNumberService {
 
 	List<SizeNumber> getNumberList(String poType);
 
+	List<SizeNumber> getSizeNumberByItem(String orderPattern, String itemCode, String subItemCode, String modelCode);
+
 }

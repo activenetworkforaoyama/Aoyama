@@ -16,8 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import co.jp.aoyama.macchinetta.domain.model.Measuring;
+import co.jp.aoyama.macchinetta.domain.model.Order;
+import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
+import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 import co.jp.aoyama.macchinetta.domain.service.pdf.PdfFileService;
 
 /**
@@ -31,6 +36,12 @@ public class PdfFileController {
 	
 	@Inject
 	PdfFileService pdfFileService;
+	
+	@Inject
+	OrderListService orderListService;
+	
+	@Inject
+	MeasuringService measuringService;
 	
 	private static final Logger logger = LoggerFactory
             .getLogger(PdfFileController.class);
@@ -49,13 +60,23 @@ public class PdfFileController {
     
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "poPdfFileDownload", method = RequestMethod.GET)
-	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity poPdfFileDownload(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@ResponseBody
+	public ResponseEntity poPdfFileDownload(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		String sign = request.getParameter("sign");
 		String orderId = request.getParameter("orderId");
-		try {
-			output = pdfFileService.outputSamplePoPdf(sign, orderId);
+		
+		//orderIdでorderオブジェクトを取得します
+		Order order = orderListService.findOrderByPk(orderId);
+		//orderIdでmeasuringオブジェクトを取得します
+    	Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+    	
+    	if(measuring == null) {
+    		logger.info("measuring対象はnullです。");
+    	}
+    	
+    	try {
+			output = pdfFileService.outputSamplePoPdf(sign, order, measuring);
 			
 			String fileNameDefault = null;
 			if("1".equals(sign)) {
@@ -75,13 +96,12 @@ public class PdfFileController {
 			response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
 			response.getOutputStream().write(output.toByteArray());
 			response.setStatus(200);
-			logger.info("done");
+			logger.info("Download is OK");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.info(e.toString());
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
-		//RunTime.getRunTime().exec("rundll32 url.dll,FileProtocolHandler " + url);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
@@ -124,6 +144,28 @@ public class PdfFileController {
 		}
 		//RunTime.getRunTime().exec("rundll32 url.dll,FileProtocolHandler " + url);
 		return new ResponseEntity(HttpStatus.OK);
+	}
+	
+	/**
+	 * orderIdに基ずいてオブジェクトを照会する
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param orderId
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "poPdfFileCheck", method = RequestMethod.GET)
+	@ResponseBody
+	public Order poPdfFileCheck(HttpServletRequest request, HttpServletResponse response, Model model, String orderId) throws Exception {
+		//orderIdでorderオブジェクトを取得します
+		Order order = orderListService.findOrderByPk(orderId);
+		
+		if(order == null) {
+    		logger.info("order対象はnullです。");
+    	}
+		
+		return order;
 	}
     
 }

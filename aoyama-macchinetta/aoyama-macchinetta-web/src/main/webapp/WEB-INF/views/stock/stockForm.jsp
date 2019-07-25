@@ -167,9 +167,9 @@
 						<div class="col col-lg-6">
 							<div class="row form-group">
 								<div class="col col-md-4">
-									<label class=" form-control-label"> </label>
+									<label class=" form-control-label">　</label>
 								</div>
-								<div class="col-12 col-md-8"> </div>
+								<div class="col-12 col-md-8">　</div>
 							</div>
 							<c:choose>
 								<c:when test="${sessionContent.authority != '03'}">

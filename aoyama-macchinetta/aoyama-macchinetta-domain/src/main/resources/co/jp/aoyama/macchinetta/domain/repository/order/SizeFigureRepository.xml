@@ -63,4 +63,13 @@
     created_user_id, created_at, updated_user_id, updated_at
     from mtb_size_figure where order_pattern = #{arg0}
   </select>
+  
+  <select id="getSizeFigureByItem" resultMap="BaseResultMap" >
+    select item_code, sub_item_code, figure 
+    from mtb_size_figure where 
+    order_pattern = #{orderPattern} 
+    and item_code = #{itemCode}
+    and sub_item_code = #{subItemCode}
+    and model_code = #{modelCode} order by display_order
+  </select>
 </mapper>

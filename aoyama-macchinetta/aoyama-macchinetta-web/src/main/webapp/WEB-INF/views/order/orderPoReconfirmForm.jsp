@@ -526,7 +526,7 @@
 							<label class=" form-control-label">組成表示　表地</label>
 						</div>
 						<div class="col-12 col-md-9">
-							<strong><label class=" form-control-label-value" id="composFrtFabric"></label></strong>
+							<strong><label class=" form-control-label-value" id="composFrtFabric">${orderForm.productComposFrtFabric}</label></strong>
 						</div>
 					</div>
 					<div class="row">
@@ -753,7 +753,7 @@
 								<strong><label class=" form-control-label">JACKETサイズ</label></strong>
 							</div>
 							<div class="col-12 col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.sizeFigureMap[orderForm.adjustJacketStandardInfo.sizeFigure] }&nbsp &nbsp &nbsp${orderForm.adjustJacketStandardInfo.sizeNumberMap[orderForm.adjustJacketStandardInfo.sizeNumber] }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.sizeFigure}&nbsp &nbsp &nbsp${orderForm.adjustJacketStandardInfo.sizeNumber}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -804,7 +804,7 @@
 								<strong><label class=" form-control-label">GILETモデル</label></strong>
 							</div>
 							<div class="col col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogGiletModel }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogGiletModelMap[orderForm.optionGiletStandardInfo.ogGiletModel] }</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -884,7 +884,7 @@
 								<strong><label class=" form-control-label">GILETサイズ</label></strong>
 							</div>
 							<div class="col-12 col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.adjustGiletStandardInfo.sizeFigureMap[orderForm.adjustGiletStandardInfo.sizeFigure] }&nbsp &nbsp &nbsp${orderForm.adjustGiletStandardInfo.sizeNumberMap[orderForm.adjustGiletStandardInfo.sizeNumber] }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustGiletStandardInfo.sizeFigure}&nbsp &nbsp &nbsp${orderForm.adjustGiletStandardInfo.sizeNumber}</label></strong>
 							</div>
 						</div>
 					</div>
@@ -906,7 +906,7 @@
 								<strong><label class=" form-control-label">PANTSモデル</label></strong>
 							</div>
 							<div class="col col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsStandardInfo.opPantsModel }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.optionPantsStandardInfo.opPantsModelMap[orderForm.optionPantsStandardInfo.opPantsModel] }</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -1032,7 +1032,7 @@
 								<strong><label class=" form-control-label">PANTSサイズ</label></strong>
 							</div>
 							<div class="col-12 col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.sizeFigureMap[orderForm.adjustPantsStandardInfo.sizeFigure] }&nbsp &nbsp &nbsp${orderForm.adjustPantsStandardInfo.sizeNumberMap[orderForm.adjustPantsStandardInfo.sizeNumber] }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.sizeFigure}&nbsp &nbsp &nbsp${orderForm.adjustPantsStandardInfo.sizeNumber}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -1085,7 +1085,7 @@
 								<strong><label class=" form-control-label">PANTSモデル</label></strong>
 							</div>
 							<div class="col col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2PantsModel}</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2PantsModelMap[orderForm.optionPants2StandardInfo.op2PantsModel]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -1211,7 +1211,7 @@
 								<strong><label class=" form-control-label">PANTSサイズ</label></strong>
 							</div>
 							<div class="col-12 col-md-3">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.sizeFigureMap[orderForm.adjustPants2StandardInfo.sizeFigure] }&nbsp &nbsp &nbsp${orderForm.adjustPants2StandardInfo.sizeNumberMap[orderForm.adjustPants2StandardInfo.sizeNumber] }</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.sizeFigure}&nbsp &nbsp &nbsp${orderForm.adjustPants2StandardInfo.sizeNumber}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -1911,16 +1911,6 @@ else if("${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" != '' && 
 else{
 	jQuery("#pants2CorinseamGross" ).html('左 ' +"${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" + 'cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }");
 	}
-
-//組成表示　表地
-jQuery("#composFrtFabric").empty();
-var result = "${orderForm.productComposFrtFabric}";
-var compositionLabel = result.split("%");
-for (i=0; i<compositionLabel.length; i++ ){
-		if(compositionLabel[i]!=""){
-			jQuery("#composFrtFabric").append(compositionLabel[i]+"%").append("<Br>");
-		}
-}
 
 //組成表示　胴裏地
 var result = "${orderForm.productComposBodyLiner}";

@@ -208,11 +208,11 @@ public class OrderController {
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(PO_TYPE);
 			// 補正:体型を取得
-			List<SizeFigure> figureList = sizeFigureService.getFigureList(PO_TYPE);
+			//List<SizeFigure> figureList = sizeFigureService.getFigureList(PO_TYPE);
 			// 補正:号数を取得
-			List<SizeNumber> numberList = sizeNumberService.getNumberList(PO_TYPE);
+			//List<SizeNumber> numberList = sizeNumberService.getNumberList(PO_TYPE);
 			// 補正を取得
-			List<Adjust> adjustList = adjustService.getAllAdjust(PO_TYPE);
+			//List<Adjust> adjustList = adjustService.getAllAdjust(PO_TYPE);
 			// アイテムを取得
 			List<Item> itemList = itemService.getAllItem(PO_TYPE);
 			// モデルを取得
@@ -224,8 +224,9 @@ public class OrderController {
 			int taxRate = consumptionService.getTaxRate(date);
 
 			orderHelper.getOptionStandardData(standardOptionList, orderForm);
-			orderHelper.getFigureNumberMap(figureList, numberList, orderForm);
-			orderHelper.getAdjust(adjustList, orderForm);
+			//orderHelper.getFigureNumberMap(figureList, numberList, orderForm);
+			orderHelper.getFigureNumberMap(orderForm);
+			//orderHelper.getAdjust(adjustList, orderForm);
 			orderHelper.getItem(itemList, orderForm);
 			orderHelper.getModel(modelList, orderForm);
 			orderHelper.getTaxRate(taxRate, orderForm);
@@ -428,6 +429,38 @@ public class OrderController {
 		return orderVersion;
 	}
 
+	/**
+	 * オーダー登録画面読み込み完了のとき、オーダーのデーターを挿入
+	 * 
+	 * @param orderForm
+	 * 
+	 */
+	@ResponseBody
+	@RequestMapping(value = "orderPoDivert", method = RequestMethod.GET)
+	public String orderPoDivert(OrderForm orderForm) {
+		
+		Order order = new Order();
+
+		Measuring measuring = new Measuring();
+		
+		Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+		
+		Measuring measuringIsExist = measuringService
+				.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+
+		// オーダーのデーター → orderForm
+		orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
+		
+		order.setVersion(orderIsExist.getVersion());
+		
+		orderService.deleteOrder(order);
+		orderService.deleteMeasuring(measuring);
+		
+		String orderVersion = getOrderVersion(order.getOrderId());
+		return orderVersion;
+	}
+	
+	
 	/**
 	 * 生地チェク完了在庫を計算
 	 * 
@@ -993,7 +1026,7 @@ public class OrderController {
 	}
 	
 	/**
-	 * モデルチェク
+	 * 
 	 * @param modelCode
 	 * @param productFabricNo
 	 * @param orderPattern
@@ -1011,5 +1044,71 @@ public class OrderController {
 			return versionStr;
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getModel", method = RequestMethod.GET)
+	public List<co.jp.aoyama.macchinetta.domain.model.Model> getModel(String orderPattern,String itemCode) {
+		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getModel(orderPattern,itemCode);
+		return modelList;
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+//	@ResponseBody
+//	@RequestMapping(value = "getAdjust", method = RequestMethod.GET)
+//	public List<Adjust> getAdjust(String orderPattern,String itemCode) {
+//		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getModel(orderPattern,itemCode);
+//		return modelList;
+//	}
+	
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getSizeFigureByItem", method = RequestMethod.GET)
+	public List<SizeFigure> getSizeFigureByItem(String orderPattern,String itemCode,String subItemCode,String modelCode) {
+		List<SizeFigure> figureList = sizeFigureService.getSizeFigureByItem(orderPattern,itemCode,subItemCode,modelCode);
+		return figureList;
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getSizeNumberByItem", method = RequestMethod.GET)
+	public List<SizeNumber> getSizeNumberByItem(String orderPattern,String itemCode,String subItemCode,String modelCode) {
+		List<SizeNumber> NumberList = sizeNumberService.getSizeNumberByItem(orderPattern,itemCode,subItemCode,modelCode);
+		return NumberList;
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getAdjustByItem", method = RequestMethod.GET)
+	public List<Adjust> getAdjustByItem(String orderPattern,String itemCode) {
+		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
+		return adjustList;
 	}
 }

@@ -45,6 +45,7 @@ public class OrderDetailController {
 	
 	@Inject
 	NextGenerationService nextGenerationService;
+	
 	@Inject
 	OrderListService orderListService;
 	
@@ -286,13 +287,31 @@ public class OrderDetailController {
 			else {
 				loadingDateD = sdf.parse(loadingDate);
 			}
-			
+			Order order= orderListService.findOrderByPk(orderId);
+			Date oldShippingDate = order.getShippingDate();
+			//出荷連携ステータス　0：未送信
+			String shippingTransmitStatus0 = "0";
+			//出荷連携ステータス　2：再送信
+			String shippingTransmitStatus2 = "2";
 			//最終更新者
 			String updatedUserId = sessionContent.getUserId();
 			//最終更新日時
 			Date updatedAt = new Date();
 			Short orderVersionS = Short.parseShort(orderVersion);
-			orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS);
+			if(oldShippingDate == null && shippingDateD != null) {
+				orderListService.updateSaveValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus0);
+			}
+			else if(oldShippingDate != null && shippingDateD != null && oldShippingDate.compareTo(shippingDateD) != 0) {
+				orderListService.updateSaveValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus2);
+			}
+			else if(oldShippingDate != null && shippingDateD != null && oldShippingDate.compareTo(shippingDateD) == 0) {
+				orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS);
+			}
+			else if(oldShippingDate == null && shippingDateD == null) {
+				orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS);
+			}
+			
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -336,12 +355,27 @@ public class OrderDetailController {
 		try {
 			shippingDateD = sdf.parse(shippingDate);
 			loadingDateD = sdf.parse(loadingDate);
+			Order order= orderListService.findOrderByPk(orderId);
+			Date oldShippingDate = order.getShippingDate();
+			//出荷連携ステータス　0：未送信
+			String shippingTransmitStatus0 = "0";
+			//出荷連携ステータス　2：再送信
+			String shippingTransmitStatus2 = "2";
 			//最終更新者
 			String updatedUserId = sessionContent.getUserId();
 			//最終更新日時
 			Date updatedAt = new Date();
 			Short orderVersionS = Short.parseShort(orderVersion);
-			orderListService.updateSaveOrChangeValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS);
+			if(oldShippingDate == null) {
+				orderListService.updateSaveOrChangeValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus0);
+			}
+			else if(oldShippingDate != null && oldShippingDate.compareTo(shippingDateD) != 0) {
+				orderListService.updateSaveOrChangeValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus2);
+			}
+			else if(oldShippingDate != null && oldShippingDate.compareTo(shippingDateD) == 0) {
+				orderListService.updateSaveOrChangeValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS);
+			}
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -404,10 +438,11 @@ public class OrderDetailController {
 	 * @param nextGenerationPrice
 	 * @return
 	 */
-	@RequestMapping(value = "/nextGenerationPrice/{orderId}/{nextGenerationPrice}/{orderVersion}")
+	@RequestMapping(value = "/nextGenerationPrice/{orderId}/{nextGenerationPrice}/{orderVersion}/{status}")
 	public String nextGenerationSave(@PathVariable(value ="orderId") String orderId,
 									 @PathVariable(value ="nextGenerationPrice") String nextGenerationPrice,
-									 @PathVariable(value = "orderVersion") String orderVersion,Model model) {
+									 @PathVariable(value = "orderVersion") String orderVersion,
+									 @PathVariable(value = "status")String status,Model model) {
 		
 		Integer nextGenerationP = Integer.parseInt(nextGenerationPrice);
 		//最終更新者
@@ -416,7 +451,18 @@ public class OrderDetailController {
 		Date updatedAt = new Date();
 		Short orderVersionS = Short.parseShort(orderVersion);
 		try {
-			orderListService.updateNextGeneration(orderId,nextGenerationP,updatedUserId,updatedAt,orderVersionS);
+			Order order= orderListService.findOrderByPk(orderId);
+			Integer wsPrice = order.getWsPrice();
+			String scheduleDataTransmitStatus = "2";
+			if("T5".equals(status)) {
+				if(!wsPrice.equals(nextGenerationP)) {
+					orderListService.updateNextGenerationAndStatus(orderId,nextGenerationP,updatedUserId,updatedAt,orderVersionS,scheduleDataTransmitStatus);
+				}
+			}
+			else {
+				orderListService.updateNextGeneration(orderId,nextGenerationP,updatedUserId,updatedAt,orderVersionS);
+			}
+			
 			String isUpdate = "1";
 			model.addAttribute("isUpdate",isUpdate);
 			return "order/orderPoLoginResultForm";

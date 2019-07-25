@@ -16,4 +16,6 @@ public interface ModelRepository {
     int updateByPrimaryKey(Model record);
 
 	List<Model> getAllModel(@Param("orderPattern") String type);
+
+	List<Model> getModel(@Param("orderPattern")String orderPattern, @Param("itemCode")String itemCode);
 }

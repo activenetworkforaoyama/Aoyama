@@ -670,7 +670,7 @@ jQuery('#backButton').on('click', function() {
 	//window.history.back();
 	var status = "${cashForm.tscStatus}";
 	if(status == "T2"){
-		window.location.href= contextPath + "/orderlist/init";
+		window.location.href= contextPath + "/orderlist/gotoOrderlist";
 		}
 	else{
 		window.location.href= contextPath + "/accounting/init";

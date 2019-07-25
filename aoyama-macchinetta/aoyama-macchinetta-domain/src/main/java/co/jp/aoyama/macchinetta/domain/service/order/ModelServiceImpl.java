@@ -23,4 +23,10 @@ public class ModelServiceImpl implements ModelService{
 		return modelList;
 	}
 
+	@Override
+	public List<Model> getModel(String orderPattern, String itemCode) {
+		List<Model> getModelList = modelRepository.getModel(orderPattern,itemCode);
+		return getModelList;
+	}
+
 }

@@ -656,7 +656,8 @@
       host_transmit_maker_product, factory_shipping_method, 
       shipping_date, loading_date, fabric_used_mount, 
       theory_fabric_used_mount, tsc_status, maker_factory_status, 
-      send2factory_status, is_cancelled, theoretical_stock_check, 
+      send2factory_status, is_cancelled, theoretical_stock_check,
+      schedule_data_transmit_status,shipping_transmit_status, 
       version, created_user_id, created_at, 
       updated_user_id, updated_at)
     values (#{orderId,jdbcType=VARCHAR}, #{orderPattern,jdbcType=VARCHAR}, #{storeBrandCode,jdbcType=VARCHAR}, 
@@ -1156,6 +1157,7 @@
       #{shippingDate,jdbcType=DATE}, #{loadingDate,jdbcType=DATE}, #{fabricUsedMount,jdbcType=NUMERIC}, 
       #{theoryFabricUsedMount,jdbcType=NUMERIC}, #{tscStatus,jdbcType=VARCHAR}, #{makerFactoryStatus,jdbcType=VARCHAR}, 
       #{send2factoryStatus,jdbcType=VARCHAR}, #{isCancelled,jdbcType=VARCHAR}, #{theoreticalStockCheck,jdbcType=VARCHAR}, 
+      #{scheduleDataTransmitStatus,jdbcType=VARCHAR},#{shippingTransmitStatus,jdbcType=VARCHAR},
       #{version,jdbcType=SMALLINT} + 1, #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
@@ -2398,6 +2400,8 @@
       send2factory_status = #{send2factoryStatus,jdbcType=VARCHAR},
       is_cancelled = #{isCancelled,jdbcType=VARCHAR},
       theoretical_stock_check = #{theoreticalStockCheck,jdbcType=VARCHAR},
+      schedule_data_transmit_status = #{scheduleDataTransmitStatus,jdbcType=VARCHAR},
+      shipping_transmit_status = #{shippingTransmitStatus,jdbcType=VARCHAR},
       version = #{version,jdbcType=SMALLINT} + 1,
       created_user_id = #{createdUserId,jdbcType=VARCHAR},
       created_at = #{createdAt,jdbcType=TIMESTAMP},

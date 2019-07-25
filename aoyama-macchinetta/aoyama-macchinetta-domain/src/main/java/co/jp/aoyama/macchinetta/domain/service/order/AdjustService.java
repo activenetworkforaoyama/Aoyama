@@ -8,4 +8,6 @@ public interface AdjustService {
 
 	List<Adjust> getAllAdjust(String type);
 
+	List<Adjust> getAdjustByItem(String orderPattern, String itemCode);
+
 }

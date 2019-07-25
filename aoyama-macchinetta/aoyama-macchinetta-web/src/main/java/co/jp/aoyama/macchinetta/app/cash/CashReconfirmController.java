@@ -177,6 +177,8 @@ public class CashReconfirmController {
 					cashInfo.setCashId(cash.getCashId());
 					//会計後商品金額（税抜き）
 					cashInfo.setCashProductPrice(cashInfoList.get(i).getCashProductPrice());
+					// T3 ：会計済
+					cashInfo.setTscStatus(TSC_STATUST3);
 					cashInfo.setUpdatedAt(new Date());
 					cashInfo.setUpdatedUserId(sessionContent.getUserId());
 					cashInfoUpdList.add(cashInfo);
@@ -192,6 +194,8 @@ public class CashReconfirmController {
 			//排他制御
 			if(cashFormVersion.equals(nowVersion) && cashInfoUpdList.size() == cashInfoList.size()) {
 				//cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
+				// 01：会計済
+				cashId.setCashStatus(CASH_STATUST01);
 				cashId.setUpdatedAt(new Date());
 				cashId.setUpdatedUserId(sessionContent.getUserId());
 				//注文合計

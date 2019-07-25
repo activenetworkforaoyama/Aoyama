@@ -14,10 +14,17 @@
 		<div class="card">
 			<div class="card-body">
 			<c:choose>
-				<c:when test="${status == 'fromAccounting' || status == 'fromOrderList'}">
+				<c:when test="${status == 'fromOrderList'}">
 				<div class="row">
 					<div class="col col-md-12">
 						<strong><output>会計(No.${cashId})を登録しました。</output></strong>
+					</div>
+				</div>
+				</c:when>
+				<c:when test="${status == 'fromAccounting'}">
+				<div class="row">
+					<div class="col col-md-12">
+						<strong><output>会計(No.${cashId})を更新しました。</output></strong>
 					</div>
 				</div>
 				</c:when>
@@ -58,7 +65,7 @@ jQuery('#backButton').on('click', function() {
 		window.location.href= contextPath + "/accounting/init";
 		}
 	else if ("${status}" == 'fromOrderList'){
-		window.location.href= contextPath + "/orderlist/init";
+		window.location.href= contextPath + "/orderlist/gotoOrderlist";
 		}
 });
 </script>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.error_result.MtbErrorResultRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.MtbErrorResult" >
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbErrorResult" >
+    insert into mtb_error_result (order_id, error_code, remark, 
+      created_user_id, created_at, updated_user_id, 
+      updated_at)
+    values (#{orderId,jdbcType=VARCHAR}, #{errorCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedUserId,jdbcType=VARCHAR}, 
+      #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select order_id, error_code, remark, created_user_id, created_at, updated_user_id, 
+    updated_at
+    from mtb_error_result
+  </select>
+  <delete id="deleteByOrderId" parameterType="java.lang.String" >
+    delete from mtb_error_result
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByOrderIds" parameterType="java.util.List" >
+    delete from mtb_error_result
+    where order_id in 
+    <foreach collection="list" index="index" item="orderId" open="(" separator="," close=")">
+      ${orderId}
+    </foreach>
+  </delete>
+</mapper>

@@ -87,12 +87,12 @@ import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.model.Yield;
 
 public class OrderHelper {
-	
-	private static final Logger logger = LoggerFactory
-            .getLogger(OrderHelper.class);
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(OrderHelper.class);
+
 	/**
 	 * 標準のオプション内容処理
+	 * 
 	 * @param standardOptionList
 	 * @param orderForm
 	 */
@@ -123,6 +123,7 @@ public class OrderHelper {
 
 	/**
 	 * タキシードのオプション内容処理
+	 * 
 	 * @param tuxedoOptionList
 	 * @param orderForm
 	 */
@@ -140,7 +141,7 @@ public class OrderHelper {
 				subItemCodeType = one.getKey();
 				classPath = ItemClassTuxedoEnum.getValue(one.getKey());
 				if (!classPath.isEmpty()) {
-					//タキシード可のデーター
+					// タキシード可のデーター
 					optionDataTuxedo(classPath, subItemCodeType, orderForm, tuxedoOptionList);
 				}
 			}
@@ -153,6 +154,7 @@ public class OrderHelper {
 
 	/**
 	 * ウォッシャブルのオプション内容処理
+	 * 
 	 * @param washableOptionList
 	 * @param orderForm
 	 */
@@ -170,7 +172,7 @@ public class OrderHelper {
 				itemCodeType = one.getKey();
 				classPath = ItemClassWashableEnum.getValue(one.getKey());
 				if (!classPath.isEmpty()) {
-					//ウォッシャブル可のデーター
+					// ウォッシャブル可のデーター
 					optionDataWashable(classPath, itemCodeType, orderForm, washableOptionList);
 				}
 			}
@@ -181,9 +183,9 @@ public class OrderHelper {
 		}
 	}
 
-	
 	/**
 	 * 列挙によって標準のオプションデーターを設定
+	 * 
 	 * @param classPath
 	 * @param orderForm
 	 * @param subItemCode
@@ -214,19 +216,19 @@ public class OrderHelper {
 				// SUIT
 				if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_SUIT.getKey())) {
 
-				} 
+				}
 				// JACKET
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 					jkStandardList.add(optionBranch);
-				} 
+				}
 				// PANTS
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 					ptStandardList.add(optionBranch);
-				} 
+				}
 				// GILET
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 					glStandardList.add(optionBranch);
-				} 
+				}
 				// SHIRT
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_SHIRTS.getKey())) {
 					shStandardList.add(optionBranch);
@@ -234,7 +236,7 @@ public class OrderHelper {
 				// COAT
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_COAT.getKey())) {
 					coStandardList.add(optionBranch);
-				} 
+				}
 				// 2PANTS
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 					pt2StandardList.add(optionBranch);
@@ -243,8 +245,8 @@ public class OrderHelper {
 
 			if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_SUIT.getKey())) {
 
-			} 
-			// JACKET 
+			}
+			// JACKET
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 				if (!jkStandardList.isEmpty()) {
 					JacketOptionStandardCodeEnum[] jacketOptionStandardEnum = JacketOptionStandardCodeEnum.values();
@@ -261,7 +263,7 @@ public class OrderHelper {
 					}
 					orderForm.setOptionJacketStandardInfo(optionJacketStandardInfo);
 				}
-			} 
+			}
 			// PANTS
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				if (!ptStandardList.isEmpty()) {
@@ -279,7 +281,7 @@ public class OrderHelper {
 					}
 					orderForm.setOptionPantsStandardInfo(optionStandardPantsInfo);
 				}
-			} 
+			}
 			// GILET
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 				if (!glStandardList.isEmpty()) {
@@ -299,7 +301,7 @@ public class OrderHelper {
 					}
 					orderForm.setOptionGiletStandardInfo(optionGiletStandardInfo);
 				}
-			} 
+			}
 			// SHIRT
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_SHIRTS.getKey())) {
 				if (!shStandardList.isEmpty()) {
@@ -311,7 +313,7 @@ public class OrderHelper {
 					}
 					orderForm.setOptionShirtStandardInfo(optionShirtStandardInfo);
 				}
-			} 
+			}
 			// COAT
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_COAT.getKey())) {
 				if (!coStandardList.isEmpty()) {
@@ -324,7 +326,7 @@ public class OrderHelper {
 					}
 					orderForm.setOptionCoatStandardInfo(optionCoatStandardInfo);
 				}
-			} 
+			}
 			// 2PANTS
 			else if (subItemCode.equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 				if (!pt2StandardList.isEmpty()) {
@@ -347,6 +349,7 @@ public class OrderHelper {
 
 	/**
 	 * 列挙によってタキシードのオプションデーターを設定
+	 * 
 	 * @param classPath
 	 * @param itemCodeType
 	 * @param orderForm
@@ -356,7 +359,6 @@ public class OrderHelper {
 			List<OptionBranch> tuxedoOptionList) {
 		try {
 
-			
 			Class<?> cls = Class.forName(classPath);
 
 			OptionPantsTuxedoInfo optionPantsTuxedoInfo = new OptionPantsTuxedoInfo();
@@ -371,17 +373,17 @@ public class OrderHelper {
 				// JACKET
 				if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 					jkTuxedoList.add(optionBranch);
-				} 
+				}
 				// PANTS
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 					pantsTuxedoList.add(optionBranch);
-				} 
+				}
 				// GILET
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 					giletTuxedoList.add(optionBranch);
 				}
 			}
-			
+
 			// JACKET
 			if (itemCodeType.equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 				JacketOptionTuxedoCodeEnum[] jacketOptionTuxedoEnum = JacketOptionTuxedoCodeEnum.values();
@@ -398,7 +400,7 @@ public class OrderHelper {
 					optionBranchColorData(codeVules, jkTuxedoList, cls, optionJacketTuxedoInfo);
 				}
 				orderForm.setOptionJacketTuxedoInfo(optionJacketTuxedoInfo);
-			} 
+			}
 			// PANTS
 			else if (itemCodeType.equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				PantsOptionTuxedoCodeEnum[] pantsOptionTuxedoEnum = PantsOptionTuxedoCodeEnum.values();
@@ -415,7 +417,7 @@ public class OrderHelper {
 					optionBranchColorData(codeVules, pantsTuxedoList, cls, optionPantsTuxedoInfo);
 				}
 				orderForm.setOptionPantsTuxedoInfo(optionPantsTuxedoInfo);
-			} 
+			}
 			// GILET
 			else if (itemCodeType.equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 				GiletOptionTuxedoCodeEnum[] giletOptionTuxedoCodeEnum = GiletOptionTuxedoCodeEnum.values();
@@ -441,6 +443,7 @@ public class OrderHelper {
 
 	/**
 	 * 列挙によってウォッシャブルのオプションデーターを設定
+	 * 
 	 * @param classPath
 	 * @param itemCodeType
 	 * @param orderForm
@@ -464,11 +467,11 @@ public class OrderHelper {
 				// JACKET
 				if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 					jkWashableList.add(optionBranch);
-				} 
+				}
 				// PANTS
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 					ptWashableList.add(optionBranch);
-				} 
+				}
 				// GILET
 				else if (optionBranch.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 					glWashableList.add(optionBranch);
@@ -492,7 +495,7 @@ public class OrderHelper {
 					optionBranchColorData(codeVules, jkWashableList, cls, optionJacketWashableInfo);
 				}
 				orderForm.setOptionJacketWashableInfo(optionJacketWashableInfo);
-			} 
+			}
 			// PANTS
 			else if (itemCodeType.equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				PantsOptionWashableCodeEnum[] pantsOptionCodes = PantsOptionWashableCodeEnum.values();
@@ -510,7 +513,7 @@ public class OrderHelper {
 					optionBranchColorData(codeVules, ptWashableList, cls, optionPantsWashableInfo);
 				}
 				orderForm.setOptionPantsWashableInfo(optionPantsWashableInfo);
-			} 
+			}
 			// GILET
 			else if (itemCodeType.equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 				GiletOptionWashableCodeEnum[] giletOptionWashabiCodeEnum = GiletOptionWashableCodeEnum.values();
@@ -537,6 +540,7 @@ public class OrderHelper {
 
 	/**
 	 * オプション選択肢コードとオプション選択肢名を設定する
+	 * 
 	 * @param codeVules
 	 * @param optionBranchList
 	 * @param cls
@@ -548,7 +552,7 @@ public class OrderHelper {
 		Map<String, String> optionBranchNameMap = new LinkedHashMap<String, String>();
 
 		for (OptionBranch detail : optionBranchList) {
-			//列挙のkeyがオプションコードの場合
+			// 列挙のkeyがオプションコードの場合
 			if (codeVules[0].equals(detail.getOptionCode())) {
 				optionBranchNameMap.put(detail.getOptionBranchCode(), detail.getOptionBranchName());
 			}
@@ -564,6 +568,7 @@ public class OrderHelper {
 
 	/**
 	 * オプション選択肢色コードとオプション選択肢色名を設定する
+	 * 
 	 * @param codeVules
 	 * @param optionBranchList
 	 * @param cls
@@ -591,12 +596,13 @@ public class OrderHelper {
 
 	/**
 	 * オプション選択肢とオプション選択肢詳細の料金を取得
+	 * 
 	 * @param priceList
 	 * @return
 	 */
 	public List<OrderCodePrice> optionBranchPriceData(List<OrderPrice> priceList) {
 
-		// オプション価格List 
+		// オプション価格List
 		List<OrderCodePrice> optionCodePriceList = new ArrayList<OrderCodePrice>();
 
 		if (priceList.size() > 0) {
@@ -604,44 +610,46 @@ public class OrderHelper {
 			for (OrderPrice detail : priceList) {
 
 				OrderCodePrice price = new OrderCodePrice();
-				//オプション選択肢:item_code
+				// オプション選択肢:item_code
 				String branchItemCode = detail.getBranchItemCode();
-				//オプション選択肢:sub_item_code
+				// オプション選択肢:sub_item_code
 				String branchSubItemCode = detail.getBranchSubItemCode();
-				//オプション選択肢:model_code 
+				// オプション選択肢:model_code
 				String branchModelCode = detail.getBranchModelCode();
-				//オプション選択肢:option_code 
+				// オプション選択肢:option_code
 				String branchOptionCode = detail.getBranchOptionCode();
-				//オプション選択肢:option_branch_code
+				// オプション選択肢:option_branch_code
 				String optinBranchCode = detail.getOptinBranchCode();
 
-				String key = branchItemCode.concat(branchSubItemCode).concat(branchModelCode).concat(branchOptionCode).concat(optinBranchCode);
-				//branchItemCode + branchSubItemCode + branchModelCode + branchOptionCode + optinBranchCode;
+				String key = branchItemCode.concat(branchSubItemCode).concat(branchModelCode).concat(branchOptionCode)
+						.concat(optinBranchCode);
+				// branchItemCode + branchSubItemCode + branchModelCode + branchOptionCode +
+				// optinBranchCode;
 
 				price.setOrderKeyCode(key);
 				price.setOrderBranchPrice(detail.getOptionBranchPrice().toString());
 				price.setOrderBranchDoublePrice(detail.getOptionBranchDoublePrice().toString());
 
-				//オプション選択肢詳細:item_code
+				// オプション選択肢詳細:item_code
 				String detailItemCode = detail.getDetailItemCode();
-				//オプション選択肢詳細:sub_item_code
+				// オプション選択肢詳細:sub_item_code
 				String detailSubItemCode = detail.getDetailSubItemCode();
-				//オプション選択肢詳細:option_code
+				// オプション選択肢詳細:option_code
 				String detailOptionCode = detail.getDetailOptionCode();
-				//オプション選択肢詳細:option_branch_code
+				// オプション選択肢詳細:option_branch_code
 				String detailOptionBranchCode = detail.getDetailOptionBranchCode();
-				//オプション選択肢詳細:option_branch_detail_code
+				// オプション選択肢詳細:option_branch_detail_code
 				String optionBranchDetailCode = detail.getOptionBranchDetailCode();
 
-				if (detailItemCode != null &&detailSubItemCode !=null && detailOptionCode != null && detailOptionBranchCode != null
-						&& optionBranchDetailCode != null) {
-					
-					String detailKey = detailItemCode.concat(detailSubItemCode).concat(branchModelCode).concat(detailOptionCode)
-							.concat(detailOptionBranchCode).concat(optionBranchDetailCode);
-							
+				if (detailItemCode != null && detailSubItemCode != null && detailOptionCode != null
+						&& detailOptionBranchCode != null && optionBranchDetailCode != null) {
+
+					String detailKey = detailItemCode.concat(detailSubItemCode).concat(branchModelCode)
+							.concat(detailOptionCode).concat(detailOptionBranchCode).concat(optionBranchDetailCode);
+
 //					detailItemCode + detailSubItemCode + branchModelCode + detailOptionCode + detailOptionBranchCode
 //							+ optionBranchDetailCode;
-					
+
 					price.setOrderDetailKeyCode(detailKey);
 					price.setOrderBranchDetailPrice(detail.getDetailBranchPrice().toString());
 					price.setOrderBranchDetailDoublePrice(detail.getDetailBranchDoublePrice().toString());
@@ -654,9 +662,10 @@ public class OrderHelper {
 		return optionCodePriceList;
 
 	}
-	
+
 	/**
 	 * クラスと列挙の方法名によって、方法を取得
+	 * 
 	 * @param clazz
 	 * @param methodName
 	 * @return
@@ -665,9 +674,10 @@ public class OrderHelper {
 		Method[] methods = clazz.getMethods();
 		Method result = null;
 		for (Method method : methods) {
-			
+
 			if (method.getName().equals(methodName)) {
 				result = method;
+				break;
 			}
 		}
 		return result;
@@ -675,6 +685,7 @@ public class OrderHelper {
 
 	/**
 	 * 素材品番を処理
+	 * 
 	 * @param buttonsList
 	 * @return
 	 */
@@ -689,68 +700,68 @@ public class OrderHelper {
 
 	/**
 	 * 補正の体型と号数を取得
+	 * 
 	 * @param figureList
 	 * @param numberList
 	 * @param orderForm
 	 */
 	public void getFigureNumberMap(List<SizeFigure> figureList, List<SizeNumber> numberList, OrderForm orderForm) {
-		
+
 		LinkedHashMap<String, String> jkFigureMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> ptFigureMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> glFigureMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> pt2FigureMap = new LinkedHashMap<String, String>();
 
-		//体型
+		// 体型
 		for (SizeFigure sizeFigure : figureList) {
-			//JACKET
+			// JACKET
 			if (sizeFigure.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 				jkFigureMap.put("", "選択　　　");
-				jkFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
-			} 
-			//PANTS
+				// jkFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
+			}
+			// PANTS
 			else if (sizeFigure.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				ptFigureMap.put("", "選択　　　");
-				ptFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
-			} 
-			//GILET
+				// ptFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
+			}
+			// GILET
 			else if (sizeFigure.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 				glFigureMap.put("", "選択　　　");
-				glFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
-			} 
-			//2PANTS
+				// glFigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
+			}
+			// 2PANTS
 			else if (sizeFigure.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 				pt2FigureMap.put("", "選択　　　");
-				pt2FigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
+				// pt2FigureMap.put(sizeFigure.getFigure(), sizeFigure.getFigure());
 			}
 		}
 
-		
-		//号数
+		// 号数
 		LinkedHashMap<String, String> jkNumberMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> ptNumberMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> glNumberMap = new LinkedHashMap<String, String>();
 		LinkedHashMap<String, String> pt2NumberMap = new LinkedHashMap<String, String>();
 
 		for (SizeNumber sizeNumber : numberList) {
-			//JACKET
+			// JACKET
 			if (sizeNumber.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 				jkNumberMap.put("", "選択　　　");
-				jkNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
-			} 
-			//PANTS
+				// jkNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
+			}
+			// PANTS
 			else if (sizeNumber.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				ptNumberMap.put("", "選択　　　");
-				ptNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
-			} 
-			//GILET
+				// ptNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
+			}
+			// GILET
 			else if (sizeNumber.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
 				glNumberMap.put("", "選択　　　");
-				glNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
-			} 
-			//2PANTS
+				// glNumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
+			}
+			// 2PANTS
 			else if (sizeNumber.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 				pt2NumberMap.put("", "選択　　　");
-				pt2NumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
+				// pt2NumberMap.put(sizeNumber.getSizeNumber(), sizeNumber.getSizeNumber());
 			}
 		}
 
@@ -777,6 +788,7 @@ public class OrderHelper {
 
 	/**
 	 * 型サイズを取得
+	 * 
 	 * @param poTypeSizeList
 	 * @return
 	 */
@@ -784,16 +796,16 @@ public class OrderHelper {
 		List<TypeSizeForm> typeSizeFormList = new ArrayList<TypeSizeForm>();
 		for (TypeSize typeSize : poTypeSizeList) {
 			TypeSizeForm typeSizeForm = new TypeSizeForm();
-			
-			//型サイズ:sub_item_code
+
+			// 型サイズ:sub_item_code
 			String subItemCode = typeSize.getSubItemCode();
-			//型サイズ:model_code
+			// 型サイズ:model_code
 			String modelCode = typeSize.getModelCode();
-			//型サイズ:体型
+			// 型サイズ:体型
 			String figure = typeSize.getFigure();
-			//型サイズ:号数
+			// 型サイズ:号数
 			String sizeNumber = typeSize.getSizeNumber();
-			//型サイズ:補正区分
+			// 型サイズ:補正区分
 			String adjustClass = typeSize.getAdjustClass();
 
 			String key = subItemCode + modelCode + figure + sizeNumber + adjustClass;
@@ -812,6 +824,7 @@ public class OrderHelper {
 
 	/**
 	 * 補正の上限値処理
+	 * 
 	 * @param adjustList
 	 * @param orderForm
 	 */
@@ -842,6 +855,7 @@ public class OrderHelper {
 
 	/**
 	 * 列挙によって補正寸上限値と補正寸下限値のMapを取得
+	 * 
 	 * @param classPath
 	 * @param orderForm
 	 * @param subItemCodeType
@@ -866,17 +880,17 @@ public class OrderHelper {
 				// JACKET
 				if (adjust.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 					jkAdjustList.add(adjust);
-				} 
+				}
 				// PANTS
 				else if (adjust.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 					ptAdjustList.add(adjust);
-				} 
+				}
 				// 2PANTS
 				else if (adjust.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 					pt2AdjustList.add(adjust);
 				}
 			}
-			
+
 			// JACKET
 			if (subItemCodeType.equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
 				JacketAdjustCodeEnum[] jacketAdjustCodeEnum = JacketAdjustCodeEnum.values();
@@ -887,7 +901,7 @@ public class OrderHelper {
 					adjustData(codeVules, jkAdjustList, cls, adjustJacketStandardInfo);
 				}
 				orderForm.setAdjustJacketStandardInfo(adjustJacketStandardInfo);
-			} 
+			}
 			// PANTS
 			else if (subItemCodeType.equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
 				PantsAdjustCodeEnum[] pantsAdjustCodeEnum = PantsAdjustCodeEnum.values();
@@ -898,7 +912,7 @@ public class OrderHelper {
 					adjustData(codeVules, ptAdjustList, cls, adjustPantsStandardInfo);
 				}
 				orderForm.setAdjustPantsStandardInfo(adjustPantsStandardInfo);
-			} 
+			}
 			// 2PANTS
 			else if (subItemCodeType.equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
 				Pants2AdjustCodeEnum[] pants2AdjustCodeEnum = Pants2AdjustCodeEnum.values();
@@ -918,6 +932,7 @@ public class OrderHelper {
 
 	/**
 	 * 補正寸上限値と補正寸下限値を設定
+	 * 
 	 * @param codeVules
 	 * @param adjustList
 	 * @param cls
@@ -928,7 +943,7 @@ public class OrderHelper {
 		Map<String, String> adjectMap = new LinkedHashMap<String, String>();
 
 		for (Adjust detail : adjustList) {
-			//列挙のkeyが補正区分の場合
+			// 列挙のkeyが補正区分の場合
 			if (codeVules[0].equals(detail.getAdjusteClass())) {
 				adjectMap.put(detail.getAdjusteMin().toString(), detail.getAdjusteMax().toString());
 			}
@@ -940,9 +955,10 @@ public class OrderHelper {
 		}
 
 	}
-	
+
 	/**
 	 * 「オーダー登録」画面、商品のサブアイテムコードの処理
+	 * 
 	 * @param itemList
 	 * @param orderForm
 	 */
@@ -953,10 +969,10 @@ public class OrderHelper {
 		}
 		orderForm.setProductItemMap(itemMap);
 	}
-	
-	
+
 	/**
 	 * 「オーダー登録」画面、オプションのモデルコードの処理
+	 * 
 	 * @param modelList
 	 * @param orderForm
 	 */
@@ -990,11 +1006,12 @@ public class OrderHelper {
 
 	/**
 	 * オーダー内容確認画面JACKEのMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
 	public void orderJacketMappingPo(OrderForm orderForm, Order order) {
-		
+
 		// JACKET_フロント釦数_名
 		order.setJkFrtBtnNm(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCntMap()
 				.get(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt()));
@@ -1025,7 +1042,7 @@ public class OrderHelper {
 		// JACKET_ベント_名
 		order.setJkVentNm(orderForm.getOptionJacketStandardInfo().getOjVentSpecMap()
 				.get(orderForm.getOptionJacketStandardInfo().getOjVentSpec()));
-		
+
 		// JACKET_Drop
 		order.setCorJkDrop(orderForm.getAdjustGiletStandardInfo().getSizeFigureMap()
 				.get(orderForm.getAdjustGiletStandardInfo().getSizeFigure()));
@@ -1033,15 +1050,16 @@ public class OrderHelper {
 		order.setCorJkSize(orderForm.getAdjustGiletStandardInfo().getSizeNumberMap()
 				.get(orderForm.getAdjustGiletStandardInfo().getSizeNumber()));
 	}
-	
+
 	/**
 	 * オーダー内容確認画面GILETのMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
 	public void orderGiletMappingPo(OrderForm orderForm, Order order) {
-		
-		//GILET_胸ポケット _名
+
+		// GILET_胸ポケット _名
 		order.setGlBreastPktNm(orderForm.getOptionGiletStandardInfo().getOgBreastPktMap()
 				.get(orderForm.getOptionGiletStandardInfo().getOgBreastPkt()));
 		// GILET_AMFステッチ _名
@@ -1054,9 +1072,10 @@ public class OrderHelper {
 		order.setCorGlSize(orderForm.getAdjustGiletStandardInfo().getSizeNumberMap()
 				.get(orderForm.getAdjustGiletStandardInfo().getSizeNumber()));
 	}
-	
+
 	/**
 	 * オーダー内容確認画面PANTSのMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
@@ -1085,7 +1104,7 @@ public class OrderHelper {
 		// PANTS_靴ずれ _名
 		order.setPtShoeSoreNm(orderForm.getOptionPantsStandardInfo().getOpBlisterMap()
 				.get(orderForm.getOptionPantsStandardInfo().getOpBlister()));
-		
+
 		// PANTS_Drop
 		order.setCorPtDrop(orderForm.getAdjustPantsStandardInfo().getSizeFigureMap()
 				.get(orderForm.getAdjustPantsStandardInfo().getSizeFigure()));
@@ -1093,14 +1112,15 @@ public class OrderHelper {
 		order.setCorPtSize(orderForm.getAdjustPantsStandardInfo().getSizeNumberMap()
 				.get(orderForm.getAdjustPantsStandardInfo().getSizeNumber()));
 	}
-	
+
 	/**
 	 * オーダー内容確認画面PANTS2のMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
 	public void orderPants2MappingPo(OrderForm orderForm, Order order) {
-		
+
 		// 2PANTS_タック_名
 		order.setPt2TackNm(orderForm.getOptionPants2StandardInfo().getOp2TackMap()
 				.get(orderForm.getOptionPants2StandardInfo().getOp2Tack()));
@@ -1133,7 +1153,7 @@ public class OrderHelper {
 		order.setCorPt2Size(orderForm.getAdjustPants2StandardInfo().getSizeNumberMap()
 				.get(orderForm.getAdjustPants2StandardInfo().getSizeNumber()));
 	}
-	
+
 	/**
 	 * 
 	 * @param productItem
@@ -1142,528 +1162,525 @@ public class OrderHelper {
 	 * @param ojFrontBtnCnt
 	 * @return
 	 */
-	public String getHostTransmitMakerProductMapKey(String productItem,String productIs3Piece,String productSparePantsClass,String ojFrontBtnCnt) {
-		//スペアパンツは有り
+	public String getHostTransmitMakerProductMapKey(String productItem, String productIs3Piece,
+			String productSparePantsClass, String ojFrontBtnCnt) {
+		// スペアパンツは有り
 		String productSparePantsClassYes = "0009902";
-		//３Pieceは有り
+		// ３Pieceは有り
 		String productIs3PieceYes = "0009902";
-		//フロント釦数はダブル
+		// フロント釦数はダブル
 		String ojFrontBtnCntDouble = "0000105";
-		//SUIT:01 JACKET:02 PANTS:03 GILET:04
+		// SUIT:01 JACKET:02 PANTS:03 GILET:04
 		String suitItemCd = "01";
 		String jacketItemCd = "02";
-		
+
 		String itemAnd = "";
 		String is3PieceAnd = "";
 		String sparePantsClassAnd = "";
 		String ojFrontBtnCntAnd = "";
-		
-		if(suitItemCd.equals(productItem)) {
-			//２Pシングル  
-			if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+
+		if (suitItemCd.equals(productItem)) {
+			// ２Pシングル
+			if (!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece)
+					&& !productSparePantsClassYes.equals(productSparePantsClass)) {
 				itemAnd = "01";
 			}
-			//２Pダブル
-			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
+			// ２Pダブル
+			else if (ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece)
+					&& !productSparePantsClassYes.equals(productSparePantsClass)) {
 				itemAnd = "01";
 				ojFrontBtnCntAnd = "0000105";
 			}
-			//２PPシングル
-			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+			// ２PPシングル
+			else if (!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece)
+					&& productSparePantsClassYes.equals(productSparePantsClass)) {
 				itemAnd = "01";
 				sparePantsClassAnd = "030009902";
 			}
-			//２PPダブル 
-			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
+			// ２PPダブル
+			else if (ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && !productIs3PieceYes.equals(productIs3Piece)
+					&& productSparePantsClassYes.equals(productSparePantsClass)) {
 				itemAnd = "01";
-				sparePantsClassAnd = "030009902";
-				ojFrontBtnCntAnd = "0000105";
-			}
-			//３Pシングル 
-			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
-				itemAnd = "01";
-				is3PieceAnd = "040009902";
-			}
-			//３Pダブル
-			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && !productSparePantsClassYes.equals(productSparePantsClass)) {
-				itemAnd = "01";
-				is3PieceAnd = "040009902";
-				ojFrontBtnCntAnd = "0000105";
-			}
-			//３P２PPシングル　
-			else if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
-				itemAnd = "01";
-				is3PieceAnd = "040009902";
-				sparePantsClassAnd = "030009902";
-			}
-			//３P２PPダブル
-			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece) && productSparePantsClassYes.equals(productSparePantsClass)) {
-				itemAnd = "01";
-				is3PieceAnd = "040009902";
 				sparePantsClassAnd = "030009902";
 				ojFrontBtnCntAnd = "0000105";
 			}
-		}
-		else if(jacketItemCd.equals(productItem)) {
-			//J　ジャケット
-			if(!ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
+			// ３Pシングル
+			else if (!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece)
+					&& !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+			}
+			// ３Pダブル
+			else if (ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece)
+					&& !productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				ojFrontBtnCntAnd = "0000105";
+			}
+			// ３P２PPシングル
+			else if (!ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece)
+					&& productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				sparePantsClassAnd = "030009902";
+			}
+			// ３P２PPダブル
+			else if (ojFrontBtnCntDouble.equals(ojFrontBtnCnt) && productIs3PieceYes.equals(productIs3Piece)
+					&& productSparePantsClassYes.equals(productSparePantsClass)) {
+				itemAnd = "01";
+				is3PieceAnd = "040009902";
+				sparePantsClassAnd = "030009902";
+				ojFrontBtnCntAnd = "0000105";
+			}
+		} else if (jacketItemCd.equals(productItem)) {
+			// J ジャケット
+			if (!ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
 				itemAnd = "02";
-			}
-			else if(ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
+			} else if (ojFrontBtnCntDouble.equals(ojFrontBtnCnt)) {
 				itemAnd = "02";
 				ojFrontBtnCntAnd = "0000105";
 			}
-		}
-		else {
+		} else {
 			itemAnd = productItem;
 		}
 		String hostTransmitMakerProductKey = itemAnd + is3PieceAnd + sparePantsClassAnd + ojFrontBtnCntAnd;
 		return hostTransmitMakerProductKey;
 	}
-	
-	
+
 	/**
 	 * オーダー内容確認画面のMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderMappingPo(OrderForm orderForm, Order order,String userId,OrderFindFabric findStock,Order orderId,String findMakerId,Map<String, Integer> retailPriceRelatedMap) {
-		
-		//オーダーパターン
+	public void orderMappingPo(OrderForm orderForm, Order order, String userId, OrderFindFabric findStock,
+			Order orderId, String findMakerId, Map<String, Integer> retailPriceRelatedMap) {
+
+		// オーダーパターン
 		order.setOrderPattern(orderForm.getOrderPattern());
-		
-		//注文承り日
+
+		// 注文承り日
 		order.setProductOrderdDate(new Date());
-		
-		//TSCステータス
+
+		// TSCステータス
 		order.setTscStatus("T2");
-		
-		//取り消しフラグ
+
+		// 取り消しフラグ
 		order.setIsCancelled("0");
-		
-		//登録者
+
+		// 登録者
 		String createdUserId = orderId.getCreatedUserId();
 		order.setCreatedUserId(createdUserId);
-		
-		//登録日時
+
+		// 登録日時
 		Date createdAt = orderId.getCreatedAt();
 		order.setCreatedAt(createdAt);
-		
-		//最終更新者
+
+		// 最終更新者
 		order.setUpdatedUserId(userId);
-		
-		//最終更新日時
+
+		// 最終更新日時
 		Date updatedAt = new Date();
 		order.setUpdatedAt(updatedAt);
-		
-		//工場ステータス 生産開始前
+
+		// 工場ステータス 生産開始前
 		order.setMakerFactoryStatus("F0");
-		
-		//tsc stutas
+
+		// tsc stutas
 		order.setTheoreticalStockCheck("1");
-		
-		//商品情報_工場
+
+		// 商品情報_工場
 		String productFactoryCd = findStock.getFactoryCode();
 		order.setProductFactoryCd(productFactoryCd);
-		
-		//商品情報_メーカーコード
+
+		// 商品情報_メーカーコード
 		String productMakerCode = findStock.getMakerCode();
 		order.setProductMakerCode(productMakerCode);
-		
-		//生地_色
+
+		// 生地_色
 		String fabricColor = findStock.getColor();
 		order.setFabricColor(fabricColor);
-		
-		//生地_柄
+
+		// 生地_柄
 		String fabricPattern = findStock.getPattern();
 		order.setFabricPattern(fabricPattern);
-		
-		//ホスト連携_店コード
+
+		// ホスト連携_店コード
 		order.setHostTransmitStoreCd(orderForm.getShopCode());
-		
-		//ホスト連携_品名コード
-		Map<String,String> hostTransmitItemCd03Map = new HashMap<String,String>();
-		Map<String,String> hostTransmitItemCd01Map = new HashMap<String,String>();
-		
-		/*業態がTSC(03)の場合
-		  061　スーツ		01 SUIT 
-		  062　ジャケット	02 JACKET 
-		  063　パンツ		03 PANTS 
-		  064　ジレ		04 GILET
-		*/
+
+		// ホスト連携_品名コード
+		Map<String, String> hostTransmitItemCd03Map = new HashMap<String, String>();
+		Map<String, String> hostTransmitItemCd01Map = new HashMap<String, String>();
+
+		/*
+		 * 業態がTSC(03)の場合 061 スーツ 01 SUIT 062 ジャケット 02 JACKET 063 パンツ 03 PANTS 064 ジレ 04
+		 * GILET
+		 */
 		hostTransmitItemCd03Map.put("01", "061");
 		hostTransmitItemCd03Map.put("02", "062");
 		hostTransmitItemCd03Map.put("03", "063");
 		hostTransmitItemCd03Map.put("04", "064");
-		/*業態がTSC(01)の場合
-		  061　スーツ		01 SUIT 
-		  062　ジャケット	02 JACKET 
-		  063　パンツ		03 PANTS 
-		  067　ジレ		04 GILET
-		*/
+		/*
+		 * 業態がTSC(01)の場合 061 スーツ 01 SUIT 062 ジャケット 02 JACKET 063 パンツ 03 PANTS 067 ジレ 04
+		 * GILET
+		 */
 		hostTransmitItemCd01Map.put("01", "061");
 		hostTransmitItemCd01Map.put("02", "062");
 		hostTransmitItemCd01Map.put("03", "063");
 		hostTransmitItemCd01Map.put("04", "067");
-		
+
 		String hostTransmitItemCdKey = orderForm.getProductItem();
 		String storeBrandCode = order.getStoreBrandCode();
-		if("01".equals(storeBrandCode)) {
+		if ("01".equals(storeBrandCode)) {
 			String hostTransmitItemCdValue = hostTransmitItemCd01Map.get(hostTransmitItemCdKey);
 			order.setHostTransmitItemCd(hostTransmitItemCdValue);
-		}
-		else if("03".equals(storeBrandCode)) {
+		} else if ("03".equals(storeBrandCode)) {
 			String hostTransmitItemCdValue = hostTransmitItemCd03Map.get(hostTransmitItemCdKey);
 			order.setHostTransmitItemCd(hostTransmitItemCdValue);
 		}
-		
-		//ホスト連携_メーカーコード
+
+		// ホスト連携_メーカーコード
 		order.setHostTransmitMakerCd(findMakerId);
-		
-		//ホスト連携_年季
+
+		// ホスト連携_年季
 		String hostTransmitNenkiCd = findStock.getSeason();
 		order.setHostTransmitNenkiCd(hostTransmitNenkiCd);
-		
-		//ホスト連携_色
+
+		// ホスト連携_色
 		String hostTransmitColorCd = findStock.getColorAoyama();
 		String hostTransmitPatternCd = findStock.getPatternAoyama();
 		order.setHostTransmitColorCd(hostTransmitColorCd + hostTransmitPatternCd);
-		
-		//工場自動連携ステータス
+
+		// 工場自動連携ステータス
 		order.setSend2factoryStatus("0");
-		
-		//ホスト連携_サイズ
+
+		// ホスト連携_サイズ
 		String orderItemCd = orderForm.getProductItem();
 		String suitItemCd = "01";
 		String jacketItemCd = "02";
 		String pantsItemCd = "03";
 		String giletItemCd = "04";
-		if(suitItemCd.equals(orderItemCd) || jacketItemCd.equals(orderItemCd)) {
+		if (suitItemCd.equals(orderItemCd) || jacketItemCd.equals(orderItemCd)) {
 			String subStringSizeFigure = "";
 			String subStringSizeNumber = "";
 			String sizeNumber = orderForm.getAdjustJacketStandardInfo().getSizeNumber();
-			if(sizeNumber.indexOf("(") != -1) {
+			if (sizeNumber.indexOf("(") != -1) {
 				subStringSizeNumber = sizeNumber.substring(0, sizeNumber.indexOf("("));
 			}
 			String sizeFigure = orderForm.getAdjustJacketStandardInfo().getSizeFigure();
-			if(sizeFigure.indexOf("(") != -1) {
+			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
-			
+
 			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
 			order.setHostTransmitSize(hostTransmitSize);
-		}
-		else if(pantsItemCd.equals(orderItemCd)) {
+		} else if (pantsItemCd.equals(orderItemCd)) {
 			String subStringSizeFigure = "";
 			String subStringSizeNumber = "";
 			String sizeNumber = orderForm.getAdjustPantsStandardInfo().getSizeNumber();
-			if(sizeNumber.indexOf("(") != -1) {
+			if (sizeNumber.indexOf("(") != -1) {
 				subStringSizeNumber = sizeNumber.substring(0, sizeNumber.indexOf("("));
 			}
 			String sizeFigure = orderForm.getAdjustPantsStandardInfo().getSizeFigure();
-			if(sizeFigure.indexOf("(") != -1) {
+			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
-			String hostTransmitSize = subStringSizeFigure +  subStringSizeNumber;
+			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
 			order.setHostTransmitSize(hostTransmitSize);
-		}
-		else if(giletItemCd.equals(orderItemCd)) {
+		} else if (giletItemCd.equals(orderItemCd)) {
 			String subStringSizeFigure = "";
 			String subStringSizeNumber = "";
 			String sizeNumber = orderForm.getAdjustGiletStandardInfo().getSizeNumber();
-			if(sizeNumber.indexOf("(") != -1 ) {
+			if (sizeNumber.indexOf("(") != -1) {
 				subStringSizeNumber = sizeNumber.substring(0, sizeNumber.indexOf("("));
 			}
-			
+
 			String sizeFigure = orderForm.getAdjustGiletStandardInfo().getSizeFigure();
-			if(sizeFigure.indexOf("(") != -1) {
+			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
 			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
 			order.setHostTransmitSize(hostTransmitSize);
 		}
-		
-		//ホスト連携_メーカー品番
-		/*生地品番(8)＋色(1)＋柄(1)＋区分(1)
-		　　色、柄：TSC表記
-		　　区分：　　　SUIT　　　　　　　　　　　　　　　単品
-		　　　　　　　1　２Pシングル  　　　　　　　   J　ジャケット
-		　　　　　　　2　２Pダブル 　　　　　　　　　W ダブルジャケット
-		　　　　　　　3　２PPシングル  　　　　　　　G　ジレ
-		　　　　　　　4　２PPダブル  　　　　　　　　V　ダブルジレ
-		　　　　　　　5　３Pシングル  　　　　　　　　P　パンツ
-		　　　　　　　6　３Pダブル 　　　　 　　　　　D　ドレスシャツ
-		　　　　　　　7　３P２PPシングル　 　　　　   C　シングルコート
-		　　　　　　　8　３P２PPダブル　　　　　　    A　ダブルコート
-		*/
-		Map<String,String> hostTransmitMakerProductMap = new HashMap<String,String>();
-		//1　２Pシングル 
+
+		// ホスト連携_メーカー品番
+		/*
+		 * 生地品番(8)＋色(1)＋柄(1)＋区分(1) 色、柄：TSC表記 区分： SUIT 単品 1 ２Pシングル J ジャケット 2 ２Pダブル W
+		 * ダブルジャケット 3 ２PPシングル G ジレ 4 ２PPダブル V ダブルジレ 5 ３Pシングル P パンツ 6 ３Pダブル D ドレスシャツ 7
+		 * ３P２PPシングル C シングルコート 8 ３P２PPダブル A ダブルコート
+		 */
+		Map<String, String> hostTransmitMakerProductMap = new HashMap<String, String>();
+		// 1 ２Pシングル
 		hostTransmitMakerProductMap.put("01", "1");
-		//2　２Pダブル 
+		// 2 ２Pダブル
 		hostTransmitMakerProductMap.put("010000105", "2");
-		//3　２PPシングル 
+		// 3 ２PPシングル
 		hostTransmitMakerProductMap.put("01030009902", "3");
-		//4　２PPダブル
+		// 4 ２PPダブル
 		hostTransmitMakerProductMap.put("010300099020000105", "4");
-		//5　３Pシングル
+		// 5 ３Pシングル
 		hostTransmitMakerProductMap.put("01040009902", "5");
-		//6　３Pダブル
+		// 6 ３Pダブル
 		hostTransmitMakerProductMap.put("010400099020000105", "6");
-		//7　３P２PPシングル
+		// 7 ３P２PPシングル
 		hostTransmitMakerProductMap.put("01040009902030009902", "7");
-		//8　３P２PPダブル
+		// 8 ３P２PPダブル
 		hostTransmitMakerProductMap.put("010400099020300099020000105", "8");
-		//J　ジャケット
+		// J ジャケット
 		hostTransmitMakerProductMap.put("02", "J");
-		//W ダブルジャケット
+		// W ダブルジャケット
 		hostTransmitMakerProductMap.put("020000105", "W");
-		//G　ジレ
+		// G ジレ
 		hostTransmitMakerProductMap.put("04", "G");
-		//P　パンツ
+		// P パンツ
 		hostTransmitMakerProductMap.put("03", "P");
-		
-		//商品情報_ITEM
+
+		// 商品情報_ITEM
 		String productItem = orderForm.getProductItem();
 		// 商品情報_３Piece
-		String productIs3Piece = orderForm.getProductIs3Piece(); 
+		String productIs3Piece = orderForm.getProductIs3Piece();
 		// 商品情報_スペアパンツ
 		String productSparePantsClass = orderForm.getProductSparePantsClass();
-		//フロント釦数
+		// フロント釦数
 		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
-		String hostTransmitMakerProductMapKey = getHostTransmitMakerProductMapKey(productItem,productIs3Piece,productSparePantsClass,ojFrontBtnCnt);
-		
+		String hostTransmitMakerProductMapKey = getHostTransmitMakerProductMapKey(productItem, productIs3Piece,
+				productSparePantsClass, ojFrontBtnCnt);
+
 		String productFabricNo = orderForm.getProductFabricNo();
 		String hostTransmitMakerProductMapValue = hostTransmitMakerProductMap.get(hostTransmitMakerProductMapKey);
-		String hostTransmitMakerProductValue = productFabricNo + fabricColor + fabricPattern + hostTransmitMakerProductMapValue;
+		String hostTransmitMakerProductValue = productFabricNo + fabricColor + fabricPattern
+				+ hostTransmitMakerProductMapValue;
 		order.setHostTransmitMakerProduct(hostTransmitMakerProductValue);
-		
-		//商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
+
+		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
-		if("0".equals(productEmbroideryNecessity)) {
+		if ("0".equals(productEmbroideryNecessity)) {
 			order.setProductEmbroideryNm(null);
 			order.setProductEmbroideryFont(null);
 			order.setProductEmbroideryThreadColor(null);
 		}
-		
-		//PANTS_ダブル幅についての項目はnull値の判定
+
+		// PANTS_ダブル幅についての項目はnull値の判定
 		String opHemUp = orderForm.getOptionPantsStandardInfo().getOpHemUp();
-		if("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
+		if ("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
 			order.setPtDblWidthCd(null);
 			order.setPtDblWidthNm(null);
 			order.setPtDblWidthRtPrice(null);
 			order.setPtDblWidthWsWage(null);
 			order.setPtDblWidthWsPrice(null);
 		}
-		
-		//PANTS2_ダブル幅についての項目はnull値の判定
+
+		// PANTS2_ダブル幅についての項目はnull値の判定
 		String op2HemUp = orderForm.getOptionPants2StandardInfo().getOp2HemUp();
-		if("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
+		if ("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
 			order.setPt2DblWidthCd(null);
 			order.setPt2DblWidthNm(null);
 			order.setPt2DblWidthRtPrice(null);
 			order.setPt2DblWidthWsWage(null);
 			order.setPt2DblWidthWsPrice(null);
 		}
-		
-		if("01".equals(orderItemCd) || "03".equals(orderItemCd)) {
-			
-			//PANTS_股下右_グロス
+
+		if ("01".equals(orderItemCd) || "03".equals(orderItemCd)) {
+
+			// PANTS_股下右_グロス
 			String corPtRightinseamGross = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamGross();
-			if(corPtRightinseamGross == null || "".equals(corPtRightinseamGross)) {
+			if (corPtRightinseamGross == null || "".equals(corPtRightinseamGross)) {
 				order.setCorPtRightinseamGross(new BigDecimal(0.0));
 			}
-			
-			//PANTS_股下左_グロス
+
+			// PANTS_股下左_グロス
 			String corPtLeftinseamGross = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamGross();
-			if(corPtLeftinseamGross == null || "".equals(corPtLeftinseamGross)) {
+			if (corPtLeftinseamGross == null || "".equals(corPtLeftinseamGross)) {
 				order.setCorPtLeftinseamGross(new BigDecimal(0.0));
 			}
-			
+
 		}
-		
-		//スペアパンツは有り
+
+		// スペアパンツは有り
 		String productYes = "0009902";
 //		String productSparePantsClass = orderForm.getProductSparePantsClass();
-		
-		if("01".equals(orderItemCd) && productYes.equals(productSparePantsClass)) {
-			
-			//2PANTS_股下右_グロス
+
+		if ("01".equals(orderItemCd) && productYes.equals(productSparePantsClass)) {
+
+			// 2PANTS_股下右_グロス
 			String corPt2RightinseamGross = orderForm.getAdjustPants2StandardInfo().getCorPt2RightinseamGross();
-			if(corPt2RightinseamGross == null || "".equals(corPt2RightinseamGross)) {
+			if (corPt2RightinseamGross == null || "".equals(corPt2RightinseamGross)) {
 				order.setCorPt2RightinseamGross(new BigDecimal(0.0));
 			}
-			
-			//2PANTS_股下左_グロス
+
+			// 2PANTS_股下左_グロス
 			String corPt2LeftinseamGross = orderForm.getAdjustPants2StandardInfo().getCorPt2LeftinseamGross();
-			if(corPt2LeftinseamGross == null || "".equals(corPt2LeftinseamGross)) {
+			if (corPt2LeftinseamGross == null || "".equals(corPt2LeftinseamGross)) {
 				order.setCorPt2LeftinseamGross(new BigDecimal(0.0));
 			}
-			
+
 		}
-		
-		//JACKET_モデル_上代
+
+		// JACKET_モデル_上代
 		Integer doubleJacketPrice = retailPriceRelatedMap.get("doubleJACKET");
 		Integer singleDoubleJacketPrice = retailPriceRelatedMap.get("singleDoubleJACKET");
 //		String productItem = orderForm.getProductItem();
 //		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
-		if("0000105".equals(ojFrontBtnCnt)) {
-			if("01".equals(productItem)) {
-				if(doubleJacketPrice != null) {
+		if ("0000105".equals(ojFrontBtnCnt)) {
+			if ("01".equals(productItem)) {
+				if (doubleJacketPrice != null) {
 					order.setJkModelRtPrice(doubleJacketPrice);
-				}
-				else {
+				} else {
 					order.setJkModelRtPrice(0);
 				}
-			}
-			else if("02".equals(productItem)) {
-				if(singleDoubleJacketPrice != null) {
+			} else if ("02".equals(productItem)) {
+				if (singleDoubleJacketPrice != null) {
 					order.setJkModelRtPrice(singleDoubleJacketPrice);
-	 			}
-				else {
+				} else {
 					order.setJkModelRtPrice(0);
 				}
 			}
+		} else {
+			if ("01".equals(productItem) || "02".equals(productItem)) {
+				order.setJkModelRtPrice(0);
+			}
+
 		}
-		else {
-			order.setJkModelRtPrice(0);
-		}
-		
-		//お客様情報_お客様氏名
+
+		// お客様情報_お客様氏名
 		order.setCustNm(null);
-		//お客様情報_フリガナ
+		// お客様情報_フリガナ
 		order.setCustKanaNm(null);
 	}
-	
+
 	/**
 	 * 更新のみのデータ
+	 * 
 	 * @param selectExistOrder
 	 * @param order
 	 */
-	public void onlyUpdateItem(Order selectExistOrder,Order order) {
-		//売上金額
+	public void onlyUpdateItem(Order selectExistOrder, Order order) {
+		// 売上金額
 		Integer salesAmount = selectExistOrder.getSalesAmount();
 		order.setSalesAmount(salesAmount);
-		//会計ID
+		// 会計ID
 		String cashId = selectExistOrder.getCashId();
 		order.setCashId(cashId);
-		//値引き後金額
+		// 値引き後金額
 		Integer cashDiscountPrice = selectExistOrder.getCashDiscountPrice();
 		order.setCashDiscountPrice(cashDiscountPrice);
-		//会計後商品金額（税抜き）
+		// 会計後商品金額（税抜き）
 		Integer cashProductPrice = selectExistOrder.getCashProductPrice();
 		order.setCashProductPrice(cashProductPrice);
-		//会計後商品金額（税込み）
+		// 会計後商品金額（税込み）
 		Integer cashContailTaxProductPrice = selectExistOrder.getCashContailTaxProductPrice();
 		order.setCashContailTaxProductPrice(cashContailTaxProductPrice);
-		//店舗・担当_店舗名
+		// 店舗・担当_店舗名
 		String storeNm = selectExistOrder.getStoreNm();
 		order.setStoreNm(storeNm);
-		//店舗・担当_営業担当者
+		// 店舗・担当_営業担当者
 		String storeStaffNm = selectExistOrder.getStoreStaffNm();
 		order.setStoreStaffNm(storeStaffNm);
-		//証紙印字情報_お客様名ローマ字
+		// 証紙印字情報_お客様名ローマ字
 		String printoutCustRomaNm = selectExistOrder.getPrintoutCustRomaNm();
 		order.setPrintoutCustRomaNm(printoutCustRomaNm);
-		//証紙印字情報_営業担当者ローマ字
+		// 証紙印字情報_営業担当者ローマ字
 		String printoutStoreStaffRomaNm = selectExistOrder.getPrintoutStoreStaffRomaNm();
 		order.setPrintoutStoreStaffRomaNm(printoutStoreStaffRomaNm);
-		//お客様情報_お客様氏名
+		// お客様情報_お客様氏名
 		String custNm = selectExistOrder.getCustNm();
 		order.setCustNm(custNm);
-		//お客様情報_フリガナ
+		// お客様情報_フリガナ
 		String custKanaNm = selectExistOrder.getCustKanaNm();
 		order.setCustKanaNm(custKanaNm);
-		//お客様情報_お客様備考
+		// お客様情報_お客様備考
 		String custRemark = selectExistOrder.getCustRemark();
 		order.setCustRemark(custRemark);
-		//ホスト連携_A行
+		// ホスト連携_A行
 		String hostTransmitARow = selectExistOrder.getHostTransmitARow();
 		order.setHostTransmitARow(hostTransmitARow);
-		//出荷番号
+		// 出荷番号
 		String shippingNumber = selectExistOrder.getShippingNumber();
 		order.setShippingNumber(shippingNumber);
 	}
-	
+
 	/**
 	 * オーダー内容確認画面のMapの値とorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
-	 * @param authority 
+	 * @param authority
 	 */
-	public void orderMappingLogOn(OrderForm orderForm, Order order,String userId,Order orderIsExist, String authority) {
-		
-		if("02".equals(authority)) {
-			//業態
+	public void orderMappingLogOn(OrderForm orderForm, Order order, String userId, Order orderIsExist,
+			String authority) {
+
+		if ("02".equals(authority)) {
+			// 業態
 			order.setStoreBrandCode(orderIsExist.getStoreBrandCode());
-			//店舗コード
+			// 店舗コード
 			order.setShopCode(orderIsExist.getShopCode());
-			
+
 		}
-		//お客様氏名
+		// お客様氏名
 		order.setCustNm(null);
-		
-		//お客様情報_フリガナ
+
+		// お客様情報_フリガナ
 		order.setCustKanaNm(null);
-		
-		//order.setVersion(orderIsExist.getVersion());
-		
-		//オーダーパターン
+
+		// order.setVersion(orderIsExist.getVersion());
+
+		// オーダーパターン
 		order.setOrderPattern(orderIsExist.getOrderPattern());
-		
-		//お客様備考
-		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n",""));
-		
-		//注文承り日
+
+		// お客様備考
+		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n", ""));
+
+		// 注文承り日
 		order.setProductOrderdDate(new Date());
-		
-		//取り消しフラグ
+
+		// 取り消しフラグ
 		order.setIsCancelled(orderIsExist.getIsCancelled());
-		
-		//最終更新者
+
+		// 最終更新者
 		order.setUpdatedUserId(userId);
-		
-		//工場ステータス 生産開始前
+
+		// 工場ステータス 生産開始前
 		order.setMakerFactoryStatus(orderIsExist.getMakerFactoryStatus());
-		
-		//登録日時
+
+		// 登録日時
 		order.setCreatedAt(orderIsExist.getCreatedAt());
-		
-		//登録者
+
+		// 登録者
 		order.setCreatedUserId(orderIsExist.getCreatedUserId());
-		
-		//工場自動連携ステータス
+
+		// 工場自動連携ステータス
 		order.setSend2factoryStatus(orderIsExist.getSend2factoryStatus());
-		
-		//理論在庫チェック
+
+		// 理論在庫チェック
 		order.setTheoreticalStockCheck(orderIsExist.getTheoreticalStockCheck());
-		
-		//最終更新日時
+
+		// 最終更新日時
 		order.setUpdatedAt(new Date());
-		
-		//最終更新者
+
+		// 最終更新者
 		order.setUpdatedUserId(userId);
-		
-		//商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
+
+		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
-		if("0".equals(productEmbroideryNecessity)) {
+		if ("0".equals(productEmbroideryNecessity)) {
 			order.setProductEmbroideryNm(null);
 			order.setProductEmbroideryFont(null);
 			order.setProductEmbroideryThreadColor(null);
 		}
-		
-		//PANTS_ダブル幅についての項目はnull値の判定
+
+		// PANTS_ダブル幅についての項目はnull値の判定
 		String opHemUp = orderForm.getOptionPantsStandardInfo().getOpHemUp();
-		if("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
+		if ("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
 			order.setPtDblWidthCd(null);
 			order.setPtDblWidthNm(null);
 			order.setPtDblWidthRtPrice(null);
 			order.setPtDblWidthWsWage(null);
 			order.setPtDblWidthWsPrice(null);
 		}
-		
-		//PANTS2_ダブル幅についての項目はnull値の判定
+
+		// PANTS2_ダブル幅についての項目はnull値の判定
 		String op2HemUp = orderForm.getOptionPants2StandardInfo().getOp2HemUp();
-		if("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
+		if ("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
 			order.setPt2DblWidthCd(null);
 			order.setPt2DblWidthNm(null);
 			order.setPt2DblWidthRtPrice(null);
@@ -1671,47 +1688,49 @@ public class OrderHelper {
 			order.setPt2DblWidthWsPrice(null);
 		}
 	}
-	
-   /**
-    * 空とnullの変換
-    * @param measuring
-    * @return
-    */
-   public BigDecimal convertBigDecimal(String measuring) {
-      BigDecimal result = new BigDecimal(0.0);
-      if("".equals(measuring) || measuring==null) {
-        return result;
-      }
-      return new BigDecimal(measuring);
-   }
-	
+
+	/**
+	 * 空とnullの変換
+	 * 
+	 * @param measuring
+	 * @return
+	 */
+	public BigDecimal convertBigDecimal(String measuring) {
+		BigDecimal result = new BigDecimal(0.0);
+		if ("".equals(measuring) || measuring == null) {
+			return result;
+		}
+		return new BigDecimal(measuring);
+	}
+
 	/**
 	 * オーダー内容確認画面のメジャーリングの値とmeasuringの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
-	 * @param  measuring
-	 * @param userId 
+	 * @param measuring
+	 * @param userId
 	 */
-	public void measuringMapping(OrderForm orderForm,Measuring measuring, String userId) {
-		
+	public void measuringMapping(OrderForm orderForm, Measuring measuring, String userId) {
+
 		// 注文ID
 		measuring.setOrderId(orderForm.getCustomerMessageInfo().getOrderId());
 		// フルレングス
 		measuring.setFullLength(convertBigDecimal(orderForm.getMeasuringInfo().getFullLength()));
-	 	//ショルダー
+		// ショルダー
 		measuring.setShoulder(convertBigDecimal(orderForm.getMeasuringInfo().getShoulder()));
-	 	// リーチ（右）
+		// リーチ（右）
 		measuring.setReachRight(convertBigDecimal(orderForm.getMeasuringInfo().getReachRight()));
-	 	// リーチ（左）
+		// リーチ（左）
 		measuring.setReachLeft(convertBigDecimal(orderForm.getMeasuringInfo().getReachLeft()));
-	 	// アウトバスト
+		// アウトバスト
 		measuring.setOutBust(convertBigDecimal(orderForm.getMeasuringInfo().getOutBust()));
-	 	// バスト
+		// バスト
 		measuring.setBust(convertBigDecimal(orderForm.getMeasuringInfo().getBust()));
-	 	// JKウエスト
+		// JKウエスト
 		measuring.setJacketWaist(convertBigDecimal(orderForm.getMeasuringInfo().getJacketWaist()));
 		// PTウエスト
 		measuring.setPantsWaist(convertBigDecimal(orderForm.getMeasuringInfo().getPantsWaist()));
-	 	// ヒップ
+		// ヒップ
 		measuring.setHip(convertBigDecimal(orderForm.getMeasuringInfo().getHip()));
 		// ワタリ（右）
 		measuring.setSpanRight(convertBigDecimal(orderForm.getMeasuringInfo().getSpanRight()));
@@ -1721,41 +1740,42 @@ public class OrderHelper {
 		measuring.setCalfRight(convertBigDecimal(orderForm.getMeasuringInfo().getCalfRight()));
 		// ふくらはぎ（左）
 		measuring.setCalfLeft(convertBigDecimal(orderForm.getMeasuringInfo().getCalfLeft()));
-	 	// ネック
+		// ネック
 		measuring.setNeck(convertBigDecimal(orderForm.getMeasuringInfo().getNeck()));
-		
+
 		measuring.setUpdatedUserId(userId);
-		
+
 		measuring.setUpdatedAt(new Date());
 	}
 
 	/**
 	 * 素材品番のMapを取得
+	 * 
 	 * @param orderForm
 	 * @param detailList
 	 */
 	public void dealWithDetailCode(OrderForm orderForm, List<OptionBranchDetail> detailList) {
-		Map<String,String> jkMateMap = new HashMap<String,String>();
-		Map<String,String> ptMateMap = new HashMap<String,String>();
-		Map<String,String> pt2MateMap = new HashMap<String,String>();
-		Map<String,String> glMateMap = new HashMap<String,String>();
-		
+		Map<String, String> jkMateMap = new HashMap<String, String>();
+		Map<String, String> ptMateMap = new HashMap<String, String>();
+		Map<String, String> pt2MateMap = new HashMap<String, String>();
+		Map<String, String> glMateMap = new HashMap<String, String>();
+
 		for (OptionBranchDetail optionBranchDetail : detailList) {
 			if (optionBranchDetail.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_JACKET.getKey())) {
-				jkMateMap.put(optionBranchDetail.getSubItemCode()+optionBranchDetail.getOptionCode()+
-						optionBranchDetail.getOptionBranchCode()+optionBranchDetail.getOptionBranchDetailCode(),
+				jkMateMap.put(optionBranchDetail.getSubItemCode() + optionBranchDetail.getOptionCode()
+						+ optionBranchDetail.getOptionBranchCode() + optionBranchDetail.getOptionBranchDetailCode(),
 						optionBranchDetail.getOptionBranchDetailName());
 			} else if (optionBranchDetail.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS.getKey())) {
-				ptMateMap.put(optionBranchDetail.getSubItemCode()+optionBranchDetail.getOptionCode()+
-						optionBranchDetail.getOptionBranchCode()+optionBranchDetail.getOptionBranchDetailCode(),
+				ptMateMap.put(optionBranchDetail.getSubItemCode() + optionBranchDetail.getOptionCode()
+						+ optionBranchDetail.getOptionBranchCode() + optionBranchDetail.getOptionBranchDetailCode(),
 						optionBranchDetail.getOptionBranchDetailName());
 			} else if (optionBranchDetail.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_GILET.getKey())) {
-				glMateMap.put(optionBranchDetail.getSubItemCode()+optionBranchDetail.getOptionCode()+
-						optionBranchDetail.getOptionBranchCode()+optionBranchDetail.getOptionBranchDetailCode(),
+				glMateMap.put(optionBranchDetail.getSubItemCode() + optionBranchDetail.getOptionCode()
+						+ optionBranchDetail.getOptionBranchCode() + optionBranchDetail.getOptionBranchDetailCode(),
 						optionBranchDetail.getOptionBranchDetailName());
 			} else if (optionBranchDetail.getSubItemCode().equals(ItemTypeEnum.ITEM_CODE_PANTS2.getKey())) {
-				pt2MateMap.put(optionBranchDetail.getSubItemCode()+optionBranchDetail.getOptionCode()+
-						optionBranchDetail.getOptionBranchCode()+optionBranchDetail.getOptionBranchDetailCode(),
+				pt2MateMap.put(optionBranchDetail.getSubItemCode() + optionBranchDetail.getOptionCode()
+						+ optionBranchDetail.getOptionBranchCode() + optionBranchDetail.getOptionBranchDetailCode(),
 						optionBranchDetail.getOptionBranchDetailName());
 			}
 		}
@@ -1764,158 +1784,173 @@ public class OrderHelper {
 		orderForm.getOptionPants2StandardInfo().setPants2MateMap(pt2MateMap);
 		orderForm.getOptionGiletStandardInfo().setGiletMateMap(glMateMap);
 	}
-	
+
 	/**
 	 * オーダー内容確認画面JACKETのoption_branch_detail_nameとorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderJkNameMappingPo(OrderForm orderForm,Order order) {
-		
-		//subItemCode
+	public void orderJkNameMappingPo(OrderForm orderForm, Order order) {
+
+		// subItemCode
 		String jacketSubItemCode = "02";
-		
-		//JACKETの胴裏素材Name表示
+
+		// JACKETの胴裏素材Name表示
 		String ojBodyBackMateOptionCode = "00038";
 		String ojBodyBackMateCode = orderForm.getOptionJacketStandardInfo().getOjBodyBackMate();
 		String ojBodyBackMateStkNoCode = orderForm.getOptionJacketStandardInfo().getOjBodyBackMateStkNo();
-		
-		String jkInnerBodyClothNmCode = jacketSubItemCode + ojBodyBackMateOptionCode + ojBodyBackMateCode + ojBodyBackMateStkNoCode;
+
+		String jkInnerBodyClothNmCode = jacketSubItemCode + ojBodyBackMateOptionCode + ojBodyBackMateCode
+				+ ojBodyBackMateStkNoCode;
 		String jkInnerClothNm = orderForm.getOptionJacketStandardInfo().getOjBodyBackMateMap().get(ojBodyBackMateCode);
-		String jkInnerBodyClothNm =orderForm.getOptionJacketStandardInfo().getJacketMateMap().get(jkInnerBodyClothNmCode);
+		String jkInnerBodyClothNm = orderForm.getOptionJacketStandardInfo().getJacketMateMap()
+				.get(jkInnerBodyClothNmCode);
 		order.setJkInnerBodyClothNm(jkInnerClothNm + " " + jkInnerBodyClothNm);
-		
+
 		// JACKETの袖裏素材Name表示
 		String ojCuffBackMateOptionCode = "00040";
 		String ojCuffBackMateCode = orderForm.getOptionJacketStandardInfo().getOjCuffBackMate();
 		String ojCuffBackMateStkNoCode = orderForm.getOptionJacketStandardInfo().getOjCuffBackMateStkNo();
-		
-		String jkInnerSleeveClothNmCode = jacketSubItemCode + ojCuffBackMateOptionCode + ojCuffBackMateCode + ojCuffBackMateStkNoCode;
-		String jkInnerSleeveBodyClothNm = orderForm.getOptionJacketStandardInfo().getOjCuffBackMateMap().get(ojCuffBackMateCode);
-		String jkInnerSleeveClothNm =orderForm.getOptionJacketStandardInfo().getJacketMateMap().get(jkInnerSleeveClothNmCode);
+
+		String jkInnerSleeveClothNmCode = jacketSubItemCode + ojCuffBackMateOptionCode + ojCuffBackMateCode
+				+ ojCuffBackMateStkNoCode;
+		String jkInnerSleeveBodyClothNm = orderForm.getOptionJacketStandardInfo().getOjCuffBackMateMap()
+				.get(ojCuffBackMateCode);
+		String jkInnerSleeveClothNm = orderForm.getOptionJacketStandardInfo().getJacketMateMap()
+				.get(jkInnerSleeveClothNmCode);
 		order.setJkInnerSleeveClothNm(jkInnerSleeveBodyClothNm + " " + jkInnerSleeveClothNm);
-		
+
 		// JACKETの釦素材Name表示
 		String ojBtnMateOptionCode = "00042";
 		String ojBtnMateCode = orderForm.getOptionJacketStandardInfo().getOjBtnMate();
 		String ojBtnMateStkNoCode = orderForm.getOptionJacketStandardInfo().getOjBtnMateStkNo();
-		
+
 		String jkBtnMaterialNmCode = jacketSubItemCode + ojBtnMateOptionCode + ojBtnMateCode + ojBtnMateStkNoCode;
-		String jkBtnMaterialBodyNm = orderForm.getOptionJacketStandardInfo().getOjBtnMateMap().get(ojBtnMateCode); 
-		String jkBtnMaterialNm =orderForm.getOptionJacketStandardInfo().getJacketMateMap().get(jkBtnMaterialNmCode);
-		order.setJkBtnMaterialNm(jkBtnMaterialBodyNm + " " +jkBtnMaterialNm);
+		String jkBtnMaterialBodyNm = orderForm.getOptionJacketStandardInfo().getOjBtnMateMap().get(ojBtnMateCode);
+		String jkBtnMaterialNm = orderForm.getOptionJacketStandardInfo().getJacketMateMap().get(jkBtnMaterialNmCode);
+		order.setJkBtnMaterialNm(jkBtnMaterialBodyNm + " " + jkBtnMaterialNm);
 	}
-	
+
 	/**
 	 * オーダー内容確認画面GILETのoption_branch_detail_nameとorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderGlNameMappingPo(OrderForm orderForm,Order order) {
-		
-		//subItemCode
+	public void orderGlNameMappingPo(OrderForm orderForm, Order order) {
+
+		// subItemCode
 		String giletSubItemCode = "04";
-		
-		//GILETの背裏地素材Name表示
+
+		// GILETの背裏地素材Name表示
 		String ogBackLiningMateOptionCode = "00017";
 		String ogBackLiningMateCode = orderForm.getOptionGiletStandardInfo().getOgBackLiningMate();
 		String ogBackLiningMateStkNoCode = orderForm.getOptionGiletStandardInfo().getOgBackLiningMateStkNo();
-		
-		String glBackClothNmCode = giletSubItemCode + ogBackLiningMateOptionCode + ogBackLiningMateCode + ogBackLiningMateStkNoCode;
-		String glBackBodyClothNm = orderForm.getOptionGiletStandardInfo().getOgBackLiningMateMap().get(ogBackLiningMateCode);
-		String glBackClothNm =orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glBackClothNmCode);
+
+		String glBackClothNmCode = giletSubItemCode + ogBackLiningMateOptionCode + ogBackLiningMateCode
+				+ ogBackLiningMateStkNoCode;
+		String glBackBodyClothNm = orderForm.getOptionGiletStandardInfo().getOgBackLiningMateMap()
+				.get(ogBackLiningMateCode);
+		String glBackClothNm = orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glBackClothNmCode);
 		order.setGlBackClothNm(glBackBodyClothNm + " " + glBackClothNm);
-		
-		//GILETの内側裏地素材Name表示
+
+		// GILETの内側裏地素材Name表示
 		String ogInsideLiningMateOptionCode = "00019";
 		String ogInsideLiningMateCode = orderForm.getOptionGiletStandardInfo().getOgInsideLiningMate();
 		String ogInsideLiningMateStkNoCode = orderForm.getOptionGiletStandardInfo().getOgInsideLiningMateStkNo();
-		
-		String glInnnerClothNmCode = giletSubItemCode + ogInsideLiningMateOptionCode + ogInsideLiningMateCode + ogInsideLiningMateStkNoCode;
-		String glInnnerBodyClothNm = orderForm.getOptionGiletStandardInfo().getOgInsideLiningMateMap().get(ogInsideLiningMateCode);
-		String glInnnerClothNm =orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glInnnerClothNmCode);
+
+		String glInnnerClothNmCode = giletSubItemCode + ogInsideLiningMateOptionCode + ogInsideLiningMateCode
+				+ ogInsideLiningMateStkNoCode;
+		String glInnnerBodyClothNm = orderForm.getOptionGiletStandardInfo().getOgInsideLiningMateMap()
+				.get(ogInsideLiningMateCode);
+		String glInnnerClothNm = orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glInnnerClothNmCode);
 		order.setGlInnnerClothNm(glInnnerBodyClothNm + " " + glInnnerClothNm);
-		
-		//GILETのフロント釦Name表示
-		String ogFrontBtnMateOptionCode = "00021"; 
+
+		// GILETのフロント釦Name表示
+		String ogFrontBtnMateOptionCode = "00021";
 		String ogFrontBtnMateCode = orderForm.getOptionGiletStandardInfo().getOgFrontBtnMate();
 		String ogFrontBtnMateStkNoCode = orderForm.getOptionGiletStandardInfo().getOgFrontBtnMateStkNo();
-		
-		String glFrtBtnNmCode = giletSubItemCode + ogFrontBtnMateOptionCode + ogFrontBtnMateCode + ogFrontBtnMateStkNoCode;
+
+		String glFrtBtnNmCode = giletSubItemCode + ogFrontBtnMateOptionCode + ogFrontBtnMateCode
+				+ ogFrontBtnMateStkNoCode;
 		String glFrtBodyBtnNm = orderForm.getOptionGiletStandardInfo().getOgFrontBtnMateMap().get(ogFrontBtnMateCode);
-		String glFrtBtnNm =orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glFrtBtnNmCode);
+		String glFrtBtnNm = orderForm.getOptionGiletStandardInfo().getGiletMateMap().get(glFrtBtnNmCode);
 		order.setGlFrtBtnNm(glFrtBodyBtnNm + " " + glFrtBtnNm);
 	}
-	
+
 	/**
 	 * オーダー内容確認画面PNATSのoption_branch_detail_nameとorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderPtNameMappingPo(OrderForm orderForm,Order order) {
-		
-		//subItemCode
+	public void orderPtNameMappingPo(OrderForm orderForm, Order order) {
+
+		// subItemCode
 		String pantsSubItemCode = "03";
-		
-		//PANTSの釦素材Name表示
+
+		// PANTSの釦素材Name表示
 		String opButtonOptionCode = "00033";
 		String opButtonCode = orderForm.getOptionPantsStandardInfo().getOpButton();
 		String opBtnMateStkNoCode = orderForm.getOptionPantsStandardInfo().getOpBtnMateStkNo();
-		
+
 		String ptBtnMaterialNmCode = pantsSubItemCode + opButtonOptionCode + opButtonCode + opBtnMateStkNoCode;
 		String ptBtnMaterialBodyNm = orderForm.getOptionPantsStandardInfo().getOpButtonMap().get(opButtonCode);
-		String ptBtnMaterialNm =orderForm.getOptionPantsStandardInfo().getPantsMateMap().get(ptBtnMaterialNmCode);
+		String ptBtnMaterialNm = orderForm.getOptionPantsStandardInfo().getPantsMateMap().get(ptBtnMaterialNmCode);
 		order.setPtBtnMaterialNm(ptBtnMaterialBodyNm + " " + ptBtnMaterialNm);
 	}
-	
+
 	/**
 	 * オーダー内容確認画面PNATS2のoption_branch_detail_nameとorderの対応フィールドのマッピング
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderPt2NameMappingPo(OrderForm orderForm,Order order) {
-		
-		//subItemCode
+	public void orderPt2NameMappingPo(OrderForm orderForm, Order order) {
+
+		// subItemCode
 		String pants2SubItemCode = "07";
-		
-		//PANTS（2本目）の釦素材Name表示
+
+		// PANTS（2本目）の釦素材Name表示
 		String op2ButtonOptionCode = "00033";
 		String op2ButtonCode = orderForm.getOptionPants2StandardInfo().getOp2Button();
 		String op2BtnMateStkNoCode = orderForm.getOptionPants2StandardInfo().getOp2BtnMateStkNo();
-		
+
 		String pt2BtnMaterialNmCode = pants2SubItemCode + op2ButtonOptionCode + op2ButtonCode + op2BtnMateStkNoCode;
 		String pt2BtnMaterialBodyNm = orderForm.getOptionPants2StandardInfo().getOp2ButtonMap().get(op2ButtonCode);
-		String pt2BtnMaterialNm =orderForm.getOptionPants2StandardInfo().getPants2MateMap().get(pt2BtnMaterialNmCode);
-		order.setPt2BtnMaterialNm(pt2BtnMaterialBodyNm + " " +pt2BtnMaterialNm);		
-		
+		String pt2BtnMaterialNm = orderForm.getOptionPants2StandardInfo().getPants2MateMap().get(pt2BtnMaterialNmCode);
+		order.setPt2BtnMaterialNm(pt2BtnMaterialBodyNm + " " + pt2BtnMaterialNm);
+
 	}
 
 	/**
 	 * JACKETの上代価額をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
-	 * @return 
+	 * @return
 	 */
-	public void orderJacketPrice(OrderForm orderForm,Order order) {
-		
+	public void orderJacketPrice(OrderForm orderForm, Order order) {
+
 		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_JACKET.getValue();
 		String branchModelCode = orderForm.getOptionJacketStandardInfo().getOjJacketModel();
-		
+
 		JacketOptionStandardPriceEnum[] priceEnum = JacketOptionStandardPriceEnum.values();
-		
+
 		for (JacketOptionStandardPriceEnum price : priceEnum) {
-			
+
 			String key = price.getKey();
 			String valueOne = price.getValue();
 			String valueTwo = price.getValue2();
 			String valueThree = price.getValue3();
-	
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Method myMethodTwo = getMethod(cls, valueTwo);
 				Object[] args = {};
@@ -1923,20 +1958,20 @@ public class OrderHelper {
 				Object result = null;
 				Object resultTwo = null;
 				if (myMethodOne != null) {
-					result = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(),args);
+					result = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(), args);
 				}
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(), argsTwo);
 				}
-				
+
 				String orderKeyCode = orderItemCode + item + branchModelCode + key + result;
-				
+
 				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + result + resultTwo;
-				
+
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
 				for (OrderCodePrice orderCodePrice : orderCodePriceList) {
 					if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
-						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode()) 
+						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderCodePrice.getOrderDetailKeyCode() == null) {
 							if (orderCodePrice.getOrderBranchDoublePrice() == null) {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
@@ -1945,8 +1980,7 @@ public class OrderHelper {
 								if (myMethod != null) {
 									ReflectionUtils.invoke(myMethod, order, argsValue);
 								}
-							} 
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethod = getMethod(cls, valueThree);
 								Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchDoublePrice()) };
@@ -1955,8 +1989,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						}
-						else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+						} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
 							if (orderCodePrice.getOrderBranchDoublePrice() == null
 									&& orderCodePrice.getOrderBranchDetailDoublePrice() == null) {
@@ -1966,8 +1999,7 @@ public class OrderHelper {
 								if (myMethodT != null) {
 									ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 								}
-							} 
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethodT = getMethod(cls, valueThree);
 								Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchDoublePrice())
@@ -1978,8 +2010,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Object[] argsDetailValue = { 0 };
@@ -1987,8 +2018,7 @@ public class OrderHelper {
 								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 							}
 						}
-					} 
-					else {
+					} else {
 						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderCodePrice.getOrderDetailKeyCode() == null) {
 							if (orderCodePrice.getOrderBranchPrice() == null) {
@@ -1998,8 +2028,7 @@ public class OrderHelper {
 								if (myMethod != null) {
 									ReflectionUtils.invoke(myMethod, order, argsValue);
 								}
-							} 
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethod = getMethod(cls, valueThree);
 								Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchPrice()) };
@@ -2008,8 +2037,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						} 
-						else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+						} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
 							if (orderCodePrice.getOrderBranchPrice() == null
 									&& orderCodePrice.getOrderBranchDetailPrice() == null) {
@@ -2019,8 +2047,7 @@ public class OrderHelper {
 								if (myMethodT != null) {
 									ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 								}
-							}
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethodT = getMethod(cls, valueThree);
 								Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchPrice())
@@ -2031,8 +2058,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Object[] argsDetailValue = { 0 };
@@ -2048,31 +2074,32 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * GILETの上代価額をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderGiletPrice(OrderForm orderForm,Order order) {
-		
+	public void orderGiletPrice(OrderForm orderForm, Order order) {
+
 		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_GILET.getValue();
 		String branchModelCode = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
-		
+
 		GiletOptionStandardPriceEnum[] priceEnum = GiletOptionStandardPriceEnum.values();
-		for(GiletOptionStandardPriceEnum price : priceEnum) {
-			
+		for (GiletOptionStandardPriceEnum price : priceEnum) {
+
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
 			String valueTwo = price.getValueTwo();
 			String valueThree = price.getValueThree();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Method myMethodTwo = getMethod(cls, valueTwo);
 				Object[] args = {};
@@ -2080,19 +2107,19 @@ public class OrderHelper {
 				Object resultOne = null;
 				Object resultTwo = null;
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(), args);
 				}
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(), argsTwo);
 				}
-				
+
 				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
 				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
-				
+
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
+				for (OrderCodePrice orderCodePrice : orderCodePriceList) {
 					if ("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
-						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode()) 
+						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderCodePrice.getOrderDetailKeyCode() == null) {
 							if (orderCodePrice.getOrderBranchDoublePrice() == null) {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
@@ -2101,8 +2128,7 @@ public class OrderHelper {
 								if (myMethod != null) {
 									ReflectionUtils.invoke(myMethod, order, argsValue);
 								}
-							} 
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethod = getMethod(cls, valueThree);
 								Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchDoublePrice()) };
@@ -2111,8 +2137,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						}
-						else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+						} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 								&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
 							if (orderCodePrice.getOrderBranchDoublePrice() == null
 									&& orderCodePrice.getOrderBranchDetailDoublePrice() == null) {
@@ -2122,8 +2147,7 @@ public class OrderHelper {
 								if (myMethodT != null) {
 									ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 								}
-							} 
-							else {
+							} else {
 								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 								Method myMethodT = getMethod(cls, valueThree);
 								Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchDoublePrice())
@@ -2134,8 +2158,7 @@ public class OrderHelper {
 								}
 							}
 							break;
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Object[] argsDetailValue = { 0 };
@@ -2143,32 +2166,47 @@ public class OrderHelper {
 								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 							}
 						}
-					} 
-					else {
-					if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
-							&& orderCodePrice.getOrderDetailKeyCode() == null) {
-						if (orderCodePrice.getOrderBranchPrice() == null) {
-							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
-							Method myMethod = getMethod(cls, valueThree);
-							Object[] argsValue = { 0 };
-							if (myMethod != null) {
-								ReflectionUtils.invoke(myMethod, order, argsValue);
+					} else {
+						if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+								&& orderCodePrice.getOrderDetailKeyCode() == null) {
+							if (orderCodePrice.getOrderBranchPrice() == null) {
+								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+								Method myMethod = getMethod(cls, valueThree);
+								Object[] argsValue = { 0 };
+								if (myMethod != null) {
+									ReflectionUtils.invoke(myMethod, order, argsValue);
+								}
+							} else {
+								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+								Method myMethod = getMethod(cls, valueThree);
+								Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchPrice()) };
+								if (myMethod != null) {
+									ReflectionUtils.invoke(myMethod, order, argsValue);
+								}
 							}
-						} 
-						else {
-							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
-							Method myMethod = getMethod(cls, valueThree);
-							Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchPrice()) };
-							if (myMethod != null) {
-								ReflectionUtils.invoke(myMethod, order, argsValue);
+							break;
+						} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+								&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
+							if (orderCodePrice.getOrderBranchPrice() == null
+									&& orderCodePrice.getOrderBranchDetailPrice() == null) {
+								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+								Method myMethodT = getMethod(cls, valueThree);
+								Object[] argsDetailValue = { 0 };
+								if (myMethodT != null) {
+									ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
+								}
+							} else {
+								cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+								Method myMethodT = getMethod(cls, valueThree);
+								Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchPrice())
+										+ Integer.parseInt(orderCodePrice.getOrderBranchDetailPrice());
+								Object[] argsDetailValue = { OrderDoublePrice };
+								if (myMethodT != null) {
+									ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
+								}
 							}
-						}
-						break;
-					}
-					else if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
-							&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
-						if (orderCodePrice.getOrderBranchPrice() == null
-								&& orderCodePrice.getOrderBranchDetailPrice() == null) {
+							break;
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Object[] argsDetailValue = { 0 };
@@ -2176,27 +2214,7 @@ public class OrderHelper {
 								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 							}
 						}
-						else {
-							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
-							Method myMethodT = getMethod(cls, valueThree);
-							Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchPrice())
-									+ Integer.parseInt(orderCodePrice.getOrderBranchDetailPrice());
-							Object[] argsDetailValue = { OrderDoublePrice };
-							if (myMethodT != null) {
-								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
-							}
-						}
-						break;
 					}
-					else {
-						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
-						Method myMethodT = getMethod(cls, valueThree);
-						Object[] argsDetailValue = { 0 };
-						if (myMethodT != null) {
-							ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
-						}
-					}
-				}
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -2204,31 +2222,32 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTSの上代価額をデータベースに入力する
+	 * 
 	 * @param orderForm
-	 * @param order 
+	 * @param order
 	 */
-	public void orderPantsPrice(OrderForm orderForm,Order order) {
-		
+	public void orderPantsPrice(OrderForm orderForm, Order order) {
+
 		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS.getValue();
 		String branchModelCode = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
-		
+
 		PantsOptionStandardPriceEnum[] priceEnum = PantsOptionStandardPriceEnum.values();
-		for(PantsOptionStandardPriceEnum price : priceEnum) {
-			
+		for (PantsOptionStandardPriceEnum price : priceEnum) {
+
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
 			String valueTwo = price.getValueTwo();
 			String valueThree = price.getValueThree();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Method myMethodTwo = getMethod(cls, valueTwo);
 				Object[] args = {};
@@ -2236,18 +2255,18 @@ public class OrderHelper {
 				Object resultOne = null;
 				Object resultTwo = null;
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPantsStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPantsStandardInfo(), args);
 				}
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPantsStandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPantsStandardInfo(), argsTwo);
 				}
-				
+
 				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
 				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
-				
+
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
-					if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+				for (OrderCodePrice orderCodePrice : orderCodePriceList) {
+					if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 							&& orderCodePrice.getOrderDetailKeyCode() == null) {
 						if (orderCodePrice.getOrderBranchPrice() == null) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
@@ -2256,8 +2275,7 @@ public class OrderHelper {
 							if (myMethod != null) {
 								ReflectionUtils.invoke(myMethod, order, argsValue);
 							}
-						} 
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethod = getMethod(cls, valueThree);
 							Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchPrice()) };
@@ -2266,8 +2284,7 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+					} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 							&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
 						if (orderCodePrice.getOrderBranchPrice() == null
 								&& orderCodePrice.getOrderBranchDetailPrice() == null) {
@@ -2277,8 +2294,7 @@ public class OrderHelper {
 							if (myMethodT != null) {
 								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 							}
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchPrice())
@@ -2289,8 +2305,7 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodT = getMethod(cls, valueThree);
 						Object[] argsDetailValue = { 0 };
@@ -2305,31 +2320,32 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTS2の上代価額をデータベースに入力する
+	 * 
 	 * @param orderForm
-	 * @param order 
+	 * @param order
 	 */
-	public void orderPants2Price(OrderForm orderForm,Order order) {
-		
+	public void orderPants2Price(OrderForm orderForm, Order order) {
+
 		String orderItemCode = orderForm.getProductItem();
 		String item = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS2.getValue();
 		String branchModelCode = orderForm.getOptionPants2StandardInfo().getOp2PantsModel();
-		
+
 		Pants2OptionStandardPriceEnum[] priceEnum = Pants2OptionStandardPriceEnum.values();
-		for(Pants2OptionStandardPriceEnum price : priceEnum) {
-			
+		for (Pants2OptionStandardPriceEnum price : priceEnum) {
+
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
 			String valueTwo = price.getValueTwo();
 			String valueThree = price.getValueThree();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Method myMethodTwo = getMethod(cls, valueTwo);
 				Object[] args = {};
@@ -2337,18 +2353,18 @@ public class OrderHelper {
 				Object resultOne = null;
 				Object resultTwo = null;
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPants2StandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPants2StandardInfo(), args);
 				}
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPants2StandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionPants2StandardInfo(), argsTwo);
 				}
-				
+
 				String orderKeyCode = orderItemCode + item + branchModelCode + key + resultOne;
 				String orderDetailKeyCode = orderItemCode + item + branchModelCode + key + resultOne + resultTwo;
-				
+
 				List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-				for(OrderCodePrice orderCodePrice : orderCodePriceList) {
-					if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+				for (OrderCodePrice orderCodePrice : orderCodePriceList) {
+					if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 							&& orderCodePrice.getOrderDetailKeyCode() == null) {
 						if (orderCodePrice.getOrderBranchPrice() == null) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
@@ -2357,8 +2373,7 @@ public class OrderHelper {
 							if (myMethod != null) {
 								ReflectionUtils.invoke(myMethod, order, argsValue);
 							}
-						} 
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethod = getMethod(cls, valueThree);
 							Object[] argsValue = { Integer.parseInt(orderCodePrice.getOrderBranchPrice()) };
@@ -2367,8 +2382,7 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else if(orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
+					} else if (orderKeyCode.equals(orderCodePrice.getOrderKeyCode())
 							&& orderDetailKeyCode.equals(orderCodePrice.getOrderDetailKeyCode())) {
 						if (orderCodePrice.getOrderBranchPrice() == null
 								&& orderCodePrice.getOrderBranchDetailPrice() == null) {
@@ -2378,8 +2392,7 @@ public class OrderHelper {
 							if (myMethodT != null) {
 								ReflectionUtils.invoke(myMethodT, order, argsDetailValue);
 							}
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodT = getMethod(cls, valueThree);
 							Integer OrderDoublePrice = Integer.parseInt(orderCodePrice.getOrderBranchPrice())
@@ -2390,8 +2403,7 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodT = getMethod(cls, valueThree);
 						Object[] argsDetailValue = { 0 };
@@ -2406,74 +2418,70 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * オーダーのitemCodeとsubItemCode
+	 * 
 	 * @param orderForm
 	 * @param jkSubItemCode
 	 * @param gtSubItemCode
 	 * @param ptSubItemCode
 	 * @param pt2SubItemCode
-	 * @return 
+	 * @return
 	 */
-	public Map<String, String> subItemCodeValue(OrderForm orderForm,String jkSubItemCode,String gtSubItemCode,String ptSubItemCode,String pt2SubItemCode) {
+	public Map<String, String> subItemCodeValue(OrderForm orderForm, String jkSubItemCode, String gtSubItemCode,
+			String ptSubItemCode, String pt2SubItemCode) {
 		String itemCode = orderForm.getProductItem();
 		String productIs3Piece = orderForm.getProductIs3Piece();
 		String productSparePantsClass = orderForm.getProductSparePantsClass();
-		Map<String,String> valueSubItemCodeMap = new HashMap<String,String>();
-		//３Pieceまたはスペアパンツは有り
+		Map<String, String> valueSubItemCodeMap = new HashMap<String, String>();
+		// ３Pieceまたはスペアパンツは有り
 		String productYes = "0009902";
-		//３Pieceまたはスペアパンツは無し
+		// ３Pieceまたはスペアパンツは無し
 		String productNo = "0009901";
-		//01:SUIT
+		// 01:SUIT
 		String suitCode = "01";
-		//02:JACKET
+		// 02:JACKET
 		String jacketCode = "02";
-		//03:PANTS
+		// 03:PANTS
 		String pantsCode = "03";
-		//04:GILET
+		// 04:GILET
 		String giletCode = "04";
-		//07:PANTS2
+		// 07:PANTS2
 		String pants2Code = "07";
-		if(itemCode.equals(suitCode)) {
-			if(productIs3Piece.equals(productYes) && productSparePantsClass.equals(productYes)) {
+		if (itemCode.equals(suitCode)) {
+			if (productIs3Piece.equals(productYes) && productSparePantsClass.equals(productYes)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = giletCode;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = pants2Code;
-			}
-			else if(productIs3Piece.equals(productYes) && productSparePantsClass.equals(productNo)) {
+			} else if (productIs3Piece.equals(productYes) && productSparePantsClass.equals(productNo)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = giletCode;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = null;
-			}
-			else if(productIs3Piece.equals(productNo) && productSparePantsClass.equals(productYes)) {
+			} else if (productIs3Piece.equals(productNo) && productSparePantsClass.equals(productYes)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = null;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = pants2Code;
-			}
-			else if(productIs3Piece.equals(productNo) && productSparePantsClass.equals(productNo)) {
+			} else if (productIs3Piece.equals(productNo) && productSparePantsClass.equals(productNo)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = null;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = null;
 			}
-		}
-		else if(itemCode.equals(jacketCode)) {
+		} else if (itemCode.equals(jacketCode)) {
 			jkSubItemCode = jacketCode;
 			gtSubItemCode = null;
 			ptSubItemCode = null;
 			pt2SubItemCode = null;
-		}
-		else if(itemCode.equals(pantsCode)) {
+		} else if (itemCode.equals(pantsCode)) {
 			jkSubItemCode = null;
 			gtSubItemCode = null;
 			ptSubItemCode = pantsCode;
 			pt2SubItemCode = null;
-		}
-		else if(itemCode.equals(giletCode)) {
+		} else if (itemCode.equals(giletCode)) {
 			jkSubItemCode = null;
 			gtSubItemCode = giletCode;
 			ptSubItemCode = null;
@@ -2485,74 +2493,70 @@ public class OrderHelper {
 		valueSubItemCodeMap.put("pt2SubItemCode", pt2SubItemCode);
 		return valueSubItemCodeMap;
 	}
-	
+
 	/**
 	 * オーダーのitemCodeとsubItemCode
+	 * 
 	 * @param order
 	 * @param jkSubItemCode
 	 * @param gtSubItemCode
 	 * @param ptSubItemCode
 	 * @param pt2SubItemCode
-	 * @return 
+	 * @return
 	 */
-	public Map<String, String> subItemCodeValue(Order order,String jkSubItemCode,String gtSubItemCode,String ptSubItemCode,String pt2SubItemCode) {
+	public Map<String, String> subItemCodeValue(Order order, String jkSubItemCode, String gtSubItemCode,
+			String ptSubItemCode, String pt2SubItemCode) {
 		String itemCode = order.getProductItem();
 		String productIs3Piece = order.getProductIs3piece();
 		String productSparePantsClass = order.getProductSparePantsClass();
-		Map<String,String> valueSubItemCodeMap = new HashMap<String,String>();
-		//３Pieceまたはスペアパンツは有り
+		Map<String, String> valueSubItemCodeMap = new HashMap<String, String>();
+		// ３Pieceまたはスペアパンツは有り
 		String productYes = "0009902";
-		//３Pieceまたはスペアパンツは無し
+		// ３Pieceまたはスペアパンツは無し
 		String productNo = "0009901";
-		//01:SUIT
+		// 01:SUIT
 		String suitCode = "01";
-		//02:JACKET
+		// 02:JACKET
 		String jacketCode = "02";
-		//03:PANTS
+		// 03:PANTS
 		String pantsCode = "03";
-		//04:GILET
+		// 04:GILET
 		String giletCode = "04";
-		//07:PANTS2
+		// 07:PANTS2
 		String pants2Code = "07";
-		if(itemCode.equals(suitCode)) {
-			if(productIs3Piece.equals(productYes) && productSparePantsClass.equals(productYes)) {
+		if (itemCode.equals(suitCode)) {
+			if (productIs3Piece.equals(productYes) && productSparePantsClass.equals(productYes)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = giletCode;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = pants2Code;
-			}
-			else if(productIs3Piece.equals(productYes) && productSparePantsClass.equals(productNo)) {
+			} else if (productIs3Piece.equals(productYes) && productSparePantsClass.equals(productNo)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = giletCode;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = null;
-			}
-			else if(productIs3Piece.equals(productNo) && productSparePantsClass.equals(productYes)) {
+			} else if (productIs3Piece.equals(productNo) && productSparePantsClass.equals(productYes)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = null;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = pants2Code;
-			}
-			else if(productIs3Piece.equals(productNo) && productSparePantsClass.equals(productNo)) {
+			} else if (productIs3Piece.equals(productNo) && productSparePantsClass.equals(productNo)) {
 				jkSubItemCode = jacketCode;
 				gtSubItemCode = null;
 				ptSubItemCode = pantsCode;
 				pt2SubItemCode = null;
 			}
-		}
-		else if(itemCode.equals(jacketCode)) {
+		} else if (itemCode.equals(jacketCode)) {
 			jkSubItemCode = jacketCode;
 			gtSubItemCode = null;
 			ptSubItemCode = null;
 			pt2SubItemCode = null;
-		}
-		else if(itemCode.equals(pantsCode)) {
+		} else if (itemCode.equals(pantsCode)) {
 			jkSubItemCode = null;
 			gtSubItemCode = null;
 			ptSubItemCode = pantsCode;
 			pt2SubItemCode = null;
-		}
-		else if(itemCode.equals(giletCode)) {
+		} else if (itemCode.equals(giletCode)) {
 			jkSubItemCode = null;
 			gtSubItemCode = giletCode;
 			ptSubItemCode = null;
@@ -2564,148 +2568,154 @@ public class OrderHelper {
 		valueSubItemCodeMap.put("pt2SubItemCode", pt2SubItemCode);
 		return valueSubItemCodeMap;
 	}
-	
+
 	/**
 	 * 基本工賃価格の取得
+	 * 
 	 * @param itemCode
 	 * @param subItemCode
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public BigDecimal getWage(String itemCode,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public BigDecimal getWage(String itemCode, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String keyItemCode = itemCode;
 		BigDecimal mbwWage = null;
-		for(NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
-			if(keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode().substring(0, 2))) {
+		for (NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
+			if (keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode().substring(0, 2))) {
 				mbwWage = basicNextGenerationPrice.getMbwWage();
 				break;
-			}
-			else {
+			} else {
 				mbwWage = new BigDecimal(0.0);
 			}
 		}
 		return mbwWage;
 	}
-	
+
 	/**
 	 * ダブルブレスト工賃価格の取得
+	 * 
 	 * @param itemCode
 	 * @param subItemCode
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	 public BigDecimal getDoubleWage(String itemCode,String subItemCode,List<NextGenerationPrice> basicNextGenerationPriceList) {
-		 String keyItemCode = itemCode + subItemCode;
-		 BigDecimal mdbwWage = null;
-		 for(NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
-				if(keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode())) {
-					mdbwWage = basicNextGenerationPrice.getMdbwWage();
-					break;
-				}
-				else {
-					mdbwWage = new BigDecimal(0.0);
-				}
+	public BigDecimal getDoubleWage(String itemCode, String subItemCode,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
+		String keyItemCode = itemCode + subItemCode;
+		BigDecimal mdbwWage = null;
+		for (NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
+			if (keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode())) {
+				mdbwWage = basicNextGenerationPrice.getMdbwWage();
+				break;
+			} else {
+				mdbwWage = new BigDecimal(0.0);
 			}
-		 return mdbwWage;
-	 }
-	 
+		}
+		return mdbwWage;
+	}
+
 	/**
 	 * 基本付属価格の取得
+	 * 
 	 * @param itemCode
 	 * @param subItemCode
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public Integer getPrice(String itemCode,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public Integer getPrice(String itemCode, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String keyItemCode = itemCode;
 		Integer mnapPrice = null;
-		for(NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
-			if(keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode().substring(0, 2))) {
+		for (NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
+			if (keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode().substring(0, 2))) {
 				mnapPrice = basicNextGenerationPrice.getMnapPrice();
 				break;
-			}
-			else {
+			} else {
 				mnapPrice = 0;
 			}
 		}
 		return mnapPrice;
 	}
-	
+
 	/**
 	 * ダブルブレスト付属価格
+	 * 
 	 * @param itemCode
 	 * @param subItemCode
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public Integer getDoublePrice(String itemCode,String subItemCode,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public Integer getDoublePrice(String itemCode, String subItemCode,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String keyItemCode = itemCode + subItemCode;
 		Integer mdbapPrice = null;
-		for(NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
-			if(keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode())) {
+		for (NextGenerationPrice basicNextGenerationPrice : basicNextGenerationPriceList) {
+			if (keyItemCode.equals(basicNextGenerationPrice.getKeyItemCode())) {
 				mdbapPrice = basicNextGenerationPrice.getMdbapPrice();
 				break;
-			}
-			else {
+			} else {
 				mdbapPrice = 0;
 			}
 		}
 		return mdbapPrice;
 	}
-	
+
 	/**
 	 * JACKET_下代工賃とJACKET_下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param optionNextGenerationPriceList
 	 * @param basicNextGenerationPriceList
 	 */
-	public void getJkNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getJkNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> optionNextGenerationPriceList,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
+		// co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
 		String className = ItemClassStandardEnum.ITEM_CODE_JACKET.getValue();
-		
-		JacketOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = JacketOptionStandardNextGenerationPriceEnum.values();
-		for(JacketOptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
-			
+
+		JacketOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = JacketOptionStandardNextGenerationPriceEnum
+				.values();
+		for (JacketOptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
 			String valueThree = nextGenerationPrice.getValueThree();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Object[] args = {};
 				Object resultOne = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(), args);
 				}
-				
+
 				String keyCode = itemCode + subItemCode + key + resultOne;
-				
-				for(NextGenerationPrice jkNextGenerationPrice : optionNextGenerationPriceList) {
-					if(keyCode.equals(jkNextGenerationPrice.getKeyCode())) {
-						//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-						if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+
+				for (NextGenerationPrice jkNextGenerationPrice : optionNextGenerationPriceList) {
+					if (keyCode.equals(jkNextGenerationPrice.getKeyCode())) {
+						// フロント釦数はダブル6つボタンの場合、該当itemはダブル
+						if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
-							//オプション工賃
+							// オプション工賃
 							BigDecimal optionWage = jkNextGenerationPrice.getMowWage();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属
+							// オプション付属
 							Integer optionDoublePrice = jkNextGenerationPrice.getMoapDoublePrice();
 							Integer nextGenerationPriceValue = optionDoublePrice;
-							Object[] argsValueTwo = {nextGenerationWageValue};
-							Object[] argsValueThree = {nextGenerationPriceValue};
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
 							if (myMethodTwo != null) {
 								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 							}
@@ -2713,19 +2723,19 @@ public class OrderHelper {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
 						}
-						//該当itemはダブル以外の場合
+						// 該当itemはダブル以外の場合
 						else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
-							//オプション工賃
+							// オプション工賃
 							BigDecimal optionWage = jkNextGenerationPrice.getMowWage();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属
+							// オプション付属
 							Integer optionPrice = jkNextGenerationPrice.getMoapPrice();
 							Integer nextGenerationPriceValue = optionPrice;
-							Object[] argsValueTwo = {nextGenerationWageValue};
-							Object[] argsValueThree = {nextGenerationPriceValue};
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
 							if (myMethodTwo != null) {
 								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 							}
@@ -2734,13 +2744,12 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						Object[] argsValueTwo = {new BigDecimal(0.0)};
-						Object[] argsValueThree = {0};
+						Object[] argsValueTwo = { new BigDecimal(0.0) };
+						Object[] argsValueThree = { 0 };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -2755,78 +2764,81 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * GILET_下代工賃とGILET_下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param optionNextGenerationPriceList
 	 * @param basicNextGenerationPriceList
 	 */
-	public void getGlNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public void getGlNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> optionNextGenerationPriceList,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
 
-		//itemCodeの取得
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
-		String className = ItemClassStandardEnum.ITEM_CODE_GILET.getValue(); 
-		
-		GiletOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = GiletOptionStandardNextGenerationPriceEnum.values();
-		for(GiletOptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
-			
+		// co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
+		String className = ItemClassStandardEnum.ITEM_CODE_GILET.getValue();
+
+		GiletOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = GiletOptionStandardNextGenerationPriceEnum
+				.values();
+		for (GiletOptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
-			String valueThree= nextGenerationPrice.getValueThree();
-			
+			String valueThree = nextGenerationPrice.getValueThree();
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Object[] args = {};
 				Object resultOne = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(), args);
 				}
-				
+
 				String keyCode = itemCode + subItemCode + key + resultOne;
-				
-				for(NextGenerationPrice glNextGenerationPrice : optionNextGenerationPriceList) {
-					if(keyCode.equals(glNextGenerationPrice.getKeyCode())) {
-						if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
+
+				for (NextGenerationPrice glNextGenerationPrice : optionNextGenerationPriceList) {
+					if (keyCode.equals(glNextGenerationPrice.getKeyCode())) {
+						if ("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
-							//オプション工賃
+							// オプション工賃
 							BigDecimal optionWage = glNextGenerationPrice.getMowWage();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属
+							// オプション付属
 							Integer optionDoublePrice = glNextGenerationPrice.getMoapDoublePrice();
 							Integer nextGenerationPriceValue = optionDoublePrice;
-							Object[] argsValueTwo = {nextGenerationWageValue};
-							Object[] argsValueThree = {nextGenerationPriceValue};
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
 							if (myMethodTwo != null) {
 								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 							}
 							if (myMethodThree != null) {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodTwo = getMethod(cls, valueTwo);
 							Method myMethodThree = getMethod(cls, valueThree);
-							//オプション工賃
+							// オプション工賃
 							BigDecimal optionWage = glNextGenerationPrice.getMowWage();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属
+							// オプション付属
 							Integer optionPrice = glNextGenerationPrice.getMoapPrice();
 							Integer nextGenerationPriceValue = optionPrice;
-							Object[] argsValueTwo = {nextGenerationWageValue};
-							Object[] argsValueThree = {nextGenerationPriceValue};
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
 							if (myMethodTwo != null) {
 								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 							}
@@ -2835,13 +2847,12 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						Object[] argsValueTwo = {new BigDecimal(0.0)};
-						Object[] argsValueThree = {0};
+						Object[] argsValueTwo = { new BigDecimal(0.0) };
+						Object[] argsValueThree = { 0 };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -2856,58 +2867,62 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTS_下代工賃とPANTS_下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param optionNextGenerationPriceList
 	 * @param basicNextGenerationPriceList
 	 */
-	public void getPtNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getPtNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> optionNextGenerationPriceList,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfoの取得
+		// co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfoの取得
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS.getValue();
-		
-		PantsOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = PantsOptionStandardNextGenerationPriceEnum.values();
-		for(PantsOptionStandardNextGenerationPriceEnum nextGenerationPrice :nextGenerationPriceEnum) {
-			
+
+		PantsOptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = PantsOptionStandardNextGenerationPriceEnum
+				.values();
+		for (PantsOptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
-			String valueThree= nextGenerationPrice.getValueThree(); 
-			
+			String valueThree = nextGenerationPrice.getValueThree();
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Object[] args = {};
 				Object resultOne = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPantsStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPantsStandardInfo(), args);
 				}
-				
+
 				String keyCode = itemCode + subItemCode + key + resultOne;
-				
-				for(NextGenerationPrice ptNextGenerationPrice : optionNextGenerationPriceList) {
-					if(keyCode.equals(ptNextGenerationPrice.getKeyCode())) {
+
+				for (NextGenerationPrice ptNextGenerationPrice : optionNextGenerationPriceList) {
+					if (keyCode.equals(ptNextGenerationPrice.getKeyCode())) {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						//オプション工賃
+						// オプション工賃
 						BigDecimal optionWage = ptNextGenerationPrice.getMowWage();
 						BigDecimal nextGenerationWageValue = optionWage;
-						//オプション付属
+						// オプション付属
 						Integer optionPrice = ptNextGenerationPrice.getMoapPrice();
 						Integer nextGenerationPriceValue = optionPrice;
-						Object[] argsValueTwo = {nextGenerationWageValue};
-						Object[] argsValueThree = {nextGenerationPriceValue};
+						Object[] argsValueTwo = { nextGenerationWageValue };
+						Object[] argsValueThree = { nextGenerationPriceValue };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -2915,13 +2930,12 @@ public class OrderHelper {
 							ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						Object[] argsValueTwo = {new BigDecimal(0.0)};
-						Object[] argsValueThree = {0};
+						Object[] argsValueTwo = { new BigDecimal(0.0) };
+						Object[] argsValueThree = { 0 };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -2936,59 +2950,63 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTS2_下代工賃とPANTS2_下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param optionNextGenerationPriceList
 	 * @param basicNextGenerationPriceList
 	 * 
 	 */
-	public void getPt2NextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> optionNextGenerationPriceList,List<NextGenerationPrice> basicNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getPt2NextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> optionNextGenerationPriceList,
+			List<NextGenerationPrice> basicNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfoの取得
+		// co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfoの取得
 		String className = ItemClassStandardEnum.ITEM_CODE_PANTS2.getValue();
-		
-		Pants2OptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = Pants2OptionStandardNextGenerationPriceEnum.values();
-		for(Pants2OptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
-			
+
+		Pants2OptionStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = Pants2OptionStandardNextGenerationPriceEnum
+				.values();
+		for (Pants2OptionStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
-			String valueThree= nextGenerationPrice.getValueThree(); 
-			
+			String valueThree = nextGenerationPrice.getValueThree();
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Object[] args = {};
 				Object resultOne = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPants2StandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionPants2StandardInfo(), args);
 				}
-				
+
 				String keyCode = itemCode + subItemCode + key + resultOne;
-				
-				for(NextGenerationPrice pt2NextGenerationPrice : optionNextGenerationPriceList) {
-					if(keyCode.equals(pt2NextGenerationPrice.getKeyCode())) {
+
+				for (NextGenerationPrice pt2NextGenerationPrice : optionNextGenerationPriceList) {
+					if (keyCode.equals(pt2NextGenerationPrice.getKeyCode())) {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						//オプション工賃
+						// オプション工賃
 						BigDecimal optionWage = pt2NextGenerationPrice.getMowWage();
 						BigDecimal nextGenerationWageValue = optionWage;
-						//オプション付属
+						// オプション付属
 						Integer optionPrice = pt2NextGenerationPrice.getMoapPrice();
 						Integer nextGenerationPriceValue = optionPrice;
-						Object[] argsValueTwo = {nextGenerationWageValue};
-						Object[] argsValueThree = {nextGenerationPriceValue};
+						Object[] argsValueTwo = { nextGenerationWageValue };
+						Object[] argsValueThree = { nextGenerationPriceValue };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -2996,13 +3014,12 @@ public class OrderHelper {
 							ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodTwo = getMethod(cls, valueTwo);
 						Method myMethodThree = getMethod(cls, valueThree);
-						Object[] argsValueTwo = {new BigDecimal(0.0)};
-						Object[] argsValueThree = {0};
+						Object[] argsValueTwo = { new BigDecimal(0.0) };
+						Object[] argsValueThree = { 0 };
 						if (myMethodTwo != null) {
 							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
 						}
@@ -3017,33 +3034,37 @@ public class OrderHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * JACKETのオプション付属詳細価格
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param detailNextGenerationPriceList
 	 */
-	public void getJkDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getJkDetailNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> detailNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
+		// co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfoの取得
 		String className = ItemClassStandardEnum.ITEM_CODE_JACKET.getValue();
-		
-		JacketOptionDetailStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = JacketOptionDetailStandardNextGenerationPriceEnum.values();
-		
-		for(JacketOptionDetailStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
-			
+
+		JacketOptionDetailStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = JacketOptionDetailStandardNextGenerationPriceEnum
+				.values();
+
+		for (JacketOptionDetailStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
 			String valueThree = nextGenerationPrice.getValueThree();
 			String valueFour = nextGenerationPrice.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
@@ -3053,52 +3074,51 @@ public class OrderHelper {
 				Object[] argsTwo = {};
 				Object resultOne = null;
 				Object resultTwo = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionJacketStandardInfo(), args);
 				}
-				
+
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionJacketStandardInfo(), argsTwo);
 				}
-				
+
 				String keyDetailCode = itemCode + subItemCode + key + resultOne + resultTwo;
-				for(NextGenerationPrice detailNextGenerationPrice :detailNextGenerationPriceList) {
-					if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
-						//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-						if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+				for (NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
+					if (keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+						// フロント釦数はダブル6つボタンの場合、該当itemはダブル
+						if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
-							//オプション工賃 
+							// オプション工賃
 							BigDecimal optionWage = detailNextGenerationPrice.getMowWageT();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属 + オプション付属詳細
+							// オプション付属 + オプション付属詳細
 							Integer optionDoublePrice = detailNextGenerationPrice.getMoapDoublePriceT();
 							Integer optionDetailDoublePrice = detailNextGenerationPrice.getMoadpDoublePrice();
 							Integer nextGenerationPriceValue = optionDoublePrice + optionDetailDoublePrice;
-							Object[] argsValueThree = {nextGenerationWageValue};
-							Object[] argsValueFour = {nextGenerationPriceValue};
+							Object[] argsValueThree = { nextGenerationWageValue };
+							Object[] argsValueFour = { nextGenerationPriceValue };
 							if (myMethodThree != null) {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
 							if (myMethodFour != null) {
 								ReflectionUtils.invoke(myMethodFour, order, argsValueFour);
 							}
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
-							//オプション工賃 
+							// オプション工賃
 							BigDecimal optionWage = detailNextGenerationPrice.getMowWageT();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属 + オプション付属詳細
+							// オプション付属 + オプション付属詳細
 							Integer optionPrice = detailNextGenerationPrice.getMoapPriceT();
 							Integer optionDetailPrice = detailNextGenerationPrice.getMoadpPrice();
 							Integer nextGenerationPriceValue = optionPrice + optionDetailPrice;
-							Object[] argsValueThree = {nextGenerationWageValue};
-							Object[] argsValueFour = {nextGenerationPriceValue};
+							Object[] argsValueThree = { nextGenerationWageValue };
+							Object[] argsValueFour = { nextGenerationPriceValue };
 							if (myMethodThree != null) {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
@@ -3107,13 +3127,12 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodThree = getMethod(cls, valueThree);
 						Method myMethodFour = getMethod(cls, valueFour);
-						Object[] argsValueThree = {new BigDecimal(0.0)};
-						Object[] argsValueFour = {0};
+						Object[] argsValueThree = { new BigDecimal(0.0) };
+						Object[] argsValueFour = { 0 };
 						if (myMethodThree != null) {
 							ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 						}
@@ -3122,94 +3141,97 @@ public class OrderHelper {
 						}
 					}
 				}
-				
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 	}
-	
+
 	/**
 	 * GILETのオプション付属詳細価格
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param detailNextGenerationPriceList
 	 */
-	public void getGlDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getGlDetailNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> detailNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		//co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
+		// co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfoの取得
 		String className = ItemClassStandardEnum.ITEM_CODE_GILET.getValue();
-		
-		GiletOptionDetailStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = GiletOptionDetailStandardNextGenerationPriceEnum.values();
-		for(GiletOptionDetailStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
+
+		GiletOptionDetailStandardNextGenerationPriceEnum[] nextGenerationPriceEnum = GiletOptionDetailStandardNextGenerationPriceEnum
+				.values();
+		for (GiletOptionDetailStandardNextGenerationPriceEnum nextGenerationPrice : nextGenerationPriceEnum) {
 			String key = nextGenerationPrice.getKey();
 			String valueOne = nextGenerationPrice.getValueOne();
 			String valueTwo = nextGenerationPrice.getValueTwo();
 			String valueThree = nextGenerationPrice.getValueThree();
 			String valueFour = nextGenerationPrice.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName(className);
-				
+
 				Method myMethodOne = getMethod(cls, valueOne);
 				Method myMethodTwo = getMethod(cls, valueTwo);
 				Object[] args = {};
 				Object[] argsTwo = {};
 				Object resultOne = null;
 				Object resultTwo = null;
-				
+
 				if (myMethodOne != null) {
-					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(),args);
+					resultOne = ReflectionUtils.invoke(myMethodOne, orderForm.getOptionGiletStandardInfo(), args);
 				}
-				
+
 				if (myMethodTwo != null) {
-					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(),argsTwo);
+					resultTwo = ReflectionUtils.invoke(myMethodTwo, orderForm.getOptionGiletStandardInfo(), argsTwo);
 				}
-				
+
 				String keyDetailCode = itemCode + subItemCode + key + resultOne + resultTwo;
-				for(NextGenerationPrice detailNextGenerationPrice :detailNextGenerationPriceList) {
-					if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
-						//GILETモデルはCH14-Dの場合、該当itemはダブル
-						if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
+				for (NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
+					if (keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+						// GILETモデルはCH14-Dの場合、該当itemはダブル
+						if ("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
-							//オプション工賃 
+							// オプション工賃
 							BigDecimal optionWage = detailNextGenerationPrice.getMowWageT();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属 + オプション付属詳細
+							// オプション付属 + オプション付属詳細
 							Integer optionDoublePrice = detailNextGenerationPrice.getMoapDoublePriceT();
 							Integer optionDetailDoublePrice = detailNextGenerationPrice.getMoadpDoublePrice();
 							Integer nextGenerationPriceValue = optionDoublePrice + optionDetailDoublePrice;
-							Object[] argsValueThree = {nextGenerationWageValue};
-							Object[] argsValueFour = {nextGenerationPriceValue};
+							Object[] argsValueThree = { nextGenerationWageValue };
+							Object[] argsValueFour = { nextGenerationPriceValue };
 							if (myMethodThree != null) {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
 							if (myMethodFour != null) {
 								ReflectionUtils.invoke(myMethodFour, order, argsValueFour);
 							}
-						}
-						else {
+						} else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
-							//オプション工賃 
+							// オプション工賃
 							BigDecimal optionWage = detailNextGenerationPrice.getMowWageT();
 							BigDecimal nextGenerationWageValue = optionWage;
-							//オプション付属 + オプション付属詳細
+							// オプション付属 + オプション付属詳細
 							Integer optionPrice = detailNextGenerationPrice.getMoapPriceT();
 							Integer optionDetailPrice = detailNextGenerationPrice.getMoadpPrice();
 							Integer nextGenerationPriceValue = optionPrice + optionDetailPrice;
-							Object[] argsValueThree = {nextGenerationWageValue};
-							Object[] argsValueFour = {nextGenerationPriceValue};
+							Object[] argsValueThree = { nextGenerationWageValue };
+							Object[] argsValueFour = { nextGenerationPriceValue };
 							if (myMethodThree != null) {
 								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 							}
@@ -3218,13 +3240,12 @@ public class OrderHelper {
 							}
 						}
 						break;
-					}
-					else {
+					} else {
 						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 						Method myMethodThree = getMethod(cls, valueThree);
 						Method myMethodFour = getMethod(cls, valueFour);
-						Object[] argsValueThree = {new BigDecimal(0.0)};
-						Object[] argsValueFour = {0};
+						Object[] argsValueThree = { new BigDecimal(0.0) };
+						Object[] argsValueFour = { 0 };
 						if (myMethodThree != null) {
 							ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
 						}
@@ -3233,199 +3254,203 @@ public class OrderHelper {
 						}
 					}
 				}
-				
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTSのオプション付属詳細価格
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param detailNextGenerationPriceList
 	 */
-	public void getPtDetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getPtDetailNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> detailNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		
-		String optionCode = "00033";		
+
+		String optionCode = "00033";
 		String optionBranchCode = orderForm.getOptionPantsStandardInfo().getOpButton();
 		String optionBranchDetailCode = orderForm.getOptionPantsStandardInfo().getOpBtnMateStkNo();
-		
+
 		String keyDetailCode = itemCode + subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
-		for(NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
-			if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
-				//オプション工賃 
+		for (NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
+			if (keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+				// オプション工賃
 				BigDecimal mowWageT = detailNextGenerationPrice.getMowWageT();
 				BigDecimal nextGenerationWageValue = mowWageT;
-				//オプション付属 + オプション付属詳細
+				// オプション付属 + オプション付属詳細
 				Integer moapPriceT = detailNextGenerationPrice.getMoapPriceT();
 				Integer moadpPrice = detailNextGenerationPrice.getMoadpPrice();
 				Integer nextGenerationPriceValue = moapPriceT + moadpPrice;
 				order.setPtBtnMaterialWsWage(nextGenerationWageValue);
 				order.setPtBtnMaterialWsPrice(nextGenerationPriceValue);
 				break;
-			}
-			else {
+			} else {
 				order.setPtBtnMaterialWsWage(new BigDecimal(0.0));
 				order.setPtBtnMaterialWsPrice(0);
 			}
 		}
 	}
-	
+
 	/**
 	 * PANTS2のオプション付属詳細価格
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param detailNextGenerationPriceList
 	 */
-	public void getPt2DetailNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> detailNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getPt2DetailNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> detailNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
-		String optionCode = "00033";		
+		String optionCode = "00033";
 		String optionBranchCode = orderForm.getOptionPants2StandardInfo().getOp2Button();
 		String optionBranchDetailCode = orderForm.getOptionPants2StandardInfo().getOp2BtnMateStkNo();
-		
+
 		String keyDetailCode = itemCode + subItemCode + optionCode + optionBranchCode + optionBranchDetailCode;
-		for(NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
-			if(keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
-				//オプション工賃 
+		for (NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
+			if (keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+				// オプション工賃
 				BigDecimal mowWageT = detailNextGenerationPrice.getMowWageT();
 				BigDecimal nextGenerationWageValue = mowWageT;
-				//オプション付属 + オプション付属詳細
+				// オプション付属 + オプション付属詳細
 				Integer moapPriceT = detailNextGenerationPrice.getMoapPriceT();
 				Integer moadpPrice = detailNextGenerationPrice.getMoadpPrice();
 				Integer nextGenerationPriceValue = moapPriceT + moadpPrice;
 				order.setPt2BtnMaterialWsWage(nextGenerationWageValue);
 				order.setPt2BtnMaterialWsPrice(nextGenerationPriceValue);
 				break;
-			}
-			else {
+			} else {
 				order.setPt2BtnMaterialWsWage(new BigDecimal(0.0));
 				order.setPt2BtnMaterialWsPrice(0);
 			}
 		}
 	}
-	
+
 	/**
 	 * ３Pieceの上代をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * 
 	 */
-	public void order3PiecePrice(OrderForm orderForm,Order order) {
-		
-		//itemCodeの取得
+	public void order3PiecePrice(OrderForm orderForm, Order order) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		//modelCodeの取得
+		// modelCodeの取得
 		String branchModelCode = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
-		//optionCodeの取得
+		// optionCodeの取得
 		String optionCode = "00099";
-		//optionBranchCodeの取得
+		// optionBranchCodeの取得
 		String optionBranchCode = orderForm.getProductIs3Piece();
-		
+
 		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
 		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-		for(OrderCodePrice orderCodePrice : orderCodePriceList) {
-			if(keyCode.equals(orderCodePrice.getOrderKeyCode())) {
-				if(orderCodePrice.getOrderBranchPrice() != null) {
+		for (OrderCodePrice orderCodePrice : orderCodePriceList) {
+			if (keyCode.equals(orderCodePrice.getOrderKeyCode())) {
+				if (orderCodePrice.getOrderBranchPrice() != null) {
 					Integer price = Integer.parseInt(orderCodePrice.getOrderBranchPrice());
 					order.setProductIs3pieceRtPrice(price);
-				}
-				else if(orderCodePrice.getOrderBranchPrice() != null) {
+				} else if (orderCodePrice.getOrderBranchPrice() != null) {
 					Integer price = 0;
 					order.setProductIs3pieceRtPrice(price);
 				}
 				break;
-			}
-			else {
+			} else {
 				Integer price = 0;
 				order.setProductIs3pieceRtPrice(price);
 			}
 		}
 	}
-	
+
 	/**
 	 * スペアパンツの上代をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderSparePantsPrice(OrderForm orderForm,Order order) {
-		//itemCodeの取得
+	public void orderSparePantsPrice(OrderForm orderForm, Order order) {
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		//modelCodeの取得
+		// modelCodeの取得
 		String branchModelCode = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
-		//optionCodeの取得
+		// optionCodeの取得
 		String optionCode = "00099";
-		//optionBranchCodeの取得
+		// optionBranchCodeの取得
 		String optionBranchCode = orderForm.getProductSparePantsClass();
-		
+
 		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
 		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-		for(OrderCodePrice orderCodePrice : orderCodePriceList) {
-			if(keyCode.equals(orderCodePrice.getOrderKeyCode())) {
-				if(orderCodePrice.getOrderBranchPrice() != null) {
+		for (OrderCodePrice orderCodePrice : orderCodePriceList) {
+			if (keyCode.equals(orderCodePrice.getOrderKeyCode())) {
+				if (orderCodePrice.getOrderBranchPrice() != null) {
 					Integer price = Integer.parseInt(orderCodePrice.getOrderBranchPrice());
 					order.setProductSparePantsRtPrice(price);
-				}
-				else if(orderCodePrice.getOrderBranchPrice() != null) {
+				} else if (orderCodePrice.getOrderBranchPrice() != null) {
 					Integer price = 0;
 					order.setProductSparePantsRtPrice(price);
 				}
 				break;
-			}
-			else {
+			} else {
 				Integer price = 0;
 				order.setProductSparePantsRtPrice(price);
 			}
 		}
 	}
-	
+
 	/**
 	 * 商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param optionNextGenerationPriceList
 	 */
-	public void getGl3PieceNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> optionNextGenerationPriceList) {
-		
-		//itemCodeの取得
+	public void getGl3PieceNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> optionNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		
+
 		String optionCode = "00099";
 		String optionBranchCode = orderForm.getProductIs3Piece();
-		
+
 		String keyCode = itemCode + subItemCode + optionCode + optionBranchCode;
-		for(NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
-			if(keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
-				if("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
+		for (NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
+			if (keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
+				if ("CH14-D".equals(orderForm.getOptionGiletStandardInfo().getOgGiletModel())) {
 					BigDecimal mowWage = optionNextGenerationPrice.getMowWage();
 					BigDecimal nextGenerationWageValue = mowWage;
-					
+
 					Integer moapDoublePrice = optionNextGenerationPrice.getMoapDoublePrice();
 					Integer nextGenerationPriceValue = moapDoublePrice;
 					order.setProductIs3pieceWsWage(nextGenerationWageValue);
 					order.setProductIs3pieceWsPrice(nextGenerationPriceValue);
-				}
-				else {
+				} else {
 					Integer moapPrice = optionNextGenerationPrice.getMoapPrice();
 					BigDecimal mowWage = optionNextGenerationPrice.getMowWage();
 					BigDecimal nextGenerationWageValue = mowWage;
@@ -3434,150 +3459,152 @@ public class OrderHelper {
 					order.setProductIs3pieceWsPrice(nextGenerationPriceValue);
 				}
 				break;
-			}
-			else {
+			} else {
 				order.setProductIs3pieceWsWage(new BigDecimal(0.0));
 				order.setProductIs3pieceWsPrice(0);
 			}
 		}
 	}
-	
+
 	/**
 	 * 商品情報_スペアパンツ_下代工賃と下代付属をデータベースに入力する
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param basicNextGenerationPriceList
 	 * @param optionNextGenerationPriceList
 	 */
-	public void getSparePantsNextGenerationPrice(OrderForm orderForm,Order order,List<NextGenerationPrice> basicNextGenerationPriceList,List<NextGenerationPrice> optionNextGenerationPriceList) {
- 
-		//itemCodeの取得
+	public void getSparePantsNextGenerationPrice(OrderForm orderForm, Order order,
+			List<NextGenerationPrice> basicNextGenerationPriceList,
+			List<NextGenerationPrice> optionNextGenerationPriceList) {
+
+		// itemCodeの取得
 		String itemCode = orderForm.getProductItem();
-		//subItemCodeの取得
+		// subItemCodeの取得
 		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		
-		String optionCode = "00099";		
+
+		String optionCode = "00099";
 		String optionBranchCode = orderForm.getProductSparePantsClass();
-		
+
 		String keyCode = itemCode + subItemCode + optionCode + optionBranchCode;
-		for(NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
-			if(keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
-				
+		for (NextGenerationPrice optionNextGenerationPrice : optionNextGenerationPriceList) {
+			if (keyCode.equals(optionNextGenerationPrice.getKeyCode())) {
+
 				BigDecimal mowWage = optionNextGenerationPrice.getMowWage();
 				BigDecimal nextGenerationWageValue = mowWage;
-				
+
 				Integer moapPrice = optionNextGenerationPrice.getMoapPrice();
 				Integer nextGenerationPriceValue = moapPrice;
 				order.setProductSparePantsWsWage(nextGenerationWageValue);
 				order.setProductSparePantsWsPrice(nextGenerationPriceValue);
 				break;
-			}
-			else {
+			} else {
 				order.setProductSparePantsWsWage(new BigDecimal(0.0));
 				order.setProductSparePantsWsPrice(0);
 			}
 		}
 	}
-	
+
 	/**
 	 * 商品情報_ITEM表示用をデータベースに入力する
+	 * 
 	 * @param
 	 *
 	 */
-	public void setProductItemDisplayCode(OrderForm orderForm,Order order) {
-		//商品情報_ITEM
+	public void setProductItemDisplayCode(OrderForm orderForm, Order order) {
+		// 商品情報_ITEM
 		String itemCode = orderForm.getProductItem();
-		//商品情報_３Piece
+		// 商品情報_３Piece
 		String product3Piece = orderForm.getProductIs3Piece();
-		//商品情報_スペアパンツ
+		// 商品情報_スペアパンツ
 		String productSparePantsClass = orderForm.getProductSparePantsClass();
-		//01:SUIT
+		// 01:SUIT
 		String suitCode = "01";
-		//３Pieceまたはスペアパンツは有り
+		// ３Pieceまたはスペアパンツは有り
 		String productYes = "0009902";
-		//３Pieceまたはスペアパンツは無し
+		// ３Pieceまたはスペアパンツは無し
 		String productNo = "0009901";
-		//SUIT(2p)：21
-		String item2p= "21";
-		//SUIT(2pp)：22
-		String item2pp= "22";
-		//SUIT(3p)：31
-		String item3p= "31";
-		//SUIT(3p2pp)：32
-		String item3p2pp= "32";
-		if(itemCode.equals(suitCode)) {
-			if(productYes.equals(product3Piece) && productYes.equals(productSparePantsClass)) {
+		// SUIT(2p)：21
+		String item2p = "21";
+		// SUIT(2pp)：22
+		String item2pp = "22";
+		// SUIT(3p)：31
+		String item3p = "31";
+		// SUIT(3p2pp)：32
+		String item3p2pp = "32";
+		if (itemCode.equals(suitCode)) {
+			if (productYes.equals(product3Piece) && productYes.equals(productSparePantsClass)) {
 				order.setProductItemDisplaycode(item3p2pp);
-			}
-			else if(productYes.equals(product3Piece) && productNo.equals(productSparePantsClass)) {
+			} else if (productYes.equals(product3Piece) && productNo.equals(productSparePantsClass)) {
 				order.setProductItemDisplaycode(item3p);
-			}
-			else if(productNo.equals(product3Piece) && productYes.equals(productSparePantsClass)) {
+			} else if (productNo.equals(product3Piece) && productYes.equals(productSparePantsClass)) {
 				order.setProductItemDisplaycode(item2pp);
-			}
-			else if(productNo.equals(product3Piece) && productNo.equals(productSparePantsClass)) {
+			} else if (productNo.equals(product3Piece) && productNo.equals(productSparePantsClass)) {
 				order.setProductItemDisplaycode(item2p);
 			}
-		}else {
+		} else {
 			order.setProductItemDisplaycode(null);
 		}
 	}
-	
+
 	/**
 	 * Integerの変換
+	 * 
 	 * @param result
 	 * @return
 	 */
 	public Integer commonTransfer(Object result) {
 		Integer resultReturn = 0;
-		if(result == null || "".equals(result)) {
+		if (result == null || "".equals(result)) {
 			return resultReturn;
 		}
 		resultReturn = Integer.parseInt(result.toString());
 		return resultReturn;
 	}
-	
+
 	/**
 	 * BigDecimalの変換
+	 * 
 	 * @param result
 	 * @return
 	 */
 	public BigDecimal BigDecimalCommonTransfer(Object result) {
 		BigDecimal resultReturn = new BigDecimal(0.0);
-		if(result == null || "".equals(result)) {
+		if (result == null || "".equals(result)) {
 			return resultReturn;
 		}
 		resultReturn = new BigDecimal(result.toString());
 		return resultReturn;
 	}
-	
+
 	/**
 	 * JACKET_下代工賃合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal jkNextGenerationWageTotal(Order order) {
-		
+
 		BigDecimal jkWageTotal = new BigDecimal(0.0);
 		JacketOptionStandardNextGenerationPriceEnum[] priceEnum = JacketOptionStandardNextGenerationPriceEnum.values();
-		for(JacketOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (JacketOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFour = price.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFour = getMethod(cls, valueFour);
 				Object[] args = {};
 				Object resultFour = null;
-				
+
 				if (myMethodFour != null) {
-					resultFour = ReflectionUtils.invoke(myMethodFour, order,args);
+					resultFour = ReflectionUtils.invoke(myMethodFour, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFour);
-				jkWageTotal= result.add(jkWageTotal);
-				
+				jkWageTotal = result.add(jkWageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3585,34 +3612,35 @@ public class OrderHelper {
 		}
 		return jkWageTotal;
 	}
-	
+
 	/**
 	 * JACKET_下代付属合計
+	 * 
 	 * @param order
-	 * @return  
+	 * @return
 	 */
 	public Integer jkNextGenerationPriceTotal(Order order) {
-		
+
 		Integer jkPriceTotal = 0;
 		JacketOptionStandardNextGenerationPriceEnum[] priceEnum = JacketOptionStandardNextGenerationPriceEnum.values();
-		for(JacketOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (JacketOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] argsTwo = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,argsTwo);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, argsTwo);
 				}
-				
+
 				Integer result = commonTransfer(resultFive);
 				jkPriceTotal = result + jkPriceTotal;
-				
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3620,34 +3648,36 @@ public class OrderHelper {
 		}
 		return jkPriceTotal;
 	}
-	
+
 	/**
 	 * JACKET_下代工賃合計 (オプション付属詳細価格を含む)
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal jkNextGenerationDetailWageTotal(Order order) {
-		
+
 		BigDecimal jkDetailWageTotal = new BigDecimal(0.0);
-		JacketOptionDetailStandardNextGenerationPriceEnum[] priceEnum = JacketOptionDetailStandardNextGenerationPriceEnum.values();
-		for(JacketOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		JacketOptionDetailStandardNextGenerationPriceEnum[] priceEnum = JacketOptionDetailStandardNextGenerationPriceEnum
+				.values();
+		for (JacketOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] args = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,args);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFive);
-				jkDetailWageTotal= result.add(jkDetailWageTotal);
-				
+				jkDetailWageTotal = result.add(jkDetailWageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3655,34 +3685,36 @@ public class OrderHelper {
 		}
 		return jkDetailWageTotal;
 	}
-	
+
 	/**
 	 * JACKET_下代付属合計 (オプション付属詳細価格を含む)
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public Integer jkNextGenerationDetailPriceTotal(Order order) {
-		
+
 		Integer jkDetailPriceTotal = 0;
-		JacketOptionDetailStandardNextGenerationPriceEnum[] priceEnum = JacketOptionDetailStandardNextGenerationPriceEnum.values();
-		for(JacketOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		JacketOptionDetailStandardNextGenerationPriceEnum[] priceEnum = JacketOptionDetailStandardNextGenerationPriceEnum
+				.values();
+		for (JacketOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueSix = price.getValueSix();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodSix = getMethod(cls, valueSix);
 				Object[] args = {};
 				Object resultSix = null;
-				
+
 				if (myMethodSix != null) {
-					resultSix = ReflectionUtils.invoke(myMethodSix, order,args);
+					resultSix = ReflectionUtils.invoke(myMethodSix, order, args);
 				}
-				
+
 				Integer result = commonTransfer(resultSix);
-				jkDetailPriceTotal= result + jkDetailPriceTotal;
-				
+				jkDetailPriceTotal = result + jkDetailPriceTotal;
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3690,122 +3722,123 @@ public class OrderHelper {
 		}
 		return jkDetailPriceTotal;
 	}
-	
+
 	/**
 	 * PANTS_下代工賃合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal ptNextGenerationWageTotal(Order order) {
-		
+
 		BigDecimal ptWageTotal = new BigDecimal(0.0);
 		PantsOptionStandardNextGenerationPriceEnum[] priceEnum = PantsOptionStandardNextGenerationPriceEnum.values();
-		for(PantsOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (PantsOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFour = price.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFour = getMethod(cls, valueFour);
 				Object[] args = {};
 				Object resultFour = null;
-				
+
 				if (myMethodFour != null) {
-					resultFour = ReflectionUtils.invoke(myMethodFour, order,args);
+					resultFour = ReflectionUtils.invoke(myMethodFour, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFour);
-				ptWageTotal= result.add(ptWageTotal);
-				
+				ptWageTotal = result.add(ptWageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 		BigDecimal ptBtnMaterialWsWage;
-		if(order.getPtBtnMaterialWsWage() == null) {
+		if (order.getPtBtnMaterialWsWage() == null) {
 			ptBtnMaterialWsWage = new BigDecimal(0.0);
 			ptWageTotal = ptBtnMaterialWsWage.add(ptWageTotal);
-		}
-		else {
+		} else {
 			ptBtnMaterialWsWage = order.getPtBtnMaterialWsWage();
 			ptWageTotal = ptBtnMaterialWsWage.add(ptWageTotal);
 		}
 		return ptWageTotal;
 	}
-	
+
 	/**
 	 * PANTS_下代付属合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public Integer ptNextGenerationPriceTotal(Order order) {
-		
+
 		Integer ptPriceTotal = 0;
 		PantsOptionStandardNextGenerationPriceEnum[] priceEnum = PantsOptionStandardNextGenerationPriceEnum.values();
-		for(PantsOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (PantsOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] args = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,args);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, args);
 				}
-				
+
 				Integer result = commonTransfer(resultFive);
-				ptPriceTotal= result + ptPriceTotal;
-				
+				ptPriceTotal = result + ptPriceTotal;
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 		Integer ptBtnMaterialWsPrice;
-		if(order.getPtBtnMaterialWsPrice() == null) {
+		if (order.getPtBtnMaterialWsPrice() == null) {
 			ptBtnMaterialWsPrice = 0;
 			ptPriceTotal = ptBtnMaterialWsPrice + ptPriceTotal;
-		}
-		else {
+		} else {
 			ptBtnMaterialWsPrice = order.getPtBtnMaterialWsPrice();
 			ptPriceTotal = ptBtnMaterialWsPrice + ptPriceTotal;
 		}
 		return ptPriceTotal;
 	}
-	
+
 	/**
 	 * GILET_下代工賃合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal glNextGenerationWageTotal(Order order) {
-		
+
 		BigDecimal glWageTotal = new BigDecimal(0.0);
 		GiletOptionStandardNextGenerationPriceEnum[] priceEnum = GiletOptionStandardNextGenerationPriceEnum.values();
-		for(GiletOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (GiletOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFour = price.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFour = getMethod(cls, valueFour);
 				Object[] args = {};
 				Object resultFour = null;
-				
+
 				if (myMethodFour != null) {
-					resultFour = ReflectionUtils.invoke(myMethodFour, order,args);
+					resultFour = ReflectionUtils.invoke(myMethodFour, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFour);
-				glWageTotal= result.add(glWageTotal);
-				
+				glWageTotal = result.add(glWageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3813,34 +3846,35 @@ public class OrderHelper {
 		}
 		return glWageTotal;
 	}
-	
+
 	/**
 	 * GILET_下代付属合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public Integer glNextGenerationPriceTotal(Order order) {
-		
+
 		Integer glPriceTotal = 0;
 		GiletOptionStandardNextGenerationPriceEnum[] priceEnum = GiletOptionStandardNextGenerationPriceEnum.values();
-		for(GiletOptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (GiletOptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] args = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,args);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, args);
 				}
-				
+
 				Integer result = commonTransfer(resultFive);
-				glPriceTotal= result + glPriceTotal;
-				
+				glPriceTotal = result + glPriceTotal;
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3848,34 +3882,36 @@ public class OrderHelper {
 		}
 		return glPriceTotal;
 	}
-	
+
 	/**
 	 * GILET_下代工賃合計 (オプション付属詳細価格を含む)
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal glNextGenerationDetailWageTotal(Order order) {
-		
+
 		BigDecimal glDetailWageTotal = new BigDecimal(0.0);
-		GiletOptionDetailStandardNextGenerationPriceEnum[] priceEnum = GiletOptionDetailStandardNextGenerationPriceEnum.values();
-		for(GiletOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		GiletOptionDetailStandardNextGenerationPriceEnum[] priceEnum = GiletOptionDetailStandardNextGenerationPriceEnum
+				.values();
+		for (GiletOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] args = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,args);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFive);
-				glDetailWageTotal= result.add(glDetailWageTotal);
-				
+				glDetailWageTotal = result.add(glDetailWageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3883,34 +3919,36 @@ public class OrderHelper {
 		}
 		return glDetailWageTotal;
 	}
-	
+
 	/**
 	 * GILET_下代付属合計 (オプション付属詳細価格を含む)
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public Integer glNextGenerationDetailPriceTotal(Order order) {
-		
+
 		Integer glDetailPriceTotal = 0;
-		GiletOptionDetailStandardNextGenerationPriceEnum[] priceEnum = GiletOptionDetailStandardNextGenerationPriceEnum.values();
-		for(GiletOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		GiletOptionDetailStandardNextGenerationPriceEnum[] priceEnum = GiletOptionDetailStandardNextGenerationPriceEnum
+				.values();
+		for (GiletOptionDetailStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueSix = price.getValueSix();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodSix = getMethod(cls, valueSix);
 				Object[] args = {};
 				Object resultSix = null;
-				
+
 				if (myMethodSix != null) {
-					resultSix = ReflectionUtils.invoke(myMethodSix, order,args);
+					resultSix = ReflectionUtils.invoke(myMethodSix, order, args);
 				}
-				
+
 				Integer result = commonTransfer(resultSix);
-				glDetailPriceTotal= result + glDetailPriceTotal;
-				
+				glDetailPriceTotal = result + glDetailPriceTotal;
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
@@ -3918,114 +3956,114 @@ public class OrderHelper {
 		}
 		return glDetailPriceTotal;
 	}
-	
-	
+
 	/**
 	 * PANTS2_下代工賃合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public BigDecimal pt2NextGenerationWageTotal(Order order) {
-		
+
 		BigDecimal pt2WageTotal = new BigDecimal(0.0);
 		Pants2OptionStandardNextGenerationPriceEnum[] priceEnum = Pants2OptionStandardNextGenerationPriceEnum.values();
-		for(Pants2OptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (Pants2OptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFour = price.getValueFour();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFour = getMethod(cls, valueFour);
 				Object[] args = {};
 				Object resultFour = null;
-					
+
 				if (myMethodFour != null) {
-					resultFour = ReflectionUtils.invoke(myMethodFour, order,args);
+					resultFour = ReflectionUtils.invoke(myMethodFour, order, args);
 				}
-				
+
 				BigDecimal result = BigDecimalCommonTransfer(resultFour);
-				pt2WageTotal= result.add(pt2WageTotal);
-				
+				pt2WageTotal = result.add(pt2WageTotal);
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 		BigDecimal pt2BtnMaterialWsWage;
-		if(order.getPt2BtnMaterialWsWage() == null) {
+		if (order.getPt2BtnMaterialWsWage() == null) {
 			pt2BtnMaterialWsWage = new BigDecimal(0.0);
 			pt2WageTotal = pt2BtnMaterialWsWage.add(pt2WageTotal);
-		}
-		else {
+		} else {
 			pt2BtnMaterialWsWage = order.getPt2BtnMaterialWsWage();
 			pt2WageTotal = pt2BtnMaterialWsWage.add(pt2WageTotal);
 		}
 		return pt2WageTotal;
 	}
-	
+
 	/**
 	 * PANTS2_下代付属合計
+	 * 
 	 * @param order
 	 * @return
 	 */
 	public Integer pt2NextGenerationPriceTotal(Order order) {
-		
+
 		Integer pt2PriceTotal = 0;
 		Pants2OptionStandardNextGenerationPriceEnum[] priceEnum = Pants2OptionStandardNextGenerationPriceEnum.values();
-		for(Pants2OptionStandardNextGenerationPriceEnum price : priceEnum) {
-			
+		for (Pants2OptionStandardNextGenerationPriceEnum price : priceEnum) {
+
 			String valueFive = price.getValueFive();
-			
+
 			Class<?> cls;
 			try {
 				cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 				Method myMethodFive = getMethod(cls, valueFive);
 				Object[] args = {};
 				Object resultFive = null;
-				
+
 				if (myMethodFive != null) {
-					resultFive = ReflectionUtils.invoke(myMethodFive, order,args);
+					resultFive = ReflectionUtils.invoke(myMethodFive, order, args);
 				}
-				
+
 				Integer result = commonTransfer(resultFive);
-				pt2PriceTotal= result + pt2PriceTotal;
-				
+				pt2PriceTotal = result + pt2PriceTotal;
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				logger.error(e.toString());
 			}
 		}
 		Integer pt2BtnMaterialWsPrice;
-		if(order.getPt2BtnMaterialWsPrice() == null) {
+		if (order.getPt2BtnMaterialWsPrice() == null) {
 			pt2BtnMaterialWsPrice = 0;
 			pt2PriceTotal = pt2BtnMaterialWsPrice + pt2PriceTotal;
-		}else {
+		} else {
 			pt2BtnMaterialWsPrice = order.getPt2BtnMaterialWsPrice();
 			pt2PriceTotal = pt2BtnMaterialWsPrice + pt2PriceTotal;
 		}
 		return pt2PriceTotal;
 	}
-	
+
 	/**
 	 * JACKET要尺の取得
+	 * 
 	 * @param orderForm
 	 * @param yieldList
 	 * @return
 	 */
-	public Integer getJacketYield(OrderForm orderForm,List<NextGenerationPrice> yieldList) {
+	public Integer getJacketYield(OrderForm orderForm, List<NextGenerationPrice> yieldList) {
 
 		Integer jkYield = 0;
 		String jkSubItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		String ojFrontBtnCnt = "0000105";
-		for(NextGenerationPrice yield : yieldList) {
-			if(jkSubItemCode.equals(yield.getSubItemCode())) {
-				//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-				if(ojFrontBtnCnt.equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+		for (NextGenerationPrice yield : yieldList) {
+			if (jkSubItemCode.equals(yield.getSubItemCode())) {
+				// フロント釦数はダブル6つボタンの場合、該当itemはダブル
+				if (ojFrontBtnCnt.equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 					jkYield = yield.getDoubleBreastedFabricAmount();
 					return jkYield;
-				}
-				else {
+				} else {
 					jkYield = yield.getNomalFabricAmount();
 					return jkYield;
 				}
@@ -4033,26 +4071,26 @@ public class OrderHelper {
 		}
 		return jkYield;
 	}
-	
+
 	/**
 	 * JACKET要尺の取得
+	 * 
 	 * @param orderForm
 	 * @param yieldList
 	 * @return
 	 */
-	public Integer getJacketYield(Order order,List<NextGenerationPrice> yieldList) {
+	public Integer getJacketYield(Order order, List<NextGenerationPrice> yieldList) {
 
 		Integer jkYield = 0;
 		String jkSubItemCode = ItemClassStandardEnum.ITEM_CODE_JACKET.getKey();
 		String ojFrontBtnCnt = "0000105";
-		for(NextGenerationPrice yield : yieldList) {
-			if(jkSubItemCode.equals(yield.getSubItemCode())) {
-				//フロント釦数はダブル6つボタンの場合、該当itemはダブル
-				if(ojFrontBtnCnt.equals(order.getJkFrtBtnCd())) {
+		for (NextGenerationPrice yield : yieldList) {
+			if (jkSubItemCode.equals(yield.getSubItemCode())) {
+				// フロント釦数はダブル6つボタンの場合、該当itemはダブル
+				if (ojFrontBtnCnt.equals(order.getJkFrtBtnCd())) {
 					jkYield = yield.getDoubleBreastedFabricAmount();
 					return jkYield;
-				}
-				else {
+				} else {
 					jkYield = yield.getNomalFabricAmount();
 					return jkYield;
 				}
@@ -4060,10 +4098,10 @@ public class OrderHelper {
 		}
 		return jkYield;
 	}
-	
-	
+
 	/**
 	 * GILET要尺の取得
+	 * 
 	 * @param yieldList
 	 * @return
 	 */
@@ -4071,17 +4109,18 @@ public class OrderHelper {
 
 		Integer jkYield = 0;
 		String glSubItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		for(NextGenerationPrice yield : yieldList) {
-			if(glSubItemCode.equals(yield.getSubItemCode())) {
-					jkYield = yield.getNomalFabricAmount();
-					return jkYield;
+		for (NextGenerationPrice yield : yieldList) {
+			if (glSubItemCode.equals(yield.getSubItemCode())) {
+				jkYield = yield.getNomalFabricAmount();
+				return jkYield;
 			}
 		}
 		return jkYield;
 	}
-	
+
 	/**
 	 * PANTS要尺の取得
+	 * 
 	 * @param yieldList
 	 * @return
 	 */
@@ -4089,17 +4128,18 @@ public class OrderHelper {
 
 		Integer jkYield = 0;
 		String ptSubItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		for(NextGenerationPrice yield : yieldList) {
-			if(ptSubItemCode.equals(yield.getSubItemCode())) {
-					jkYield = yield.getNomalFabricAmount();
-					return jkYield;
+		for (NextGenerationPrice yield : yieldList) {
+			if (ptSubItemCode.equals(yield.getSubItemCode())) {
+				jkYield = yield.getNomalFabricAmount();
+				return jkYield;
 			}
 		}
 		return jkYield;
 	}
-	
+
 	/**
 	 * PANTS2要尺の取得
+	 * 
 	 * @param yieldList
 	 * @return
 	 */
@@ -4107,492 +4147,494 @@ public class OrderHelper {
 
 		Integer jkYield = 0;
 		String pt2SubItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS2.getKey();
-		for(NextGenerationPrice yield : yieldList) {
-			if(pt2SubItemCode.equals(yield.getSubItemCode())) {
-					jkYield = yield.getNomalFabricAmount();
-					return jkYield;
+		for (NextGenerationPrice yield : yieldList) {
+			if (pt2SubItemCode.equals(yield.getSubItemCode())) {
+				jkYield = yield.getNomalFabricAmount();
+				return jkYield;
 			}
 		}
 		return jkYield;
 	}
-	
+
 	/**
 	 * ドル為替の取得
+	 * 
 	 * @param wholesalePieceList
-	 * @return 
+	 * @return
 	 */
-	public BigDecimal getDollarExchange(OrderForm orderForm,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public BigDecimal getDollarExchange(OrderForm orderForm, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = orderForm.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		BigDecimal productDollarExchange = new BigDecimal(0.0);
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productDollarExchange = wholesalePiece.getDollarExchange();
 				return productDollarExchange;
-			}
-			else {
+			} else {
 				productDollarExchange = new BigDecimal(100.0);
 			}
 		}
 		return productDollarExchange;
 	}
-	
+
 	/**
 	 * ドル為替の取得
+	 * 
 	 * @param wholesalePieceList
-	 * @return 
+	 * @return
 	 */
-	public BigDecimal getDollarExchange(Order order,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public BigDecimal getDollarExchange(Order order, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = order.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		BigDecimal productDollarExchange = new BigDecimal(0.0);
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productDollarExchange = wholesalePiece.getDollarExchange();
 				return productDollarExchange;
-			}
-			else {
+			} else {
 				productDollarExchange = new BigDecimal(100.0);
 			}
 		}
 		return productDollarExchange;
 	}
-	
-	
+
 	/**
 	 * 製品関税の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Double getProductTariff(OrderForm orderForm,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Double getProductTariff(OrderForm orderForm, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = orderForm.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Double productTariff = 0.0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productTariff = wholesalePiece.getProductTariff();
 				return productTariff;
-			}
-			else {
+			} else {
 				productTariff = 100.0;
 			}
 		}
 		return productTariff;
 	}
-	
+
 	/**
 	 * 製品関税の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Double getProductTariff(Order order,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Double getProductTariff(Order order, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = order.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Double productTariff = 0.0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productTariff = wholesalePiece.getProductTariff();
 				return productTariff;
-			}
-			else {
+			} else {
 				productTariff = 100.0;
 			}
 		}
 		return productTariff;
 	}
-	
+
 	/**
 	 * 製品運賃の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Integer getProductShipping(OrderForm orderForm,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Integer getProductShipping(OrderForm orderForm, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = orderForm.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Integer productShipping = 0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productShipping = wholesalePiece.getProductShipping();
 				return productShipping;
 			}
 		}
 		return productShipping;
 	}
-	
+
 	/**
 	 * 製品運賃の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Integer getProductShipping(Order order,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Integer getProductShipping(Order order, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = order.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Integer productShipping = 0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				productShipping = wholesalePiece.getProductShipping();
 				return productShipping;
 			}
 		}
 		return productShipping;
 	}
-	
+
 	/**
 	 * 運賃誤差の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Integer getShippingError(OrderForm orderForm,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Integer getShippingError(OrderForm orderForm, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = orderForm.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Integer shippingError = 0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				shippingError = wholesalePiece.getShippingError();
 				return shippingError;
 			}
 		}
 		return shippingError;
 	}
-	
+
 	/**
 	 * 運賃誤差の取得
+	 * 
 	 * @param orderForm
 	 * @param wholesalePieceList
 	 * @param factoryCode
 	 * @return
 	 */
-	public Integer getShippingError(Order order,List<NextGenerationPrice> wholesalePieceList,NextGenerationPrice priceCode) {
-		
+	public Integer getShippingError(Order order, List<NextGenerationPrice> wholesalePieceList,
+			NextGenerationPrice priceCode) {
+
 		String mfaFactoryCode = priceCode.getMfaFactoryCode();
 		String productItem = order.getProductItem();
 		String wholesaleKeyCode = mfaFactoryCode + productItem;
 		Integer shippingError = 0;
-		
-		for(NextGenerationPrice wholesalePiece : wholesalePieceList) {
-			if(wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
+
+		for (NextGenerationPrice wholesalePiece : wholesalePieceList) {
+			if (wholesaleKeyCode.equals(wholesalePiece.getWholesaleKeyCode())) {
 				shippingError = wholesalePiece.getShippingError();
 				return shippingError;
 			}
 		}
 		return shippingError;
 	}
-	
+
 	/**
 	 * 基本工賃合計
+	 * 
 	 * @param orderForm
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public BigDecimal baseWageCount(OrderForm orderForm,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public BigDecimal baseWageCount(OrderForm orderForm, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String itemCode = orderForm.getProductItem();
 		String jkSubItemCode = "02";
 		BigDecimal baseWageTotal = new BigDecimal(0.0);
-		
-		if("01".equals(itemCode)) {
-			if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+
+		if ("01".equals(itemCode)) {
+			if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				BigDecimal mdbwWage = this.getDoubleWage(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage).add(mdbwWage);
-			}
-			else {
+			} else {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage);
 			}
-		}
-		else if("02".equals(itemCode)) {
-			if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+		} else if ("02".equals(itemCode)) {
+			if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				BigDecimal mdbwWage = this.getDoubleWage(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage).add(mdbwWage);
-			}
-			else {
+			} else {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage);
 			}
-			
-		}
-		else if("03".equals(itemCode)) {
+
+		} else if ("03".equals(itemCode)) {
 			BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 			baseWageTotal = baseWageTotal.add(mbwWage);
-		}
-		else if("04".equals(itemCode)) {
+		} else if ("04".equals(itemCode)) {
 			BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 			baseWageTotal = baseWageTotal.add(mbwWage);
 		}
 		return baseWageTotal;
 	}
-	
+
 	/**
 	 * 基本工賃合計
+	 * 
 	 * @param orderForm
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public BigDecimal baseWageCount(Order order,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public BigDecimal baseWageCount(Order order, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String itemCode = order.getProductItem();
 		String jkSubItemCode = "02";
 		BigDecimal baseWageTotal = new BigDecimal(0.0);
-		
-		if("01".equals(itemCode)) {
-			if("0000105".equals(order.getJkFrtBtnCd())) {
+
+		if ("01".equals(itemCode)) {
+			if ("0000105".equals(order.getJkFrtBtnCd())) {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				BigDecimal mdbwWage = this.getDoubleWage(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage).add(mdbwWage);
-			}
-			else {
+			} else {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage);
 			}
-		}
-		else if("02".equals(itemCode)) {
-			if("0000105".equals(order.getJkFrtBtnCd())) {
+		} else if ("02".equals(itemCode)) {
+			if ("0000105".equals(order.getJkFrtBtnCd())) {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				BigDecimal mdbwWage = this.getDoubleWage(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage).add(mdbwWage);
-			}
-			else {
+			} else {
 				BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 				baseWageTotal = baseWageTotal.add(mbwWage);
 			}
-			
-		}
-		else if("03".equals(itemCode)) {
+
+		} else if ("03".equals(itemCode)) {
 			BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 			baseWageTotal = baseWageTotal.add(mbwWage);
-		}
-		else if("04".equals(itemCode)) {
+		} else if ("04".equals(itemCode)) {
 			BigDecimal mbwWage = this.getWage(itemCode, basicNextGenerationPriceList);
 			baseWageTotal = baseWageTotal.add(mbwWage);
 		}
 		return baseWageTotal;
 	}
-	
+
 	/**
 	 * 基本付属合計
+	 * 
 	 * @param orderForm
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public Integer basePriceCount(OrderForm orderForm,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public Integer basePriceCount(OrderForm orderForm, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String itemCode = orderForm.getProductItem();
 		String jkSubItemCode = "02";
 		Integer basePriceTotal = 0;
-		
-		if("01".equals(itemCode)) {
-			if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+
+		if ("01".equals(itemCode)) {
+			if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				Integer mdbapPrice = this.getDoublePrice(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice + mdbapPrice;
-			}
-			else {
+			} else {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice;
 			}
-		}
-		else if("02".equals(itemCode)) {
-			if("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
+		} else if ("02".equals(itemCode)) {
+			if ("0000105".equals(orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt())) {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				Integer mdbapPrice = this.getDoublePrice(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice + mdbapPrice;
-			}
-			else {
+			} else {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice;
 			}
-			
-		}
-		else if("03".equals(itemCode)) {
+
+		} else if ("03".equals(itemCode)) {
 			Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 			basePriceTotal = basePriceTotal + mnapPrice;
-		}
-		else if("04".equals(itemCode)) {
+		} else if ("04".equals(itemCode)) {
 			Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 			basePriceTotal = basePriceTotal + mnapPrice;
 		}
 		return basePriceTotal;
 	}
-	
+
 	/**
 	 * 基本付属合計
+	 * 
 	 * @param orderForm
 	 * @param basicNextGenerationPriceList
 	 * @return
 	 */
-	public Integer basePriceCount(Order order,List<NextGenerationPrice> basicNextGenerationPriceList) {
+	public Integer basePriceCount(Order order, List<NextGenerationPrice> basicNextGenerationPriceList) {
 		String itemCode = order.getProductItem();
 		String jkSubItemCode = "02";
 		Integer basePriceTotal = 0;
-		
-		if("01".equals(itemCode)) {
-			if("0000105".equals(order.getJkFrtBtnCd())) {
+
+		if ("01".equals(itemCode)) {
+			if ("0000105".equals(order.getJkFrtBtnCd())) {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				Integer mdbapPrice = this.getDoublePrice(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice + mdbapPrice;
-			}
-			else {
+			} else {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice;
 			}
-		}
-		else if("02".equals(itemCode)) {
-			if("0000105".equals(order.getJkFrtBtnCd())) {
+		} else if ("02".equals(itemCode)) {
+			if ("0000105".equals(order.getJkFrtBtnCd())) {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				Integer mdbapPrice = this.getDoublePrice(itemCode, jkSubItemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice + mdbapPrice;
-			}
-			else {
+			} else {
 				Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 				basePriceTotal = basePriceTotal + mnapPrice;
 			}
-			
-		}
-		else if("03".equals(itemCode)) {
+
+		} else if ("03".equals(itemCode)) {
 			Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 			basePriceTotal = basePriceTotal + mnapPrice;
-		}
-		else if("04".equals(itemCode)) {
+		} else if ("04".equals(itemCode)) {
 			Integer mnapPrice = this.getPrice(itemCode, basicNextGenerationPriceList);
 			basePriceTotal = basePriceTotal + mnapPrice;
 		}
 		return basePriceTotal;
 	}
-	
+
 	/**
 	 * 下代関連計算方法
+	 * 
 	 * @param order
 	 * @param yieldList
 	 * @param wholesalePieceList
 	 * @param priceCode
 	 * @param marginRate
-	 * @return 
+	 * @return
 	 */
-	public Integer nextGenerationRelationCount(Order order,List<NextGenerationPrice> yieldList,List<NextGenerationPrice> wholesalePieceList,List<NextGenerationPrice> basicNextGenerationPriceList,NextGenerationPrice priceCode,NextGenerationPrice marginRate) {
-		//下代関連計算方法の オプション工賃
+	public Integer nextGenerationRelationCount(Order order, List<NextGenerationPrice> yieldList,
+			List<NextGenerationPrice> wholesalePieceList, List<NextGenerationPrice> basicNextGenerationPriceList,
+			NextGenerationPrice priceCode, NextGenerationPrice marginRate) {
+		// 下代関連計算方法の オプション工賃
 		BigDecimal jkNextGenerationWageTotal = this.jkNextGenerationWageTotal(order);
 		BigDecimal jkNextGenerationDetailWageTotal = this.jkNextGenerationDetailWageTotal(order);
 		BigDecimal glNextGenerationWageTotal = this.glNextGenerationWageTotal(order);
 		BigDecimal glNextGenerationDetailWageTotal = this.glNextGenerationDetailWageTotal(order);
 		BigDecimal ptNextGenerationWageTotal = this.ptNextGenerationWageTotal(order);
 		BigDecimal pt2NextGenerationWageTotal = this.pt2NextGenerationWageTotal(order);
-		
-		//基本工賃
+
+		// 基本工賃
 		BigDecimal baseWageCount = this.baseWageCount(order, basicNextGenerationPriceList);
-		//商品情報_３Piece下代工賃
+		// 商品情報_３Piece下代工賃
 		BigDecimal productIs3pieceWsWage = order.getProductIs3pieceWsWage();
-		//商品情報_スペアパンツ下代工賃
+		// 商品情報_スペアパンツ下代工賃
 		BigDecimal productSparePantsWsWage = order.getProductSparePantsWsWage();
-		//基本工賃 + オプション工賃合計
-		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal).add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal).add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage);
-		
-		//下代関連計算方法の オプション付属
+		// 基本工賃 + オプション工賃合計
+		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+				.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
+				.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
+				.add(productIs3pieceWsWage).add(productSparePantsWsWage);
+
+		// 下代関連計算方法の オプション付属
 		Integer jkNextGenerationPriceTotal = this.jkNextGenerationPriceTotal(order);
 		Integer jkNextGenerationDetailPriceTotal = this.jkNextGenerationDetailPriceTotal(order);
 		Integer glNextGenerationPriceTotal = this.glNextGenerationPriceTotal(order);
 		Integer glNextGenerationDetailPriceTotal = this.glNextGenerationDetailPriceTotal(order);
 		Integer ptNextGenerationPriceTotal = this.ptNextGenerationPriceTotal(order);
 		Integer pt2NextGenerationPriceTotal = this.pt2NextGenerationPriceTotal(order);
-		
-		//基本付属代
+
+		// 基本付属代
 		Integer basePriceCount = this.basePriceCount(order, basicNextGenerationPriceList);
-		//商品情報_３Piece_下代付属
+		// 商品情報_３Piece_下代付属
 		Integer productIs3pieceWsPrice = order.getProductIs3pieceWsPrice();
-		//商品情報_スペアパンツ下代付属
+		// 商品情報_スペアパンツ下代付属
 		Integer productSparePantsWsPrice = order.getProductSparePantsWsPrice();
 		// オプション付属合計
-		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal + jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal + ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + productIs3pieceWsPrice + productSparePantsWsPrice;
-		
-		//下代関連計算方法の要尺
+		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+				+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
+				+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + productIs3pieceWsPrice
+				+ productSparePantsWsPrice;
+
+		// 下代関連計算方法の要尺
 		Integer jacketYield = this.getJacketYield(order, yieldList);
 		Integer giletYield = this.getGiletYield(yieldList);
 		Integer pants2Yield = this.getPants2Yield(yieldList);
 		Integer pantsYield = this.getPantsYield(yieldList);
-		//要尺合計
-		Double yieldTotal = (double)(jacketYield + giletYield + pantsYield + pants2Yield)/1000;
-		
-		//下代関連計算方法の生地代
+		// 要尺合計
+		Double yieldTotal = (double) (jacketYield + giletYield + pantsYield + pants2Yield) / 1000;
+
+		// 下代関連計算方法の生地代
 		Integer fabricPrice = priceCode.getFabricPrice();
-		
-		//下代関連計算方法の下代調整金
+
+		// 下代関連計算方法の下代調整金
 		Integer wsPriceAdjust = priceCode.getWsPriceAdjust();
-		
-		//下代関連計算方法の為替
+
+		// 下代関連計算方法の為替
 		BigDecimal dollarExchange = this.getDollarExchange(order, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の製品関税
+
+		// 下代関連計算方法の製品関税
 		Double productTariff = this.getProductTariff(order, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の製品運賃
+
+		// 下代関連計算方法の製品運賃
 		Integer productShipping = this.getProductShipping(order, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の運賃誤差
+
+		// 下代関連計算方法の運賃誤差
 		Integer shippingError = this.getShippingError(order, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法のメーカーマージン
+
+		// 下代関連計算方法のメーカーマージン
 		Double makerMarginRate = marginRate.getMarginRate();
-		
-		/*(												
-			(											
-			  (										
-				(生地代×要尺)									
-				+ (基本工賃 + オプション工賃) * 為替									
-				+ (基本付属代 ＋ オプション付属)									
-			   )*製品関税										
-			) ＋ 製品運賃＋運賃誤差											
-		  )*メーカーマージン+ 下代調整金												
-		*/
-		
-		//生地代×要尺
-		BigDecimal fabricPriceYieldTotal =BigDecimalCommonTransfer((fabricPrice*yieldTotal));
-		//(基本付属代 ＋ オプション付属)
+
+		/*
+		 * ( ( ( (生地代×要尺) + (基本工賃 + オプション工賃) * 為替 + (基本付属代 ＋ オプション付属) )*製品関税 ) ＋
+		 * 製品運賃＋運賃誤差 )*メーカーマージン+ 下代調整金
+		 */
+
+		// 生地代×要尺
+		BigDecimal fabricPriceYieldTotal = BigDecimalCommonTransfer((fabricPrice * yieldTotal));
+		// (基本付属代 ＋ オプション付属)
 		BigDecimal NextGenerationPriceTotalTransfer = BigDecimalCommonTransfer(NextGenerationPriceTotal);
-		//製品関税
-		BigDecimal productTariffTransfer = BigDecimalCommonTransfer((productTariff/100));
-		// 製品運賃＋運賃誤差	
+		// 製品関税
+		BigDecimal productTariffTransfer = BigDecimalCommonTransfer((productTariff / 100));
+		// 製品運賃＋運賃誤差
 		BigDecimal productShippingShippingError = BigDecimalCommonTransfer(productShipping + shippingError);
-		//メーカーマージン
-		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate/100));
-		//下代調整金
+		// メーカーマージン
+		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate / 100));
+		// 下代調整金
 		BigDecimal wsPriceAdjustTransfer = BigDecimalCommonTransfer(wsPriceAdjust);
-		
-		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);												
+
+		BigDecimal nextGenerationRelationCount = (((fabricPriceYieldTotal
+				.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer))
+						.multiply(productTariffTransfer)).add(productShippingShippingError))
+								.multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);
 		Integer convertNumber = this.convertNumber(nextGenerationRelationCount);
 		return convertNumber;
 	}
-	
+
 	/**
 	 * 下代関連計算方法
+	 * 
 	 * @param orderForm
 	 * @param order
 	 * @param yieldList
@@ -4600,115 +4642,122 @@ public class OrderHelper {
 	 * @param priceCode
 	 * @param marginRate
 	 */
-	public void nextGenerationRelationCount(OrderForm orderForm,Order order,List<NextGenerationPrice> yieldList,List<NextGenerationPrice> wholesalePieceList,List<NextGenerationPrice> basicNextGenerationPriceList,NextGenerationPrice priceCode,NextGenerationPrice marginRate) {
-		//下代関連計算方法のオプション工賃
+	public void nextGenerationRelationCount(OrderForm orderForm, Order order, List<NextGenerationPrice> yieldList,
+			List<NextGenerationPrice> wholesalePieceList, List<NextGenerationPrice> basicNextGenerationPriceList,
+			NextGenerationPrice priceCode, NextGenerationPrice marginRate) {
+		// 下代関連計算方法のオプション工賃
 		BigDecimal jkNextGenerationWageTotal = this.jkNextGenerationWageTotal(order);
 		BigDecimal jkNextGenerationDetailWageTotal = this.jkNextGenerationDetailWageTotal(order);
 		BigDecimal glNextGenerationWageTotal = this.glNextGenerationWageTotal(order);
 		BigDecimal glNextGenerationDetailWageTotal = this.glNextGenerationDetailWageTotal(order);
 		BigDecimal ptNextGenerationWageTotal = this.ptNextGenerationWageTotal(order);
 		BigDecimal pt2NextGenerationWageTotal = this.pt2NextGenerationWageTotal(order);
-		//基本工賃
+		// 基本工賃
 		BigDecimal baseWageCount = this.baseWageCount(orderForm, basicNextGenerationPriceList);
-		//商品情報_３Piece下代工賃
+		// 商品情報_３Piece下代工賃
 		BigDecimal productIs3pieceWsWage = order.getProductIs3pieceWsWage();
-		//商品情報_スペアパンツ下代工賃
+		// 商品情報_スペアパンツ下代工賃
 		BigDecimal productSparePantsWsWage = order.getProductSparePantsWsWage();
-		//基本工賃 + オプション工賃合計
-		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal).add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal).add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage);
-		
-		//下代関連計算方法のオプション付属
+		// 基本工賃 + オプション工賃合計
+		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+				.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
+				.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
+				.add(productIs3pieceWsWage).add(productSparePantsWsWage);
+
+		// 下代関連計算方法のオプション付属
 		Integer jkNextGenerationPriceTotal = this.jkNextGenerationPriceTotal(order);
 		Integer jkNextGenerationDetailPriceTotal = this.jkNextGenerationDetailPriceTotal(order);
 		Integer glNextGenerationPriceTotal = this.glNextGenerationPriceTotal(order);
 		Integer glNextGenerationDetailPriceTotal = this.glNextGenerationDetailPriceTotal(order);
 		Integer ptNextGenerationPriceTotal = this.ptNextGenerationPriceTotal(order);
 		Integer pt2NextGenerationPriceTotal = this.pt2NextGenerationPriceTotal(order);
-		
-		//基本付属代
+
+		// 基本付属代
 		Integer basePriceCount = this.basePriceCount(orderForm, basicNextGenerationPriceList);
-		//商品情報_３Piece_下代付属
+		// 商品情報_３Piece_下代付属
 		Integer productIs3pieceWsPrice = order.getProductIs3pieceWsPrice();
-		//商品情報_スペアパンツ下代付属
+		// 商品情報_スペアパンツ下代付属
 		Integer productSparePantsWsPrice = order.getProductSparePantsWsPrice();
-		//基本付属代 ＋ オプション付属合計
-		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal + jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal + ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + productIs3pieceWsPrice + productSparePantsWsPrice;
-		
-		//下代関連計算方法の要尺
+		// 基本付属代 ＋ オプション付属合計
+		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+				+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
+				+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + productIs3pieceWsPrice
+				+ productSparePantsWsPrice;
+
+		// 下代関連計算方法の要尺
 		Integer jacketYield = this.getJacketYield(orderForm, yieldList);
 		Integer giletYield = this.getGiletYield(yieldList);
 		Integer pants2Yield = this.getPants2Yield(yieldList);
 		Integer pantsYield = this.getPantsYield(yieldList);
-		//要尺合計
-		Double yieldTotal = (double)(jacketYield + giletYield + pantsYield + pants2Yield)/1000;
-		
-		//下代関連計算方法の生地代
+		// 要尺合計
+		Double yieldTotal = (double) (jacketYield + giletYield + pantsYield + pants2Yield) / 1000;
+
+		// 下代関連計算方法の生地代
 		Integer fabricPrice = priceCode.getFabricPrice();
-		
-		//下代関連計算方法の下代調整金
+
+		// 下代関連計算方法の下代調整金
 		Integer wsPriceAdjust = priceCode.getWsPriceAdjust();
-		
-		//下代関連計算方法の為替
+
+		// 下代関連計算方法の為替
 		BigDecimal dollarExchange = this.getDollarExchange(orderForm, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の製品関税
+
+		// 下代関連計算方法の製品関税
 		Double productTariff = this.getProductTariff(orderForm, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の製品運賃
+
+		// 下代関連計算方法の製品運賃
 		Integer productShipping = this.getProductShipping(orderForm, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法の運賃誤差
+
+		// 下代関連計算方法の運賃誤差
 		Integer shippingError = this.getShippingError(orderForm, wholesalePieceList, priceCode);
-		
-		//下代関連計算方法のメーカーマージン
+
+		// 下代関連計算方法のメーカーマージン
 		Double makerMarginRate = marginRate.getMarginRate();
-		
-		/*(												
-			(											
-			  (										
-				(生地代×要尺)									
-				+ (基本工賃 + オプション工賃) * 為替									
-				+ (基本付属代 ＋ オプション付属)									
-			   )*製品関税										
-			) ＋ 製品運賃＋運賃誤差											
-		  )*メーカーマージン + 下代調整金												
-		*/
-		
-		//(生地代×要尺)
-		BigDecimal fabricPriceYieldTotal = BigDecimalCommonTransfer((fabricPrice*yieldTotal));
-		//(基本付属代 ＋ オプション付属)
+
+		/*
+		 * ( ( ( (生地代×要尺) + (基本工賃 + オプション工賃) * 為替 + (基本付属代 ＋ オプション付属) )*製品関税 ) ＋
+		 * 製品運賃＋運賃誤差 )*メーカーマージン + 下代調整金
+		 */
+
+		// (生地代×要尺)
+		BigDecimal fabricPriceYieldTotal = BigDecimalCommonTransfer((fabricPrice * yieldTotal));
+		// (基本付属代 ＋ オプション付属)
 		BigDecimal NextGenerationPriceTotalTransfer = BigDecimalCommonTransfer(NextGenerationPriceTotal);
-		//製品関税
-		BigDecimal productTariffTransfer = BigDecimalCommonTransfer((productTariff/100));
-		// 製品運賃＋運賃誤差	
+		// 製品関税
+		BigDecimal productTariffTransfer = BigDecimalCommonTransfer((productTariff / 100));
+		// 製品運賃＋運賃誤差
 		BigDecimal productShippingShippingError = BigDecimalCommonTransfer(productShipping + shippingError);
-		//メーカーマージン
-		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate/100));
-		//下代調整金
+		// メーカーマージン
+		BigDecimal makerMarginRateTransfer = BigDecimalCommonTransfer((makerMarginRate / 100));
+		// 下代調整金
 		BigDecimal wsPriceAdjustTransfer = BigDecimalCommonTransfer(wsPriceAdjust);
-		BigDecimal nextGenerationRelationCount =(((fabricPriceYieldTotal.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer)).multiply(productTariffTransfer)).add(productShippingShippingError)).multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);												
+		BigDecimal nextGenerationRelationCount = (((fabricPriceYieldTotal
+				.add(NextGenerationWageTotal.multiply(dollarExchange)).add(NextGenerationPriceTotalTransfer))
+						.multiply(productTariffTransfer)).add(productShippingShippingError))
+								.multiply(makerMarginRateTransfer).add(wsPriceAdjustTransfer);
 		Integer convertNumber = this.convertNumber(nextGenerationRelationCount);
 		order.setWsPrice(convertNumber);
 	}
-	
+
 	/**
 	 * 計算結果の1円の桁は切り捨て
-	 * @return 
+	 * 
+	 * @return
 	 */
 	public Integer convertNumber(BigDecimal nextGenerationRelationCount) {
 		BigDecimal nextGenerationCount = nextGenerationRelationCount.setScale(0, RoundingMode.DOWN);
 		Integer nextGeneration = Integer.parseInt(nextGenerationCount.toString());
-		nextGeneration = nextGeneration-(nextGeneration % 10);
+		nextGeneration = nextGeneration - (nextGeneration % 10);
 		return nextGeneration;
 	}
-	
+
 	/**
 	 * 再補正値が「お渡し時再補正入力」画面からオーダー詳細画面に伝わる
+	 * 
 	 * @param orderForm
 	 * @param order
-	 * @param userId 
+	 * @param userId
 	 */
-	public void dealWithCorrectAgain(OrderForm orderForm,Order order, String userId) {
+	public void dealWithCorrectAgain(OrderForm orderForm, Order order, String userId) {
 		String suitItemCode = "01";
 		String jacketItemCode = "02";
 		String pantsItemCode = "03";
@@ -4716,305 +4765,341 @@ public class OrderHelper {
 		String suit3P2PP = "32";
 		String productItemDisplaycode = order.getProductItemDisplaycode();
 		String productItem = order.getProductItem();
-		if(suitItemCode.equals(productItem)) {
-			//JACKET_着丈_再補正値
-			String corJkBodylengthCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkBodylengthCorrectAgain();
+		if (suitItemCode.equals(productItem)) {
+			// JACKET_着丈_再補正値
+			String corJkBodylengthCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkBodylengthCorrectAgain();
 			BigDecimal corJkBodylengthCorrectA = convertBigDecimal(corJkBodylengthCorrectAgain);
-			//JACKET_着丈_再補正値フラッグ
-			String corJkBodylengthCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkBodylengthCorrectAgainFlag();
+			// JACKET_着丈_再補正値フラッグ
+			String corJkBodylengthCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkBodylengthCorrectAgainFlag();
 			BigDecimal corJkBodylengthCorrectAgainF = new BigDecimal(corJkBodylengthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkBodylengthCorrect = corJkBodylengthCorrectA.multiply(corJkBodylengthCorrectAgainF);
-			//JACKET_着丈_再補正値
+			// JACKET_着丈_再補正値
 			order.setCorJkBodylengthCorrectAgain(corJkBodylengthCorrect);
-			
-			//JACKET_ウエスト_再補正値
+
+			// JACKET_ウエスト_再補正値
 			String corJkWaistCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkWaistCorrectAgain();
 			BigDecimal corJkWaistCorrectA = convertBigDecimal(corJkWaistCorrectAgain);
-			//JACKET_ウエスト_再補正値フラッグ
+			// JACKET_ウエスト_再補正値フラッグ
 			String corJkWaistCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkWaistCorrectAgainFlag();
 			BigDecimal corJkWaistCorrectAgainF = new BigDecimal(corJkWaistCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkWaistCorrect = corJkWaistCorrectA.multiply(corJkWaistCorrectAgainF);
-			//JACKET_ウエスト_再補正値
+			// JACKET_ウエスト_再補正値
 			order.setCorJkWaistCorrectAgain(corJkWaistCorrect);
-			
-			//JACKET_袖丈右_再補正値
-			String corJkRightsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkRightsleeveCorrectAgain();
+
+			// JACKET_袖丈右_再補正値
+			String corJkRightsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkRightsleeveCorrectAgain();
 			BigDecimal corJkRightsleeveCorrectA = convertBigDecimal(corJkRightsleeveCorrectAgain);
-			//JACKET_袖丈右_再補正値フラッグ
-			String corJkRightsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkRightsleeveCorrectAgainFlag();
+			// JACKET_袖丈右_再補正値フラッグ
+			String corJkRightsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkRightsleeveCorrectAgainFlag();
 			BigDecimal corJkRightsleeveCorrectAgainF = new BigDecimal(corJkRightsleeveCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkRightsleeveCorrect = corJkRightsleeveCorrectA.multiply(corJkRightsleeveCorrectAgainF);
-			//JACKET_袖丈右_再補正値
+			// JACKET_袖丈右_再補正値
 			order.setCorJkRightsleeveCorrectAgain(corJkRightsleeveCorrect);
-			
-			//JACKET_袖丈左_再補正値
-			String corJkLeftsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkLeftsleeveCorrectAgain();
+
+			// JACKET_袖丈左_再補正値
+			String corJkLeftsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkLeftsleeveCorrectAgain();
 			BigDecimal corJkLeftsleeveCorrectA = convertBigDecimal(corJkLeftsleeveCorrectAgain);
-			//JACKET_袖丈左_再補正値フラッグ
-			String corJkLeftsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkLeftsleeveCorrectAgainFlag();
+			// JACKET_袖丈左_再補正値フラッグ
+			String corJkLeftsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkLeftsleeveCorrectAgainFlag();
 			BigDecimal corJkLeftsleeveCorrectAgainF = new BigDecimal(corJkLeftsleeveCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkLeftsleeveCorrect = corJkLeftsleeveCorrectA.multiply(corJkLeftsleeveCorrectAgainF);
-			//JACKET_袖丈左_再補正値
+			// JACKET_袖丈左_再補正値
 			order.setCorJkLeftsleeveCorrectAgain(corJkLeftsleeveCorrect);
-			
-			
+
 			// PANTS_ウエスト_再補正値
 			String corPtWaistCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtWaistCorrectAgain();
 			BigDecimal corPtWaistCorrectA = convertBigDecimal(corPtWaistCorrectAgain);
 			// PANTS_ウエスト_再補正値フラッグ
 			String corPtWaistCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtWaistCorrectAgainFlag();
 			BigDecimal corPtWaistCorrectAgainF = new BigDecimal(corPtWaistCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtWaistCorrect = corPtWaistCorrectA.multiply(corPtWaistCorrectAgainF);
-			//PANTS_ウエスト_再補正値
+			// PANTS_ウエスト_再補正値
 			order.setCorPtWaistCorrectAgain(corPtWaistCorrect);
-			
+
 			// PANTS_ヒップ_再補正値
 			String corPtHipCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtHipCorrectAgain();
 			BigDecimal corPtHipCorrectA = convertBigDecimal(corPtHipCorrectAgain);
 			// PANTS_ヒップ_再補正値フラッグ
 			String corPtHipCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtHipCorrectAgainFlag();
 			BigDecimal corPtHipCorrectAgainF = new BigDecimal(corPtHipCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtHipCorrect = corPtHipCorrectA.multiply(corPtHipCorrectAgainF);
-			//PANTS_ヒップ_再補正値
+			// PANTS_ヒップ_再補正値
 			order.setCorPtHipCorrectAgain(corPtHipCorrect);
-			
+
 			// PANTS_ワタリ_再補正値
-			String corPtThighwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtThighwidthCorrectAgain();
+			String corPtThighwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtThighwidthCorrectAgain();
 			BigDecimal corPtThighwidthCorrectA = convertBigDecimal(corPtThighwidthCorrectAgain);
 			// PANTS_ワタリ_再補正値フラッグ
-			String corPtThighwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtThighwidthCorrectAgainFlag();
+			String corPtThighwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtThighwidthCorrectAgainFlag();
 			BigDecimal corPtThighwidthCorrectAgainF = new BigDecimal(corPtThighwidthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtThighwidthCorrect = corPtThighwidthCorrectA.multiply(corPtThighwidthCorrectAgainF);
-			//PANTS_ワタリ_再補正値
+			// PANTS_ワタリ_再補正値
 			order.setCorPtThighwidthCorrectAgain(corPtThighwidthCorrect);
-			
+
 			// PANTS_裾幅_修正_再補正値
 			String corPtHemwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrectAgain();
 			BigDecimal corPtHemwidthCorrectA = convertBigDecimal(corPtHemwidthCorrectAgain);
 			// PANTS_裾幅_修正_再補正値フラッグ
-			String corPtHemwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrectAgainFlag();
+			String corPtHemwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtHemwidthCorrectAgainFlag();
 			BigDecimal corPtHemwidthCorrectAgainF = new BigDecimal(corPtHemwidthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtHemwidthCorrect = corPtHemwidthCorrectA.multiply(corPtHemwidthCorrectAgainF);
-			//PANTS_裾幅_修正_再補正値
+			// PANTS_裾幅_修正_再補正値
 			order.setCorPtHemwidthCorrectAgain(corPtHemwidthCorrect);
-			
+
 			// PANTS_股下右_再補正値
-			String corPtRightinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamCorrectAgain();
+			String corPtRightinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtRightinseamCorrectAgain();
 			BigDecimal corPtRightinseamCorrectA = convertBigDecimal(corPtRightinseamCorrectAgain);
 			// PANTS_股下右_再補正値フラッグ
-			String corPtRightinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamCorrectAgainFlag();
+			String corPtRightinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtRightinseamCorrectAgainFlag();
 			BigDecimal corPtRightinseamCorrectAgainF = new BigDecimal(corPtRightinseamCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtRightinseamCorrect = corPtRightinseamCorrectA.multiply(corPtRightinseamCorrectAgainF);
-			//PANTS_股下右_再補正値
+			// PANTS_股下右_再補正値
 			order.setCorPtRightinseamCorrectAgain(corPtRightinseamCorrect);
-			
+
 			// PANTS_股下左_再補正値
-			String corPtLeftinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamCorrectAgain();
+			String corPtLeftinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtLeftinseamCorrectAgain();
 			BigDecimal corPtLeftinseamCorrectA = convertBigDecimal(corPtLeftinseamCorrectAgain);
 			// PANTS_股下左_再補正値フラッグ
-			String corPtLeftinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamCorrectAgainFlag();
+			String corPtLeftinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtLeftinseamCorrectAgainFlag();
 			BigDecimal corPtLeftinseamCorrectAgainF = new BigDecimal(corPtLeftinseamCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtLeftinseamCorrect = corPtLeftinseamCorrectA.multiply(corPtLeftinseamCorrectAgainF);
-			//PANTS_股下左_再補正値
+			// PANTS_股下左_再補正値
 			order.setCorPtLeftinseamCorrectAgain(corPtLeftinseamCorrect);
-			
-			if(suit2PP.equals(productItemDisplaycode) || suit3P2PP.equals(productItemDisplaycode)) {
-				//２PANTS_ウエスト_再補正値
+
+			if (suit2PP.equals(productItemDisplaycode) || suit3P2PP.equals(productItemDisplaycode)) {
+				// ２PANTS_ウエスト_再補正値
 				String corPt2WaistCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2WaistCorrectAgain();
 				BigDecimal corPt2WaistCorrectA = convertBigDecimal(corPt2WaistCorrectAgain);
-				//２PANTS_ウエスト_再補正値フラッグ
-				String corPt2WaistCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2WaistCorrectAgainFlag();
+				// ２PANTS_ウエスト_再補正値フラッグ
+				String corPt2WaistCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2WaistCorrectAgainFlag();
 				BigDecimal corPt2WaistCorrectAgainF = new BigDecimal(corPt2WaistCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
+				// 再補正値*再補正値フラッグ
 				BigDecimal corPt2WaistCorrect = corPt2WaistCorrectA.multiply(corPt2WaistCorrectAgainF);
-				//２PANTS_ウエスト_再補正値
+				// ２PANTS_ウエスト_再補正値
 				order.setCorPt2WaistCorrectAgain(corPt2WaistCorrect);
-				
+
 				// ２PANTS_ヒップ_再補正値
 				String corPt2HipCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2HipCorrectAgain();
 				BigDecimal corPt2HipCorrectA = convertBigDecimal(corPt2HipCorrectAgain);
 				// ２PANTS_ヒップ_再補正値フラッグ
-				String corPt2HipCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2HipCorrectAgainFlag();
+				String corPt2HipCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2HipCorrectAgainFlag();
 				BigDecimal corPt2HipCorrectAgainF = new BigDecimal(corPt2HipCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
+				// 再補正値*再補正値フラッグ
 				BigDecimal corPt2HipCorrect = corPt2HipCorrectA.multiply(corPt2HipCorrectAgainF);
-				//２PANTS_ヒップ_再補正値
+				// ２PANTS_ヒップ_再補正値
 				order.setCorPt2HipCorrectAgain(corPt2HipCorrect);
-				
+
 				// 2PANTS_ワタリ_再補正値
-				String corPt2ThighwidthCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2ThighwidthCorrectAgain();
+				String corPt2ThighwidthCorrectAgain = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2ThighwidthCorrectAgain();
 				BigDecimal corPt2ThighwidthCorrectA = convertBigDecimal(corPt2ThighwidthCorrectAgain);
 				// 2PANTS_ワタリ_再補正値フラッグ
-				String corPt2ThighwidthCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2ThighwidthCorrectAgainFlag();
+				String corPt2ThighwidthCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2ThighwidthCorrectAgainFlag();
 				BigDecimal corPt2ThighwidthCorrectAgainF = new BigDecimal(corPt2ThighwidthCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
+				// 再補正値*再補正値フラッグ
 				BigDecimal corPt2ThighwidthCorrect = corPt2ThighwidthCorrectA.multiply(corPt2ThighwidthCorrectAgainF);
-				//2PANTS_ワタリ_再補正値
+				// 2PANTS_ワタリ_再補正値
 				order.setCorPt2ThighwidthCorrectAgain(corPt2ThighwidthCorrect);
-				
+
 				// 2PANTS_裾幅_修正_再補正値
-				String corPt2HemwidthCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2HemwidthCorrectAgain();
+				String corPt2HemwidthCorrectAgain = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2HemwidthCorrectAgain();
 				BigDecimal corPt2HemwidthCorrectA = convertBigDecimal(corPt2HemwidthCorrectAgain);
 				// 2PANTS_裾幅_修正_再補正値フラッグ
-				String corPt2HemwidthCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2HemwidthCorrectAgainFlag();
+				String corPt2HemwidthCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2HemwidthCorrectAgainFlag();
 				BigDecimal corPt2HemwidthCorrectAgainF = new BigDecimal(corPt2HemwidthCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
+				// 再補正値*再補正値フラッグ
 				BigDecimal corPt2HemwidthCorrect = corPt2HemwidthCorrectA.multiply(corPt2HemwidthCorrectAgainF);
-				//2PANTS_裾幅_修正_再補正値
+				// 2PANTS_裾幅_修正_再補正値
 				order.setCorPt2HemwidthCorrectAgain(corPt2HemwidthCorrect);
-				
+
 				// 2PANTS_股下右_再補正値
-				String corPt2RightinseamCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2RightinseamCorrectAgain();
+				String corPt2RightinseamCorrectAgain = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2RightinseamCorrectAgain();
 				BigDecimal corPt2RightinseamCorrectA = convertBigDecimal(corPt2RightinseamCorrectAgain);
 				// 2PANTS_股下右_再補正値フラッグ
-				String corPt2RightinseamCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2RightinseamCorrectAgainFlag();
+				String corPt2RightinseamCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2RightinseamCorrectAgainFlag();
 				BigDecimal corPt2RightinseamCorrectAgainF = new BigDecimal(corPt2RightinseamCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
-				BigDecimal corPt2RightinseamCorrect = corPt2RightinseamCorrectA.multiply(corPt2RightinseamCorrectAgainF);
-				//2PANTS_股下右_再補正値
+				// 再補正値*再補正値フラッグ
+				BigDecimal corPt2RightinseamCorrect = corPt2RightinseamCorrectA
+						.multiply(corPt2RightinseamCorrectAgainF);
+				// 2PANTS_股下右_再補正値
 				order.setCorPt2RightinseamCorrectAgain(corPt2RightinseamCorrect);
-				
+
 				// 2PANTS_股下左_再補正値
-				String corPt2LeftinseamCorrectAgain = orderForm.getAdjustPants2StandardInfo().getCorPt2LeftinseamCorrectAgain();
+				String corPt2LeftinseamCorrectAgain = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2LeftinseamCorrectAgain();
 				BigDecimal corPt2LeftinseamCorrectA = convertBigDecimal(corPt2LeftinseamCorrectAgain);
 				// 2PANTS_股下左_再補正値フラッグ
-				String corPt2LeftinseamCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo().getCorPt2LeftinseamCorrectAgainFlag();
+				String corPt2LeftinseamCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2LeftinseamCorrectAgainFlag();
 				BigDecimal corPt2LeftinseamCorrectAgainF = new BigDecimal(corPt2LeftinseamCorrectAgainFlag);
-				//再補正値*再補正値フラッグ
+				// 再補正値*再補正値フラッグ
 				BigDecimal corPt2LeftinseamCorrect = corPt2LeftinseamCorrectA.multiply(corPt2LeftinseamCorrectAgainF);
-				//2PANTS_股下左_再補正値
+				// 2PANTS_股下左_再補正値
 				order.setCorPt2LeftinseamCorrectAgain(corPt2LeftinseamCorrect);
 			}
-		}
-		else if(jacketItemCode.equals(productItem)){
-			//JACKET_着丈_再補正値
-			String corJkBodylengthCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkBodylengthCorrectAgain();
+		} else if (jacketItemCode.equals(productItem)) {
+			// JACKET_着丈_再補正値
+			String corJkBodylengthCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkBodylengthCorrectAgain();
 			BigDecimal corJkBodylengthCorrectA = convertBigDecimal(corJkBodylengthCorrectAgain);
-			//JACKET_着丈_再補正値フラッグ
-			String corJkBodylengthCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkBodylengthCorrectAgainFlag();
+			// JACKET_着丈_再補正値フラッグ
+			String corJkBodylengthCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkBodylengthCorrectAgainFlag();
 			BigDecimal corJkBodylengthCorrectAgainF = new BigDecimal(corJkBodylengthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkBodylengthCorrect = corJkBodylengthCorrectA.multiply(corJkBodylengthCorrectAgainF);
-			//JACKET_着丈_再補正値
+			// JACKET_着丈_再補正値
 			order.setCorJkBodylengthCorrectAgain(corJkBodylengthCorrect);
-			
-			//JACKET_ウエスト_再補正値
+
+			// JACKET_ウエスト_再補正値
 			String corJkWaistCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkWaistCorrectAgain();
 			BigDecimal corJkWaistCorrectA = convertBigDecimal(corJkWaistCorrectAgain);
-			//JACKET_ウエスト_再補正値フラッグ
+			// JACKET_ウエスト_再補正値フラッグ
 			String corJkWaistCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkWaistCorrectAgainFlag();
 			BigDecimal corJkWaistCorrectAgainF = new BigDecimal(corJkWaistCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkWaistCorrect = corJkWaistCorrectA.multiply(corJkWaistCorrectAgainF);
-			//JACKET_ウエスト_再補正値
+			// JACKET_ウエスト_再補正値
 			order.setCorJkWaistCorrectAgain(corJkWaistCorrect);
-			
-			//JACKET_袖丈右_再補正値
-			String corJkRightsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkRightsleeveCorrectAgain();
+
+			// JACKET_袖丈右_再補正値
+			String corJkRightsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkRightsleeveCorrectAgain();
 			BigDecimal corJkRightsleeveCorrectA = convertBigDecimal(corJkRightsleeveCorrectAgain);
-			//JACKET_袖丈右_再補正値フラッグ
-			String corJkRightsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkRightsleeveCorrectAgainFlag();
+			// JACKET_袖丈右_再補正値フラッグ
+			String corJkRightsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkRightsleeveCorrectAgainFlag();
 			BigDecimal corJkRightsleeveCorrectAgainF = new BigDecimal(corJkRightsleeveCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkRightsleeveCorrect = corJkRightsleeveCorrectA.multiply(corJkRightsleeveCorrectAgainF);
-			//JACKET_袖丈右_再補正値
+			// JACKET_袖丈右_再補正値
 			order.setCorJkRightsleeveCorrectAgain(corJkRightsleeveCorrect);
-			
-			//JACKET_袖丈左_再補正値
-			String corJkLeftsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo().getCorJkLeftsleeveCorrectAgain();
+
+			// JACKET_袖丈左_再補正値
+			String corJkLeftsleeveCorrectAgain = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkLeftsleeveCorrectAgain();
 			BigDecimal corJkLeftsleeveCorrectA = convertBigDecimal(corJkLeftsleeveCorrectAgain);
-			//JACKET_袖丈左_再補正値フラッグ
-			String corJkLeftsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo().getCorJkLeftsleeveCorrectAgainFlag();
+			// JACKET_袖丈左_再補正値フラッグ
+			String corJkLeftsleeveCorrectAgainFlag = orderForm.getAdjustJacketStandardInfo()
+					.getCorJkLeftsleeveCorrectAgainFlag();
 			BigDecimal corJkLeftsleeveCorrectAgainF = new BigDecimal(corJkLeftsleeveCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corJkLeftsleeveCorrect = corJkLeftsleeveCorrectA.multiply(corJkLeftsleeveCorrectAgainF);
-			//JACKET_袖丈左_再補正値
+			// JACKET_袖丈左_再補正値
 			order.setCorJkLeftsleeveCorrectAgain(corJkLeftsleeveCorrect);
-		}
-		else if(pantsItemCode.equals(productItem)) {
+		} else if (pantsItemCode.equals(productItem)) {
 			// PANTS_ウエスト_再補正値
 			String corPtWaistCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtWaistCorrectAgain();
 			BigDecimal corPtWaistCorrectA = convertBigDecimal(corPtWaistCorrectAgain);
 			// PANTS_ウエスト_再補正値フラッグ
 			String corPtWaistCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtWaistCorrectAgainFlag();
 			BigDecimal corPtWaistCorrectAgainF = new BigDecimal(corPtWaistCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtWaistCorrect = corPtWaistCorrectA.multiply(corPtWaistCorrectAgainF);
-			//PANTS_ウエスト_再補正値
+			// PANTS_ウエスト_再補正値
 			order.setCorPtWaistCorrectAgain(corPtWaistCorrect);
-			
+
 			// PANTS_ヒップ_再補正値
 			String corPtHipCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtHipCorrectAgain();
 			BigDecimal corPtHipCorrectA = convertBigDecimal(corPtHipCorrectAgain);
 			// PANTS_ヒップ_再補正値フラッグ
 			String corPtHipCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtHipCorrectAgainFlag();
 			BigDecimal corPtHipCorrectAgainF = new BigDecimal(corPtHipCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtHipCorrect = corPtHipCorrectA.multiply(corPtHipCorrectAgainF);
-			//PANTS_ヒップ_再補正値
+			// PANTS_ヒップ_再補正値
 			order.setCorPtHipCorrectAgain(corPtHipCorrect);
-			
+
 			// PANTS_ワタリ_再補正値
-			String corPtThighwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtThighwidthCorrectAgain();
+			String corPtThighwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtThighwidthCorrectAgain();
 			BigDecimal corPtThighwidthCorrectA = convertBigDecimal(corPtThighwidthCorrectAgain);
 			// PANTS_ワタリ_再補正値フラッグ
-			String corPtThighwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtThighwidthCorrectAgainFlag();
+			String corPtThighwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtThighwidthCorrectAgainFlag();
 			BigDecimal corPtThighwidthCorrectAgainF = new BigDecimal(corPtThighwidthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtThighwidthCorrect = corPtThighwidthCorrectA.multiply(corPtThighwidthCorrectAgainF);
-			//PANTS_ワタリ_再補正値
+			// PANTS_ワタリ_再補正値
 			order.setCorPtThighwidthCorrectAgain(corPtThighwidthCorrect);
-			
+
 			// PANTS_裾幅_修正_再補正値
 			String corPtHemwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrectAgain();
 			BigDecimal corPtHemwidthCorrectA = convertBigDecimal(corPtHemwidthCorrectAgain);
 			// PANTS_裾幅_修正_再補正値フラッグ
-			String corPtHemwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrectAgainFlag();
+			String corPtHemwidthCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtHemwidthCorrectAgainFlag();
 			BigDecimal corPtHemwidthCorrectAgainF = new BigDecimal(corPtHemwidthCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtHemwidthCorrect = corPtHemwidthCorrectA.multiply(corPtHemwidthCorrectAgainF);
-			//PANTS_裾幅_修正_再補正値
+			// PANTS_裾幅_修正_再補正値
 			order.setCorPtHemwidthCorrectAgain(corPtHemwidthCorrect);
-			
+
 			// PANTS_股下右_再補正値
-			String corPtRightinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamCorrectAgain();
+			String corPtRightinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtRightinseamCorrectAgain();
 			BigDecimal corPtRightinseamCorrectA = convertBigDecimal(corPtRightinseamCorrectAgain);
 			// PANTS_股下右_再補正値フラッグ
-			String corPtRightinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtRightinseamCorrectAgainFlag();
+			String corPtRightinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtRightinseamCorrectAgainFlag();
 			BigDecimal corPtRightinseamCorrectAgainF = new BigDecimal(corPtRightinseamCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtRightinseamCorrect = corPtRightinseamCorrectA.multiply(corPtRightinseamCorrectAgainF);
-			//PANTS_股下右_再補正値
+			// PANTS_股下右_再補正値
 			order.setCorPtRightinseamCorrectAgain(corPtRightinseamCorrect);
-			
+
 			// PANTS_股下左_再補正値
-			String corPtLeftinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamCorrectAgain();
+			String corPtLeftinseamCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtLeftinseamCorrectAgain();
 			BigDecimal corPtLeftinseamCorrectA = convertBigDecimal(corPtLeftinseamCorrectAgain);
 			// PANTS_股下左_再補正値フラッグ
-			String corPtLeftinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo().getCorPtLeftinseamCorrectAgainFlag();
+			String corPtLeftinseamCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtLeftinseamCorrectAgainFlag();
 			BigDecimal corPtLeftinseamCorrectAgainF = new BigDecimal(corPtLeftinseamCorrectAgainFlag);
-			//再補正値*再補正値フラッグ
+			// 再補正値*再補正値フラッグ
 			BigDecimal corPtLeftinseamCorrect = corPtLeftinseamCorrectA.multiply(corPtLeftinseamCorrectAgainF);
-			//PANTS_股下左_再補正値
+			// PANTS_股下左_再補正値
 			order.setCorPtLeftinseamCorrectAgain(corPtLeftinseamCorrect);
 		}
 		order.setUpdatedUserId(userId);
 		order.setUpdatedAt(new Date());
-		String corStoreCorrectionMemoAgain = orderForm.getCorStoreCorrectionMemoAgain();
+		String corStoreCorrectionMemoAgain = orderForm.getCorStoreCorrectionMemoAgain().replaceAll("\\n", "");
 		order.setCorStoreCorrectionMemoAgain(corStoreCorrectionMemoAgain);
 	}
+
 	/**
-	    *    消費税を取得
+	 * 消費税を取得
+	 * 
 	 * @param taxRate
 	 * @param orderForm
 	 */
@@ -5024,52 +5109,106 @@ public class OrderHelper {
 	}
 
 	/**
-	    *  要尺を取得
+	 * 要尺を取得
+	 * 
 	 * @param taxRate
 	 * @param orderForm
 	 */
 	public void getYield(List<Yield> yieldList, OrderForm orderForm) {
 		orderForm.setYield(new Gson().toJson(yieldList));
 	}
-	
+
 	/**
 	 * 
 	 * @param orderFabric
-	 * @return 
+	 * @return
 	 */
 	public Map<String, Integer> getRetailPriceRelated(OrderFindFabric orderFabric) {
-		
-		Map<String,Integer> priceMap = new HashMap<String,Integer>();
-		//上代
+
+		Map<String, Integer> priceMap = new HashMap<String, Integer>();
+		// 上代
 		Integer retailPrice = orderFabric.getRetailPrice();
-		//ダブルJACKET増額率
+		// ダブルJACKET増額率
 		Integer additionalDoubleJacketRate = orderFabric.getAdditionalDoubleJacketRate();
-		//シングルGILET追加増額率
+		// シングルGILET追加増額率
 		Integer additionalSingleGiletRate = orderFabric.getAdditionalSingleGiletRate();
-		//PANTS追加増額率
+		// PANTS追加増額率
 		Integer additionalPantsRate = orderFabric.getAdditionalPantsRate();
-		//上代*シングルGILET追加増額率/100
-		Integer single3PieceRetailPrice = retailPrice * additionalSingleGiletRate/100;
-		//上代*PANTS追加増額率/100
-		Integer sparePantsPrice = retailPrice * additionalPantsRate/100;
-		//ダブルJACKET単品率
+		// 上代*シングルGILET追加増額率/100
+		Integer single3PieceRetailPrice = retailPrice * additionalSingleGiletRate / 100;
+		// 上代*PANTS追加増額率/100
+		Integer sparePantsPrice = retailPrice * additionalPantsRate / 100;
+		// ダブルJACKET単品率
 		Integer doubleJacketOnlyRate = orderFabric.getDoubleJacketOnlyRate();
-		//ダブルJacketの単品購買追加金額
+		// ダブルJacketの単品購買追加金額
 		Integer jkDoubleOnlyPlusAlphaPrice = orderFabric.getJkDoubleOnlyPlusAlphaPrice();
-		//シングルJACKET単品率
+		// シングルJACKET単品率
 		Integer singleJacketOnlyRate = orderFabric.getSingleJacketOnlyRate();
-		//シングルJacketの単品購買追加金額
+		// シングルJacketの単品購買追加金額
 		Integer jkSingleOnlyPlusAlphaPrice = orderFabric.getJkSingleOnlyPlusAlphaPrice();
-		//(上代*ダブルJACKET単品率/100+「ダブルJacketの単品購買追加金額」) -　(上代*シングルJACKET単品率/100+「シングルJacketの単品購買追加金額」)
-		Integer singleJacketDoublePrice =(retailPrice * doubleJacketOnlyRate/100 + jkDoubleOnlyPlusAlphaPrice)-(retailPrice * singleJacketOnlyRate/100 + jkSingleOnlyPlusAlphaPrice);
-		
-		
+		// (上代*ダブルJACKET単品率/100+「ダブルJacketの単品購買追加金額」) -
+		// (上代*シングルJACKET単品率/100+「シングルJacketの単品購買追加金額」)
+		Integer singleJacketDoublePrice = (retailPrice * doubleJacketOnlyRate / 100 + jkDoubleOnlyPlusAlphaPrice)
+				- (retailPrice * singleJacketOnlyRate / 100 + jkSingleOnlyPlusAlphaPrice);
+
 		priceMap.put("doubleJACKET", additionalDoubleJacketRate);
 		priceMap.put("price3Piece", single3PieceRetailPrice);
 		priceMap.put("sparePants", sparePantsPrice);
 		priceMap.put("singleDoubleJACKET", singleJacketDoublePrice);
-		
+
 		return priceMap;
-		
+
+	}
+
+	public void getFigureNumberMap(OrderForm orderForm) {
+		LinkedHashMap<String, String> jkFigureMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> ptFigureMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> glFigureMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> pt2FigureMap = new LinkedHashMap<String, String>();
+
+		// 体型
+		// JACKET
+		jkFigureMap.put("", "選択　　　");
+		// PANTS
+		ptFigureMap.put("", "選択　　　");
+		// GILET
+		glFigureMap.put("", "選択　　　");
+		// 2PANTS
+		pt2FigureMap.put("", "選択　　　");
+
+		// 号数
+		LinkedHashMap<String, String> jkNumberMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> ptNumberMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> glNumberMap = new LinkedHashMap<String, String>();
+		LinkedHashMap<String, String> pt2NumberMap = new LinkedHashMap<String, String>();
+
+		// JACKET
+		jkNumberMap.put("", "選択　　　");
+		// PANTS
+		ptNumberMap.put("", "選択　　　");
+		// GILET
+		glNumberMap.put("", "選択　　　");
+		// 2PANTS
+		pt2NumberMap.put("", "選択　　　");
+		AdjustJacketStandardInfo adjustJacketStandardInfo = new AdjustJacketStandardInfo();
+		adjustJacketStandardInfo.setSizeFigureMap(jkFigureMap);
+		adjustJacketStandardInfo.setSizeNumberMap(jkNumberMap);
+		orderForm.setAdjustJacketStandardInfo(adjustJacketStandardInfo);
+
+		AdjustPantsStandardInfo adjustPantsStandardInfo = new AdjustPantsStandardInfo();
+		adjustPantsStandardInfo.setSizeFigureMap(ptFigureMap);
+		adjustPantsStandardInfo.setSizeNumberMap(ptNumberMap);
+		orderForm.setAdjustPantsStandardInfo(adjustPantsStandardInfo);
+
+		AdjustGiletStandardInfo adjustGiletStandardInfo = new AdjustGiletStandardInfo();
+		adjustGiletStandardInfo.setSizeFigureMap(glFigureMap);
+		adjustGiletStandardInfo.setSizeNumberMap(glNumberMap);
+		orderForm.setAdjustGiletStandardInfo(adjustGiletStandardInfo);
+
+		AdjustPants2StandardInfo adjustPants2StandardInfo = new AdjustPants2StandardInfo();
+		adjustPants2StandardInfo.setSizeFigureMap(pt2FigureMap);
+		adjustPants2StandardInfo.setSizeNumberMap(pt2NumberMap);
+		orderForm.setAdjustPants2StandardInfo(adjustPants2StandardInfo);
+
 	}
 }

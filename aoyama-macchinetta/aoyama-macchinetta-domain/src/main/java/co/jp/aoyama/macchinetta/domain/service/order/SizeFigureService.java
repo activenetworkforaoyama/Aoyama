@@ -8,4 +8,6 @@ public interface SizeFigureService {
 
 	List<SizeFigure> getFigureList(String poType);
 
+	List<SizeFigure> getSizeFigureByItem(String orderPattern, String itemCode, String subItemCode, String modelCode);
+
 }

@@ -4,6 +4,11 @@
 	<input type="button" value="③工場指示書(SUIT)" onclick="pdfDownload(3)">
 </div>
 
+<div>
+	<input type="button" value="text" onclick="textOne()">&nbsp;&nbsp;
+	<input type="text" value="${textOne }">
+</div>
+
 <!-- 依存ライブラリの読み込み -->
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/firebugx.js"></script>
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/jquery-1.11.2.min.js"></script>
@@ -16,6 +21,10 @@ var contextPath = $("meta[name='contextPath']").attr("content");
 
 function pdfDownload(sign){
 	window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId=077190125940";
+}
+
+function textOne(){
+	window.location.href = contextPath + "/pdfFile/textOne";
 }
 
 </script>

@@ -17,4 +17,10 @@ public interface SizeFigureRepository {
     int updateByPrimaryKey(SizeFigure record);
 
 	List<SizeFigure> getFigureList(String poType);
+
+	List<SizeFigure> getSizeFigureByItem(
+			@Param("orderPattern")String orderPattern, 
+			@Param("itemCode")String itemCode, 
+			@Param("subItemCode")String subItemCode, 
+			@Param("modelCode")String modelCode);
 }

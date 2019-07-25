@@ -385,7 +385,7 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  text: getMsgByOneArg('msg017','編集内容'),
+			  text: getMsgByOneArg('msg017','編集'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
 			  dangerMode: true,
