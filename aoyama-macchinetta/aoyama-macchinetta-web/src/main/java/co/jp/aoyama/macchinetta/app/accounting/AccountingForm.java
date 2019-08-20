@@ -3,6 +3,13 @@ package co.jp.aoyama.macchinetta.app.accounting;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+
+@Component
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AccountingForm implements Serializable {
 
 	/**
@@ -51,6 +58,12 @@ public class AccountingForm implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
+    
+    private String authority;
+    
+    private String belongCode;
+    
+    private boolean isAccount;
 
 	public String getCashId() {
 		return cashId;
@@ -220,4 +233,27 @@ public class AccountingForm implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+	public String getBelongCode() {
+		return belongCode;
+	}
+
+	public void setBelongCode(String belongCode) {
+		this.belongCode = belongCode;
+	}
+	
+	public boolean getIsAccount() {
+		return isAccount;
+	}
+
+	public void setIsAccount(boolean isAccount) {
+		this.isAccount = isAccount;
+	}
 }

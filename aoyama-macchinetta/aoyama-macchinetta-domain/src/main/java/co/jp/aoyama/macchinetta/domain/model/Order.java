@@ -12285,7 +12285,7 @@ public class Order implements Serializable {
     }
 
     public void setHostTransmitSize(String hostTransmitSize) {
-        this.hostTransmitSize = hostTransmitSize == null ? null : hostTransmitSize.trim();
+        this.hostTransmitSize = hostTransmitSize == null ? null : hostTransmitSize;
     }
 
     public String getHostTransmitMakerProduct() {
@@ -12408,424 +12408,6 @@ public class Order implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-	@Override
-	public String toString() {
-		return "{\"" + orderId + "\"\t\"" + orderPattern + "\"\t\"" + storeBrandCode + "\"\t\"" + shopCode
-				+ "\"\t\"" + billingAmount + "\"\t\"" + productPrice + "\"\t\"" + optionPrice + "\"\t\""
-				+ totalPrice + "\"\t\"" + consumptionTaxAmount + "\"\t\"" + salesAmount + "\"\t\"" + wsPrice
-				+ "\"\t\"" + cashId + "\"\t\"" + cashDiscountPrice + "\"\t\"" + cashProductPrice + "\"\t\""
-				+ storeNm + "\"\t\"" + storeStaffNm + "\"\t\"" + printoutCustRomaNm + "\"\t\""
-				+ printoutStoreStaffRomaNm + "\"\t\"" + custCd + "\"\t\"" + custNm + "\"\t\"" + custKanaNm
-				+ "\"\t\"" + custDeliverDate + "\"\t\"" + custIsDeliverShortning + "\"\t\"" + custIsEarlyDiscount
-				+ "\"\t\"" + custShopDeliveryDate + "\"\t\"" + custStaff + "\"\t\"" + custType + "\"\t\""
-				+ custShippingDestination + "\"\t\"" + custShippingDestnationOtherstore + "\"\t\"" + custRemark
-				+ "\"\t\"" + productItem + "\"\t\"" + productItemDisplaycode + "\"\t\"" + productIs3piece
-				+ "\"\t\"" + productIs3pieceRtPrice + "\"\t\"" + productIs3pieceWsWage + "\"\t\""
-				+ productIs3pieceWsPrice + "\"\t\"" + productSparePantsClass + "\"\t\"" + productSparePantsRtPrice
-				+ "\"\t\"" + productSparePantsWsWage + "\"\t\"" + productSparePantsWsPrice + "\"\t\""
-				+ productFabricNo + "\"\t\"" + productCategory + "\"\t\"" + productBrandType + "\"\t\""
-				+ productBrandNm + "\"\t\"" + productFabricNmNecessity + "\"\t\"" + productEmbroideryNecessity
-				+ "\"\t\"" + productEmbroideryNm + "\"\t\"" + productEmbroideryFont + "\"\t\""
-				+ productEmbroideryThreadColor + "\"\t\"" + productEmbroideryGazette + "\"\t\""
-				+ productEmbroideryGazetteRtPrice + "\"\t\"" + productEmbroideryGazetteWsWage + "\"\t\""
-				+ productEmbroideryGazetteWsPrice + "\"\t\"" + productEmbroideryNmPos + "\"\t\""
-				+ productEmbroideryNmPosRtPrice + "\"\t\"" + productEmbroideryNmPosWsWage + "\"\t\""
-				+ productEmbroideryNmPosWsPrice + "\"\t\"" + productEmbroideryLength + "\"\t\""
-				+ productEmbroideryWidth + "\"\t\"" + productRemainingClothType + "\"\t\"" + productRemainingClothNm
-				+ "\"\t\"" + productFabricBrandNm + "\"\t\"" + productServiceNm + "\"\t\""
-				+ productComposFrtFabric + "\"\t\"" + productComposBodyLiner + "\"\t\"" + productComposSleeveLiner
-				+ "\"\t\"" + productNotice + "\"\t\"" + productFactoryCd + "\"\t\"" + productMakerCode
-				+ "\"\t\"" + productOrderdDate + "\"\t\"" + jkModelCd + "\"\t\"" + jkModelNm + "\"\t\""
-				+ jkModelRtPrice + "\"\t\"" + jkModelWsWage + "\"\t\"" + jkModelWsPrice + "\"\t\"" + jkFrtBtnCd
-				+ "\"\t\"" + jkFrtBtnNm + "\"\t\"" + jkFrtBtnRtPrice + "\"\t\"" + jkFrtBtnWsWage + "\"\t\""
-				+ jkFrtBtnWsPrice + "\"\t\"" + jkLapelDesignCd + "\"\t\"" + jkLapelDesignNm + "\"\t\""
-				+ jkLapelDesignRtPrice + "\"\t\"" + jkLapelDesignWsWage + "\"\t\"" + jkLapelDesignWsPrice
-				+ "\"\t\"" + jkGradeCd + "\"\t\"" + jkGradeNm + "\"\t\"" + jkGradeRtPrice + "\"\t\""
-				+ jkGradeWsWage + "\"\t\"" + jkGradeWsPrice + "\"\t\"" + jkInnerClothCd + "\"\t\""
-				+ jkInnerClothNm + "\"\t\"" + jkInnerClothRtPrice + "\"\t\"" + jkInnerClothWsWage + "\"\t\""
-				+ jkInnerClothWsPrice + "\"\t\"" + jkDaibaCd + "\"\t\"" + jkDaibaNm + "\"\t\"" + jkDaibaRtPrice
-				+ "\"\t\"" + jkDaibaWsWage + "\"\t\"" + jkDaibaWsPrice + "\"\t\"" + jkLookClothCd + "\"\t\""
-				+ jkLookClothNm + "\"\t\"" + jkLookClothRtPrice + "\"\t\"" + jkLookClothWsWage + "\"\t\""
-				+ jkLookClothWsPrice + "\"\t\"" + jkCollarInnerCd + "\"\t\"" + jkCollarInnerNm + "\"\t\""
-				+ jkCollarInnerRtPrice + "\"\t\"" + jkCollarInnerWsWage + "\"\t\"" + jkCollarInnerWsPrice
-				+ "\"\t\"" + jkCollarHangCd + "\"\t\"" + jkCollarHangNm + "\"\t\"" + jkCollarHangRtPrice
-				+ "\"\t\"" + jkCollarHangWsWage + "\"\t\"" + jkCollarHangWsPrice + "\"\t\"" + jkLapelWidthCd
-				+ "\"\t\"" + jkLapelWidthNm + "\"\t\"" + jkLapelWidthRtPrice + "\"\t\"" + jkLapelWidthWsWage
-				+ "\"\t\"" + jkLapelWidthWsPrice + "\"\t\"" + jkFlowerHoleCd + "\"\t\"" + jkFlowerHoleNm
-				+ "\"\t\"" + jkFlowerHoleRtPrice + "\"\t\"" + jkFlowerHoleWsWage + "\"\t\"" + jkFlowerHoleWsPrice
-				+ "\"\t\"" + jkBreastPktCd + "\"\t\"" + jkBreastPktNm + "\"\t\"" + jkBreastPktRtPrice + "\"\t\""
-				+ jkBreastPktWsWage + "\"\t\"" + jkBreastPktWsPrice + "\"\t\"" + jkWaistPktCd + "\"\t\""
-				+ jkWaistPktNm + "\"\t\"" + jkWaistPktRtPrice + "\"\t\"" + jkWaistPktWsWage + "\"\t\""
-				+ jkWaistPktWsPrice + "\"\t\"" + jkChgPktCd + "\"\t\"" + jkChgPktNm + "\"\t\"" + jkChgPktRtPrice
-				+ "\"\t\"" + jkChgPktWsWage + "\"\t\"" + jkChgPktWsPrice + "\"\t\"" + jkSlantedPktCd + "\"\t\""
-				+ jkSlantedPktNm + "\"\t\"" + jkSlantedPktRtPrice + "\"\t\"" + jkSlantedPktWsWage + "\"\t\""
-				+ jkSlantedPktWsPrice + "\"\t\"" + jkShinobiPktCd + "\"\t\"" + jkShinobiPktNm + "\"\t\""
-				+ jkShinobiPktRtPrice + "\"\t\"" + jkShinobiPktWsWage + "\"\t\"" + jkShinobiPktWsPrice + "\"\t\""
-				+ jkSleeveTypeCd + "\"\t\"" + jkSleeveTypeNm + "\"\t\"" + jkSleeveTypeRtPrice + "\"\t\""
-				+ jkSleeveTypeWsWage + "\"\t\"" + jkSleeveTypeWsPrice + "\"\t\"" + jkManicaCd + "\"\t\""
-				+ jkManicaNm + "\"\t\"" + jkManicaRtPrice + "\"\t\"" + jkManicaWsWage + "\"\t\"" + jkManicaWsPrice
-				+ "\"\t\"" + jkSleeveBtnType + "\"\t\"" + jkSleeveBtnNumber + "\"\t\"" + jkSleeveBtnCd
-				+ "\"\t\"" + jkSleeveBtnNm + "\"\t\"" + jkSleeveBtnRtPrice + "\"\t\"" + jkSleeveBtnWsWage
-				+ "\"\t\"" + jkSleeveBtnWsPrice + "\"\t\"" + jkCuffCd + "\"\t\"" + jkCuffNm + "\"\t\""
-				+ jkCuffRtPrice + "\"\t\"" + jkCuffWsWage + "\"\t\"" + jkCuffWsPrice + "\"\t\"" + jkInnerPktType
-				+ "\"\t\"" + jkInnerPktCd + "\"\t\"" + jkInnerPktNm + "\"\t\"" + jkInnerPktRtPrice + "\"\t\""
-				+ jkInnerPktWsWage + "\"\t\"" + jkInnerPktWsPrice + "\"\t\"" + jkRightInnerPktTypeCd + "\"\t\""
-				+ jkRightInnerPktTypeNm + "\"\t\"" + jkRightInnerPktTypeRtPrice + "\"\t\""
-				+ jkRightInnerPktTypeWsWage + "\"\t\"" + jkRightInnerPktTypeWsPrice + "\"\t\"" + jkStitchTypeCd
-				+ "\"\t\"" + jkStitchTypeNm + "\"\t\"" + jkStitchTypeRtPrice + "\"\t\"" + jkStitchTypeWsWage
-				+ "\"\t\"" + jkStitchTypeWsPrice + "\"\t\"" + jkStitchPlcType + "\"\t\"" + jkStitchPlcCd
-				+ "\"\t\"" + jkStitchPlcNm + "\"\t\"" + jkStitchPlcRtPrice + "\"\t\"" + jkStitchPlcWsWage
-				+ "\"\t\"" + jkStitchPlcWsPrice + "\"\t\"" + jkDblstitchPlcType + "\"\t\"" + jkDblstitchPlcCd
-				+ "\"\t\"" + jkDblstitchPlcNm + "\"\t\"" + jkDblstitchPlcRtPrice + "\"\t\"" + jkDblstitchPlcWsWage
-				+ "\"\t\"" + jkDblstitchPlcWsPrice + "\"\t\"" + jkAmfColorType + "\"\t\"" + jkAmfColorPlcCd
-				+ "\"\t\"" + jkAmfColorPlcNm + "\"\t\"" + jkAmfColorCd + "\"\t\"" + jkAmfColorNm + "\"\t\""
-				+ jkAmfColorRtPrice + "\"\t\"" + jkAmfColorWsWage + "\"\t\"" + jkAmfColorWsPrice + "\"\t\""
-				+ jkBtnholeColorType + "\"\t\"" + jkBtnholeColorPlcCd + "\"\t\"" + jkBtnholeColorPlcN + "\"\t\""
-				+ jkBtnholeColorCd + "\"\t\"" + jkBtnholeColorNm + "\"\t\"" + jkBtnholePlcColorRtPrice + "\"\t\""
-				+ jkBtnholePlcColorWsWage + "\"\t\"" + jkBtnholePlcColorWsPrice + "\"\t\"" + jkBtnthreadColorType
-				+ "\"\t\"" + jkBtnthreadColorPlcCd + "\"\t\"" + jkBtnthreadColorPlcN + "\"\t\""
-				+ jkBtnthreadColorCd + "\"\t\"" + jkBtnthreadColorNm + "\"\t\"" + jkBtnthreadPlcColorRtPrice
-				+ "\"\t\"" + jkBtnthreadPlcColorWsWage + "\"\t\"" + jkBtnthreadPlcColorWsPrice + "\"\t\""
-				+ jkVentCd + "\"\t\"" + jkVentNm + "\"\t\"" + jkVentRtPrice + "\"\t\"" + jkVentWsWage + "\"\t\""
-				+ jkVentWsPrice + "\"\t\"" + jkInnerBodyClothType + "\"\t\"" + jkInnerBodyClothCd + "\"\t\""
-				+ jkInnerBodyClothNm + "\"\t\"" + jkInnerBodyClothRtPrice + "\"\t\"" + jkInnerBodyClothWsWage
-				+ "\"\t\"" + jkInnerBodyClothWsPrice + "\"\t\"" + jkInnerSleeveClothType + "\"\t\""
-				+ jkInnerSleeveClothCd + "\"\t\"" + jkInnerSleeveClothNm + "\"\t\"" + jkInnerSleeveClothRtPrice
-				+ "\"\t\"" + jkInnerSleeveClothWsWage + "\"\t\"" + jkInnerSleeveClothWsPrice + "\"\t\""
-				+ jkBtnMaterialType + "\"\t\"" + jkBtnMaterialCd + "\"\t\"" + jkBtnMaterialNm + "\"\t\""
-				+ jkBtnMaterialRtPrice + "\"\t\"" + jkBtnMaterialWsWage + "\"\t\"" + jkBtnMaterialWsPrice
-				+ "\"\t\"" + jkShapeMemoryCd + "\"\t\"" + jkShapeMemoryNm + "\"\t\"" + jkShapeMemoryRtPrice
-				+ "\"\t\"" + jkShapeMemoryWsWage + "\"\t\"" + jkShapeMemoryWsPrice + "\"\t\"" + ptModelCd
-				+ "\"\t\"" + ptModelNm + "\"\t\"" + ptModelRtPrice + "\"\t\"" + ptModelWsWage + "\"\t\""
-				+ ptModelWsPrice + "\"\t\"" + ptTackCd + "\"\t\"" + ptTackNm + "\"\t\"" + ptTackRtPrice
-				+ "\"\t\"" + ptTackWsWage + "\"\t\"" + ptTackWsPrice + "\"\t\"" + ptKneeinnerTypeCd + "\"\t\""
-				+ ptKneeinnerTypeNm + "\"\t\"" + ptKneeinnerTypeRtPrice + "\"\t\"" + ptKneeinnerTypeWsWage
-				+ "\"\t\"" + ptKneeinnerTypeWsPrice + "\"\t\"" + ptKneeinnerClothCd + "\"\t\""
-				+ ptKneeinnerClothNm + "\"\t\"" + ptKneeinnerClothRtPrice + "\"\t\"" + ptKneeinnerClothWsWage
-				+ "\"\t\"" + ptKneeinnerClothWsPrice + "\"\t\"" + ptFrtTypeCd + "\"\t\"" + ptFrtTypeNm
-				+ "\"\t\"" + ptFrtTypeRtPrice + "\"\t\"" + ptFrtTypeWsWage + "\"\t\"" + ptFrtTypeWsPrice
-				+ "\"\t\"" + ptPancherinaCd + "\"\t\"" + ptPancherinaNm + "\"\t\"" + ptPancherinaRtPrice
-				+ "\"\t\"" + ptPancherinaWsWage + "\"\t\"" + ptPancherinaWsPrice + "\"\t\"" + ptAdjusterCd
-				+ "\"\t\"" + ptAdjusterNm + "\"\t\"" + ptAdjusterRtPrice + "\"\t\"" + ptAdjusterWsWage
-				+ "\"\t\"" + ptAdjusterWsPrice + "\"\t\"" + ptBeltloopType + "\"\t\"" + ptBeltloopCd + "\"\t\""
-				+ ptBeltloopNm + "\"\t\"" + ptBeltloopRtPrice + "\"\t\"" + ptBeltloopWsWage + "\"\t\""
-				+ ptBeltloopWsPrice + "\"\t\"" + ptPinloopCd + "\"\t\"" + ptPinloopNm + "\"\t\""
-				+ ptPinloopRtPrice + "\"\t\"" + ptPinloopWsWage + "\"\t\"" + ptPinloopWsPrice + "\"\t\""
-				+ ptSidePktCd + "\"\t\"" + ptSidePktNm + "\"\t\"" + ptSidePktRtPrice + "\"\t\"" + ptSidePktWsWage
-				+ "\"\t\"" + ptSidePktWsPrice + "\"\t\"" + ptShinobiPktCd + "\"\t\"" + ptShinobiPktNm + "\"\t\""
-				+ ptShinobiPktRtPrice + "\"\t\"" + ptShinobiPktWsWage + "\"\t\"" + ptShinobiPktWsPrice + "\"\t\""
-				+ ptCoinPktCd + "\"\t\"" + ptCoinPktNm + "\"\t\"" + ptCoinPktRtPrice + "\"\t\"" + ptCoinPktWsWage
-				+ "\"\t\"" + ptCoinPktWsPrice + "\"\t\"" + ptFlapcoinPktCd + "\"\t\"" + ptFlapcoinPktNm
-				+ "\"\t\"" + ptFlapcoinPktRtPrice + "\"\t\"" + ptFlapcoinPktWsWage + "\"\t\""
-				+ ptFlapcoinPktWsPrice + "\"\t\"" + ptLeftPisPktCd + "\"\t\"" + ptLeftPisPktNm + "\"\t\""
-				+ ptLeftPisPktRtPrice + "\"\t\"" + ptLeftPisPktWsWage + "\"\t\"" + ptLeftPisPktWsPrice + "\"\t\""
-				+ ptRightPisPktCd + "\"\t\"" + ptRightPisPktNm + "\"\t\"" + ptRightPisPktRtPrice + "\"\t\""
-				+ ptRightPisPktWsWage + "\"\t\"" + ptRightPisPktWsPrice + "\"\t\"" + ptVCutCd + "\"\t\""
-				+ ptVCutNm + "\"\t\"" + ptVCutRtPrice + "\"\t\"" + ptVCutWsWage + "\"\t\"" + ptVCutWsPrice
-				+ "\"\t\"" + ptHemUpCd + "\"\t\"" + ptHemUpNm + "\"\t\"" + ptHemUpRtPrice + "\"\t\""
-				+ ptHemUpWsWage + "\"\t\"" + ptHemUpWsPrice + "\"\t\"" + ptDblWidthCd + "\"\t\"" + ptDblWidthNm
-				+ "\"\t\"" + ptDblWidthRtPrice + "\"\t\"" + ptDblWidthWsWage + "\"\t\"" + ptDblWidthWsPrice
-				+ "\"\t\"" + ptAmfStitchCd + "\"\t\"" + ptAmfStitchNm + "\"\t\"" + ptAmfStitchRtPrice + "\"\t\""
-				+ ptAmfStitchWsWage + "\"\t\"" + ptAmfStitchWsPrice + "\"\t\"" + ptStitchPlcType + "\"\t\""
-				+ ptStitchPlcCd + "\"\t\"" + ptStitchPlcNm + "\"\t\"" + ptStitchPlcRtPrice + "\"\t\""
-				+ ptStitchPlcWsWage + "\"\t\"" + ptStitchPlcWsPrice + "\"\t\"" + ptDblstitchPlcType + "\"\t\""
-				+ ptDblstitchPlcCd + "\"\t\"" + ptDblstitchPlcNm + "\"\t\"" + ptDblstitchPlcRtPrice + "\"\t\""
-				+ ptDblstitchPlcWsWage + "\"\t\"" + ptDblstitchPlcWsPrice + "\"\t\"" + ptAmfColorType + "\"\t\""
-				+ ptAmfColorPlcCd + "\"\t\"" + ptAmfColorPlcNm + "\"\t\"" + ptAmfColorCd + "\"\t\"" + ptAmfColorNm
-				+ "\"\t\"" + ptAmfColorRtPrice + "\"\t\"" + ptAmfColorWsWage + "\"\t\"" + ptAmfColorWsPrice
-				+ "\"\t\"" + ptBtnholeColorType + "\"\t\"" + ptBtnholeColorPlcCd + "\"\t\"" + ptBtnholeColorPlcNm
-				+ "\"\t\"" + ptBtnholeColorCd + "\"\t\"" + ptBtnholeColorNm + "\"\t\"" + ptBtnholeColorRtPrice
-				+ "\"\t\"" + ptBtnholeColorWsWage + "\"\t\"" + ptBtnholeColorWsPrice + "\"\t\""
-				+ ptBtnthreadColorType + "\"\t\"" + ptBtnthreadColorPlcCd + "\"\t\"" + ptBtnthreadColorPlcNm
-				+ "\"\t\"" + ptBtnthreadColorCd + "\"\t\"" + ptBtnthreadColorNm + "\"\t\""
-				+ ptBtnthreadColorRtPrice + "\"\t\"" + ptBtnthreadColorWsWage + "\"\t\"" + ptBtnthreadColorWsPrice
-				+ "\"\t\"" + ptBtnMaterialType + "\"\t\"" + ptBtnMaterialCd + "\"\t\"" + ptBtnMaterialNm
-				+ "\"\t\"" + ptBtnMaterialRtPrice + "\"\t\"" + ptBtnMaterialWsWage + "\"\t\""
-				+ ptBtnMaterialWsPrice + "\"\t\"" + ptSuspenderBtnCd + "\"\t\"" + ptSuspenderBtnNm + "\"\t\""
-				+ ptSuspenderBtnRtPrice + "\"\t\"" + ptSuspenderBtnWsWage + "\"\t\"" + ptSuspenderBtnWsPrice
-				+ "\"\t\"" + ptNonSlipCd + "\"\t\"" + ptNonSlipNm + "\"\t\"" + ptNonSlipRtPrice + "\"\t\""
-				+ ptNonSlipWsWage + "\"\t\"" + ptNonSlipWsPrice + "\"\t\"" + ptChicSlipCd + "\"\t\""
-				+ ptChicSlipNm + "\"\t\"" + ptChicSlipRtPrice + "\"\t\"" + ptChicSlipWsWage + "\"\t\""
-				+ ptChicSlipWsPrice + "\"\t\"" + ptShapeMemoryCd + "\"\t\"" + ptShapeMemoryNm + "\"\t\""
-				+ ptShapeMemoryRtPrice + "\"\t\"" + ptShapeMemoryWsWage + "\"\t\"" + ptShapeMemoryWsPrice
-				+ "\"\t\"" + ptShoeSoreCd + "\"\t\"" + ptShoeSoreNm + "\"\t\"" + ptShoeSoreRtPrice + "\"\t\""
-				+ ptShoeSoreWsWage + "\"\t\"" + ptShoeSoreWsPrice + "\"\t\"" + ptSideStripeCd + "\"\t\""
-				+ ptSideStripeNm + "\"\t\"" + ptSideStripeRtPrice + "\"\t\"" + ptSideStripeWsWage + "\"\t\""
-				+ ptSideStripeWsPrice + "\"\t\"" + ptSideStripeWidthCd + "\"\t\"" + ptSideStripeWidthNm + "\"\t\""
-				+ ptSideStripeWidthRtPrice + "\"\t\"" + ptSideStripeWidthWsWage + "\"\t\""
-				+ ptSideStripeWidthWsPrice + "\"\t\"" + pt2ModelCd + "\"\t\"" + pt2ModelNm + "\"\t\""
-				+ pt2ModelRtPrice + "\"\t\"" + pt2ModelWsWage + "\"\t\"" + pt2ModelWsPrice + "\"\t\"" + pt2TackCd
-				+ "\"\t\"" + pt2TackNm + "\"\t\"" + pt2TackRtPrice + "\"\t\"" + pt2TackWsWage + "\"\t\""
-				+ pt2TackWsPrice + "\"\t\"" + pt2KneeinnerTypeCd + "\"\t\"" + pt2KneeinnerTypeNm + "\"\t\""
-				+ pt2KneeinnerTypeRtPrice + "\"\t\"" + pt2KneeinnerTypeWsWage + "\"\t\"" + pt2KneeinnerTypeWsPrice
-				+ "\"\t\"" + pt2KneeinnerClothCd + "\"\t\"" + pt2KneeinnerClothNm + "\"\t\""
-				+ pt2KneeinnerClothRtPrice + "\"\t\"" + pt2KneeinnerClothWsWage + "\"\t\""
-				+ pt2KneeinnerClothWsPrice + "\"\t\"" + pt2FrtTypeCd + "\"\t\"" + pt2FrtTypeNm + "\"\t\""
-				+ pt2FrtTypeRtPrice + "\"\t\"" + pt2FrtTypeWsWage + "\"\t\"" + pt2FrtTypeWsPrice + "\"\t\""
-				+ pt2PancherinaCd + "\"\t\"" + pt2PancherinaNm + "\"\t\"" + pt2PancherinaRtPrice + "\"\t\""
-				+ pt2PancherinaWsWage + "\"\t\"" + pt2PancherinaWsPrice + "\"\t\"" + pt2AdjusterCd + "\"\t\""
-				+ pt2AdjusterNm + "\"\t\"" + pt2AdjusterRtPrice + "\"\t\"" + pt2AdjusterWsWage + "\"\t\""
-				+ pt2AdjusterWsPrice + "\"\t\"" + pt2BeltloopType + "\"\t\"" + pt2BeltloopCd + "\"\t\""
-				+ pt2BeltloopNm + "\"\t\"" + pt2BeltloopRtPrice + "\"\t\"" + pt2BeltloopWsWage + "\"\t\""
-				+ pt2BeltloopWsPrice + "\"\t\"" + pt2PinloopCd + "\"\t\"" + pt2PinloopNm + "\"\t\""
-				+ pt2PinloopRtPrice + "\"\t\"" + pt2PinloopWsWage + "\"\t\"" + pt2PinloopWsPrice + "\"\t\""
-				+ pt2SidePktCd + "\"\t\"" + pt2SidePktNm + "\"\t\"" + pt2SidePktRtPrice + "\"\t\""
-				+ pt2SidePktWsWage + "\"\t\"" + pt2SidePktWsPrice + "\"\t\"" + pt2ShinobiPktCd + "\"\t\""
-				+ pt2ShinobiPktNm + "\"\t\"" + pt2ShinobiPktRtPrice + "\"\t\"" + pt2ShinobiPktWsWage + "\"\t\""
-				+ pt2ShinobiPktWsPrice + "\"\t\"" + pt2CoinPktCd + "\"\t\"" + pt2CoinPktNm + "\"\t\""
-				+ pt2CoinPktRtPrice + "\"\t\"" + pt2CoinPktWsWage + "\"\t\"" + pt2CoinPktWsPrice + "\"\t\""
-				+ pt2FlapcoinPktCd + "\"\t\"" + pt2FlapcoinPktNm + "\"\t\"" + pt2FlapcoinPktRtPrice + "\"\t\""
-				+ pt2FlapcoinPktWsWage + "\"\t\"" + pt2FlapcoinPktWsPrice + "\"\t\"" + pt2LeftPisPktCd + "\"\t\""
-				+ pt2LeftPisPktNm + "\"\t\"" + pt2LeftPisPktRtPrice + "\"\t\"" + pt2LeftPisPktWsWage + "\"\t\""
-				+ pt2LeftPisPktWsPrice + "\"\t\"" + pt2RightPisPktCd + "\"\t\"" + pt2RightPisPktNm + "\"\t\""
-				+ pt2RightPisPktRtPrice + "\"\t\"" + pt2RightPisPktWsWage + "\"\t\"" + pt2RightPisPktWsPrice
-				+ "\"\t\"" + pt2VCutCd + "\"\t\"" + pt2VCutNm + "\"\t\"" + pt2VCutRtPrice + "\"\t\""
-				+ pt2VCutWsWage + "\"\t\"" + pt2VCutWsPrice + "\"\t\"" + pt2HemUpCd + "\"\t\"" + pt2HemUpNm
-				+ "\"\t\"" + pt2HemUpRtPrice + "\"\t\"" + pt2HemUpWsWage + "\"\t\"" + pt2HemUpWsPrice + "\"\t\""
-				+ pt2DblWidthCd + "\"\t\"" + pt2DblWidthNm + "\"\t\"" + pt2DblWidthRtPrice + "\"\t\""
-				+ pt2DblWidthWsWage + "\"\t\"" + pt2DblWidthWsPrice + "\"\t\"" + pt2AmfStitchCd + "\"\t\""
-				+ pt2AmfStitchNm + "\"\t\"" + pt2AmfStitchRtPrice + "\"\t\"" + pt2AmfStitchWsWage + "\"\t\""
-				+ pt2AmfStitchWsPrice + "\"\t\"" + pt2StitchPlcType + "\"\t\"" + pt2StitchPlcCd + "\"\t\""
-				+ pt2StitchPlcNm + "\"\t\"" + pt2StitchPlcRtPrice + "\"\t\"" + pt2StitchPlcWsWage + "\"\t\""
-				+ pt2StitchPlcWsPrice + "\"\t\"" + pt2DblstitchPlcType + "\"\t\"" + pt2DblstitchPlcCd + "\"\t\""
-				+ pt2DblstitchPlcNm + "\"\t\"" + pt2DblstitchPlcRtPrice + "\"\t\"" + pt2DblstitchPlcWsWage
-				+ "\"\t\"" + pt2DblstitchPlcWsPrice + "\"\t\"" + pt2AmfColorType + "\"\t\"" + pt2AmfColorPlcCd
-				+ "\"\t\"" + pt2AmfColorPlcNm + "\"\t\"" + pt2AmfColorCd + "\"\t\"" + pt2AmfColorNm + "\"\t\""
-				+ pt2AmfColorRtPrice + "\"\t\"" + pt2AmfColorWsWage + "\"\t\"" + pt2AmfColorWsPrice + "\"\t\""
-				+ pt2BtnholeColorType + "\"\t\"" + pt2BtnholeColorPlcCd + "\"\t\"" + pt2BtnholeColorPlcNm
-				+ "\"\t\"" + pt2BtnholeColorCd + "\"\t\"" + pt2BtnholeColorNm + "\"\t\"" + pt2BtnholeColorRtPrice
-				+ "\"\t\"" + pt2BtnholeColorWsWage + "\"\t\"" + pt2BtnholeColorWsPrice + "\"\t\""
-				+ pt2BtnthreadColorType + "\"\t\"" + pt2BtnthreadColorPlcCd + "\"\t\"" + pt2BtnthreadColorPlcNm
-				+ "\"\t\"" + pt2BtnthreadColorCd + "\"\t\"" + pt2BtnthreadColorNm + "\"\t\""
-				+ pt2BtnthreadColorRtPrice + "\"\t\"" + pt2BtnthreadColorWsWage + "\"\t\""
-				+ pt2BtnthreadColorWsPrice + "\"\t\"" + pt2BtnMaterialType + "\"\t\"" + pt2BtnMaterialCd
-				+ "\"\t\"" + pt2BtnMaterialNm + "\"\t\"" + pt2BtnMaterialRtPrice + "\"\t\"" + pt2BtnMaterialWsWage
-				+ "\"\t\"" + pt2BtnMaterialWsPrice + "\"\t\"" + pt2SuspenderBtnCd + "\"\t\"" + pt2SuspenderBtnNm
-				+ "\"\t\"" + pt2SuspenderBtnRtPrice + "\"\t\"" + pt2SuspenderBtnWsWage + "\"\t\""
-				+ pt2SuspenderBtnWsPrice + "\"\t\"" + pt2NonSlipCd + "\"\t\"" + pt2NonSlipNm + "\"\t\""
-				+ pt2NonSlipRtPrice + "\"\t\"" + pt2NonSlipWsWage + "\"\t\"" + pt2NonSlipWsPrice + "\"\t\""
-				+ pt2ChicSlipCd + "\"\t\"" + pt2ChicSlipNm + "\"\t\"" + pt2ChicSlipRtPrice + "\"\t\""
-				+ pt2ChicSlipWsWage + "\"\t\"" + pt2ChicSlipWsPrice + "\"\t\"" + pt2ShapeMemoryCd + "\"\t\""
-				+ pt2ShapeMemoryNm + "\"\t\"" + pt2ShapeMemoryRtPrice + "\"\t\"" + pt2ShapeMemoryWsWage + "\"\t\""
-				+ pt2ShapeMemoryWsPrice + "\"\t\"" + pt2ShoeSoreCd + "\"\t\"" + pt2ShoeSoreNm + "\"\t\""
-				+ pt2ShoeSoreRtPrice + "\"\t\"" + pt2ShoeSoreWsWage + "\"\t\"" + pt2ShoeSoreWsPrice + "\"\t\""
-				+ pt2SideStripeCd + "\"\t\"" + pt2SideStripeNm + "\"\t\"" + pt2SideStripeRtPrice + "\"\t\""
-				+ pt2SideStripeWsWage + "\"\t\"" + pt2SideStripeWsPrice + "\"\t\"" + pt2SideStripeWidthCd
-				+ "\"\t\"" + pt2SideStripeWidthNm + "\"\t\"" + pt2SideStripeWidthRtPrice + "\"\t\""
-				+ pt2SideStripeWidthWsWage + "\"\t\"" + pt2SideStripeWidthWsPrice + "\"\t\"" + pt3ModelCd
-				+ "\"\t\"" + pt3ModelNm + "\"\t\"" + pt3ModelRtPrice + "\"\t\"" + pt3ModelWsWage + "\"\t\""
-				+ pt3ModelWsPrice + "\"\t\"" + pt3TackCd + "\"\t\"" + pt3TackNm + "\"\t\"" + pt3TackRtPrice
-				+ "\"\t\"" + pt3TackWsWage + "\"\t\"" + pt3TackWsPrice + "\"\t\"" + pt3KneeinnerTypeCd
-				+ "\"\t\"" + pt3KneeinnerTypeNm + "\"\t\"" + pt3KneeinnerTypeRtPrice + "\"\t\""
-				+ pt3KneeinnerTypeWsWage + "\"\t\"" + pt3KneeinnerTypeWsPrice + "\"\t\"" + pt3KneeinnerClothCd
-				+ "\"\t\"" + pt3KneeinnerClothNm + "\"\t\"" + pt3KneeinnerClothRtPrice + "\"\t\""
-				+ pt3KneeinnerClothWsWage + "\"\t\"" + pt3KneeinnerClothWsPrice + "\"\t\"" + pt3FrtTypeCd
-				+ "\"\t\"" + pt3FrtTypeNm + "\"\t\"" + pt3FrtTypeRtPrice + "\"\t\"" + pt3FrtTypeWsWage
-				+ "\"\t\"" + pt3FrtTypeWsPrice + "\"\t\"" + pt3PancherinaCd + "\"\t\"" + pt3PancherinaNm
-				+ "\"\t\"" + pt3PancherinaRtPrice + "\"\t\"" + pt3PancherinaWsWage + "\"\t\""
-				+ pt3PancherinaWsPrice + "\"\t\"" + pt3AdjusterCd + "\"\t\"" + pt3AdjusterNm + "\"\t\""
-				+ pt3AdjusterRtPrice + "\"\t\"" + pt3AdjusterWsWage + "\"\t\"" + pt3AdjusterWsPrice + "\"\t\""
-				+ pt3BeltloopType + "\"\t\"" + pt3BeltloopCd + "\"\t\"" + pt3BeltloopNm + "\"\t\""
-				+ pt3BeltloopRtPrice + "\"\t\"" + pt3BeltloopWsWage + "\"\t\"" + pt3BeltloopWsPrice + "\"\t\""
-				+ pt3PinloopCd + "\"\t\"" + pt3PinloopNm + "\"\t\"" + pt3PinloopRtPrice + "\"\t\""
-				+ pt3PinloopWsWage + "\"\t\"" + pt3PinloopWsPrice + "\"\t\"" + pt3SidePktCd + "\"\t\""
-				+ pt3SidePktNm + "\"\t\"" + pt3SidePktRtPrice + "\"\t\"" + pt3SidePktWsWage + "\"\t\""
-				+ pt3SidePktWsPrice + "\"\t\"" + pt3ShinobiPktCd + "\"\t\"" + pt3ShinobiPktNm + "\"\t\""
-				+ pt3ShinobiPktRtPrice + "\"\t\"" + pt3ShinobiPktWsWage + "\"\t\"" + pt3ShinobiPktWsPrice
-				+ "\"\t\"" + pt3CoinPktCd + "\"\t\"" + pt3CoinPktNm + "\"\t\"" + pt3CoinPktRtPrice + "\"\t\""
-				+ pt3CoinPktWsWage + "\"\t\"" + pt3CoinPktWsPrice + "\"\t\"" + pt3FlapcoinPktCd + "\"\t\""
-				+ pt3FlapcoinPktNm + "\"\t\"" + pt3FlapcoinPktRtPrice + "\"\t\"" + pt3FlapcoinPktWsWage + "\"\t\""
-				+ pt3FlapcoinPktWsPrice + "\"\t\"" + pt3LeftPisPktCd + "\"\t\"" + pt3LeftPisPktNm + "\"\t\""
-				+ pt3LeftPisPktRtPrice + "\"\t\"" + pt3LeftPisPktWsWage + "\"\t\"" + pt3LeftPisPktWsPrice
-				+ "\"\t\"" + pt3RightPisPktCd + "\"\t\"" + pt3RightPisPktNm + "\"\t\"" + pt3RightPisPktRtPrice
-				+ "\"\t\"" + pt3RightPisPktWsWage + "\"\t\"" + pt3RightPisPktWsPrice + "\"\t\"" + pt3VCutCd
-				+ "\"\t\"" + pt3VCutNm + "\"\t\"" + pt3VCutRtPrice + "\"\t\"" + pt3VCutWsWage + "\"\t\""
-				+ pt3VCutWsPrice + "\"\t\"" + pt3HemUpCd + "\"\t\"" + pt3HemUpNm + "\"\t\"" + pt3HemUpRtPrice
-				+ "\"\t\"" + pt3HemUpWsWage + "\"\t\"" + pt3HemUpWsPrice + "\"\t\"" + pt3DblWidthCd + "\"\t\""
-				+ pt3DblWidthNm + "\"\t\"" + pt3DblWidthRtPrice + "\"\t\"" + pt3DblWidthWsWage + "\"\t\""
-				+ pt3DblWidthWsPrice + "\"\t\"" + pt3AmfStitchCd + "\"\t\"" + pt3AmfStitchNm + "\"\t\""
-				+ pt3AmfStitchRtPrice + "\"\t\"" + pt3AmfStitchWsWage + "\"\t\"" + pt3AmfStitchWsPrice + "\"\t\""
-				+ pt3StitchPlcType + "\"\t\"" + pt3StitchPlcCd + "\"\t\"" + pt3StitchPlcNm + "\"\t\""
-				+ pt3StitchPlcRtPrice + "\"\t\"" + pt3StitchPlcWsWage + "\"\t\"" + pt3StitchPlcWsPrice + "\"\t\""
-				+ pt3DblstitchPlcType + "\"\t\"" + pt3DblstitchPlcCd + "\"\t\"" + pt3DblstitchPlcNm + "\"\t\""
-				+ pt3DblstitchPlcRtPrice + "\"\t\"" + pt3DblstitchPlcWsWage + "\"\t\"" + pt3DblstitchPlcWsPrice
-				+ "\"\t\"" + pt3AmfColorType + "\"\t\"" + pt3AmfColorPlcCd + "\"\t\"" + pt3AmfColorPlcNm
-				+ "\"\t\"" + pt3AmfColorCd + "\"\t\"" + pt3AmfColorNm + "\"\t\"" + pt3AmfColorRtPrice + "\"\t\""
-				+ pt3AmfColorWsWage + "\"\t\"" + pt3AmfColorWsPrice + "\"\t\"" + pt3BtnholeColorType + "\"\t\""
-				+ pt3BtnholeColorPlcCd + "\"\t\"" + pt3BtnholeColorPlcNm + "\"\t\"" + pt3BtnholeColorCd + "\"\t\""
-				+ pt3BtnholeColorNm + "\"\t\"" + pt3BtnholeColorRtPrice + "\"\t\"" + pt3BtnholeColorWsWage
-				+ "\"\t\"" + pt3BtnholeColorWsPrice + "\"\t\"" + pt3BtnthreadColorType + "\"\t\""
-				+ pt3BtnthreadColorPlcCd + "\"\t\"" + pt3BtnthreadColorPlcNm + "\"\t\"" + pt3BtnthreadColorCd
-				+ "\"\t\"" + pt3BtnthreadColorNm + "\"\t\"" + pt3BtnthreadColorRtPrice + "\"\t\""
-				+ pt3BtnthreadColorWsWage + "\"\t\"" + pt3BtnthreadColorWsPrice + "\"\t\"" + pt3BtnMaterialType
-				+ "\"\t\"" + pt3BtnMaterialCd + "\"\t\"" + pt3BtnMaterialNm + "\"\t\"" + pt3BtnMaterialRtPrice
-				+ "\"\t\"" + pt3BtnMaterialWsWage + "\"\t\"" + pt3BtnMaterialWsPrice + "\"\t\""
-				+ pt3SuspenderBtnCd + "\"\t\"" + pt3SuspenderBtnNm + "\"\t\"" + pt3SuspenderBtnRtPrice + "\"\t\""
-				+ pt3SuspenderBtnWsWage + "\"\t\"" + pt3SuspenderBtnWsPrice + "\"\t\"" + pt3NonSlipCd + "\"\t\""
-				+ pt3NonSlipNm + "\"\t\"" + pt3NonSlipRtPrice + "\"\t\"" + pt3NonSlipWsWage + "\"\t\""
-				+ pt3NonSlipWsPrice + "\"\t\"" + pt3ChicSlipCd + "\"\t\"" + pt3ChicSlipNm + "\"\t\""
-				+ pt3ChicSlipRtPrice + "\"\t\"" + pt3ChicSlipWsWage + "\"\t\"" + pt3ChicSlipWsPrice + "\"\t\""
-				+ pt3ShapeMemoryCd + "\"\t\"" + pt3ShapeMemoryNm + "\"\t\"" + pt3ShapeMemoryRtPrice + "\"\t\""
-				+ pt3ShapeMemoryWsWage + "\"\t\"" + pt3ShapeMemoryWsPrice + "\"\t\"" + pt3ShoeSoreCd + "\"\t\""
-				+ pt3ShoeSoreNm + "\"\t\"" + pt3ShoeSoreRtPrice + "\"\t\"" + pt3ShoeSoreWsWage + "\"\t\""
-				+ pt3ShoeSoreWsPrice + "\"\t\"" + pt3SideStripeCd + "\"\t\"" + pt3SideStripeNm + "\"\t\""
-				+ pt3SideStripeRtPrice + "\"\t\"" + pt3SideStripeWsWage + "\"\t\"" + pt3SideStripeWsPrice
-				+ "\"\t\"" + pt3SideStripeWidthCd + "\"\t\"" + pt3SideStripeWidthNm + "\"\t\""
-				+ pt3SideStripeWidthRtPrice + "\"\t\"" + pt3SideStripeWidthWsWage + "\"\t\""
-				+ pt3SideStripeWidthWsPrice + "\"\t\"" + glModelCd + "\"\t\"" + glModelNm + "\"\t\""
-				+ glModelRtPrice + "\"\t\"" + glModelWsWage + "\"\t\"" + glModelWsPrice + "\"\t\"" + glBreastPktCd
-				+ "\"\t\"" + glBreastPktNm + "\"\t\"" + glBreastPktRtPrice + "\"\t\"" + glBreastPktWsWage
-				+ "\"\t\"" + glBreastPktWsPrice + "\"\t\"" + glWaistPktCd + "\"\t\"" + glWaistPktNm + "\"\t\""
-				+ glWaistPktRtPrice + "\"\t\"" + glWaistPktWsWage + "\"\t\"" + glWaistPktWsPrice + "\"\t\""
-				+ glWaistPktShapeCd + "\"\t\"" + glWaistPktShapeNm + "\"\t\"" + glWaistPktShapeRtPrice + "\"\t\""
-				+ glWaistPktShapeWsWage + "\"\t\"" + glWaistPktShapeWsPrice + "\"\t\"" + glWaistPktClothCd
-				+ "\"\t\"" + glWaistPktClothNm + "\"\t\"" + glWaistPktClothRtPrice + "\"\t\""
-				+ glWaistPktClothWsWage + "\"\t\"" + glWaistPktClothWsPrice + "\"\t\"" + glAmfStitchCd + "\"\t\""
-				+ glAmfStitchNm + "\"\t\"" + glAmfStitchRtPrice + "\"\t\"" + glAmfStitchWsWage + "\"\t\""
-				+ glAmfStitchWsPrice + "\"\t\"" + glStitchPlcType + "\"\t\"" + glStitchPlcCd + "\"\t\""
-				+ glStitchPlcNm + "\"\t\"" + glStitchPlcRtPrice + "\"\t\"" + glStitchPlcWsWage + "\"\t\""
-				+ glStitchPlcWsPrice + "\"\t\"" + glAmfColorType + "\"\t\"" + glAmfColorPlcCd + "\"\t\""
-				+ glAmfColorPlcNm + "\"\t\"" + glAmfColorCd + "\"\t\"" + glAmfColorNm + "\"\t\""
-				+ glAmfColorRtPrice + "\"\t\"" + glAmfColorWsWage + "\"\t\"" + glAmfColorWsPrice + "\"\t\""
-				+ glBtnholeColorType + "\"\t\"" + glBtnholeColorPlcCd + "\"\t\"" + glBtnholeColorPlcNm + "\"\t\""
-				+ glBtnholeColorCd + "\"\t\"" + glBtnholeColorNm + "\"\t\"" + glBtnholeColorRtPrice + "\"\t\""
-				+ glBtnholeColorWsWage + "\"\t\"" + glBtnholeColorWsPrice + "\"\t\"" + glBtnthreadColorType
-				+ "\"\t\"" + glBtnthreadColorPlcCd + "\"\t\"" + glBtnthreadColorPlcNm + "\"\t\""
-				+ glBtnthreadColorCd + "\"\t\"" + glBtnthreadColorNm + "\"\t\"" + glBtnthreadColorRtPrice
-				+ "\"\t\"" + glBtnthreadColorWsWage + "\"\t\"" + glBtnthreadColorWsPrice + "\"\t\""
-				+ glBackClothType + "\"\t\"" + glBackClothCd + "\"\t\"" + glBackClothNm + "\"\t\""
-				+ glBackClothRtPrice + "\"\t\"" + glBackClothWsWage + "\"\t\"" + glBackClothWsPrice + "\"\t\""
-				+ glInnnerClothType + "\"\t\"" + glInnnerClothCd + "\"\t\"" + glInnnerClothNm + "\"\t\""
-				+ glInnnerClothRtPrice + "\"\t\"" + glInnnerClothWsWage + "\"\t\"" + glInnnerClothWsPrice
-				+ "\"\t\"" + glFrtBtnType + "\"\t\"" + glFrtBtnCd + "\"\t\"" + glFrtBtnNm + "\"\t\""
-				+ glFrtBtnRtPrice + "\"\t\"" + glFrtBtnWsWage + "\"\t\"" + glFrtBtnWsPrice + "\"\t\""
-				+ glBackBeltCd + "\"\t\"" + glBackBeltNm + "\"\t\"" + glBackBeltRtPrice + "\"\t\""
-				+ glBackBeltWsWage + "\"\t\"" + glBackBeltWsPrice + "\"\t\"" + glWatchChainCd + "\"\t\""
-				+ glWatchChainNm + "\"\t\"" + glWatchChainRtPrice + "\"\t\"" + glWatchChainWsWage + "\"\t\""
-				+ glWatchChainWsPrice + "\"\t\"" + ctModelCd + "\"\t\"" + ctModelNm + "\"\t\"" + ctModelRtPrice
-				+ "\"\t\"" + ctModelWsWage + "\"\t\"" + ctModelWsPrice + "\"\t\"" + ctLapelDesignCd + "\"\t\""
-				+ ctLapelDesignNm + "\"\t\"" + ctLapelDesignRtPrice + "\"\t\"" + ctLapelDesignWsWage + "\"\t\""
-				+ ctLapelDesignWsPrice + "\"\t\"" + ctWaistPktCd + "\"\t\"" + ctWaistPktNm + "\"\t\""
-				+ ctWaistPktRtPrice + "\"\t\"" + ctWaistPktWsWage + "\"\t\"" + ctWaistPktWsPrice + "\"\t\""
-				+ ctChgPktCd + "\"\t\"" + ctChgPktNm + "\"\t\"" + ctChgPktRtPrice + "\"\t\"" + ctChgPktWsWage
-				+ "\"\t\"" + ctChgPktWsPrice + "\"\t\"" + ctSlantedPktCd + "\"\t\"" + ctSlantedPktNm + "\"\t\""
-				+ ctSlantedPktRtPrice + "\"\t\"" + ctSlantedPktWsWage + "\"\t\"" + ctSlantedPktWsPrice + "\"\t\""
-				+ ctVentCd + "\"\t\"" + ctVentNm + "\"\t\"" + ctVentRtPrice + "\"\t\"" + ctVentWsWage + "\"\t\""
-				+ ctVentWsPrice + "\"\t\"" + ctFrtBtnCd + "\"\t\"" + ctFrtBtnNm + "\"\t\"" + ctFrtBtnRtPrice
-				+ "\"\t\"" + ctFrtBtnWsWage + "\"\t\"" + ctFrtBtnWsPrice + "\"\t\"" + ctCuffCd + "\"\t\""
-				+ ctCuffNm + "\"\t\"" + ctCuffRtPrice + "\"\t\"" + ctCuffWsWage + "\"\t\"" + ctCuffWsPrice
-				+ "\"\t\"" + ctSleeveBtnCd + "\"\t\"" + ctSleeveBtnNm + "\"\t\"" + ctSleeveBtnRtPrice + "\"\t\""
-				+ ctSleeveBtnWsWage + "\"\t\"" + ctSleeveBtnWsPrice + "\"\t\"" + ctBackBeltCd + "\"\t\""
-				+ ctBackBeltNm + "\"\t\"" + ctBackBeltRtPrice + "\"\t\"" + ctBackBeltWsWage + "\"\t\""
-				+ ctBackBeltWsPrice + "\"\t\"" + ctCollarHangCd + "\"\t\"" + ctCollarHangNm + "\"\t\""
-				+ ctCollarHangRtPrice + "\"\t\"" + ctCollarHangWsWage + "\"\t\"" + ctCollarHangWsPrice + "\"\t\""
-				+ ctInnerBodyClothCd + "\"\t\"" + ctInnerBodyClothNm + "\"\t\"" + ctInnerBodyClothRtPrice
-				+ "\"\t\"" + ctInnerBodyClothWsWage + "\"\t\"" + ctInnerBodyClothWsPrice + "\"\t\""
-				+ ctInnerSleeveClothCd + "\"\t\"" + ctInnerSleeveClothNm + "\"\t\"" + ctInnerSleeveClothRtPrice
-				+ "\"\t\"" + ctInnerSleeveClothWsWage + "\"\t\"" + ctInnerSleeveClothWsPrice + "\"\t\""
-				+ ctBtnMaterialCd + "\"\t\"" + ctBtnMaterialNm + "\"\t\"" + ctBtnMaterialRtPrice + "\"\t\""
-				+ ctBtnMaterialWsWage + "\"\t\"" + ctBtnMaterialWsPrice + "\"\t\"" + stModelCd + "\"\t\""
-				+ stModelNm + "\"\t\"" + stModelRtPrice + "\"\t\"" + stModelWsWage + "\"\t\"" + stModelWsPrice
-				+ "\"\t\"" + stCasualHemlineCd + "\"\t\"" + stCasualHemlineNm + "\"\t\"" + stCasualHemlineRtPrice
-				+ "\"\t\"" + stCasualHemlineWsWage + "\"\t\"" + stCasualHemlineWsPrice + "\"\t\"" + stCollarTypeCd
-				+ "\"\t\"" + stCollarTypeNm + "\"\t\"" + stCollarTypeRtPrice + "\"\t\"" + stCollarTypeWsWage
-				+ "\"\t\"" + stCollarTypeWsPrice + "\"\t\"" + stCuffsCd + "\"\t\"" + stCuffsNm + "\"\t\""
-				+ stCuffsRtPrice + "\"\t\"" + stCuffsWsWage + "\"\t\"" + stCuffsWsPrice + "\"\t\""
-				+ stConvertibleCd + "\"\t\"" + stConvertibleNm + "\"\t\"" + stConvertibleRtPrice + "\"\t\""
-				+ stConvertibleWsWage + "\"\t\"" + stConvertibleWsPrice + "\"\t\"" + stAdjusterBtnCd + "\"\t\""
-				+ stAdjusterBtnNm + "\"\t\"" + stAdjusterBtnRtPrice + "\"\t\"" + stAdjusterBtnWsWage + "\"\t\""
-				+ stAdjusterBtnWsPrice + "\"\t\"" + stDblCuffsCd + "\"\t\"" + stDblCuffsNm + "\"\t\""
-				+ stDblCuffsRtPrice + "\"\t\"" + stDblCuffsWsWage + "\"\t\"" + stDblCuffsWsPrice + "\"\t\""
-				+ stClericCd + "\"\t\"" + stClericNm + "\"\t\"" + stClericRtPrice + "\"\t\"" + stClericWsWage
-				+ "\"\t\"" + stClericWsPrice + "\"\t\"" + stSleeveClericcd + "\"\t\"" + stSleeveClericnm
-				+ "\"\t\"" + stSleeveClericrtPrice + "\"\t\"" + stSleeveClericwsWage + "\"\t\""
-				+ stSleeveClericwsPrice + "\"\t\"" + stBtnMaterialCd + "\"\t\"" + stBtnMaterialNm + "\"\t\""
-				+ stBtnMaterialRtPrice + "\"\t\"" + stBtnMaterialWsWage + "\"\t\"" + stBtnMaterialWsPrice
-				+ "\"\t\"" + stGauntletBtnPosCd + "\"\t\"" + stGauntletBtnPosNm + "\"\t\""
-				+ stGauntletBtnPosRtPrice + "\"\t\"" + stGauntletBtnPosWsWage + "\"\t\"" + stGauntletBtnPosWsPrice
-				+ "\"\t\"" + stPinholePinCd + "\"\t\"" + stPinholePinNm + "\"\t\"" + stPinholePinRtPrice
-				+ "\"\t\"" + stPinholePinWsWage + "\"\t\"" + stPinholePinWsPrice + "\"\t\"" + stBreastPktCd
-				+ "\"\t\"" + stBreastPktNm + "\"\t\"" + stBreastPktRtPrice + "\"\t\"" + stBreastPktWsWage
-				+ "\"\t\"" + stBreastPktWsPrice + "\"\t\"" + stFrtDesignCd + "\"\t\"" + stFrtDesignNm + "\"\t\""
-				+ stFrtDesignRtPrice + "\"\t\"" + stFrtDesignWsWage + "\"\t\"" + stFrtDesignWsPrice + "\"\t\""
-				+ stPintuckBosomCd + "\"\t\"" + stPintuckBosomNm + "\"\t\"" + stPintuckBosomRtPrice + "\"\t\""
-				+ stPintuckBosomWsWage + "\"\t\"" + stPintuckBosomWsPrice + "\"\t\"" + stStitchCd + "\"\t\""
-				+ stStitchNm + "\"\t\"" + stStitchRtPrice + "\"\t\"" + stStitchWsWage + "\"\t\"" + stStitchWsPrice
-				+ "\"\t\"" + stColarKeeperCd + "\"\t\"" + stColarKeeperNm + "\"\t\"" + stColarKeeperRtPrice
-				+ "\"\t\"" + stColarKeeperWsWage + "\"\t\"" + stColarKeeperWsPrice + "\"\t\"" + stBtnthreadColorCd
-				+ "\"\t\"" + stBtnthreadColorNm + "\"\t\"" + stBtnthreadColorRtPrice + "\"\t\""
-				+ stBtnthreadColorWsWage + "\"\t\"" + stBtnthreadColorWsPrice + "\"\t\"" + stBtnholeColorCd
-				+ "\"\t\"" + stBtnholeColorNm + "\"\t\"" + stBtnholeColorRtPrice + "\"\t\"" + stBtnholeColorWsWage
-				+ "\"\t\"" + stBtnholeColorWsPrice + "\"\t\"" + stBtnposChgCd + "\"\t\"" + stBtnposChgNm
-				+ "\"\t\"" + stBtnposChgRtPrice + "\"\t\"" + stBtnposChgWsWage + "\"\t\"" + stBtnposChgWsPrice
-				+ "\"\t\"" + stNeckbandBtnChgCd + "\"\t\"" + stNeckbandBtnChgNm + "\"\t\""
-				+ stNeckbandBtnChgRtPrice + "\"\t\"" + stNeckbandBtnChgWsWage + "\"\t\"" + stNeckbandBtnChgWsPrice
-				+ "\"\t\"" + stNeckbandBtnPosChg + "\"\t\"" + stFrtfirstBtnChgCd + "\"\t\"" + stFrtfirstBtnChgNm
-				+ "\"\t\"" + stFrtfirstBtnChgRtPrice + "\"\t\"" + stFrtfirstBtnChgWsWage + "\"\t\""
-				+ stFrtfirstBtnChgWsPrice + "\"\t\"" + stFrtfirstBtnPosChg + "\"\t\"" + stFrtsecondBtnChgCd
-				+ "\"\t\"" + stFrtsecondBtnChgNm + "\"\t\"" + stFrtsecondBtnChgRtPrice + "\"\t\""
-				+ stFrtsecondBtnChgWsWage + "\"\t\"" + stFrtsecondBtnChgWsPrice + "\"\t\"" + stFrtsecondBtnPosChg
-				+ "\"\t\"" + corJkDrop + "\"\t\"" + corJkSize + "\"\t\"" + corJkBodylengthSize + "\"\t\""
-				+ corJkBodylengthCorrect + "\"\t\"" + corJkBodylengthGross + "\"\t\"" + corJkWaistSize + "\"\t\""
-				+ corJkWaistCorrect + "\"\t\"" + corJkWaistGross + "\"\t\"" + corJkRightsleeveSize + "\"\t\""
-				+ corJkRightsleeveCorrect + "\"\t\"" + corJkRightsleeveGross + "\"\t\"" + corJkLeftsleeveSize
-				+ "\"\t\"" + corJkLeftsleeveCorrect + "\"\t\"" + corJkLeftsleeveGross + "\"\t\""
-				+ corJkShoulderpad + "\"\t\"" + corJkFigureCorrect + "\"\t\"" + corPtDrop + "\"\t\"" + corPtSize
-				+ "\"\t\"" + corPtWaistSize + "\"\t\"" + corPtWaistCorrect + "\"\t\"" + corPtWaistGross
-				+ "\"\t\"" + corPtHipSize + "\"\t\"" + corPtHipCorrect + "\"\t\"" + corPtHipGross + "\"\t\""
-				+ corPtThighwidthSize + "\"\t\"" + corPtThighwidthCorrect + "\"\t\"" + corPtThighwidthGross
-				+ "\"\t\"" + corPtHemwidthType + "\"\t\"" + corPtHemwidthSize + "\"\t\"" + corPtHemwidthCorrect
-				+ "\"\t\"" + corPtHemwidthGross + "\"\t\"" + corPtHemwidthDegignate + "\"\t\""
-				+ corPtRightinseamSize + "\"\t\"" + corPtRightinseamCorrect + "\"\t\"" + corPtRightinseamGross
-				+ "\"\t\"" + corPtLeftinseamSize + "\"\t\"" + corPtLeftinseamCorrect + "\"\t\""
-				+ corPtLeftinseamGross + "\"\t\"" + corPt2Drop + "\"\t\"" + corPt2Size + "\"\t\""
-				+ corPt2WaistSize + "\"\t\"" + corPt2WaistCorrect + "\"\t\"" + corPt2WaistGross + "\"\t\""
-				+ corPt2HipSize + "\"\t\"" + corPt2HipCorrect + "\"\t\"" + corPt2HipGross + "\"\t\""
-				+ corPt2ThighwidthSize + "\"\t\"" + corPt2ThighwidthCorrect + "\"\t\"" + corPt2ThighwidthGross
-				+ "\"\t\"" + corPt2HemwidthType + "\"\t\"" + corPt2HemwidthSize + "\"\t\"" + corPt2HemwidthCorrect
-				+ "\"\t\"" + corPt2HemwidthGross + "\"\t\"" + corPt2HemwidthDegignate + "\"\t\""
-				+ corPt2RightinseamSize + "\"\t\"" + corPt2RightinseamCorrect + "\"\t\"" + corPt2RightinseamGross
-				+ "\"\t\"" + corPt2LeftinseamSize + "\"\t\"" + corPt2LeftinseamCorrect + "\"\t\""
-				+ corPt2LeftinseamGross + "\"\t\"" + corGlDrop + "\"\t\"" + corGlSize + "\"\t\""
-				+ corGlBodylengthSize + "\"\t\"" + corGlBodylengthCorrect + "\"\t\"" + corGlBodylengthGross
-				+ "\"\t\"" + corGlBustSize + "\"\t\"" + corGlBustCorrect + "\"\t\"" + corGlBustGross + "\"\t\""
-				+ corGlWaistSize + "\"\t\"" + corGlWaistCorrect + "\"\t\"" + corGlWaistGross + "\"\t\""
-				+ corCtSize + "\"\t\"" + corCtBodylengthSize + "\"\t\"" + corCtBodylengthCorrect + "\"\t\""
-				+ corCtBodylengthGross + "\"\t\"" + corCtWaistSize + "\"\t\"" + corCtWaistCorrect + "\"\t\""
-				+ corCtWaistGross + "\"\t\"" + corCtRightsleeveSize + "\"\t\"" + corCtRightsleeveCorrect
-				+ "\"\t\"" + corCtRightsleeveGross + "\"\t\"" + corCtLeftsleeveSize + "\"\t\""
-				+ corCtLeftsleeveCorrect + "\"\t\"" + corCtLeftsleeveGross + "\"\t\"" + corCtVenthightSize
-				+ "\"\t\"" + corCtVenthightCorrect + "\"\t\"" + corCtVenthightGross + "\"\t\"" + corCtPktposSize
-				+ "\"\t\"" + corCtPktposCorrect + "\"\t\"" + corCtPktposGross + "\"\t\"" + corStSize + "\"\t\""
-				+ corStNeckSize + "\"\t\"" + corStNeckCorrect + "\"\t\"" + corStNeckGross + "\"\t\""
-				+ corStBodylengthSize + "\"\t\"" + corStBodylengthCorrect + "\"\t\"" + corStBodylengthGross
-				+ "\"\t\"" + corStRightsleeveSize + "\"\t\"" + corStRightsleeveCorrect + "\"\t\""
-				+ corStRightsleeveGross + "\"\t\"" + corStLeftsleeveSize + "\"\t\"" + corStLeftsleeveCorrect
-				+ "\"\t\"" + corStLeftsleeveGross + "\"\t\"" + corStBackdartsPackSize + "\"\t\""
-				+ corStBackdartsPackCorrect + "\"\t\"" + corStBackdartsPackGross + "\"\t\""
-				+ corStBackdartsUnpackSize + "\"\t\"" + corStBackdartsUnpackCorrect + "\"\t\""
-				+ corStBackdartsUnpackGross + "\"\t\"" + corStRightcuffsSurroundingSize + "\"\t\""
-				+ corStRightcuffsSurroundingCorrect + "\"\t\"" + corStRightcuffsSurroundingGross + "\"\t\""
-				+ corStLeftcuffsSurroundingSize + "\"\t\"" + corStLeftcuffsSurroundingCorrect + "\"\t\""
-				+ corStLeftcuffsSurroundingGross + "\"\t\"" + corStoreCorrectionMemo + "\"\t\""
-				+ corJkBodylengthCorrectAgain + "\"\t\"" + corJkWaistCorrectAgain + "\"\t\""
-				+ corJkRightsleeveCorrectAgain + "\"\t\"" + corJkLeftsleeveCorrectAgain + "\"\t\""
-				+ corGlBodylengthCorrectAgain + "\"\t\"" + corGlBustCorrectAgain + "\"\t\"" + corPtWaistCorrectAgain
-				+ "\"\t\"" + corPtHipCorrectAgain + "\"\t\"" + corPtThighwidthCorrectAgain + "\"\t\""
-				+ corPtHemwidthCorrectAgain + "\"\t\"" + corPtRightinseamCorrectAgain + "\"\t\""
-				+ corPtLeftinseamCorrectAgain + "\"\t\"" + corPt2WaistCorrectAgain + "\"\t\""
-				+ corPt2HipCorrectAgain + "\"\t\"" + corPt2ThighwidthCorrectAgain + "\"\t\""
-				+ corPt2HemwidthCorrectAgain + "\"\t\"" + corPt2RightinseamCorrectAgain + "\"\t\""
-				+ corPt2LeftinseamCorrectAgain + "\"\t\"" + corStoreCorrectionMemoAgain + "\"\t\""
-				+ hostTransmitARow + "\"\t\"" + hostTransmitStoreCd + "\"\t\"" + hostTransmitItemCd + "\"\t\""
-				+ hostTransmitMakerCd + "\"\t\"" + hostTransmitNenkiCd + "\"\t\"" + hostTransmitColorCd + "\"\t\""
-				+ hostTransmitSize + "\"\t\"" + hostTransmitMakerProduct + "\"\t\"" + factoryShippingMethod
-				+ "\"\t\"" + shippingDate + "\"\t\"" + loadingDate + "\"\t\"" + fabricUsedMount + "\"\t\""
-				+ theoryFabricUsedMount + "\"\t\"" + tscStatus + "\"\t\"" + makerFactoryStatus + "\"\t\""
-				+ send2factoryStatus + "\"\t\"" + isCancelled + "\"\t\"" + theoreticalStockCheck + "\"\t\""
-				+ createdUserId + "\"\t\"" + createdAt + "\"\t\"" + updatedUserId + "\"\t\"" + updatedAt + "\"}";
-	}
-
     public String getFabricColor() {
         return fabricColor;
     }
@@ -12865,5 +12447,2496 @@ public class Order implements Serializable {
 	public void setShippingTransmitStatus(String shippingTransmitStatus) {
 		this.shippingTransmitStatus = shippingTransmitStatus;
 	}
-    
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(orderId == null ? "" : orderId);
+		builder.append(",");
+		builder.append(orderPattern == null ? "" : orderPattern);
+		builder.append(",");
+		builder.append(storeBrandCode == null ? "" : storeBrandCode);
+		builder.append(",");
+		builder.append(shopCode == null ? "" : shopCode);
+		builder.append(",");
+		builder.append(billingAmount == null ? "" : billingAmount);
+		builder.append(",");
+		builder.append(productPrice == null ? "" : productPrice);
+		builder.append(",");
+		builder.append(optionPrice == null ? "" : optionPrice);
+		builder.append(",");
+		builder.append(totalPrice == null ? "" : totalPrice);
+		builder.append(",");
+		builder.append(consumptionTaxAmount == null ? "" : consumptionTaxAmount);
+		builder.append(",");
+		builder.append(salesAmount == null ? "" : salesAmount);
+		builder.append(",");
+		builder.append(wsPrice == null ? "" : wsPrice);
+		builder.append(",");
+		builder.append(cashId == null ? "" : cashId);
+		builder.append(",");
+		builder.append(cashDiscountPrice == null ? "" : cashDiscountPrice);
+		builder.append(",");
+		builder.append(cashProductPrice == null ? "" : cashProductPrice);
+		builder.append(",");
+		builder.append(cashContailTaxProductPrice == null ? "" : cashContailTaxProductPrice);
+		builder.append(",");
+		builder.append(storeNm == null ? "" : storeNm);
+		builder.append(",");
+		builder.append(storeStaffNm == null ? "" : storeStaffNm);
+		builder.append(",");
+		builder.append(printoutCustRomaNm == null ? "" : printoutCustRomaNm);
+		builder.append(",");
+		builder.append(printoutStoreStaffRomaNm == null ? "" : printoutStoreStaffRomaNm);
+		builder.append(",");
+		builder.append(custCd == null ? "" : custCd);
+		builder.append(",");
+		builder.append(custNm == null ? "" : custNm);
+		builder.append(",");
+		builder.append(custKanaNm == null ? "" : custKanaNm);
+		builder.append(",");
+		builder.append(custDeliverDate == null ? "" : custDeliverDate);
+		builder.append(",");
+		builder.append(custIsDeliverShortning == null ? "" : custIsDeliverShortning);
+		builder.append(",");
+		builder.append(custIsEarlyDiscount == null ? "" : custIsEarlyDiscount);
+		builder.append(",");
+		builder.append(custShopDeliveryDate == null ? "" : custShopDeliveryDate);
+		builder.append(",");
+		builder.append(custStaff == null ? "" : custStaff);
+		builder.append(",");
+		builder.append(custType == null ? "" : custType);
+		builder.append(",");
+		builder.append(custShippingDestination == null ? "" : custShippingDestination);
+		builder.append(",");
+		builder.append(custShippingDestnationOtherstore == null ? "" : custShippingDestnationOtherstore);
+		builder.append(",");
+		builder.append(custRemark == null ? "" : custRemark);
+		builder.append(",");
+		builder.append(productItem == null ? "" : productItem);
+		builder.append(",");
+		builder.append(productIs3piece == null ? "" : productIs3piece);
+		builder.append(",");
+		builder.append(productIs3pieceRtPrice == null ? "" : productIs3pieceRtPrice);
+		builder.append(",");
+		builder.append(productIs3pieceWsWage == null ? "" : productIs3pieceWsWage);
+		builder.append(",");
+		builder.append(productIs3pieceWsPrice == null ? "" : productIs3pieceWsPrice);
+		builder.append(",");
+		builder.append(productSparePantsClass == null ? "" : productSparePantsClass);
+		builder.append(",");
+		builder.append(productSparePantsRtPrice == null ? "" : productSparePantsRtPrice);
+		builder.append(",");
+		builder.append(productSparePantsWsWage == null ? "" : productSparePantsWsWage);
+		builder.append(",");
+		builder.append(productSparePantsWsPrice == null ? "" : productSparePantsWsPrice);
+		builder.append(",");
+		builder.append(productFabricNo == null ? "" : productFabricNo);
+		builder.append(",");
+		builder.append(fabricColor == null ? "" : fabricColor);
+		builder.append(",");
+		builder.append(fabricPattern == null ? "" : fabricPattern);
+		builder.append(",");
+		builder.append(productCategory == null ? "" : productCategory);
+		builder.append(",");
+		builder.append(productBrandType == null ? "" : productBrandType);
+		builder.append(",");
+		builder.append(productBrandNm == null ? "" : productBrandNm);
+		builder.append(",");
+		builder.append(productFabricNmNecessity == null ? "" : productFabricNmNecessity);
+		builder.append(",");
+		builder.append(productEmbroideryNecessity == null ? "" : productEmbroideryNecessity);
+		builder.append(",");
+		builder.append(productEmbroideryNm == null ? "" : productEmbroideryNm);
+		builder.append(",");
+		builder.append(productEmbroideryFont == null ? "" : productEmbroideryFont);
+		builder.append(",");
+		builder.append(productEmbroideryThreadColor == null ? "" : productEmbroideryThreadColor);
+		builder.append(",");
+		builder.append(productEmbroideryGazette == null ? "" : productEmbroideryGazette);
+		builder.append(",");
+		builder.append(productEmbroideryGazetteRtPrice == null ? "" : productEmbroideryGazetteRtPrice);
+		builder.append(",");
+		builder.append(productEmbroideryGazetteWsWage == null ? "" : productEmbroideryGazetteWsWage);
+		builder.append(",");
+		builder.append(productEmbroideryGazetteWsPrice == null ? "" : productEmbroideryGazetteWsPrice);
+		builder.append(",");
+		builder.append(productEmbroideryNmPos == null ? "" : productEmbroideryNmPos);
+		builder.append(",");
+		builder.append(productEmbroideryNmPosRtPrice == null ? "" : productEmbroideryNmPosRtPrice);
+		builder.append(",");
+		builder.append(productEmbroideryNmPosWsWage == null ? "" : productEmbroideryNmPosWsWage);
+		builder.append(",");
+		builder.append(productEmbroideryNmPosWsPrice == null ? "" : productEmbroideryNmPosWsPrice);
+		builder.append(",");
+		builder.append(productEmbroideryLength == null ? "" : productEmbroideryLength);
+		builder.append(",");
+		builder.append(productEmbroideryWidth == null ? "" : productEmbroideryWidth);
+		builder.append(",");
+		builder.append(productRemainingClothType == null ? "" : productRemainingClothType);
+		builder.append(",");
+		builder.append(productRemainingClothNm == null ? "" : productRemainingClothNm);
+		builder.append(",");
+		builder.append(productFabricBrandNm == null ? "" : productFabricBrandNm);
+		builder.append(",");
+		builder.append(productServiceNm == null ? "" : productServiceNm);
+		builder.append(",");
+		builder.append(productComposFrtFabric == null ? "" : productComposFrtFabric);
+		builder.append(",");
+		builder.append(productComposBodyLiner == null ? "" : productComposBodyLiner);
+		builder.append(",");
+		builder.append(productComposSleeveLiner == null ? "" : productComposSleeveLiner);
+		builder.append(",");
+		builder.append(productNotice == null ? "" : productNotice);
+		builder.append(",");
+		builder.append(productFactoryCd == null ? "" : productFactoryCd);
+		builder.append(",");
+		builder.append(productMakerCode == null ? "" : productMakerCode);
+		builder.append(",");
+		builder.append(productOrderdDate == null ? "" : productOrderdDate);
+		builder.append(",");
+		builder.append(jkModelCd == null ? "" : jkModelCd);
+		builder.append(",");
+		builder.append(jkModelNm == null ? "" : jkModelNm);
+		builder.append(",");
+		builder.append(jkModelRtPrice == null ? "" : jkModelRtPrice);
+		builder.append(",");
+		builder.append(jkModelWsWage == null ? "" : jkModelWsWage);
+		builder.append(",");
+		builder.append(jkModelWsPrice == null ? "" : jkModelWsPrice);
+		builder.append(",");
+		builder.append(jkFrtBtnCd == null ? "" : jkFrtBtnCd);
+		builder.append(",");
+		builder.append(jkFrtBtnNm == null ? "" : jkFrtBtnNm);
+		builder.append(",");
+		builder.append(jkFrtBtnRtPrice == null ? "" : jkFrtBtnRtPrice);
+		builder.append(",");
+		builder.append(jkFrtBtnWsWage == null ? "" : jkFrtBtnWsWage);
+		builder.append(",");
+		builder.append(jkFrtBtnWsPrice == null ? "" : jkFrtBtnWsPrice);
+		builder.append(",");
+		builder.append(jkLapelDesignCd == null ? "" : jkLapelDesignCd);
+		builder.append(",");
+		builder.append(jkLapelDesignNm == null ? "" : jkLapelDesignNm);
+		builder.append(",");
+		builder.append(jkLapelDesignRtPrice == null ? "" : jkLapelDesignRtPrice);
+		builder.append(",");
+		builder.append(jkLapelDesignWsWage == null ? "" : jkLapelDesignWsWage);
+		builder.append(",");
+		builder.append(jkLapelDesignWsPrice == null ? "" : jkLapelDesignWsPrice);
+		builder.append(",");
+		builder.append(jkLapelModelCd == null ? "" : jkLapelModelCd);
+		builder.append(",");
+		builder.append(jkLapelModelNm == null ? "" : jkLapelModelNm);
+		builder.append(",");
+		builder.append(jkLapelModelRtPrice == null ? "" : jkLapelModelRtPrice);
+		builder.append(",");
+		builder.append(jkLapelModelWsWage == null ? "" : jkLapelModelWsWage);
+		builder.append(",");
+		builder.append(jkLapelModelWsPrice == null ? "" : jkLapelModelWsPrice);
+		builder.append(",");
+		builder.append(jkGradeCd == null ? "" : jkGradeCd);
+		builder.append(",");
+		builder.append(jkGradeNm == null ? "" : jkGradeNm);
+		builder.append(",");
+		builder.append(jkGradeRtPrice == null ? "" : jkGradeRtPrice);
+		builder.append(",");
+		builder.append(jkGradeWsWage == null ? "" : jkGradeWsWage);
+		builder.append(",");
+		builder.append(jkGradeWsPrice == null ? "" : jkGradeWsPrice);
+		builder.append(",");
+		builder.append(jkInnerClothCd == null ? "" : jkInnerClothCd);
+		builder.append(",");
+		builder.append(jkInnerClothNm == null ? "" : jkInnerClothNm);
+		builder.append(",");
+		builder.append(jkInnerClothRtPrice == null ? "" : jkInnerClothRtPrice);
+		builder.append(",");
+		builder.append(jkInnerClothWsWage == null ? "" : jkInnerClothWsWage);
+		builder.append(",");
+		builder.append(jkInnerClothWsPrice == null ? "" : jkInnerClothWsPrice);
+		builder.append(",");
+		builder.append(jkDaibaCd == null ? "" : jkDaibaCd);
+		builder.append(",");
+		builder.append(jkDaibaNm == null ? "" : jkDaibaNm);
+		builder.append(",");
+		builder.append(jkDaibaRtPrice == null ? "" : jkDaibaRtPrice);
+		builder.append(",");
+		builder.append(jkDaibaWsWage == null ? "" : jkDaibaWsWage);
+		builder.append(",");
+		builder.append(jkDaibaWsPrice == null ? "" : jkDaibaWsPrice);
+		builder.append(",");
+		builder.append(jkLookClothCd == null ? "" : jkLookClothCd);
+		builder.append(",");
+		builder.append(jkLookClothNm == null ? "" : jkLookClothNm);
+		builder.append(",");
+		builder.append(jkLookClothRtPrice == null ? "" : jkLookClothRtPrice);
+		builder.append(",");
+		builder.append(jkLookClothWsWage == null ? "" : jkLookClothWsWage);
+		builder.append(",");
+		builder.append(jkLookClothWsPrice == null ? "" : jkLookClothWsPrice);
+		builder.append(",");
+		builder.append(jkCollarInnerCd == null ? "" : jkCollarInnerCd);
+		builder.append(",");
+		builder.append(jkCollarInnerNm == null ? "" : jkCollarInnerNm);
+		builder.append(",");
+		builder.append(jkCollarInnerRtPrice == null ? "" : jkCollarInnerRtPrice);
+		builder.append(",");
+		builder.append(jkCollarInnerWsWage == null ? "" : jkCollarInnerWsWage);
+		builder.append(",");
+		builder.append(jkCollarInnerWsPrice == null ? "" : jkCollarInnerWsPrice);
+		builder.append(",");
+		builder.append(jkCollarHangCd == null ? "" : jkCollarHangCd);
+		builder.append(",");
+		builder.append(jkCollarHangNm == null ? "" : jkCollarHangNm);
+		builder.append(",");
+		builder.append(jkCollarHangRtPrice == null ? "" : jkCollarHangRtPrice);
+		builder.append(",");
+		builder.append(jkCollarHangWsWage == null ? "" : jkCollarHangWsWage);
+		builder.append(",");
+		builder.append(jkCollarHangWsPrice == null ? "" : jkCollarHangWsPrice);
+		builder.append(",");
+		builder.append(jkLapelWidthCd == null ? "" : jkLapelWidthCd);
+		builder.append(",");
+		builder.append(jkLapelWidthNm == null ? "" : jkLapelWidthNm);
+		builder.append(",");
+		builder.append(jkLapelWidthRtPrice == null ? "" : jkLapelWidthRtPrice);
+		builder.append(",");
+		builder.append(jkLapelWidthWsWage == null ? "" : jkLapelWidthWsWage);
+		builder.append(",");
+		builder.append(jkLapelWidthWsPrice == null ? "" : jkLapelWidthWsPrice);
+		builder.append(",");
+		builder.append(jkFlowerHoleCd == null ? "" : jkFlowerHoleCd);
+		builder.append(",");
+		builder.append(jkFlowerHoleNm == null ? "" : jkFlowerHoleNm);
+		builder.append(",");
+		builder.append(jkFlowerHoleRtPrice == null ? "" : jkFlowerHoleRtPrice);
+		builder.append(",");
+		builder.append(jkFlowerHoleWsWage == null ? "" : jkFlowerHoleWsWage);
+		builder.append(",");
+		builder.append(jkFlowerHoleWsPrice == null ? "" : jkFlowerHoleWsPrice);
+		builder.append(",");
+		builder.append(jkBreastPktCd == null ? "" : jkBreastPktCd);
+		builder.append(",");
+		builder.append(jkBreastPktNm == null ? "" : jkBreastPktNm);
+		builder.append(",");
+		builder.append(jkBreastPktRtPrice == null ? "" : jkBreastPktRtPrice);
+		builder.append(",");
+		builder.append(jkBreastPktWsWage == null ? "" : jkBreastPktWsWage);
+		builder.append(",");
+		builder.append(jkBreastPktWsPrice == null ? "" : jkBreastPktWsPrice);
+		builder.append(",");
+		builder.append(jkWaistPktCd == null ? "" : jkWaistPktCd);
+		builder.append(",");
+		builder.append(jkWaistPktNm == null ? "" : jkWaistPktNm);
+		builder.append(",");
+		builder.append(jkWaistPktRtPrice == null ? "" : jkWaistPktRtPrice);
+		builder.append(",");
+		builder.append(jkWaistPktWsWage == null ? "" : jkWaistPktWsWage);
+		builder.append(",");
+		builder.append(jkWaistPktWsPrice == null ? "" : jkWaistPktWsPrice);
+		builder.append(",");
+		builder.append(jkChgPktCd == null ? "" : jkChgPktCd);
+		builder.append(",");
+		builder.append(jkChgPktNm == null ? "" : jkChgPktNm);
+		builder.append(",");
+		builder.append(jkChgPktRtPrice == null ? "" : jkChgPktRtPrice);
+		builder.append(",");
+		builder.append(jkChgPktWsWage == null ? "" : jkChgPktWsWage);
+		builder.append(",");
+		builder.append(jkChgPktWsPrice == null ? "" : jkChgPktWsPrice);
+		builder.append(",");
+		builder.append(jkSlantedPktCd == null ? "" : jkSlantedPktCd);
+		builder.append(",");
+		builder.append(jkSlantedPktNm == null ? "" : jkSlantedPktNm);
+		builder.append(",");
+		builder.append(jkSlantedPktRtPrice == null ? "" : jkSlantedPktRtPrice);
+		builder.append(",");
+		builder.append(jkSlantedPktWsWage == null ? "" : jkSlantedPktWsWage);
+		builder.append(",");
+		builder.append(jkSlantedPktWsPrice == null ? "" : jkSlantedPktWsPrice);
+		builder.append(",");
+		builder.append(jkShinobiPktCd == null ? "" : jkShinobiPktCd);
+		builder.append(",");
+		builder.append(jkShinobiPktNm == null ? "" : jkShinobiPktNm);
+		builder.append(",");
+		builder.append(jkShinobiPktRtPrice == null ? "" : jkShinobiPktRtPrice);
+		builder.append(",");
+		builder.append(jkShinobiPktWsWage == null ? "" : jkShinobiPktWsWage);
+		builder.append(",");
+		builder.append(jkShinobiPktWsPrice == null ? "" : jkShinobiPktWsPrice);
+		builder.append(",");
+		builder.append(jkSleeveTypeCd == null ? "" : jkSleeveTypeCd);
+		builder.append(",");
+		builder.append(jkSleeveTypeNm == null ? "" : jkSleeveTypeNm);
+		builder.append(",");
+		builder.append(jkSleeveTypeRtPrice == null ? "" : jkSleeveTypeRtPrice);
+		builder.append(",");
+		builder.append(jkSleeveTypeWsWage == null ? "" : jkSleeveTypeWsWage);
+		builder.append(",");
+		builder.append(jkSleeveTypeWsPrice == null ? "" : jkSleeveTypeWsPrice);
+		builder.append(",");
+		builder.append(jkManicaCd == null ? "" : jkManicaCd);
+		builder.append(",");
+		builder.append(jkManicaNm == null ? "" : jkManicaNm);
+		builder.append(",");
+		builder.append(jkManicaRtPrice == null ? "" : jkManicaRtPrice);
+		builder.append(",");
+		builder.append(jkManicaWsWage == null ? "" : jkManicaWsWage);
+		builder.append(",");
+		builder.append(jkManicaWsPrice == null ? "" : jkManicaWsPrice);
+		builder.append(",");
+		builder.append(jkSleeveBtnType == null ? "" : jkSleeveBtnType);
+		builder.append(",");
+		builder.append(jkSleeveBtnNumber == null ? "" : jkSleeveBtnNumber);
+		builder.append(",");
+		builder.append(jkSleeveBtnCd == null ? "" : jkSleeveBtnCd);
+		builder.append(",");
+		builder.append(jkSleeveBtnNm == null ? "" : jkSleeveBtnNm);
+		builder.append(",");
+		builder.append(jkSleeveBtnRtPrice == null ? "" : jkSleeveBtnRtPrice);
+		builder.append(",");
+		builder.append(jkSleeveBtnWsWage == null ? "" : jkSleeveBtnWsWage);
+		builder.append(",");
+		builder.append(jkSleeveBtnWsPrice == null ? "" : jkSleeveBtnWsPrice);
+		builder.append(",");
+		builder.append(jkCuffCd == null ? "" : jkCuffCd);
+		builder.append(",");
+		builder.append(jkCuffNm == null ? "" : jkCuffNm);
+		builder.append(",");
+		builder.append(jkCuffRtPrice == null ? "" : jkCuffRtPrice);
+		builder.append(",");
+		builder.append(jkCuffWsWage == null ? "" : jkCuffWsWage);
+		builder.append(",");
+		builder.append(jkCuffWsPrice == null ? "" : jkCuffWsPrice);
+		builder.append(",");
+		builder.append(jkInnerPktType == null ? "" : jkInnerPktType);
+		builder.append(",");
+		builder.append(jkInnerPktCd == null ? "" : jkInnerPktCd);
+		builder.append(",");
+		builder.append(jkInnerPktNm == null ? "" : jkInnerPktNm);
+		builder.append(",");
+		builder.append(jkInnerPktRtPrice == null ? "" : jkInnerPktRtPrice);
+		builder.append(",");
+		builder.append(jkInnerPktWsWage == null ? "" : jkInnerPktWsWage);
+		builder.append(",");
+		builder.append(jkInnerPktWsPrice == null ? "" : jkInnerPktWsPrice);
+		builder.append(",");
+		builder.append(jkRightInnerPktTypeCd == null ? "" : jkRightInnerPktTypeCd);
+		builder.append(",");
+		builder.append(jkRightInnerPktTypeNm == null ? "" : jkRightInnerPktTypeNm);
+		builder.append(",");
+		builder.append(jkRightInnerPktTypeRtPrice == null ? "" : jkRightInnerPktTypeRtPrice);
+		builder.append(",");
+		builder.append(jkRightInnerPktTypeWsWage == null ? "" : jkRightInnerPktTypeWsWage);
+		builder.append(",");
+		builder.append(jkRightInnerPktTypeWsPrice == null ? "" : jkRightInnerPktTypeWsPrice);
+		builder.append(",");
+		builder.append(jkStitchTypeCd == null ? "" : jkStitchTypeCd);
+		builder.append(",");
+		builder.append(jkStitchTypeNm == null ? "" : jkStitchTypeNm);
+		builder.append(",");
+		builder.append(jkStitchTypeRtPrice == null ? "" : jkStitchTypeRtPrice);
+		builder.append(",");
+		builder.append(jkStitchTypeWsWage == null ? "" : jkStitchTypeWsWage);
+		builder.append(",");
+		builder.append(jkStitchTypeWsPrice == null ? "" : jkStitchTypeWsPrice);
+		builder.append(",");
+		builder.append(jkStitchPlcType == null ? "" : jkStitchPlcType);
+		builder.append(",");
+		builder.append(jkStitchPlcCd == null ? "" : jkStitchPlcCd);
+		builder.append(",");
+		builder.append(jkStitchPlcNm == null ? "" : jkStitchPlcNm);
+		builder.append(",");
+		builder.append(jkStitchPlcRtPrice == null ? "" : jkStitchPlcRtPrice);
+		builder.append(",");
+		builder.append(jkStitchPlcWsWage == null ? "" : jkStitchPlcWsWage);
+		builder.append(",");
+		builder.append(jkStitchPlcWsPrice == null ? "" : jkStitchPlcWsPrice);
+		builder.append(",");
+		builder.append(jkDblstitchPlcType == null ? "" : jkDblstitchPlcType);
+		builder.append(",");
+		builder.append(jkDblstitchPlcCd == null ? "" : jkDblstitchPlcCd);
+		builder.append(",");
+		builder.append(jkDblstitchPlcNm == null ? "" : jkDblstitchPlcNm);
+		builder.append(",");
+		builder.append(jkDblstitchPlcRtPrice == null ? "" : jkDblstitchPlcRtPrice);
+		builder.append(",");
+		builder.append(jkDblstitchPlcWsWage == null ? "" : jkDblstitchPlcWsWage);
+		builder.append(",");
+		builder.append(jkDblstitchPlcWsPrice == null ? "" : jkDblstitchPlcWsPrice);
+		builder.append(",");
+		builder.append(jkAmfColorType == null ? "" : jkAmfColorType);
+		builder.append(",");
+		builder.append(jkAmfColorPlcCd == null ? "" : jkAmfColorPlcCd);
+		builder.append(",");
+		builder.append(jkAmfColorPlcNm == null ? "" : jkAmfColorPlcNm);
+		builder.append(",");
+		builder.append(jkAmfColorCd == null ? "" : jkAmfColorCd);
+		builder.append(",");
+		builder.append(jkAmfColorNm == null ? "" : jkAmfColorNm);
+		builder.append(",");
+		builder.append(jkAmfColorRtPrice == null ? "" : jkAmfColorRtPrice);
+		builder.append(",");
+		builder.append(jkAmfColorWsWage == null ? "" : jkAmfColorWsWage);
+		builder.append(",");
+		builder.append(jkAmfColorWsPrice == null ? "" : jkAmfColorWsPrice);
+		builder.append(",");
+		builder.append(jkBtnholeColorType == null ? "" : jkBtnholeColorType);
+		builder.append(",");
+		builder.append(jkBtnholeColorPlcCd == null ? "" : jkBtnholeColorPlcCd);
+		builder.append(",");
+		builder.append(jkBtnholeColorPlcN == null ? "" : jkBtnholeColorPlcN);
+		builder.append(",");
+		builder.append(jkBtnholeColorCd == null ? "" : jkBtnholeColorCd);
+		builder.append(",");
+		builder.append(jkBtnholeColorNm == null ? "" : jkBtnholeColorNm);
+		builder.append(",");
+		builder.append(jkBtnholePlcColorRtPrice == null ? "" : jkBtnholePlcColorRtPrice);
+		builder.append(",");
+		builder.append(jkBtnholePlcColorWsWage == null ? "" : jkBtnholePlcColorWsWage);
+		builder.append(",");
+		builder.append(jkBtnholePlcColorWsPrice == null ? "" : jkBtnholePlcColorWsPrice);
+		builder.append(",");
+		builder.append(jkBtnthreadColorType == null ? "" : jkBtnthreadColorType);
+		builder.append(",");
+		builder.append(jkBtnthreadColorPlcCd == null ? "" : jkBtnthreadColorPlcCd);
+		builder.append(",");
+		builder.append(jkBtnthreadColorPlcN == null ? "" : jkBtnthreadColorPlcN);
+		builder.append(",");
+		builder.append(jkBtnthreadColorCd == null ? "" : jkBtnthreadColorCd);
+		builder.append(",");
+		builder.append(jkBtnthreadColorNm == null ? "" : jkBtnthreadColorNm);
+		builder.append(",");
+		builder.append(jkBtnthreadPlcColorRtPrice == null ? "" : jkBtnthreadPlcColorRtPrice);
+		builder.append(",");
+		builder.append(jkBtnthreadPlcColorWsWage == null ? "" : jkBtnthreadPlcColorWsWage);
+		builder.append(",");
+		builder.append(jkBtnthreadPlcColorWsPrice == null ? "" : jkBtnthreadPlcColorWsPrice);
+		builder.append(",");
+		builder.append(jkVentCd == null ? "" : jkVentCd);
+		builder.append(",");
+		builder.append(jkVentNm == null ? "" : jkVentNm);
+		builder.append(",");
+		builder.append(jkVentRtPrice == null ? "" : jkVentRtPrice);
+		builder.append(",");
+		builder.append(jkVentWsWage == null ? "" : jkVentWsWage);
+		builder.append(",");
+		builder.append(jkVentWsPrice == null ? "" : jkVentWsPrice);
+		builder.append(",");
+		builder.append(jkInnerBodyClothType == null ? "" : jkInnerBodyClothType);
+		builder.append(",");
+		builder.append(jkInnerBodyClothCd == null ? "" : jkInnerBodyClothCd);
+		builder.append(",");
+		builder.append(jkInnerBodyClothNm == null ? "" : jkInnerBodyClothNm);
+		builder.append(",");
+		builder.append(jkInnerBodyClothRtPrice == null ? "" : jkInnerBodyClothRtPrice);
+		builder.append(",");
+		builder.append(jkInnerBodyClothWsWage == null ? "" : jkInnerBodyClothWsWage);
+		builder.append(",");
+		builder.append(jkInnerBodyClothWsPrice == null ? "" : jkInnerBodyClothWsPrice);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothType == null ? "" : jkInnerSleeveClothType);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothCd == null ? "" : jkInnerSleeveClothCd);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothNm == null ? "" : jkInnerSleeveClothNm);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothRtPrice == null ? "" : jkInnerSleeveClothRtPrice);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothWsWage == null ? "" : jkInnerSleeveClothWsWage);
+		builder.append(",");
+		builder.append(jkInnerSleeveClothWsPrice == null ? "" : jkInnerSleeveClothWsPrice);
+		builder.append(",");
+		builder.append(jkBtnMaterialType == null ? "" : jkBtnMaterialType);
+		builder.append(",");
+		builder.append(jkBtnMaterialCd == null ? "" : jkBtnMaterialCd);
+		builder.append(",");
+		builder.append(jkBtnMaterialNm == null ? "" : jkBtnMaterialNm);
+		builder.append(",");
+		builder.append(jkBtnMaterialRtPrice == null ? "" : jkBtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(jkBtnMaterialWsWage == null ? "" : jkBtnMaterialWsWage);
+		builder.append(",");
+		builder.append(jkBtnMaterialWsPrice == null ? "" : jkBtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(jkShapeMemoryCd == null ? "" : jkShapeMemoryCd);
+		builder.append(",");
+		builder.append(jkShapeMemoryNm == null ? "" : jkShapeMemoryNm);
+		builder.append(",");
+		builder.append(jkShapeMemoryRtPrice == null ? "" : jkShapeMemoryRtPrice);
+		builder.append(",");
+		builder.append(jkShapeMemoryWsWage == null ? "" : jkShapeMemoryWsWage);
+		builder.append(",");
+		builder.append(jkShapeMemoryWsPrice == null ? "" : jkShapeMemoryWsPrice);
+		builder.append(",");
+		builder.append(ptModelCd == null ? "" : ptModelCd);
+		builder.append(",");
+		builder.append(ptModelNm == null ? "" : ptModelNm);
+		builder.append(",");
+		builder.append(ptModelRtPrice == null ? "" : ptModelRtPrice);
+		builder.append(",");
+		builder.append(ptModelWsWage == null ? "" : ptModelWsWage);
+		builder.append(",");
+		builder.append(ptModelWsPrice == null ? "" : ptModelWsPrice);
+		builder.append(",");
+		builder.append(ptTackCd == null ? "" : ptTackCd);
+		builder.append(",");
+		builder.append(ptTackNm == null ? "" : ptTackNm);
+		builder.append(",");
+		builder.append(ptTackRtPrice == null ? "" : ptTackRtPrice);
+		builder.append(",");
+		builder.append(ptTackWsWage == null ? "" : ptTackWsWage);
+		builder.append(",");
+		builder.append(ptTackWsPrice == null ? "" : ptTackWsPrice);
+		builder.append(",");
+		builder.append(ptKneeinnerTypeCd == null ? "" : ptKneeinnerTypeCd);
+		builder.append(",");
+		builder.append(ptKneeinnerTypeNm == null ? "" : ptKneeinnerTypeNm);
+		builder.append(",");
+		builder.append(ptKneeinnerTypeRtPrice == null ? "" : ptKneeinnerTypeRtPrice);
+		builder.append(",");
+		builder.append(ptKneeinnerTypeWsWage == null ? "" : ptKneeinnerTypeWsWage);
+		builder.append(",");
+		builder.append(ptKneeinnerTypeWsPrice == null ? "" : ptKneeinnerTypeWsPrice);
+		builder.append(",");
+		builder.append(ptKneeinnerClothCd == null ? "" : ptKneeinnerClothCd);
+		builder.append(",");
+		builder.append(ptKneeinnerClothNm == null ? "" : ptKneeinnerClothNm);
+		builder.append(",");
+		builder.append(ptKneeinnerClothRtPrice == null ? "" : ptKneeinnerClothRtPrice);
+		builder.append(",");
+		builder.append(ptKneeinnerClothWsWage == null ? "" : ptKneeinnerClothWsWage);
+		builder.append(",");
+		builder.append(ptKneeinnerClothWsPrice == null ? "" : ptKneeinnerClothWsPrice);
+		builder.append(",");
+		builder.append(ptFrtTypeCd == null ? "" : ptFrtTypeCd);
+		builder.append(",");
+		builder.append(ptFrtTypeNm == null ? "" : ptFrtTypeNm);
+		builder.append(",");
+		builder.append(ptFrtTypeRtPrice == null ? "" : ptFrtTypeRtPrice);
+		builder.append(",");
+		builder.append(ptFrtTypeWsWage == null ? "" : ptFrtTypeWsWage);
+		builder.append(",");
+		builder.append(ptFrtTypeWsPrice == null ? "" : ptFrtTypeWsPrice);
+		builder.append(",");
+		builder.append(ptPancherinaCd == null ? "" : ptPancherinaCd);
+		builder.append(",");
+		builder.append(ptPancherinaNm == null ? "" : ptPancherinaNm);
+		builder.append(",");
+		builder.append(ptPancherinaRtPrice == null ? "" : ptPancherinaRtPrice);
+		builder.append(",");
+		builder.append(ptPancherinaWsWage == null ? "" : ptPancherinaWsWage);
+		builder.append(",");
+		builder.append(ptPancherinaWsPrice == null ? "" : ptPancherinaWsPrice);
+		builder.append(",");
+		builder.append(ptAdjusterCd == null ? "" : ptAdjusterCd);
+		builder.append(",");
+		builder.append(ptAdjusterNm == null ? "" : ptAdjusterNm);
+		builder.append(",");
+		builder.append(ptAdjusterRtPrice == null ? "" : ptAdjusterRtPrice);
+		builder.append(",");
+		builder.append(ptAdjusterWsWage == null ? "" : ptAdjusterWsWage);
+		builder.append(",");
+		builder.append(ptAdjusterWsPrice == null ? "" : ptAdjusterWsPrice);
+		builder.append(",");
+		builder.append(ptBeltloopType == null ? "" : ptBeltloopType);
+		builder.append(",");
+		builder.append(ptBeltloopCd == null ? "" : ptBeltloopCd);
+		builder.append(",");
+		builder.append(ptBeltloopNm == null ? "" : ptBeltloopNm);
+		builder.append(",");
+		builder.append(ptBeltloopRtPrice == null ? "" : ptBeltloopRtPrice);
+		builder.append(",");
+		builder.append(ptBeltloopWsWage == null ? "" : ptBeltloopWsWage);
+		builder.append(",");
+		builder.append(ptBeltloopWsPrice == null ? "" : ptBeltloopWsPrice);
+		builder.append(",");
+		builder.append(ptPinloopCd == null ? "" : ptPinloopCd);
+		builder.append(",");
+		builder.append(ptPinloopNm == null ? "" : ptPinloopNm);
+		builder.append(",");
+		builder.append(ptPinloopRtPrice == null ? "" : ptPinloopRtPrice);
+		builder.append(",");
+		builder.append(ptPinloopWsWage == null ? "" : ptPinloopWsWage);
+		builder.append(",");
+		builder.append(ptPinloopWsPrice == null ? "" : ptPinloopWsPrice);
+		builder.append(",");
+		builder.append(ptSidePktCd == null ? "" : ptSidePktCd);
+		builder.append(",");
+		builder.append(ptSidePktNm == null ? "" : ptSidePktNm);
+		builder.append(",");
+		builder.append(ptSidePktRtPrice == null ? "" : ptSidePktRtPrice);
+		builder.append(",");
+		builder.append(ptSidePktWsWage == null ? "" : ptSidePktWsWage);
+		builder.append(",");
+		builder.append(ptSidePktWsPrice == null ? "" : ptSidePktWsPrice);
+		builder.append(",");
+		builder.append(ptShinobiPktCd == null ? "" : ptShinobiPktCd);
+		builder.append(",");
+		builder.append(ptShinobiPktNm == null ? "" : ptShinobiPktNm);
+		builder.append(",");
+		builder.append(ptShinobiPktRtPrice == null ? "" : ptShinobiPktRtPrice);
+		builder.append(",");
+		builder.append(ptShinobiPktWsWage == null ? "" : ptShinobiPktWsWage);
+		builder.append(",");
+		builder.append(ptShinobiPktWsPrice == null ? "" : ptShinobiPktWsPrice);
+		builder.append(",");
+		builder.append(ptCoinPktCd == null ? "" : ptCoinPktCd);
+		builder.append(",");
+		builder.append(ptCoinPktNm == null ? "" : ptCoinPktNm);
+		builder.append(",");
+		builder.append(ptCoinPktRtPrice == null ? "" : ptCoinPktRtPrice);
+		builder.append(",");
+		builder.append(ptCoinPktWsWage == null ? "" : ptCoinPktWsWage);
+		builder.append(",");
+		builder.append(ptCoinPktWsPrice == null ? "" : ptCoinPktWsPrice);
+		builder.append(",");
+		builder.append(ptFlapcoinPktCd == null ? "" : ptFlapcoinPktCd);
+		builder.append(",");
+		builder.append(ptFlapcoinPktNm == null ? "" : ptFlapcoinPktNm);
+		builder.append(",");
+		builder.append(ptFlapcoinPktRtPrice == null ? "" : ptFlapcoinPktRtPrice);
+		builder.append(",");
+		builder.append(ptFlapcoinPktWsWage == null ? "" : ptFlapcoinPktWsWage);
+		builder.append(",");
+		builder.append(ptFlapcoinPktWsPrice == null ? "" : ptFlapcoinPktWsPrice);
+		builder.append(",");
+		builder.append(ptLeftPisPktCd == null ? "" : ptLeftPisPktCd);
+		builder.append(",");
+		builder.append(ptLeftPisPktNm == null ? "" : ptLeftPisPktNm);
+		builder.append(",");
+		builder.append(ptLeftPisPktRtPrice == null ? "" : ptLeftPisPktRtPrice);
+		builder.append(",");
+		builder.append(ptLeftPisPktWsWage == null ? "" : ptLeftPisPktWsWage);
+		builder.append(",");
+		builder.append(ptLeftPisPktWsPrice == null ? "" : ptLeftPisPktWsPrice);
+		builder.append(",");
+		builder.append(ptRightPisPktCd == null ? "" : ptRightPisPktCd);
+		builder.append(",");
+		builder.append(ptRightPisPktNm == null ? "" : ptRightPisPktNm);
+		builder.append(",");
+		builder.append(ptRightPisPktRtPrice == null ? "" : ptRightPisPktRtPrice);
+		builder.append(",");
+		builder.append(ptRightPisPktWsWage == null ? "" : ptRightPisPktWsWage);
+		builder.append(",");
+		builder.append(ptRightPisPktWsPrice == null ? "" : ptRightPisPktWsPrice);
+		builder.append(",");
+		builder.append(ptVCutCd == null ? "" : ptVCutCd);
+		builder.append(",");
+		builder.append(ptVCutNm == null ? "" : ptVCutNm);
+		builder.append(",");
+		builder.append(ptVCutRtPrice == null ? "" : ptVCutRtPrice);
+		builder.append(",");
+		builder.append(ptVCutWsWage == null ? "" : ptVCutWsWage);
+		builder.append(",");
+		builder.append(ptVCutWsPrice == null ? "" : ptVCutWsPrice);
+		builder.append(",");
+		builder.append(ptHemUpCd == null ? "" : ptHemUpCd);
+		builder.append(",");
+		builder.append(ptHemUpNm == null ? "" : ptHemUpNm);
+		builder.append(",");
+		builder.append(ptHemUpRtPrice == null ? "" : ptHemUpRtPrice);
+		builder.append(",");
+		builder.append(ptHemUpWsWage == null ? "" : ptHemUpWsWage);
+		builder.append(",");
+		builder.append(ptHemUpWsPrice == null ? "" : ptHemUpWsPrice);
+		builder.append(",");
+		builder.append(ptDblWidthCd == null ? "" : ptDblWidthCd);
+		builder.append(",");
+		builder.append(ptDblWidthNm == null ? "" : ptDblWidthNm);
+		builder.append(",");
+		builder.append(ptDblWidthRtPrice == null ? "" : ptDblWidthRtPrice);
+		builder.append(",");
+		builder.append(ptDblWidthWsWage == null ? "" : ptDblWidthWsWage);
+		builder.append(",");
+		builder.append(ptDblWidthWsPrice == null ? "" : ptDblWidthWsPrice);
+		builder.append(",");
+		builder.append(ptAmfStitchCd == null ? "" : ptAmfStitchCd);
+		builder.append(",");
+		builder.append(ptAmfStitchNm == null ? "" : ptAmfStitchNm);
+		builder.append(",");
+		builder.append(ptAmfStitchRtPrice == null ? "" : ptAmfStitchRtPrice);
+		builder.append(",");
+		builder.append(ptAmfStitchWsWage == null ? "" : ptAmfStitchWsWage);
+		builder.append(",");
+		builder.append(ptAmfStitchWsPrice == null ? "" : ptAmfStitchWsPrice);
+		builder.append(",");
+		builder.append(ptStitchPlcType == null ? "" : ptStitchPlcType);
+		builder.append(",");
+		builder.append(ptStitchPlcCd == null ? "" : ptStitchPlcCd);
+		builder.append(",");
+		builder.append(ptStitchPlcNm == null ? "" : ptStitchPlcNm);
+		builder.append(",");
+		builder.append(ptStitchPlcRtPrice == null ? "" : ptStitchPlcRtPrice);
+		builder.append(",");
+		builder.append(ptStitchPlcWsWage == null ? "" : ptStitchPlcWsWage);
+		builder.append(",");
+		builder.append(ptStitchPlcWsPrice == null ? "" : ptStitchPlcWsPrice);
+		builder.append(",");
+		builder.append(ptDblstitchPlcType == null ? "" : ptDblstitchPlcType);
+		builder.append(",");
+		builder.append(ptDblstitchPlcCd == null ? "" : ptDblstitchPlcCd);
+		builder.append(",");
+		builder.append(ptDblstitchPlcNm == null ? "" : ptDblstitchPlcNm);
+		builder.append(",");
+		builder.append(ptDblstitchPlcRtPrice == null ? "" : ptDblstitchPlcRtPrice);
+		builder.append(",");
+		builder.append(ptDblstitchPlcWsWage == null ? "" : ptDblstitchPlcWsWage);
+		builder.append(",");
+		builder.append(ptDblstitchPlcWsPrice == null ? "" : ptDblstitchPlcWsPrice);
+		builder.append(",");
+		builder.append(ptAmfColorType == null ? "" : ptAmfColorType);
+		builder.append(",");
+		builder.append(ptAmfColorPlcCd == null ? "" : ptAmfColorPlcCd);
+		builder.append(",");
+		builder.append(ptAmfColorPlcNm == null ? "" : ptAmfColorPlcNm);
+		builder.append(",");
+		builder.append(ptAmfColorCd == null ? "" : ptAmfColorCd);
+		builder.append(",");
+		builder.append(ptAmfColorNm == null ? "" : ptAmfColorNm);
+		builder.append(",");
+		builder.append(ptAmfColorRtPrice == null ? "" : ptAmfColorRtPrice);
+		builder.append(",");
+		builder.append(ptAmfColorWsWage == null ? "" : ptAmfColorWsWage);
+		builder.append(",");
+		builder.append(ptAmfColorWsPrice == null ? "" : ptAmfColorWsPrice);
+		builder.append(",");
+		builder.append(ptBtnholeColorType == null ? "" : ptBtnholeColorType);
+		builder.append(",");
+		builder.append(ptBtnholeColorPlcCd == null ? "" : ptBtnholeColorPlcCd);
+		builder.append(",");
+		builder.append(ptBtnholeColorPlcNm == null ? "" : ptBtnholeColorPlcNm);
+		builder.append(",");
+		builder.append(ptBtnholeColorCd == null ? "" : ptBtnholeColorCd);
+		builder.append(",");
+		builder.append(ptBtnholeColorNm == null ? "" : ptBtnholeColorNm);
+		builder.append(",");
+		builder.append(ptBtnholeColorRtPrice == null ? "" : ptBtnholeColorRtPrice);
+		builder.append(",");
+		builder.append(ptBtnholeColorWsWage == null ? "" : ptBtnholeColorWsWage);
+		builder.append(",");
+		builder.append(ptBtnholeColorWsPrice == null ? "" : ptBtnholeColorWsPrice);
+		builder.append(",");
+		builder.append(ptBtnthreadColorType == null ? "" : ptBtnthreadColorType);
+		builder.append(",");
+		builder.append(ptBtnthreadColorPlcCd == null ? "" : ptBtnthreadColorPlcCd);
+		builder.append(",");
+		builder.append(ptBtnthreadColorPlcNm == null ? "" : ptBtnthreadColorPlcNm);
+		builder.append(",");
+		builder.append(ptBtnthreadColorCd == null ? "" : ptBtnthreadColorCd);
+		builder.append(",");
+		builder.append(ptBtnthreadColorNm == null ? "" : ptBtnthreadColorNm);
+		builder.append(",");
+		builder.append(ptBtnthreadColorRtPrice == null ? "" : ptBtnthreadColorRtPrice);
+		builder.append(",");
+		builder.append(ptBtnthreadColorWsWage == null ? "" : ptBtnthreadColorWsWage);
+		builder.append(",");
+		builder.append(ptBtnthreadColorWsPrice == null ? "" : ptBtnthreadColorWsPrice);
+		builder.append(",");
+		builder.append(ptBtnMaterialType == null ? "" : ptBtnMaterialType);
+		builder.append(",");
+		builder.append(ptBtnMaterialCd == null ? "" : ptBtnMaterialCd);
+		builder.append(",");
+		builder.append(ptBtnMaterialNm == null ? "" : ptBtnMaterialNm);
+		builder.append(",");
+		builder.append(ptBtnMaterialRtPrice == null ? "" : ptBtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(ptBtnMaterialWsWage == null ? "" : ptBtnMaterialWsWage);
+		builder.append(",");
+		builder.append(ptBtnMaterialWsPrice == null ? "" : ptBtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(ptSuspenderBtnCd == null ? "" : ptSuspenderBtnCd);
+		builder.append(",");
+		builder.append(ptSuspenderBtnNm == null ? "" : ptSuspenderBtnNm);
+		builder.append(",");
+		builder.append(ptSuspenderBtnRtPrice == null ? "" : ptSuspenderBtnRtPrice);
+		builder.append(",");
+		builder.append(ptSuspenderBtnWsWage == null ? "" : ptSuspenderBtnWsWage);
+		builder.append(",");
+		builder.append(ptSuspenderBtnWsPrice == null ? "" : ptSuspenderBtnWsPrice);
+		builder.append(",");
+		builder.append(ptNonSlipCd == null ? "" : ptNonSlipCd);
+		builder.append(",");
+		builder.append(ptNonSlipNm == null ? "" : ptNonSlipNm);
+		builder.append(",");
+		builder.append(ptNonSlipRtPrice == null ? "" : ptNonSlipRtPrice);
+		builder.append(",");
+		builder.append(ptNonSlipWsWage == null ? "" : ptNonSlipWsWage);
+		builder.append(",");
+		builder.append(ptNonSlipWsPrice == null ? "" : ptNonSlipWsPrice);
+		builder.append(",");
+		builder.append(ptChicSlipCd == null ? "" : ptChicSlipCd);
+		builder.append(",");
+		builder.append(ptChicSlipNm == null ? "" : ptChicSlipNm);
+		builder.append(",");
+		builder.append(ptChicSlipRtPrice == null ? "" : ptChicSlipRtPrice);
+		builder.append(",");
+		builder.append(ptChicSlipWsWage == null ? "" : ptChicSlipWsWage);
+		builder.append(",");
+		builder.append(ptChicSlipWsPrice == null ? "" : ptChicSlipWsPrice);
+		builder.append(",");
+		builder.append(ptShapeMemoryCd == null ? "" : ptShapeMemoryCd);
+		builder.append(",");
+		builder.append(ptShapeMemoryNm == null ? "" : ptShapeMemoryNm);
+		builder.append(",");
+		builder.append(ptShapeMemoryRtPrice == null ? "" : ptShapeMemoryRtPrice);
+		builder.append(",");
+		builder.append(ptShapeMemoryWsWage == null ? "" : ptShapeMemoryWsWage);
+		builder.append(",");
+		builder.append(ptShapeMemoryWsPrice == null ? "" : ptShapeMemoryWsPrice);
+		builder.append(",");
+		builder.append(ptShoeSoreCd == null ? "" : ptShoeSoreCd);
+		builder.append(",");
+		builder.append(ptShoeSoreNm == null ? "" : ptShoeSoreNm);
+		builder.append(",");
+		builder.append(ptShoeSoreRtPrice == null ? "" : ptShoeSoreRtPrice);
+		builder.append(",");
+		builder.append(ptShoeSoreWsWage == null ? "" : ptShoeSoreWsWage);
+		builder.append(",");
+		builder.append(ptShoeSoreWsPrice == null ? "" : ptShoeSoreWsPrice);
+		builder.append(",");
+		builder.append(ptSideStripeCd == null ? "" : ptSideStripeCd);
+		builder.append(",");
+		builder.append(ptSideStripeNm == null ? "" : ptSideStripeNm);
+		builder.append(",");
+		builder.append(ptSideStripeRtPrice == null ? "" : ptSideStripeRtPrice);
+		builder.append(",");
+		builder.append(ptSideStripeWsWage == null ? "" : ptSideStripeWsWage);
+		builder.append(",");
+		builder.append(ptSideStripeWsPrice == null ? "" : ptSideStripeWsPrice);
+		builder.append(",");
+		builder.append(ptSideStripeWidthCd == null ? "" : ptSideStripeWidthCd);
+		builder.append(",");
+		builder.append(ptSideStripeWidthNm == null ? "" : ptSideStripeWidthNm);
+		builder.append(",");
+		builder.append(ptSideStripeWidthRtPrice == null ? "" : ptSideStripeWidthRtPrice);
+		builder.append(",");
+		builder.append(ptSideStripeWidthWsWage == null ? "" : ptSideStripeWidthWsWage);
+		builder.append(",");
+		builder.append(ptSideStripeWidthWsPrice == null ? "" : ptSideStripeWidthWsPrice);
+		builder.append(",");
+		builder.append(pt2ModelCd == null ? "" : pt2ModelCd);
+		builder.append(",");
+		builder.append(pt2ModelNm == null ? "" : pt2ModelNm);
+		builder.append(",");
+		builder.append(pt2ModelRtPrice == null ? "" : pt2ModelRtPrice);
+		builder.append(",");
+		builder.append(pt2ModelWsWage == null ? "" : pt2ModelWsWage);
+		builder.append(",");
+		builder.append(pt2ModelWsPrice == null ? "" : pt2ModelWsPrice);
+		builder.append(",");
+		builder.append(pt2TackCd == null ? "" : pt2TackCd);
+		builder.append(",");
+		builder.append(pt2TackNm == null ? "" : pt2TackNm);
+		builder.append(",");
+		builder.append(pt2TackRtPrice == null ? "" : pt2TackRtPrice);
+		builder.append(",");
+		builder.append(pt2TackWsWage == null ? "" : pt2TackWsWage);
+		builder.append(",");
+		builder.append(pt2TackWsPrice == null ? "" : pt2TackWsPrice);
+		builder.append(",");
+		builder.append(pt2KneeinnerTypeCd == null ? "" : pt2KneeinnerTypeCd);
+		builder.append(",");
+		builder.append(pt2KneeinnerTypeNm == null ? "" : pt2KneeinnerTypeNm);
+		builder.append(",");
+		builder.append(pt2KneeinnerTypeRtPrice == null ? "" : pt2KneeinnerTypeRtPrice);
+		builder.append(",");
+		builder.append(pt2KneeinnerTypeWsWage == null ? "" : pt2KneeinnerTypeWsWage);
+		builder.append(",");
+		builder.append(pt2KneeinnerTypeWsPrice == null ? "" : pt2KneeinnerTypeWsPrice);
+		builder.append(",");
+		builder.append(pt2KneeinnerClothCd == null ? "" : pt2KneeinnerClothCd);
+		builder.append(",");
+		builder.append(pt2KneeinnerClothNm == null ? "" : pt2KneeinnerClothNm);
+		builder.append(",");
+		builder.append(pt2KneeinnerClothRtPrice == null ? "" : pt2KneeinnerClothRtPrice);
+		builder.append(",");
+		builder.append(pt2KneeinnerClothWsWage == null ? "" : pt2KneeinnerClothWsWage);
+		builder.append(",");
+		builder.append(pt2KneeinnerClothWsPrice == null ? "" : pt2KneeinnerClothWsPrice);
+		builder.append(",");
+		builder.append(pt2FrtTypeCd == null ? "" : pt2FrtTypeCd);
+		builder.append(",");
+		builder.append(pt2FrtTypeNm == null ? "" : pt2FrtTypeNm);
+		builder.append(",");
+		builder.append(pt2FrtTypeRtPrice == null ? "" : pt2FrtTypeRtPrice);
+		builder.append(",");
+		builder.append(pt2FrtTypeWsWage == null ? "" : pt2FrtTypeWsWage);
+		builder.append(",");
+		builder.append(pt2FrtTypeWsPrice == null ? "" : pt2FrtTypeWsPrice);
+		builder.append(",");
+		builder.append(pt2PancherinaCd == null ? "" : pt2PancherinaCd);
+		builder.append(",");
+		builder.append(pt2PancherinaNm == null ? "" : pt2PancherinaNm);
+		builder.append(",");
+		builder.append(pt2PancherinaRtPrice == null ? "" : pt2PancherinaRtPrice);
+		builder.append(",");
+		builder.append(pt2PancherinaWsWage == null ? "" : pt2PancherinaWsWage);
+		builder.append(",");
+		builder.append(pt2PancherinaWsPrice == null ? "" : pt2PancherinaWsPrice);
+		builder.append(",");
+		builder.append(pt2AdjusterCd == null ? "" : pt2AdjusterCd);
+		builder.append(",");
+		builder.append(pt2AdjusterNm == null ? "" : pt2AdjusterNm);
+		builder.append(",");
+		builder.append(pt2AdjusterRtPrice == null ? "" : pt2AdjusterRtPrice);
+		builder.append(",");
+		builder.append(pt2AdjusterWsWage == null ? "" : pt2AdjusterWsWage);
+		builder.append(",");
+		builder.append(pt2AdjusterWsPrice == null ? "" : pt2AdjusterWsPrice);
+		builder.append(",");
+		builder.append(pt2BeltloopType == null ? "" : pt2BeltloopType);
+		builder.append(",");
+		builder.append(pt2BeltloopCd == null ? "" : pt2BeltloopCd);
+		builder.append(",");
+		builder.append(pt2BeltloopNm == null ? "" : pt2BeltloopNm);
+		builder.append(",");
+		builder.append(pt2BeltloopRtPrice == null ? "" : pt2BeltloopRtPrice);
+		builder.append(",");
+		builder.append(pt2BeltloopWsWage == null ? "" : pt2BeltloopWsWage);
+		builder.append(",");
+		builder.append(pt2BeltloopWsPrice == null ? "" : pt2BeltloopWsPrice);
+		builder.append(",");
+		builder.append(pt2PinloopCd == null ? "" : pt2PinloopCd);
+		builder.append(",");
+		builder.append(pt2PinloopNm == null ? "" : pt2PinloopNm);
+		builder.append(",");
+		builder.append(pt2PinloopRtPrice == null ? "" : pt2PinloopRtPrice);
+		builder.append(",");
+		builder.append(pt2PinloopWsWage == null ? "" : pt2PinloopWsWage);
+		builder.append(",");
+		builder.append(pt2PinloopWsPrice == null ? "" : pt2PinloopWsPrice);
+		builder.append(",");
+		builder.append(pt2SidePktCd == null ? "" : pt2SidePktCd);
+		builder.append(",");
+		builder.append(pt2SidePktNm == null ? "" : pt2SidePktNm);
+		builder.append(",");
+		builder.append(pt2SidePktRtPrice == null ? "" : pt2SidePktRtPrice);
+		builder.append(",");
+		builder.append(pt2SidePktWsWage == null ? "" : pt2SidePktWsWage);
+		builder.append(",");
+		builder.append(pt2SidePktWsPrice == null ? "" : pt2SidePktWsPrice);
+		builder.append(",");
+		builder.append(pt2ShinobiPktCd == null ? "" : pt2ShinobiPktCd);
+		builder.append(",");
+		builder.append(pt2ShinobiPktNm == null ? "" : pt2ShinobiPktNm);
+		builder.append(",");
+		builder.append(pt2ShinobiPktRtPrice == null ? "" : pt2ShinobiPktRtPrice);
+		builder.append(",");
+		builder.append(pt2ShinobiPktWsWage == null ? "" : pt2ShinobiPktWsWage);
+		builder.append(",");
+		builder.append(pt2ShinobiPktWsPrice == null ? "" : pt2ShinobiPktWsPrice);
+		builder.append(",");
+		builder.append(pt2CoinPktCd == null ? "" : pt2CoinPktCd);
+		builder.append(",");
+		builder.append(pt2CoinPktNm == null ? "" : pt2CoinPktNm);
+		builder.append(",");
+		builder.append(pt2CoinPktRtPrice == null ? "" : pt2CoinPktRtPrice);
+		builder.append(",");
+		builder.append(pt2CoinPktWsWage == null ? "" : pt2CoinPktWsWage);
+		builder.append(",");
+		builder.append(pt2CoinPktWsPrice == null ? "" : pt2CoinPktWsPrice);
+		builder.append(",");
+		builder.append(pt2FlapcoinPktCd == null ? "" : pt2FlapcoinPktCd);
+		builder.append(",");
+		builder.append(pt2FlapcoinPktNm == null ? "" : pt2FlapcoinPktNm);
+		builder.append(",");
+		builder.append(pt2FlapcoinPktRtPrice == null ? "" : pt2FlapcoinPktRtPrice);
+		builder.append(",");
+		builder.append(pt2FlapcoinPktWsWage == null ? "" : pt2FlapcoinPktWsWage);
+		builder.append(",");
+		builder.append(pt2FlapcoinPktWsPrice == null ? "" : pt2FlapcoinPktWsPrice);
+		builder.append(",");
+		builder.append(pt2LeftPisPktCd == null ? "" : pt2LeftPisPktCd);
+		builder.append(",");
+		builder.append(pt2LeftPisPktNm == null ? "" : pt2LeftPisPktNm);
+		builder.append(",");
+		builder.append(pt2LeftPisPktRtPrice == null ? "" : pt2LeftPisPktRtPrice);
+		builder.append(",");
+		builder.append(pt2LeftPisPktWsWage == null ? "" : pt2LeftPisPktWsWage);
+		builder.append(",");
+		builder.append(pt2LeftPisPktWsPrice == null ? "" : pt2LeftPisPktWsPrice);
+		builder.append(",");
+		builder.append(pt2RightPisPktCd == null ? "" : pt2RightPisPktCd);
+		builder.append(",");
+		builder.append(pt2RightPisPktNm == null ? "" : pt2RightPisPktNm);
+		builder.append(",");
+		builder.append(pt2RightPisPktRtPrice == null ? "" : pt2RightPisPktRtPrice);
+		builder.append(",");
+		builder.append(pt2RightPisPktWsWage == null ? "" : pt2RightPisPktWsWage);
+		builder.append(",");
+		builder.append(pt2RightPisPktWsPrice == null ? "" : pt2RightPisPktWsPrice);
+		builder.append(",");
+		builder.append(pt2VCutCd == null ? "" : pt2VCutCd);
+		builder.append(",");
+		builder.append(pt2VCutNm == null ? "" : pt2VCutNm);
+		builder.append(",");
+		builder.append(pt2VCutRtPrice == null ? "" : pt2VCutRtPrice);
+		builder.append(",");
+		builder.append(pt2VCutWsWage == null ? "" : pt2VCutWsWage);
+		builder.append(",");
+		builder.append(pt2VCutWsPrice == null ? "" : pt2VCutWsPrice);
+		builder.append(",");
+		builder.append(pt2HemUpCd == null ? "" : pt2HemUpCd);
+		builder.append(",");
+		builder.append(pt2HemUpNm == null ? "" : pt2HemUpNm);
+		builder.append(",");
+		builder.append(pt2HemUpRtPrice == null ? "" : pt2HemUpRtPrice);
+		builder.append(",");
+		builder.append(pt2HemUpWsWage == null ? "" : pt2HemUpWsWage);
+		builder.append(",");
+		builder.append(pt2HemUpWsPrice == null ? "" : pt2HemUpWsPrice);
+		builder.append(",");
+		builder.append(pt2DblWidthCd == null ? "" : pt2DblWidthCd);
+		builder.append(",");
+		builder.append(pt2DblWidthNm == null ? "" : pt2DblWidthNm);
+		builder.append(",");
+		builder.append(pt2DblWidthRtPrice == null ? "" : pt2DblWidthRtPrice);
+		builder.append(",");
+		builder.append(pt2DblWidthWsWage == null ? "" : pt2DblWidthWsWage);
+		builder.append(",");
+		builder.append(pt2DblWidthWsPrice == null ? "" : pt2DblWidthWsPrice);
+		builder.append(",");
+		builder.append(pt2AmfStitchCd == null ? "" : pt2AmfStitchCd);
+		builder.append(",");
+		builder.append(pt2AmfStitchNm == null ? "" : pt2AmfStitchNm);
+		builder.append(",");
+		builder.append(pt2AmfStitchRtPrice == null ? "" : pt2AmfStitchRtPrice);
+		builder.append(",");
+		builder.append(pt2AmfStitchWsWage == null ? "" : pt2AmfStitchWsWage);
+		builder.append(",");
+		builder.append(pt2AmfStitchWsPrice == null ? "" : pt2AmfStitchWsPrice);
+		builder.append(",");
+		builder.append(pt2StitchPlcType == null ? "" : pt2StitchPlcType);
+		builder.append(",");
+		builder.append(pt2StitchPlcCd == null ? "" : pt2StitchPlcCd);
+		builder.append(",");
+		builder.append(pt2StitchPlcNm == null ? "" : pt2StitchPlcNm);
+		builder.append(",");
+		builder.append(pt2StitchPlcRtPrice == null ? "" : pt2StitchPlcRtPrice);
+		builder.append(",");
+		builder.append(pt2StitchPlcWsWage == null ? "" : pt2StitchPlcWsWage);
+		builder.append(",");
+		builder.append(pt2StitchPlcWsPrice == null ? "" : pt2StitchPlcWsPrice);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcType == null ? "" : pt2DblstitchPlcType);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcCd == null ? "" : pt2DblstitchPlcCd);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcNm == null ? "" : pt2DblstitchPlcNm);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcRtPrice == null ? "" : pt2DblstitchPlcRtPrice);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcWsWage == null ? "" : pt2DblstitchPlcWsWage);
+		builder.append(",");
+		builder.append(pt2DblstitchPlcWsPrice == null ? "" : pt2DblstitchPlcWsPrice);
+		builder.append(",");
+		builder.append(pt2AmfColorType == null ? "" : pt2AmfColorType);
+		builder.append(",");
+		builder.append(pt2AmfColorPlcCd == null ? "" : pt2AmfColorPlcCd);
+		builder.append(",");
+		builder.append(pt2AmfColorPlcNm == null ? "" : pt2AmfColorPlcNm);
+		builder.append(",");
+		builder.append(pt2AmfColorCd == null ? "" : pt2AmfColorCd);
+		builder.append(",");
+		builder.append(pt2AmfColorNm == null ? "" : pt2AmfColorNm);
+		builder.append(",");
+		builder.append(pt2AmfColorRtPrice == null ? "" : pt2AmfColorRtPrice);
+		builder.append(",");
+		builder.append(pt2AmfColorWsWage == null ? "" : pt2AmfColorWsWage);
+		builder.append(",");
+		builder.append(pt2AmfColorWsPrice == null ? "" : pt2AmfColorWsPrice);
+		builder.append(",");
+		builder.append(pt2BtnholeColorType == null ? "" : pt2BtnholeColorType);
+		builder.append(",");
+		builder.append(pt2BtnholeColorPlcCd == null ? "" : pt2BtnholeColorPlcCd);
+		builder.append(",");
+		builder.append(pt2BtnholeColorPlcNm == null ? "" : pt2BtnholeColorPlcNm);
+		builder.append(",");
+		builder.append(pt2BtnholeColorCd == null ? "" : pt2BtnholeColorCd);
+		builder.append(",");
+		builder.append(pt2BtnholeColorNm == null ? "" : pt2BtnholeColorNm);
+		builder.append(",");
+		builder.append(pt2BtnholeColorRtPrice == null ? "" : pt2BtnholeColorRtPrice);
+		builder.append(",");
+		builder.append(pt2BtnholeColorWsWage == null ? "" : pt2BtnholeColorWsWage);
+		builder.append(",");
+		builder.append(pt2BtnholeColorWsPrice == null ? "" : pt2BtnholeColorWsPrice);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorType == null ? "" : pt2BtnthreadColorType);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorPlcCd == null ? "" : pt2BtnthreadColorPlcCd);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorPlcNm == null ? "" : pt2BtnthreadColorPlcNm);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorCd == null ? "" : pt2BtnthreadColorCd);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorNm == null ? "" : pt2BtnthreadColorNm);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorRtPrice == null ? "" : pt2BtnthreadColorRtPrice);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorWsWage == null ? "" : pt2BtnthreadColorWsWage);
+		builder.append(",");
+		builder.append(pt2BtnthreadColorWsPrice == null ? "" : pt2BtnthreadColorWsPrice);
+		builder.append(",");
+		builder.append(pt2BtnMaterialType == null ? "" : pt2BtnMaterialType);
+		builder.append(",");
+		builder.append(pt2BtnMaterialCd == null ? "" : pt2BtnMaterialCd);
+		builder.append(",");
+		builder.append(pt2BtnMaterialNm == null ? "" : pt2BtnMaterialNm);
+		builder.append(",");
+		builder.append(pt2BtnMaterialRtPrice == null ? "" : pt2BtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(pt2BtnMaterialWsWage == null ? "" : pt2BtnMaterialWsWage);
+		builder.append(",");
+		builder.append(pt2BtnMaterialWsPrice == null ? "" : pt2BtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(pt2SuspenderBtnCd == null ? "" : pt2SuspenderBtnCd);
+		builder.append(",");
+		builder.append(pt2SuspenderBtnNm == null ? "" : pt2SuspenderBtnNm);
+		builder.append(",");
+		builder.append(pt2SuspenderBtnRtPrice == null ? "" : pt2SuspenderBtnRtPrice);
+		builder.append(",");
+		builder.append(pt2SuspenderBtnWsWage == null ? "" : pt2SuspenderBtnWsWage);
+		builder.append(",");
+		builder.append(pt2SuspenderBtnWsPrice == null ? "" : pt2SuspenderBtnWsPrice);
+		builder.append(",");
+		builder.append(pt2NonSlipCd == null ? "" : pt2NonSlipCd);
+		builder.append(",");
+		builder.append(pt2NonSlipNm == null ? "" : pt2NonSlipNm);
+		builder.append(",");
+		builder.append(pt2NonSlipRtPrice == null ? "" : pt2NonSlipRtPrice);
+		builder.append(",");
+		builder.append(pt2NonSlipWsWage == null ? "" : pt2NonSlipWsWage);
+		builder.append(",");
+		builder.append(pt2NonSlipWsPrice == null ? "" : pt2NonSlipWsPrice);
+		builder.append(",");
+		builder.append(pt2ChicSlipCd == null ? "" : pt2ChicSlipCd);
+		builder.append(",");
+		builder.append(pt2ChicSlipNm == null ? "" : pt2ChicSlipNm);
+		builder.append(",");
+		builder.append(pt2ChicSlipRtPrice == null ? "" : pt2ChicSlipRtPrice);
+		builder.append(",");
+		builder.append(pt2ChicSlipWsWage == null ? "" : pt2ChicSlipWsWage);
+		builder.append(",");
+		builder.append(pt2ChicSlipWsPrice == null ? "" : pt2ChicSlipWsPrice);
+		builder.append(",");
+		builder.append(pt2ShapeMemoryCd == null ? "" : pt2ShapeMemoryCd);
+		builder.append(",");
+		builder.append(pt2ShapeMemoryNm == null ? "" : pt2ShapeMemoryNm);
+		builder.append(",");
+		builder.append(pt2ShapeMemoryRtPrice == null ? "" : pt2ShapeMemoryRtPrice);
+		builder.append(",");
+		builder.append(pt2ShapeMemoryWsWage == null ? "" : pt2ShapeMemoryWsWage);
+		builder.append(",");
+		builder.append(pt2ShapeMemoryWsPrice == null ? "" : pt2ShapeMemoryWsPrice);
+		builder.append(",");
+		builder.append(pt2ShoeSoreCd == null ? "" : pt2ShoeSoreCd);
+		builder.append(",");
+		builder.append(pt2ShoeSoreNm == null ? "" : pt2ShoeSoreNm);
+		builder.append(",");
+		builder.append(pt2ShoeSoreRtPrice == null ? "" : pt2ShoeSoreRtPrice);
+		builder.append(",");
+		builder.append(pt2ShoeSoreWsWage == null ? "" : pt2ShoeSoreWsWage);
+		builder.append(",");
+		builder.append(pt2ShoeSoreWsPrice == null ? "" : pt2ShoeSoreWsPrice);
+		builder.append(",");
+		builder.append(pt2SideStripeCd == null ? "" : pt2SideStripeCd);
+		builder.append(",");
+		builder.append(pt2SideStripeNm == null ? "" : pt2SideStripeNm);
+		builder.append(",");
+		builder.append(pt2SideStripeRtPrice == null ? "" : pt2SideStripeRtPrice);
+		builder.append(",");
+		builder.append(pt2SideStripeWsWage == null ? "" : pt2SideStripeWsWage);
+		builder.append(",");
+		builder.append(pt2SideStripeWsPrice == null ? "" : pt2SideStripeWsPrice);
+		builder.append(",");
+		builder.append(pt2SideStripeWidthCd == null ? "" : pt2SideStripeWidthCd);
+		builder.append(",");
+		builder.append(pt2SideStripeWidthNm == null ? "" : pt2SideStripeWidthNm);
+		builder.append(",");
+		builder.append(pt2SideStripeWidthRtPrice == null ? "" : pt2SideStripeWidthRtPrice);
+		builder.append(",");
+		builder.append(pt2SideStripeWidthWsWage == null ? "" : pt2SideStripeWidthWsWage);
+		builder.append(",");
+		builder.append(pt2SideStripeWidthWsPrice == null ? "" : pt2SideStripeWidthWsPrice);
+		builder.append(",");
+		builder.append(pt3ModelCd == null ? "" : pt3ModelCd);
+		builder.append(",");
+		builder.append(pt3ModelNm == null ? "" : pt3ModelNm);
+		builder.append(",");
+		builder.append(pt3ModelRtPrice == null ? "" : pt3ModelRtPrice);
+		builder.append(",");
+		builder.append(pt3ModelWsWage == null ? "" : pt3ModelWsWage);
+		builder.append(",");
+		builder.append(pt3ModelWsPrice == null ? "" : pt3ModelWsPrice);
+		builder.append(",");
+		builder.append(pt3TackCd == null ? "" : pt3TackCd);
+		builder.append(",");
+		builder.append(pt3TackNm == null ? "" : pt3TackNm);
+		builder.append(",");
+		builder.append(pt3TackRtPrice == null ? "" : pt3TackRtPrice);
+		builder.append(",");
+		builder.append(pt3TackWsWage == null ? "" : pt3TackWsWage);
+		builder.append(",");
+		builder.append(pt3TackWsPrice == null ? "" : pt3TackWsPrice);
+		builder.append(",");
+		builder.append(pt3KneeinnerTypeCd == null ? "" : pt3KneeinnerTypeCd);
+		builder.append(",");
+		builder.append(pt3KneeinnerTypeNm == null ? "" : pt3KneeinnerTypeNm);
+		builder.append(",");
+		builder.append(pt3KneeinnerTypeRtPrice == null ? "" : pt3KneeinnerTypeRtPrice);
+		builder.append(",");
+		builder.append(pt3KneeinnerTypeWsWage == null ? "" : pt3KneeinnerTypeWsWage);
+		builder.append(",");
+		builder.append(pt3KneeinnerTypeWsPrice == null ? "" : pt3KneeinnerTypeWsPrice);
+		builder.append(",");
+		builder.append(pt3KneeinnerClothCd == null ? "" : pt3KneeinnerClothCd);
+		builder.append(",");
+		builder.append(pt3KneeinnerClothNm == null ? "" : pt3KneeinnerClothNm);
+		builder.append(",");
+		builder.append(pt3KneeinnerClothRtPrice == null ? "" : pt3KneeinnerClothRtPrice);
+		builder.append(",");
+		builder.append(pt3KneeinnerClothWsWage == null ? "" : pt3KneeinnerClothWsWage);
+		builder.append(",");
+		builder.append(pt3KneeinnerClothWsPrice == null ? "" : pt3KneeinnerClothWsPrice);
+		builder.append(",");
+		builder.append(pt3FrtTypeCd == null ? "" : pt3FrtTypeCd);
+		builder.append(",");
+		builder.append(pt3FrtTypeNm == null ? "" : pt3FrtTypeNm);
+		builder.append(",");
+		builder.append(pt3FrtTypeRtPrice == null ? "" : pt3FrtTypeRtPrice);
+		builder.append(",");
+		builder.append(pt3FrtTypeWsWage == null ? "" : pt3FrtTypeWsWage);
+		builder.append(",");
+		builder.append(pt3FrtTypeWsPrice == null ? "" : pt3FrtTypeWsPrice);
+		builder.append(",");
+		builder.append(pt3PancherinaCd == null ? "" : pt3PancherinaCd);
+		builder.append(",");
+		builder.append(pt3PancherinaNm == null ? "" : pt3PancherinaNm);
+		builder.append(",");
+		builder.append(pt3PancherinaRtPrice == null ? "" : pt3PancherinaRtPrice);
+		builder.append(",");
+		builder.append(pt3PancherinaWsWage == null ? "" : pt3PancherinaWsWage);
+		builder.append(",");
+		builder.append(pt3PancherinaWsPrice == null ? "" : pt3PancherinaWsPrice);
+		builder.append(",");
+		builder.append(pt3AdjusterCd == null ? "" : pt3AdjusterCd);
+		builder.append(",");
+		builder.append(pt3AdjusterNm == null ? "" : pt3AdjusterNm);
+		builder.append(",");
+		builder.append(pt3AdjusterRtPrice == null ? "" : pt3AdjusterRtPrice);
+		builder.append(",");
+		builder.append(pt3AdjusterWsWage == null ? "" : pt3AdjusterWsWage);
+		builder.append(",");
+		builder.append(pt3AdjusterWsPrice == null ? "" : pt3AdjusterWsPrice);
+		builder.append(",");
+		builder.append(pt3BeltloopType == null ? "" : pt3BeltloopType);
+		builder.append(",");
+		builder.append(pt3BeltloopCd == null ? "" : pt3BeltloopCd);
+		builder.append(",");
+		builder.append(pt3BeltloopNm == null ? "" : pt3BeltloopNm);
+		builder.append(",");
+		builder.append(pt3BeltloopRtPrice == null ? "" : pt3BeltloopRtPrice);
+		builder.append(",");
+		builder.append(pt3BeltloopWsWage == null ? "" : pt3BeltloopWsWage);
+		builder.append(",");
+		builder.append(pt3BeltloopWsPrice == null ? "" : pt3BeltloopWsPrice);
+		builder.append(",");
+		builder.append(pt3PinloopCd == null ? "" : pt3PinloopCd);
+		builder.append(",");
+		builder.append(pt3PinloopNm == null ? "" : pt3PinloopNm);
+		builder.append(",");
+		builder.append(pt3PinloopRtPrice == null ? "" : pt3PinloopRtPrice);
+		builder.append(",");
+		builder.append(pt3PinloopWsWage == null ? "" : pt3PinloopWsWage);
+		builder.append(",");
+		builder.append(pt3PinloopWsPrice == null ? "" : pt3PinloopWsPrice);
+		builder.append(",");
+		builder.append(pt3SidePktCd == null ? "" : pt3SidePktCd);
+		builder.append(",");
+		builder.append(pt3SidePktNm == null ? "" : pt3SidePktNm);
+		builder.append(",");
+		builder.append(pt3SidePktRtPrice == null ? "" : pt3SidePktRtPrice);
+		builder.append(",");
+		builder.append(pt3SidePktWsWage == null ? "" : pt3SidePktWsWage);
+		builder.append(",");
+		builder.append(pt3SidePktWsPrice == null ? "" : pt3SidePktWsPrice);
+		builder.append(",");
+		builder.append(pt3ShinobiPktCd == null ? "" : pt3ShinobiPktCd);
+		builder.append(",");
+		builder.append(pt3ShinobiPktNm == null ? "" : pt3ShinobiPktNm);
+		builder.append(",");
+		builder.append(pt3ShinobiPktRtPrice == null ? "" : pt3ShinobiPktRtPrice);
+		builder.append(",");
+		builder.append(pt3ShinobiPktWsWage == null ? "" : pt3ShinobiPktWsWage);
+		builder.append(",");
+		builder.append(pt3ShinobiPktWsPrice == null ? "" : pt3ShinobiPktWsPrice);
+		builder.append(",");
+		builder.append(pt3CoinPktCd == null ? "" : pt3CoinPktCd);
+		builder.append(",");
+		builder.append(pt3CoinPktNm == null ? "" : pt3CoinPktNm);
+		builder.append(",");
+		builder.append(pt3CoinPktRtPrice == null ? "" : pt3CoinPktRtPrice);
+		builder.append(",");
+		builder.append(pt3CoinPktWsWage == null ? "" : pt3CoinPktWsWage);
+		builder.append(",");
+		builder.append(pt3CoinPktWsPrice == null ? "" : pt3CoinPktWsPrice);
+		builder.append(",");
+		builder.append(pt3FlapcoinPktCd == null ? "" : pt3FlapcoinPktCd);
+		builder.append(",");
+		builder.append(pt3FlapcoinPktNm == null ? "" : pt3FlapcoinPktNm);
+		builder.append(",");
+		builder.append(pt3FlapcoinPktRtPrice == null ? "" : pt3FlapcoinPktRtPrice);
+		builder.append(",");
+		builder.append(pt3FlapcoinPktWsWage == null ? "" : pt3FlapcoinPktWsWage);
+		builder.append(",");
+		builder.append(pt3FlapcoinPktWsPrice == null ? "" : pt3FlapcoinPktWsPrice);
+		builder.append(",");
+		builder.append(pt3LeftPisPktCd == null ? "" : pt3LeftPisPktCd);
+		builder.append(",");
+		builder.append(pt3LeftPisPktNm == null ? "" : pt3LeftPisPktNm);
+		builder.append(",");
+		builder.append(pt3LeftPisPktRtPrice == null ? "" : pt3LeftPisPktRtPrice);
+		builder.append(",");
+		builder.append(pt3LeftPisPktWsWage == null ? "" : pt3LeftPisPktWsWage);
+		builder.append(",");
+		builder.append(pt3LeftPisPktWsPrice == null ? "" : pt3LeftPisPktWsPrice);
+		builder.append(",");
+		builder.append(pt3RightPisPktCd == null ? "" : pt3RightPisPktCd);
+		builder.append(",");
+		builder.append(pt3RightPisPktNm == null ? "" : pt3RightPisPktNm);
+		builder.append(",");
+		builder.append(pt3RightPisPktRtPrice == null ? "" : pt3RightPisPktRtPrice);
+		builder.append(",");
+		builder.append(pt3RightPisPktWsWage == null ? "" : pt3RightPisPktWsWage);
+		builder.append(",");
+		builder.append(pt3RightPisPktWsPrice == null ? "" : pt3RightPisPktWsPrice);
+		builder.append(",");
+		builder.append(pt3VCutCd == null ? "" : pt3VCutCd);
+		builder.append(",");
+		builder.append(pt3VCutNm == null ? "" : pt3VCutNm);
+		builder.append(",");
+		builder.append(pt3VCutRtPrice == null ? "" : pt3VCutRtPrice);
+		builder.append(",");
+		builder.append(pt3VCutWsWage == null ? "" : pt3VCutWsWage);
+		builder.append(",");
+		builder.append(pt3VCutWsPrice == null ? "" : pt3VCutWsPrice);
+		builder.append(",");
+		builder.append(pt3HemUpCd == null ? "" : pt3HemUpCd);
+		builder.append(",");
+		builder.append(pt3HemUpNm == null ? "" : pt3HemUpNm);
+		builder.append(",");
+		builder.append(pt3HemUpRtPrice == null ? "" : pt3HemUpRtPrice);
+		builder.append(",");
+		builder.append(pt3HemUpWsWage == null ? "" : pt3HemUpWsWage);
+		builder.append(",");
+		builder.append(pt3HemUpWsPrice == null ? "" : pt3HemUpWsPrice);
+		builder.append(",");
+		builder.append(pt3DblWidthCd == null ? "" : pt3DblWidthCd);
+		builder.append(",");
+		builder.append(pt3DblWidthNm == null ? "" : pt3DblWidthNm);
+		builder.append(",");
+		builder.append(pt3DblWidthRtPrice == null ? "" : pt3DblWidthRtPrice);
+		builder.append(",");
+		builder.append(pt3DblWidthWsWage == null ? "" : pt3DblWidthWsWage);
+		builder.append(",");
+		builder.append(pt3DblWidthWsPrice == null ? "" : pt3DblWidthWsPrice);
+		builder.append(",");
+		builder.append(pt3AmfStitchCd == null ? "" : pt3AmfStitchCd);
+		builder.append(",");
+		builder.append(pt3AmfStitchNm == null ? "" : pt3AmfStitchNm);
+		builder.append(",");
+		builder.append(pt3AmfStitchRtPrice == null ? "" : pt3AmfStitchRtPrice);
+		builder.append(",");
+		builder.append(pt3AmfStitchWsWage == null ? "" : pt3AmfStitchWsWage);
+		builder.append(",");
+		builder.append(pt3AmfStitchWsPrice == null ? "" : pt3AmfStitchWsPrice);
+		builder.append(",");
+		builder.append(pt3StitchPlcType == null ? "" : pt3StitchPlcType);
+		builder.append(",");
+		builder.append(pt3StitchPlcCd == null ? "" : pt3StitchPlcCd);
+		builder.append(",");
+		builder.append(pt3StitchPlcNm == null ? "" : pt3StitchPlcNm);
+		builder.append(",");
+		builder.append(pt3StitchPlcRtPrice == null ? "" : pt3StitchPlcRtPrice);
+		builder.append(",");
+		builder.append(pt3StitchPlcWsWage == null ? "" : pt3StitchPlcWsWage);
+		builder.append(",");
+		builder.append(pt3StitchPlcWsPrice == null ? "" : pt3StitchPlcWsPrice);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcType == null ? "" : pt3DblstitchPlcType);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcCd == null ? "" : pt3DblstitchPlcCd);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcNm == null ? "" : pt3DblstitchPlcNm);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcRtPrice == null ? "" : pt3DblstitchPlcRtPrice);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcWsWage == null ? "" : pt3DblstitchPlcWsWage);
+		builder.append(",");
+		builder.append(pt3DblstitchPlcWsPrice == null ? "" : pt3DblstitchPlcWsPrice);
+		builder.append(",");
+		builder.append(pt3AmfColorType == null ? "" : pt3AmfColorType);
+		builder.append(",");
+		builder.append(pt3AmfColorPlcCd == null ? "" : pt3AmfColorPlcCd);
+		builder.append(",");
+		builder.append(pt3AmfColorPlcNm == null ? "" : pt3AmfColorPlcNm);
+		builder.append(",");
+		builder.append(pt3AmfColorCd == null ? "" : pt3AmfColorCd);
+		builder.append(",");
+		builder.append(pt3AmfColorNm == null ? "" : pt3AmfColorNm);
+		builder.append(",");
+		builder.append(pt3AmfColorRtPrice == null ? "" : pt3AmfColorRtPrice);
+		builder.append(",");
+		builder.append(pt3AmfColorWsWage == null ? "" : pt3AmfColorWsWage);
+		builder.append(",");
+		builder.append(pt3AmfColorWsPrice == null ? "" : pt3AmfColorWsPrice);
+		builder.append(",");
+		builder.append(pt3BtnholeColorType == null ? "" : pt3BtnholeColorType);
+		builder.append(",");
+		builder.append(pt3BtnholeColorPlcCd == null ? "" : pt3BtnholeColorPlcCd);
+		builder.append(",");
+		builder.append(pt3BtnholeColorPlcNm == null ? "" : pt3BtnholeColorPlcNm);
+		builder.append(",");
+		builder.append(pt3BtnholeColorCd == null ? "" : pt3BtnholeColorCd);
+		builder.append(",");
+		builder.append(pt3BtnholeColorNm == null ? "" : pt3BtnholeColorNm);
+		builder.append(",");
+		builder.append(pt3BtnholeColorRtPrice == null ? "" : pt3BtnholeColorRtPrice);
+		builder.append(",");
+		builder.append(pt3BtnholeColorWsWage == null ? "" : pt3BtnholeColorWsWage);
+		builder.append(",");
+		builder.append(pt3BtnholeColorWsPrice == null ? "" : pt3BtnholeColorWsPrice);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorType == null ? "" : pt3BtnthreadColorType);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorPlcCd == null ? "" : pt3BtnthreadColorPlcCd);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorPlcNm == null ? "" : pt3BtnthreadColorPlcNm);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorCd == null ? "" : pt3BtnthreadColorCd);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorNm == null ? "" : pt3BtnthreadColorNm);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorRtPrice == null ? "" : pt3BtnthreadColorRtPrice);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorWsWage == null ? "" : pt3BtnthreadColorWsWage);
+		builder.append(",");
+		builder.append(pt3BtnthreadColorWsPrice == null ? "" : pt3BtnthreadColorWsPrice);
+		builder.append(",");
+		builder.append(pt3BtnMaterialType == null ? "" : pt3BtnMaterialType);
+		builder.append(",");
+		builder.append(pt3BtnMaterialCd == null ? "" : pt3BtnMaterialCd);
+		builder.append(",");
+		builder.append(pt3BtnMaterialNm == null ? "" : pt3BtnMaterialNm);
+		builder.append(",");
+		builder.append(pt3BtnMaterialRtPrice == null ? "" : pt3BtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(pt3BtnMaterialWsWage == null ? "" : pt3BtnMaterialWsWage);
+		builder.append(",");
+		builder.append(pt3BtnMaterialWsPrice == null ? "" : pt3BtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(pt3SuspenderBtnCd == null ? "" : pt3SuspenderBtnCd);
+		builder.append(",");
+		builder.append(pt3SuspenderBtnNm == null ? "" : pt3SuspenderBtnNm);
+		builder.append(",");
+		builder.append(pt3SuspenderBtnRtPrice == null ? "" : pt3SuspenderBtnRtPrice);
+		builder.append(",");
+		builder.append(pt3SuspenderBtnWsWage == null ? "" : pt3SuspenderBtnWsWage);
+		builder.append(",");
+		builder.append(pt3SuspenderBtnWsPrice == null ? "" : pt3SuspenderBtnWsPrice);
+		builder.append(",");
+		builder.append(pt3NonSlipCd == null ? "" : pt3NonSlipCd);
+		builder.append(",");
+		builder.append(pt3NonSlipNm == null ? "" : pt3NonSlipNm);
+		builder.append(",");
+		builder.append(pt3NonSlipRtPrice == null ? "" : pt3NonSlipRtPrice);
+		builder.append(",");
+		builder.append(pt3NonSlipWsWage == null ? "" : pt3NonSlipWsWage);
+		builder.append(",");
+		builder.append(pt3NonSlipWsPrice == null ? "" : pt3NonSlipWsPrice);
+		builder.append(",");
+		builder.append(pt3ChicSlipCd == null ? "" : pt3ChicSlipCd);
+		builder.append(",");
+		builder.append(pt3ChicSlipNm == null ? "" : pt3ChicSlipNm);
+		builder.append(",");
+		builder.append(pt3ChicSlipRtPrice == null ? "" : pt3ChicSlipRtPrice);
+		builder.append(",");
+		builder.append(pt3ChicSlipWsWage == null ? "" : pt3ChicSlipWsWage);
+		builder.append(",");
+		builder.append(pt3ChicSlipWsPrice == null ? "" : pt3ChicSlipWsPrice);
+		builder.append(",");
+		builder.append(pt3ShapeMemoryCd == null ? "" : pt3ShapeMemoryCd);
+		builder.append(",");
+		builder.append(pt3ShapeMemoryNm == null ? "" : pt3ShapeMemoryNm);
+		builder.append(",");
+		builder.append(pt3ShapeMemoryRtPrice == null ? "" : pt3ShapeMemoryRtPrice);
+		builder.append(",");
+		builder.append(pt3ShapeMemoryWsWage == null ? "" : pt3ShapeMemoryWsWage);
+		builder.append(",");
+		builder.append(pt3ShapeMemoryWsPrice == null ? "" : pt3ShapeMemoryWsPrice);
+		builder.append(",");
+		builder.append(pt3ShoeSoreCd == null ? "" : pt3ShoeSoreCd);
+		builder.append(",");
+		builder.append(pt3ShoeSoreNm == null ? "" : pt3ShoeSoreNm);
+		builder.append(",");
+		builder.append(pt3ShoeSoreRtPrice == null ? "" : pt3ShoeSoreRtPrice);
+		builder.append(",");
+		builder.append(pt3ShoeSoreWsWage == null ? "" : pt3ShoeSoreWsWage);
+		builder.append(",");
+		builder.append(pt3ShoeSoreWsPrice == null ? "" : pt3ShoeSoreWsPrice);
+		builder.append(",");
+		builder.append(pt3SideStripeCd == null ? "" : pt3SideStripeCd);
+		builder.append(",");
+		builder.append(pt3SideStripeNm == null ? "" : pt3SideStripeNm);
+		builder.append(",");
+		builder.append(pt3SideStripeRtPrice == null ? "" : pt3SideStripeRtPrice);
+		builder.append(",");
+		builder.append(pt3SideStripeWsWage == null ? "" : pt3SideStripeWsWage);
+		builder.append(",");
+		builder.append(pt3SideStripeWsPrice == null ? "" : pt3SideStripeWsPrice);
+		builder.append(",");
+		builder.append(pt3SideStripeWidthCd == null ? "" : pt3SideStripeWidthCd);
+		builder.append(",");
+		builder.append(pt3SideStripeWidthNm == null ? "" : pt3SideStripeWidthNm);
+		builder.append(",");
+		builder.append(pt3SideStripeWidthRtPrice == null ? "" : pt3SideStripeWidthRtPrice);
+		builder.append(",");
+		builder.append(pt3SideStripeWidthWsWage == null ? "" : pt3SideStripeWidthWsWage);
+		builder.append(",");
+		builder.append(pt3SideStripeWidthWsPrice == null ? "" : pt3SideStripeWidthWsPrice);
+		builder.append(",");
+		builder.append(glModelCd == null ? "" : glModelCd);
+		builder.append(",");
+		builder.append(glModelNm == null ? "" : glModelNm);
+		builder.append(",");
+		builder.append(glModelRtPrice == null ? "" : glModelRtPrice);
+		builder.append(",");
+		builder.append(glModelWsWage == null ? "" : glModelWsWage);
+		builder.append(",");
+		builder.append(glModelWsPrice == null ? "" : glModelWsPrice);
+		builder.append(",");
+		builder.append(glBreastPktCd == null ? "" : glBreastPktCd);
+		builder.append(",");
+		builder.append(glBreastPktNm == null ? "" : glBreastPktNm);
+		builder.append(",");
+		builder.append(glBreastPktRtPrice == null ? "" : glBreastPktRtPrice);
+		builder.append(",");
+		builder.append(glBreastPktWsWage == null ? "" : glBreastPktWsWage);
+		builder.append(",");
+		builder.append(glBreastPktWsPrice == null ? "" : glBreastPktWsPrice);
+		builder.append(",");
+		builder.append(glWaistPktCd == null ? "" : glWaistPktCd);
+		builder.append(",");
+		builder.append(glWaistPktNm == null ? "" : glWaistPktNm);
+		builder.append(",");
+		builder.append(glWaistPktRtPrice == null ? "" : glWaistPktRtPrice);
+		builder.append(",");
+		builder.append(glWaistPktWsWage == null ? "" : glWaistPktWsWage);
+		builder.append(",");
+		builder.append(glWaistPktWsPrice == null ? "" : glWaistPktWsPrice);
+		builder.append(",");
+		builder.append(glWaistPktShapeCd == null ? "" : glWaistPktShapeCd);
+		builder.append(",");
+		builder.append(glWaistPktShapeNm == null ? "" : glWaistPktShapeNm);
+		builder.append(",");
+		builder.append(glWaistPktShapeRtPrice == null ? "" : glWaistPktShapeRtPrice);
+		builder.append(",");
+		builder.append(glWaistPktShapeWsWage == null ? "" : glWaistPktShapeWsWage);
+		builder.append(",");
+		builder.append(glWaistPktShapeWsPrice == null ? "" : glWaistPktShapeWsPrice);
+		builder.append(",");
+		builder.append(glWaistPktClothCd == null ? "" : glWaistPktClothCd);
+		builder.append(",");
+		builder.append(glWaistPktClothNm == null ? "" : glWaistPktClothNm);
+		builder.append(",");
+		builder.append(glWaistPktClothRtPrice == null ? "" : glWaistPktClothRtPrice);
+		builder.append(",");
+		builder.append(glWaistPktClothWsWage == null ? "" : glWaistPktClothWsWage);
+		builder.append(",");
+		builder.append(glWaistPktClothWsPrice == null ? "" : glWaistPktClothWsPrice);
+		builder.append(",");
+		builder.append(glAmfStitchCd == null ? "" : glAmfStitchCd);
+		builder.append(",");
+		builder.append(glAmfStitchNm == null ? "" : glAmfStitchNm);
+		builder.append(",");
+		builder.append(glAmfStitchRtPrice == null ? "" : glAmfStitchRtPrice);
+		builder.append(",");
+		builder.append(glAmfStitchWsWage == null ? "" : glAmfStitchWsWage);
+		builder.append(",");
+		builder.append(glAmfStitchWsPrice == null ? "" : glAmfStitchWsPrice);
+		builder.append(",");
+		builder.append(glStitchPlcType == null ? "" : glStitchPlcType);
+		builder.append(",");
+		builder.append(glStitchPlcCd == null ? "" : glStitchPlcCd);
+		builder.append(",");
+		builder.append(glStitchPlcNm == null ? "" : glStitchPlcNm);
+		builder.append(",");
+		builder.append(glStitchPlcRtPrice == null ? "" : glStitchPlcRtPrice);
+		builder.append(",");
+		builder.append(glStitchPlcWsWage == null ? "" : glStitchPlcWsWage);
+		builder.append(",");
+		builder.append(glStitchPlcWsPrice == null ? "" : glStitchPlcWsPrice);
+		builder.append(",");
+		builder.append(glDblstitchPlcType == null ? "" : glDblstitchPlcType);
+		builder.append(",");
+		builder.append(glDblstitchPlcCd == null ? "" : glDblstitchPlcCd);
+		builder.append(",");
+		builder.append(glDblstitchPlcNm == null ? "" : glDblstitchPlcNm);
+		builder.append(",");
+		builder.append(glDblstitchPlcRtPrice == null ? "" : glDblstitchPlcRtPrice);
+		builder.append(",");
+		builder.append(glDblstitchPlcWsWage == null ? "" : glDblstitchPlcWsWage);
+		builder.append(",");
+		builder.append(glDblstitchPlcWsPrice == null ? "" : glDblstitchPlcWsPrice);
+		builder.append(",");
+		builder.append(glAmfColorType == null ? "" : glAmfColorType);
+		builder.append(",");
+		builder.append(glAmfColorPlcCd == null ? "" : glAmfColorPlcCd);
+		builder.append(",");
+		builder.append(glAmfColorPlcNm == null ? "" : glAmfColorPlcNm);
+		builder.append(",");
+		builder.append(glAmfColorCd == null ? "" : glAmfColorCd);
+		builder.append(",");
+		builder.append(glAmfColorNm == null ? "" : glAmfColorNm);
+		builder.append(",");
+		builder.append(glAmfColorRtPrice == null ? "" : glAmfColorRtPrice);
+		builder.append(",");
+		builder.append(glAmfColorWsWage == null ? "" : glAmfColorWsWage);
+		builder.append(",");
+		builder.append(glAmfColorWsPrice == null ? "" : glAmfColorWsPrice);
+		builder.append(",");
+		builder.append(glBtnholeColorType == null ? "" : glBtnholeColorType);
+		builder.append(",");
+		builder.append(glBtnholeColorPlcCd == null ? "" : glBtnholeColorPlcCd);
+		builder.append(",");
+		builder.append(glBtnholeColorPlcNm == null ? "" : glBtnholeColorPlcNm);
+		builder.append(",");
+		builder.append(glBtnholeColorCd == null ? "" : glBtnholeColorCd);
+		builder.append(",");
+		builder.append(glBtnholeColorNm == null ? "" : glBtnholeColorNm);
+		builder.append(",");
+		builder.append(glBtnholeColorRtPrice == null ? "" : glBtnholeColorRtPrice);
+		builder.append(",");
+		builder.append(glBtnholeColorWsWage == null ? "" : glBtnholeColorWsWage);
+		builder.append(",");
+		builder.append(glBtnholeColorWsPrice == null ? "" : glBtnholeColorWsPrice);
+		builder.append(",");
+		builder.append(glBtnthreadColorType == null ? "" : glBtnthreadColorType);
+		builder.append(",");
+		builder.append(glBtnthreadColorPlcCd == null ? "" : glBtnthreadColorPlcCd);
+		builder.append(",");
+		builder.append(glBtnthreadColorPlcNm == null ? "" : glBtnthreadColorPlcNm);
+		builder.append(",");
+		builder.append(glBtnthreadColorCd == null ? "" : glBtnthreadColorCd);
+		builder.append(",");
+		builder.append(glBtnthreadColorNm == null ? "" : glBtnthreadColorNm);
+		builder.append(",");
+		builder.append(glBtnthreadColorRtPrice == null ? "" : glBtnthreadColorRtPrice);
+		builder.append(",");
+		builder.append(glBtnthreadColorWsWage == null ? "" : glBtnthreadColorWsWage);
+		builder.append(",");
+		builder.append(glBtnthreadColorWsPrice == null ? "" : glBtnthreadColorWsPrice);
+		builder.append(",");
+		builder.append(glBackClothType == null ? "" : glBackClothType);
+		builder.append(",");
+		builder.append(glBackClothCd == null ? "" : glBackClothCd);
+		builder.append(",");
+		builder.append(glBackClothNm == null ? "" : glBackClothNm);
+		builder.append(",");
+		builder.append(glBackClothRtPrice == null ? "" : glBackClothRtPrice);
+		builder.append(",");
+		builder.append(glBackClothWsWage == null ? "" : glBackClothWsWage);
+		builder.append(",");
+		builder.append(glBackClothWsPrice == null ? "" : glBackClothWsPrice);
+		builder.append(",");
+		builder.append(glInnnerClothType == null ? "" : glInnnerClothType);
+		builder.append(",");
+		builder.append(glInnnerClothCd == null ? "" : glInnnerClothCd);
+		builder.append(",");
+		builder.append(glInnnerClothNm == null ? "" : glInnnerClothNm);
+		builder.append(",");
+		builder.append(glInnnerClothRtPrice == null ? "" : glInnnerClothRtPrice);
+		builder.append(",");
+		builder.append(glInnnerClothWsWage == null ? "" : glInnnerClothWsWage);
+		builder.append(",");
+		builder.append(glInnnerClothWsPrice == null ? "" : glInnnerClothWsPrice);
+		builder.append(",");
+		builder.append(glFrtBtnType == null ? "" : glFrtBtnType);
+		builder.append(",");
+		builder.append(glFrtBtnCd == null ? "" : glFrtBtnCd);
+		builder.append(",");
+		builder.append(glFrtBtnNm == null ? "" : glFrtBtnNm);
+		builder.append(",");
+		builder.append(glFrtBtnRtPrice == null ? "" : glFrtBtnRtPrice);
+		builder.append(",");
+		builder.append(glFrtBtnWsWage == null ? "" : glFrtBtnWsWage);
+		builder.append(",");
+		builder.append(glFrtBtnWsPrice == null ? "" : glFrtBtnWsPrice);
+		builder.append(",");
+		builder.append(glBackBeltCd == null ? "" : glBackBeltCd);
+		builder.append(",");
+		builder.append(glBackBeltNm == null ? "" : glBackBeltNm);
+		builder.append(",");
+		builder.append(glBackBeltRtPrice == null ? "" : glBackBeltRtPrice);
+		builder.append(",");
+		builder.append(glBackBeltWsWage == null ? "" : glBackBeltWsWage);
+		builder.append(",");
+		builder.append(glBackBeltWsPrice == null ? "" : glBackBeltWsPrice);
+		builder.append(",");
+		builder.append(glWatchChainCd == null ? "" : glWatchChainCd);
+		builder.append(",");
+		builder.append(glWatchChainNm == null ? "" : glWatchChainNm);
+		builder.append(",");
+		builder.append(glWatchChainRtPrice == null ? "" : glWatchChainRtPrice);
+		builder.append(",");
+		builder.append(glWatchChainWsWage == null ? "" : glWatchChainWsWage);
+		builder.append(",");
+		builder.append(glWatchChainWsPrice == null ? "" : glWatchChainWsPrice);
+		builder.append(",");
+		builder.append(ctModelCd == null ? "" : ctModelCd);
+		builder.append(",");
+		builder.append(ctModelNm == null ? "" : ctModelNm);
+		builder.append(",");
+		builder.append(ctModelRtPrice == null ? "" : ctModelRtPrice);
+		builder.append(",");
+		builder.append(ctModelWsWage == null ? "" : ctModelWsWage);
+		builder.append(",");
+		builder.append(ctModelWsPrice == null ? "" : ctModelWsPrice);
+		builder.append(",");
+		builder.append(ctLapelDesignCd == null ? "" : ctLapelDesignCd);
+		builder.append(",");
+		builder.append(ctLapelDesignNm == null ? "" : ctLapelDesignNm);
+		builder.append(",");
+		builder.append(ctLapelDesignRtPrice == null ? "" : ctLapelDesignRtPrice);
+		builder.append(",");
+		builder.append(ctLapelDesignWsWage == null ? "" : ctLapelDesignWsWage);
+		builder.append(",");
+		builder.append(ctLapelDesignWsPrice == null ? "" : ctLapelDesignWsPrice);
+		builder.append(",");
+		builder.append(ctSleeveTypeCd == null ? "" : ctSleeveTypeCd);
+		builder.append(",");
+		builder.append(ctSleeveTypeNm == null ? "" : ctSleeveTypeNm);
+		builder.append(",");
+		builder.append(ctSleeveTypeRtPrice == null ? "" : ctSleeveTypeRtPrice);
+		builder.append(",");
+		builder.append(ctSleeveTypeWsWage == null ? "" : ctSleeveTypeWsWage);
+		builder.append(",");
+		builder.append(ctSleeveTypeWsPrice == null ? "" : ctSleeveTypeWsPrice);
+		builder.append(",");
+		builder.append(ctWaistPktCd == null ? "" : ctWaistPktCd);
+		builder.append(",");
+		builder.append(ctWaistPktNm == null ? "" : ctWaistPktNm);
+		builder.append(",");
+		builder.append(ctWaistPktRtPrice == null ? "" : ctWaistPktRtPrice);
+		builder.append(",");
+		builder.append(ctWaistPktWsWage == null ? "" : ctWaistPktWsWage);
+		builder.append(",");
+		builder.append(ctWaistPktWsPrice == null ? "" : ctWaistPktWsPrice);
+		builder.append(",");
+		builder.append(ctChgPktCd == null ? "" : ctChgPktCd);
+		builder.append(",");
+		builder.append(ctChgPktNm == null ? "" : ctChgPktNm);
+		builder.append(",");
+		builder.append(ctChgPktRtPrice == null ? "" : ctChgPktRtPrice);
+		builder.append(",");
+		builder.append(ctChgPktWsWage == null ? "" : ctChgPktWsWage);
+		builder.append(",");
+		builder.append(ctChgPktWsPrice == null ? "" : ctChgPktWsPrice);
+		builder.append(",");
+		builder.append(ctSlantedPktCd == null ? "" : ctSlantedPktCd);
+		builder.append(",");
+		builder.append(ctSlantedPktNm == null ? "" : ctSlantedPktNm);
+		builder.append(",");
+		builder.append(ctSlantedPktRtPrice == null ? "" : ctSlantedPktRtPrice);
+		builder.append(",");
+		builder.append(ctSlantedPktWsWage == null ? "" : ctSlantedPktWsWage);
+		builder.append(",");
+		builder.append(ctSlantedPktWsPrice == null ? "" : ctSlantedPktWsPrice);
+		builder.append(",");
+		builder.append(ctVentCd == null ? "" : ctVentCd);
+		builder.append(",");
+		builder.append(ctVentNm == null ? "" : ctVentNm);
+		builder.append(",");
+		builder.append(ctVentRtPrice == null ? "" : ctVentRtPrice);
+		builder.append(",");
+		builder.append(ctVentWsWage == null ? "" : ctVentWsWage);
+		builder.append(",");
+		builder.append(ctVentWsPrice == null ? "" : ctVentWsPrice);
+		builder.append(",");
+		builder.append(ctFrtBtnCd == null ? "" : ctFrtBtnCd);
+		builder.append(",");
+		builder.append(ctFrtBtnNm == null ? "" : ctFrtBtnNm);
+		builder.append(",");
+		builder.append(ctFrtBtnRtPrice == null ? "" : ctFrtBtnRtPrice);
+		builder.append(",");
+		builder.append(ctFrtBtnWsWage == null ? "" : ctFrtBtnWsWage);
+		builder.append(",");
+		builder.append(ctFrtBtnWsPrice == null ? "" : ctFrtBtnWsPrice);
+		builder.append(",");
+		builder.append(ctCuffCd == null ? "" : ctCuffCd);
+		builder.append(",");
+		builder.append(ctCuffNm == null ? "" : ctCuffNm);
+		builder.append(",");
+		builder.append(ctCuffRtPrice == null ? "" : ctCuffRtPrice);
+		builder.append(",");
+		builder.append(ctCuffWsWage == null ? "" : ctCuffWsWage);
+		builder.append(",");
+		builder.append(ctCuffWsPrice == null ? "" : ctCuffWsPrice);
+		builder.append(",");
+		builder.append(ctSleeveBtnCd == null ? "" : ctSleeveBtnCd);
+		builder.append(",");
+		builder.append(ctSleeveBtnNm == null ? "" : ctSleeveBtnNm);
+		builder.append(",");
+		builder.append(ctSleeveBtnRtPrice == null ? "" : ctSleeveBtnRtPrice);
+		builder.append(",");
+		builder.append(ctSleeveBtnWsWage == null ? "" : ctSleeveBtnWsWage);
+		builder.append(",");
+		builder.append(ctSleeveBtnWsPrice == null ? "" : ctSleeveBtnWsPrice);
+		builder.append(",");
+		builder.append(ctBackBeltCd == null ? "" : ctBackBeltCd);
+		builder.append(",");
+		builder.append(ctBackBeltNm == null ? "" : ctBackBeltNm);
+		builder.append(",");
+		builder.append(ctBackBeltRtPrice == null ? "" : ctBackBeltRtPrice);
+		builder.append(",");
+		builder.append(ctBackBeltWsWage == null ? "" : ctBackBeltWsWage);
+		builder.append(",");
+		builder.append(ctBackBeltWsPrice == null ? "" : ctBackBeltWsPrice);
+		builder.append(",");
+		builder.append(ctCollarHangCd == null ? "" : ctCollarHangCd);
+		builder.append(",");
+		builder.append(ctCollarHangNm == null ? "" : ctCollarHangNm);
+		builder.append(",");
+		builder.append(ctCollarHangRtPrice == null ? "" : ctCollarHangRtPrice);
+		builder.append(",");
+		builder.append(ctCollarHangWsWage == null ? "" : ctCollarHangWsWage);
+		builder.append(",");
+		builder.append(ctCollarHangWsPrice == null ? "" : ctCollarHangWsPrice);
+		builder.append(",");
+		builder.append(ctInnerBodyClothCd == null ? "" : ctInnerBodyClothCd);
+		builder.append(",");
+		builder.append(ctInnerBodyClothNm == null ? "" : ctInnerBodyClothNm);
+		builder.append(",");
+		builder.append(ctInnerBodyClothRtPrice == null ? "" : ctInnerBodyClothRtPrice);
+		builder.append(",");
+		builder.append(ctInnerBodyClothWsWage == null ? "" : ctInnerBodyClothWsWage);
+		builder.append(",");
+		builder.append(ctInnerBodyClothWsPrice == null ? "" : ctInnerBodyClothWsPrice);
+		builder.append(",");
+		builder.append(ctInnerSleeveClothCd == null ? "" : ctInnerSleeveClothCd);
+		builder.append(",");
+		builder.append(ctInnerSleeveClothNm == null ? "" : ctInnerSleeveClothNm);
+		builder.append(",");
+		builder.append(ctInnerSleeveClothRtPrice == null ? "" : ctInnerSleeveClothRtPrice);
+		builder.append(",");
+		builder.append(ctInnerSleeveClothWsWage == null ? "" : ctInnerSleeveClothWsWage);
+		builder.append(",");
+		builder.append(ctInnerSleeveClothWsPrice == null ? "" : ctInnerSleeveClothWsPrice);
+		builder.append(",");
+		builder.append(ctBtnMaterialCd == null ? "" : ctBtnMaterialCd);
+		builder.append(",");
+		builder.append(ctBtnMaterialNm == null ? "" : ctBtnMaterialNm);
+		builder.append(",");
+		builder.append(ctBtnMaterialRtPrice == null ? "" : ctBtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(ctBtnMaterialWsWage == null ? "" : ctBtnMaterialWsWage);
+		builder.append(",");
+		builder.append(ctBtnMaterialWsPrice == null ? "" : ctBtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(stModelCd == null ? "" : stModelCd);
+		builder.append(",");
+		builder.append(stModelNm == null ? "" : stModelNm);
+		builder.append(",");
+		builder.append(stModelRtPrice == null ? "" : stModelRtPrice);
+		builder.append(",");
+		builder.append(stModelWsWage == null ? "" : stModelWsWage);
+		builder.append(",");
+		builder.append(stModelWsPrice == null ? "" : stModelWsPrice);
+		builder.append(",");
+		builder.append(stCasualHemlineCd == null ? "" : stCasualHemlineCd);
+		builder.append(",");
+		builder.append(stCasualHemlineSize == null ? "" : stCasualHemlineSize);
+		builder.append(",");
+		builder.append(stCasualHemlineNm == null ? "" : stCasualHemlineNm);
+		builder.append(",");
+		builder.append(stCasualHemlineRtPrice == null ? "" : stCasualHemlineRtPrice);
+		builder.append(",");
+		builder.append(stCasualHemlineWsWage == null ? "" : stCasualHemlineWsWage);
+		builder.append(",");
+		builder.append(stCasualHemlineWsPrice == null ? "" : stCasualHemlineWsPrice);
+		builder.append(",");
+		builder.append(stCollarTypeCd == null ? "" : stCollarTypeCd);
+		builder.append(",");
+		builder.append(stCollarTypeNm == null ? "" : stCollarTypeNm);
+		builder.append(",");
+		builder.append(stCollarTypeRtPrice == null ? "" : stCollarTypeRtPrice);
+		builder.append(",");
+		builder.append(stCollarTypeWsWage == null ? "" : stCollarTypeWsWage);
+		builder.append(",");
+		builder.append(stCollarTypeWsPrice == null ? "" : stCollarTypeWsPrice);
+		builder.append(",");
+		builder.append(stCuffsCd == null ? "" : stCuffsCd);
+		builder.append(",");
+		builder.append(stCuffsNm == null ? "" : stCuffsNm);
+		builder.append(",");
+		builder.append(stCuffsRtPrice == null ? "" : stCuffsRtPrice);
+		builder.append(",");
+		builder.append(stCuffsWsWage == null ? "" : stCuffsWsWage);
+		builder.append(",");
+		builder.append(stCuffsWsPrice == null ? "" : stCuffsWsPrice);
+		builder.append(",");
+		builder.append(stConvertibleCd == null ? "" : stConvertibleCd);
+		builder.append(",");
+		builder.append(stConvertibleNm == null ? "" : stConvertibleNm);
+		builder.append(",");
+		builder.append(stConvertibleRtPrice == null ? "" : stConvertibleRtPrice);
+		builder.append(",");
+		builder.append(stConvertibleWsWage == null ? "" : stConvertibleWsWage);
+		builder.append(",");
+		builder.append(stConvertibleWsPrice == null ? "" : stConvertibleWsPrice);
+		builder.append(",");
+		builder.append(stAdjusterBtnCd == null ? "" : stAdjusterBtnCd);
+		builder.append(",");
+		builder.append(stAdjusterBtnNm == null ? "" : stAdjusterBtnNm);
+		builder.append(",");
+		builder.append(stAdjusterBtnRtPrice == null ? "" : stAdjusterBtnRtPrice);
+		builder.append(",");
+		builder.append(stAdjusterBtnWsWage == null ? "" : stAdjusterBtnWsWage);
+		builder.append(",");
+		builder.append(stAdjusterBtnWsPrice == null ? "" : stAdjusterBtnWsPrice);
+		builder.append(",");
+		builder.append(stDblCuffsCd == null ? "" : stDblCuffsCd);
+		builder.append(",");
+		builder.append(stDblCuffsNm == null ? "" : stDblCuffsNm);
+		builder.append(",");
+		builder.append(stDblCuffsRtPrice == null ? "" : stDblCuffsRtPrice);
+		builder.append(",");
+		builder.append(stDblCuffsWsWage == null ? "" : stDblCuffsWsWage);
+		builder.append(",");
+		builder.append(stDblCuffsWsPrice == null ? "" : stDblCuffsWsPrice);
+		builder.append(",");
+		builder.append(stClericCd == null ? "" : stClericCd);
+		builder.append(",");
+		builder.append(stClericNm == null ? "" : stClericNm);
+		builder.append(",");
+		builder.append(stClericRtPrice == null ? "" : stClericRtPrice);
+		builder.append(",");
+		builder.append(stClericWsWage == null ? "" : stClericWsWage);
+		builder.append(",");
+		builder.append(stClericWsPrice == null ? "" : stClericWsPrice);
+		builder.append(",");
+		builder.append(stCuffsBtnCd == null ? "" : stCuffsBtnCd);
+		builder.append(",");
+		builder.append(stCuffsBtnNm == null ? "" : stCuffsBtnNm);
+		builder.append(",");
+		builder.append(stCuffsBtnRtPrice == null ? "" : stCuffsBtnRtPrice);
+		builder.append(",");
+		builder.append(stCuffsBtnWsWage == null ? "" : stCuffsBtnWsWage);
+		builder.append(",");
+		builder.append(stCuffsBtnWsPrice == null ? "" : stCuffsBtnWsPrice);
+		builder.append(",");
+		builder.append(stSleeveClericcd == null ? "" : stSleeveClericcd);
+		builder.append(",");
+		builder.append(stSleeveClericnm == null ? "" : stSleeveClericnm);
+		builder.append(",");
+		builder.append(stSleeveClericrtPrice == null ? "" : stSleeveClericrtPrice);
+		builder.append(",");
+		builder.append(stSleeveClericwsWage == null ? "" : stSleeveClericwsWage);
+		builder.append(",");
+		builder.append(stSleeveClericwsPrice == null ? "" : stSleeveClericwsPrice);
+		builder.append(",");
+		builder.append(stBtnMaterialCd == null ? "" : stBtnMaterialCd);
+		builder.append(",");
+		builder.append(stBtnMaterialNm == null ? "" : stBtnMaterialNm);
+		builder.append(",");
+		builder.append(stBtnMaterialRtPrice == null ? "" : stBtnMaterialRtPrice);
+		builder.append(",");
+		builder.append(stBtnMaterialWsWage == null ? "" : stBtnMaterialWsWage);
+		builder.append(",");
+		builder.append(stBtnMaterialWsPrice == null ? "" : stBtnMaterialWsPrice);
+		builder.append(",");
+		builder.append(stDblBtnCd == null ? "" : stDblBtnCd);
+		builder.append(",");
+		builder.append(stDblBtnNm == null ? "" : stDblBtnNm);
+		builder.append(",");
+		builder.append(stDblBtnRtPrice == null ? "" : stDblBtnRtPrice);
+		builder.append(",");
+		builder.append(stDblBtnWsWage == null ? "" : stDblBtnWsWage);
+		builder.append(",");
+		builder.append(stDblBtnWsPrice == null ? "" : stDblBtnWsPrice);
+		builder.append(",");
+		builder.append(stGauntletBtnPosCd == null ? "" : stGauntletBtnPosCd);
+		builder.append(",");
+		builder.append(stGauntletBtnPosNm == null ? "" : stGauntletBtnPosNm);
+		builder.append(",");
+		builder.append(stGauntletBtnPosRtPrice == null ? "" : stGauntletBtnPosRtPrice);
+		builder.append(",");
+		builder.append(stGauntletBtnPosWsWage == null ? "" : stGauntletBtnPosWsWage);
+		builder.append(",");
+		builder.append(stGauntletBtnPosWsPrice == null ? "" : stGauntletBtnPosWsPrice);
+		builder.append(",");
+		builder.append(stPinholePinCd == null ? "" : stPinholePinCd);
+		builder.append(",");
+		builder.append(stPinholePinNm == null ? "" : stPinholePinNm);
+		builder.append(",");
+		builder.append(stPinholePinRtPrice == null ? "" : stPinholePinRtPrice);
+		builder.append(",");
+		builder.append(stPinholePinWsWage == null ? "" : stPinholePinWsWage);
+		builder.append(",");
+		builder.append(stPinholePinWsPrice == null ? "" : stPinholePinWsPrice);
+		builder.append(",");
+		builder.append(stBreastPktCd == null ? "" : stBreastPktCd);
+		builder.append(",");
+		builder.append(stBreastPktNm == null ? "" : stBreastPktNm);
+		builder.append(",");
+		builder.append(stBreastPktRtPrice == null ? "" : stBreastPktRtPrice);
+		builder.append(",");
+		builder.append(stBreastPktWsWage == null ? "" : stBreastPktWsWage);
+		builder.append(",");
+		builder.append(stBreastPktWsPrice == null ? "" : stBreastPktWsPrice);
+		builder.append(",");
+		builder.append(stBreastSizeCd == null ? "" : stBreastSizeCd);
+		builder.append(",");
+		builder.append(stBreastSizeNm == null ? "" : stBreastSizeNm);
+		builder.append(",");
+		builder.append(stBreastSizeRtPrice == null ? "" : stBreastSizeRtPrice);
+		builder.append(",");
+		builder.append(stBreastSizeWsWage == null ? "" : stBreastSizeWsWage);
+		builder.append(",");
+		builder.append(stBreastSizeWsPrice == null ? "" : stBreastSizeWsPrice);
+		builder.append(",");
+		builder.append(stFrtDesignCd == null ? "" : stFrtDesignCd);
+		builder.append(",");
+		builder.append(stFrtDesignNm == null ? "" : stFrtDesignNm);
+		builder.append(",");
+		builder.append(stFrtDesignRtPrice == null ? "" : stFrtDesignRtPrice);
+		builder.append(",");
+		builder.append(stFrtDesignWsWage == null ? "" : stFrtDesignWsWage);
+		builder.append(",");
+		builder.append(stFrtDesignWsPrice == null ? "" : stFrtDesignWsPrice);
+		builder.append(",");
+		builder.append(stPintuckBosomCd == null ? "" : stPintuckBosomCd);
+		builder.append(",");
+		builder.append(stPintuckBosomNm == null ? "" : stPintuckBosomNm);
+		builder.append(",");
+		builder.append(stPintuckBosomRtPrice == null ? "" : stPintuckBosomRtPrice);
+		builder.append(",");
+		builder.append(stPintuckBosomWsWage == null ? "" : stPintuckBosomWsWage);
+		builder.append(",");
+		builder.append(stPintuckBosomWsPrice == null ? "" : stPintuckBosomWsPrice);
+		builder.append(",");
+		builder.append(stStitchCd == null ? "" : stStitchCd);
+		builder.append(",");
+		builder.append(stStitchNm == null ? "" : stStitchNm);
+		builder.append(",");
+		builder.append(stStitchRtPrice == null ? "" : stStitchRtPrice);
+		builder.append(",");
+		builder.append(stStitchWsWage == null ? "" : stStitchWsWage);
+		builder.append(",");
+		builder.append(stStitchWsPrice == null ? "" : stStitchWsPrice);
+		builder.append(",");
+		builder.append(stColarKeeperCd == null ? "" : stColarKeeperCd);
+		builder.append(",");
+		builder.append(stColarKeeperNm == null ? "" : stColarKeeperNm);
+		builder.append(",");
+		builder.append(stColarKeeperRtPrice == null ? "" : stColarKeeperRtPrice);
+		builder.append(",");
+		builder.append(stColarKeeperWsWage == null ? "" : stColarKeeperWsWage);
+		builder.append(",");
+		builder.append(stColarKeeperWsPrice == null ? "" : stColarKeeperWsPrice);
+		builder.append(",");
+		builder.append(stBtnthreadColorCd == null ? "" : stBtnthreadColorCd);
+		builder.append(",");
+		builder.append(stBtnthreadColorNm == null ? "" : stBtnthreadColorNm);
+		builder.append(",");
+		builder.append(stBtnthreadColorRtPrice == null ? "" : stBtnthreadColorRtPrice);
+		builder.append(",");
+		builder.append(stBtnthreadColorWsWage == null ? "" : stBtnthreadColorWsWage);
+		builder.append(",");
+		builder.append(stBtnthreadColorWsPrice == null ? "" : stBtnthreadColorWsPrice);
+		builder.append(",");
+		builder.append(stBtnholeColorCd == null ? "" : stBtnholeColorCd);
+		builder.append(",");
+		builder.append(stBtnholeColorNm == null ? "" : stBtnholeColorNm);
+		builder.append(",");
+		builder.append(stBtnholeColorRtPrice == null ? "" : stBtnholeColorRtPrice);
+		builder.append(",");
+		builder.append(stBtnholeColorWsWage == null ? "" : stBtnholeColorWsWage);
+		builder.append(",");
+		builder.append(stBtnholeColorWsPrice == null ? "" : stBtnholeColorWsPrice);
+		builder.append(",");
+		builder.append(stBtnposChgCd == null ? "" : stBtnposChgCd);
+		builder.append(",");
+		builder.append(stBtnposChgNm == null ? "" : stBtnposChgNm);
+		builder.append(",");
+		builder.append(stBtnposChgRtPrice == null ? "" : stBtnposChgRtPrice);
+		builder.append(",");
+		builder.append(stBtnposChgWsWage == null ? "" : stBtnposChgWsWage);
+		builder.append(",");
+		builder.append(stBtnposChgWsPrice == null ? "" : stBtnposChgWsPrice);
+		builder.append(",");
+		builder.append(stNeckbandBtnChgCd == null ? "" : stNeckbandBtnChgCd);
+		builder.append(",");
+		builder.append(stNeckbandBtnChgNm == null ? "" : stNeckbandBtnChgNm);
+		builder.append(",");
+		builder.append(stNeckbandBtnChgRtPrice == null ? "" : stNeckbandBtnChgRtPrice);
+		builder.append(",");
+		builder.append(stNeckbandBtnChgWsWage == null ? "" : stNeckbandBtnChgWsWage);
+		builder.append(",");
+		builder.append(stNeckbandBtnChgWsPrice == null ? "" : stNeckbandBtnChgWsPrice);
+		builder.append(",");
+		builder.append(stNeckbandBtnPosChg == null ? "" : stNeckbandBtnPosChg);
+		builder.append(",");
+		builder.append(stFrtfirstBtnChgCd == null ? "" : stFrtfirstBtnChgCd);
+		builder.append(",");
+		builder.append(stFrtfirstBtnChgNm == null ? "" : stFrtfirstBtnChgNm);
+		builder.append(",");
+		builder.append(stFrtfirstBtnChgRtPrice == null ? "" : stFrtfirstBtnChgRtPrice);
+		builder.append(",");
+		builder.append(stFrtfirstBtnChgWsWage == null ? "" : stFrtfirstBtnChgWsWage);
+		builder.append(",");
+		builder.append(stFrtfirstBtnChgWsPrice == null ? "" : stFrtfirstBtnChgWsPrice);
+		builder.append(",");
+		builder.append(stFrtfirstBtnPosChg == null ? "" : stFrtfirstBtnPosChg);
+		builder.append(",");
+		builder.append(stFrtsecondBtnChgCd == null ? "" : stFrtsecondBtnChgCd);
+		builder.append(",");
+		builder.append(stFrtsecondBtnChgNm == null ? "" : stFrtsecondBtnChgNm);
+		builder.append(",");
+		builder.append(stFrtsecondBtnChgRtPrice == null ? "" : stFrtsecondBtnChgRtPrice);
+		builder.append(",");
+		builder.append(stFrtsecondBtnChgWsWage == null ? "" : stFrtsecondBtnChgWsWage);
+		builder.append(",");
+		builder.append(stFrtsecondBtnChgWsPrice == null ? "" : stFrtsecondBtnChgWsPrice);
+		builder.append(",");
+		builder.append(stFrtsecondBtnPosChg == null ? "" : stFrtsecondBtnPosChg);
+		builder.append(",");
+		builder.append(corJkDrop == null ? "" : corJkDrop);
+		builder.append(",");
+		builder.append(corJkSize == null ? "" : corJkSize);
+		builder.append(",");
+		builder.append(corJkBodylengthSize == null ? "" : corJkBodylengthSize);
+		builder.append(",");
+		builder.append(corJkBodylengthCorrect == null ? "" : corJkBodylengthCorrect);
+		builder.append(",");
+		builder.append(corJkBodylengthGross == null ? "" : corJkBodylengthGross);
+		builder.append(",");
+		builder.append(corJkWaistSize == null ? "" : corJkWaistSize);
+		builder.append(",");
+		builder.append(corJkWaistCorrect == null ? "" : corJkWaistCorrect);
+		builder.append(",");
+		builder.append(corJkWaistGross == null ? "" : corJkWaistGross);
+		builder.append(",");
+		builder.append(corJkRightsleeveSize == null ? "" : corJkRightsleeveSize);
+		builder.append(",");
+		builder.append(corJkRightsleeveCorrect == null ? "" : corJkRightsleeveCorrect);
+		builder.append(",");
+		builder.append(corJkRightsleeveGross == null ? "" : corJkRightsleeveGross);
+		builder.append(",");
+		builder.append(corJkLeftsleeveSize == null ? "" : corJkLeftsleeveSize);
+		builder.append(",");
+		builder.append(corJkLeftsleeveCorrect == null ? "" : corJkLeftsleeveCorrect);
+		builder.append(",");
+		builder.append(corJkLeftsleeveGross == null ? "" : corJkLeftsleeveGross);
+		builder.append(",");
+		builder.append(corJkShoulderpad == null ? "" : corJkShoulderpad);
+		builder.append(",");
+		builder.append(corJkFigureCorrect == null ? "" : corJkFigureCorrect);
+		builder.append(",");
+		builder.append(corPtDrop == null ? "" : corPtDrop);
+		builder.append(",");
+		builder.append(corPtSize == null ? "" : corPtSize);
+		builder.append(",");
+		builder.append(corPtWaistSize == null ? "" : corPtWaistSize);
+		builder.append(",");
+		builder.append(corPtWaistCorrect == null ? "" : corPtWaistCorrect);
+		builder.append(",");
+		builder.append(corPtWaistGross == null ? "" : corPtWaistGross);
+		builder.append(",");
+		builder.append(corPtHipSize == null ? "" : corPtHipSize);
+		builder.append(",");
+		builder.append(corPtHipCorrect == null ? "" : corPtHipCorrect);
+		builder.append(",");
+		builder.append(corPtHipGross == null ? "" : corPtHipGross);
+		builder.append(",");
+		builder.append(corPtThighwidthSize == null ? "" : corPtThighwidthSize);
+		builder.append(",");
+		builder.append(corPtThighwidthCorrect == null ? "" : corPtThighwidthCorrect);
+		builder.append(",");
+		builder.append(corPtThighwidthGross == null ? "" : corPtThighwidthGross);
+		builder.append(",");
+		builder.append(corPtHemwidthType == null ? "" : corPtHemwidthType);
+		builder.append(",");
+		builder.append(corPtHemwidthSize == null ? "" : corPtHemwidthSize);
+		builder.append(",");
+		builder.append(corPtHemwidthCorrect == null ? "" : corPtHemwidthCorrect);
+		builder.append(",");
+		builder.append(corPtHemwidthGross == null ? "" : corPtHemwidthGross);
+		builder.append(",");
+		builder.append(corPtHemwidthDegignate == null ? "" : corPtHemwidthDegignate);
+		builder.append(",");
+		builder.append(corPtRightinseamSize == null ? "" : corPtRightinseamSize);
+		builder.append(",");
+		builder.append(corPtRightinseamCorrect == null ? "" : corPtRightinseamCorrect);
+		builder.append(",");
+		builder.append(corPtRightinseamGross == null ? "" : corPtRightinseamGross);
+		builder.append(",");
+		builder.append(corPtLeftinseamSize == null ? "" : corPtLeftinseamSize);
+		builder.append(",");
+		builder.append(corPtLeftinseamCorrect == null ? "" : corPtLeftinseamCorrect);
+		builder.append(",");
+		builder.append(corPtLeftinseamGross == null ? "" : corPtLeftinseamGross);
+		builder.append(",");
+		builder.append(corPt2Drop == null ? "" : corPt2Drop);
+		builder.append(",");
+		builder.append(corPt2Size == null ? "" : corPt2Size);
+		builder.append(",");
+		builder.append(corPt2WaistSize == null ? "" : corPt2WaistSize);
+		builder.append(",");
+		builder.append(corPt2WaistCorrect == null ? "" : corPt2WaistCorrect);
+		builder.append(",");
+		builder.append(corPt2WaistGross == null ? "" : corPt2WaistGross);
+		builder.append(",");
+		builder.append(corPt2HipSize == null ? "" : corPt2HipSize);
+		builder.append(",");
+		builder.append(corPt2HipCorrect == null ? "" : corPt2HipCorrect);
+		builder.append(",");
+		builder.append(corPt2HipGross == null ? "" : corPt2HipGross);
+		builder.append(",");
+		builder.append(corPt2ThighwidthSize == null ? "" : corPt2ThighwidthSize);
+		builder.append(",");
+		builder.append(corPt2ThighwidthCorrect == null ? "" : corPt2ThighwidthCorrect);
+		builder.append(",");
+		builder.append(corPt2ThighwidthGross == null ? "" : corPt2ThighwidthGross);
+		builder.append(",");
+		builder.append(corPt2HemwidthType == null ? "" : corPt2HemwidthType);
+		builder.append(",");
+		builder.append(corPt2HemwidthSize == null ? "" : corPt2HemwidthSize);
+		builder.append(",");
+		builder.append(corPt2HemwidthCorrect == null ? "" : corPt2HemwidthCorrect);
+		builder.append(",");
+		builder.append(corPt2HemwidthGross == null ? "" : corPt2HemwidthGross);
+		builder.append(",");
+		builder.append(corPt2HemwidthDegignate == null ? "" : corPt2HemwidthDegignate);
+		builder.append(",");
+		builder.append(corPt2RightinseamSize == null ? "" : corPt2RightinseamSize);
+		builder.append(",");
+		builder.append(corPt2RightinseamCorrect == null ? "" : corPt2RightinseamCorrect);
+		builder.append(",");
+		builder.append(corPt2RightinseamGross == null ? "" : corPt2RightinseamGross);
+		builder.append(",");
+		builder.append(corPt2LeftinseamSize == null ? "" : corPt2LeftinseamSize);
+		builder.append(",");
+		builder.append(corPt2LeftinseamCorrect == null ? "" : corPt2LeftinseamCorrect);
+		builder.append(",");
+		builder.append(corPt2LeftinseamGross == null ? "" : corPt2LeftinseamGross);
+		builder.append(",");
+		builder.append(corGlDrop == null ? "" : corGlDrop);
+		builder.append(",");
+		builder.append(corGlSize == null ? "" : corGlSize);
+		builder.append(",");
+		builder.append(corGlBodylengthSize == null ? "" : corGlBodylengthSize);
+		builder.append(",");
+		builder.append(corGlBodylengthCorrect == null ? "" : corGlBodylengthCorrect);
+		builder.append(",");
+		builder.append(corGlBodylengthGross == null ? "" : corGlBodylengthGross);
+		builder.append(",");
+		builder.append(corGlBustSize == null ? "" : corGlBustSize);
+		builder.append(",");
+		builder.append(corGlBustCorrect == null ? "" : corGlBustCorrect);
+		builder.append(",");
+		builder.append(corGlBustGross == null ? "" : corGlBustGross);
+		builder.append(",");
+		builder.append(corGlWaistSize == null ? "" : corGlWaistSize);
+		builder.append(",");
+		builder.append(corGlWaistCorrect == null ? "" : corGlWaistCorrect);
+		builder.append(",");
+		builder.append(corGlWaistGross == null ? "" : corGlWaistGross);
+		builder.append(",");
+		builder.append(corCtSize == null ? "" : corCtSize);
+		builder.append(",");
+		builder.append(corCtBodylengthSize == null ? "" : corCtBodylengthSize);
+		builder.append(",");
+		builder.append(corCtBodylengthCorrect == null ? "" : corCtBodylengthCorrect);
+		builder.append(",");
+		builder.append(corCtBodylengthGross == null ? "" : corCtBodylengthGross);
+		builder.append(",");
+		builder.append(corCtWaistSize == null ? "" : corCtWaistSize);
+		builder.append(",");
+		builder.append(corCtWaistCorrect == null ? "" : corCtWaistCorrect);
+		builder.append(",");
+		builder.append(corCtWaistGross == null ? "" : corCtWaistGross);
+		builder.append(",");
+		builder.append(corCtRightsleeveSize == null ? "" : corCtRightsleeveSize);
+		builder.append(",");
+		builder.append(corCtRightsleeveCorrect == null ? "" : corCtRightsleeveCorrect);
+		builder.append(",");
+		builder.append(corCtRightsleeveGross == null ? "" : corCtRightsleeveGross);
+		builder.append(",");
+		builder.append(corCtLeftsleeveSize == null ? "" : corCtLeftsleeveSize);
+		builder.append(",");
+		builder.append(corCtLeftsleeveCorrect == null ? "" : corCtLeftsleeveCorrect);
+		builder.append(",");
+		builder.append(corCtLeftsleeveGross == null ? "" : corCtLeftsleeveGross);
+		builder.append(",");
+		builder.append(corCtVenthightSize == null ? "" : corCtVenthightSize);
+		builder.append(",");
+		builder.append(corCtVenthightCorrect == null ? "" : corCtVenthightCorrect);
+		builder.append(",");
+		builder.append(corCtVenthightGross == null ? "" : corCtVenthightGross);
+		builder.append(",");
+		builder.append(corCtPktposSize == null ? "" : corCtPktposSize);
+		builder.append(",");
+		builder.append(corCtPktposCorrect == null ? "" : corCtPktposCorrect);
+		builder.append(",");
+		builder.append(corCtPktposGross == null ? "" : corCtPktposGross);
+		builder.append(",");
+		builder.append(corStSize == null ? "" : corStSize);
+		builder.append(",");
+		builder.append(corStNeckSize == null ? "" : corStNeckSize);
+		builder.append(",");
+		builder.append(corStNeckCorrect == null ? "" : corStNeckCorrect);
+		builder.append(",");
+		builder.append(corStNeckGross == null ? "" : corStNeckGross);
+		builder.append(",");
+		builder.append(corStBodylengthSize == null ? "" : corStBodylengthSize);
+		builder.append(",");
+		builder.append(corStBodylengthCorrect == null ? "" : corStBodylengthCorrect);
+		builder.append(",");
+		builder.append(corStBodylengthGross == null ? "" : corStBodylengthGross);
+		builder.append(",");
+		builder.append(corStRightsleeveSize == null ? "" : corStRightsleeveSize);
+		builder.append(",");
+		builder.append(corStRightsleeveCorrect == null ? "" : corStRightsleeveCorrect);
+		builder.append(",");
+		builder.append(corStRightsleeveGross == null ? "" : corStRightsleeveGross);
+		builder.append(",");
+		builder.append(corStLeftsleeveSize == null ? "" : corStLeftsleeveSize);
+		builder.append(",");
+		builder.append(corStLeftsleeveCorrect == null ? "" : corStLeftsleeveCorrect);
+		builder.append(",");
+		builder.append(corStLeftsleeveGross == null ? "" : corStLeftsleeveGross);
+		builder.append(",");
+		builder.append(corStBackdartsPackSize == null ? "" : corStBackdartsPackSize);
+		builder.append(",");
+		builder.append(corStBackdartsPackCorrect == null ? "" : corStBackdartsPackCorrect);
+		builder.append(",");
+		builder.append(corStBackdartsPackGross == null ? "" : corStBackdartsPackGross);
+		builder.append(",");
+		builder.append(corStBackdartsUnpackSize == null ? "" : corStBackdartsUnpackSize);
+		builder.append(",");
+		builder.append(corStBackdartsUnpackCorrect == null ? "" : corStBackdartsUnpackCorrect);
+		builder.append(",");
+		builder.append(corStBackdartsUnpackGross == null ? "" : corStBackdartsUnpackGross);
+		builder.append(",");
+		builder.append(corStRightcuffsSurroundingSize == null ? "" : corStRightcuffsSurroundingSize);
+		builder.append(",");
+		builder.append(corStRightcuffsSurroundingCorrect == null ? "" : corStRightcuffsSurroundingCorrect);
+		builder.append(",");
+		builder.append(corStRightcuffsSurroundingGross == null ? "" : corStRightcuffsSurroundingGross);
+		builder.append(",");
+		builder.append(corStLeftcuffsSurroundingSize == null ? "" : corStLeftcuffsSurroundingSize);
+		builder.append(",");
+		builder.append(corStLeftcuffsSurroundingCorrect == null ? "" : corStLeftcuffsSurroundingCorrect);
+		builder.append(",");
+		builder.append(corStLeftcuffsSurroundingGross == null ? "" : corStLeftcuffsSurroundingGross);
+		builder.append(",");
+		builder.append(corStoreCorrectionMemo == null ? "" : corStoreCorrectionMemo);
+		builder.append(",");
+		builder.append(corJkBodylengthCorrectAgain == null ? "" : corJkBodylengthCorrectAgain);
+		builder.append(",");
+		builder.append(corJkWaistCorrectAgain == null ? "" : corJkWaistCorrectAgain);
+		builder.append(",");
+		builder.append(corJkRightsleeveCorrectAgain == null ? "" : corJkRightsleeveCorrectAgain);
+		builder.append(",");
+		builder.append(corJkLeftsleeveCorrectAgain == null ? "" : corJkLeftsleeveCorrectAgain);
+		builder.append(",");
+		builder.append(corGlBodylengthCorrectAgain == null ? "" : corGlBodylengthCorrectAgain);
+		builder.append(",");
+		builder.append(corGlBustCorrectAgain == null ? "" : corGlBustCorrectAgain);
+		builder.append(",");
+		builder.append(corGlWaistCorrectAgain == null ? "" : corGlWaistCorrectAgain);
+		builder.append(",");
+		builder.append(corPtWaistCorrectAgain == null ? "" : corPtWaistCorrectAgain);
+		builder.append(",");
+		builder.append(corPtHipCorrectAgain == null ? "" : corPtHipCorrectAgain);
+		builder.append(",");
+		builder.append(corPtThighwidthCorrectAgain == null ? "" : corPtThighwidthCorrectAgain);
+		builder.append(",");
+		builder.append(corPtHemwidthCorrectAgain == null ? "" : corPtHemwidthCorrectAgain);
+		builder.append(",");
+		builder.append(corPtRightinseamCorrectAgain == null ? "" : corPtRightinseamCorrectAgain);
+		builder.append(",");
+		builder.append(corPtLeftinseamCorrectAgain == null ? "" : corPtLeftinseamCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2WaistCorrectAgain == null ? "" : corPt2WaistCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2HipCorrectAgain == null ? "" : corPt2HipCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2ThighwidthCorrectAgain == null ? "" : corPt2ThighwidthCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2HemwidthCorrectAgain == null ? "" : corPt2HemwidthCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2RightinseamCorrectAgain == null ? "" : corPt2RightinseamCorrectAgain);
+		builder.append(",");
+		builder.append(corPt2LeftinseamCorrectAgain == null ? "" : corPt2LeftinseamCorrectAgain);
+		builder.append(",");
+		builder.append(corStoreCorrectionMemoAgain == null ? "" : corStoreCorrectionMemoAgain);
+		builder.append(",");
+		builder.append(hostTransmitARow == null ? "" : hostTransmitARow);
+		builder.append(",");
+		builder.append(shippingNumber == null ? "" : shippingNumber);
+		builder.append(",");
+		builder.append(hostTransmitStoreCd == null ? "" : hostTransmitStoreCd);
+		builder.append(",");
+		builder.append(hostTransmitItemCd == null ? "" : hostTransmitItemCd);
+		builder.append(",");
+		builder.append(hostTransmitMakerCd == null ? "" : hostTransmitMakerCd);
+		builder.append(",");
+		builder.append(hostTransmitNenkiCd == null ? "" : hostTransmitNenkiCd);
+		builder.append(",");
+		builder.append(hostTransmitColorCd == null ? "" : hostTransmitColorCd);
+		builder.append(",");
+		builder.append(hostTransmitSize == null ? "" : hostTransmitSize);
+		builder.append(",");
+		builder.append(hostTransmitMakerProduct == null ? "" : hostTransmitMakerProduct);
+		builder.append(",");
+		builder.append(factoryShippingMethod == null ? "" : factoryShippingMethod);
+		builder.append(",");
+		builder.append(shippingDate == null ? "" : shippingDate);
+		builder.append(",");
+		builder.append(loadingDate == null ? "" : loadingDate);
+		builder.append(",");
+		builder.append(fabricUsedMount == null ? "" : fabricUsedMount);
+		builder.append(",");
+		builder.append(theoryFabricUsedMount == null ? "" : theoryFabricUsedMount);
+		builder.append(",");
+		builder.append(tscStatus == null ? "" : tscStatus);
+		builder.append(",");
+		builder.append(makerFactoryStatus == null ? "" : makerFactoryStatus);
+		builder.append(",");
+		builder.append(send2factoryStatus == null ? "" : send2factoryStatus);
+		builder.append(",");
+		builder.append(isCancelled == null ? "" : isCancelled);
+		builder.append(",");
+		builder.append(theoreticalStockCheck == null ? "" : theoreticalStockCheck);
+		builder.append(",");
+		builder.append(scheduleDataTransmitStatus == null ? "" : scheduleDataTransmitStatus);
+		builder.append(",");
+		builder.append(shippingTransmitStatus == null ? "" : shippingTransmitStatus);
+		builder.append(",");
+		builder.append(version == null ? "" : version);
+		builder.append(",");
+		builder.append(createdUserId == null ? "" : createdUserId);
+		builder.append(",");
+		builder.append(createdAt == null ? "" : createdAt);
+		builder.append(",");
+		builder.append(updatedUserId == null ? "" : updatedUserId);
+		builder.append(",");
+		builder.append(updatedAt == null ? "" : updatedAt);
+		return builder.toString();
+	}
+ 
 }

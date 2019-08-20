@@ -1,6 +1,7 @@
 package co.jp.aoyama.macchinetta.app.order;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
-import co.jp.aoyama.macchinetta.app.order.info.CustomerMessageInfo;
+import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.app.shop.ShopForm;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
@@ -105,8 +106,6 @@ public class OrderController {
 	
 	private static final String PO_TYPE = "PO";
 
-	private static final String CO_TYPE = "CO";
-
 	private static final String ONE = "1";
 	
 	private static final String MIN_CODE = "10000001";
@@ -122,9 +121,6 @@ public class OrderController {
 
 	// TSCステータス 取り置き
 	private static final String TSC_STATUST1 = "T1";
-
-	// 取り消しフラグ 取り消しではない
-	private static final String IS_NOT_CANCELLED = "0";
 
 	// 取り消しフラグ 取り消し
 	private static final String IS_CANCELLED = "1";
@@ -147,34 +143,9 @@ public class OrderController {
 	//注文情報が変更されています。もう一度、オーダー一覧へ戻って最新の注文情報を選んでください。
 	private static final String IS_UPDATE6 = "6";
 	
-	// 工場ステータス 生産開始前
-	private static final String FACTORY_STATUSF0 = "F0";
-
-	// 工場自動連携ステータス 送信前
-	private static final String SEND2FACTORY_STATUS0 = "0";
-
 	@ModelAttribute(value = "orderForm")
 	public OrderForm setupForm() {
 		return new OrderForm();
-	}
-
-	@RequestMapping("orderCo")
-	public String toOrderCo(HttpServletRequest request) {
-		try {
-			OrderForm orderForm = (OrderForm) request.getSession().getAttribute("orderForm");
-			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(CO_TYPE);
-			List<OptionBranch> tuxedoOptionList = optionBranchService.getTuxedoOption(CO_TYPE);
-			List<OptionBranch> washableOptionList = optionBranchService.getWashableOption(CO_TYPE);
-
-			orderHelper.getOptionStandardData(standardOptionList, orderForm);
-			orderHelper.getOptionTuxedoData(tuxedoOptionList, orderForm);
-			orderHelper.getOptionWashableData(washableOptionList, orderForm);
-
-		} catch (Exception e) {
-			logger.error(e.toString());
-			e.printStackTrace();
-		}
-		return "order/orderCoForm";
 	}
 
 	/**
@@ -187,32 +158,10 @@ public class OrderController {
 	@RequestMapping(value = "orderPo")
 	public String toOrderPo(OrderForm orderForm, Model model) {
 		try {
-			// 注文ID
-			String orderId = null;
-			// 店舗コード
-			String belongCode = sessionContent.getBelongCode();
-			String orderIdCheckCd = belongCode.concat(ONE);
-			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-			if (maxOrderId == null) {
-				orderId = belongCode.concat(MIN_CODE);
-			} else {
-				long parseLong = Long.parseLong(maxOrderId) + 1;
-				orderId = String.format("%012d", parseLong);
-			}
-
-			CustomerMessageInfo customerMessageInfo = new CustomerMessageInfo();
-			customerMessageInfo.setOrderId(orderId);
-			orderForm.setCustomerMessageInfo(customerMessageInfo);
 			orderForm.setAuthority(sessionContent.getAuthority());
 
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(PO_TYPE);
-			// 補正:体型を取得
-			//List<SizeFigure> figureList = sizeFigureService.getFigureList(PO_TYPE);
-			// 補正:号数を取得
-			//List<SizeNumber> numberList = sizeNumberService.getNumberList(PO_TYPE);
-			// 補正を取得
-			//List<Adjust> adjustList = adjustService.getAllAdjust(PO_TYPE);
 			// アイテムを取得
 			List<Item> itemList = itemService.getAllItem(PO_TYPE);
 			// モデルを取得
@@ -222,55 +171,25 @@ public class OrderController {
 			// 消費税を取得
 			Date date = new Date();
 			int taxRate = consumptionService.getTaxRate(date);
+			// 素材品番のMapを取得
+			List<OptionBranchDetail> detailList = optionBranchDeailService.getAllOption(PO_TYPE);
+			
+			List<OrderPrice> priceList = orderService.getOrderPrice(PO_TYPE);
 
 			orderHelper.getOptionStandardData(standardOptionList, orderForm);
-			//orderHelper.getFigureNumberMap(figureList, numberList, orderForm);
 			orderHelper.getFigureNumberMap(orderForm);
-			//orderHelper.getAdjust(adjustList, orderForm);
 			orderHelper.getItem(itemList, orderForm);
 			orderHelper.getModel(modelList, orderForm);
 			orderHelper.getTaxRate(taxRate, orderForm);
 			orderHelper.getYield(yieldList, orderForm);
-			
+			orderHelper.dealWithDetailCode(orderForm, detailList);
+			List<OrderCodePrice> optionBranchPriceData = orderHelper.optionBranchPriceData(priceList);
+			orderForm.setOrderCodePriceList(optionBranchPriceData);
 			//登録フラッグ
 			String orderFlag = "orderPo";
 			orderForm.setOrderFlag(orderFlag);
 			
 			orderForm.setStatus("");
-			// 初期化のとき注文 データを挿入
-			Order orderNew = new Order();
-			// 注文ID
-			orderNew.setOrderId(orderId);
-			// オーダーパターン
-			orderNew.setOrderPattern(PO_TYPE);
-			// 業態
-			orderNew.setStoreBrandCode(sessionContent.getStoreBrandCode());
-			// 店舗コード
-			orderNew.setShopCode(belongCode);
-			// 理論在庫チェック
-			orderNew.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-			// 工場ステータス
-			orderNew.setMakerFactoryStatus(FACTORY_STATUSF0);
-			// 取り消しフラグ
-			orderNew.setIsCancelled(IS_NOT_CANCELLED);
-			// 工場自動連携ステータス
-			orderNew.setSend2factoryStatus(SEND2FACTORY_STATUS0);
-			orderNew.setCreatedUserId(sessionContent.getUserId());
-			orderNew.setCreatedAt(new Date());
-			orderNew.setUpdatedAt(new Date());
-			orderNew.setUpdatedUserId(sessionContent.getUserId());
-			orderNew.setVersion((short)0);
-			orderService.insertOrder(orderNew);
-
-			// 初期化のときメジャーリング データを挿入
-			Measuring measuring = new Measuring();
-			measuring.setOrderId(orderId);
-			measuring.setCreatedAt(new Date());
-			measuring.setCreatedUserId(sessionContent.getUserId());
-			measuring.setUpdatedAt(new Date());
-			measuring.setUpdatedUserId(sessionContent.getUserId());
-			orderService.insertMeasuring(measuring);
-
 			model.addAttribute("orderFlag", "");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -280,18 +199,13 @@ public class OrderController {
 	}
 
 	@RequestMapping(value = "orderPoUpdate")
-	public String toOrderPoUpdate(Model model, OrderForm orderForm) {
+	public String toOrderPoUpdate(Model model) {
 		try {
+			OrderForm orderForm = new OrderForm();
 			orderForm.setAuthority(sessionContent.getAuthority());
 
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(PO_TYPE);
-			// 補正:体型を取得
-			List<SizeFigure> figureList = sizeFigureService.getFigureList(PO_TYPE);
-			// 補正:号数を取得
-			List<SizeNumber> numberList = sizeNumberService.getNumberList(PO_TYPE);
-			// 補正を取得
-			List<Adjust> adjustList = adjustService.getAllAdjust(PO_TYPE);
 			// アイテムを取得
 			List<Item> itemList = itemService.getAllItem(PO_TYPE);
 			// モデルを取得
@@ -301,16 +215,23 @@ public class OrderController {
 			// 消費税を取得
 			Date date = new Date();
 			int taxRate = consumptionService.getTaxRate(date);
+			// 素材品番のMapを取得
+			List<OptionBranchDetail> detailList = optionBranchDeailService.getAllOption(PO_TYPE);
+			List<OrderPrice> priceList = orderService.getOrderPrice(PO_TYPE);
+			
 
 			orderHelper.getOptionStandardData(standardOptionList, orderForm);
-			orderHelper.getFigureNumberMap(figureList, numberList, orderForm);
-			orderHelper.getAdjust(adjustList, orderForm);
+			orderHelper.getFigureNumberMap(orderForm);
 			orderHelper.getItem(itemList, orderForm);
 			orderHelper.getModel(modelList, orderForm);
 			orderHelper.getTaxRate(taxRate, orderForm);
 			orderHelper.getYield(yieldList, orderForm);
+			orderHelper.dealWithDetailCode(orderForm, detailList);
+			List<OrderCodePrice> optionBranchPriceData = orderHelper.optionBranchPriceData(priceList);
+			orderForm.setOrderCodePriceList(optionBranchPriceData);
 			orderForm.setOrderFlag("");
 			orderForm.setStatus("");
+			model.addAttribute("orderForm", orderForm);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -389,78 +310,6 @@ public class OrderController {
 		return "order/orderPoLoginResultForm";
 	}
 
-
-	/**
-	 * オーダー登録画面読み込み完了のとき、オーダーのデーターを挿入
-	 * 
-	 * @param orderForm
-	 * 
-	 */
-	@ResponseBody
-	@RequestMapping(value = "orderPoLogOn", method = RequestMethod.GET)
-	public String orderPoLogOn(OrderForm orderForm) {
-		Order order = new Order();
-		Measuring measuring = new Measuring();
-		beanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
-		beanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
-		beanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
-		beanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
-		orderHelper.setProductItemDisplayCode(orderForm, order);
-		orderHelper.measuringMapping(orderForm, measuring, sessionContent.getUserId());
-		// orderFormの対象とorderの対応フィールドのマッピング
-		beanMapper.map(orderForm.getCustomerMessageInfo(), order);
-		beanMapper.map(orderForm, order);
-
-		Order orderIsExist = orderListService.findOrderByPk(order.getOrderId());
-		order.setCreatedAt(orderIsExist.getCreatedAt());
-		order.setCreatedUserId(orderIsExist.getCreatedUserId());
-		order.setUpdatedAt(new Date());
-		order.setUpdatedUserId(sessionContent.getUserId());
-		order.setSend2factoryStatus(orderIsExist.getSend2factoryStatus());
-		order.setMakerFactoryStatus(orderIsExist.getMakerFactoryStatus());
-		order.setProductOrderdDate(new Date());
-		order.setVersion(orderIsExist.getVersion());
-		// 取り消しフラグ
-		order.setIsCancelled(orderIsExist.getIsCancelled());
-		// 在庫チェック
-		order.setTheoreticalStockCheck(orderIsExist.getTheoreticalStockCheck());
-		orderService.updateOrder(order);
-		String orderVersion = getOrderVersion(order.getOrderId());
-		return orderVersion;
-	}
-
-	/**
-	 * オーダー登録画面読み込み完了のとき、オーダーのデーターを挿入
-	 * 
-	 * @param orderForm
-	 * 
-	 */
-	@ResponseBody
-	@RequestMapping(value = "orderPoDivert", method = RequestMethod.GET)
-	public String orderPoDivert(OrderForm orderForm) {
-		
-		Order order = new Order();
-
-		Measuring measuring = new Measuring();
-		
-		Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
-		
-		Measuring measuringIsExist = measuringService
-				.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
-
-		// オーダーのデーター → orderForm
-		orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
-		
-		order.setVersion(orderIsExist.getVersion());
-		
-		orderService.deleteOrder(order);
-		orderService.deleteMeasuring(measuring);
-		
-		String orderVersion = getOrderVersion(order.getOrderId());
-		return orderVersion;
-	}
-	
-	
 	/**
 	 * 生地チェク完了在庫を計算
 	 * 
@@ -474,46 +323,83 @@ public class OrderController {
 
 		Measuring measuring = new Measuring();
 
-		Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+		String orderIdImage = orderForm.getCustomerMessageInfo().getOrderId();
 
-		Measuring measuringIsExist = measuringService
-				.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+		String version = null;
 
-		// オーダーのデーター → orderForm
-		orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
-		
-		String version = orderForm.getVersion();
-		
-		order.setVersion(Short.parseShort(version));
+		if (orderIdImage == null || "".equals(orderIdImage)) {
+			// 注文ID
+			String orderId = null;
+			// 店舗コード
+			String belongCode = sessionContent.getBelongCode();
+			String orderIdCheckCd = belongCode.concat(ONE);
+			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
+			if (maxOrderId == null) {
+				orderId = belongCode.concat(MIN_CODE);
+			} else {
+				long parseLong = Long.parseLong(maxOrderId) + 1;
+				orderId = String.format("%012d", parseLong);
+			}
 
-		ResultMessages resultMessages = null;
-		// 理論在庫チェック、在庫戻る
-		try {
+			// オーダーのデーター → orderForm
+			orderFormToOrder(orderForm, order, measuring);
+
+			order.setOrderId(orderId);
+
+			measuring.setOrderId(orderId);
+
+			String stockCheck = stockCheck(order, measuring);
+
+			return stockCheck;
+		} else {
+			version = orderForm.getVersion();
+			Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+
+			Measuring measuringIsExist = measuringService
+					.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+
+			// オーダーのデーター → orderForm
+			orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
+
+			order.setVersion(Short.parseShort(version));
+
 			String stockCheck = stockCheck(order, orderIsExist, measuring);
-			if("true".equals(stockCheck)) {
-				return stockCheck;
-			}
+
+			return stockCheck;
 		}
-		catch(ResourceNotFoundException re) {
-			resultMessages = re.getResultMessages();
-			logger.error(re.toString());
+
+	}
+
+	private String stockCheck(Order order, Measuring measuring) {
+		// 商品情報_ITEM(ログ用)
+		String item = LogItemClassEnum.getLogItem(order);
+
+		// 生地品番が無しの場合
+		if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
+			order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+			orderService.deleteOrder(order);
+			orderService.deleteMeasuring(measuring);
 		}
-		
-		String codeVa = null;
-		
-		if(resultMessages!=null) {
-			String code = resultMessages.getList().get(0).getCode();
-			codeVa =  code.toString();
-			if("E023".equals(codeVa)) {
-				return "1";
-			}else {
-				return "2";
-			}
-		}else {
-			codeVa = "0";
-			return codeVa;
+		// 生地品番が有りの場合
+		else {
+			Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID：" + order.getOrderId()
+					+ "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫：" + stock.getTheoreticalStock()
+					+ "、予約生地量：" + stock.getReservationStock() + "」");
+			BigDecimal reservationStock = stock.getReservationStock();
+			BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+			stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
+			stock.setUpdatedUserId(sessionContent.getUserId());
+			stock.setUpdatedAt(new Date());
+			order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
+			orderService.deleteOrderAndStock(order, stock, measuring);
+
+			Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID：" + order.getOrderId()
+					+ "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+					+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
 		}
-		
+		return order.getOrderId();
 	}
 
 	/**
@@ -524,46 +410,67 @@ public class OrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "orderPoTemporarySave", method = RequestMethod.POST)
-	public String orderPoTemporarySave(OrderForm orderForm,Model model) {
+	public String orderPoTemporarySave(OrderForm orderForm, Model model) {
 
 		Order order = new Order();
 
 		Measuring measuring = new Measuring();
-		
-		Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
-		
-		Short version = Short.parseShort(orderForm.getVersion());
-		
 
-		Measuring measuringIsExist = measuringService
-				.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+		String orderIdImage = orderForm.getCustomerMessageInfo().getOrderId();
 
-		// オーダーのデーター → orderForm
-		orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
-		
-		order.setVersion(version);
-
-		ResultMessages resultMessages = null;
-		try {
-			orderService.deletOrder(order,version);
-			orderService.deleteMeasuring(measuring);
-			return "true";
-		}catch(ResourceNotFoundException re) {
-			resultMessages = re.getResultMessages();
-			logger.error(re.toString());
-		}
-		if(resultMessages!=null) {
-			String errorCode = resultMessages.getList().get(0).getCode();
-			if("E023".equals(errorCode)) {
-				return "1";
-			}else {
-				return "0";
+		if (orderIdImage == null || "".equals(orderIdImage)) {
+			// 注文ID
+			String orderId = null;
+			// 店舗コード
+			String belongCode = sessionContent.getBelongCode();
+			String orderIdCheckCd = belongCode.concat(ONE);
+			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
+			if (maxOrderId == null) {
+				orderId = belongCode.concat(MIN_CODE);
+			} else {
+				long parseLong = Long.parseLong(maxOrderId) + 1;
+				orderId = String.format("%012d", parseLong);
 			}
-		}else {
+
+			// オーダーのデーター → orderForm
+			orderFormToOrder(orderForm, order, measuring);
+
+			order.setOrderId(orderId);
+
+			measuring.setOrderId(orderId);
+
+		} else {
+			Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+
+			Measuring measuringIsExist = measuringService
+					.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+
+			// オーダーのデーター → orderForm
+			orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
+
+			order.setVersion(orderIsExist.getVersion());
+		}
+
+		String saveFlag = orderForm.getSaveFlag();
+
+		// 保存flag 1：自動保存
+		if ("1".equals(saveFlag)) {
+			orderService.deletOrderWithNotVersion(order);
+			orderService.deleteMeasuring(measuring);
+		} else {
+			orderService.deletOrderisExistence(order);
+			orderService.deleteMeasuring(measuring);
+		}
+
+		if (orderIdImage == null || "".equals(orderIdImage)) {
+			return order.getOrderId();
+		} else {
 			return "true";
 		}
-		
+
 	}
+
+	
 
 	/**
 	 * 在庫を戻る
@@ -571,15 +478,30 @@ public class OrderController {
 	 * @param order
 	 */
 	private void stockRecovery(Order order) {
-		// 在庫チェク成功の場合
+		//商品情報_ITEM(ログ用)
+		String item = LogItemClassEnum.getLogItem(order);
+		
 		if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 			BigDecimal stockNum = order.getTheoryFabricUsedMount();
-			Stock stockDb = orderService.getStock(order.getProductFabricNo());
+			Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+order.getProductFabricNo() 
+			+ "、理論在庫："+stockDb.getTheoreticalStock() 
+			+ "、予約生地量："+stockDb.getReservationStock() + "」");
 			BigDecimal reservationStock = stockDb.getReservationStock();
 			stockDb.setReservationStock(reservationStock.subtract(stockNum));
 			stockDb.setUpdatedUserId(sessionContent.getUserId());
 			stockDb.setUpdatedAt(new Date());
 			orderService.updateStockByPk(stockDb);
+			Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item
+			+ "、生地品番："+order.getProductFabricNo() 
+			+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+			+ "、予約生地量："+stockAfter.getReservationStock() + "」");
 		}
 	}
 
@@ -605,23 +527,17 @@ public class OrderController {
 			return "0";
 		}
 	}
-
-	/**
-	 * オーダーのデーター → orderForm
-	 * 
-	 * @param orderForm
-	 * @param order
-	 * @param measuring
-	 * @param orderIsExist
-	 */
-	private void orderFormToOrder(OrderForm orderForm, Order order, Measuring measuring, Order orderIsExist,
-			Measuring measuringIsExist) {
+	
+	
+	
+	private void orderFormToOrder(OrderForm orderForm, Order order, Measuring measuring) {
+		
 		// SUITの場合、itemCodeは"01"
 		if ("01".equals(orderForm.getProductItem())) {
 
 			beanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
 			beanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
-
+			
 			beanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
 			beanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
 
@@ -675,7 +591,98 @@ public class OrderController {
 		beanMapper.map(orderForm.getCustomerMessageInfo(), order);
 		beanMapper.map(orderForm, order);
 		orderHelper.setProductItemDisplayCode(orderForm, order);
-		orderHelper.orderMappingLogOn(orderForm, order, sessionContent.getUserId(), orderIsExist,sessionContent.getAuthority());
+		orderHelper.orderMappingLogOn(orderForm, order, sessionContent);
+		orderHelper.measuringMapping(orderForm, measuring, sessionContent.getUserId());
+		measuring.setCreatedUserId(sessionContent.getUserId());
+		measuring.setCreatedAt(new Date());
+		
+		String saveFlag = orderForm.getSaveFlag();
+		if ("0".equals(saveFlag)) {
+			order.setTscStatus(orderForm.getStatus());
+			// 保存flag 1：自動保存
+			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
+		} 
+		else if ("1".equals(saveFlag)) {
+			String tscStatus = orderForm.getStatus();
+			if ("".equals(tscStatus) || tscStatus == null) {
+				order.setTscStatus(TSC_STATUST0);
+			} else {
+				order.setTscStatus(tscStatus);
+			}
+		}
+	}
+
+	/**
+	 * オーダーのデーター → orderForm
+	 * 
+	 * @param orderForm
+	 * @param order
+	 * @param measuring
+	 * @param orderIsExist
+	 * @throws ParseException 
+	 */
+	private void orderFormToOrder(OrderForm orderForm, Order order, Measuring measuring, Order orderIsExist,
+			Measuring measuringIsExist){
+		// SUITの場合、itemCodeは"01"
+		if ("01".equals(orderForm.getProductItem())) {
+
+			beanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
+			beanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
+			
+			beanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
+			beanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
+
+			// ３Pieceまたはスペアパンツは有り
+			String productYes = "0009902";
+			// ３Pieceまたはスペアパンツは無し
+			String productNo = "0009901";
+			// ３Pieceは有り、スペアパンツは有りの場合
+			if (productYes.equals(orderForm.getProductIs3Piece())
+					&& productYes.equals(orderForm.getProductSparePantsClass())) {
+
+				beanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+				beanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
+
+				beanMapper.map(orderForm.getOptionPants2StandardInfo(), order);
+				beanMapper.map(orderForm.getAdjustPants2StandardInfo(), order);
+			}
+			// ３Pieceは有り、スペアパンツは無しの場合
+			else if (productYes.equals(orderForm.getProductIs3Piece())
+					&& productNo.equals(orderForm.getProductSparePantsClass())) {
+
+				beanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+				beanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
+			}
+			// ３Pieceは無し、スペアパンツは有りの場合
+			else if (productNo.equals(orderForm.getProductIs3Piece())
+					&& productYes.equals(orderForm.getProductSparePantsClass())) {
+
+				beanMapper.map(orderForm.getOptionPants2StandardInfo(), order);
+				beanMapper.map(orderForm.getAdjustPants2StandardInfo(), order);
+
+			}
+		}
+		// JACKETの場合、itemCodeは"02"
+		else if ("02".equals(orderForm.getProductItem())) {
+			beanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
+			beanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
+		}
+		// PANTSの場合、itemCodeは"03"
+		else if ("03".equals(orderForm.getProductItem())) {
+			beanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
+			beanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
+		}
+		// GILETの場合、itemCodeは"04"
+		else if ("04".equals(orderForm.getProductItem())) {
+			beanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+			beanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
+		}
+
+		// orderFormの対象とorderの対応フィールドのマッピング
+		beanMapper.map(orderForm.getCustomerMessageInfo(), order);
+		beanMapper.map(orderForm, order);
+		orderHelper.setProductItemDisplayCode(orderForm, order);
+		orderHelper.orderMappingLogOn(orderForm, order, sessionContent, orderIsExist);
 		orderHelper.measuringMapping(orderForm, measuring, sessionContent.getUserId());
 		measuring.setCreatedAt(measuringIsExist.getCreatedAt());
 		measuring.setCreatedUserId(measuringIsExist.getUpdatedUserId());
@@ -693,16 +700,6 @@ public class OrderController {
 				order.setTscStatus(tscStatus);
 			}
 		}
-		// 保存flag 2：在庫チェク
-		// ステータスなし→ステータスなし、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		else if ("2".equals(saveFlag)) {
-			String tscStatus = orderIsExist.getTscStatus();
-			if ("".equals(tscStatus) || tscStatus == null) {
-				order.setTscStatus("");
-			} else {
-				order.setTscStatus(tscStatus);
-			}
-		}
 
 	}
 
@@ -714,60 +711,71 @@ public class OrderController {
 	 * @param measuring
 	 */
 	private String stockCheck(Order order, Order orderIsExist, Measuring measuring) throws ResourceNotFoundException {
-		
-		if(order.getVersion().equals(orderIsExist.getVersion())) {
-			// 在庫を戻る
-			stockRecovery(orderIsExist);
 
-			// 理論在庫チェック値を取得
-			String isCheck = orderIsExist.getTheoreticalStockCheck();
-			// 理論在庫チェック値が0の場合
-			if (IS_NOT_THEORETICAL_STOCKCECK.equals(isCheck)) {
-				// 生地品番が無しの場合
-				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
-					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-					orderService.deleteOrder(order);
-					orderService.deleteMeasuring(measuring);
-				}
-				// 生地品番が有りの場合
-				else {
-					Stock stock = orderService.getStock(order.getProductFabricNo());
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deleteOrderAndStock(order,stock,measuring);
-				}
-				// 理論在庫チェック値が１の場合
-			} else if (IS_THEORETICAL_STOCKCECK.equals(isCheck)) {
-				// 生地品番が無しの場合
-				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
-					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-					orderService.deleteOrder(order);
-					orderService.deleteMeasuring(measuring);
-				}
-				// 生地品番が有りの場合
-				else {
-					Stock stock = orderService.getStock(order.getProductFabricNo());
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deleteOrderAndStock(order,stock,measuring);
-				}
+		// 商品情報_ITEM(ログ用)
+		String item = LogItemClassEnum.getLogItem(order);
+
+		// 在庫を戻る
+		stockRecovery(orderIsExist);
+
+		// 理論在庫チェック値を取得
+		String isCheck = orderIsExist.getTheoreticalStockCheck();
+		// 理論在庫チェック値が0の場合
+		if (IS_NOT_THEORETICAL_STOCKCECK.equals(isCheck)) {
+			// 生地品番が無しの場合
+			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
+				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+				orderService.deleteOrder(order);
+				orderService.deleteMeasuring(measuring);
 			}
-			return "true";
-		}else {
-			 ResultMessages messages = ResultMessages.error();
-	         messages.add("E023");
-	         logger.error(messages.toString());
-	         throw new ResourceNotFoundException(messages);
+			// 生地品番が有りの場合
+			else {
+				Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
+				BigDecimal reservationStock = stock.getReservationStock();
+				BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+				stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
+				stock.setUpdatedUserId(sessionContent.getUserId());
+				stock.setUpdatedAt(new Date());
+				order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
+				orderService.deleteOrderAndStock(order, stock, measuring);
+
+				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
+			}
+			// 理論在庫チェック値が１の場合
+		} else if (IS_THEORETICAL_STOCKCECK.equals(isCheck)) {
+			// 生地品番が無しの場合
+			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
+				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+				orderService.deleteOrder(order);
+				orderService.deleteMeasuring(measuring);
+			}
+			// 生地品番が有りの場合
+			else {
+				Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
+				BigDecimal reservationStock = stock.getReservationStock();
+				BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+				stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
+				stock.setUpdatedUserId(sessionContent.getUserId());
+				stock.setUpdatedAt(new Date());
+				order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
+				orderService.deleteOrderAndStock(order, stock, measuring);
+
+				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
+			}
 		}
-		
+		return "true";
 	}
 
 	
@@ -780,51 +788,84 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "/physicalDelete", method = RequestMethod.GET)
 	public String physicalDelete(String orderId,String version ,Model model) {
-		// 注文IDによって 注文を取得
-		Order order = orderListService.findOrderByPk(orderId);
+		String orderVersion = this.getOrderVersion(orderId);
 		
-		String versionDb = String.valueOf(order.getVersion());
-		
-		if(version.equals(versionDb)) {
-			// tscステータスが無しの場合 注文物理削除
-			if ("".equals(order.getTscStatus()) || order.getTscStatus() == null) {
-				if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-					orderService.deleteMeasuringBothOrder(orderId);
-				} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-					// 生地の論理在庫を戻る
-					Stock stock = orderService.getStock(order.getProductFabricNo());
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					orderService.physicalDeleteOrder(stock,orderId);
-				}
-
-			} else {
-				// tscステータスが「一時保存、取り置き」の場合、物理削除
-				if (TSC_STATUST0.equals(order.getTscStatus()) || TSC_STATUST1.equals(order.getTscStatus())) {
-					// 理論在庫チェックなしの場合
+		if(orderVersion != null&& !"".equals(orderVersion)) {
+			// 注文IDによって 注文を取得
+			Order order = orderListService.findOrderByPk(orderId);
+			
+			//商品情報_ITEM(ログ用)
+			String item = LogItemClassEnum.getLogItem(order);
+			
+			String versionDb = String.valueOf(order.getVersion());
+			if(version.equals(versionDb)) {
+				// tscステータスが無しの場合 注文物理削除
+				if ("".equals(order.getTscStatus()) || order.getTscStatus() == null) {
 					if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 						orderService.deleteMeasuringBothOrder(orderId);
-						// 理論在庫チェックありの場合
 					} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 						// 生地の論理在庫を戻る
-						Stock stock = orderService.getStock(order.getProductFabricNo());
+						Stock stock = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stock.getTheoreticalStock() 
+						+ "、予約生地量："+stock.getReservationStock() + "」");
 						BigDecimal reservationStock = stock.getReservationStock();
 						BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
 						stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
 						stock.setUpdatedUserId(sessionContent.getUserId());
 						stock.setUpdatedAt(new Date());
 						orderService.physicalDeleteOrder(stock,orderId);
+						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					}
+
+				} else {
+					// tscステータスが「一時保存、取り置き」の場合、物理削除
+					if (TSC_STATUST0.equals(order.getTscStatus()) || TSC_STATUST1.equals(order.getTscStatus())) {
+						// 理論在庫チェックなしの場合
+						if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
+							orderService.deleteMeasuringBothOrder(orderId);
+							// 理論在庫チェックありの場合
+						} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
+							// 生地の論理在庫を戻る
+							Stock stock = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+							logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stock.getTheoreticalStock() 
+							+ "、予約生地量："+stock.getReservationStock() + "」");
+							BigDecimal reservationStock = stock.getReservationStock();
+							BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+							stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
+							stock.setUpdatedUserId(sessionContent.getUserId());
+							stock.setUpdatedAt(new Date());
+							orderService.physicalDeleteOrder(stock,orderId);
+							Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+							logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+							+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						}
 					}
 				}
+				model.addAttribute("isUpdate", IS_UPDATE2);
+			}else {
+				model.addAttribute("isUpdate", IS_UPDATE6);
 			}
-			model.addAttribute("isUpdate", IS_UPDATE2);
 		}else {
 			model.addAttribute("isUpdate", IS_UPDATE6);
 		}
-		
 		return "order/orderPoLoginResultForm";
 	}
 
@@ -838,6 +879,8 @@ public class OrderController {
 	public String logicalDeletion(String orderId,String version, Model model) {
 
 		Order order = orderListService.findOrderByPk(orderId);
+		//商品情報_ITEM(ログ用)
+		String item = LogItemClassEnum.getLogItem(order);
 		String versionDb = String.valueOf(order.getVersion());
 		if(version.equals(versionDb)) {
 			String cashId = order.getCashId();
@@ -849,28 +892,95 @@ public class OrderController {
 					// ステータスは「会計取消」を設定する
 					Cash cash = cashService.selectByPrimaryKey(order.getCashId());
 					cash.setCashStatus(CASH_STATUS02);
-					orderService.updateCash(cash);
+					if (!"".equals(order.getProductFabricNo()) || order.getProductFabricNo() != null) {
+						// 生地の論理在庫を戻る
+						BigDecimal stockNum = order.getTheoryFabricUsedMount();
+						Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockDb.getTheoreticalStock() 
+						+ "、予約生地量："+stockDb.getReservationStock() + "」");
+						stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+						stockDb.setUpdatedUserId(sessionContent.getUserId());
+						stockDb.setUpdatedAt(new Date());
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
+						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					}else {
+						// 取り消しフラグ:0
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateOrderAndCash(order,cash);
+					}
 				} else {
 					// ステータスは「会計再確認要」を設定する
 					Cash cash = cashService.selectByPrimaryKey(order.getCashId());
 					cash.setCashStatus(CASH_STATUS03);
-					orderService.updateCash(cash);
+					if (!"".equals(order.getProductFabricNo()) || order.getProductFabricNo() != null) {
+						// 生地の論理在庫を戻る
+						BigDecimal stockNum = order.getTheoryFabricUsedMount();
+						Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockDb.getTheoreticalStock() 
+						+ "、予約生地量："+stockDb.getReservationStock() + "」");
+						stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+						stockDb.setUpdatedUserId(sessionContent.getUserId());
+						stockDb.setUpdatedAt(new Date());
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
+						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					}else {
+						// 取り消しフラグ:0
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateOrderAndCash(order,cash);
+					}
+				}
+			}else {
+				if (!"".equals(order.getProductFabricNo()) || order.getProductFabricNo() != null) {
+					// 生地の論理在庫を戻る
+					BigDecimal stockNum = order.getTheoryFabricUsedMount();
+					Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+					+ "、注文ID："+order.getOrderId()  
+					+ "、ITEM："+item 
+					+ "、生地品番："+order.getProductFabricNo() 
+					+ "、理論在庫："+stockDb.getTheoreticalStock() 
+					+ "、予約生地量："+stockDb.getReservationStock() + "」");
+					stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+					stockDb.setUpdatedUserId(sessionContent.getUserId());
+					stockDb.setUpdatedAt(new Date());
+					order.setIsCancelled(IS_CANCELLED);
+					orderService.updateStockByPkAndOrder(stockDb,order);
+					Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+					+ "、注文ID："+order.getOrderId()  
+					+ "、ITEM："+item
+					+ "、生地品番："+order.getProductFabricNo() 
+					+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+					+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+				}else {
+					// 取り消しフラグ:0
+					order.setIsCancelled(IS_CANCELLED);
+					orderService.updateOrder(order);
 				}
 			}
 
-			if (!"".equals(order.getProductFabricNo()) || order.getProductFabricNo() != null) {
-				// 生地の論理在庫を戻る
-				BigDecimal stockNum = order.getTheoryFabricUsedMount();
-				Stock stockDb = orderService.getStock(order.getProductFabricNo());
-				stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
-				stockDb.setUpdatedUserId(sessionContent.getUserId());
-				stockDb.setUpdatedAt(new Date());
-				orderService.updateStockByPk(stockDb);
-			}
-			// 取り消しフラグ:0
-			order.setIsCancelled(IS_CANCELLED);
-			order.setVersion(order.getVersion());
-			orderService.updateOrder(order);
 			model.addAttribute("isUpdate", IS_UPDATE3);
 		}else {
 			model.addAttribute("isUpdate", IS_UPDATE6);
@@ -995,18 +1105,6 @@ public class OrderController {
 	}
 
 	/**
-	 * 
-	 * 補正型サイズを取得
-	 */
-	@ResponseBody
-	@RequestMapping(value = "getPoTypeSize", method = RequestMethod.GET)
-	public List<TypeSizeForm> getPoTypeSize(String orderPattern) {
-		List<TypeSize> poTypeSizeList = typeSizeService.getPoTypeSize(orderPattern);
-		List<TypeSizeForm> typeSizeFormList = orderHelper.getPoTypeSizeList(poTypeSizeList);
-		return typeSizeFormList;
-	}
-
-	/**
 	 * モデルチェク
 	 * @param modelCode
 	 * @param productFabricNo
@@ -1065,20 +1163,6 @@ public class OrderController {
 	 * @param itemCode
 	 * @return
 	 */
-//	@ResponseBody
-//	@RequestMapping(value = "getAdjust", method = RequestMethod.GET)
-//	public List<Adjust> getAdjust(String orderPattern,String itemCode) {
-//		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getModel(orderPattern,itemCode);
-//		return modelList;
-//	}
-	
-	
-	/**
-	 * 
-	 * @param orderPattern
-	 * @param itemCode
-	 * @return
-	 */
 	@ResponseBody
 	@RequestMapping(value = "getSizeFigureByItem", method = RequestMethod.GET)
 	public List<SizeFigure> getSizeFigureByItem(String orderPattern,String itemCode,String subItemCode,String modelCode) {
@@ -1110,5 +1194,118 @@ public class OrderController {
 	public List<Adjust> getAdjustByItem(String orderPattern,String itemCode) {
 		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
 		return adjustList;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getOrderPrice", method = RequestMethod.GET)
+	public String getOrderPrice (String code,String codeDetail,OrderForm orderForm) {
+		String resultPrice = null;
+		List<OrderCodePrice> priceList = orderForm.getOrderCodePriceList();
+		for (OrderCodePrice orderCodePrice : priceList) {
+			String orderKeyCode = orderCodePrice.getOrderKeyCode();
+			String orderDetailKeyCode = orderCodePrice.getOrderDetailKeyCode();
+			String orderBranchPrice = orderCodePrice.getOrderBranchPrice();
+			String orderBranchDetailPrice = orderCodePrice.getOrderBranchDetailPrice();
+			if(orderKeyCode.equals(code)&&orderDetailKeyCode.equals(codeDetail)) {
+				if(orderBranchPrice.equals("0")&&orderBranchDetailPrice.equals("0")) {
+					resultPrice = "0";
+					break;
+				}else {
+					BigDecimal branchPrice = new BigDecimal(orderBranchPrice);
+					BigDecimal branchDetailPrice = new BigDecimal(orderBranchDetailPrice);
+					BigDecimal addPrice = branchPrice.add(branchDetailPrice);
+					resultPrice = String.valueOf(addPrice);
+					break;
+				}
+			}else {
+				resultPrice = "0";
+			}
+		}
+		return resultPrice;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getOrderNormalPrice", method = RequestMethod.GET)
+	public String getOrderNormalPrice (String code,String codeDetail,OrderForm orderForm) {
+		String resultPrice = null;
+		List<OrderCodePrice> priceList = orderForm.getOrderCodePriceList();
+		for (OrderCodePrice orderCodePrice : priceList) {
+			String orderKeyCode = orderCodePrice.getOrderKeyCode();
+			String orderBranchPrice = orderCodePrice.getOrderBranchPrice();
+			if(orderKeyCode.equals(code)) {
+				if(orderBranchPrice.equals("0")) {
+					resultPrice = "0";
+					break;
+				}else {
+					BigDecimal branchPrice = new BigDecimal(orderBranchPrice);
+					resultPrice = String.valueOf(branchPrice);
+					break;
+				}
+			}else {
+				resultPrice = "0";
+			}
+		}
+		return resultPrice;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "getOrderDoublePrice", method = RequestMethod.GET)
+	public String getOrderDoublePrice (String code,String codeDetail,OrderForm orderForm) {
+		String resultPrice = null;
+		List<OrderCodePrice> priceList = orderForm.getOrderCodePriceList();
+		for (OrderCodePrice orderCodePrice : priceList) {
+			String orderKeyCode = orderCodePrice.getOrderKeyCode();
+			String orderDetailKeyCode = orderCodePrice.getOrderDetailKeyCode();
+			String orderBranchDoublePrice = orderCodePrice.getOrderBranchDoublePrice();
+			String orderBranchDetailDoublePrice = orderCodePrice.getOrderBranchDetailDoublePrice();
+			if(orderKeyCode.equals(code)&&orderDetailKeyCode.equals(codeDetail)) {
+				if(orderBranchDoublePrice.equals("0")&&orderBranchDetailDoublePrice.equals("0")) {
+					resultPrice = "0";
+					break;
+				}else {
+					BigDecimal branchPrice = new BigDecimal(orderBranchDoublePrice);
+					BigDecimal branchDetailPrice = new BigDecimal(orderBranchDetailDoublePrice);
+					BigDecimal addPrice = branchPrice.add(branchDetailPrice);
+					resultPrice = String.valueOf(addPrice);
+					break;
+				}
+			}else {
+				resultPrice = "0";
+			}
+		}
+		return resultPrice;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getOrderDoubleNormalPrice", method = RequestMethod.GET)
+	public String getOrderDoubleNormalPrice (String code,String codeDetail,OrderForm orderForm) {
+		String resultPrice = null;
+		List<OrderCodePrice> priceList = orderForm.getOrderCodePriceList();
+		for (OrderCodePrice orderCodePrice : priceList) {
+			String orderKeyCode = orderCodePrice.getOrderKeyCode();
+			String orderBranchDoublePrice = orderCodePrice.getOrderBranchDoublePrice();
+			if(orderKeyCode.equals(code)) {
+				if(orderBranchDoublePrice.equals("0")) {
+					resultPrice = "0";
+					break;
+				}else {
+					BigDecimal branchPrice = new BigDecimal(orderBranchDoublePrice);
+					resultPrice = String.valueOf(branchPrice);
+					break;
+				}
+			}else {
+				resultPrice = "0";
+			}
+		}
+		return resultPrice;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getPoTypeSizeOptimization", method = RequestMethod.GET)
+	public List<TypeSizeOptimization> getPoTypeSizeOptimization (String orderPattern,String subItemCode,String modelCode,String figure,String number) {
+		List<TypeSize> poTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern,subItemCode,modelCode,figure,number);
+		List<TypeSizeOptimization> poTypeSizeOptimization = orderHelper.getPoTypeSizeOptimization(poTypeSizeList);
+		return poTypeSizeOptimization;
 	}
 }

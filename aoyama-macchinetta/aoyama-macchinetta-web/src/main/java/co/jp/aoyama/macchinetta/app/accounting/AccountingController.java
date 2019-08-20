@@ -11,9 +11,11 @@ import javax.inject.Inject;
 import org.dozer.Mapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.app.shop.ShopForm;
@@ -25,6 +27,7 @@ import co.jp.aoyama.macchinetta.domain.service.shop.ShopService;
 
 @Controller
 @RequestMapping(value = "/accounting")
+@SessionAttributes(value = {"accountingForm"})
 public class AccountingController {
 	@Inject
 	SessionContent sessionContent;
@@ -41,8 +44,23 @@ public class AccountingController {
 	@Inject
 	Mapper beanMapper;
 	
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@ModelAttribute(value = "accountingForm")
+	public AccountingForm setupForm() {
+		AccountingForm accountingForm = new AccountingForm();
+		return accountingForm;
+	}
+	
+	@RequestMapping(value = "init")
 	public String init(Model model) {
+		AccountingForm accountingForm = new AccountingForm();
+		model.addAttribute(accountingForm);
+		model.addAttribute("initFlag", "0");
+		return "accounting/accountingForm";
+	}
+	
+	@RequestMapping(value = "gotoAccounting", method = RequestMethod.GET)
+	public String returnInitSearch(Model model) {
+		model.addAttribute("initFlag", "1");
 		return "accounting/accountingForm";
 	}
 	
@@ -76,6 +94,9 @@ public class AccountingController {
 	@RequestMapping(value = "/fuzzyQuery" , method = RequestMethod.GET)
 	@ResponseBody
 	public List<AccountingForm> fuzzyQuery(AccountingForm accountingForm) {
+		if("01".equals(sessionContent.getAuthority())) {
+			accountingForm.setShopCode(sessionContent.getBelongCode());
+		}
 		accountingForm = stringToDate(accountingForm);
 		Accounting accounting = beanMapper.map(accountingForm, Accounting.class);
 		List<Accounting> accountingList = accountingService.fuzzyQuery(accounting);
@@ -113,10 +134,14 @@ public class AccountingController {
 		try {
 			//Str形式をDate形式に変更する
 			if ((!"".equals(accountingForm.getProductOrderdDateFromStr())) && accountingForm.getProductOrderdDateFromStr() != null) {
-				accountingForm.setProductOrderdDateFrom(format.parse(accountingForm.getProductOrderdDateFromStr()));
+				accountingForm.setProductOrderdDateFrom(format.parse(accountingForm.getProductOrderdDateFromStr().replaceAll("/", "-")));
+			}else{
+				accountingForm.setProductOrderdDateFrom(null);
 			}
 			if ((!"".equals(accountingForm.getProductOrderdDateToStr())) && accountingForm.getProductOrderdDateToStr() != null) {
-				accountingForm.setProductOrderdDateTo(format.parse(accountingForm.getProductOrderdDateToStr()));
+				accountingForm.setProductOrderdDateTo(format.parse(accountingForm.getProductOrderdDateToStr().replaceAll("/", "-")));
+			}else {
+				accountingForm.setProductOrderdDateTo(null);
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();

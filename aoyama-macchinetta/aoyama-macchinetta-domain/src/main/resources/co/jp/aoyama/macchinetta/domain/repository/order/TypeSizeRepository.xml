@@ -79,8 +79,21 @@
   
   <select id="getPoTypeSize" resultMap="BaseResultMap">
     select sub_item_code, model_code, figure, size_number, adjust_class, type_size, type_size_1_intack, 
-    type_size_2_intack, type_size_1_outtack, type_size_2_outtack, created_user_id, created_at, 
-    updated_user_id, updated_at
-    from mtb_type_size where order_pattern = #{arg0}
+    type_size_2_intack, type_size_1_outtack, type_size_2_outtack
+    from mtb_type_size where 
+    order_pattern = #{arg0}
+    and sub_item_code = #{arg1}
+    and model_code = #{arg2}
+  </select>
+  
+  <select id="getPoTypeSizeOptimization" resultMap="BaseResultMap">
+    select adjust_class,type_size, type_size_1_intack, 
+    type_size_2_intack, type_size_1_outtack, type_size_2_outtack
+    from mtb_type_size where 
+    order_pattern = #{orderPattern}
+    and sub_item_code = #{subItemCode}
+    and model_code = #{modelCode}
+    and figure = #{figure}
+    and size_number = #{sizeNumber}
   </select>
 </mapper>

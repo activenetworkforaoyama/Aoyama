@@ -71,6 +71,7 @@ import co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsTuxedoInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionShirtStandardInfo;
+import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Item;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
@@ -87,6 +88,18 @@ import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.model.Yield;
 
 public class OrderHelper {
+	
+	// 在庫チェックなし
+	private static final String IS_NOT_THEORETICAL_STOCKCECK = "0";
+	
+	// 工場ステータス 生産開始前
+	private static final String FACTORY_STATUSF0 = "F0";
+	
+	// 取り消しフラグ 取り消しではない
+	private static final String IS_NOT_CANCELLED = "0";
+	
+	// 工場自動連携ステータス 送信前
+	private static final String SEND2FACTORY_STATUS0 = "0";
 
 	private static final Logger logger = LoggerFactory.getLogger(OrderHelper.class);
 
@@ -787,42 +800,6 @@ public class OrderHelper {
 	}
 
 	/**
-	 * 型サイズを取得
-	 * 
-	 * @param poTypeSizeList
-	 * @return
-	 */
-	public List<TypeSizeForm> getPoTypeSizeList(List<TypeSize> poTypeSizeList) {
-		List<TypeSizeForm> typeSizeFormList = new ArrayList<TypeSizeForm>();
-		for (TypeSize typeSize : poTypeSizeList) {
-			TypeSizeForm typeSizeForm = new TypeSizeForm();
-
-			// 型サイズ:sub_item_code
-			String subItemCode = typeSize.getSubItemCode();
-			// 型サイズ:model_code
-			String modelCode = typeSize.getModelCode();
-			// 型サイズ:体型
-			String figure = typeSize.getFigure();
-			// 型サイズ:号数
-			String sizeNumber = typeSize.getSizeNumber();
-			// 型サイズ:補正区分
-			String adjustClass = typeSize.getAdjustClass();
-
-			String key = subItemCode + modelCode + figure + sizeNumber + adjustClass;
-
-			typeSizeForm.setKey(key);
-			typeSizeForm.setValue(typeSize.getTypeSize().toString());
-			typeSizeForm.setInTack1Value(typeSize.getTypeSize1Intack().toString());
-			typeSizeForm.setInTack2Value(typeSize.getTypeSize2Intack().toString());
-			typeSizeForm.setOutTack1Value(typeSize.getTypeSize1Outtack().toString());
-			typeSizeForm.setOutTack2Value(typeSize.getTypeSize2Outtack().toString());
-
-			typeSizeFormList.add(typeSizeForm);
-		}
-		return typeSizeFormList;
-	}
-
-	/**
 	 * 補正の上限値処理
 	 * 
 	 * @param adjustList
@@ -1246,6 +1223,19 @@ public class OrderHelper {
 		String hostTransmitMakerProductKey = itemAnd + is3PieceAnd + sparePantsClassAnd + ojFrontBtnCntAnd;
 		return hostTransmitMakerProductKey;
 	}
+	
+	/**
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public String complete2Digits(String string) {
+		String blankSpace = " ";
+		if(string.length() < 2) {
+			string = string + blankSpace;
+		}
+		return string;
+	}
 
 	/**
 	 * オーダー内容確認画面のMapの値とorderの対応フィールドのマッピング
@@ -1275,6 +1265,15 @@ public class OrderHelper {
 		// 登録日時
 		Date createdAt = orderId.getCreatedAt();
 		order.setCreatedAt(createdAt);
+		
+		if("T2".equals(orderForm.getStatus()) || "T3".equals(orderForm.getStatus()) || "T4".equals(orderForm.getStatus()) || "T5".equals(orderForm.getStatus())) {
+			//業態
+			String storeBrandCode = orderId.getStoreBrandCode();
+			order.setStoreBrandCode(storeBrandCode);
+			//店舗コード
+			String shopCode = orderId.getShopCode();
+			order.setShopCode(shopCode);
+		}
 
 		// 最終更新者
 		order.setUpdatedUserId(userId);
@@ -1306,7 +1305,7 @@ public class OrderHelper {
 		order.setFabricPattern(fabricPattern);
 
 		// ホスト連携_店コード
-		order.setHostTransmitStoreCd(orderForm.getShopCode());
+		order.setHostTransmitStoreCd(order.getShopCode());
 
 		// ホスト連携_品名コード
 		Map<String, String> hostTransmitItemCd03Map = new HashMap<String, String>();
@@ -1371,8 +1370,8 @@ public class OrderHelper {
 			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
-
-			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
+			
+			String hostTransmitSize = complete2Digits(subStringSizeFigure) + complete2Digits(subStringSizeNumber);
 			order.setHostTransmitSize(hostTransmitSize);
 		} else if (pantsItemCd.equals(orderItemCd)) {
 			String subStringSizeFigure = "";
@@ -1385,7 +1384,7 @@ public class OrderHelper {
 			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
-			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
+			String hostTransmitSize = complete2Digits(subStringSizeFigure) + complete2Digits(subStringSizeNumber);
 			order.setHostTransmitSize(hostTransmitSize);
 		} else if (giletItemCd.equals(orderItemCd)) {
 			String subStringSizeFigure = "";
@@ -1399,7 +1398,7 @@ public class OrderHelper {
 			if (sizeFigure.indexOf("(") != -1) {
 				subStringSizeFigure = sizeFigure.substring(0, sizeFigure.indexOf("("));
 			}
-			String hostTransmitSize = subStringSizeFigure + subStringSizeNumber;
+			String hostTransmitSize = complete2Digits(subStringSizeFigure) + complete2Digits(subStringSizeNumber);
 			order.setHostTransmitSize(hostTransmitSize);
 		}
 
@@ -1541,11 +1540,12 @@ public class OrderHelper {
 			}
 
 		}
-
 		// お客様情報_お客様氏名
 		order.setCustNm(null);
 		// お客様情報_フリガナ
 		order.setCustKanaNm(null);
+		// お客様備考
+		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n", ""));
 	}
 
 	/**
@@ -1554,7 +1554,7 @@ public class OrderHelper {
 	 * @param selectExistOrder
 	 * @param order
 	 */
-	public void onlyUpdateItem(Order selectExistOrder, Order order) {
+	public void onlyUpdateItem(Order selectExistOrder, Order order,String authority) {
 		// 売上金額
 		Integer salesAmount = selectExistOrder.getSalesAmount();
 		order.setSalesAmount(salesAmount);
@@ -1588,15 +1588,20 @@ public class OrderHelper {
 		// お客様情報_フリガナ
 		String custKanaNm = selectExistOrder.getCustKanaNm();
 		order.setCustKanaNm(custKanaNm);
-		// お客様情報_お客様備考
-		String custRemark = selectExistOrder.getCustRemark();
-		order.setCustRemark(custRemark);
 		// ホスト連携_A行
 		String hostTransmitARow = selectExistOrder.getHostTransmitARow();
 		order.setHostTransmitARow(hostTransmitARow);
 		// 出荷番号
 		String shippingNumber = selectExistOrder.getShippingNumber();
 		order.setShippingNumber(shippingNumber);
+		
+		if ("02".equals(authority)) {
+			// 業態
+			order.setStoreBrandCode(selectExistOrder.getStoreBrandCode());
+			// 店舗コード
+			order.setShopCode(selectExistOrder.getShopCode());
+
+		}
 	}
 
 	/**
@@ -1606,26 +1611,78 @@ public class OrderHelper {
 	 * @param order
 	 * @param authority
 	 */
-	public void orderMappingLogOn(OrderForm orderForm, Order order, String userId, Order orderIsExist,
-			String authority) {
+	public void orderMappingLogOn(OrderForm orderForm, Order order, SessionContent sessionContent, Order orderIsExist) {
 
-		if ("02".equals(authority)) {
+		if(orderIsExist!=null) {
+			//商品部の場合
+			if ("02".equals(sessionContent.getAuthority())) {
+				// 業態
+				order.setStoreBrandCode(orderIsExist.getStoreBrandCode());
+				// 店舗コード
+				order.setShopCode(orderIsExist.getShopCode());
+			}
+			
+			// オーダーパターン
+			order.setOrderPattern(orderIsExist.getOrderPattern());
+			// 取り消しフラグ
+			order.setIsCancelled(orderIsExist.getIsCancelled());
+
+			// 最終更新者
+			order.setUpdatedUserId(sessionContent.getUserId());
+
+			// 工場ステータス 生産開始前
+			order.setMakerFactoryStatus(orderIsExist.getMakerFactoryStatus());
+
+			// 登録日時
+			order.setCreatedAt(orderIsExist.getCreatedAt());
+
+			// 登録者
+			order.setCreatedUserId(orderIsExist.getCreatedUserId());
+
+			// 工場自動連携ステータス
+			order.setSend2factoryStatus(orderIsExist.getSend2factoryStatus());
+
+			// 理論在庫チェック
+			order.setTheoreticalStockCheck(orderIsExist.getTheoreticalStockCheck());
+			
+			// 最終更新日時
+			order.setUpdatedAt(new Date());
+
+			// 最終更新者
+			order.setUpdatedUserId(sessionContent.getUserId());
+			
+		}else {
 			// 業態
-			order.setStoreBrandCode(orderIsExist.getStoreBrandCode());
+			order.setStoreBrandCode(sessionContent.getStoreBrandCode());
+			
 			// 店舗コード
-			order.setShopCode(orderIsExist.getShopCode());
-
+			order.setShopCode(sessionContent.getBelongCode());
+			
+			// 理論在庫チェック
+			order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+			
+			// 工場ステータス
+			order.setMakerFactoryStatus(FACTORY_STATUSF0);
+			
+			// 取り消しフラグ
+			order.setIsCancelled(IS_NOT_CANCELLED);
+			
+			// 工場自動連携ステータス
+			order.setSend2factoryStatus(SEND2FACTORY_STATUS0);
+			
+			order.setCreatedUserId(sessionContent.getUserId());
+			order.setCreatedAt(new Date());
+			order.setUpdatedAt(new Date());
+			order.setUpdatedUserId(sessionContent.getUserId());
+			order.setVersion((short)0);
 		}
+		
 		// お客様氏名
 		order.setCustNm(null);
 
 		// お客様情報_フリガナ
 		order.setCustKanaNm(null);
 
-		// order.setVersion(orderIsExist.getVersion());
-
-		// オーダーパターン
-		order.setOrderPattern(orderIsExist.getOrderPattern());
 
 		// お客様備考
 		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n", ""));
@@ -1633,32 +1690,6 @@ public class OrderHelper {
 		// 注文承り日
 		order.setProductOrderdDate(new Date());
 
-		// 取り消しフラグ
-		order.setIsCancelled(orderIsExist.getIsCancelled());
-
-		// 最終更新者
-		order.setUpdatedUserId(userId);
-
-		// 工場ステータス 生産開始前
-		order.setMakerFactoryStatus(orderIsExist.getMakerFactoryStatus());
-
-		// 登録日時
-		order.setCreatedAt(orderIsExist.getCreatedAt());
-
-		// 登録者
-		order.setCreatedUserId(orderIsExist.getCreatedUserId());
-
-		// 工場自動連携ステータス
-		order.setSend2factoryStatus(orderIsExist.getSend2factoryStatus());
-
-		// 理論在庫チェック
-		order.setTheoreticalStockCheck(orderIsExist.getTheoreticalStockCheck());
-
-		// 最終更新日時
-		order.setUpdatedAt(new Date());
-
-		// 最終更新者
-		order.setUpdatedUserId(userId);
 
 		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
@@ -3350,36 +3381,19 @@ public class OrderHelper {
 	 * @param order
 	 * 
 	 */
-	public void order3PiecePrice(OrderForm orderForm, Order order) {
-
-		// itemCodeの取得
-		String itemCode = orderForm.getProductItem();
-		// subItemCodeの取得
-		String subItemCode = ItemClassStandardEnum.ITEM_CODE_GILET.getKey();
-		// modelCodeの取得
-		String branchModelCode = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
-		// optionCodeの取得
-		String optionCode = "00099";
-		// optionBranchCodeの取得
-		String optionBranchCode = orderForm.getProductIs3Piece();
-
-		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
-		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-		for (OrderCodePrice orderCodePrice : orderCodePriceList) {
-			if (keyCode.equals(orderCodePrice.getOrderKeyCode())) {
-				if (orderCodePrice.getOrderBranchPrice() != null) {
-					Integer price = Integer.parseInt(orderCodePrice.getOrderBranchPrice());
-					order.setProductIs3pieceRtPrice(price);
-				} else if (orderCodePrice.getOrderBranchPrice() != null) {
-					Integer price = 0;
-					order.setProductIs3pieceRtPrice(price);
-				}
-				break;
-			} else {
-				Integer price = 0;
-				order.setProductIs3pieceRtPrice(price);
-			}
+	public void order3PiecePrice(OrderForm orderForm, Order order,Map<String, Integer> retailPriceRelatedMap) {
+		
+		String productIs3Piece = orderForm.getProductIs3Piece();
+		String productIs3PieceYes = "0009902";
+		if(productIs3PieceYes.equals(productIs3Piece)) {
+			Integer single3PieceRetailPrice = retailPriceRelatedMap.get("price3Piece");
+			order.setProductIs3pieceRtPrice(single3PieceRetailPrice);
 		}
+		else {
+			Integer price = 0;
+			order.setProductIs3pieceRtPrice(price);
+		}
+		
 	}
 
 	/**
@@ -3388,34 +3402,18 @@ public class OrderHelper {
 	 * @param orderForm
 	 * @param order
 	 */
-	public void orderSparePantsPrice(OrderForm orderForm, Order order) {
-		// itemCodeの取得
-		String itemCode = orderForm.getProductItem();
-		// subItemCodeの取得
-		String subItemCode = ItemClassStandardEnum.ITEM_CODE_PANTS.getKey();
-		// modelCodeの取得
-		String branchModelCode = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
-		// optionCodeの取得
-		String optionCode = "00099";
-		// optionBranchCodeの取得
-		String optionBranchCode = orderForm.getProductSparePantsClass();
-
-		String keyCode = itemCode + subItemCode + branchModelCode + optionCode + optionBranchCode;
-		List<OrderCodePrice> orderCodePriceList = orderForm.getOrderCodePriceList();
-		for (OrderCodePrice orderCodePrice : orderCodePriceList) {
-			if (keyCode.equals(orderCodePrice.getOrderKeyCode())) {
-				if (orderCodePrice.getOrderBranchPrice() != null) {
-					Integer price = Integer.parseInt(orderCodePrice.getOrderBranchPrice());
-					order.setProductSparePantsRtPrice(price);
-				} else if (orderCodePrice.getOrderBranchPrice() != null) {
-					Integer price = 0;
-					order.setProductSparePantsRtPrice(price);
-				}
-				break;
-			} else {
-				Integer price = 0;
-				order.setProductSparePantsRtPrice(price);
-			}
+	public void orderSparePantsPrice(OrderForm orderForm, Order order,Map<String, Integer> retailPriceRelatedMap) {
+		
+		String productSparePantsClass = orderForm.getProductSparePantsClass();
+		String productSparePantsClassYes = "0009902";
+		
+		if(productSparePantsClassYes.equals(productSparePantsClass)) {
+			Integer sparePantsPrice = retailPriceRelatedMap.get("sparePants");
+			order.setProductSparePantsRtPrice(sparePantsPrice);
+		}
+		else {
+			Integer price = 0;
+			order.setProductSparePantsRtPrice(price);
 		}
 	}
 
@@ -5210,5 +5208,119 @@ public class OrderHelper {
 		adjustPants2StandardInfo.setSizeNumberMap(pt2NumberMap);
 		orderForm.setAdjustPants2StandardInfo(adjustPants2StandardInfo);
 
+	}
+
+	public void orderMappingLogOn(OrderForm orderForm, Order order, SessionContent sessionContent) {
+		// 業態
+		order.setStoreBrandCode(sessionContent.getStoreBrandCode());
+
+		// 店舗コード
+		order.setShopCode(sessionContent.getBelongCode());
+
+		// 理論在庫チェック
+		order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+
+		// 工場ステータス
+		order.setMakerFactoryStatus(FACTORY_STATUSF0);
+
+		// 取り消しフラグ
+		order.setIsCancelled(IS_NOT_CANCELLED);
+
+		// 工場自動連携ステータス
+		order.setSend2factoryStatus(SEND2FACTORY_STATUS0);
+
+		order.setCreatedUserId(sessionContent.getUserId());
+		order.setCreatedAt(new Date());
+		order.setUpdatedAt(new Date());
+		order.setUpdatedUserId(sessionContent.getUserId());
+		order.setVersion((short) 0);
+
+		// お客様氏名
+		order.setCustNm(null);
+
+		// お客様情報_フリガナ
+		order.setCustKanaNm(null);
+
+		// お客様備考
+		order.setCustRemark(orderForm.getCustomerMessageInfo().getCustRemark().replaceAll("\\n", ""));
+
+		// 注文承り日
+		order.setProductOrderdDate(new Date());
+
+		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
+		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
+		if ("0".equals(productEmbroideryNecessity)) {
+			order.setProductEmbroideryNm(null);
+			order.setProductEmbroideryFont(null);
+			order.setProductEmbroideryThreadColor(null);
+		}
+
+		// PANTS_ダブル幅についての項目はnull値の判定
+		String opHemUp = orderForm.getOptionPantsStandardInfo().getOpHemUp();
+		if ("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
+			order.setPtDblWidthCd(null);
+			order.setPtDblWidthNm(null);
+			order.setPtDblWidthRtPrice(null);
+			order.setPtDblWidthWsWage(null);
+			order.setPtDblWidthWsPrice(null);
+		}
+
+		// PANTS2_ダブル幅についての項目はnull値の判定
+		String op2HemUp = orderForm.getOptionPants2StandardInfo().getOp2HemUp();
+		if ("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
+			order.setPt2DblWidthCd(null);
+			order.setPt2DblWidthNm(null);
+			order.setPt2DblWidthRtPrice(null);
+			order.setPt2DblWidthWsWage(null);
+			order.setPt2DblWidthWsPrice(null);
+		}
+	}
+
+	public void orderModelPrice(OrderForm orderForm, Map<String, Integer> retailPriceRelatedMap, Order order) {
+		// 商品情報_ITEM
+		String productItem = orderForm.getProductItem();
+		// フロント釦数
+		String ojFrontBtnCnt = orderForm.getOptionJacketStandardInfo().getOjFrontBtnCnt();
+
+		// JACKET_モデル_上代
+		Integer doubleJacketPrice = retailPriceRelatedMap.get("doubleJACKET");
+		Integer singleDoubleJacketPrice = retailPriceRelatedMap.get("singleDoubleJACKET");
+		
+		if ("0000105".equals(ojFrontBtnCnt)) {
+			if ("01".equals(productItem)) {
+				if (doubleJacketPrice != null) {
+					order.setJkModelRtPrice(doubleJacketPrice);
+				} else {
+					order.setJkModelRtPrice(0);
+				}
+			} else if ("02".equals(productItem)) {
+				if (singleDoubleJacketPrice != null) {
+					order.setJkModelRtPrice(singleDoubleJacketPrice);
+				} else {
+					order.setJkModelRtPrice(0);
+				}
+			}
+		} else {
+			if ("01".equals(productItem) || "02".equals(productItem)) {
+				order.setJkModelRtPrice(0);
+			}
+
+		}
+
+	}
+
+	public List<TypeSizeOptimization> getPoTypeSizeOptimization(List<TypeSize> poTypeSizeList) {
+		List<TypeSizeOptimization> typeSizeList = new ArrayList<TypeSizeOptimization>();
+		for (TypeSize typeSize : poTypeSizeList) {
+			TypeSizeOptimization typeSizeOptimization = new TypeSizeOptimization();
+			typeSizeOptimization.setAdjustClass(typeSize.getAdjustClass());
+			typeSizeOptimization.setTypeSize(typeSize.getTypeSize().toString());
+			typeSizeOptimization.setTypeSize1Intack(typeSize.getTypeSize1Intack().toString());
+			typeSizeOptimization.setTypeSize1Outtack(typeSize.getTypeSize1Outtack().toString());
+			typeSizeOptimization.setTypeSize2Intack(typeSize.getTypeSize2Intack().toString());
+			typeSizeOptimization.setTypeSize2Outtack(typeSize.getTypeSize2Outtack().toString());
+			typeSizeList.add(typeSizeOptimization);
+		}
+		return typeSizeList;
 	}
 }

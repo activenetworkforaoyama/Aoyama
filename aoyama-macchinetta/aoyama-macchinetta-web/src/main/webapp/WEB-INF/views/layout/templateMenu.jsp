@@ -11,15 +11,11 @@
 </c:set>
 <sec:csrfMetaTags />
 <title><spring:message code="${titleKey}" text="受発注システム" /></title>
-<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/app/images/favicon.ico">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/button.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/slick.grid.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/controls/slick.pager.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/css/smoothness/jquery-ui-1.11.3.custom.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/css/smoothness/jquery-ui-1.11.3.custom.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/slickGrid.css" type="text/css"/>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/controls/slick.columnpicker.css" type="text/css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/slick-default-theme.css" type="text/css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/font-awesome.min.css" type="text/css">
@@ -28,11 +24,17 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/cs-skin-elastic.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/styles.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/chosen.css" type="text/css">
-<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/message.js"></script>
-
-
+<script src="${pageContext.request.contextPath}/resources/app/js/sweetalert.min.js"></script>
+<spring:eval var="sessionContent" expression="@sessionContent" />
+<c:if test="${sessionContent.category == 'CO'}">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/style_overwrite_co.css" type="text/css">
+</c:if>
+<c:if test="${sessionContent.category == 'PO'}">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/style_overwrite_po.css" type="text/css">
+</c:if>
 </head>
 <body>
 
@@ -43,8 +45,14 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand">受発注システム</a>
-                <a class="navbar-brand hidden" href="./"><img src="${pageContext.request.contextPath}/resources/app/images/logo2.png" alt="Logo"></a>
+                <c:if test="${sessionContent.category == 'PO'}">
+                	<span class="navbar-brand" >パターンオーダー</span>
+                	<span class="navbar-brand hidden"><span>P</span></span>
+                </c:if>
+                <c:if test="${sessionContent.category == 'CO'}">
+                	<span class="navbar-brand" >カスタムオーダー</span>
+                	<span class="navbar-brand hidden"><span>C</span></span>
+                </c:if>
             </div>
 
             <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -56,7 +64,8 @@
 
 
 
-    <spring:eval var="sessionContent" expression="@sessionContent" />
+    
+    
     <div id="right-panel" class="right-panel" >
 
 

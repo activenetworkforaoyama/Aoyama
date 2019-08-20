@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+             http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+             http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+                
+    <import resource="classpath:META-INF/spring/job-base-context.xml"/>
+
+    <context:component-scan base-package="co.jp.aoyama.macchinetta.siireHenji" />
+
+      <bean id="siireYoteiHenjiReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step"
+               p:resource="file:${prdResData}">
+      <property name="lineMapper">
+        <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+            <property name="lineTokenizer" ref ="lineTokenizer">
+            </property>
+            <property name="fieldSetMapper">
+                <bean class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper"
+                      p:targetType="co.jp.aoyama.macchinetta.siireHenji.SiireYoteiHenji"/>
+            </property>
+        </bean>
+    </property>
+    </bean>
+
+	<bean id="lineTokenizer"
+		class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">
+		<property name="columns" value="1-12, 13-25, 26-42"></property>
+		<property name="names" value="chumonId,shohinBarcode,shukkaNumber"></property>
+	</bean>
+
+	<batch:job id="JobSiireYoteiHenji"
+		job-repository="jobRepository">
+		<batch:step id="JobSiireYoteiHenji.step01">
+			<batch:tasklet
+				transaction-manager="jobTransactionManager">
+				<batch:chunk reader="siireYoteiHenjiReader"
+					writer="siireYoteiHenjiWriter" commit-interval="100"  skip-limit="1000">
+					<batch:skippable-exception-classes>
+                        <batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
+                    </batch:skippable-exception-classes>
+                    </batch:chunk>
+			</batch:tasklet>
+			<batch:listeners>
+		    <batch:listener ref="siireYoteiHenjiStepExecutionListener" />
+		</batch:listeners>
+		</batch:step>
+	</batch:job>
+</beans>

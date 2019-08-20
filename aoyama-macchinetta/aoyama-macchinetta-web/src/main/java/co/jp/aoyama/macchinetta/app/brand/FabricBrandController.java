@@ -39,7 +39,7 @@ public class FabricBrandController {
 		return fabricBrandForm;
 	}
 	
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String PageSearch2(Model model) {
 
 		return "brand/fabricBrandForm";

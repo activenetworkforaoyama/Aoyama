@@ -24,7 +24,7 @@ public interface OrderRepository {
 
 	String selectMaxOrderId(@Param("belongCode")String belongCode, @Param("type")String type);
 
-	Stock getStock(String productFabricNo);
+	Stock getStock(String productFabricNo, String orderPattern);
 
 	void updateStockByPk(Stock stock);
 
@@ -37,5 +37,9 @@ public interface OrderRepository {
 	String getFactories(String orderPattern,String itemCode, String jkModel, String subItemCode);
 
 	Short findOrderVersion(String orderId);
+
+	void insertOrderWithNotVersion(Order order);
+
+	void insertOrder(Order order, @Param("saveFlag")String saveFlag);
 
 }

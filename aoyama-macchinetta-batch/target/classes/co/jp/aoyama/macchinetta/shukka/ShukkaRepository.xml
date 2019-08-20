@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.jp.aoyama.macchinetta.shukka.ShukkaRepository">
+
+        <resultMap id="ShukkaResultMap" type="co.jp.aoyama.macchinetta.shukka.Shukka">
+		<result property="chumonId" column="order_id" />
+		<result property="shukkaYmd" column="shipping_date" />
+    </resultMap>
+    
+    <select id="findAll" resultMap="ShukkaResultMap" >
+        <![CDATA[
+        select
+            order_id,
+			shipping_date
+        from
+            dtb_order
+        where shipping_date is not null
+              and shipping_transmit_status in ('0', '2')
+        order by order_id
+        ]]>
+    </select>
+    
+    <update id="update"  parameterType="co.jp.aoyama.macchinetta.shukka.Shukka">
+        <![CDATA[
+        update
+            dtb_order
+            set shipping_transmit_status = '1',
+                updated_user_id = 'BATCH',
+                updated_at = #{updatedAt}
+        where order_id = #{chumonId}
+        ]]>
+    </update>
+</mapper>

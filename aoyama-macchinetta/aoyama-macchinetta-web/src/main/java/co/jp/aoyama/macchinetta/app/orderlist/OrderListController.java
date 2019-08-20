@@ -1,7 +1,9 @@
 package co.jp.aoyama.macchinetta.app.orderlist;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,8 +44,10 @@ import co.jp.aoyama.macchinetta.app.order.enums.HeaderTitleMakerUseEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
 import co.jp.aoyama.macchinetta.domain.model.OrderMakerUse;
+import co.jp.aoyama.macchinetta.domain.model.ErrorResult;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.Order;
+import co.jp.aoyama.macchinetta.domain.service.errorResult.ErrorResultService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
 import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
 import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
@@ -62,6 +68,9 @@ public class OrderListController {
 	
     @Inject
 	OrderService orderService;
+    
+    @Inject
+    ErrorResultService errorResultService;
     
 	@Inject
 	Mapper beanMapper;
@@ -122,7 +131,7 @@ public class OrderListController {
                   * 初期表示.
      * @return
      */
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String initSearch(SessionStatus sessionStatus, Model model) {
 	    OrderListForm orderListForm = new OrderListForm();
 	    model.addAttribute(orderListForm);
@@ -185,17 +194,78 @@ public class OrderListController {
 	                            Model model) {
 		String authority = sessionContent.getAuthority();
 		String shopCode = sessionContent.getBelongCode();
+		String userId = sessionContent.getUserId();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 		
+			//StringBuffer errorResult;
+			String errorResult = "";
 			Order order= orderListService.findOrderByPk(orderId);
+			
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdf.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDate = order.getShippingDate();
+			if(shippingDate != null && !"".equals(shippingDate.toString())) {
+				String shippingDateFormat = sdf.format(shippingDate);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDate = order.getLoadingDate();
+			if(loadingDate != null && !"".equals(loadingDate.toString())) {
+				String loadingDateFormat = sdf.format(loadingDate);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdf.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
+			
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			if("02".equals(authority)) {
+				String send2factoryStatus = order.getSend2factoryStatus();
+				if("4".equals(send2factoryStatus)) {
+					List<ErrorResult> errorResultList = errorResultService.selectAllErrorResultByOrderId(order.getOrderId());
+					if(errorResultList.size() == 1) {
+						errorResult = "「" + errorResultList.get(0).getRemark() + "」";
+					}else {
+						for (int i = 0; i < errorResultList.size(); i++) {
+							if(i == errorResultList.size()-1) {
+								errorResult = errorResult.concat("「" + errorResultList.get(i).getRemark()+ "」");
+							}else {
+								errorResult = errorResult.concat("「" + errorResultList.get(i).getRemark()+ "」、");
+							}
+						}
+					}
+				}
+				model.addAttribute("errorResult", errorResult);
+			}
+			
 			/*
 			 * if (measuring == null) { return "redirect:/orderlist/gotoOrderlistError"; }
 			 */
 			model.addAttribute("order", order);
 			model.addAttribute("measuring", measuring);
 			model.addAttribute("authority", authority);
+			model.addAttribute("userId", userId);
 			String orderFlag = "orderLink";
 			model.addAttribute("orderFlag", orderFlag);
 			//本店オーダー 、商品部の場合
@@ -206,10 +276,22 @@ public class OrderListController {
 				if (authority.equals(AUTHORITY_01)) {
 					//本店の生産開始前の場合、登録画面へ遷移
 					if (order.getShopCode().equals(shopCode) && 
-						order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
-						order.getIsCancelled().equals("0")) {
-						return "forward:/order/orderPoUpdate"; 
+							order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
+							order.getIsCancelled().equals("0")) {
+						if(TSC_STATUS_T2.equals(order.getTscStatus()) ||
+								TSC_STATUS_T3.equals(order.getTscStatus()) ||
+								TSC_STATUS_T4.equals(order.getTscStatus()) ||
+								TSC_STATUS_T5.equals(order.getTscStatus())) {
+							
+							return "forward:/orderDetail/orderPoDetail"; 
+							
+						}else if(TSC_STATUS_T0.equals(order.getTscStatus()) || TSC_STATUS_T1.equals(order.getTscStatus()) || "".equals(order.getTscStatus()) || order.getTscStatus() == null){
+							
+							return "forward:/order/orderPoUpdate"; 
+						}
+							
 					}
+					
 				}
 				//商品部の場合
 				if (authority.equals(AUTHORITY_02)) {
@@ -217,9 +299,8 @@ public class OrderListController {
 					if ((order.getTscStatus() == null ||
 							order.getTscStatus().equals("") ||
 							order.getTscStatus().equals(TSC_STATUS_T0) || 
-							order.getTscStatus().equals(TSC_STATUS_T1) || 
-							order.getTscStatus().equals(TSC_STATUS_T2))
-							&& order.getIsCancelled().equals("0")) {
+							order.getTscStatus().equals(TSC_STATUS_T1)) &&
+							order.getIsCancelled().equals("0")) {
 						return "forward:/order/orderPoUpdate"; 
 					}
 				}
@@ -331,67 +412,26 @@ public class OrderListController {
 	@RequestMapping(value = "/goToOrderDivert/{orderId}",method =RequestMethod.GET)
 	public String goToOrderDivert(@PathVariable(value ="orderId") String orderId,
 	                       Model model) {
-		String type = "PO";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Order order= orderListService.findOrderByPk(orderId);
 		Measuring measuring = measuringService.selectByPrimaryKey(orderId);
-		String belongCode = sessionContent.getBelongCode();
-		String orderIdCheckCd = belongCode.concat("1");
-		String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, type);
-		if (maxOrderId == null) {
-			orderId = belongCode.concat("10000001");
-		} else {
-			long parseLong = Long.parseLong(maxOrderId)+1;
-			orderId = String.format("%012d",parseLong);
+		//名簿納期
+		Date custDeliverDate = order.getCustDeliverDate();
+		if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+			String custDeliverDateFormat = sdf.format(custDeliverDate);
+			Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+			order.setCustDeliverDate(custDeliverDateParse);
 		}
-		order.setOrderId(orderId);
+		//お渡し日
+		Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+		if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+			String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+			Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+			order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+		}
+		
 		//TSCステータス
 		order.setTscStatus("");
-		//オーダーパターン
-		order.setOrderPattern(type);
-		//業態
-		order.setStoreBrandCode(sessionContent.getStoreBrandCode());
-		// 店舗コード
-		order.setShopCode(belongCode);
-		//商品情報_工場
-		order.setProductFactoryCd("");
-		//商品情報_メーカーコード
-		order.setProductMakerCode("");
-		//注文承り日
-		order.setProductOrderdDate(new Date());
-		//理論生地使用量
-		order.setTheoryFabricUsedMount(new BigDecimal(0));
-		//工場ステータス
-		order.setMakerFactoryStatus(MAKER_FACTORY_STATUS_F0);
-		//工場自動連携ステータス
-		order.setSend2factoryStatus(SEND2FACTORY_STATUS0);
-		//取り消しフラグ
-		order.setIsCancelled(IS_NOT_CANCELLED);
-		//理論在庫チェック
-		order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-		//登録者
-		order.setCreatedUserId(sessionContent.getUserId());
-		//登録日時
-		order.setCreatedAt(new Date());
-		//最終更新者
-		order.setUpdatedUserId(sessionContent.getUserId());
-		//最終更新日時
-		order.setUpdatedAt(new Date());
-		
-		order.setVersion((short)0);
-		
-		orderService.insertOrder(order);
-		
-		measuring.setOrderId(orderId);
-		
-		measuring.setCreatedUserId(sessionContent.getUserId());
-		
-		measuring.setCreatedAt(new Date());
-		
-		measuring.setUpdatedUserId(sessionContent.getUserId());
-		
-		measuring.setUpdatedAt(new Date());
-		
-		measuringService.insertMeasuring(measuring);
 		
 		model.addAttribute("order", order);
 		model.addAttribute("measuring", measuring);
@@ -412,14 +452,14 @@ public class OrderListController {
 					              BindingResult result,
 					              Model model)throws Exception {
 		
-		ServletContext servletContext = request.getSession().getServletContext();
-		String path = servletContext.getRealPath("/");
+//		ServletContext servletContext = request.getSession().getServletContext();
+//		String path = servletContext.getRealPath("/");
 		
-		//ダウンロードファイル名を定義する
-		Date date = new Date();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		
-		String fileName = "orderlist_"+simpleDateFormat.format(date) + ".txt";
+//		//ダウンロードファイル名を定義する
+//		Date date = new Date();
+//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+//		
+//		String fileName = "orderlist_"+simpleDateFormat.format(date) + ".csv";
 		
 		List<Order> orderList = new ArrayList<Order>();
 		
@@ -431,6 +471,8 @@ public class OrderListController {
 
 		String authority = orderListForm.getAuthority();
 		
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
 		if(authority.equals(AUTHORITY_02)) {
 		
 			//表示項目名を定義する
@@ -439,17 +481,18 @@ public class OrderListController {
 			DecimalFormat df=new DecimalFormat("0000");
 			
 			for (int i = 0; i < headerTitleEnum.length; i++) {
-				title[i] = "\"" + HeaderTitleEnum.getValue(df.format(i)) + "\"";
+				title[i] = HeaderTitleEnum.getValue(df.format(i)) + ",";
 			}
 			
 			String[] content = new String[orderList.size()];
 			for (int i = 0; i < orderList.size(); i++) {
 				Order order = orderList.get(i);
-				content[i] = order.toString();
+				content[i] = order.toString().replaceAll("\r", "");
 			}
 			
 			try {
-				CsvUtil.createCSVFile(title, content, path, fileName);
+				writeByteArrayOutputStream(output, title, content);
+//				CsvUtil.createCSVFile(title, content, path, fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -462,7 +505,7 @@ public class OrderListController {
 			DecimalFormat df=new DecimalFormat("0000");
 			
 			for (int i = 0; i < headerTitleMakerUseEnum.length; i++) {
-				title[i] = "\"" + HeaderTitleMakerUseEnum.getValue(df.format(i)) + "\"";
+				title[i] = HeaderTitleMakerUseEnum.getValue(df.format(i)) + ",";
 			}
 
 			String[] content = new String[orderList.size()];
@@ -470,37 +513,63 @@ public class OrderListController {
 				Order order = orderList.get(i);
 				OrderMakerUse orderMakerUse = beanMapper.map(order,
 						OrderMakerUse.class);
-				content[i] = orderMakerUse.toString();
+				content[i] = orderMakerUse.toString().replaceAll("\r", "");
 			}
 			
 			try {
-				CsvUtil.createCSVFile(title, content, path, fileName);
+				writeByteArrayOutputStream(output, title, content);
+//				CsvUtil.createCSVFile(title, content, path, fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 		}
 		
-		//デフォルトのダウンロードファイル名
-		String fileNameDefault = "orderlist_"+simpleDateFormat.format(date) + ".txt";
-        fileName = new String(fileName.getBytes("UTF-8"),"UTF-8");
-        response.setContentType("application/octet-stream");
-        //デフォルトのダウンロードファイル名を設定する
-        response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
+		//取得時間
+		Date dateNow = new Date(); 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		String dateToday = dateFormat.format(dateNow); 
 		
-		//ファイルオブジェクトの作成
-		File file = new File(path+fileName);
-        response.setHeader("Content-Length", String.valueOf(file.length()));
-        //内容を書きこむ
-        OutputStream out = response.getOutputStream();
-        FileInputStream in = new FileInputStream(file);
-        byte[] b = new byte[102400];
-        int n;
-        while((n = in.read(b)) != -1){
-            out.write(b, 0, n);
-        }
-        in.close();
-        out.close();
+		String fileNameDefault = "orderlist_"+dateToday+".csv";
+		try {
+			response.addHeader("Content-Type", "application/force-download");
+			//デフォルトのダウンロードファイル名を設定する
+			response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
+			
+			//ByteArrayをbyte配列に変換
+			byte[] byteArray = output.toByteArray();
+			//byte配列をStringに変換
+			String strFromByteArray = new String(byteArray);
+			//出力ストリームのエンコード形式を設定します
+			response.getOutputStream().write(strFromByteArray.getBytes("Shift_JIS"));
+			
+			response.setStatus(200);
+			logger.info("Download is OK");
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.info(e.toString());
+		}
+		
+//		//デフォルトのダウンロードファイル名
+//		String fileNameDefault = "orderlist_"+simpleDateFormat.format(date) + ".csv";
+//        fileName = new String(fileName.getBytes("UTF-8"),"UTF-8");
+//        response.setContentType("application/octet-stream");
+//        //デフォルトのダウンロードファイル名を設定する
+//        response.addHeader("Content-Disposition", "attachment;filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
+//		
+//		//ファイルオブジェクトの作成
+//		File file = new File(path+fileName);
+//        response.setHeader("Content-Length", String.valueOf(file.length()));
+//        //内容を書きこむ
+//        OutputStream out = response.getOutputStream();
+//        FileInputStream in = new FileInputStream(file);
+//        byte[] b = new byte[102400];
+//        int n;
+//        while((n = in.read(b)) != -1){
+//            out.write(b, 0, n);
+//        }
+//        in.close();
+//        out.close();
 		
 		return null;
 	}
@@ -536,6 +605,7 @@ public class OrderListController {
 				Order order= orderListService.findOrderByPk(orderId[i]);
 				if (order != null) {
 					order.setTscStatus("T5");
+					order.setScheduleDataTransmitStatus("0");
 					order.setUpdatedAt(new Date());
 					order.setUpdatedUserId(sessionContent.getUserId());
 					orderService.updateOrder(order);
@@ -548,4 +618,27 @@ public class OrderListController {
 		return "orderlist/confirmSuccess";
 
 	}
+	
+	private void writeByteArrayOutputStream(ByteArrayOutputStream output, String[] title, String[] content) throws IOException {
+		StringBuffer sbTitle = new StringBuffer();
+		for(int i=0;i<title.length;i++) {
+			if(i == title.length-1) {
+				sbTitle.append(title[i]).append("\r\n");
+			}else {
+				sbTitle.append(title[i]);
+			}
+		}
+		
+		byte[] a = String.valueOf(sbTitle).getBytes();
+		output.write(a);
+		
+		for(int i=0;i<content.length;i++){
+			StringBuffer sbBody = new StringBuffer();
+			sbBody.append(content[i]).append("\r\n");
+			
+			byte[] b = String.valueOf(sbBody).getBytes();
+			output.write(b);
+		}
+	}
+	
 }

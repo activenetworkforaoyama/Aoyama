@@ -44,6 +44,10 @@ public class MessageKeys {
     public static final String E021 = "E021";
     /** E022=[E022] 生地IDは既に生地マスタに存在するため更新できません。オーダーパターン＝{0}，生地ID＝{1}，生地品番＝{2}，処理区分＝{3}，行数＝{4} */
     public static final String E022 = "E022";
+    /** E027=[E027] オーダーパターンはログインする業態と不一致のため登録できません。オーダーパターン＝{0}，行数＝{1} */
+    public static final String E027 = "E027";
+    /** E028=[E028] 選択されたファイルに重複データが存在しているため、更新できませんでした。オーダーパターン＝{0}，生地品番＝{1}，行数＝{2}、{3} */
+    public static final String E028 = "E028";
     /** E500=[E500] System error occurred. */
     public static final String E500 = "E500";
     /** E999=[E999] Error occurred. Caused by : {0} */

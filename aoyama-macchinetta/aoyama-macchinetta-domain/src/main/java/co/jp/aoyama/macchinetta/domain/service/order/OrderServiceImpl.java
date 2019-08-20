@@ -1,6 +1,7 @@
 package co.jp.aoyama.macchinetta.domain.service.order;
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,8 @@ import co.jp.aoyama.macchinetta.domain.repository.cash.CashRepository;
 import co.jp.aoyama.macchinetta.domain.repository.measuring.MeasuringRepository;
 import co.jp.aoyama.macchinetta.domain.repository.order.OrderRepository;
 import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
+import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
+import co.jp.aoyama.macchinetta.domain.service.stock.StockService;
 
 @Service
 @Transactional
@@ -40,6 +43,15 @@ public class OrderServiceImpl  implements OrderService {
 	
 	@Inject
 	MeasuringRepository measuringRepository;
+	
+	@Inject
+	OrderService orderService;
+	
+	@Inject
+	StockService stockService;
+	
+	@Inject
+	CashService cashService;
 
 
 	@Override
@@ -84,7 +96,94 @@ public class OrderServiceImpl  implements OrderService {
 	            throw new ResourceNotFoundException(resultMessages);
 		}
 	}
+	
+	@Override
+	public void updateOrderConfirm(Order order,String status) {
+		Order findOrderByPk = orderListRepository.findOrderByPk(order.getOrderId());
+		Short version = findOrderByPk.getVersion();
+		Short orderVersion = order.getVersion();
+		//会計ID
+		String cashId = findOrderByPk.getCashId();
+		//最終更新者
+		String updatedUserId = order.getUpdatedUserId();
+		//最終更新日時
+		Date updatedAt = new Date();
+		//03：会計再確認要
+		String cashStatus = "03";
+		//生地品番
+		String productFabricNo = order.getProductFabricNo();
+		//オーダーマスタに生地品番
+		String productFabricNoExit = findOrderByPk.getProductFabricNo();
+		//オーダーマスタに理論生地使用量
+		BigDecimal theoryFabricUsedMountOrder = findOrderByPk.getTheoryFabricUsedMount();
+		//予約生地量
+		BigDecimal reservationStockValue = order.getTheoryFabricUsedMount();
+		
+		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
+			if(orderVersion.equals(version)) {
+				orderRepository.updateOrder(order);
+				
+				if(productFabricNoExit != null && productFabricNo != null && theoryFabricUsedMountOrder != null && reservationStockValue != null) {
+					if(productFabricNoExit.equals(productFabricNo)) {
+						if(theoryFabricUsedMountOrder.compareTo(reservationStockValue)!=0) {
+							Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
+							
+							BigDecimal theoreticalStock = stock.getTheoreticalStock();
+							BigDecimal oldTheoreticalStockUpdate = theoreticalStock.add(theoryFabricUsedMountOrder);
+							BigDecimal newTheoreticalStockUpdate = oldTheoreticalStockUpdate.subtract(reservationStockValue);
+							stockService.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate);
+						}
+					}
+					else if(!productFabricNoExit.equals(productFabricNo)) {
+						//古い理論在庫を修正する
+						Stock oldStock = orderService.getStock(productFabricNoExit,order.getOrderPattern());
+						BigDecimal oldTheoreticalStock = oldStock.getTheoreticalStock();
+						BigDecimal oldTheoreticalStockUpdate = oldTheoreticalStock.add(theoryFabricUsedMountOrder);
+						stockService.updateTheoreticalStock(productFabricNoExit,oldTheoreticalStockUpdate);
+						
+						//新しい理論在庫を修正する
+						Stock newStock = orderService.getStock(productFabricNo,order.getOrderPattern());
+						BigDecimal newTheoreticalStock = newStock.getTheoreticalStock();
+						BigDecimal newTheoreticalStockUpdate = newTheoreticalStock.subtract(reservationStockValue);
+						stockService.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate);
+					}
+				}
+					
+				if("T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
+					if(cashId != null || !("".equals(cashId))) {
+						cashService.updateCashStatus(cashId, cashStatus, updatedUserId, updatedAt);
+					}
+				}
+			}
+			else {
+				ResultMessages resultMessages = ResultMessages.error();
+					resultMessages.add("E023", order.getOrderId());
+		            logger.error(resultMessages.toString());
+		            throw new ResourceNotFoundException(resultMessages);
+			}
+			
+		}
+		else {
+			
+			orderRepository.updateOrder(order);
+			
+			//TSCステータスは空、T0（一時保存）、T1（取り置き）の場合
+			if("".equals(status) || "T0".equals(status) || "T1".equals(status)) {
+				if(productFabricNo != null && reservationStockValue != null) {
+					Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
+					BigDecimal theoreticalStock = stock.getTheoreticalStock();
+					BigDecimal stockReservationStock = stock.getReservationStock();
+					BigDecimal theoreticalStockUpdate = theoreticalStock.subtract(reservationStockValue);
+					BigDecimal reservationStockUpdate = stockReservationStock.subtract(reservationStockValue);
+					stockService.updateStockValue(productFabricNo,theoreticalStockUpdate,reservationStockUpdate);
+				}
+			}
+		}
+	}
 
+	public void updateOrderNotCheck(Order order) {
+		orderRepository.updateOrder(order);
+	}
 
 	@Override
 	public String selectMaxOrderId(String belongCode,String type) {
@@ -94,8 +193,8 @@ public class OrderServiceImpl  implements OrderService {
 
 
 	@Override
-	public Stock getStock(String productFabricNo) {
-		Stock stock = orderRepository.getStock(productFabricNo);
+	public Stock getStock(String productFabricNo,String orderPattern) {
+		Stock stock = orderRepository.getStock(productFabricNo,orderPattern);
 		return stock;
 	}
 
@@ -116,18 +215,21 @@ public class OrderServiceImpl  implements OrderService {
 	@Override
 	public void deletOrder(Order order,Short version) {
 		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
-		Short orderDbVersion = orderDb.getVersion();
-		if(version.equals(orderDbVersion)) {
-			orderRepository.deletOrderByOrderId(order.getOrderId());
+		if(orderDb == null) {
 			orderRepository.insertOrder(order);
 		}else {
-			//BusinessException businessException = new BusinessException();
-			ResultMessages messages = ResultMessages.error();
-            messages.add("E023");
-            logger.error(messages.toString());
-            throw new ResourceNotFoundException(messages);
+			Short orderDbVersion = orderDb.getVersion();
+			if(version.equals(orderDbVersion)) {
+				orderRepository.deletOrderByOrderId(order.getOrderId());
+				orderRepository.insertOrder(order);
+			}else {
+				//BusinessException businessException = new BusinessException();
+				ResultMessages messages = ResultMessages.error();
+	            messages.add("E023");
+	            logger.error(messages.toString());
+	            throw new ResourceNotFoundException(messages);
+			}
 		}
-		
 	}
 
 
@@ -165,8 +267,13 @@ public class OrderServiceImpl  implements OrderService {
 
 	@Override
 	public void deleteMeasuring(Measuring measuring) {
-		measuringRepository.deleteByPrimaryKey(measuring.getOrderId());
-		measuringRepository.insert(measuring);
+		Measuring measuringDb = measuringRepository.selectByPrimaryKey(measuring.getOrderId());
+		if(measuringDb == null) {
+			measuringRepository.insert(measuring);
+		}else {
+			measuringRepository.deleteByPrimaryKey(measuring.getOrderId());
+			measuringRepository.insert(measuring);
+		}
 	}
 
 
@@ -212,6 +319,64 @@ public class OrderServiceImpl  implements OrderService {
 	public void deleteMeasuringBothOrder(String orderId) {
 		orderRepository.deletOrderByOrderId(orderId);
 		measuringRepository.deleteByPrimaryKey(orderId);
+	}
+
+
+	@Override
+	public void updateStockByPkAndOrderAndCash(Stock stockDb, Order order, Cash cash) {
+		this.updateOrderNotCheck(order);
+		this.updateStockByPk(stockDb);
+		this.updateCash(cash);
+	}
+
+
+	@Override
+	public void updateOrderAndCash(Order order, Cash cash) {
+		this.updateOrderNotCheck(order);
+		this.updateCash(cash);
+	}
+
+
+	@Override
+	public void deletOrderWithNotVersion(Order order) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		if (orderDb == null) {
+			orderRepository.insertOrderWithNotVersion(order);
+		} else {
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrderWithNotVersion(order);
+		}
+
+	}
+
+
+	@Override
+	public void deletOrder(Order order, Short version, String saveFlag) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		Short orderDbVersion = orderDb.getVersion();
+		if(version.equals(orderDbVersion)) {
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrder(order,saveFlag);
+		}else {
+			ResultMessages messages = ResultMessages.error();
+            messages.add("E023");
+            logger.error(messages.toString());
+            throw new ResourceNotFoundException(messages);
+		}
+	}
+
+
+	@Override
+	public void updateStockByPkAndOrder(Stock stockDb, Order order) {
+		this.updateOrderNotCheck(order);
+		this.updateStockByPk(stockDb);
+	}
+
+
+	@Override
+	public void deletOrderisExistence(Order order) {
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrder(order);
 	}
 
 

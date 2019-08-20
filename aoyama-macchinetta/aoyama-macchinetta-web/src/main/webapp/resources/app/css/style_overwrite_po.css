@@ -1,0 +1,106 @@
+﻿/* PO用style.css
+--------------------------------------------------------- /
+* パターンオーダー用の見栄えにするために
+* style.cssを上書く必要のあるクラスのみを転記し、
+* 変更を行っている。
+* 
+* 変更点：
+*  - 左メニューの背景色(#272c33 ⇒ #000066)
+--------------------------------------------------------- */
+@charset "UTF-8";
+
+aside.left-panel {
+  background: #000066;
+  display: table-cell;
+  height: 100vh;
+  min-height: 100%;
+  padding: 0 25px;
+  vertical-align: top;
+  width: 280px;
+  -webkit-transition:width 0.3s ease;
+  transition: width 0.3s ease; }
+
+.navbar {
+  background: #000066;
+  border-radius: 0;
+  border: none;
+  display: block;
+  margin: 0 0 100px;
+  padding: 0; }
+
+  .navbar .navbar-brand {
+    border-bottom: 1px solid #4e4e52;
+    color: #f1f2f7 !important;
+    font-family: 'Open Sans';
+    font-size: 22px;
+    float: none;
+    line-height: 50px;
+    margin: 0;
+    text-align: left;
+    text-transform: capitalize;
+    display: block;
+    min-height: 69px;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    position: relative; }
+
+        .navbar .navbar-nav li.menu-item-has-children .sub-menu {
+          background: #000066;
+          border: none;
+          box-shadow: none;
+          overflow-y: hidden;
+          padding: 0 0 0 35px; }
+
+.search-trigger {
+  background: transparent;
+  border: none;
+  color: #000066;
+  cursor: pointer;
+  font-size: 16px;
+  height: 41px;
+  width: 43px;
+  line-height: 38px; }
+
+  .header-left .dropdown .dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: #000066;
+    font-size: 16px; }
+
+    .header-left .dropdown .dropdown-toggle:active, .header-left .dropdown .dropdown-toggle:focus, .header-left .dropdown .dropdown-toggle:visited {
+      background: none !important;
+      border-color: transparent !important;
+      color: #000066 !important; }
+
+    .header-left .dropdown .dropdown-menu .dropdown-item {
+      color: #000066;
+      font-size: 13px;
+      padding: 10px 15px 3px;
+      text-overflow: ellipsis; }
+
+    .user-area .user-menu .nav-link {
+      color: #000066;
+      display: block;
+      font-size: 14px;
+      line-height: 22px;
+      padding: 5px 0; }
+
+    .dataTables_paginate .pagination li a {
+      border-radius: 0 !important;
+      color: #000066; }
+    .dataTables_paginate .pagination li.active a {
+      background: #000066;
+      border-color: #000066;
+      color: #fff; }
+    .dataTables_paginate .pagination li:hover a {
+      background: #000066;
+      border-color: #000066;
+      color: #fff; }

@@ -152,6 +152,7 @@ public class CashController {
 				helpCashForm.add(cashInfoList.get(i));
 			}
 		}
+		Short amount = (short)helpCashForm.size();
 		List<String> factoryStatus=new ArrayList<>();
 		for(int i = 0;i<cashList.size();i++) {
 			factoryStatus.add(cashList.get(i).getMakerFactoryStatus());
@@ -162,6 +163,7 @@ public class CashController {
 			cashForm.setHelpCashForm(helpCashForm);
 			String flag = "cashInit";
 			cashForm.setBackFlag(flag);
+			cash.setOrderAmount(amount);
 			cash.setCustNm(cashList.get(0).getCustNm());
 			beanMapper.map(cash, cashForm);
 			Date date = new Date();

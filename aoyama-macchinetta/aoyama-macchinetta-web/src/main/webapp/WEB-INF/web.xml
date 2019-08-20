@@ -41,7 +41,7 @@
         <filter-name>exceptionLoggingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-	<!-- <filter>
+<!--      <filter>
 		<filter-name>springSessionRepositoryFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
 		</filter-class>
@@ -50,7 +50,9 @@
 	<filter-mapping>
 		<filter-name>springSessionRepositoryFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>  -->
     <filter>
         <filter-name>XTrackMDCPutFilter</filter-name>
         <filter-class>org.terasoluna.gfw.web.logging.mdc.XTrackMDCPutFilter</filter-class>
@@ -153,5 +155,5 @@
         </cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
-
+<distributable/> 
 </web-app>

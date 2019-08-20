@@ -11,7 +11,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,6 +64,10 @@ public class FabricController {
 	private static final String VALUE_IS_INCORRECT = "5";
 	//6：「エラー発生の第一番目の行数」の「エラー発生の項目名」の桁数が不正です。
 	private static final String NUMBER_OF_BITS_IS_INCORRECT = "6";
+	//7：オーダーパターンはログインする業態と不一致のため登録できません。オーダーパターン＝{0}，行数＝{1}
+	private static final String THE_STATUS_OF_ORDER_PATTERN_IS_INCORRECT = "7";
+	//8：選択されたファイルに重複データが存在しているため、更新できませんでした。オーダーパターン＝{0}，生地品番＝{1}，行数＝{2}、{3}
+	private static final String DUPLICATE_PRIMARY_KEY_IN_FILE = "8";
 	//10：全角
 	private static final String FULL_ANGLE = "10";
 	//99：要求にかない
@@ -86,8 +92,10 @@ public class FabricController {
 	 * 初期表示
 	 * @return
 	 */
-	@RequestMapping(value = "init" , method = RequestMethod.GET)
-	public String fabricDataupload() {
+	@RequestMapping(value = "init")
+	public String fabricDataupload(Model model) {
+		String category = sessionContent.getCategory();
+		model.addAttribute("category", category);
 		return "fabric/fabricForm";
 	}
 	
@@ -101,8 +109,10 @@ public class FabricController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/fabricDownload" , method = RequestMethod.GET)
 	public ResponseEntity fabricDownload(HttpServletRequest request,HttpServletResponse response,Model model) throws Exception{
+		//order_pttern状況を取得する
+		String category = request.getParameter("category");
 		//データベースから生地の情報を読み取る
-		List<Fabric> fabricList = fabricService.fabricQueryAll();
+		List<Fabric> fabricList = fabricService.fabricQueryByCoOrPo(category);
 		//バイト配列出力ストリーム
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
@@ -215,7 +225,14 @@ public class FabricController {
 			response.addHeader("Content-Type", "application/force-download");
 			//デフォルトのダウンロードファイル名を設定する
 			response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
-			response.getOutputStream().write(output.toByteArray());
+			
+			//ByteArrayをbyte配列に変換
+			byte[] byteArray = output.toByteArray();
+			//byte配列をStringに変換
+			String strFromByteArray = new String(byteArray);
+			//出力ストリームのエンコード形式を設定します
+			response.getOutputStream().write(strFromByteArray.getBytes("Shift_JIS"));
+			
 			response.setStatus(200);
 			logger.info("Download is OK");
 		} catch (IOException e) {
@@ -236,7 +253,9 @@ public class FabricController {
 	 * @throws IllegalStateException 
 	 */
 	@RequestMapping(value = "fabricUpload" , method = RequestMethod.POST)
-	public String fabricUpload(@RequestParam(value = "file") MultipartFile file, Model model, HttpServletRequest req) throws IllegalStateException, IOException {
+	public String fabricUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
+		//order_pttern状況を取得する
+		String category = request.getParameter("category");
 		//strArr：エラー発生の第一番目の情報
 		//strArr「０」：エラー発生の第一番目の行数。 strArr「１」：エラー発生の項目名。 strArr「２」：エラー発生のタイプ。
 		String[] strArr = new String[3];
@@ -248,7 +267,7 @@ public class FabricController {
 		String[] fabricUpdate = {"0","0","0"};
 		try {
 			//ファイル解析をリスト化する
-			fabricList = convertStreamToString(file.getInputStream());
+			fabricList = convertStreamToString(file.getInputStream(), category);
 			//ループ、エラー発生の第一番目の行数を探す
 			for (Fabric fabricFor : fabricList) {
 				if(fabricFor.getErrorArr() != null) {
@@ -268,6 +287,7 @@ public class FabricController {
 				if(NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT.equals(strArr[2])) {
 					//1：CSVファイルの項目数が不正です。行数＝「エラー発生の第一番目の行数」
 					messagesError.add(MessageKeys.E005, strArr[0]); 
+					logger.error(messagesError.toString());
 				}else if(PROCESSING_SEPARATION_IS_INCORRECT.equals(strArr[2])) {
 					//変換された一時のオブジェクトを処理区分します
 					String temporaryHandleDiscriminate = null;
@@ -277,35 +297,54 @@ public class FabricController {
 						//2.1：生地品番は既に生地マスタに存在するため登録できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
 						messagesError.add(MessageKeys.E022, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 								temporaryHandleDiscriminate, strArr[0]); 
+						logger.error(messagesError.toString());
 					}else if("Y".equals(fabricError.getHandleDiscriminate())) {
 						temporaryHandleDiscriminate = "U";
 						//2.2：生地マスタに存在しない生地品番のため更新できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
 						messagesError.add(MessageKeys.E006, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 								temporaryHandleDiscriminate, strArr[0]); 
+						logger.error(messagesError.toString());
 					}else if("Z".equals(fabricError.getHandleDiscriminate())) {
 						temporaryHandleDiscriminate = "D";
 						//2.2：生地マスタに存在しない生地品番のため更新できません。オーダーパターン＝{0}，生地品番＝{1}，処理区分＝{2}，行数＝{3}
 						messagesError.add(MessageKeys.E006, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 								temporaryHandleDiscriminate, strArr[0]); 
+						logger.error(messagesError.toString());
 					}
 				}else if(MANAGEMENT_NUMBER_DOES_NOT_EXIST.equals(strArr[2])) {
 					//3：生地ブランドマスタに存在しない生地ブランド管理番号です。オーダーパターン＝{0}，生地品番＝{1}，生地ブランド管理番号＝{2}，行数＝{3}
 					messagesError.add(MessageKeys.E007, fabricError.getOrderPattern(), fabricError.getFabricNo(), 
 							fabricError.getFablicBrandNo(), strArr[0]); 
+					logger.error(messagesError.toString());
 				}else if(PROJECT_NAME_IS_EMPTY.equals(strArr[2])) {
 					//4：「一個目のエラーの行数」行目の「エラー発生の項目名」は入力必須です。
 					messagesError.add(MessageKeys.E008, strArr[0], strArr[1]); 
+					logger.error(messagesError.toString());
 				}else if(VALUE_IS_INCORRECT.equals(strArr[2])) {
 					//5：「エラー発生の第一番目の行数」行目の「エラー発生の項目名」の値に誤りがあります。
 					messagesError.add(MessageKeys.E010, strArr[0], strArr[1]); 
+					logger.error(messagesError.toString());
 				}else if(NUMBER_OF_BITS_IS_INCORRECT.equals(strArr[2])) {
 					//6：「エラー発生の第一番目の行数」行目の「エラー発生の項目名」の桁数が異なります。
 					messagesError.add(MessageKeys.E011, strArr[0], strArr[1]); 
+					logger.error(messagesError.toString());
+				}else if(THE_STATUS_OF_ORDER_PATTERN_IS_INCORRECT.equals(strArr[2])) {
+					//7：オーダーパターンはログインする業態と不一致のため登録できません。オーダーパターン＝{0}，行数＝{1}
+					messagesError.add(MessageKeys.E027, fabricError.getOrderPattern(), strArr[0]); 
+					logger.error(messagesError.toString());
+				}else if(DUPLICATE_PRIMARY_KEY_IN_FILE.equals(strArr[2])) {
+					//8：選択されたファイルに重複データが存在しているため、更新できませんでした。オーダーパターン＝{0}，生地品番＝{1}，行数＝{2}、{3}
+					//このエラーが発生した場合、strArr[0]は２回目に繰り返される行数、strArr[1]は最初の反復の行数です
+					messagesError.add(MessageKeys.E028, fabricError.getOrderPattern(), fabricError.getFabricNo(),
+							strArr[1], strArr[0]); 
+					logger.error(messagesError.toString());
 				}
 				//フロントでエラーメッセージを提示する
 				model.addAttribute("resultMessages", messagesError);
+				// ログを出力
+		    	logger.error(messagesError.toString());
 			}else {
-				//エラーメッセージがないの場合
+				//単一行データのエラーメッセージがないの場合
 				//更新操作を行う
 				fabricUpdate = fabricService.fabricUpdate(fabricList);
 				
@@ -314,6 +353,7 @@ public class FabricController {
 				//fabricUpdate「０」：登録件数；　fabricUpdate「１」：更新件数；　fabricUpdate「２」：削除件数
 				messagesSuccess.add(MessageKeys.I002, fabricUpdate[0], fabricUpdate[1], fabricUpdate[2]); 
 				model.addAttribute("resultMessages", messagesSuccess);
+				logger.info(messagesSuccess.toString());
 			}
 			
 		} catch (MultipartException | IOException e) {
@@ -322,8 +362,11 @@ public class FabricController {
 			ResultMessages messagesError = ResultMessages.error();
 			//6：「エラー発生の第一番目の行数」の「エラー発生の項目名」の桁数が不正です。
 			messagesError.add(MessageKeys.E004); 
+			// ログを出力
+	    	logger.error(messagesError.toString());
 		}
 		
+		model.addAttribute("category", category);
 		return "fabric/fabricForm";
 	}
 	
@@ -333,12 +376,15 @@ public class FabricController {
 	 * @return　解析後のコレクション
 	 * @throws UnsupportedEncodingException
 	 */
-	private List<Fabric> convertStreamToString(InputStream inputStream) throws UnsupportedEncodingException{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private List<Fabric> convertStreamToString(InputStream inputStream, String category) throws UnsupportedEncodingException{
+		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"Shift_JIS"));
 	    StringBuilder sb = new StringBuilder();
 	    ArrayList<Fabric> fabricList = new ArrayList<Fabric>();
 	    ArrayList<String> list = new ArrayList<String>();
 	    String line = null;
+	    
+	    Map primaryKeyMap = new HashMap();
 	    
 	    try {
 	        while ((line = reader.readLine()) != null) {
@@ -371,6 +417,28 @@ public class FabricController {
 				//検査処理区分
 				if(!("null".equals(data[0])) && data[0] != null && !("".equals(data[0]))
 						&& ("I".equals(data[0]) || "U".equals(data[0]) || "D".equals(data[0]))){
+					
+					//ｃｓｖファイルに主キーの重複データがあるがどうか
+					String primaryKeyStr = String.valueOf(data[1]).concat(String.valueOf(data[2]));
+					if(primaryKeyMap.isEmpty() == true) {
+						//最初のデータ、主キーのコレクションは空です
+						primaryKeyMap.put(primaryKeyStr, String.valueOf(countErrorLine));
+					} else {
+						boolean contains = primaryKeyMap.containsKey(primaryKeyStr);
+						if(contains == false) {
+							//主キーの繰り返しなし
+							primaryKeyMap.put(primaryKeyStr, String.valueOf(countErrorLine));
+						}else {
+							//主キーの繰り返し
+							fabric.setOrderPattern(data[1]);
+							fabric.setFabricNo(data[2]);
+							//このエラーが発生した場合、2番目のパラメータは２回目に繰り返される行数、３番目のパラメータは最初の反復の行数です
+							fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, 
+									String.valueOf(primaryKeyMap.get(primaryKeyStr)),
+									DUPLICATE_PRIMARY_KEY_IN_FILE));
+							break;
+						}
+					}
 					
 					//検査オーダーバターン、特殊のチェック
 					if("CO".equals(data[1]) || "PO".equals(data[1])){
@@ -437,7 +505,7 @@ public class FabricController {
 				}
 				
 				//検査素材品番
-				dataWhetherConform = stringCheckIsHalfAngle(data[3], 30);
+				dataWhetherConform = stringCheckNoAngle(data[3], 30);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT){ 
 					fabric.setMaterialNo(data[3]);
 				}else{
@@ -976,6 +1044,9 @@ public class FabricController {
 		}else if(dataWhetherConform == NUMBER_OF_BITS_IS_INCORRECT){
 			//「エラー発生の第一番目の行数」の「エラー発生の項目名」の桁数が不正です。
 			fabricList.add(setErrorArrayDeploy(fabric, line, row, NUMBER_OF_BITS_IS_INCORRECT));
+		}else if(dataWhetherConform == THE_STATUS_OF_ORDER_PATTERN_IS_INCORRECT){
+			//オーダーパターンはログインする業態と不一致のため登録できません。オーダーパターン＝{0}，行数＝{1}
+			fabricList.add(setErrorArrayDeploy(fabric, line, row, THE_STATUS_OF_ORDER_PATTERN_IS_INCORRECT));
 		}
 		return fabricList;
 	}
@@ -991,8 +1062,6 @@ public class FabricController {
 	private Fabric setErrorArrayDeploy(Fabric fabric, Integer line, String row, String type) {
 		//エンティクラスのフォーマットに基づいて、エラー情報を配列に入れる
 		String[] str = {String.valueOf(line), row, type};
-		//エラーた行、処理区分が空に設定されている
-		//fabric.setHandleDiscriminate("");
 		//エラーた行、エラーメッセージの設定
 		fabric.setErrorArr(str);
 		return fabric;
@@ -1181,7 +1250,6 @@ public class FabricController {
 		}
 		
 		byte[] a = String.valueOf(sbTitle).getBytes();
-		//output.write('\ufeff');
 		output.write(a);
 		
 		for(int i=0;i<content.length;i++){

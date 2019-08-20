@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.cash.DtbCashRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.DtbCash" >
+    <id column="cash_id" property="cashId" jdbcType="VARCHAR" />
+    <result column="cash_status" property="cashStatus" jdbcType="VARCHAR" />
+    <result column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <result column="store_brand_code" property="storeBrandCode" jdbcType="VARCHAR" />
+    <result column="shop_code" property="shopCode" jdbcType="VARCHAR" />
+    <result column="store_staff_nm" property="storeStaffNm" jdbcType="VARCHAR" />
+    <result column="cust_cd" property="custCd" jdbcType="VARCHAR" />
+    <result column="product_orderd_date" property="productOrderdDate" jdbcType="DATE" />
+    <result column="order_amount" property="orderAmount" jdbcType="SMALLINT" />
+    <result column="cash_total_price" property="cashTotalPrice" jdbcType="INTEGER" />
+    <result column="cash_except_tax_price" property="cashExceptTaxPrice" jdbcType="INTEGER" />
+    <result column="cash_tax_amount" property="cashTaxAmount" jdbcType="INTEGER" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>  
+  
+  <update id="updateByCashIds" parameterType="co.jp.aoyama.macchinetta.domain.dto.CashUpdateCondition" >
+    update dtb_cash
+    <set>
+        <if test="condition.cashStatus != null and condition.cashStatus != '' ">
+            cash_status = #{condition.cashStatus,jdbcType=VARCHAR},
+        </if>
+            updated_user_id = #{condition.updatedUserId,jdbcType=VARCHAR},
+            updated_at = #{condition.updatedAt,jdbcType=TIMESTAMP}
+    </set>
+    where cash_id in 
+    <foreach collection="list" index="index" item="cashId" open="(" separator="," close=")">
+      #{cashId}
+    </foreach>
+  </update>
+</mapper>

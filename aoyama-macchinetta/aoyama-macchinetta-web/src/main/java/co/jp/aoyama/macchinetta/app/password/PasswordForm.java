@@ -8,28 +8,30 @@ public class PasswordForm implements Serializable {
 
 	private static final long serialVersionUID = -7854754589334258917L;
 	
-	 private String userId;
+	 private String myUserId;
 	 @NotBlank
-	 private String password;
-	@NotBlank
-	 private String passwordConfirm;
+	 private String myPassword;
+	 @NotBlank
+	 private String myPasswordConfirm;
+	 
+	public String getMyUserId() {
+		return myUserId;
+	}
+	public String getMyPassword() {
+		return myPassword;
+	}
+	public String getMyPasswordConfirm() {
+		return myPasswordConfirm;
+	}
+	public void setMyUserId(String myUserId) {
+		this.myUserId = myUserId;
+	}
+	public void setMyPassword(String myPassword) {
+		this.myPassword = myPassword;
+	}
+	public void setMyPasswordConfirm(String myPasswordConfirm) {
+		this.myPasswordConfirm = myPasswordConfirm;
+	}
 	  
-	public String getUserId() {
-		return userId;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
-	}
+
 }

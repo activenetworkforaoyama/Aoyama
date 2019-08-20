@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class OptionCoatStandardInfo implements Serializable {
 	private static final long serialVersionUID = 8096233544839181551L;
+	
+	//COATモデル
+	private String coatModel;
+	
+	private Map<String, String> coatModelMap;
 
 	// ラペルデザイン
 	private String ocLapelDesign;
@@ -56,20 +61,29 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	private Map<String, String> ocChainHangeMap;
 
-	// 胴裏地
+	// 胴裏素材
+	private String ocBodyBackMate;
+
+	private Map<String, String> ocBodyBackMateMap;
+	
+	//胴裏素材品番
 	private String ocBodyBackMateStkNo;
 
-	private Map<String, String> ocBodyBackMateStkNoMap;
+	// 袖裏素材
+	private String ocCuffBackMate;
 
-	// 袖裏地
+	private Map<String, String> ocCuffBackMateMap;
+	
+	//袖裏素材品番
 	private String ocCuffBackMateStkNo;
 
-	private Map<String, String> ocCuffBackMateStkNoMap;
+	// 釦素材
+	private String ocFrontBtnMate;
 
-	// 釦
+	private Map<String, String> ocFrontBtnMateMap;
+	
+	//釦素材品番
 	private String ocFrontBtnMateStkNo;
-
-	private Map<String, String> ocFrontBtnMateStkNoMap;
 
 	public String getOcLapelDesign() {
 		return ocLapelDesign;
@@ -239,28 +253,12 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocBodyBackMateStkNo = ocBodyBackMateStkNo;
 	}
 
-	public Map<String, String> getOcBodyBackMateStkNoMap() {
-		return ocBodyBackMateStkNoMap;
-	}
-
-	public void setOcBodyBackMateStkNoMap(Map<String, String> ocBodyBackMateStkNoMap) {
-		this.ocBodyBackMateStkNoMap = ocBodyBackMateStkNoMap;
-	}
-
 	public String getOcCuffBackMateStkNo() {
 		return ocCuffBackMateStkNo;
 	}
 
 	public void setOcCuffBackMateStkNo(String ocCuffBackMateStkNo) {
 		this.ocCuffBackMateStkNo = ocCuffBackMateStkNo;
-	}
-
-	public Map<String, String> getOcCuffBackMateStkNoMap() {
-		return ocCuffBackMateStkNoMap;
-	}
-
-	public void setOcCuffBackMateStkNoMap(Map<String, String> ocCuffBackMateStkNoMap) {
-		this.ocCuffBackMateStkNoMap = ocCuffBackMateStkNoMap;
 	}
 
 	public String getOcFrontBtnMateStkNo() {
@@ -271,12 +269,68 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocFrontBtnMateStkNo = ocFrontBtnMateStkNo;
 	}
 
-	public Map<String, String> getOcFrontBtnMateStkNoMap() {
-		return ocFrontBtnMateStkNoMap;
+	public String getCoatModel() {
+		return coatModel;
 	}
 
-	public void setOcFrontBtnMateStkNoMap(Map<String, String> ocFrontBtnMateStkNoMap) {
-		this.ocFrontBtnMateStkNoMap = ocFrontBtnMateStkNoMap;
+	public void setCoatModel(String coatModel) {
+		this.coatModel = coatModel;
 	}
-	
+
+	public Map<String, String> getCoatModelMap() {
+		return coatModelMap;
+	}
+
+	public void setCoatModelMap(Map<String, String> coatModelMap) {
+		this.coatModelMap = coatModelMap;
+	}
+
+	public String getOcBodyBackMate() {
+		return ocBodyBackMate;
+	}
+
+	public void setOcBodyBackMate(String ocBodyBackMate) {
+		this.ocBodyBackMate = ocBodyBackMate;
+	}
+
+	public Map<String, String> getOcBodyBackMateMap() {
+		return ocBodyBackMateMap;
+	}
+
+	public void setOcBodyBackMateMap(Map<String, String> ocBodyBackMateMap) {
+		this.ocBodyBackMateMap = ocBodyBackMateMap;
+	}
+
+	public String getOcCuffBackMate() {
+		return ocCuffBackMate;
+	}
+
+	public void setOcCuffBackMate(String ocCuffBackMate) {
+		this.ocCuffBackMate = ocCuffBackMate;
+	}
+
+	public Map<String, String> getOcCuffBackMateMap() {
+		return ocCuffBackMateMap;
+	}
+
+	public void setOcCuffBackMateMap(Map<String, String> ocCuffBackMateMap) {
+		this.ocCuffBackMateMap = ocCuffBackMateMap;
+	}
+
+	public String getOcFrontBtnMate() {
+		return ocFrontBtnMate;
+	}
+
+	public void setOcFrontBtnMate(String ocFrontBtnMate) {
+		this.ocFrontBtnMate = ocFrontBtnMate;
+	}
+
+	public Map<String, String> getOcFrontBtnMateMap() {
+		return ocFrontBtnMateMap;
+	}
+
+	public void setOcFrontBtnMateMap(Map<String, String> ocFrontBtnMateMap) {
+		this.ocFrontBtnMateMap = ocFrontBtnMateMap;
+	}
+
 }

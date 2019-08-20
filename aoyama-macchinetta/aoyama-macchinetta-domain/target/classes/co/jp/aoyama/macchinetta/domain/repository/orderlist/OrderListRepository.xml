@@ -1245,6 +1245,8 @@
     <result column="send2factory_status" jdbcType="VARCHAR" property="send2factoryStatus" />
     <result column="is_cancelled" jdbcType="VARCHAR" property="isCancelled" />
     <result column="theoretical_stock_check" jdbcType="VARCHAR" property="theoreticalStockCheck" />
+    <result column="schedule_data_transmit_status" jdbcType="VARCHAR" property="scheduleDataTransmitStatus" />
+    <result column="shipping_transmit_status" jdbcType="VARCHAR" property="shippingTransmitStatus" />
     <result column="version" property="version" jdbcType="SMALLINT" />
     <result column="created_user_id" jdbcType="VARCHAR" property="createdUserId" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
@@ -1556,7 +1558,7 @@
 		    host_transmit_item_cd, host_transmit_maker_cd, host_transmit_nenki_cd, host_transmit_color_cd, 
 		    host_transmit_size, host_transmit_maker_product, factory_shipping_method, shipping_date, 
 		    loading_date, fabric_used_mount, theory_fabric_used_mount, tsc_status, maker_factory_status, 
-		    send2factory_status, is_cancelled, theoretical_stock_check, dtb_order.version,
+		    send2factory_status, is_cancelled, theoretical_stock_check,schedule_data_transmit_status,shipping_transmit_status, dtb_order.version,
 		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at
     </sql>
 
@@ -1854,10 +1856,29 @@
 				shipping_date = #{arg2},
 				loading_date = #{arg3},
 				updated_user_id = #{arg4},
-				updated_at = #{arg5}
+				updated_at = #{arg5},
+				version = #{arg6} + 1
 			</set>
 			WHERE
 				order_id = #{arg0}
+				and version = #{arg6}
+	</update>
+	
+	<update id="updateSaveValueAndStatus" >
+			UPDATE
+			dtb_order
+			<set>
+				fabric_used_mount = #{arg1},
+				shipping_date = #{arg2},
+				loading_date = #{arg3},
+				updated_user_id = #{arg4},
+				updated_at = #{arg5},
+				version = #{arg6} + 1,
+				shipping_transmit_status = #{arg7}
+			</set>
+			WHERE
+				order_id = #{arg0}
+				and version = #{arg6}
 	</update>
 	
 	<update id="updateSaveOrChangeValue" >
@@ -1877,6 +1898,24 @@
 				and version = #{arg7}
 	</update>
 	
+	<update id="updateSaveOrChangeValueAndStatus" >
+			UPDATE
+			dtb_order
+			<set>
+				fabric_used_mount = #{arg1},
+				shipping_date = #{arg2},
+				loading_date = #{arg3},
+				maker_factory_status = #{arg4},
+				updated_user_id = #{arg5},
+				updated_at = #{arg6},
+				version = #{arg7} + 1,
+				shipping_transmit_status = #{arg8}
+			</set>
+			WHERE
+				order_id = #{arg0}
+				and version = #{arg7}
+	</update>
+	
 	<update id="updateNextGeneration" >
 			UPDATE
 			dtb_order
@@ -1890,6 +1929,22 @@
 				order_id = #{arg0}
 				and version = #{arg4}
 	</update>
+	
+	<update id="updateNextGenerationAndStatus" >
+			UPDATE
+			dtb_order
+			<set>
+				ws_price = #{arg1},
+				updated_user_id = #{arg2},
+				updated_at = #{arg3},
+				version = #{arg4} + 1,
+				schedule_data_transmit_status = #{arg5}
+			</set>
+			WHERE
+				order_id = #{arg0}
+				and version = #{arg4}
+	</update>
+	
 	<update id="updateActualStock" >
 			UPDATE
 			mtb_stock
@@ -1923,7 +1978,8 @@
         cust_shop_delivery_date,
         cust_deliver_date,
         send2factory_status,
-        is_cancelled
+        is_cancelled,
+        dtb_order.updated_at
         FROM dtb_order
         <if test="condition.fablicImporter != null and condition.fablicImporter != ''">
         <![CDATA[

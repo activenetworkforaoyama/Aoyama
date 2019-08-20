@@ -51,23 +51,24 @@
 			<div class="card-body">
 			
 				<div class="row">
-					<div class="col col-lg-6">
+					<div class="col col-lg-12">
 						<div class="row form-group">
-							<div class="col col-md-4">
+							<div class="col col-md-2">
 								<label class=" form-control-label">承り日</label>
 							</div>
-							<div class="col-12 col-md-8">
-								<input type="date" name="orderOnStartDateInput" id="orderOnStartDateInput" max= "9999-12-31" 
-									class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
-								～<input type="date" name="orderOnEndDateInput" id="orderOnEndDateInput" max= "9999-12-31" 
-									class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
+							<div class="col col-md-10">
+								<input type="text" name="orderOnStartDateInput" id="orderOnStartDateInput" placeholder="年/月/日" 
+								 	autocomplete="off" class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
+								&nbsp;〜&nbsp;
+								<input type="text" name="orderOnEndDateInput" id="orderOnEndDateInput" placeholder="年/月/日" 
+									autocomplete="off" class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
 							</div>
 						</div>
 						<div class="row form-group">
-							<div class="col col-md-4">
+							<div class="col col-md-2">
 								<label class=" form-control-label">店着納期区分</label>
 							</div>
-							<div class="col-12 col-md-8">
+							<div class="col col-md-10">
 								<select name="shopDeliveryClassInput" id="shopDeliveryClassInput" 
 									class="input-sm form-control-sm form-control" style="display:inline-block;width:200px;">
 									<option value="全区分">全区分</option>
@@ -77,13 +78,6 @@
 									</c:forEach>
 								</select>
 							</div>
-						</div>
-					</div>
-					<!-- 右側項目 -->
-					<div class="col col-lg-6">
-						<div class="row form-group">
-						</div>
-						<div class="row form-group">
 						</div>
 					</div>
 				</div>
@@ -111,52 +105,51 @@
 			</div>
 		</div>
 	</div>
+</div>
 	
-	<div id="shopListDiv" style="display:none;">
-	
-		<div class="content container" style="float: left">
-			<div class="row">
-				<div class="col-9">
-					<div id="gridContainer">
-						<!-- SlickGridテーブルの表示領域となる要素 -->
-						<div id="myGrid" style="width: 100%;"></div>
-					</div>
-				</div>
-				<div class="col-3">
+<div id="shopListDiv" style="display:none;">
+
+	<div class="content container" style="float: left">
+		<div class="row">
+			<div class="col-9">
+				<div id="gridContainer">
+					<!-- SlickGridテーブルの表示領域となる要素 -->
+					<div id="myGrid" style="width: 100%;"></div>
 				</div>
 			</div>
+			<div class="col-3">
+			</div>
 		</div>
+	</div>
 
-		<div class="content">
-			<div class="card-body">
-				<div id="doKoShin">
-					<div class="row">
-						<!-- 左側項目 -->
-						<div class="col col-lg-6">
-							<div class="row form-group">
-								<div class="col col-md-6">
-									<button id="cancelButton" type="button" class="btn btn-danger btn-block">
-										<i class="fa fa-trash-o"></i> キャンセル</button>
-								</div>
-								<div class="col col-md-6">
-									<button id="updateButton" type="button" class="btn btn-primary btn-block">
-										<i class="fa fa-check-circle"></i> 更新</button>
-								</div>
+	<div class="content">
+		<div class="card-body">
+			<div id="doKoShin">
+				<div class="row">
+					<!-- 左側項目 -->
+					<div class="col col-lg-6">
+						<div class="row form-group">
+							<div class="col col-md-6">
+								<button id="cancelButton" type="button" class="btn btn-danger btn-block">
+									<i class="fa fa-trash-o"></i> キャンセル</button>
+							</div>
+							<div class="col col-md-6">
+								<button id="updateButton" type="button" class="btn btn-primary btn-block">
+									<i class="fa fa-check-circle"></i> 更新</button>
 							</div>
 						</div>
-						<!-- 右側項目 -->
-						<div class="col col-lg-6">
-							<div class="row form-group"></div>
-						</div>
+					</div>
+					<!-- 右側項目 -->
+					<div class="col col-lg-6">
+						<div class="row form-group"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-		
 	</div>
 	
 </div>
-
+	
 <!-- 依存ライブラリの読み込み -->
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/firebugx.js"></script>
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/jquery-1.11.2.min.js"></script>
@@ -175,7 +168,9 @@
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/controls/slick.columnpicker.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap-datepicker3.css" type="text/css">
 
 <script type="text/javascript">
 	var dataView;
@@ -320,7 +315,7 @@
 	});
 
 	$(document).ready(function() {
-	
+
 		$("#shopListDiv").hide();	
 		// (1) SlickGridのカラム定義
 		var columns = [
@@ -357,15 +352,20 @@
 				text: getMsg('msg082'),
 				icon: "info",
 				buttons: ["キャンセル", true],
-				dangerMode: true,
-				closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 				if (isConfirm) {
 					// 更新します
+					$("#orderOnStartDateInput").val("");
+					$("#orderOnEndDateInput").val("");
+					$("#shopDeliveryClassInput").val("全区分");
 					appendAlertDel('errorMessage');
 					appendAlertDel('successMessage');
-					$("#selectButton").click();
+					$("#clearButton").removeAttr("disabled");
+					$("#selectButton").removeAttr("disabled");
+					$("#addButton").removeAttr("disabled");
+					$("#doKoShin").hide();
+					$("#shopListDiv").hide();
 				}
 			});
 			return false;
@@ -392,26 +392,26 @@
 			var orderOnStartDateInput = $("#orderOnStartDateInput").val();
 			var orderOnEndDateInput = $("#orderOnEndDateInput").val();
 			//日付フォーマットの変換
-			var startArr = orderOnStartDateInput.toString().split("-");
-			var endArr = orderOnEndDateInput.toString().split("-");
-			var startDateD = startArr[0]+"/"+startArr[1]+"/"+startArr[2];
-			var endDateD = endArr[0]+"/"+endArr[1]+"/"+endArr[2];
+			var startArr;
+			var endArr;
+			var startDateD;
+			var endDateD;
 			//日付変数に変換
 			var startCompare = new Date(orderOnStartDateInput);
 			var endCompare = new Date(orderOnEndDateInput);
 			
 			//日付フォーマットの変換
 			if(orderOnStartDateInput == null || orderOnStartDateInput == ""){
-				var startDateD = null;
+				startDateD = null;
 			}else{
-				var startArr = orderOnStartDateInput.toString().split("-");
-				var startDateD = startArr[0]+"/"+startArr[1]+"/"+startArr[2];
+				startArr = orderOnStartDateInput.toString().split("/");
+				startDateD = startArr[0]+"/"+startArr[1]+"/"+startArr[2];
 			}
 			if(orderOnEndDateInput == null || orderOnEndDateInput == ""){
-				var endDateD = null;
+				endDateD = null;
 			}else{
-				var endArr = orderOnEndDateInput.toString().split("-");
-				var endDateD = endArr[0]+"/"+endArr[1]+"/"+endArr[2];
+				endArr = orderOnEndDateInput.toString().split("/");
+				endDateD = endArr[0]+"/"+endArr[1]+"/"+endArr[2];
 			}
 
 			if(!(orderOnStartDateInput == "" || orderOnStartDateInput == null || orderOnStartDateInput == undefined) 
@@ -421,17 +421,8 @@
 				//msg068 = {0}は{1}以降の日付を入力してください。
 				appendAlert('errorMessage', getMsgByTwoArgs('msg068', '承り日TO', '承り日FROM'));
 				
-				var data = [];
-				// (4) SlickGridテーブルを作成
-				dataView = new Slick.Data.DataView();
-				grid = new Slick.Grid("#myGrid", dataView,columns, options);
-				grid.setSelectionModel(new Slick.RowSelectionModel());
-				grid.init();
-				// initialize the model after all the events have been hooked up
-				dataView.beginUpdate();
-				dataView.setItems(data);
-				dataView.endUpdate();
-				attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");
+				$("#doKoShin").hide();
+				$("#shopListDiv").hide();
 			}else{
 				var data = [];
 				$.ajax({
@@ -558,8 +549,6 @@
 				text: getMsgByOneArg('msg025', "納期情報"),
 				icon: "info",
 				buttons: ["キャンセル", true],
-				dangerMode: true,
-				closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 				if (isConfirm) {
@@ -766,8 +755,6 @@
 				text: getMsg('msg067'),
 				icon: "info",
 				buttons: ["キャンセル", true],
-				dangerMode: true,
-				closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 				if (isConfirm) {
@@ -792,8 +779,8 @@
 					var orderOnStartDateInput = $("#orderOnStartDateInput").val();
 					var orderOnEndDateInput = $("#orderOnEndDateInput").val();
 					//日付フォーマットの変換
-					var startArr = orderOnStartDateInput.toString().split("-");
-					var endArr = orderOnEndDateInput.toString().split("-");
+					var startArr = orderOnStartDateInput.toString().split("/");
+					var endArr = orderOnEndDateInput.toString().split("/");
 					var startDateD = startArr[0]+"/"+startArr[1]+"/"+startArr[2];
 					var endDateD = endArr[0]+"/"+endArr[1]+"/"+endArr[2];
 
@@ -840,6 +827,9 @@
 						    	for(var i = 0; i < result.length; i++) {
 									if (result[i].errorIdentification == "-1"){
 										//新しい日付と既存のデータが交差します、テーブルを空にする
+										
+										$("#doKoShin").hide();
+										$("#shopListDiv").hide();
 										
 										// (4) SlickGridテーブルを作成
 										dataView = new Slick.Data.DataView();
@@ -1048,8 +1038,6 @@
 										swal({
 											text: htmlTempAll,
 											icon: "info",
-											dangerMode: true,
-											closeOnEsc: false,
 										})
 										.then((isConfirm) => {
 											if (isConfirm) {
@@ -1065,5 +1053,27 @@
 			});//.then((isConfirm) =>
 		})//$("#addButton").click
 
+		// カレンダー表示の設定
+		  $('#orderOnStartDateInput').datepicker({
+			  format: 'yyyy/mm/dd',
+			  clearBtn: true,
+			  language: 'ja',
+			  todayBtn: "linked",
+			  orientation: 'buttom auto',
+			  todayHighlight: true,
+			  autoclose: true
+		  });
+
+		// カレンダー表示の設定
+		  $('#orderOnEndDateInput').datepicker({
+			  format: 'yyyy/mm/dd',
+			  clearBtn: true,
+			  language: 'ja',
+			  todayBtn: "linked",
+			  orientation: 'buttom auto',
+			  todayHighlight: true,
+			  autoclose: true
+		  });
+		  
 	});//$(document).ready(function)
 </script>

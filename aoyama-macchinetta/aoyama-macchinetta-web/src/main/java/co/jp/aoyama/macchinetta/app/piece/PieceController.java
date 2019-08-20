@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,7 +37,10 @@ public class PieceController {
     
     @Inject
     Mapper beanMapper;
-    
+	
+	private static final Logger logger = LoggerFactory
+            .getLogger(PieceController.class);
+	
 	private PieceForm pieceForm = new PieceForm();
 	
 	@ModelAttribute
@@ -47,7 +52,7 @@ public class PieceController {
 	 * 初期表示
 	 * @return
 	 */
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String pieceInit(Model model) {
 		return "piece/pieceForm";
 	}
@@ -107,6 +112,7 @@ public class PieceController {
 						pieceFormGet.setUpdateFailure("-5");
 						failureTemp = true;
 						pieceFormListReturn.add(pieceFormGet);
+						logger.info("バージョン番号が不正です");
 					}
 				}else {
 					//下代価格の主キーはすでに存在しない。確認して再入力してください。
@@ -114,6 +120,7 @@ public class PieceController {
 					pieceFormGet.setUpdateFailure("-4");
 					failureTemp = true;
 					pieceFormListReturn.add(pieceFormGet);
+					logger.info("削除のエラーが存在する場合。----納期情報の主キーはすでに存在しない。");
 				}
 			}else{
 				//新規または修正の操作
@@ -138,6 +145,7 @@ public class PieceController {
 							pieceFormGet.setUpdateFailure("-5");
 							failureTemp = true;
 							pieceFormListReturn.add(pieceFormGet);
+							logger.info("バージョン番号が不正です");
 						}
 					}else {
 						//下代価格の主キーはすでに存在しません。確認して再入力してください。
@@ -145,6 +153,7 @@ public class PieceController {
 						pieceFormGet.setUpdateFailure("-4");
 			            failureTemp = true;
 			            pieceFormListReturn.add(pieceFormGet);
+			            logger.info("修正のエラーが存在する場合。----納期情報の主キーはすでに存在しない。");
 					}
 				}else if("2".equals(piece.getOptionType())) {
 					//"2"は新規区分
@@ -158,18 +167,21 @@ public class PieceController {
 						pieceFormGet.setUpdateFailure("-1");
 			            failureTemp = true;
 			            pieceFormListReturn.add(pieceFormGet);
+			            logger.info("新規のエラーが存在する場合。----下代価格の主キーはすでに存在している。");
 					}else if(pieceFactoryCodeQuery == 0) {
 						//工場コードは工場マスタに存在しません。確認して再入力してください。
 						//setUpdateFailure("-2"):工場コードは工場マスタに存在しません
 						pieceFormGet.setUpdateFailure("-2");
 			            failureTemp = true;
 			            pieceFormListReturn.add(pieceFormGet);
+			            logger.info("新規のエラーが存在する場合。----工場コードは工場マスタに存在しません。");
 					}else if(pieceItemCodeQuery == 0) {
 						//アイテムコードはアイテムマスタに存在しません。確認して再入力してください。
 						//setUpdateFailure("-3"):アイテムコードはアイテムマスタに存在しません
 						pieceFormGet.setUpdateFailure("-3");
 			            failureTemp = true;
 			            pieceFormListReturn.add(pieceFormGet);
+			            logger.info("新規のエラーが存在する場合。----アイテムコードはアイテムマスタに存在しません。");
 					}else {
 						//条件を満たす
 						piece.setCreatedAt(new Date());

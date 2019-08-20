@@ -24,6 +24,7 @@
 </div>
 <form:form id="idForm" action="${pageContext.request.contextPath}/cashConfirm/cashReFormInDb" method="post" modelAttribute="cashForm" class="form-horizontal">
 <div class="content mt-3">
+<div class="alert alert-error" id="errormssage" style="display:none"></div>
 <t:messagesPanel  messagesAttributeName="resultMessages"/>
 	<div class="animated fadeIn">
 
@@ -58,7 +59,7 @@
 									<label class=" form-control-label">ご注文合計</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<strong>&yen;<output id="cashTotalPrice">${cashForm.cashTotalPrice}</output></strong>
+									<strong>￥<output id="cashTotalPrice">${cashForm.cashTotalPrice}</output></strong>
 									<input type="hidden" name="cashTotalPrice" value="${cashForm.cashTotalPrice}"/>
 									<%-- <strong><input value="${cashForm.cashTotalPrice}" name="cashTotalPrice" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly></strong> --%>
 								</div>
@@ -69,7 +70,7 @@
 									<label class=" form-control-label">内商品合計</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<strong>&yen;<output id="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
+									<strong>￥<output id="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
 									<input type="hidden" name="cashExceptTaxPrice" value="${cashForm.cashExceptTaxPrice}"/>
 									<%-- <strong><input value="${cashForm.cashExceptTaxPrice}" name="cashExceptTaxPrice" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly></strong> --%>
 								</div>
@@ -80,7 +81,7 @@
 									<label class=" form-control-label">内消費税</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<strong>&yen;<output id="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
+									<strong>￥<output id="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
 									<input type="hidden" name="cashTaxAmount" value="${cashForm.cashTaxAmount}"/>
 									<%-- <strong><input value="${cashForm.cashTaxAmount}" name="cashTaxAmount" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly></strong> --%>
 								</div>
@@ -123,15 +124,15 @@
 								<td style="width:25%;"><input value="${cash.orderId }" name="helpCashForm[${row.index}].orderId" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly>
 								<!-- <input type="hidden" name="helpCashForm[${row.count}].orderId" value="${cash.orderId }" readonly/> -->
 								</td>
-								<td class="text-right" style="width:25%;">&yen;<output id="totalPrice_${row.index}">${cash.totalPrice }</output>
+								<td class="text-right" style="width:25%;">￥<output id="totalPrice_${row.index}">${cash.totalPrice }</output>
 								<input type="hidden" name="helpCashForm[${row.index}].totalPrice" value="${cash.totalPrice }" readonly/> 
 								<%-- <input value="${cash.totalPrice }" name="helpCashForm[${row.index}].totalPric" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly> --%>
 								</td>
-								<td class="text-right" style="width:25%;">&yen;<output id="cashDiscountPrice_${row.index}">${cash.cashDiscountPrice }</output>
+								<td class="text-right" style="width:25%;">￥<output id="cashDiscountPrice_${row.index}">${cash.cashDiscountPrice }</output>
 								<input type="hidden" name="helpCashForm[${row.index}].cashDiscountPrice" value="${cash.cashDiscountPrice }" readonly/>
 								<%-- <input value="${cash.cashDiscountPrice }" name="helpCashForm[${row.index}].cashDiscountPrice" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly> --%>
 								</td>
-								<td class="text-right" style="width:25%;">&yen;<output id="cashProductPrice_${row.index}">${cash.cashProductPrice }</output>
+								<td class="text-right" style="width:25%;">￥<output id="cashProductPrice_${row.index}">${cash.cashProductPrice }</output>
 								<input type="hidden" name="helpCashForm[${row.index}].cashProductPrice" value="${cash.cashProductPrice }" readonly/>
 								<%-- <input value="${cash.cashProductPrice }" name="helpCashForm[${row.index}].cashProductPrice" style="vertical-align: right; border-width: 0; BACKGROUND-COLOR: transparent;" readonly> --%>
 								</td>
@@ -155,7 +156,7 @@
 						</button>
 					</div>
 					<div class="col col-md-4">
-						<button id="submit" type="submit"
+						<button id="submit" type="submit" onclick="return imageCheck();"
 							class="btn btn-primary btn-block">
 							<i class="fa fa-check-circle"></i> 確定
 						</button>
@@ -177,6 +178,8 @@
 	</div>
 </div>
 </form:form>
+<script
+	src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
 <script type="text/javascript">
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 //CSRF令牌
@@ -226,6 +229,63 @@ jQuery(document).ready(function(){
 		}
 });
 
+//--------------------------------------------
+//確認チェック
+//--------------------------------------------
+function imageCheck(){
+	//会計No.
+	var cashId = "${cashForm.cashId}";
+	if(isEmpty(cashId)) {
+        appendAlert('errormssage', getMsgByOneArg('msg001', '会計No.'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	//ご注文合計：cashTotalPrice
+	var cashTotalPrice = "${cashForm.cashTotalPrice}";
+	if(isEmpty(cashTotalPrice)) {
+        appendAlert('errormssage', getMsgByOneArg('msg118', 'ご注文合計'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	//内商品合計
+	var cashExceptTaxPrice = "${cashForm.cashExceptTaxPrice}";
+	if(isEmpty(cashExceptTaxPrice)) {
+        appendAlert('errormssage', getMsgByOneArg('msg118', '内商品合計'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	//内消費税
+	var cashTaxAmount = "${cashForm.cashTaxAmount}";
+	if(isEmpty(cashTaxAmount)) {
+        appendAlert('errormssage', getMsgByOneArg('msg118', '内消費税'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	
+	var cashDiscountPriceList = obj;
+	for( var i = 0;i<cashDiscountPriceList.length;i++){
+		//値引後金額(税抜):cashDiscountPrice
+		if(cashDiscountPriceList[i].cashDiscountPrice === "" || cashDiscountPriceList[i].cashDiscountPrice == null){
+			appendAlert('errormssage', getMsgByOneArg('msg118', '値引後金額(税抜)'));
+	        return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+		//商品金額(税抜):cashDiscountPrice
+		if(cashDiscountPriceList[i].cashProductPrice === "" || cashDiscountPriceList[i].cashProductPrice == null){
+			appendAlert('errormssage', getMsgByOneArg('msg118', '商品金額(税抜)'));
+	        return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+		
+	}
+}
+
 jQuery('#backButton').click(function(){
 	var cashTotalPrice = "${cashForm.cashTotalPrice}";
 	var cashExceptTaxPrice = "${cashForm.cashExceptTaxPrice}";
@@ -248,7 +308,7 @@ jQuery('#backButton').click(function(){
 	/* window.history.go(-1) */
 });
 jQuery('#accountingBackButton').on('click', function() {
-	window.location.href= contextPath + "/accounting/init";
+	window.location.href= contextPath + "/accounting/gotoAccounting";
 });
 
 //金額フォーマット

@@ -9,6 +9,8 @@ public class Stock implements Serializable {
 
 	private static final long serialVersionUID = 3117939473881415294L;
 	
+	private String orderPattern;
+	
 	private String fabricNo;
 	
 	private String color;
@@ -113,7 +115,7 @@ public class Stock implements Serializable {
 
 
 	public BigDecimal getTheoreticalStock() {
-		return theoreticalStock;
+		return theoreticalStock == null? new BigDecimal(0.0) : theoreticalStock;
 	}
 
 	public void setTheoreticalStock(BigDecimal theoreticalStock) {
@@ -121,7 +123,7 @@ public class Stock implements Serializable {
 	}
 
 	public BigDecimal getActualStock() {
-		return actualStock;
+		return actualStock == null? new BigDecimal(0.0) : actualStock;
 	}
 
 	public void setActualStock(BigDecimal actualStock) {
@@ -129,7 +131,7 @@ public class Stock implements Serializable {
 	}
 	
 	public BigDecimal getReservationStock() {
-		return reservationStock;
+		return reservationStock == null? new BigDecimal(0.0) : reservationStock;
 	}
 
 	public void setReservationStock(BigDecimal reservationStock) {
@@ -197,6 +199,14 @@ public class Stock implements Serializable {
 
 	public void setVersion(Short version) {
 		this.version = version;
+	}
+
+	public String getOrderPattern() {
+		return orderPattern;
+	}
+
+	public void setOrderPattern(String orderPattern) {
+		this.orderPattern = orderPattern;
 	}
     
 }

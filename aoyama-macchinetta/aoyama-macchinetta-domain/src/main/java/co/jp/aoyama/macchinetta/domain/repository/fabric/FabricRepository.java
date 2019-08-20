@@ -8,7 +8,7 @@ import co.jp.aoyama.macchinetta.domain.model.Fabric;
 
 public interface FabricRepository {
 	
-	List<Fabric> fabricQueryAll();
+	List<Fabric> fabricQueryByCoOrPo(@Param("category") String category);
 	
 	Fabric fabricQueryByPrimaryKey(@Param("orderPattern") String orderPattern, @Param("fabricNo") String fabricNo);
 	

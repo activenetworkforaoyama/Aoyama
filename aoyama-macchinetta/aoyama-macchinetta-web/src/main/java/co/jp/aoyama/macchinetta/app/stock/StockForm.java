@@ -42,6 +42,8 @@ public class StockForm implements Serializable {
 	
 	private String version;
 	
+	private String orderPattern;
+	
 	public String getFabricId() {
 		return fabricId;
 	}
@@ -176,6 +178,14 @@ public class StockForm implements Serializable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getOrderPattern() {
+		return orderPattern;
+	}
+
+	public void setOrderPattern(String orderPattern) {
+		this.orderPattern = orderPattern;
 	}
 	
 }

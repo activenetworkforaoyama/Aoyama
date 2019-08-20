@@ -16,9 +16,9 @@ public enum CoatOptionStandardCodeEnum {
 	COAT_STANDARD_OPTION_CODE08("00008","setOcSleeveBtnTypeMap"),
 	COAT_STANDARD_OPTION_CODE09("00009","setOcBackBeltMap"),
 	COAT_STANDARD_OPTION_CODE10("00010","setOcChainHangeMap"),
-	COAT_STANDARD_OPTION_CODE11("00011","setOcBodyBackMateStkNoMap"),
-	COAT_STANDARD_OPTION_CODE12("00012","setOcCuffBackMateStkNoMap"),
-	COAT_STANDARD_OPTION_CODE13("00013","setOcFrontBtnMateStkNoMap");
+	COAT_STANDARD_OPTION_CODE11("00011","setOcChainHangeMap"),
+	COAT_STANDARD_OPTION_CODE12("00012","setOcCuffBackMate"),
+	COAT_STANDARD_OPTION_CODE13("00013","setOcFrontBtnMate");
 	
 	
 	private final String key;

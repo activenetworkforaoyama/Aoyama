@@ -67,7 +67,7 @@ public class CsvUtil{
             }
             csvFile.createNewFile();
  
-            csvWtriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile), "UTF-8"), 1024);
+            csvWtriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(csvFile), "SJIS"), 1024);
             
             // タイトルを出力
             writeTitle(title, csvWtriter);
@@ -91,13 +91,13 @@ public class CsvUtil{
     	for(int i=0;i<title.length;i++) {
     		
     		if(i == title.length-1) {
-    			sb.append(title[i]).append("");
+    			sb.append(title[i]).append("\r\n");
     		}else {
-    			sb.append(title[i]).append("\t");
+    			sb.append(title[i]);
     		}
     	}
     	csvWriter.write(sb.toString());
-        csvWriter.newLine();
+        //csvWriter.newLine();
     }
 	
 	/**
@@ -130,12 +130,11 @@ public class CsvUtil{
 	 * @throws Exception　エラー
 	 */
     private static void writeRow(String[] values, BufferedWriter csvWriter) throws Exception {
+    	StringBuffer sbTitle = new StringBuffer();
     	for(int i=0; i<values.length; i++){
-            
-        	csvWriter.write(values[i]);
-        	csvWriter.newLine();
-            
+            sbTitle.append(values[i]).append("\r\n");
         }
+    	csvWriter.write(sbTitle.toString());
     }
 }
 

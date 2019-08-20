@@ -176,7 +176,7 @@ function isFullCharacters(argVlaue) {
  * @returns true/false
  */
 function charactersCheck(argVlaue) {
-	var patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
+	var patrn = /[!'"#$%&`()=~^¥<>,]/im;
 	if (patrn.test(argVlaue)) {
 		   return true;
 
@@ -184,6 +184,15 @@ function charactersCheck(argVlaue) {
     	 return false;
     }
 }
+//function charactersCheck(argVlaue) {
+//	var patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
+//	if (patrn.test(argVlaue)) {
+//		   return true;
+//
+//    }else{
+//    	 return false;
+//    }
+//}
 
 /**
  * 全角カナチェック

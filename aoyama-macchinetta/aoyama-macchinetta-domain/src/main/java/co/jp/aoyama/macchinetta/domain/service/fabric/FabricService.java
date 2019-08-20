@@ -6,7 +6,7 @@ import co.jp.aoyama.macchinetta.domain.model.Fabric;
 
 public interface FabricService {
 	
-	List<Fabric> fabricQueryAll();
+	List<Fabric> fabricQueryByCoOrPo(String category);
 	
 	String[] fabricUpdate(List<Fabric> fabricList);
 	

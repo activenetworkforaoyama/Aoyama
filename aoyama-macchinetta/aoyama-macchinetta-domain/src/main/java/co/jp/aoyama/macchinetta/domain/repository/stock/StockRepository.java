@@ -11,11 +11,11 @@ public interface StockRepository {
 	 
 	List<Stock> findAllStock();  
 	
-	Stock findStockByPk(@Param("fabricNo")String fabricNo);
+	Stock findStockByPk(@Param("orderPattern")String orderPattern,@Param("fabricNo")String fabricNo);
 
 	void updateStockByPk(@Param("stockUpd") List<Stock> stockUpd);
 	
-	List<Stock> fuzzyQuery(@Param("fabricNo")String fabricNo,@Param("color")String color,@Param("pattern")String pattern,@Param("brandName")String brandName,@Param("retailPrice")Integer retailPrice,@Param("retailPriceTo")Integer retailPriceTo,@Param("makerName")String makerName,@Param("factoryName")String factoryName);
+	List<Stock> fuzzyQuery(@Param("orderPattern")String orderPattern,@Param("fabricNo")String fabricNo,@Param("color")String color,@Param("pattern")String pattern,@Param("brandName")String brandName,@Param("retailPrice")Integer retailPrice,@Param("retailPriceTo")Integer retailPriceTo,@Param("makerName")String makerName,@Param("factoryName")String factoryName);
     
 	void updateStockValue(String fabricId,BigDecimal theoreticalStockUpdate,BigDecimal reservationStockUpdate);
 	

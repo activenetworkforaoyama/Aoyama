@@ -30,8 +30,8 @@ public class FabricServiceImpl  implements FabricService {
 	 * すべての生地を調べる
 	 */
 	@Override
-	public List<Fabric> fabricQueryAll() {
-		List<Fabric> fabricList = fabricRepository.fabricQueryAll();
+	public List<Fabric> fabricQueryByCoOrPo(String category) {
+		List<Fabric> fabricList = fabricRepository.fabricQueryByCoOrPo(category);
 		//予約在庫の取得
 		for (int i = 0; i < fabricList.size(); i++) {
 			if(fabricList.get(i).getReservationStock() == null) {
@@ -50,7 +50,7 @@ public class FabricServiceImpl  implements FabricService {
 	 * 生地を更新する
 	 */
 	@Override
-	public String[] fabricUpdate(List<Fabric> fabricList) {
+	public String[] fabricUpdate(List<Fabric> fabricList){
 		//新規オブジェクトのリストを格納する
 		List<Fabric> fabricInsertList = new ArrayList<Fabric>();
 		//修正オブジェクトのリストを格納する
@@ -101,14 +101,18 @@ public class FabricServiceImpl  implements FabricService {
 			//新規された場合、バージョン番号は１に設定されます
 			for (int i = 0; i < fabricInsertList.size(); i++) {
 				Short s1 = 1;
+				BigDecimal b1 = new BigDecimal("0");
 				fabricInsertList.get(i).setFabricVersion(s1);
 				fabricInsertList.get(i).setStockVersion(s1);
+				fabricInsertList.get(i).setReservationStock(b1);
+				fabricInsertList.get(i).setActualStock(b1);
 			}
 			
 			//データベースのfabric表にデータを追加する
 			fabricRepository.fabricInsertByPrimaryKey(fabricInsertList);
 			//データベースのstock表にデータを追加する
 			fabricRepository.stockInsertByPrimaryKey(fabricInsertList);
+			
 		}
 		
 		if(fabricUpdateList.size() != 0) {

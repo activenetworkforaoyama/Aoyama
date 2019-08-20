@@ -7,6 +7,11 @@ public class OptionGiletTuxedoInfo implements Serializable {
 
 	private static final long serialVersionUID = -4934283279616821245L;
 
+	// GILETモデル
+	private String tgGiletModel;
+
+	private Map<String, String> tgGiletModelMap;
+
 	// 胸ポケット
 	private String tgBreastPkt;
 
@@ -27,7 +32,7 @@ public class OptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgWaistPktMateMap;
 
-	// AMFステッチ
+	// ステッチ種類
 	private String tgStitch;
 
 	private Map<String, String> tgStitchMap;
@@ -120,16 +125,25 @@ public class OptionGiletTuxedoInfo implements Serializable {
 	private String tgBackLiningMate;
 
 	private Map<String, String> tgBackLiningMateMap;
+	
+	// 背裏地素材品番
+	private String tgBackLiningMateStkNo;
 
 	// 内側裏地素材
 	private String tgInsideLiningMate;
 
 	private Map<String, String> tgInsideLiningMateMap;
+	
+	// 内側裏地素材品番
+	private String tgInsideLiningMateStkNo;
 
-	// フロント釦
+	// 釦素材
 	private String tgFrontBtnMate;
 
 	private Map<String, String> tgFrontBtnMateMap;
+	
+	// 釦素材品番
+	private String tgFrontBtnMateStkNo;
 
 	// バックベルト
 	private String tgBackBelt;
@@ -540,6 +554,45 @@ public class OptionGiletTuxedoInfo implements Serializable {
 	public void setTgWatchChainMap(Map<String, String> tgWatchChainMap) {
 		this.tgWatchChainMap = tgWatchChainMap;
 	}
-    
-	
+
+	public String getTgGiletModel() {
+		return tgGiletModel;
+	}
+
+	public void setTgGiletModel(String tgGiletModel) {
+		this.tgGiletModel = tgGiletModel;
+	}
+
+	public Map<String, String> getTgGiletModelMap() {
+		return tgGiletModelMap;
+	}
+
+	public void setTgGiletModelMap(Map<String, String> tgGiletModelMap) {
+		this.tgGiletModelMap = tgGiletModelMap;
+	}
+
+	public String getTgBackLiningMateStkNo() {
+		return tgBackLiningMateStkNo;
+	}
+
+	public void setTgBackLiningMateStkNo(String tgBackLiningMateStkNo) {
+		this.tgBackLiningMateStkNo = tgBackLiningMateStkNo;
+	}
+
+	public String getTgInsideLiningMateStkNo() {
+		return tgInsideLiningMateStkNo;
+	}
+
+	public void setTgInsideLiningMateStkNo(String tgInsideLiningMateStkNo) {
+		this.tgInsideLiningMateStkNo = tgInsideLiningMateStkNo;
+	}
+
+	public String getTgFrontBtnMateStkNo() {
+		return tgFrontBtnMateStkNo;
+	}
+
+	public void setTgFrontBtnMateStkNo(String tgFrontBtnMateStkNo) {
+		this.tgFrontBtnMateStkNo = tgFrontBtnMateStkNo;
+	}
+
 }

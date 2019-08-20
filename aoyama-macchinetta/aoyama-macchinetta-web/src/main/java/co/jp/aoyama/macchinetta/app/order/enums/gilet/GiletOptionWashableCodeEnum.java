@@ -25,7 +25,9 @@ public enum GiletOptionWashableCodeEnum {
 	GILET_WASHABI_OPTION_CODE19("00019","setWgInsideLiningMateMap"),
 	GILET_WASHABI_OPTION_CODE21("00021","setWgFrontBtnMateMap"),
 	GILET_WASHABI_OPTION_CODE23("00023","setWgBackBeltMap"),
-	GILET_WASHABI_OPTION_CODE24("00024","setWgWatchChainMap");
+	GILET_WASHABI_OPTION_CODE24("00024","setWgWatchChainMap"),
+	GILET_WASHABI_OPTION_CODE26("00026","setWgDStitchModifyMap"),
+	GILET_WASHABI_OPTION_CODE27("00027","setWgDStitchModifyPlaceMap");
 	
 	
 	private final String key;

@@ -300,32 +300,32 @@ public class OrderListServiceImpl implements OrderListService {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
 		try {
 			if ( !"".equals(condition.getProductOrderdDateFrom()) && condition.getProductOrderdDateFrom() != null) {
-			   condition.setProductOrderdDate2From(format.parse(condition.getProductOrderdDateFrom()));
+			   condition.setProductOrderdDate2From(format.parse(condition.getProductOrderdDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getProductOrderdDateTo()) && condition.getProductOrderdDateTo() != null) {
-			   condition.setProductOrderdDate2To(format.parse(condition.getProductOrderdDateTo()));
+			   condition.setProductOrderdDate2To(format.parse(condition.getProductOrderdDateTo().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustShopDeliveryDateFrom()) && condition.getCustShopDeliveryDateFrom() != null) {
-			   condition.setCustShopDeliveryDate2From(format.parse(condition.getCustShopDeliveryDateFrom()));
+			   condition.setCustShopDeliveryDate2From(format.parse(condition.getCustShopDeliveryDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustShopDeliveryDateTo()) && condition.getCustShopDeliveryDateTo() != null) {
-			   condition.setCustShopDeliveryDate2To(format.parse(condition.getCustShopDeliveryDateTo()));
+			   condition.setCustShopDeliveryDate2To(format.parse(condition.getCustShopDeliveryDateTo().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getUpdatedAtFrom()) && condition.getUpdatedAtFrom() != null) {
-			   condition.setUpdatedAt2From(format.parse(condition.getUpdatedAtFrom()));
+			   condition.setUpdatedAt2From(format.parse(condition.getUpdatedAtFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getUpdatedAtTo()) && condition.getUpdatedAtTo() != null) {
 				Calendar calendar = new GregorianCalendar(); 
-				calendar.setTime(format.parse(condition.getUpdatedAtTo())); 
+				calendar.setTime(format.parse(condition.getUpdatedAtTo().replaceAll("/", "-"))); 
 				calendar.add(5,1);
 				calendar.add(14,-1);
 				condition.setUpdatedAt2To(calendar.getTime());
 			}
 			if ( !"".equals(condition.getCustDeliverDateFrom()) && condition.getCustDeliverDateFrom() != null) {
-			   condition.setCustDeliverDate2From(format.parse(condition.getCustDeliverDateFrom()));
+			   condition.setCustDeliverDate2From(format.parse(condition.getCustDeliverDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustDeliverDateTo()) && condition.getCustDeliverDateTo() != null) {
-			   condition.setCustDeliverDate2To(format.parse(condition.getCustDeliverDateTo()));
+			   condition.setCustDeliverDate2To(format.parse(condition.getCustDeliverDateTo().replaceAll("/", "-")));
 			}
 			
 		} catch (ParseException e) {

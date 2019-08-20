@@ -21,10 +21,12 @@ public interface OrderService {
 	Order selectByOrderId(String orderId);
 
 	void updateOrder(Order order);
+	
+	void updateOrderConfirm(Order order,String status);
 
 	String selectMaxOrderId(String belongCode, String type);
 
-	Stock getStock(String productFabricNo);
+	Stock getStock(String productFabricNo, String orderPattern);
 
 	void updateStockByPk(Stock stock);
 
@@ -55,6 +57,18 @@ public interface OrderService {
 	void physicalDeleteOrder(Stock stock, String orderId);
 
 	void deleteMeasuringBothOrder(String orderId);
+
+	void updateStockByPkAndOrderAndCash(Stock stockDb, Order order, Cash cash);
+
+	void updateOrderAndCash(Order order, Cash cash);
+
+	void deletOrderWithNotVersion(Order order);
+
+	void deletOrder(Order order, Short version, String saveFlag);
+
+	void updateStockByPkAndOrder(Stock stockDb, Order order);
+
+	void deletOrderisExistence(Order order);
 
 
 }

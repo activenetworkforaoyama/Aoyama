@@ -16,5 +16,8 @@ public interface TypeSizeRepository {
 
     int updateByPrimaryKey(TypeSize record);
 
-	List<TypeSize> getPoTypeSize(String orderPattern);
+	List<TypeSize> getPoTypeSize(String orderPattern, String subItemCode, String modelCode);
+
+	List<TypeSize> getPoTypeSizeOptimization(@Param("orderPattern")String orderPattern, @Param("subItemCode")String subItemCode,@Param("modelCode")String modelCode, @Param("figure")String figure,
+			@Param("sizeNumber") String sizeNumber);
 }

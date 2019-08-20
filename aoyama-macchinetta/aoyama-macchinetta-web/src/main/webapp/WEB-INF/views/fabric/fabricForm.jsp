@@ -35,17 +35,18 @@ th {padding-left: 1cm;}
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/jquery.event.drag-2.3.0.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 /**
  * ｊｓｐページのロードが完了したときの実行
  */
 $(document).ready(function(){
+	var category = "${category}";
  	var contextPath = $("meta[name='contextPath']").attr("content");
  	//ダウンロードのボタンのクリック
 	$("#fabricDownload").click(function(){
-	    window.location.href= contextPath + "/fabric/fabricDownload";
+		$("#messagesPanel").attr("style","display:none");
+	    window.location.href= contextPath + "/fabric/fabricDownload?category="+category;
 	}); 
 
 	// 更新のボタンのクリック
@@ -55,8 +56,6 @@ $(document).ready(function(){
 			  text: getMsgByOneArg('msg025', "生地情報"),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
@@ -74,11 +73,12 @@ $(document).ready(function(){
  */
 function updateFabric(){
 	$("#messagesPanel").attr("style","display:none");
+	var category = "${category}";
 	var suffixType = checkFileTxt();
 
 	if(suffixType == 1){
 		//CSVです
-		$("#updateFabricForm").attr("action","${pageContext.request.contextPath}/fabric/fabricUpload");
+		$("#updateFabricForm").attr("action","${pageContext.request.contextPath}/fabric/fabricUpload?category="+category);
 		$("#updateFabricForm").submit();
 
 	}else if(suffixType == -1){
@@ -110,6 +110,7 @@ function checkFileTxt(){
 		return -1;
 	}
 }
+
 </script>
 
 <div class="breadcrumbs">
@@ -138,7 +139,7 @@ function checkFileTxt(){
 			<br>
 			<div class="col col-md-2" style="font-weight:bold;">CSVアップロード</div>
 			<div class="col-12 col-md-9">
-				<input class="float-left col-md-9" id="file" name="file" type="file">
+				<input class="float-left col-md-9" id="file" name="file" type="file" style="background-color: #F0F0F0;">
 				<!-- <span class="btn btn-success fileinput-button">
 			        <span>ファイルを選択</span>
 					<input class=" float-left" id="file" name="file" type="file">
@@ -146,7 +147,7 @@ function checkFileTxt(){
 			</div>
 			<br><br>
 			<div class="col col-md-2"></div>
-			<div class="col-12 col-md-3">
+			<div class="col-12 col-md-4">
 				<button id="confirmUpload" class="btn btn-danger btn-block"><i class="fa fa-check-circle"></i>生地情報を更新する</button>
 			</div>
 			<br><br>

@@ -333,10 +333,37 @@ function requiredMakerCodeValidator(value) {
 
 //入力のメーカー名の判定
 function requiredMakerNameValidator(value) {
-	if (value == "" || value.length > 20 || charactersCheck(value)) {
+	if (value == "") {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', 'メーカー名','20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		   return {valid: false};
+	}
+	else if(value.length > 20 && !charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', 'メーカー名','20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		   return {valid: false};
+	}
+	else if(value.length > 20 && charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg119', 'メーカー名','20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		   return {valid: false};
+	}
+	else if(charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByOneArg('msg120'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);
@@ -574,8 +601,6 @@ $(document).ready(function() {
 			  text: getMsgByOneArg('msg025', 'メーカー情報'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			}).then((isConfirm) => {
 			  if (isConfirm) {
 					appendAlertDel('errorMassageIno');
@@ -807,18 +832,20 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  text: getMsgByOneArg('msg017','編集内容'),
+			  text: getMsgByOneArg('msg017','編集'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
 				  // 検索します
 				appendAlertDel('errorMassageIno');
 				appendAlertDel('successMessage');
-				$("#select_button").click();
+				$("#clear_button").removeAttr("disabled");
+				$("#select_button").removeAttr("disabled");
+				$("#clear_button").click();
+				$("#doKoShin").hide();
+				$("#makerListDiv").hide();
 			  }
 			});
 	});

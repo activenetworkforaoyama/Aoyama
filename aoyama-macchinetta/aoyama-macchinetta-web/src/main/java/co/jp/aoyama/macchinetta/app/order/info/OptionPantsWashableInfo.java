@@ -6,6 +6,11 @@ import java.util.Map;
 public class OptionPantsWashableInfo implements Serializable{
 	private static final long serialVersionUID = -4505963757793347479L;
 	
+	//PANTSモデル
+	private String wpPantsModel;
+	
+	private Map<String,String> wpPantsModelMap;
+	
 	//タック
     private String wpTack;
     
@@ -15,18 +20,22 @@ public class OptionPantsWashableInfo implements Serializable{
     private String wpKneeBack;
     
     private Map<String,String> wpKneeBackMap;
+    
     //膝裏素材
     private String wpKneeBackMate;
 
     private Map<String,String> wpKneeBackMateMap;
+    
     //フロント仕様
   	private String wpFrontSpec;
       
     private Map<String,String> wpFrontSpecMap;
+    
     //パンチェリーナ
     private String wpPancherina;
     
     private Map<String,String> wpPancherinaMap;
+    
     //アジャスター仕様
     private String wpAdjuster;
     
@@ -92,7 +101,7 @@ public class OptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpDoubleWideMap;
     
-    //AMFステッチ
+    //ステッチ種類
     private String wpStitch;
     
     private Map<String,String> wpStitchMap;
@@ -211,6 +220,9 @@ public class OptionPantsWashableInfo implements Serializable{
     private String wpButton;
     
     private Map<String,String> wpButtonMap;
+    
+    //釦素材品番
+    private String wpBtnMateStkNo;
     
     //サスペンダー釦
     private String wpSuspenderBtn;

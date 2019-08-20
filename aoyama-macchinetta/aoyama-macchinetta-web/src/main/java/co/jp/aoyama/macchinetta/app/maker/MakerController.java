@@ -40,7 +40,7 @@ public class MakerController {
 		return makerForm;
 	}
 
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String pageSerch(Model model) {
 		return "maker/makerForm";
 	}
@@ -127,7 +127,7 @@ public class MakerController {
 				boolean makerIsExist = makerService.makerIsExist(makerFormList.get(i).getMakerCode());
 				try {
 					Maker findOne = makerService.findOne(makerFormList.get(i).getMakerCode());
-					String version = findOne.getVersion().toString();
+					String version = String.valueOf(findOne.getVersion());
 					if(findOne != null && !version.equals(makerFormList.get(i).getVersion())) {
 						//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)	6 : 更新失敗(バージョン不正)
 						makerFormList.get(i).setUpdateFlag("6");

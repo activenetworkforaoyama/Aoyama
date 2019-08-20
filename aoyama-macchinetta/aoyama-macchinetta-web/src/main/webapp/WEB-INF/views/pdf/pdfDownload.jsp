@@ -5,8 +5,22 @@
 </div>
 
 <div>
-	<input type="button" value="text" onclick="textOne()">&nbsp;&nbsp;
-	<input type="text" value="${textOne }">
+	<input type="button" value="text" onclick="textOne()">
+	<input type="text" value="${textOne }" style="width:500px">
+</div>
+
+<div>
+	<input type="button" value="confirmationBookSuit-Factory" onclick="pdfDownload(1,'suit')">&nbsp;&nbsp;
+	<input type="button" value="confirmationBookSuit-Guest" onclick="pdfDownload(2,'suit')">&nbsp;&nbsp;
+	<input type="button" value="factoryInstructionsSuit" onclick="pdfDownload(3,'suit')">
+	<br>
+	<input type="button" value="confirmationBookCoat-Factory" onclick="pdfDownload(4,'coat')">&nbsp;&nbsp;
+	<input type="button" value="confirmationBookCoat-Guest" onclick="pdfDownload(5,'coat')">&nbsp;&nbsp;
+	<input type="button" value="factoryInstructionsCoat" onclick="pdfDownload(6,'coat')">
+	<br>
+	<input type="button" value="confirmationBookShirt-Factory" onclick="pdfDownload(7,'shirt')">&nbsp;&nbsp;
+	<input type="button" value="confirmationBookShirt-Guest" onclick="pdfDownload(8,'shirt')">&nbsp;&nbsp;
+	<input type="button" value="factoryInstructionsShirt" onclick="pdfDownload(9,'shirt')">
 </div>
 
 <!-- 依存ライブラリの読み込み -->
@@ -19,8 +33,8 @@
 
 var contextPath = $("meta[name='contextPath']").attr("content");
 
-function pdfDownload(sign){
-	window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId=077190125940";
+function pdfDownload(sign,productItem){
+	window.location.href = contextPath + "/pdfFile/coPdfFileDownload?sign="+sign+"&orderId=376710000010&productItem=SUIT(3P2PP)";
 }
 
 function textOne(){

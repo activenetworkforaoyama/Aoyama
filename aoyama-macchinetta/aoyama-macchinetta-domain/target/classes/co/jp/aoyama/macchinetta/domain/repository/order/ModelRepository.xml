@@ -24,6 +24,12 @@
   <select id="getAllModel" resultMap="BaseResultMap" parameterType="java.lang.String">
     select order_pattern, item_code, sub_item_code, model_code,model_name, support_factorys, style_name, 
     display_order, created_user_id, created_at, updated_user_id, updated_at
-    from mtb_model where order_pattern=#{orderPattern}
+    from mtb_model where order_pattern=#{orderPattern} order by display_order 
   </select>
+  
+  <select id="getModel" resultMap="BaseResultMap">
+    select item_code, sub_item_code, model_code,model_name
+    from mtb_model where order_pattern=#{orderPattern} and item_code=#{itemCode} order by display_order
+  </select>
+  
 </mapper>

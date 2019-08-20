@@ -18,8 +18,7 @@ public class AccountingServiceImpl implements AccountingService {
 	AccountingRepository accountingRepository;
 	@Override
 	public List<Accounting> fuzzyQuery(Accounting accounting) {
-		List<Accounting> accountingList = accountingRepository.fuzzyQuery(accounting.getCustCd(), accounting.getStoreStaffNm(), 
-				accounting.getProductOrderdDateFrom(), accounting.getProductOrderdDateTo(), accounting.getStoreBrandCode(), accounting.getCashStatus(), accounting.getShopCode());
+		List<Accounting> accountingList = accountingRepository.fuzzyQuery(accounting);
 		return accountingList;
 	}
 

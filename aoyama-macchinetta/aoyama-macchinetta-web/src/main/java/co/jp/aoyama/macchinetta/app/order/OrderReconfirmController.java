@@ -1,6 +1,7 @@
 package co.jp.aoyama.macchinetta.app.order;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,6 +11,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
+import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Maker;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
@@ -40,7 +46,10 @@ import co.jp.aoyama.macchinetta.domain.service.stock.StockService;
 @Controller
 @RequestMapping("/orderConfirm")
 @SessionAttributes(value = {"orderForm"})
+@TransactionTokenCheck("/orderConfirm")
 public class OrderReconfirmController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(OrderReconfirmController.class);
 	
 	@Inject
 	SessionContent sessionContent;
@@ -80,8 +89,21 @@ public class OrderReconfirmController {
 	}
 
 	@RequestMapping(value = "orderReForm")
+	@TransactionTokenCheck(value = "create",type = TransactionTokenType.BEGIN)
 	public String toOrderReForm(@ModelAttribute(value = "orderForm")OrderForm orderForm,HttpServletRequest req,Model model,Map<String, Map<String, Integer>> map) {
-		
+		String status = orderForm.getStatus();
+		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
+			//注文ID
+			String orderId = orderForm.getCustomerMessageInfo().getOrderId();
+			//注文
+			Order order = orderListService.findOrderByPk(orderId);
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String productOrderdDateFormat = sdf.format(productOrderdDate);
+				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
+			}
+		}
 		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
 		OrderFindFabric findStock = this.findStock(orderForm);
 		String color = findStock.getColor();
@@ -228,15 +250,21 @@ public class OrderReconfirmController {
 	/**
 	 * 要尺の取得
 	 */
-	public List<NextGenerationPrice> getYieldList(){
+	public List<NextGenerationPrice> getYieldList(OrderForm orderForm){
 		//JACKETのsubItemCode
-		String jkSubItemCode = "02";
+		String jkSubItemCode = null;
 		//GILETのsubItemCode
-		String gtSubItemCode = "04";
+		String gtSubItemCode = null;
 		//PANTSのsubItemCode
-		String ptSubItemCode = "03";
+		String ptSubItemCode = null;
 		//PANTS2のsubItemCode
-		String pt2SubItemCode = "07";
+		String pt2SubItemCode = null;
+		OrderHelper orderHelper = new OrderHelper();
+		Map<String, String> subItemCodeValue = orderHelper.subItemCodeValue(orderForm,jkSubItemCode,gtSubItemCode,ptSubItemCode,pt2SubItemCode);
+		jkSubItemCode = subItemCodeValue.get("jkSubItemCode");
+		gtSubItemCode = subItemCodeValue.get("gtSubItemCode");
+		ptSubItemCode = subItemCodeValue.get("ptSubItemCode");
+		pt2SubItemCode = subItemCodeValue.get("pt2SubItemCode");
 		
 		List<NextGenerationPrice> yieldList= nextGenerationService.selectYield(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode);
 		return yieldList;
@@ -278,99 +306,6 @@ public class OrderReconfirmController {
 	}
 	
 	/**
-	 * 会計ステータスを更新
-	 * @param orderForm
-	 * @return
-	 */
-	public boolean updateCashStatus(OrderForm orderForm) {
-		//注文ID
-		String orderId = orderForm.getCustomerMessageInfo().getOrderId();
-		//注文
-		Order order = orderListService.findOrderByPk(orderId);
-		//会計ID
-		String cashId = order.getCashId();
-		//TSCステータス
-		String orderStatus = orderForm.getStatus();
-		//最終更新者
-		String updatedUserId = sessionContent.getUserId();
-		//最終更新日時
-		Date updatedAt = new Date();
-		//03：会計再確認要
-		String cashStatus = "03";
-		boolean updateFlag = false;
-		if(order.getCashId() == null || "".equals(order.getCashId())) {
-			return updateFlag;
-		}
-		else if("T3".equals(orderStatus) || "T4".equals(orderStatus) || "T5".equals(orderStatus)) {
-			if(order.getCashId() != null || !("".equals(order.getCashId()))) {
-				cashService.updateCashStatus(cashId, cashStatus, updatedUserId, updatedAt);
-				updateFlag = true;
-			}
-		}
-		return updateFlag;
-	}
-	
-	/**
-	 * 在庫チェック
-	 * @param orderForm
-	 */
-	public void updateFabric(OrderForm orderForm) {
-		//生地品番
-		String fabricNo = orderForm.getProductFabricNo();
-		//TSCステータス
-		String status = orderForm.getStatus();
-		//注文ID
-		String orderId = orderForm.getCustomerMessageInfo().getOrderId();
-		//注文
-		Order order = orderListService.findOrderByPk(orderId);
-		//オーダーマスタに生地品番
-		String productFabricNo = order.getProductFabricNo();
-		//オーダーマスタに理論生地使用量
-		BigDecimal theoryFabricUsedMountOrder = order.getTheoryFabricUsedMount();
-		//予約生地量
-		String orderFormReservationStock = orderForm.getTheoryFabricUsedMount();
-		BigDecimal reservationStockValue = new BigDecimal(orderFormReservationStock);
-		
-		//TSCステータスは空、T0（一時保存）、T1（取り置き）の場合
-		if("".equals(status) || "T0".equals(status) || "T1".equals(status)) {
-			if(fabricNo != null && reservationStockValue != null) {
-				Stock stock = orderService.getStock(fabricNo);
-				BigDecimal theoreticalStock = stock.getTheoreticalStock();
-				BigDecimal stockReservationStock = stock.getReservationStock();
-				BigDecimal theoreticalStockUpdate = theoreticalStock.subtract(reservationStockValue);
-				BigDecimal reservationStockUpdate = stockReservationStock.subtract(reservationStockValue);
-				stockService.updateStockValue(fabricNo,theoreticalStockUpdate,reservationStockUpdate);
-			}
-		}
-		else {
-			if(productFabricNo != null && fabricNo != null && theoryFabricUsedMountOrder != null && reservationStockValue != null) {
-				if(productFabricNo.equals(fabricNo)) {
-					if(theoryFabricUsedMountOrder.compareTo(reservationStockValue)!=0) {
-						Stock stock = orderService.getStock(fabricNo);
-						BigDecimal theoreticalStock = stock.getTheoreticalStock();
-						BigDecimal oldTheoreticalStockUpdate = theoreticalStock.add(theoryFabricUsedMountOrder);
-						BigDecimal newTheoreticalStockUpdate = oldTheoreticalStockUpdate.subtract(reservationStockValue);
-						stockService.updateTheoreticalStock(fabricNo,newTheoreticalStockUpdate);
-					}
-				}
-				else if(!productFabricNo.equals(fabricNo)) {
-					//古い理論在庫を修正する
-					Stock oldStock = orderService.getStock(productFabricNo);
-					BigDecimal oldTheoreticalStock = oldStock.getTheoreticalStock();
-					BigDecimal oldTheoreticalStockUpdate = oldTheoreticalStock.add(theoryFabricUsedMountOrder);
-					stockService.updateTheoreticalStock(fabricNo,oldTheoreticalStockUpdate);
-					
-					//新しい理論在庫を修正する
-					Stock newStock = orderService.getStock(fabricNo);
-					BigDecimal newTheoreticalStock = newStock.getTheoreticalStock();
-					BigDecimal newTheoreticalStockUpdate = newTheoreticalStock.subtract(reservationStockValue);
-					stockService.updateTheoreticalStock(fabricNo,newTheoreticalStockUpdate);
-				}
-			}
-		}
-	}
-	
-	/**
 	 * データベースのorderデータを検索する。
 	 * @param orderForm
 	 * @return
@@ -401,6 +336,7 @@ public class OrderReconfirmController {
 	 * @return
 	 */
 	@RequestMapping(value = "orderReFormInDb", method = RequestMethod.POST)
+	@TransactionTokenCheck(value = "create",type = TransactionTokenType.IN)
 	public String orderReFormInDb(@ModelAttribute(value = "orderForm")OrderForm orderForm,SessionStatus sessionStatus,Model model) {
 		
 		Order order = new Order();
@@ -410,7 +346,7 @@ public class OrderReconfirmController {
 			List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderForm);
 			List<NextGenerationPrice> basicNextGenerationPriceList = this.basicNextGenerationPrice(orderForm);
 			List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderForm);
-			List<NextGenerationPrice> yieldList = this.getYieldList();
+			List<NextGenerationPrice> yieldList = this.getYieldList(orderForm);
 			List<NextGenerationPrice> wholesalePieceList = this.getWholesalePieceList(orderForm);
 			NextGenerationPrice marginRate = this.getMarginRate(orderForm);
 			NextGenerationPrice priceCode = this.getPriceCode(orderForm);
@@ -420,9 +356,9 @@ public class OrderReconfirmController {
 		
 			
 			//商品情報_３Piece上代
-			orderHelper.order3PiecePrice(orderForm, order);
+			orderHelper.order3PiecePrice(orderForm, order,retailPriceRelatedMap);
 			//スペアパンツ上代
-			orderHelper.orderSparePantsPrice(orderForm, order);
+			orderHelper.orderSparePantsPrice(orderForm, order,retailPriceRelatedMap);
 			// 商品情報_３Pieceとスペアパンツの下代付属と下代工賃
 			orderHelper.getGl3PieceNextGenerationPrice(orderForm, order, basicNextGenerationPriceList, optionNextGenerationPriceList);
 			orderHelper.getSparePantsNextGenerationPrice(orderForm, order, basicNextGenerationPriceList, optionNextGenerationPriceList);
@@ -536,12 +472,12 @@ public class OrderReconfirmController {
 			beanMapper.map(orderForm,order);
 			
 			String userId = sessionContent.getUserId();
-			
 			String findMakerId = this.findMakerId(orderForm);
+			orderHelper.onlyUpdateItem(selectExistOrder,order,sessionContent.getAuthority());
 			orderHelper.orderMappingPo(orderForm, order,userId,findStock,orderId,findMakerId,retailPriceRelatedMap);
 			orderHelper.measuringMapping(orderForm, measuring,sessionContent.getUserId());
 			orderHelper.nextGenerationRelationCount(orderForm, order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate);
-			orderHelper.onlyUpdateItem(selectExistOrder,order);
+			
 			
 			measuringService.updateByPrimaryKey(measuring);
 			
@@ -552,12 +488,45 @@ public class OrderReconfirmController {
 			//更新の場合
 			else {
 				try {
-					orderService.updateOrder(order);
-					//在庫チェック
-					this.updateFabric(orderForm);
-					//会計ステータスを更新
-					this.updateCashStatus(orderForm);
+					//生地品番
+					String fabricNo = orderForm.getProductFabricNo();
+					//商品情報_ITEM(ログ用)
+					String item = LogItemClassEnum.getLogItem(order);
+					//ステータス
+					String status = orderForm.getStatus();
+					
+					Stock stock = orderService.getStock(fabricNo,order.getOrderPattern());
+					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+					+ "、注文ID："+orderForm.getCustomerMessageInfo().getOrderId()  
+					+ "、ITEM："+item 
+					+ "、生地品番："+fabricNo
+					+ "、理論在庫："+stock.getTheoreticalStock() 
+					+ "、予約生地量："+stock.getReservationStock() + "」");
+					
+					orderService.updateOrderConfirm(order,status);
+					
+					Stock stockAfter = orderService.getStock(fabricNo,order.getOrderPattern());
+					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+					+ "、注文ID："+orderForm.getCustomerMessageInfo().getOrderId()  
+					+ "、ITEM："+item
+					+ "、生地品番："+fabricNo
+					+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+					+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					
 				} catch (ResourceNotFoundException e) {
+					String status = orderForm.getStatus();
+					if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
+						//注文ID
+						String orderError = orderForm.getCustomerMessageInfo().getOrderId();
+						//注文
+						Order orderValue = orderListService.findOrderByPk(orderError);
+						Date productOrderdDate = orderValue.getProductOrderdDate();
+						if(productOrderdDate != null) {
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+							String productOrderdDateFormat = sdf.format(productOrderdDate);
+							model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
+						}
+					}
 					model.addAttribute("resultMessages", e.getResultMessages());
 					Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
 					OrderFindFabric findStockOrder = this.findStock(orderForm);

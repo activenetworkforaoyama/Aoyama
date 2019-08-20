@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:batch="http://www.springframework.org/schema/batch"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+             http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd
+             http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+                
+    <import resource="classpath:META-INF/spring/job-base-context.xml"/>
+
+    <context:component-scan base-package="co.jp.aoyama.macchinetta.shukka,co.jp.aoyama.macchinetta.converter" />
+    <mybatis:scan           base-package="co.jp.aoyama.macchinetta.shukka" factory-ref="jobSqlSessionFactory"/>
+ 
+      <bean id="shukkaReader" class="org.mybatis.spring.batch.MyBatisCursorItemReader"
+      p:queryId="co.jp.aoyama.macchinetta.shukka.ShukkaRepository.findAll"
+      p:sqlSessionFactory-ref="jobSqlSessionFactory"/>
+
+	<bean id="shukkaWriter"
+		class="org.springframework.batch.item.file.FlatFileItemWriter"
+		p:resource="file:${dvdReqData}" p:encoding="Shift_JIS">
+		<property name="lineAggregator">
+				<bean class="org.springframework.batch.item.file.transform.FormatterLineAggregator"
+              p:format="%2s%12s%8s">
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor"
+						p:names="gyotaiCd,chumonId,shukkaYmd" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<batch:job id="JobShukka"
+		job-repository="jobRepository">
+		<batch:step id="JobShukka.step01">
+			<batch:tasklet
+				transaction-manager="jobTransactionManager">
+				<batch:chunk reader="shukkaReader"
+					processor="shukkaProcessor" writer="shukkaWriter"
+					commit-interval="100" />
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+</beans>

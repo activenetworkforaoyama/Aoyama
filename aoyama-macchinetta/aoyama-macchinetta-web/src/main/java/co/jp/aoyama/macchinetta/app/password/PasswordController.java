@@ -55,7 +55,7 @@ public class PasswordController {
      * 初期表示.
      * @return
      */
-    @RequestMapping(value = "init", method = RequestMethod.GET)
+    @RequestMapping(value = "init")
     public String createForm() {
     	return "password/passwordForm";
 	}
@@ -66,15 +66,10 @@ public class PasswordController {
      */
     @ResponseBody
     @RequestMapping(value = "selectAllUser", method = RequestMethod.GET)
-    public List<PasswordForm> selectAllUser() {
+    public List<MineUser> selectAllUser() {
     	
-    	List<MineUser> shopList = userService.findAll();
-		List<PasswordForm> passwordList = new ArrayList<PasswordForm>();
-		for (MineUser mineUser : shopList) {
-			PasswordForm form = beanMapper.map(mineUser, PasswordForm.class);
-			passwordList.add(form);
-		}
-		return passwordList;
+    	List<MineUser> userList = userService.findAll();
+		return userList;
 
 	}
 
@@ -90,7 +85,7 @@ public class PasswordController {
     	if (result.hasErrors()) {
     		return "password/passwordForm";
     	}
-    	String userId = form.getUserId();
+    	String userId = form.getMyUserId();
     	if (userId == null || userId.isEmpty()) {
     		userId = sessionContent.getUserId();
     	}
@@ -101,7 +96,7 @@ public class PasswordController {
 	    	// メッセージリスト
 	    	ResultMessages messages = ResultMessages.error();
 	    	
-	    	if (form.getPassword().equals(myUser.getUserPasswd())) {
+	    	if (form.getMyPassword().equals(myUser.getUserPasswd())) {
 	    		// パスワードが直前のパスワードと一致しています。
 	        	messages.add(MessageKeys.E004); 
 	    	}
@@ -112,7 +107,7 @@ public class PasswordController {
 	    		// ログを出力
 		    	logger.error(messages.toString());
 	    	} else {
-		    	myUser.setUserPasswd(form.getPassword());
+		    	myUser.setUserPasswd(form.getMyPassword());
 		    	myUser.setUpdatedUserId(userId);
 	    	
 	    		userService.update(myUser);

@@ -11,6 +11,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.dozer.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,12 +46,15 @@ public class ShopDeliveryController {
     
     @Inject
     Mapper beanMapper;
+    
+    private static final Logger logger = LoggerFactory
+            .getLogger(ShopDeliveryController.class);
 	
 	/**
 	 * 初期表示
 	 * @return
 	 */
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String pieceInit(Model model) {
 		List<GeneralCode> generalCodeList = getGeneralCode();
 		model.addAttribute("generalCodeList", generalCodeList);
@@ -106,6 +111,7 @@ public class ShopDeliveryController {
 							shopDeliveryFormGet.setUpdateFailure("-4");
 							failureTemp = true;
 							shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+							logger.info("バージョン番号が不正です");
 						}
 					}else {
 						//納期情報の主キーはすでに存在しない。確認して再入力してください。
@@ -113,6 +119,7 @@ public class ShopDeliveryController {
 						shopDeliveryFormGet.setUpdateFailure("-3");
 						failureTemp = true;
 			            shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+			            logger.info("削除のエラーが存在する場合。----納期情報の主キーはすでに存在しない。");
 					}
 				}
 			}else{
@@ -138,6 +145,7 @@ public class ShopDeliveryController {
 							shopDeliveryFormGet.setUpdateFailure("-4");
 							failureTemp = true;
 				            shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+				            logger.info("バージョン番号が不正です");
 						}
 					}else {
 						//納期情報の主キーはすでに存在しない。確認して再入力してください。
@@ -145,6 +153,7 @@ public class ShopDeliveryController {
 						shopDeliveryFormGet.setUpdateFailure("-2");
 						failureTemp = true;
 			            shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+			            logger.info("修正のエラーが存在する場合。----納期情報の主キーはすでに存在しない。");
 					}
 				}else if("2".equals(shopDelivery.getOptionType())) {
 					//"2"は新規区分
@@ -156,6 +165,7 @@ public class ShopDeliveryController {
 						shopDeliveryFormGet.setUpdateFailure("-1");
 						failureTemp = true;
 						shopDeliveryFormListReturn.add(shopDeliveryFormGet);
+						logger.info("新規のエラーが存在する場合。----納期情報の主キーはすでに存在している。");
 					}else {
 						//条件を満たす
 						shopDelivery.setCreatedAt(new Date());
@@ -286,9 +296,11 @@ public class ShopDeliveryController {
 					shopDeliveryFormFor.setErrorIdentification("0");
 					shopDeliveryFormListReturn.add(shopDeliveryFormFor); 
 				}else {
+					//-１：交差して存在する
 					//setErrorIdentification("-1")：エラーが存在する場合
 					shopDeliveryFormFor.setErrorIdentification("-1");
 					shopDeliveryFormListReturn.add(shopDeliveryFormFor); 
+					logger.info("承り日に共通点があるかどうか 、交差して存在する");
 				} 
 				
 			}
@@ -314,9 +326,11 @@ public class ShopDeliveryController {
 				shopDeliveryForm.setErrorIdentification("0");
 				shopDeliveryFormListReturn.add(shopDeliveryForm); 
 			}else {
+				//-１：交差して存在する
 				//setErrorIdentification("-1")：エラーが存在する場合
 				shopDeliveryForm.setErrorIdentification("-1");
 				shopDeliveryFormListReturn.add(shopDeliveryForm); 
+				logger.info("承り日に共通点があるかどうか 、交差して存在する");
 			} 
 			
 		}
@@ -374,24 +388,23 @@ public class ShopDeliveryController {
 	/**
 	 * 日付書式の変更:date-->string
 	 */
-	@SuppressWarnings("unlikely-arg-type")
 	public ShopDeliveryForm dateToString(ShopDeliveryForm ShopDeliveryForm){
 		DateFormat format = new SimpleDateFormat("yyyy/MM/dd"); 
 		
 		//Date形式をStr形式に変更する、ShopDeliveryFormクラスオブジェクトに保存する
-		if ((!"".equals(ShopDeliveryForm.getOrderOnStartDate())) && ShopDeliveryForm.getOrderOnStartDate() != null) {
+		if (ShopDeliveryForm.getOrderOnStartDate() != null) {
 			ShopDeliveryForm.setOrderOnStartDateStr(format.format(ShopDeliveryForm.getOrderOnStartDate()));
 		}
-		if ((!"".equals(ShopDeliveryForm.getOrderOnEndDate())) && ShopDeliveryForm.getOrderOnEndDate() != null) {
+		if (ShopDeliveryForm.getOrderOnEndDate() != null) {
 			ShopDeliveryForm.setOrderOnEndDateStr(format.format(ShopDeliveryForm.getOrderOnEndDate()));
 		}
-		if ((!"".equals(ShopDeliveryForm.getShopDeliveryOn())) && ShopDeliveryForm.getShopDeliveryOn() != null) {
+		if (ShopDeliveryForm.getShopDeliveryOn() != null) {
 			ShopDeliveryForm.setShopDeliveryOnStr(format.format(ShopDeliveryForm.getShopDeliveryOn()));
 		}
-		if ((!"".equals(ShopDeliveryForm.getBlankIntervalStart())) && ShopDeliveryForm.getBlankIntervalStart() != null) {
+		if (ShopDeliveryForm.getBlankIntervalStart() != null) {
 			ShopDeliveryForm.setBlankIntervalStartStr(format.format(ShopDeliveryForm.getBlankIntervalStart()));
 		}
-		if ((!"".equals(ShopDeliveryForm.getBlankIntervalEnd())) && ShopDeliveryForm.getBlankIntervalEnd() != null) {
+		if (ShopDeliveryForm.getBlankIntervalEnd() != null) {
 			ShopDeliveryForm.setBlankIntervalEndStr(format.format(ShopDeliveryForm.getBlankIntervalEnd()));
 		}
 		

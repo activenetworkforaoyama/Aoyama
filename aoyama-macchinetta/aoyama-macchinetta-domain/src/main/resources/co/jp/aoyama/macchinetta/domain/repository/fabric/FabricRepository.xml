@@ -58,6 +58,7 @@
 	    <result column="fabric_name_exist" property="fabricNameExist" jdbcType="VARCHAR" />
 	    <result column="theoretical_stock" property="theoreticalStock" jdbcType="NUMERIC" />
 	    <result column="reservation_stock" property="reservationStock" jdbcType="NUMERIC" />
+	    <result column="actual_stock" property="actualStock" jdbcType="NUMERIC" />
 	    <result column="fabric_version" property="fabricVersion" jdbcType="SMALLINT" />
 	    <result column="stock_version" property="stockVersion" jdbcType="SMALLINT" />
 	    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
@@ -66,9 +67,9 @@
 	    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
     </resultMap>
     
-     <select id="fabricQueryAll" resultMap="fabricResultMap">
+     <select id="fabricQueryByCoOrPo" resultMap="fabricResultMap">
      	SELECT 
-	     	order_pattern, 
+	     	mtb_fabric.order_pattern, 
 	     	mtb_fabric.fabric_no, 
 	     	material_no, 
 	        fablic_brand_no, 
@@ -129,15 +130,16 @@
     	FROM 
     		mtb_fabric, mtb_stock
     	WHERE
+    		mtb_fabric.order_pattern = mtb_stock.order_pattern AND
     		mtb_fabric.fabric_no = mtb_stock.fabric_no
     	ORDER BY
-    		order_pattern, 
+    		mtb_fabric.order_pattern, 
 			mtb_fabric.fabric_no
 	</select>
     
     <select id="fabricQueryByPrimaryKey" resultMap="fabricResultMap">
 		SELECT
-	     	order_pattern, 
+	     	mtb_fabric.order_pattern, 
 	     	mtb_fabric.fabric_no, 
 	     	material_no, 
 	        fablic_brand_no, 
@@ -198,10 +200,9 @@
 		FROM
 			mtb_fabric, mtb_stock
 		WHERE
-			order_pattern = #{orderPattern,jdbcType=VARCHAR} 
-		AND 
-			mtb_fabric.fabric_no = #{fabricNo,jdbcType=VARCHAR}
-		AND
+			mtb_fabric.order_pattern = #{orderPattern,jdbcType=VARCHAR} AND 
+			mtb_fabric.fabric_no = #{fabricNo,jdbcType=VARCHAR} AND
+			mtb_fabric.order_pattern = mtb_stock.order_pattern AND
 			mtb_fabric.fabric_no = mtb_stock.fabric_no
 	</select>
 	
@@ -328,8 +329,11 @@
 		INSERT 
 		INTO 
 			mtb_stock 
-			(fabric_no, 
+			(order_pattern, 
+			fabric_no, 
 			theoretical_stock, 
+			reservation_stock,
+			actual_stock,
 			version, 
 			created_user_id, 
 	        created_at, 
@@ -337,8 +341,11 @@
 	        updated_at) 
 		VALUES
 		<foreach collection="stockInsertList" item="item" index="index" separator=",">
-            (#{item.fabricNo,jdbcType=VARCHAR}, 
+            (#{item.orderPattern,jdbcType=VARCHAR},
+             #{item.fabricNo,jdbcType=VARCHAR}, 
              #{item.theoreticalStock,jdbcType=NUMERIC}, 
+             #{item.reservationStock,jdbcType=NUMERIC}, 
+             #{item.actualStock,jdbcType=NUMERIC}, 
              #{item.stockVersion,jdbcType=SMALLINT}, 
              #{item.createdUserId,jdbcType=VARCHAR}, 
 		     #{item.createdAt,jdbcType=TIMESTAMP}, 
@@ -404,7 +411,7 @@
 		    updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR},
 		    updated_at = #{item.updatedAt,jdbcType=TIMESTAMP}
         WHERE
-            order_pattern = #{item.orderPattern,jdbcType=VARCHAR} and 
+            order_pattern = #{item.orderPattern,jdbcType=VARCHAR} AND 
 			fabric_no = #{item.fabricNo,jdbcType=VARCHAR}
 		</foreach>
 	</update>
@@ -419,6 +426,7 @@
         	updated_user_id = #{item.updatedUserId,jdbcType=VARCHAR},
 		    updated_at = #{item.updatedAt,jdbcType=TIMESTAMP}
         WHERE
+        	order_pattern = #{item.orderPattern,jdbcType=VARCHAR} AND
 			fabric_no = #{item.fabricNo,jdbcType=VARCHAR}
 		</foreach>
 	</update>
@@ -429,7 +437,7 @@
 			FROM 
 				mtb_fabric 
 			WHERE
-	            order_pattern = #{item.orderPattern,jdbcType=VARCHAR} and 
+	            order_pattern = #{item.orderPattern,jdbcType=VARCHAR} AND 
 				fabric_no = #{item.fabricNo,jdbcType=VARCHAR}
 		</foreach>
 	</delete>
@@ -440,6 +448,7 @@
 			FROM 
 				mtb_stock 
 			WHERE
+				order_pattern = #{item.orderPattern,jdbcType=VARCHAR} AND 
 				fabric_no = #{item.fabricNo,jdbcType=VARCHAR}
 		</foreach>
 	</delete>

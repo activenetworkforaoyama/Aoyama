@@ -102,7 +102,7 @@
 			</div>
 		</div>
 	</div>
-	
+</div>
 	<div id="shopListDiv" style="display:none;">
 	
 		<div class="content container" style="float: left">
@@ -145,9 +145,6 @@
 		</div>
 		
 	</div>
-	
-</div>
-
 <!-- 依存ライブラリの読み込み -->
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/firebugx.js"></script>
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/jquery-1.11.2.min.js"></script>
@@ -166,7 +163,6 @@
 <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/controls/slick.columnpicker.js"></script>
 
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 	var dataView;
@@ -265,8 +261,8 @@
 			$("#selectButton").attr("disabled",true);
 			$("#updateButton").attr("disabled",true);
 		    return {valid: false};
-		}else if(!(/^[A-Za-z0-9]{5}$/.test(value))) {
-			appendAlert("errorMessage", getMsgByTwoArgs('msg011', '工場コード', "5"));
+		}else if(!(/^[A-Za-z0-9]{6}$/.test(value))) {
+			appendAlert("errorMessage", getMsgByTwoArgs('msg011', '工場コード', "6"));
 			$("#clearButton").attr("disabled",true);
 			$("#selectButton").attr("disabled",true);
 			$("#updateButton").attr("disabled",true);
@@ -478,15 +474,19 @@
 				text: getMsgByOneArg('msg017', "編集"),
 				icon: "info",
 				buttons: ["キャンセル", true],
-				dangerMode: true,
-				closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 				if (isConfirm) {
 					// 更新します
+					$("#factoryCodeInput").val("");
+					$("#itemCodeInput").val("");
 					appendAlertDel('errorMessage');
 					appendAlertDel('successMessage');
-					$("#selectButton").click();
+					$("#clearButton").removeAttr("disabled");
+					$("#selectButton").removeAttr("disabled");
+					$("#doKoShin").hide();
+					$("#shopListDiv").hide();
+					//$("#selectButton").click();
 				}
 			});
 			return false;
@@ -637,8 +637,6 @@
 				text: getMsgByOneArg('msg025', "下代価格情報"),
 				icon: "info",
 				buttons: ["キャンセル", true],
-				dangerMode: true,
-				closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 				if (isConfirm) {

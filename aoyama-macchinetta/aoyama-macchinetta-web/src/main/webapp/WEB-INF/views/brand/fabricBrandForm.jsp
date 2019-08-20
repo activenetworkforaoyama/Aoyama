@@ -306,16 +306,31 @@ function requiredBrandNameValidator(value) {
 	if (value == "" || value == null) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		//appendAlert('errorMassageIno', getMsgByOneArg('msg001', '生地ブランド名'));
-		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '生地ブランド名', '50'));
+		appendAlert('errorMassageIno', getMsgByOneArg('msg001', '生地ブランド名'));
+		//appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '生地ブランド名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
 		return {valid: false};
-	}else if(value.length > 50 || charactersCheck(value)){
+	}else if(value.length > 50 && !charactersCheck(value)){
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '生地ブランド名', '50'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+ 		$("#update_button").attr("disabled",true);
+	}else if( value.length <= 50 && charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert("errorMassageIno",getMsg('msg120'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+ 		$("#update_button").attr("disabled",true);
+		}
+	else if(value.length > 50 && charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg119', '生地ブランド名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
@@ -330,19 +345,32 @@ function requiredCountryNameValidator(value) {
 	if (value == "" || value == null) {
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
-		//appendAlert('errorMassageIno', getMsgByOneArg('msg001', '国名'));
-		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '国名', '50'));
+		appendAlert('errorMassageIno', getMsgByOneArg('msg001', '国名'));
+		//appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '国名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
 		return {valid: false};
-	}else if (value.length > 50 || charactersCheck(value)){
+	}else if (value.length > 50 && !charactersCheck(value)){
 		appendAlertDel('errorMassageIno');
 		appendAlertDel('successMessage');
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '国名', '50'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
  		$("#update_button").attr("disabled",true);
+	}else if( value.length <= 50 && charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert("errorMassageIno",getMsg('msg120'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+ 		$("#update_button").attr("disabled",true);
+	}else if(value.length > 50 && charactersCheck(value)){
+		appendAlertDel('errorMassageIno');
+		appendAlertDel('successMessage');
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg119', '国名', '50'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
 		}
 	else {
 		return {valid: true};		
@@ -388,16 +416,17 @@ $(document).ready(function() {
 			  text: getMsgByOneArg('msg017','編集'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
 				  // 検索します
 				appendAlertDel('errorMassageIno');
 				appendAlertDel('successMessage');
-				$("#select_button").click();
-				
+				$("#select_button").removeAttr("disabled");
+				$("#clear_button").removeAttr("disabled");
+				$("#clear_button").click();
+				$("#doKoShin").hide();
+				$("#slick").hide();
 			  }
 			});
 	});
@@ -419,9 +448,9 @@ $(document).ready(function() {
   // (1) SlickGridのカラム定義
   var columns = [
 	  	{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
-	  	{id: 'fablic_brand_no', name: '管理番号', field: 'fablicBrandNo',minWidth: 60, maxWidth: 100,formatter: colorFormatter, sortable: true},
-	    {id: 'brand_name', name: '生地ブランド名', field: 'brandName',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredBrandNameValidator},
-	    {id: 'country_name', name: '国名', field: 'countryName',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredCountryNameValidator},
+	  	{id: 'fablic_brand_no', name: '管理番号', field: 'fablicBrandNo',minWidth: 20, maxWidth: 150,formatter: colorFormatter, sortable: true},
+	    {id: 'brand_name', name: '生地ブランド名', field: 'brandName',minWidth: 20, maxWidth: 270,formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredBrandNameValidator},
+	    {id: 'country_name', name: '国名', field: 'countryName',minWidth: 20, maxWidth: 270,formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredCountryNameValidator},
 	    {id: "del_type", name: "削除", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-del-type", field: "delType", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true, sortable: false}
  ];
   // (2) SlickGridの動作オプション
@@ -566,8 +595,6 @@ $(document).ready(function() {
 			  text: getMsgByOneArg('msg025', '生地ブランド'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			  }).then((isConfirm) => {
 				  if(isConfirm){
 					  appendAlertDel('errorMassageIno');

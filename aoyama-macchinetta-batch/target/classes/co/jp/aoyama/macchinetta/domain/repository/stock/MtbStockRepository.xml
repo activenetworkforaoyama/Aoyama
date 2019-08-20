@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.stock.MtbStockRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.MtbStock" >
+    <id column="fabric_no" property="fabricNo" jdbcType="VARCHAR" />
+    <result column="theoretical_stock" property="theoreticalStock" jdbcType="NUMERIC" />
+    <result column="actual_stock" property="actualStock" jdbcType="NUMERIC" />
+    <result column="reservation_stock" property="reservationStock" jdbcType="NUMERIC" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from mtb_stock
+    where fabric_no = #{fabricNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbStock" >
+    insert into mtb_stock (fabric_no, theoretical_stock, actual_stock, 
+      reservation_stock, created_user_id, created_at, 
+      updated_user_id, updated_at)
+    values (#{fabricNo,jdbcType=VARCHAR}, #{theoreticalStock,jdbcType=NUMERIC}, #{actualStock,jdbcType=NUMERIC}, 
+      #{reservationStock,jdbcType=NUMERIC}, #{createdUserId,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, 
+      #{updatedUserId,jdbcType=VARCHAR}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbStock" >
+    update mtb_stock
+    set theoretical_stock = #{theoreticalStock,jdbcType=NUMERIC},
+      actual_stock = #{actualStock,jdbcType=NUMERIC},
+      reservation_stock = #{reservationStock,jdbcType=NUMERIC},
+      created_user_id = #{createdUserId,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_user_id = #{updatedUserId,jdbcType=VARCHAR},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where fabric_no = #{fabricNo,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select fabric_no, theoretical_stock, actual_stock, reservation_stock, created_user_id, 
+    created_at, updated_user_id, updated_at
+    from mtb_stock
+    where fabric_no = #{fabricNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select fabric_no, theoretical_stock, actual_stock, reservation_stock, created_user_id, 
+    created_at, updated_user_id, updated_at
+    from mtb_stock
+  </select>
+  <update id="updateActualStockByFabricNo">
+   <foreach separator=";" collection="stockList" item="item" index="index">
+            <if test="item.factory_stock != null and item.factory_stock != '' ">
+            update mtb_stock
+            <set>
+            actual_stock=#{item.factory_stock},
+            updated_at=now(),
+            updated_user_id=#{batchUpdateUserid}
+            </set>
+            where fabric_no =#{item.ftcode}
+            </if>
+    </foreach>
+  </update>
+  <select id="selectfabricNoList" resultType="java.lang.String">
+  
+  select s.fabric_no 
+  from mtb_fabric f , mtb_stock s
+  where f.factory_code = 'F00005'
+    AND f.order_pattern = 'PO'
+    AND f.fabric_no = s.fabric_no
+  </select>
+</mapper>

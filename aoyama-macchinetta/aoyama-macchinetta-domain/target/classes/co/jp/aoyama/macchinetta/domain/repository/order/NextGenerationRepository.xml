@@ -100,6 +100,7 @@
   </select>
   
   <select id="selectBasicNextGenerationPrice" resultMap="NextGenerationResultMap"> 
+  <if test='param5 == "01" or param5 == "02"'>
   	select mdbw.item_code || mdbw.sub_item_code keyItemCode,
        COALESCE(mfa.fabric_price, 0) as fabricPrice,
        mfa.factory_code as mfaFactoryCode,
@@ -110,19 +111,12 @@
        mdbw.item_code as mbwItemCode,
        mdbw.sub_item_code as mdbwSubItemCode
 	from mtb_fabric as mfa,
-	   mtb_base_wage as mbw,
-	   mtb_double_breasted_wage as mdbw,
-	   mtb_nomal_accessory_price as mnap,
-	   mtb_double_breasted_accessory_price as mdbap
- 	where mdbw.factory_code = mfa.factory_code
-       and mnap.factory_code = mfa.factory_code
-       and mdbap.factory_code = mfa.factory_code
-       and mbw.factory_code = mfa.factory_code
-       and mbw.item_code = mdbw.item_code
+	   mtb_base_wage as mbw left join mtb_double_breasted_wage as mdbw on mdbw.factory_code = mbw.factory_code and mbw.item_code = mdbw.item_code,
+	   mtb_nomal_accessory_price as mnap left join mtb_double_breasted_accessory_price as mdbap on mdbap.factory_code = mnap.factory_code and mnap.item_code = mdbap.item_code and mnap.order_pattern = mdbap.order_pattern
+ 	where  mnap.factory_code = mfa.factory_code
+       and mbw.factory_code = mfa.factory_code 
        and mbw.item_code = mnap.item_code
-       and mbw.item_code = mdbap.item_code
        and mdbw.sub_item_code = mdbap.sub_item_code
-       and mnap.order_pattern = mdbap.order_pattern
        and mfa.fabric_no = #{arg5}
        and mbw.item_code = #{arg4}
        and mnap.order_pattern = 'PO'
@@ -147,6 +141,28 @@
 		<if test="param1==null and param2==null and param3!=null and param3!=''and param4==null">	
       		and mdbw.sub_item_code in (#{arg2})	
 		</if>
+	</if>
+	<if test='param5 == "03" or param5 == "04"'>
+	select mbw.item_code || mbw.item_code keyItemCode,
+       COALESCE(mfa.fabric_price, 0) as fabricPrice,
+       mfa.factory_code as mfaFactoryCode,
+       COALESCE(mbw.wage, 0) as mbwWage,
+       COALESCE(mdbw.wage, 0) as mdbwWage,
+       COALESCE(mnap.price, 0) as mnapPrice,
+       COALESCE(mdbap.price, 0) as mdbapPrice,
+       mdbw.item_code as mbwItemCode,
+       mdbw.sub_item_code as mdbwSubItemCode
+	from mtb_fabric as mfa,
+	   mtb_base_wage as mbw left join mtb_double_breasted_wage as mdbw on mdbw.factory_code = mbw.factory_code and mbw.item_code = mdbw.item_code,
+	   mtb_nomal_accessory_price as mnap left join mtb_double_breasted_accessory_price as mdbap on mdbap.factory_code = mnap.factory_code and mnap.item_code = mdbap.item_code and mnap.order_pattern = mdbap.order_pattern
+ 	where  mnap.factory_code = mfa.factory_code
+       and mbw.factory_code = mfa.factory_code 
+       and mbw.item_code = mnap.item_code
+       and mfa.fabric_no = #{arg5}
+       and mbw.item_code = #{arg4}
+       and mnap.order_pattern = 'PO'
+	</if>
+	
   </select>
   
   <select id="selectDetailNextGenerationPrice" resultMap="NextGenerationResultMap">

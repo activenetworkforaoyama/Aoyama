@@ -96,7 +96,7 @@ public class FabricBrandServiceImpl implements FabricBrandService {
 			}
 		}
 		if(falg) {
-			if(fabricBrandUpdList.size()!=0 && fabricBrandUpdList.size()!=0) {
+			if(fabricBrandUpdList.size()!=0) {
 				fabricBrandRepository.updateFabricBrandByKey(fabricBrandUpdList);
 			}
 			

@@ -12,8 +12,20 @@
     border-color: rgba(216, 80, 48, 0.3);
     width:800px;
 }
+.alert-info {
+	margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #ffffff;
+    background: #fff3cd;
+    color: #856404;
+    border-color: #fff3cd;
+    width:100%;
+}
 </style>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap-datepicker3.css" type="text/css">
 <div class="breadcrumbs">
 		<div class="col-sm-4">
 			<div class="page-header float-left">
@@ -26,7 +38,7 @@
 		</div>
 	<div class="col-md-8">
 		<c:if test="${authority == '01'}">
-			<c:if test="${order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
+			<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 				<div class="col col-md-7">
 				</div>
 				<div class="col col-md-5">
@@ -38,7 +50,7 @@
 		</c:if>
 		
 		<c:if test="${authority == '02'}">
-			<c:if test="${order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5'}">
+			<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4'}">
 				<c:if test="${order.makerFactoryStatus == 'F0'}">
 					<div class="col col-md-7">
 					</div>
@@ -73,21 +85,80 @@
 		<c:if test="${authority == '02'}">
 			<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 				<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<div class="col col-md-5">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
-						お客様注文内容確認書
-					</button>
-				</div>
-				<div class="col col-md-4">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
-						注文内容確認書
-					</button>
-				</div>
-				<div class="col col-md-3">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
-						工場指示書
-					</button>
-				</div>
+					<c:choose>
+						<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+							<div class="col col-md-5">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+									お客様注文内容確認書
+								</button>
+							</div>
+							
+							<div class="col col-md-4">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+									注文内容確認書
+								</button>
+							</div>
+							
+							<div class="col col-md-3">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+									工場指示書
+								</button>
+							</div>
+						</c:when>
+					
+						<c:otherwise>
+							<div class="col col-md-4">
+							</div>
+							<div class="col col-md-5">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+									お客様注文内容確認書
+								</button>
+							</div>
+							<div class="col col-md-3">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+									工場指示書
+								</button>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
+			</c:if>
+		</c:if>
+		
+		<c:if test="${authority == '02'}">
+			<c:if test="${order.tscStatus == 'T5'}">
+				<c:if test="${order.makerFactoryStatus == 'F0'}">
+					<c:choose>
+						<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+						
+							<div class="col col-md-3">
+							</div>
+							<div class="col col-md-5">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+									お客様注文内容確認書
+								</button>
+							</div>
+							
+							<div class="col col-md-4">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+									注文内容確認書
+								</button>
+							</div>
+						</c:when>
+					
+						<c:otherwise>
+							<div class="col col-md-4">
+							</div>
+							
+							<div class="col col-md-3">
+							</div>
+							<div class="col col-md-5">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+									お客様注文内容確認書
+								</button>
+							</div>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
 			</c:if>
 		</c:if>
@@ -109,18 +180,58 @@
 		<c:if test="${authority == '03'}">
 			<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 				<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-					<div class="col col-md-5">
-					</div>
-					<div class="col col-md-4">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
-							注文内容確認書
-						</button>
-					</div>
-					<div class="col col-md-3">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
-							工場指示書
-						</button>
-					</div>
+					<c:choose>
+						<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+							<div class="col col-md-5">
+							</div>
+							
+							<div class="col col-md-4">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+									注文内容確認書
+								</button>
+							</div>
+							
+							<div class="col col-md-3">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+									工場指示書
+								</button>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="col col-md-5">
+							</div>
+							
+							<div class="col col-md-4">
+							</div>
+							
+							<div class="col col-md-3">
+								<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+									工場指示書
+								</button>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
+			</c:if>
+		</c:if>
+		
+		<c:if test="${authority == '03'}">
+			<c:if test="${order.tscStatus == 'T5'}">
+				<c:if test="${order.makerFactoryStatus == 'F0'}">
+					<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+						<div class="col col-md-5">
+						</div>
+						
+						<div class="col col-md-3">
+						</div>
+						
+						<div class="col col-md-4">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+								注文内容確認書
+							</button>
+						</div>
+						
+					</c:if>
 				</c:if>
 			</c:if>
 		</c:if>
@@ -142,26 +253,67 @@
 		<c:if test="${authority == '04'}">
 			<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 				<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-					<div class="col col-md-4">
-					</div>
-					<div class="col col-md-5">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
-							注文内容確認書
-						</button>
-					</div>
-					<div class="col col-md-3">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
-							工場指示書
-						</button>
-					</div>
+					<c:choose>
+					<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+						<div class="col col-md-4">
+						</div>
+						
+						<div class="col col-md-5">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+								注文内容確認書
+							</button>
+						</div>
+						<div class="col col-md-3">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+								工場指示書
+							</button>
+						</div>
+					</c:when>
+					<c:otherwise>
+						<div class="col col-md-4">
+						</div>
+						
+						<div class="col col-md-5">
+						</div>
+						<div class="col col-md-3">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+								工場指示書
+							</button>
+						</div>
+					</c:otherwise>
+					</c:choose>
+				</c:if>
+			</c:if>
+		</c:if>
+		<c:if test="${authority == '04'}">
+			<c:if test="${order.tscStatus == 'T5'}">
+				<c:if test="${order.makerFactoryStatus == 'F0'}">
+					<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+						<div class="col col-md-4">
+						</div>
+						
+						<div class="col col-md-3">
+						</div>
+						
+						<div class="col col-md-5">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+								注文内容確認書
+							</button>
+						</div>
+						
+					</c:if>
 				</c:if>
 			</c:if>
 		</c:if>
 	</div>
 </div>
+<div class="col-md-12">
+<div class="alert alert-info" id="errorResult" style="display:none"></div>
+</div>
+<div class="content mt-3">
+
 <div class="alert alert-error" id="errormssage"  style="display:none"></div>
 <t:messagesPanel  messagesAttributeName="resultMessages"/>
-<div class="content mt-3">
 	<div class="animated fadeIn">
 		<div class="row">
 			<div class="col col-lg-6">
@@ -270,14 +422,26 @@
 								<strong><label class=" form-control-label-value">${f:h(order.custKanaNm)}</label></strong>
 							</div>
 						</div>
+						<c:if test="${authority == '01' || authority == '03' || authority == '04'}">
 						<div class="row">
 							<div class="col col-md-3">
 								<label class=" form-control-label">承り日</label>
 							</div>
 							<div class="col-12 col-md-9">
-								<strong><label class=" form-control-label-value" id="product_orderd_date">${order.productOrderdDate}</label></strong>
+								<strong><label class=" form-control-label-value" id="product_orderd_date"></label></strong>
 							</div>
 						</div>
+						</c:if>
+						<c:if test="${authority == '02' || authority == '05'}">
+						<div class="row">
+							<div class="col col-md-3">
+								<label class=" form-control-label">名簿納期</label>
+							</div>
+							<div class="col-12 col-md-9">
+								<strong><label class=" form-control-label-value" id="cust_deliver_date"></label></strong>
+							</div>
+						</div>
+						</c:if>
 					</c:if>
 				</div>
 				<c:if test="${authority == '01' || authority == '02' || authority == '05'}">
@@ -287,7 +451,7 @@
 								<label class=" form-control-label">お渡し日</label>
 							</div>
 							<div class="col-12 col-md-9">
-								<strong><label class=" form-control-label-value" id="cust_shop_delivery_date">${order.custShopDeliveryDate}</label></strong>
+								<strong><label class=" form-control-label-value" id="cust_shop_delivery_date"></label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -616,7 +780,7 @@
 									<strong><label class=" form-control-label-value">${order.productEmbroideryNm}</label></strong>
 								</div>
 							</div>
-							<c:if test="${order.productEmbroideryFont == '14'}">
+							<c:if test="${order.productEmbroideryFont == '14（花文字）'}">
 								<div class="row">
 									<div class="col col-md-3">
 										<label class=" form-control-label">刺繍書体</label>
@@ -626,7 +790,7 @@
 									</div>
 								</div>
 							</c:if>
-							<c:if test="${order.productEmbroideryFont == '48'}">
+							<c:if test="${order.productEmbroideryFont == '48（ブロック）'}">
 								<div class="row">
 									<div class="col col-md-3">
 										<label class=" form-control-label">刺繍書体</label>
@@ -641,7 +805,7 @@
 									<label class=" form-control-label">刺繍糸色</label>
 								</div>
 								<div class="col-12 col-md-3">
-									<strong><label class=" form-control-label-value" id="product_embroidery_thread_color"></label></strong>
+									<strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryThreadColor}</label></strong>
 								</div>
 							</div>
 						</div>
@@ -1153,7 +1317,6 @@
 							<label class=" form-control-label">裾幅</label>
 						</div>
 						<div class="col-12 col-md-4">
-							<strong><label for="ap_hemWidth_absolute" class="form-check-label ">指定</label></strong>
 							<strong><label class=" form-control-label-value">${order.corPtHemwidthGross}</label>cm</strong>
 						</div>
 						
@@ -1321,7 +1484,6 @@
 							<label class=" form-control-label">裾幅</label>
 						</div>
 						<div class="col-12 col-md-4">
-							<strong><label for="ap2_hemWidth_absolute" class="form-check-label "> 指定 </label></strong>
 							<strong><label class=" form-control-label-value">${order.corPt2HemwidthGross}</label>cm</strong>
 						</div>
 						
@@ -1338,23 +1500,37 @@
 	</div>
 </div>
 
+
+
 <c:if test="${authority == '01' || authority == '02'}">
-	<div class="col-md-12" id="al_seikyukin_div">
-		<div class="card" id="nav_alter_div">
-			<div class="col col-lg-12">
-				<div class="row">
-					<div class="col col-md-8">
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+					<div class="col col-lg-6">
 						<label class=" form-control-label">ご請求金額</label>
 					</div>
-					<div class="col-12 col-md-4" align="right">
+					<div class="col col-lg-6">
 						<div class="row">
 							<div class="col text-right">
 							<strong><span>ご請求金額：￥<label id="bottom_billingAmount"></label>（内消費税￥<label id="bottom_consumptionTaxAmount"></label>）</span></strong>
 							</div>
-					</div>
+						</div>
+							<div class="row">
+							<div class="col text-right">
 							<span class="smlFnt85">商品金額：￥<label id="bottom_productPrice"></label></span><br /> 
+							</div>
+							</div>
+							<div class="row">
+							<div class="col text-right">
 							<span class="smlFnt85">オプション金額：￥<label id="bottom_optionPrice"></label></span><br /> 
+							</div>
+							</div>
+							<div class="row">
+							<div class="col text-right">
 							<span class="smlFnt85">合計金額：￥<label id="bottom_totalPrice"></label></span>
+							</div>
+							</div>
 					</div>
 				</div>
 			</div>
@@ -1362,11 +1538,8 @@
 	</div>
 </c:if>
 
-
-
 <c:if test="${authority == '01' || authority == '02' || authority == '05'}">
 <c:if test="${order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
-<c:if test="${order.corJkBodylengthCorrectAgain != ''}">
 <div class="col-md-12" id="jkCorrectAgain" style="display:none;">
 	<div class="card">
 		<div class="card-header">
@@ -1545,13 +1718,12 @@
 		<div class="card-body">
 			<div class="row">
 				<div class="col col-lg-12">
-					<label class=" form-control-label" id="corStoreCorrectionMemoAgain">${order.corStoreCorrectionMemoAgain}</label>
+					<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${order.corStoreCorrectionMemoAgain}</textarea>
 				</div>	
 			</div>
 		</div>
 	</div>
 </div>
-</c:if>
 </c:if>
 </c:if>
 
@@ -1603,14 +1775,31 @@
 </div>
 </c:if>
 
-
 <c:if test="${authority == '01'}">
+<c:if test="${userId == order.createdUserId}">
+<c:if test="${order.isCancelled != '1'}">
 	<div class="col-md-12">
 		<div class="card" id="nav2_alter_div">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card-body">
 						<div class="row">
+							<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5')}">		
+								<div class="col col-md-2">
+								</div>
+								<div class="col col-md-4">
+									<button type="button" class="btn btn-info btn-block" id="backButton" >
+										一覧へ戻る
+									</button>
+								</div>
+								<div class="col col-md-4">
+									<button type="button" class="btn btn-danger btn-block" id="ChangeOrderValue">
+										注文訂正
+									</button>
+								</div>
+								<div class="col col-md-2">
+								</div>
+							</c:if>
 							<c:if test="${order.tscStatus == 'T6' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03')}">		
 								<div class="col col-md-4">
 									<button type="button" class="btn btn-info btn-block" id="backButton" >
@@ -1688,13 +1877,62 @@
 				</div>
 			</div>
 		</div>
-	
+	</c:if>
+</c:if>
+</c:if>
+
+<c:if test="${authority == '01'}">
+<c:if test="${userId != order.createdUserId}">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="col-md-12">
+				<div class="card-body">
+					<div class="row">
+						<div class="col col-md-4">
+						</div>
+						<div class="col col-md-4">
+							<button type="button" class="btn btn-info btn-block" id="backButton">
+								一覧へ戻る
+							</button>
+						</div>
+						<div class="col col-md-4">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>							
+</c:if>
 </c:if>
 
 <c:if test="${authority == '02'}">
+<c:if test="${order.isCancelled != '1'}">
 	<div class="col-md-12">
 		<div class="card" id="nav2_alter_div">
-		
+			<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2'}">		
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card-body">
+						<div class="row">
+							<div class="col col-md-2">
+							</div>
+							<div class="col col-md-4">
+								<button type="button" class="btn btn-info btn-block" id="backButton" >
+									一覧へ戻る
+								</button>
+							</div>
+							<div class="col col-md-4">
+								<button type="button" class="btn btn-danger btn-block" id="ChangeOrderValue">
+									注文訂正
+								</button>
+							</div>
+							<div class="col col-md-2">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</c:if>
 			<c:if test="${((order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.makerFactoryStatus == 'F1') || ((order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.makerFactoryStatus == 'F0') }">
 			<div class="row">
 				<div class="col-md-12">
@@ -1762,9 +2000,11 @@
 			</c:if>
 			</div>
 		</div>
+	</c:if>
 </c:if>
 
 <c:if test="${authority == '03' || authority == '05'}">
+<c:if test="${order.isCancelled != '1'}">
 	<div class="col-md-12">
 		<div class="card" id="nav2_alter_div">
 			<div class="row">
@@ -1789,9 +2029,11 @@
 		</div>
 	</div>
 </c:if>
+</c:if>
 
 
 <c:if test="${authority == '04'}">
+<c:if test="${order.isCancelled != '1'}">
 	<div class="col-md-12">
 		<div class="card" id="nav2_alter_div">
 			<c:if test="${order.makerFactoryStatus == 'F1' }">
@@ -1801,21 +2043,21 @@
 						<div class="row">
 							<div class="col col-md-4">
 								生地使用量:
-								<div class="col col-xl-9 float-right">
+								<div class="col col-xl-6 float-right">
 									<input type="text" id="fabricUsedMount" class="input-sm form-control-sm form-control"  onkeyup="clearNoNum(this)" value="${order.fabricUsedMount}" maxlength="6"/>
 								</div>
 							</div>
 							<div class="col col-md-4">
 								出荷日:
-								<div class="col col-xl-9 float-right">
-									<input type="date" id="shippingDate" class="input-sm form-control-sm form-control" />
+								<div class="col col-xl-6 float-right">
+									<input type="text" id="shippingDate" placeholder="年/月/日" class="input-sm form-control-sm form-control" />
 									
 								</div>
 							</div>
 							<div class="col col-md-4">
 								積載日:
-								<div class="col col-xl-9 float-right">
-									<input type="date" id="loadingDate" class="input-sm form-control-sm form-control" />
+								<div class="col col-xl-6 float-right">
+									<input type="text" id="loadingDate" placeholder="年/月/日" class="input-sm form-control-sm form-control" />
 								</div>
 							</div>
 							
@@ -1869,7 +2111,30 @@
 		</div>
 	</div>
 </c:if>
+</c:if>
+<c:if test="${order.isCancelled == '1'}">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="col-md-12">
+				<div class="card-body">
+					<div class="row">
+						<div class="col col-md-4">
+						</div>
+						<div class="col col-md-4">
+							<button type="button" class="btn btn-info btn-block" id="backButton">
+								一覧へ戻る
+							</button>
+						</div>
+						<div class="col col-md-4">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</c:if>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
 
 //CSRF令牌
@@ -1884,6 +2149,17 @@ jQuery(function () {
     });
 });
 
+var authority = "${sessionContent.authority}";
+var errorResult = "${errorResult}";
+
+if(authority == "01"){
+	
+}else{
+	if(isNotEmpty(errorResult)){
+		appendAlert('errorResult', getMsgByOneArg('msg117',errorResult));
+	}
+}
+
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 		var statusList = {
 		T0 : "一時保存",
@@ -1895,8 +2171,19 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 		T6 : "仕入済",
 		T7 : "お渡し済"
 	};
-	jQuery("#status_appear").html(statusList["${order.tscStatus}"]);
 
+		var factoryStatusList = {
+				F0 : "生産開始前",
+				F1 : "生産開始",
+				F2 : "生産終了"
+			};
+if("${order.makerFactoryStatus}" == "F1" || "${order.makerFactoryStatus}" == "F2"){
+	jQuery("#status_appear").html(statusList["${order.tscStatus}"] +" "+ "・" + " " + factoryStatusList["${order.makerFactoryStatus}"]);
+}
+else{
+	jQuery("#status_appear").html(statusList["${order.tscStatus}"]);
+}
+	
 	//お客様情報_区分の内容表示
 	var custType = {
 		t01 : "一般",
@@ -1912,7 +2199,7 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 	function dateFormat(time) {
 		var date = new Date(time);
 		var year = date.getFullYear();
-		var month = date.getMonth() + 1
+		var month = date.getMonth() + 1;
 		if (month <= 9) {
 			month = "0" + month;
 		}
@@ -1921,6 +2208,20 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 			day = "0" + day;
 		}
 		return year + "/" + month + "/" + day;
+	}
+
+	function dateFormatValue(time) {
+		var date = new Date(time);
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		if (month <= 9) {
+			month = "0" + month;
+		}
+		var day = date.getDate();
+		if (day <= 9) {
+			day = "0" + day;
+		}
+		return year + "年" + month + "月" + day + "日";
 	}
 	var custShopDeliveryDate = "${order.custShopDeliveryDate}";
 	if (custShopDeliveryDate != null) {
@@ -1933,6 +2234,11 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 		jQuery("#product_orderd_date").html(dateFormat(productOrderdDate))
 	}
 
+	var custDeliverDate = "${order.custDeliverDate}";
+	if (custDeliverDate != null) {
+		jQuery("#cust_deliver_date").html(dateFormat(custDeliverDate))
+	}
+	
 	//お客様情報_出荷先の内容表示
 	var custShippingDestination = {
 		s01 : '店舗',
@@ -1956,6 +2262,7 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 	//ITEMの内容表示
 
 	var productItem = {
+		I01 : "SUIT",
 		I02 : "JACKET",
 		I03 : "PANTS",
 		I04 : "GILET",
@@ -1966,34 +2273,12 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 		I31 : "SUIT(3P)",
 		I32 : "SUIT(3P2PP)"
 	};
-	if ("${order.productItem}" == "01" && "${order.productItem}" != "") {
+	if ("${order.productItem}" == "01" && "${order.productItemDisplaycode}" != "") {
 		jQuery("#product_item").html(
 				productItem["I${order.productItemDisplaycode}"]);
 	} else {
 		jQuery("#product_item").html(productItem["I${order.productItem}"]);
 	}
-
-	//商品情報_刺繍糸色の内容表示
-	var productEmbroideryEhreadColor = {
-		110 : '110（金茶）',
-		140 : '140（白）',
-		402 : '402（黒）',
-		760 : '760（ネイビー）',
-		145 : '145（水色）',
-		75 : '75（ブルー）',
-		9 : '9（赤）',
-		56 : '56（グリーン）',
-		89 : '89（ライトブラウン）',
-		94 : '94（ブラウン）',
-		152 : '152（ボルドー）',
-		169 : '169（パープル）',
-		343 : '343（ベージュ）',
-		701 : '701（モカ）',
-		401 : '401（白）'
-	};
-	jQuery("#product_embroidery_thread_color")
-			.html(
-					productEmbroideryEhreadColor["${order.productEmbroideryThreadColor}"]);
 
 	//オプション内容の表示
 	var item = jQuery("#product_item").html();
@@ -2054,28 +2339,81 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 	//再補正内容表示
 	var productItemValue = "${order.productItem}";
 	var productItemDisplayValue = "${order.productItemDisplaycode}";
-	if("${order.corJkBodylengthCorrectAgain}" != ''){
-		if(productItemValue == '01'){
-			if(productItemDisplayValue == '21' || productItemDisplayValue == '31'){
+	
+	//JACKET_着丈_再補正値
+	var corJkBodylengthCorrectAgain = "${order.corJkBodylengthCorrectAgain}";
+	//JACKET_ウエスト_再補正値
+	var corJkWaistCorrectAgain = "${order.corJkWaistCorrectAgain}";
+	//JACKET_袖丈右_再補正値
+	var corJkRightsleeveCorrectAgain = "${order.corJkRightsleeveCorrectAgain}";
+	//JACKET_袖丈左_再補正値
+	var corJkLeftsleeveCorrectAgain = "${order.corJkLeftsleeveCorrectAgain}";
+	
+	//PANTS_ウエスト_再補正値
+	var corPtWaistCorrectAgain = "${order.corPtWaistCorrectAgain}";
+	//PANTS_ヒップ_再補正値
+	var corPtHipCorrectAgain = "${order.corPtHipCorrectAgain}";
+	//PANTS_ワタリ_再補正値
+	var corPtThighwidthCorrectAgain = "${order.corPtThighwidthCorrectAgain}";
+	//PANTS_裾幅_修正_再補正値
+	var corPtHemwidthCorrectAgain = "${order.corPtHemwidthCorrectAgain}";
+	//PANTS_股下右_再補正値
+	var corPtRightinseamCorrectAgain = "${order.corPtRightinseamCorrectAgain}";
+	//PANTS_股下左_再補正値
+	var corPtLeftinseamCorrectAgain = "${order.corPtLeftinseamCorrectAgain}";
+
+	//２PANTS_ウエスト_再補正値
+	var corPt2WaistCorrectAgain = "${order.corPt2WaistCorrectAgain}";
+	//２PANTS_ヒップ_再補正値
+	var corPt2HipCorrectAgain = "${order.corPt2HipCorrectAgain}";
+	//２PANTS_ワタリ_再補正値
+	var corPt2ThighwidthCorrectAgain = "${order.corPt2ThighwidthCorrectAgain}";
+	//２PANTS_裾幅_修正_再補正値
+	var corPt2HemwidthCorrectAgain = "${order.corPt2HemwidthCorrectAgain}";
+	//２PANTS_股下右_再補正値
+	var corPt2RightinseamCorrectAgain = "${order.corPt2RightinseamCorrectAgain}";
+	//２PANTS_股下左_再補正値
+	var corPt2LeftinseamCorrectAgain = "${order.corPt2LeftinseamCorrectAgain}";
+	
+	
+	if(productItemValue == '01'){
+		if(productItemDisplayValue == '21' || productItemDisplayValue == '31'){
+			if(!isEmpty(corJkBodylengthCorrectAgain) || !isEmpty(corJkWaistCorrectAgain) || !isEmpty(corJkRightsleeveCorrectAgain) ||　!isEmpty(corJkLeftsleeveCorrectAgain)
+					|| !isEmpty(corPtWaistCorrectAgain) || !isEmpty(corPtHipCorrectAgain) || !isEmpty(corPtThighwidthCorrectAgain) 
+					|| !isEmpty(corPtHemwidthCorrectAgain) || !isEmpty(corPtRightinseamCorrectAgain) || !isEmpty(corPtLeftinseamCorrectAgain)){
 				jQuery('#jkCorrectAgain').show();
 				jQuery('#ptCorrectAgain').show();
-				}
-			else if(productItemDisplayValue == '22' || productItemDisplayValue == '32'){
+				jQuery('#correctionMemoAgain').show();
+			}
+		}
+		else if(productItemDisplayValue == '22' || productItemDisplayValue == '32'){
+			if(!isEmpty(corJkBodylengthCorrectAgain) || !isEmpty(corJkWaistCorrectAgain) || !isEmpty(corJkRightsleeveCorrectAgain) ||　!isEmpty(corJkLeftsleeveCorrectAgain)
+					|| !isEmpty(corPtWaistCorrectAgain) || !isEmpty(corPtHipCorrectAgain) || !isEmpty(corPtThighwidthCorrectAgain) 
+					|| !isEmpty(corPtHemwidthCorrectAgain) || !isEmpty(corPtRightinseamCorrectAgain) || !isEmpty(corPtLeftinseamCorrectAgain)
+					|| !isEmpty(corPt2WaistCorrectAgain) || !isEmpty(corPt2HipCorrectAgain) || !isEmpty(corPt2ThighwidthCorrectAgain) 
+					|| !isEmpty(corPt2HemwidthCorrectAgain) || !isEmpty(corPt2RightinseamCorrectAgain) || !isEmpty(corPt2LeftinseamCorrectAgain)){
 				jQuery('#jkCorrectAgain').show();
 				jQuery('#ptCorrectAgain').show();
 				jQuery('#pt2CorrectAgain').show();
-				}
-			jQuery('#correctionMemoAgain').show();
-			}
-		else if(productItemValue == '02'){
-			jQuery('#jkCorrectAgain').show();
-			jQuery('#correctionMemoAgain').show();
-			}
-		else if(productItemValue == '03'){
-			jQuery('#ptCorrectAgain').show();
-			jQuery('#correctionMemoAgain').show();
+				jQuery('#correctionMemoAgain').show();
 			}
 		}
+	}
+	else if(productItemValue == '02'){
+		if(!isEmpty(corJkBodylengthCorrectAgain) || !isEmpty(corJkWaistCorrectAgain) || !isEmpty(corJkRightsleeveCorrectAgain) ||　!isEmpty(corJkLeftsleeveCorrectAgain)){
+			jQuery('#jkCorrectAgain').show();
+			jQuery('#correctionMemoAgain').show();
+		}
+	}
+	else if(productItemValue == '03'){
+		if(!isEmpty(corPtWaistCorrectAgain) || !isEmpty(corPtHipCorrectAgain) || !isEmpty(corPtThighwidthCorrectAgain) 
+				|| !isEmpty(corPtHemwidthCorrectAgain) || !isEmpty(corPtRightinseamCorrectAgain) || !isEmpty(corPtLeftinseamCorrectAgain)){
+			jQuery('#ptCorrectAgain').show();
+			jQuery('#correctionMemoAgain').show();
+		}
+		
+	}
+	
 	
 	
 	if ("${order.productIs3pieceRtPrice}" == "0"
@@ -2418,33 +2756,6 @@ jQuery('#backButton').on('click', function() {
 //生地使用量・出荷日・船積日の保存を行う、保存完了後、「オーダー登録結果」画面へ遷移する
 jQuery("#saveValue").click(function(){
 
-	//お渡し日
-	var ShopDeliveryDate = new Date("${order.custShopDeliveryDate}");
-	//出荷日
-	var shippingDate = new Date(jQuery("#shippingDate").val()); 
-	//積載日
-	var loadingDate = new Date(jQuery("#loadingDate").val()); 
-	//出荷日（初期値）
-	var oldShippingDate = "${order.shippingDate}";
-
-	if(shippingDate!=""&&loadingDate!=""&& loadingDate <shippingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','積載日')); 
-		return false; 
-	}
-	else if(shippingDate!=""&&ShopDeliveryDate!=""&& ShopDeliveryDate <shippingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','お渡し日')); 
-		return false;
-	}
-	else if(loadingDate!=""&&ShopDeliveryDate!=""&& ShopDeliveryDate <loadingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','積載日','お渡し日')); 
-		return false;
-	}
-	else if(oldShippingDate != "" && shippingDate == "Invalid Date"){
-		appendAlert('errormssage', getMsgByOneArg('msg001', '出荷日'));
-		return false;
-		}
-	
-	
 	//生地使用量
 	var orderId = "${order.orderId}";
 	var productFabricNo = "${order.productFabricNo}";
@@ -2468,29 +2779,219 @@ jQuery("#saveValue").click(function(){
 	if(hasPrivileage == false){
 		return false;
 		}
-	swal({
-		  text: getMsg('msg077'),
-		  icon: "info",
-		  buttons: ["キャンセル", true],
-		  dangerMode: true,
-		  closeOnEsc: false,
-		}).then((isConfirm) => {
-		  if (isConfirm) {
-			//注文ID
-			var orderId = "${order.orderId}";
-			//商品情報_生地番号
-			var fabricNo = "${order.productFabricNo}"
-			//生地使用量
-			var fabricUsedMount = jQuery("#fabricUsedMount").val();
-			//出荷日
-			var shippingDate = jQuery("#shippingDate").val();
-			//積載日
-			var loadingDate = jQuery("#loadingDate").val();
-			//バージョン
-			var orderVersion = "${order.version}";
-			window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
-			  }
-		})
+	
+	//お渡し日
+	var ShopDeliveryDate = dateFormat("${order.custShopDeliveryDate}");
+	//出荷日
+	var shippingDate = jQuery("#shippingDate").val(); 
+	//積載日
+	var loadingDate = jQuery("#loadingDate").val(); 
+	//出荷日（初期値）
+	var oldShippingDate = "${order.shippingDate}";
+
+	if(oldShippingDate != "" && shippingDate == ""){
+		appendAlert('errormssage', getMsgByOneArg('msg001', '出荷日'));
+		return false;
+		}
+	else if(shippingDate!=""&&loadingDate!=""&& loadingDate <shippingDate){ 
+		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','積載日')); 
+		return false; 
+	}
+	else if(shippingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate <shippingDate && ShopDeliveryDate < loadingDate){
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				  swal({		
+					  text: getMsgByOneArg('msg115', dateFormatValue(ShopDeliveryDate)),	
+					  icon: "info",	
+					  buttons: ["キャンセル", true],	
+					}).then((isConfirm) => {	
+					  if (isConfirm) {
+						  swal({		
+							  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),	
+							  icon: "info",	
+							  buttons: ["キャンセル", true],	
+							}).then((isConfirm) => {	
+							  if (isConfirm) {	
+								//注文ID
+								var orderId = "${order.orderId}";
+								//商品情報_生地番号
+								var fabricNo = "${order.productFabricNo}"
+								//生地使用量
+								var fabricUsedMount = jQuery("#fabricUsedMount").val();
+								//出荷日
+								var shippingDate = jQuery("#shippingDate").val();
+								//積載日
+								var loadingDate = jQuery("#loadingDate").val();
+								//バージョン
+								var orderVersion = "${order.version}";
+								window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+								  }
+							})		
+						  }
+					})	
+				  }		
+			})
+	}
+	else if(shippingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate <shippingDate && ShopDeliveryDate < loadingDate){
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				  swal({		
+					  text: getMsgByOneArg('msg115', dateFormatValue(ShopDeliveryDate)),	
+					  icon: "info",	
+					  buttons: ["キャンセル", true],	
+					}).then((isConfirm) => {	
+					  if (isConfirm) {
+						  swal({		
+							  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),	
+							  icon: "info",	
+							  buttons: ["キャンセル", true],	
+							}).then((isConfirm) => {	
+							  if (isConfirm) {	
+								//注文ID
+								var orderId = "${order.orderId}";
+								//商品情報_生地番号
+								var fabricNo = "${order.productFabricNo}"
+								//生地使用量
+								var fabricUsedMount = jQuery("#fabricUsedMount").val();
+								//出荷日
+								var shippingDate = jQuery("#shippingDate").val();
+								//積載日
+								var loadingDate = jQuery("#loadingDate").val();
+								//バージョン
+								var orderVersion = "${order.version}";
+								window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+								  }
+							})		
+						  }
+					})	
+				  }		
+			})
+	}
+	else if(shippingDate!="" && ShopDeliveryDate!="" && loadingDate == "" && ShopDeliveryDate <shippingDate){ 
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				  swal({		
+					  text: getMsgByOneArg('msg115', dateFormatValue(ShopDeliveryDate)),	
+					  icon: "info",	
+					  buttons: ["キャンセル", true],	
+					}).then((isConfirm) => {	
+					  if (isConfirm) {	
+						//注文ID
+						var orderId = "${order.orderId}";
+						//商品情報_生地番号
+						var fabricNo = "${order.productFabricNo}"
+						//生地使用量
+						var fabricUsedMount = jQuery("#fabricUsedMount").val();
+						//出荷日
+						var shippingDate = jQuery("#shippingDate").val();
+						//積載日
+						var loadingDate = jQuery("#loadingDate").val();
+						//バージョン
+						var orderVersion = "${order.version}";
+						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						  }
+					})	
+				  }		
+			})
+	}
+	else if(loadingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate <loadingDate && ShopDeliveryDate >= shippingDate){ 
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				  swal({		
+					  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),	
+					  icon: "info",	
+					  buttons: ["キャンセル", true],	
+					}).then((isConfirm) => {	
+					  if (isConfirm) {	
+						//注文ID
+						var orderId = "${order.orderId}";
+						//商品情報_生地番号
+						var fabricNo = "${order.productFabricNo}"
+						//生地使用量
+						var fabricUsedMount = jQuery("#fabricUsedMount").val();
+						//出荷日
+						var shippingDate = jQuery("#shippingDate").val();
+						//積載日
+						var loadingDate = jQuery("#loadingDate").val();
+						//バージョン
+						var orderVersion = "${order.version}";
+						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						  }
+					})	
+				  }		
+			})			
+	}
+	else if(loadingDate!="" && ShopDeliveryDate!="" && shippingDate=="" && ShopDeliveryDate <loadingDate ){ 
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				  swal({		
+					  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),	
+					  icon: "info",	
+					  buttons: ["キャンセル", true],	
+					}).then((isConfirm) => {	
+					  if (isConfirm) {	
+						//注文ID
+						var orderId = "${order.orderId}";
+						//商品情報_生地番号
+						var fabricNo = "${order.productFabricNo}"
+						//生地使用量
+						var fabricUsedMount = jQuery("#fabricUsedMount").val();
+						//出荷日
+						var shippingDate = jQuery("#shippingDate").val();
+						//積載日
+						var loadingDate = jQuery("#loadingDate").val();
+						//バージョン
+						var orderVersion = "${order.version}";
+						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						  }
+					})	
+				  }		
+			})			
+	}
+	else{
+		swal({						
+			  text: getMsg('msg077'),			
+			  icon: "info",			
+			  buttons: ["キャンセル", true],			
+			}).then((isConfirm) => {			
+			  if (isConfirm) {			
+				//注文ID
+				var orderId = "${order.orderId}";
+				//商品情報_生地番号
+				var fabricNo = "${order.productFabricNo}"
+				//生地使用量
+				var fabricUsedMount = jQuery("#fabricUsedMount").val();
+				//出荷日
+				var shippingDate = jQuery("#shippingDate").val();
+				//積載日
+				var loadingDate = jQuery("#loadingDate").val();
+				//バージョン
+				var orderVersion = "${order.version}";
+				window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;	
+				  }		
+			})
+	}
+	
 })
 
 //ステータスを「生産終了」に変更する、生地使用量・出荷日・船積日の保存を行う、保存完了後、「オーダー登録結果」画面へ遷移する
@@ -2515,26 +3016,6 @@ jQuery("#saveOrChangeValue").click(function(){
 		return false;
 		}
 
-	//お渡し日
-	var ShopDeliveryDate = new Date("${order.custShopDeliveryDate}");
-	//出荷日
-	var shippingDate = new Date(jQuery("#shippingDate").val()); 
-	//積載日
-	var loadingDate = new Date(jQuery("#loadingDate").val()); 
-
-	if(shippingDate!=""&&loadingDate!=""&& loadingDate <shippingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','積載日')); 
-		return false; 
-	}
-	else if(shippingDate!=""&&ShopDeliveryDate!=""&& ShopDeliveryDate <shippingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','お渡し日')); 
-		return false;
-	}
-	else if(loadingDate!=""&&ShopDeliveryDate!=""&& ShopDeliveryDate <loadingDate){ 
-		appendAlert('errormssage', getMsgByTwoArgs('msg095','積載日','お渡し日')); 
-		return false;
-	}
-
 	//生地使用量
 	var orderId = "${order.orderId}";
 	var productFabricNo = "${order.productFabricNo}";
@@ -2556,32 +3037,158 @@ jQuery("#saveOrChangeValue").click(function(){
 	if(hasPrivileage == false){
 		return false;
 		}
-	swal({
-		  text: getMsg('msg077'),
-		  icon: "info",
-		  buttons: ["キャンセル", true],
-		  dangerMode: true,
-		  closeOnEsc: false,
-		}).then((isConfirm) => {
-		  if (isConfirm) {
+	//お渡し日
+	var ShopDeliveryDate = dateFormat("${order.custShopDeliveryDate}");
+	//出荷日
+	var shippingDate = jQuery("#shippingDate").val(); 
+	//積載日
+	var loadingDate = jQuery("#loadingDate").val(); 
+
+	if(shippingDate!=""&&loadingDate!=""&& loadingDate <shippingDate){ 
+		appendAlert('errormssage', getMsgByTwoArgs('msg095','出荷日','積載日')); 
+		return false; 
+	}
+	else if(shippingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate < shippingDate && ShopDeliveryDate < loadingDate){
+		swal({
+			  text: getMsg('msg077'),
+			  icon: "info",
+			  buttons: ["キャンセル", true],
+			}).then((isConfirm) => {
+			  if (isConfirm) {
+				  swal({
+					  text: getMsgByOneArg('msg115', dateFormatValue(ShopDeliveryDate)),
+					  icon: "info",
+					  buttons: ["キャンセル", true],
+					}).then((isConfirm) => {
+					  if (isConfirm) {
+						  swal({
+							  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),
+							  icon: "info",
+							  buttons: ["キャンセル", true],
+							}).then((isConfirm) => {
+							  if (isConfirm) {
+									//注文ID
+									var orderId = "${order.orderId}";
+									//商品情報_生地番号
+									var fabricNo = "${order.productFabricNo}"
+									//生地使用量
+									var fabricUsedMount = jQuery("#fabricUsedMount").val();
+									//出荷日
+									var shippingDate = jQuery("#shippingDate").val();
+									//積載日
+									var loadingDate = jQuery("#loadingDate").val();
+									//ステータス「生産終了」
+									var makerFactoryStatus = 'F2'; 
+									//バージョン
+									var orderVersion = "${order.version}";
+									window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+								  }
+							})
+						  }
+					})
+				  }
+			})
+	}
+	else if(shippingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate < shippingDate && ShopDeliveryDate >= loadingDate){ 
+		swal({
+			  text: getMsg('msg077'),
+			  icon: "info",
+			  buttons: ["キャンセル", true],
+			}).then((isConfirm) => {
+			  if (isConfirm) {
+				  swal({
+					  text: getMsgByOneArg('msg115', dateFormatValue(ShopDeliveryDate)),
+					  icon: "info",
+					  buttons: ["キャンセル", true],
+					}).then((isConfirm) => {
+					  if (isConfirm) {
+							//注文ID
+							var orderId = "${order.orderId}";
+							//商品情報_生地番号
+							var fabricNo = "${order.productFabricNo}"
+							//生地使用量
+							var fabricUsedMount = jQuery("#fabricUsedMount").val();
+							//出荷日
+							var shippingDate = jQuery("#shippingDate").val();
+							//積載日
+							var loadingDate = jQuery("#loadingDate").val();
+							//ステータス「生産終了」
+							var makerFactoryStatus = 'F2'; 
+							//バージョン
+							var orderVersion = "${order.version}";
+							window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+						  }
+					})
+				  }
+			})
+	}
+	else if(loadingDate!="" && ShopDeliveryDate!="" && ShopDeliveryDate <loadingDate && ShopDeliveryDate >= shippingDate){ 
+		swal({
+			  text: getMsg('msg077'),
+			  icon: "info",
+			  buttons: ["キャンセル", true],
+			}).then((isConfirm) => {
+			  if (isConfirm) {
+				  swal({
+					  text: getMsgByOneArg('msg116', dateFormatValue(ShopDeliveryDate)),
+					  icon: "info",
+					  buttons: ["キャンセル", true],
+					}).then((isConfirm) => {
+					  if (isConfirm) {
+							//注文ID
+							var orderId = "${order.orderId}";
+							//商品情報_生地番号
+							var fabricNo = "${order.productFabricNo}"
+							//生地使用量
+							var fabricUsedMount = jQuery("#fabricUsedMount").val();
+							//出荷日
+							var shippingDate = jQuery("#shippingDate").val();
+							//積載日
+							var loadingDate = jQuery("#loadingDate").val();
+							//ステータス「生産終了」
+							var makerFactoryStatus = 'F2'; 
+							//バージョン
+							var orderVersion = "${order.version}";
+							window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+						  }
+					})
+				  }
+			})
+	}
+	else{
+		swal({
+			  text: getMsg('msg077'),
+			  icon: "info",
+			  buttons: ["キャンセル", true],
+			}).then((isConfirm) => {
+			  if (isConfirm) {
 				//注文ID
-				var orderId = "${order.orderId}";
-				//商品情報_生地番号
-				var fabricNo = "${order.productFabricNo}"
-				//生地使用量
-				var fabricUsedMount = jQuery("#fabricUsedMount").val();
-				//出荷日
-				var shippingDate = jQuery("#shippingDate").val();
-				//積載日
-				var loadingDate = jQuery("#loadingDate").val();
-				//ステータス「生産終了」
-				var makerFactoryStatus = 'F2'; 
-				//バージョン
-				var orderVersion = "${order.version}";
-				window.location.href= contextPath + "/orderDetail/saveOrChangeValue/" + orderId + "/" + fabricNo + "/" + fabricUsedMount + "/" + shippingDate + "/" + loadingDate + "/" + makerFactoryStatus + "/" + orderVersion;
-			  }
-		})
+					var orderId = "${order.orderId}";
+					//商品情報_生地番号
+					var fabricNo = "${order.productFabricNo}"
+					//生地使用量
+					var fabricUsedMount = jQuery("#fabricUsedMount").val();
+					//出荷日
+					var shippingDate = jQuery("#shippingDate").val();
+					//積載日
+					var loadingDate = jQuery("#loadingDate").val();
+					//ステータス「生産終了」
+					var makerFactoryStatus = 'F2'; 
+					//バージョン
+					var orderVersion = "${order.version}";
+					window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+				  }
+			})
+	}
+	
 })
+
+jQuery("#ChangeOrderValue").click(function(){
+	//注文ID
+	var orderId = "${order.orderId}"
+	window.location.href= contextPath + "/orderDetail/orderDetailToOrderPo/" + orderId;
+})
+
 
 //下代価格を計算する
 jQuery("#nextGenerationCount").click(function(){
@@ -2635,16 +3242,36 @@ jQuery("#nextGenerationSave").on('click', function(){
 })
 
 //積載日初期値
-var loadingDateFirst = new Date("${order.loadingDate}");
-var loadingday = ("0" + loadingDateFirst.getDate()).slice(-2);
-var loadingmonth = ("0" + (loadingDateFirst.getMonth() + 1)).slice(-2);
-jQuery("#loadingDate").val(loadingDateFirst.getFullYear() + "-" + loadingmonth + "-" + loadingday);
+jQuery('#loadingDate').datepicker({
+	  format: 'yyyy/mm/dd',
+	  clearBtn: true,
+	  language: 'ja',
+	  todayBtn: "linked",
+	  orientation: 'buttom auto',
+	  autoclose: true
+	});
+var loadingDate = "${order.loadingDate}";
+if (loadingDate != null && loadingDate != '') {
+	jQuery("#loadingDate").val(
+			dateFormat(loadingDate));
+	jQuery("#loadingDate").datepicker("update", dateFormat(loadingDate));
+}
 
 //出荷日初期値
-var shippingDateFirst = new Date("${order.shippingDate}");
-var shippingday = ("0" + shippingDateFirst.getDate()).slice(-2);
-var shippingmonth = ("0" + (shippingDateFirst.getMonth() + 1)).slice(-2);
-jQuery("#shippingDate").val(shippingDateFirst.getFullYear() + "-" + shippingmonth + "-" + shippingday);
+jQuery('#shippingDate').datepicker({
+  format: 'yyyy/mm/dd',
+  clearBtn: true,
+  language: 'ja',
+  todayBtn: "linked",
+  orientation: 'buttom auto',
+  autoclose: true
+});
+var shippingDate = "${order.shippingDate}";
+if (shippingDate != null && shippingDate != '') {
+	jQuery("#shippingDate").val(
+			dateFormat(shippingDate));
+	jQuery("#shippingDate").datepicker("update", dateFormat(shippingDate));
+}
 
 //積載日のFormat
 var loadingDateFormat = "${order.loadingDate}";
@@ -2811,6 +3438,8 @@ else{
 function pdfDownload(sign){
 	var orderId = "${order.orderId}";
 	var authority = "${authority}";
+	var makerFactoryStatus = "${order.makerFactoryStatus}";
+	var productItem = jQuery("#product_item").text();
 
 	jQuery.ajax({
 	    url:contextPath + "/pdfFile/poPdfFileCheck",
@@ -2820,29 +3449,31 @@ function pdfDownload(sign){
 	    success:function(result){
 	    	var shippingNumber = result.shippingNumber;
 	    	var hostTransmitARow = result.hostTransmitARow;
-	    	if((shippingNumber == null || "" == shippingNumber) && sign == "1"){
+	    	if((shippingNumber == null || "" == shippingNumber) && "1" == sign){
+		    	//"1" == sign：注文内容確認書
 	    		//msg113 = {0}が未連携のためＰＤＦを生成できません。
 				appendAlert('errormssage', getMsgByOneArg('msg113', '出荷番号'));
-		    }else if((hostTransmitARow == null || "" == hostTransmitARow) && sign == "1"){
+		    }else if((hostTransmitARow == null || "" == hostTransmitARow) && "1" == sign){
+		    	//"1" == sign：注文内容確認書
 		    	//msg113 = {0}が未連携のためＰＤＦを生成できません。
 				appendAlert('errormssage', getMsgByOneArg('msg113', 'A行'));
 			}else{
-				if("01" == authority || "02" == authority){
+				if(("01" == authority || "02" == authority) && "F0" == makerFactoryStatus){
+					//"01" == authority：店舗。"02" == authority：商品部
+					//"F0" == makerFactoryStatus：生産開始前
 					// 確認メッセージ
 					swal({
 						// 注文確定が完了していない場合、PDFと注文内容に差異が出る可能性があります。PDF出力後、速やかに注文確定を行ってください。
 						text: getMsg('msg112'),
 						icon: "info",
-						dangerMode: true,
-						closeOnEsc: false,
 					})
 					.then((isConfirm) => {
 						if (isConfirm) {
-							window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+							window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId+"&productItem="+productItem;
 						}
 					});
 				}else{
-					window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+					window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId+"&productItem="+productItem;
 				}
 			}
 	    }

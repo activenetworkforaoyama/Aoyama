@@ -351,10 +351,37 @@ function requiredShopCodeValidator(value) {
 
 //入力の店舗名のチェック
 function requiredShopNameValidator(value) {
-	if (value == "" || value.length > 20 || charactersCheck(value)) {
+	if (value == "") {
 		appendAlertDel('errorMessage');
 		appendAlertDel('successMessage');
 		appendAlert('errorMessage', getMsgByTwoArgs('msg097', '店舗名', '20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
+	else if(value.length > 20 && !charactersCheck(value)){
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		appendAlert('errorMessage', getMsgByTwoArgs('msg097', '店舗名', '20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
+	else if(value.length > 20 && charactersCheck(value)){
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		appendAlert('errorMessage', getMsgByTwoArgs('msg119', '店舗名', '20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
+	else if(charactersCheck(value)){
+		appendAlertDel('errorMessage');
+		appendAlertDel('successMessage');
+		appendAlert('errorMessage', getMsgByOneArg('msg120'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);
@@ -466,7 +493,7 @@ $(document).ready(function() {
 	var columns = [
 	 {id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false},
 	 {id: 'shop_code', name: '店舗コード', field: 'shopCode', maxWidth: 120,formatter: colorFormatter, editor: Slick.Editors.DisabledText, sortable: true,validator: requiredShopCodeValidator},
-	 {id: 'shop_name', name: '店舗名', field: 'shopName', maxWidth: 440, formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true,validator: requiredShopNameValidator},
+	 {id: 'shop_name', name: '店舗名', field: 'shopName', formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true,validator: requiredShopNameValidator},
 	 {id: 'store_brand_code', name: '業態', field: 'storeBrandCode', maxWidth: 120, formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true,validator: requiredStoreBrandCodeValidator},
 	 {id: "del_type", name: "削除", maxWidth: 80, cssClass: "cell-del-type", field: "delType", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true}
 	];
@@ -631,8 +658,6 @@ $(document).ready(function() {
 			  text: getMsgByOneArg('msg025','店舗情報'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
@@ -856,18 +881,20 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  text: getMsgByOneArg('msg017','編集内容'),
+			  text: getMsgByOneArg('msg017','編集'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
 				  // 検索します
 				appendAlertDel('errorMessage');
 				appendAlertDel('successMessage');
-				$("#select_button").click();
+				$("#select_button").removeAttr("disabled");
+				$("#clear_button").removeAttr("disabled");
+				$("#clear_button").click();
+				$("#doKoShin").hide();
+				$("#shopListDiv").hide();
 			  }
 			});
 

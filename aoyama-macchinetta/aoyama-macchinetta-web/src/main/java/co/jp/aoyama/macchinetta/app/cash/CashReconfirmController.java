@@ -99,10 +99,12 @@ public class CashReconfirmController {
 		cash.setCustCd(cashForm.getCustCd());
 		cash.setOrderAmount(cashForm.getOrderAmount());
 		List<CashInfo> cashInfoList = cashForm.getHelpCashForm();
+		List<CashInfo> orderList = cashForm.getOrderIdList();
 		String json = new Gson().toJson(cashInfoList);
 		List<CashInfo> cashInfoUpdList = new ArrayList<CashInfo>();
 		long totalPrice= Long.parseLong(cashTotalPrice);
 		long discountPrice = 0;
+		int lastMount = 0;
 		//バージョン管理用
 		short version = 1;
 		for(int i = 0;i<cashInfoList.size();i++) {
@@ -115,11 +117,21 @@ public class CashReconfirmController {
 				CashInfo cashInfo = cashInfoService.selectOrderByOrderId(cashInfoList.get(i).getOrderId());
 				long cashDiscountPrice = cashInfoList.get(i).getCashDiscountPrice();
 				//会計後商品金額（税込み）
-				if(discountPrice != 0) {
-					long discount = Math.round((totalPrice*cashDiscountPrice) / (discountPrice));
-					cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+				if(i == cashForm.getHelpCashForm().size() -1 ) {
+					if(discountPrice != 0) {
+						long discount = totalPrice - lastMount;
+						cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+					}else {
+						cashInfo.setCashContailTaxProductPrice(0);
+					}
 				}else {
-					cashInfo.setCashContailTaxProductPrice(0);
+					if(discountPrice != 0) {
+						long discount = (totalPrice*cashDiscountPrice) / (discountPrice);
+						cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+						lastMount += Integer.parseInt(String.valueOf(discount));
+					}else {
+						cashInfo.setCashContailTaxProductPrice(0);
+					}
 				}
 				if(cashInfo.getVersion().equals(cashInfoList.get(i).getVersion())) {
 					//値引き後金額
@@ -160,15 +172,35 @@ public class CashReconfirmController {
 		//会計修正更新の場合
 		else {
 			String nowVersion = String.valueOf(cashId.getVersion());
+			if(orderList.size() != 0) {
+				for(int i = 0; i < orderList.size(); i ++) {
+					CashInfo orderInfo = cashInfoService.selectOrderByOrderId(orderList.get(i).getOrderId());
+					orderInfo.setCashId("");
+					orderInfo.setUpdatedAt(new Date());
+					orderInfo.setUpdatedUserId(sessionContent.getUserId());
+					cashInfoUpdList.add(orderInfo);
+				}
+			}
+
 			for(int i = 0;i<cashForm.getHelpCashForm().size();i++) {
 				CashInfo cashInfo = cashInfoService.selectOrderByOrderId(cashInfoList.get(i).getOrderId());
 				long cashDiscountPrice = cashInfoList.get(i).getCashDiscountPrice();
 				//会計後商品金額（税込み）
-				if(discountPrice != 0) {
-					long discount = Math.round((totalPrice*cashDiscountPrice) / (discountPrice));
-					cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+				if(i == cashForm.getHelpCashForm().size() -1 ) {
+					if(discountPrice != 0) {
+						long discount = totalPrice - lastMount;
+						cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+					}else {
+						cashInfo.setCashContailTaxProductPrice(0);
+					}
 				}else {
-					cashInfo.setCashContailTaxProductPrice(0);
+					if(discountPrice != 0) {
+						long discount = (totalPrice*cashDiscountPrice) / (discountPrice);
+						cashInfo.setCashContailTaxProductPrice((Integer.parseInt(String.valueOf(discount))));
+						lastMount += Integer.parseInt(String.valueOf(discount));
+					}else {
+						cashInfo.setCashContailTaxProductPrice(0);
+					}
 				}
 				if(cashInfo.getVersion().equals(cashInfoList.get(i).getVersion())) {
 					//値引き後金額
@@ -192,10 +224,11 @@ public class CashReconfirmController {
 				//cashInfoService.updateOrderByOrderId(cashInfo);
 			}
 			//排他制御
-			if(cashFormVersion.equals(nowVersion) && cashInfoUpdList.size() == cashInfoList.size()) {
+			if(cashFormVersion.equals(nowVersion) && cashInfoUpdList.size() != 0) {
 				//cashService.updateCashInfoByPrimaryKey(cashInfoUpdList);
 				// 01：会計済
 				cashId.setCashStatus(CASH_STATUST01);
+				cashId.setOrderAmount(cashForm.getOrderAmount());
 				cashId.setUpdatedAt(new Date());
 				cashId.setUpdatedUserId(sessionContent.getUserId());
 				//注文合計

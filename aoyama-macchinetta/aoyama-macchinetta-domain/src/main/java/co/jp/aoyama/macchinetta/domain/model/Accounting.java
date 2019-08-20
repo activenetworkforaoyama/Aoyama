@@ -51,6 +51,8 @@ public class Accounting implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
+    
+    private boolean isAccount;
 
 	public String getCashId() {
 		return cashId;
@@ -219,5 +221,12 @@ public class Accounting implements Serializable {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
+	public boolean getIsAccount() {
+		return isAccount;
+	}
 
+	public void setIsAccount(boolean isAccount) {
+		this.isAccount = isAccount;
+	}
 }

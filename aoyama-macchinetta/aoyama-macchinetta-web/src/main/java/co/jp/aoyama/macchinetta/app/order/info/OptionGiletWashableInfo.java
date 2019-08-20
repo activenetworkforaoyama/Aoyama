@@ -5,6 +5,12 @@ import java.util.Map;
 
 public class OptionGiletWashableInfo implements Serializable {
 	private static final long serialVersionUID = -4719132036199041997L;
+	
+	//GILETモデル
+	private String wgGiletModel;
+	
+	private Map<String, String> wgGiletModelMap;
+	
 	// 胸ポケット
 	private String wgBreastPkt;
 
@@ -20,7 +26,7 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgWaistPktSpecMap;
 
-	// AMFステッチ
+	// ステッチ種類
 	private String wgStitch;
 
 	private Map<String, String> wgStitchMap;
@@ -30,10 +36,20 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgStitchModifyMap;
 
-	// ステッチ箇所変更箇所
+	// ステッチ変更箇所
 	private String wgStitchModifyPlace;
 
 	private Map<String, String> wgStitchModifyPlaceMap;
+	
+	//ダブルステッチ変更
+	private String wgDStitchModify;
+	
+	private Map<String, String> wgDStitchModifyMap;
+	
+	//ダブルステッチ変更箇所
+	private String wgDStitchModifyPlace;
+	
+	private Map<String, String> wgDStitchModifyPlaceMap;
 
 	// AMF色指定
 	private String wgAmfColor;
@@ -150,16 +166,25 @@ public class OptionGiletWashableInfo implements Serializable {
 	private String wgBackLiningMate;
 
 	private Map<String, String> wgBackLiningMateMap;
+	
+	// 背裏地素材品番
+	private String wgBackLiningMateStkNo;
 
 	// 内側裏地素材
 	private String wgInsideLiningMate;
 
 	private Map<String, String> wgInsideLiningMateMap;
+	
+	// 内側裏地素材品番
+	private String wgInsideLiningMateStkNo;
 
-	// フロント釦
+	// 釦素材
 	private String wgFrontBtnMate;
 
 	private Map<String, String> wgFrontBtnMateMap;
+	
+	//釦素材品番
+	private String wgFrontBtnMateStkNo;
 
 	// バックベルト
 	private String wgBackBelt;
@@ -667,5 +692,76 @@ public class OptionGiletWashableInfo implements Serializable {
 		this.wgWatchChainMap = wgWatchChainMap;
 	}
 
+	public String getWgGiletModel() {
+		return wgGiletModel;
+	}
+
+	public void setWgGiletModel(String wgGiletModel) {
+		this.wgGiletModel = wgGiletModel;
+	}
+
+	public Map<String, String> getWgGiletModelMap() {
+		return wgGiletModelMap;
+	}
+
+	public void setWgGiletModelMap(Map<String, String> wgGiletModelMap) {
+		this.wgGiletModelMap = wgGiletModelMap;
+	}
+
+	public String getWgDStitchModify() {
+		return wgDStitchModify;
+	}
+
+	public void setWgDStitchModify(String wgDStitchModify) {
+		this.wgDStitchModify = wgDStitchModify;
+	}
+
+	public Map<String, String> getWgDStitchModifyMap() {
+		return wgDStitchModifyMap;
+	}
+
+	public void setWgDStitchModifyMap(Map<String, String> wgDStitchModifyMap) {
+		this.wgDStitchModifyMap = wgDStitchModifyMap;
+	}
+
+	public String getWgDStitchModifyPlace() {
+		return wgDStitchModifyPlace;
+	}
+
+	public void setWgDStitchModifyPlace(String wgDStitchModifyPlace) {
+		this.wgDStitchModifyPlace = wgDStitchModifyPlace;
+	}
+
+	public Map<String, String> getWgDStitchModifyPlaceMap() {
+		return wgDStitchModifyPlaceMap;
+	}
+
+	public void setWgDStitchModifyPlaceMap(Map<String, String> wgDStitchModifyPlaceMap) {
+		this.wgDStitchModifyPlaceMap = wgDStitchModifyPlaceMap;
+	}
+
+	public String getWgBackLiningMateStkNo() {
+		return wgBackLiningMateStkNo;
+	}
+
+	public void setWgBackLiningMateStkNo(String wgBackLiningMateStkNo) {
+		this.wgBackLiningMateStkNo = wgBackLiningMateStkNo;
+	}
+
+	public String getWgInsideLiningMateStkNo() {
+		return wgInsideLiningMateStkNo;
+	}
+
+	public void setWgInsideLiningMateStkNo(String wgInsideLiningMateStkNo) {
+		this.wgInsideLiningMateStkNo = wgInsideLiningMateStkNo;
+	}
+
+	public String getWgFrontBtnMateStkNo() {
+		return wgFrontBtnMateStkNo;
+	}
+
+	public void setWgFrontBtnMateStkNo(String wgFrontBtnMateStkNo) {
+		this.wgFrontBtnMateStkNo = wgFrontBtnMateStkNo;
+	}
 	
 }

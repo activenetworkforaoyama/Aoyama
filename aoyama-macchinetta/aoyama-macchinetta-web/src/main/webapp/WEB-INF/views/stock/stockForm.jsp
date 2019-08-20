@@ -224,14 +224,14 @@
 		<!-- card -->
 	</div>
 	<div id="slick" style="display: none">
-	<div class="row">
+		<div class="row">
 			<div class="col-grid">
 				<div id="gridContainer">
 					<div id="myGrid" style="width: 100%"></div>
 				</div>
 			</div>
 		</div>
-		</div>
+	</div>
 </div>
 <!-- .animated -->
 	<!-- <div id="slick" style="display: none">
@@ -433,8 +433,6 @@ function update_button(j){
 		  text: getMsgByOneArg('msg025', '在庫情報'),
 		  icon: "info",
 		  buttons: ["キャンセル", true],
-		  dangerMode: true,
-		  closeOnEsc: false,
 		  }).then((isConfirm) => {
 			  if(isConfirm){
 				  appendAlertDel('errorMassageIno');
@@ -455,34 +453,37 @@ function update_button(j){
 						}
 					}
 					updData1 = "[" + JSON.stringify(updData) + "]";
-					$.ajax({
-					    type:"post",
-					    url: contextPath + "/stock/update",
-					    data:updData1,
-					    dataType:"json",
-					    contentType:"application/json",
-					    success:function(result){
-						if(result == "1"){
-							appendAlert("errorMassageIno",getMsg('msg033'));
-							}
-						else if(result == "0"){
-							appendAlert("errorMassageIno",getMsgByTwoArgs('msg108',"在庫情報","在庫情報"));
-							}
-						else{
-							if($("#errorMassageIno").text() == ""){
-								appendAlert("successMessage",getMsgByOneArg('msg044', "在庫情報"));
+					if($("#errorMassageIno").text() == ""){
+						$.ajax({
+						    type:"post",
+						    url: contextPath + "/stock/update",
+						    data:updData1,
+						    dataType:"json",
+						    contentType:"application/json",
+						    success:function(result){
+							if(result == "1"){
+								appendAlert("errorMassageIno",getMsg('msg033'));
 								}
-							
-							
-							e = document.createEvent("MouseEvents");
-							
-							e.initEvent("click", true, true);
-							e.eventType = 'message';
+							else if(result == "0"){
+								appendAlert("errorMassageIno",getMsgByTwoArgs('msg108',"在庫情報","在庫情報"));
+								}
+							else{
+								if($("#errorMassageIno").text() == ""){
+									appendAlert("successMessage",getMsgByOneArg('msg044', "在庫情報"));
+									}
+								
+								
+								e = document.createEvent("MouseEvents");
+								
+								e.initEvent("click", true, true);
+								e.eventType = 'message';
 
-							document.getElementById("select_button").dispatchEvent(e);														
-							}  
-					    }
-					});
+								document.getElementById("select_button").dispatchEvent(e);														
+								}  
+						    }
+						});
+					}
+					
 				  }
 			});
 		
@@ -537,6 +538,9 @@ $(document).ready(function() {
 			    	if(makerName == result[key].makerCode){
 			    		$("#factoryName").append(jQuery('<option />').val(result[key].factoryCode).text(result[key].factoryName));
 				    }
+				    if(makerName == ""){
+				    	$("#factoryName").append(jQuery('<option />').val(result[key].factoryCode).text(result[key].factoryName));
+					}
 				 }
 			});	
 		});
@@ -634,11 +638,17 @@ $(document).ready(function() {
 	};
 
 	$("#select_button").click(function() {
+		var winWidth = 0;
+		if (window.innerWidth){
+			winWidth = window.innerWidth;
+		}
+		$("#slick").width(winWidth - 290);
 		
 		changeRowNum.length = 0;
 		cRNum = 0;
 		errorRowNum.length = 0;
 		eRNum = 0;
+		var orderPattern = '${sessionContent.category}';
 		var fabricNo = $("#fabricNo").val();
 		var color = $("#color").val();
 		var pattern = $("#pattern").val();
@@ -651,7 +661,7 @@ $(document).ready(function() {
 		$.ajax({
 			url : contextPath + "/stock/fuzzyQuery",
 			type : 'get',
-			data : {"fabricNo" : fabricNo,"color" : color,"pattern" : pattern,"brandName" : brandName,"retailPrice" : retailPrice,"retailPriceTo" : retailPriceTo,"makerName" : makerName,"factoryName" : factoryName}
+			data : {"orderPattern" : orderPattern,"fabricNo" : fabricNo,"color" : color,"pattern" : pattern,"brandName" : brandName,"retailPrice" : retailPrice,"retailPriceTo" : retailPriceTo,"makerName" : makerName,"factoryName" : factoryName}
 		}).then(function(result) {
 			appendAlertDel('errorMassageIno');
 			if(Object.keys(result).length  == 0){
@@ -666,6 +676,7 @@ $(document).ready(function() {
 					var d = (data[i] = {});
 					d["id"] = "id_" + i;
 					d["num"] = i + 1;
+					d["orderPattern"] = result[i].orderPattern;
 					d["fabricNo"] = result[i].fabricNo;
 					d["fabricNoCP"] = result[i].fabricNo+ "-" + result[i].color + result[i].pattern;
 					d["brandName"] = result[i].brandName;

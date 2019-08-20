@@ -62,7 +62,7 @@
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 jQuery('#backButton').on('click', function() {
 	if("${status}" == '02' || "${status}" == 'fromAccounting'){
-		window.location.href= contextPath + "/accounting/init";
+		window.location.href= contextPath + "/accounting/gotoAccounting";
 		}
 	else if ("${status}" == 'fromOrderList'){
 		window.location.href= contextPath + "/orderlist/gotoOrderlist";

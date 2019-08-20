@@ -134,7 +134,7 @@ table.dataTable tbody td {
 									<label class=" form-control-label">内商品合計</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<strong class="text-right">&yen;<output id="cash_except_tax_price" name="cashExceptTaxPrice"></output>
+									<strong class="text-right">￥<output id="cash_except_tax_price" name="cashExceptTaxPrice"></output>
 									</strong>
 										<input id="except_tax_price" type="hidden" name="cashExceptTaxPrice" value="" />
 										<!-- <input id="cash_except_tax_price" name="cashExceptTaxPrice" style="vertical-align: middle; border-width: 0; BACKGROUND-COLOR: transparent; text-align:right;" readonly> -->
@@ -146,7 +146,7 @@ table.dataTable tbody td {
 									<label class=" form-control-label">内消費税</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<strong>&yen;<output id="cash_tax_amount"
+									<strong>￥<output id="cash_tax_amount"
 											name="cashTaxAmount"></output></strong> <input id="tax_amount"
 										type="hidden" name="cashTaxAmount" value="" />
 									<!-- <strong>
@@ -177,9 +177,9 @@ table.dataTable tbody td {
 									<label class=" form-control-label">内商品合計</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<%-- <strong>&yen;<output id="cashExceptTax_price" name="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
+									<%-- <strong>￥<output id="cashExceptTax_price" name="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
 									<input id="cash_exceptTaxPrice" type="hidden" name="cashExceptTaxPrice" value="" /> --%>
-									<strong class="text-right">&yen;<output id="cash_except_tax_price" name="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
+									<strong class="text-right">￥<output id="cash_except_tax_price" name="cashExceptTaxPrice">${cashForm.cashExceptTaxPrice}</output></strong>
 									<input id="except_tax_price" type="hidden" name="cashExceptTaxPrice" value="" />
 								</div>
 								<div class="col-12 col-md-4"></div>
@@ -189,9 +189,9 @@ table.dataTable tbody td {
 									<label class=" form-control-label">内消費税</label>
 								</div>
 								<div class="col-12 col-md-4 text-right">
-									<%-- <strong>&yen;<output id="cashTax_amount" name="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
+									<%-- <strong>￥<output id="cashTax_amount" name="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
 									<input id="cash_taxAmount" type="hidden" name="cashTaxAmount" value="" /> --%>
-									<strong>&yen;<output id="cash_tax_amount" name="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
+									<strong>￥<output id="cash_tax_amount" name="cashTaxAmount">${cashForm.cashTaxAmount}</output></strong>
 									<input id="tax_amount" type="hidden" name="cashTaxAmount" value="" />
 								</div>
 								<div class="col-12 col-md-4"></div>
@@ -248,7 +248,7 @@ table.dataTable tbody td {
 													maxlength="9"
 													class="input-sm form-control-sm form-control text-right">
 											</div></td>
-										<td class="text-right">&yen;<output id="cash_product_price_${row.index}"></output>
+										<td class="text-right">￥<output id="cash_product_price_${row.index}"></output>
 											<input id="cash_productPrice_${row.index}" type="hidden" name="helpCashForm[${row.index}].cashProductPrice" value="" />
 											<%-- <input id="cash_product_price_${row.index}" name="helpCashForm[${row.index}].cashProductPrice" value="" readonly style="vertical-align: middle; border-width: 0; BACKGROUND-COLOR: transparent;" > --%>
 										</td>
@@ -286,7 +286,7 @@ table.dataTable tbody td {
 											name="helpCashForm[${row.index}].orderId"
 											value="${cash.orderId }" readonly
 											style="border-width: 0; BACKGROUND-COLOR: transparent;" /></td>
-										<td class="text-right" style="width:25%;">&yen;<output id="totalPrice_${row.index}">${cash.totalPrice}</output>
+										<td class="text-right" style="width:25%;">￥<output id="totalPrice_${row.index}">${cash.totalPrice}</output>
 											<input type="hidden" name="helpCashForm[${row.index}].totalPrice" value="${cash.totalPrice }"/> 
 											<%-- <input name="helpCashForm[${row.index}].totalPrice" value="${cash.totalPrice}" readonly style=" border-width: 0; BACKGROUND-COLOR: transparent;"/> --%>
 										</td>
@@ -296,7 +296,7 @@ table.dataTable tbody td {
 													maxlength="9" class="input-sm form-control-sm form-control text-right">
 											
 										</td>
-										<td class="text-right" style="width:25%;">&yen;<output id="cash_product_price_${row.index}">${cash.cashProductPrice}</output>
+										<td class="text-right" style="width:25%;">￥<output id="cash_product_price_${row.index}">${cash.cashProductPrice}</output>
 											<%-- <input id="cash_product_price_${row.index}" name="helpCashForm[${row.index}].cashProductPrice" value="${cash.cashProductPrice}" readonly style="vertical-align: middle; border-width: 0; BACKGROUND-COLOR: transparent;" > --%>
 											
 											<input id="cash_productPrice_${row.index}" type="hidden" name="helpCashForm[${row.index}].cashProductPrice" value="" />
@@ -409,31 +409,19 @@ if(backFlag == "orderFrom" || backFlag == "cashInit"){
 		}
 }
 	
-	/* if(backFlag == "cashGoBack"){
-		var cashExceptTaxPrice = "${cashForm.cashExceptTaxPrice}";
-		jQuery("#cash_except_tax_price").val(cashExceptTaxPrice);
-		var cashTaxAmount = "${cashForm.cashTaxAmount}";
-		alert(cashTaxAmount)
-		jQuery("#cash_tax_amount").val(cashTaxAmount);
-		} */
+	if(backFlag == "cashGoBack"){
+		for(var i = 0;i<=obj.length-1;i++){
+			jQuery("#totalPrice_"+i).val(formatMoney(jQuery("#totalPrice_"+i).val(), 0, ""));
+			if($("#cash_product_price_"+i).val() == null || $("#cash_product_price_"+i).val() == undefined 
+					|| $("#cash_product_price_"+i).val() == ""){
+				$("#cash_product_price_"+i).val("0");
+				}else{
+					jQuery("#cash_product_price_"+i).val(formatMoney($("#cash_product_price_"+i).val(), 0, ""))
+				}
+			}
+	} 
 		
-	/* var flag_1 = localStorage.getItem("key_1");
-	if(flag_1 == 'cashRecon'){
-		var cashTotalPrice = localStorage.getItem("cashTotalPrice");
-		var cashExceptTaxPrice = localStorage.getItem("cashExceptTaxPrice");
-		jQuery("#cash_except_tax_price").val(cashExceptTaxPrice);
-		var cashTaxAmount = localStorage.getItem("cashTaxAmount");
-		jQuery("#cash_tax_amount").val(cashTaxAmount);
-		var cashDiscountPrice = JSON.parse(localStorage.getItem("cashDiscountPrice"));
-		var cashProductPrice = JSON.parse(localStorage.getItem("cashProductPrice"));
-		for(var i = 0;i<=cashDiscountPrice.length-1;i++){
-			jQuery("#cash_discount_price_"+i).val(cashDiscountPrice[i]);
-			}
-		for(var i = 0;i<=cashProductPrice.length-1;i++){
-			jQuery("#cash_product_price_"+i).val(formatMoney(cashProductPrice[i], 0, ""));
-			}
-		localStorage.clear();
-		} */
+
 		
 });
 
@@ -510,16 +498,25 @@ function imageCheck(){
 	var except_tax = jQuery("#cash_except_tax_price").val().replace(/\,/g, "");
 	var sum = 0; 
 	var zero = 0;
+	var totalDiscount = 0;
+	var lastDiscount = 0;
 	for(var i = 0;i<=obj.length-1;i++){
 		zero = jQuery("#cash_discount_price_"+i).val();
 		count += Number(zero);
 		}
 	for(var i = 0;i<=obj.length-1;i++){
 		discount = jQuery("#cash_discount_price_"+i).val();
-		sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
 		if(total != null && total != '' && discount != null && discount != '' && count != 0){
-			jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
-			jQuery("#cash_productPrice_"+i).val(sum);
+			if(i == obj.length-1){
+				lastDiscount = Number(except_tax) - totalDiscount;
+				jQuery("#cash_product_price_"+i).val(formatMoney(lastDiscount, 0, ""));
+				jQuery("#cash_productPrice_"+i).val(lastDiscount);
+			}else{
+				sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
+				totalDiscount += sum;
+				jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
+				jQuery("#cash_productPrice_"+i).val(sum);
+				}
 			}else{
 				jQuery("#cash_product_price_"+i).val('0');
 				jQuery("#cash_productPrice_"+i).val('0');
@@ -577,16 +574,25 @@ for(var i = 0;i<=obj.length-1;i++){
 		var except_tax = jQuery("#cash_except_tax_price").val().replace(/\,/g, "");
 		var sum = 0; 
 		var zero = 0;
+		var totalDiscount = 0;
+		var lastDiscount = 0;
 		for(var i = 0;i<=obj.length-1;i++){
 			zero = jQuery("#cash_discount_price_"+i).val();
 			count += Number(zero);
 			}
 		for(var i = 0;i<=obj.length-1;i++){
 			discount = jQuery("#cash_discount_price_"+i).val();
-			sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
 			if(total != null && total != '' && discount != null && discount != '' && count != 0){
-				jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
-				jQuery("#cash_productPrice_"+i).val(sum);
+				if(i == obj.length-1){
+					lastDiscount = Number(except_tax) - totalDiscount;
+					jQuery("#cash_product_price_"+i).val(formatMoney(lastDiscount, 0, ""));
+					jQuery("#cash_productPrice_"+i).val(lastDiscount);
+				}else{
+					sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
+					totalDiscount += sum;
+					jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
+					jQuery("#cash_productPrice_"+i).val(sum);
+					}
 				}else{
 					jQuery("#cash_product_price_"+i).val('0');
 					jQuery("#cash_productPrice_"+i).val('0');
@@ -627,6 +633,8 @@ jQuery("#cash_total_price").on('input',function(){
 	var except_tax = jQuery("#cash_except_tax_price").val().replace(/\,/g, "");
 	var sum = 0; 
 	var zero = 0;
+	var totalDiscount = 0;
+	var lastDiscount = 0;
 	for(var i = 0;i<=obj.length-1;i++){
 		zero = jQuery("#cash_discount_price_"+i).val();
 		count += Number(zero);
@@ -634,14 +642,22 @@ jQuery("#cash_total_price").on('input',function(){
 	for(var i = 0;i<=obj.length-1;i++){
 		discount = jQuery("#cash_discount_price_"+i).val();
 		if(total != null && total != '' && discount != null && discount != '' && count != 0){
-			sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
-			jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
-			jQuery("#cash_productPrice_"+i).val(sum);
-			}
-		else{
+			if(i == obj.length-1){
+				lastDiscount = Number(except_tax) - totalDiscount;
+				jQuery("#cash_product_price_"+i).val(formatMoney(lastDiscount, 0, ""));
+				jQuery("#cash_productPrice_"+i).val(lastDiscount);
+			}else{
+				sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
+				totalDiscount += sum;
+				jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
+				jQuery("#cash_productPrice_"+i).val(sum);
+				}
+			
+			
+		}else{
 			jQuery("#cash_product_price_"+i).val('0');
 			jQuery("#cash_productPrice_"+i).val('0');
-			}
+		}
 	}
 	
 });
@@ -673,7 +689,7 @@ jQuery('#backButton').on('click', function() {
 		window.location.href= contextPath + "/orderlist/gotoOrderlist";
 		}
 	else{
-		window.location.href= contextPath + "/accounting/init";
+		window.location.href= contextPath + "/accounting/gotoAccounting";
 		}
 });
 //金額フォーマット

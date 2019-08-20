@@ -1759,8 +1759,7 @@
         <if test="condition.authority == '03'">
         <![CDATA[
         AND
-            (tsc_status = 'T1' OR
-             tsc_status = 'T2' OR
+            (tsc_status = 'T2' OR
              tsc_status = 'T3' OR
              tsc_status = 'T4' OR 
              tsc_status = 'T5' OR 
@@ -1830,6 +1829,33 @@
         AND
             shop_code = #{condition.belongCode}
         ]]>
+        </if>
+        
+        <if test="condition.isOtherShop and condition.authority == '01'">
+        	<if test="condition.tscStatus == 'T0' or condition.tscStatus == 'T1'">
+        	<![CDATA[
+        	AND
+            	shop_code = #{condition.belongCode}
+        	AND
+        		(tsc_status = 'T0' OR tsc_status = 'T1')
+        	]]>
+        	</if>
+        	<if test="condition.tscStatus == '' or condition.tscStatus == 'T2' or 
+        	          condition.tscStatus == 'T3' or
+        	          condition.tscStatus == 'T4' or
+        	          condition.tscStatus == 'T5' or
+        	          condition.tscStatus == 'T6' or
+        	          condition.tscStatus == 'T7'">
+        	<![CDATA[
+        	AND
+            (tsc_status = 'T2' OR
+             tsc_status = 'T3' OR
+             tsc_status = 'T4' OR 
+             tsc_status = 'T5' OR 
+             tsc_status = 'T6' OR 
+             tsc_status = 'T7' )
+        	]]>
+        	</if>
         </if>
 
     </sql>

@@ -373,17 +373,38 @@ function requiredMakerCodeValidator(value) {
 
 //入力の工場名の判定
 function requiredFactoryNameValidator(value) {
-	if (value == "" || value.length > 20 || charactersCheck(value)) {
+	if (value == "") {
 		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '工場名','20'));
 		$("#select_button").attr("disabled",true);
 		$("#clear_button").attr("disabled",true);
 		$("#update_button").attr("disabled",true);
 		return {valid: false};
-	  }
+	}
+	else if(value.length > 20 && !charactersCheck(value)){
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg097', '工場名','20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
+	else if(value.length > 20 && charactersCheck(value)){
+		appendAlert('errorMassageIno', getMsgByTwoArgs('msg119', '工場名','20'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
+	else if(charactersCheck(value)){
+		appendAlert('errorMassageIno', getMsgByOneArg('msg120'));
+		$("#select_button").attr("disabled",true);
+		$("#clear_button").attr("disabled",true);
+		$("#update_button").attr("disabled",true);
+		return {valid: false};
+	}
 	 else {
 	 	return {valid: true};
-	  }
 	}
+}
 
 function comparer(a, b) {
 	  var x = a[sortcol], y = b[sortcol];
@@ -433,7 +454,7 @@ $(document).ready(function() {
 	  	{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
 	    {id: 'factory_code', name: '工場コード', field: 'factoryCode',minWidth: 20, maxWidth: 140,formatter: colorFormatter, editor: Slick.Editors.DisabledText, sortable: true, validator: requiredFactoryCodeValidator},
 	    {id: 'maker_code', name: 'メーカーコード', field: 'makerCode',minWidth: 20, maxWidth: 200,formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredMakerCodeValidator},
-	    {id: 'factory_name', name: '工場名', field: 'factoryName',minWidth: 20, maxWidth: 340,formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredFactoryNameValidator},
+	    {id: 'factory_name', name: '工場名', field: 'factoryName',formatter: colorFormatter, editor: Slick.Editors.Text, sortable: true, validator: requiredFactoryNameValidator},
 		{id: "del_type", name: "削除", width: 80, minWidth: 20, maxWidth: 80, cssClass: "cell-del-type", field: "delType", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true, sortable: false}
  ];
   // (2) SlickGridの動作オプション
@@ -580,8 +601,6 @@ $(document).ready(function() {
 			  text: getMsgByOneArg('msg025', '工場情報'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			}).then((isConfirm) => {
 			  if (isConfirm) {
 				  appendAlertDel('errorMassageIno');
@@ -743,16 +762,18 @@ $(document).ready(function() {
 
 								grid.onCellChange.subscribe(function(e, args) {
 									if(args.item.delType){
-										deleteRowNum[dRNum] = args.item.num;
-										dRNum++;
-										dataView.updateItem(args.item.id, args.item);
+										//データ削除の場合、行号を記録する
+										dRNum = args.item.num;
+										deleteRowNum[dRNum - 1] = args.item.num;
 										}
-									else if(!args.item.delType){
+									else{
 										//データ変更の場合、行号を記録する
+										dRNum = args.item.num;
+										deleteRowNum[dRNum-1] = null;
 										changeRowNum[cRNum] = args.item.num;
 										cRNum++;
-										dataView.updateItem(args.item.id, args.item);
 										}
+									dataView.updateItem(args.item.id, args.item);
 								});
 
 								grid.onActiveCellChanged.subscribe(function(e, args) {
@@ -824,18 +845,20 @@ $(document).ready(function() {
 	$("#cancel_button").click(function(){
 		// 確認メッセージ
 		swal({
-			  text: getMsgByOneArg('msg017','編集内容'),
+			  text: getMsgByOneArg('msg017','編集'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
 				// 更新します
 				appendAlertDel('errorMassageIno');
 				appendAlertDel('successMessage');
-				$("#select_button").click();
+				$("#clear_button").removeAttr("disabled");
+				$("#select_button").removeAttr("disabled");
+				$("#clear_button").click();
+				$("#doKoShin").hide();
+				$("#factoryListDiv").hide();
 			  }
 			});
 	});

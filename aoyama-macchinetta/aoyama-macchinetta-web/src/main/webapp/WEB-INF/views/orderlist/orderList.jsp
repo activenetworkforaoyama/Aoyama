@@ -104,7 +104,7 @@
 							</div>
 							<div class="col-12 col-md-8">
 								<form:input path="orderId" type="text" id="orderId"
-									placeholder="注文ID"
+									placeholder=""
 									class="input-sm form-control-sm form-control"
 									/>
 							</div>
@@ -139,7 +139,6 @@
 										<form:select path="tscStatus" id="tscStatus"
 											class="form-control-sm form-control">
 											<form:option id="" value=""></form:option>
-											<form:option value="T1">取り置き</form:option>
 											<form:option value="T2">登録済</form:option>
 											<form:option value="T3">会計済</form:option>
 											<form:option value="T4">商品部承認済</form:option>
@@ -218,7 +217,7 @@
 								test="${sessionContent.authority == '01' or sessionContent.authority == '02' or sessionContent.authority == '03'}">
 								<div class="row form-group">
 									<div class="col col-md-4">
-										<label class=" form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 									<div class="col-12 col-md-8"></div>
 								</div>
@@ -232,11 +231,11 @@
 							<div class="col-12 col-md-8">
 								<div class="form-check-inline form-check">
 									<form:input path="productOrderdDateFrom"
-										id="productOrderdDateFrom" type="date" placeholder="承り日"
+										id="productOrderdDateFrom" type="text" placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 									&nbsp;〜&nbsp;
 									<form:input path="productOrderdDateTo"
-										id="productOrderdDateTo" type="date" placeholder="承り日"
+										id="productOrderdDateTo" type="text" placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 								</div>
 							</div>
@@ -252,11 +251,11 @@
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
 											<form:input path="custDeliverDateFrom"
-												id="custDeliverDateFrom" type="date" placeholder="名簿納期"
+												id="custDeliverDateFrom" type="text" placeholder="年/月/日"
 												class="input-sm form-control-sm form-control col-md-5" />
 											&nbsp;〜&nbsp;
 											<form:input path="custDeliverDateTo" id="custDeliverDateTo"
-												type="date" placeholder="名簿納期"
+												type="text" placeholder="年/月/日"
 												class="input-sm form-control-sm form-control col-md-5" />
 										</div>
 									</div>
@@ -267,7 +266,7 @@
 								<!-- 工場、倉庫　登録の場合　 　　「取消の注文を含む」を表示する-->
 								<div class="row form-group">
 									<div class="col col-md-4">
-										<label class=" form-control-label"></label>
+										<label class=" form-control-label">　</label>
 									</div>
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
@@ -288,7 +287,7 @@
 								<!-- 店舗、 商品部、メーカー　登録の場合　 　　「取消の注文を含む」を表示する-->
 								<div class="row form-group">
 									<div class="col col-md-4">
-										<label class=" form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 									<div class="col-12 col-md-8">
 										<div class="form-check-inline form-check">
@@ -309,7 +308,7 @@
 								<!-- 店舗、 商品部　登録の場合　 　　「工場自動連携失敗のみ」を表示する-->
 								<div class="row form-group">
 									<div class="col col-md-4">
-										<label class=" form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 									<div class="col-12 col-md-6">
 										<div class="form-check-inline form-check">
@@ -335,7 +334,7 @@
 							</div>
 							<div class="col-12 col-md-8">
 								<form:input path="custCd" type="text" id="custCd"
-									placeholder="会員番号"
+									placeholder=""
 									class="input-sm form-control-sm form-control"
 									/>
 							</div>
@@ -347,7 +346,7 @@
 							</div>
 							<div class="col-12 col-md-8">
 								<form:input path="storeStaffNm" id="storeStaffNm" type="text"
-									placeholder="営業担当者"
+									placeholder=""
 									class="input-sm form-control-sm form-control"
 									/>
 							</div>
@@ -359,7 +358,7 @@
 							</div>
 							<div class="col-12 col-md-8">
 								<form:input path="productFabricNo" id="productFabricNo"
-									type="text" placeholder="生地品番"
+									type="text" placeholder=""
 									class="input-sm form-control-sm form-control"
 									/>
 							</div>
@@ -397,11 +396,11 @@
 							<div class="col-12 col-md-8">
 								<div class="form-check-inline form-check">
 									<form:input path="custShopDeliveryDateFrom"
-										id="custShopDeliveryDateFrom" type="date" placeholder="お渡し日"
+										id="custShopDeliveryDateFrom" type="text" placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 									&nbsp;〜&nbsp;
 									<form:input path="custShopDeliveryDateTo"
-										id="custShopDeliveryDateTo" type="date" placeholder="お渡し日"
+										id="custShopDeliveryDateTo" type="text" placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 								</div>
 							</div>
@@ -414,11 +413,11 @@
 							<div class="col-12 col-md-8">
 								<div class="form-check-inline form-check">
 									<form:input path="updatedAtFrom" id="updatedAtFrom"
-										type="date" placeholder="更新日"
+										type="text" placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 									&nbsp;〜&nbsp;
-									<form:input path="updatedAtTo" id="updatedAtTo" type="date"
-										placeholder="更新日"
+									<form:input path="updatedAtTo" id="updatedAtTo" type="text"
+										placeholder="年/月/日"
 										class="input-sm form-control-sm form-control col-md-5" />
 								</div>
 							</div>
@@ -442,10 +441,10 @@
 														未会計のみ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 													</label>
 												</c:when>
-												<c:when test="${sessionContent.authority == '03'}">
+												<%-- <c:when test="${sessionContent.authority == '03'}">
 													<label for="chkViewYetOrder" class="form-check-label">
 													</label>
-												</c:when>
+												</c:when> --%>
 											</c:choose>
 											<c:choose>
 												<c:when
@@ -457,15 +456,15 @@
 															class="form-check-input" /> 未承認のみ
 													</label>
 												</c:when>
-												<c:when test="${sessionContent.authority == '01'}">
+												<%-- <c:when test="${sessionContent.authority == '01'}">
 													<label for="chkViewYetCheck" class="form-check-label">
 													</label>
-												</c:when>
+												</c:when> --%>
 											</c:choose>
 										</div>
 									</div>
 									<div class="col col-md-4">
-										<label class="form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 								</div>
 							</c:when>
@@ -485,7 +484,7 @@
 										</div>
 									</div>
 									<div class="col col-md-4">
-										<label class=" form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 
 								</c:when>
@@ -493,7 +492,7 @@
 									<!-- 店舗 登録の場合　 　　「他店舗の注文を含む（参照のみ）」を表示する-->
 									<div class="col-12 col-md-8"></div>
 									<div class="col col-md-4">
-										<label class=" form-control-label"> </label>
+										<label class=" form-control-label">　</label>
 									</div>
 
 								</c:when>
@@ -581,6 +580,7 @@
 
 	</div><!-- 検索結果のdiv　End -->
 </div>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap-datepicker3.css" type="text/css">
     <!-- 依存ライブラリの読み込み -->
     <script src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/firebugx.js"></script>
 
@@ -602,6 +602,8 @@
     <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
     <!-- 実装したJavaScriptファイルの読み込み -->
     <!--<script src="${pageContext.request.contextPath}/resources/app/js/default.js"></script>-->
+    <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 
 <script>
 var dataView;
@@ -655,6 +657,17 @@ if (authority == '01'){
 var DATAGRID_MIN_HEIGHT = 180;
 var DATAGRID_MIN_WIDTH = 200;
 var DATAGRID_BOTTOM_PADDING = 20;
+
+//カレンダー表示の設定
+jQuery('#productOrderdDateTo,#productOrderdDateFrom,#custDeliverDateFrom,#custDeliverDateTo,#custShopDeliveryDateFrom,#custShopDeliveryDateTo,#updatedAtFrom,#updatedAtTo').datepicker({
+	   format: 'yyyy/mm/dd',
+	    clearBtn: true,
+	    language: 'ja',
+	    todayBtn: "linked",
+	    orientation: 'buttom auto',
+	    todayHighlight: true,
+	    autoclose: true
+});
 
 //データグリッドに自動的にサイズを調整するトリガーを追加します。有効にすると、自分でサイズを利用可能な空間に調整します。
 function attachAutoResizeDataGrid(grid, gridId, gridContainerId) {
@@ -769,6 +782,12 @@ function reset(){
 
 //検索
 function searchOrder(){
+	var winWidth = 0;
+	if (window.innerWidth){
+		winWidth = window.innerWidth;
+	}
+	$("#orderListDiv").width(winWidth - 290);
+	
 		/* if(!$('#isAccount').prop('checked')) {
 			columns.splice(0,1);
 		}else{
@@ -789,7 +808,7 @@ function searchOrder(){
 	    		if($('#isAccount').prop('checked')) {
 			        var columns = [
 			    	    {id: "account_kubun", name: "会計",minWidth: 50, maxWidth: 50, cssClass: "cell-del-type", field: "account_kubun", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true},
-						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false },
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -804,7 +823,7 @@ function searchOrder(){
 	    		//選択しない
 	    		else{
 			        var columns = [
-						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false },
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -824,7 +843,7 @@ function searchOrder(){
 	    		if($('#isConfirm').prop('checked')) {
 			        var columns = [
 			    	    {id: "confirm_kubun", name: "承認",minWidth: 50, maxWidth: 50, cssClass: "cell-del-type", field: "confirm_kubun", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true},
-						{id: "sel", name: "No", field: "num", behavior: "select",minWidth: 40, maxWidth: 50, cssClass: "cell-selection cell-money", resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select",minWidth: 40, maxWidth: 50, cssClass: "cell-selection cell-money", resizable: false, selectable: false},
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -842,7 +861,7 @@ function searchOrder(){
 	    		else if($('#isAccount').prop('checked')){
 			        var columns = [
 			    	    {id: "account_kubun", name: "会計",minWidth: 50, maxWidth: 50, cssClass: "cell-del-type", field: "account_kubun", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true},			        
-						{id: "sel", name: "No", field: "num", behavior: "select",minWidth: 40, maxWidth: 50, cssClass: "cell-selection cell-money", resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select",minWidth: 40, maxWidth: 50, cssClass: "cell-selection cell-money", resizable: false, selectable: false },
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -858,7 +877,7 @@ function searchOrder(){
 	    		//選択しない
 	    		else{
 			        var columns = [
-						{id: "sel", name: "No", field: "num",minWidth: 50, maxWidth: 50, behavior: "select", cssClass: "cell-selection cell-money", resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num",minWidth: 50, maxWidth: 50, behavior: "select", cssClass: "cell-selection cell-money", resizable: false, selectable: false},
 						{id: 'order_id', name: '注文ID', field: 'order_id', minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other "},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", minWidth: 150, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
@@ -878,7 +897,7 @@ function searchOrder(){
 	    		if($('#isConfirm').prop('checked')) {
 			        var columns = [
 			    	    {id: "confirm_kubun", name: "承認",minWidth: 50, maxWidth: 50, cssClass: "cell-del-type", field: "confirm_kubun", formatter: Slick.Formatters.Checkbox, editor: Slick.Editors.Checkbox, cannotTriggerInsert: true},
-						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false },
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -894,7 +913,7 @@ function searchOrder(){
 	    		//選択しない
 	    		else{
 			        var columns = [
-						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false , sortable: true},
+						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false},
 					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -913,7 +932,7 @@ function searchOrder(){
 			//工場 、倉庫
 	        default:
 		        var columns = [
-					{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false , sortable: true},
+					{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false},
 				    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 				    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 				    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
@@ -954,7 +973,11 @@ function searchOrder(){
 		      data: $('#conditionForm').serialize(),
 			      }).
 		      then(function(result) {
-			      
+			    if($('#orderListDiv').is(":hidden")){
+
+				}else{
+				    grid.gotoCell(0, 0,true);
+				}
 				if (result.length == 0){
 					searchNum = 0;
 					addAlert('errorMessage', 'msg_noResult', getMsg('msg031'));
@@ -1289,7 +1312,6 @@ function searchOrder(){
 		    grid.init();
 		    
 		    var pager = new Slick.Controls.Pager(dataView, grid, $("#pager"));
-		    var columnpicker = new Slick.Controls.ColumnPicker(columns, grid, options);
 
 			grid.onCellChange.subscribe(function (e, args) {
 			  dataView.updateItem(args.item.id, args.item);
@@ -1309,7 +1331,7 @@ function searchOrder(){
 			              return "gray";
 			          }
 			          //工場自動連携の場合、赤い色
-			          else if(args.dataContext.send2factory_status == 2 && args.cell != 0 && args.cell != 1){
+			          else if(args.dataContext.send2factory_status == 4 && args.cell != 0 && args.cell != 1){
 			        	  return "red";
 				      }else{
 			        	  return null;
@@ -1320,7 +1342,7 @@ function searchOrder(){
 			              return "gray";
 			          }
 			    	　　//工場自動連携の場合、赤い色
-			          else if(args.dataContext.send2factory_status == 2 && args.cell != 0){
+			          else if(args.dataContext.send2factory_status == 4 && args.cell != 0){
 			        	  return "red";
 				      }else{
 			        	  return null;
@@ -1457,8 +1479,6 @@ function csvDownload(){
 			  text: getMsg('msg032'),
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
@@ -1518,8 +1538,6 @@ function gotoAccount(){
 		  text: getMsg('msg088'),
 		  icon: "info",
 		  buttons: ["キャンセル", true],
-		  dangerMode: true,
-		  closeOnEsc: false,
 		})
 		.then((isConfirm) => {
 		  if (isConfirm) {
@@ -1579,8 +1597,6 @@ function gotoConfirm(){
 		  text: getMsg('msg087'),
 		  icon: "info",
 		  buttons: ["キャンセル", true],
-		  dangerMode: true,
-		  closeOnEsc: false,
 		})
 		.then((isConfirm) => {
 		  if (isConfirm) {
@@ -1605,7 +1621,6 @@ function gotoConfirm(){
 //検索メニューを閉じる
 $(function() {
 	$('#toggleButton').click(function() {
-
 		if ($('#conditionDiv').is(':hidden')) {
 			$('#conditionDiv').slideDown('slow');
 			$(this).html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');

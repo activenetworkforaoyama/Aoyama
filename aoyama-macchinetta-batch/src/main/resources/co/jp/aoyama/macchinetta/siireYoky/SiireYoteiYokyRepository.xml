@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="co.jp.aoyama.macchinetta.siireYoky.SiireYoteiYokyRepository">
+
+        <resultMap id="SiireYoteiYokyResultMap" type="co.jp.aoyama.macchinetta.siireYoky.SiireYoteiYoky">
+        <id property="orderPattern" column="order_pattern" />
+		<result property="orderId" column="order_id" />
+		<result property="hostTransmitMakerProduct" column="host_transmit_maker_product" />
+		<result property="hostTransmitItemCd" column="host_transmit_item_cd" />
+		<result property="hostTransmitMakerCd" column="host_transmit_maker_cd" />
+		<result property="hostTransmitNenkiCd" column="host_transmit_nenki_cd" />
+		<result property="hostTransmitColorCd" column="host_transmit_color_cd" />
+		<result property="productItem" column="product_item" />
+		<result property="hostTransmitSize" column="host_transmit_size" />
+		<result property="wsPrice" column="ws_price" />
+		<result property="billingAmount" column="billing_amount" />
+		<result property="hostTransmitStoreCd" column="host_transmit_store_cd" />
+		<result property="productOrderdDate" column="product_orderd_date" />
+    </resultMap>
+    
+    <select id="findAll" resultMap="SiireYoteiYokyResultMap" >
+        <![CDATA[
+        select
+			order_pattern,
+			order_id,
+			host_transmit_maker_product,
+			host_transmit_item_cd,
+			host_transmit_maker_cd,
+			host_transmit_nenki_cd,
+			host_transmit_color_cd,
+			product_item,
+			host_transmit_size,
+			ws_price,
+			billing_amount,
+			host_transmit_store_cd,
+			product_orderd_date
+        from
+            dtb_order
+        where tsc_status = 'T5'
+              and schedule_data_transmit_status in ('0', '2')
+        order by order_id
+        ]]>
+    </select>
+</mapper>

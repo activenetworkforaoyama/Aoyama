@@ -36,7 +36,7 @@ public class ShopController {
      * 初期表示.
      * @return
      */
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String PageSearch2(Model model) {
 		return "shop/shopForm";
 	}
@@ -115,7 +115,7 @@ public class ShopController {
 						
 						try {
 							Shop findOne = shopService.findShopByPk(shopFormList.get(i).getShopCode());
-							String version = findOne.getVersion().toString();
+							String version = String.valueOf(findOne.getVersion());
 							if(findOne != null && !version.equals(shopFormList.get(i).getVersion())) {
 								//updateFlag  0 : 更新成功       1 :更新失敗(その他)       2 : 更新失敗(一意制約)	6 : 更新失敗(バージョン不正)
 								shopFormList.get(i).setUpdateFlag("6");

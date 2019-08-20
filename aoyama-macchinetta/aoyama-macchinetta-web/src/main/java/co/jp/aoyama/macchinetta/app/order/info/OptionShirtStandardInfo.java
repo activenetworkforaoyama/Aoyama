@@ -5,10 +5,11 @@ import java.util.Map;
 
 public class OptionShirtStandardInfo implements Serializable {
 	private static final long serialVersionUID = -3593141126900298826L;
-	// カジュアルヘムライン仕様
-	private String osCasHemLine;
 
-	private Map<String, String> osCasHemLineMap;
+	// SHIRTモデル
+	private String osShirtModel;
+
+	private Map<String, String> osShirtModelMap;
 
 	// 襟型
 	private String osChainModel;
@@ -30,25 +31,30 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	private Map<String, String> osAdjustBtnMap;
 
-	// ダブルカフス仕様
-	private String osDblCuff;
-
-	private Map<String, String> osDblCuffMap;
-
 	// クレリック仕様
 	private String osClericSpec;
 
 	private Map<String, String> osClericSpecMap;
 
-	// 袖クレリック
-	private String osCuffCleric;
+	// ダブルカフス仕様
+	private String osDblCuff;
 
-	private Map<String, String> osCuffClericMap;
+	private Map<String, String> osDblCuffMap;
+	
+	//カフスボタン追加
+	private String osAddCuff;
+	
+	private Map<String, String> osAddCuffMap;
 
-	// 釦
+	// 釦素材
 	private String osBtnMate;
 
 	private Map<String, String> osBtnMateMap;
+	
+	//タブ釦
+	private String osTabBtn;
+	
+	private Map<String, String> osTabBtnMap;
 
 	// ガントレットボタン位置
 	private String osGaletteBtnPos;
@@ -64,6 +70,11 @@ public class OptionShirtStandardInfo implements Serializable {
 	private String osBreastPk;
 
 	private Map<String, String> osBreastPkMap;
+	
+	//胸ポケット大きさ
+	private String osBreastPkSize;
+	
+	private Map<String, String> osBreastPkSizeMap;
 
 	// フロントデザイン
 	private String osFrontDesign;
@@ -95,6 +106,16 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	private Map<String, String> osBhColorMap;
 
+	//カジュアルヘムライン仕様
+	private String osCasHemLine;
+	
+	private Map<String, String> osCasHemLineMap;
+	
+	//ボタン位置変更
+	private String osBtnPosChg;
+	
+	private Map<String, String> osBtnPosChgMap;
+	
 	// ボタン位置変更 台襟釦
 	private String osBtnPosChgCollar;
 
@@ -103,22 +124,6 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	// ボタン位置変更 フロント第2釦
 	private String osBtnPosChgFront2;
-
-	public String getOsCasHemLine() {
-		return osCasHemLine;
-	}
-
-	public void setOsCasHemLine(String osCasHemLine) {
-		this.osCasHemLine = osCasHemLine;
-	}
-
-	public Map<String, String> getOsCasHemLineMap() {
-		return osCasHemLineMap;
-	}
-
-	public void setOsCasHemLineMap(Map<String, String> osCasHemLineMap) {
-		this.osCasHemLineMap = osCasHemLineMap;
-	}
 
 	public String getOsChainModel() {
 		return osChainModel;
@@ -214,22 +219,6 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	public void setOsClericSpecMap(Map<String, String> osClericSpecMap) {
 		this.osClericSpecMap = osClericSpecMap;
-	}
-
-	public String getOsCuffCleric() {
-		return osCuffCleric;
-	}
-
-	public void setOsCuffCleric(String osCuffCleric) {
-		this.osCuffCleric = osCuffCleric;
-	}
-
-	public Map<String, String> getOsCuffClericMap() {
-		return osCuffClericMap;
-	}
-
-	public void setOsCuffClericMap(Map<String, String> osCuffClericMap) {
-		this.osCuffClericMap = osCuffClericMap;
 	}
 
 	public String getOsBtnMate() {
@@ -414,6 +403,102 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	public void setOsBtnPosChgFront2(String osBtnPosChgFront2) {
 		this.osBtnPosChgFront2 = osBtnPosChgFront2;
+	}
+
+	public String getOsShirtModel() {
+		return osShirtModel;
+	}
+
+	public void setOsShirtModel(String osShirtModel) {
+		this.osShirtModel = osShirtModel;
+	}
+
+	public Map<String, String> getOsShirtModelMap() {
+		return osShirtModelMap;
+	}
+
+	public void setOsShirtModelMap(Map<String, String> osShirtModelMap) {
+		this.osShirtModelMap = osShirtModelMap;
+	}
+
+	public String getOsAddCuff() {
+		return osAddCuff;
+	}
+
+	public void setOsAddCuff(String osAddCuff) {
+		this.osAddCuff = osAddCuff;
+	}
+
+	public Map<String, String> getOsAddCuffMap() {
+		return osAddCuffMap;
+	}
+
+	public void setOsAddCuffMap(Map<String, String> osAddCuffMap) {
+		this.osAddCuffMap = osAddCuffMap;
+	}
+
+	public String getOsTabBtn() {
+		return osTabBtn;
+	}
+
+	public void setOsTabBtn(String osTabBtn) {
+		this.osTabBtn = osTabBtn;
+	}
+
+	public Map<String, String> getOsTabBtnMap() {
+		return osTabBtnMap;
+	}
+
+	public void setOsTabBtnMap(Map<String, String> osTabBtnMap) {
+		this.osTabBtnMap = osTabBtnMap;
+	}
+
+	public String getOsBreastPkSize() {
+		return osBreastPkSize;
+	}
+
+	public void setOsBreastPkSize(String osBreastPkSize) {
+		this.osBreastPkSize = osBreastPkSize;
+	}
+
+	public Map<String, String> getOsBreastPkSizeMap() {
+		return osBreastPkSizeMap;
+	}
+
+	public void setOsBreastPkSizeMap(Map<String, String> osBreastPkSizeMap) {
+		this.osBreastPkSizeMap = osBreastPkSizeMap;
+	}
+
+	public String getOsCasHemLine() {
+		return osCasHemLine;
+	}
+
+	public void setOsCasHemLine(String osCasHemLine) {
+		this.osCasHemLine = osCasHemLine;
+	}
+
+	public Map<String, String> getOsCasHemLineMap() {
+		return osCasHemLineMap;
+	}
+
+	public void setOsCasHemLineMap(Map<String, String> osCasHemLineMap) {
+		this.osCasHemLineMap = osCasHemLineMap;
+	}
+
+	public String getOsBtnPosChg() {
+		return osBtnPosChg;
+	}
+
+	public void setOsBtnPosChg(String osBtnPosChg) {
+		this.osBtnPosChg = osBtnPosChg;
+	}
+
+	public Map<String, String> getOsBtnPosChgMap() {
+		return osBtnPosChgMap;
+	}
+
+	public void setOsBtnPosChgMap(Map<String, String> osBtnPosChgMap) {
+		this.osBtnPosChgMap = osBtnPosChgMap;
 	}
 	
 }

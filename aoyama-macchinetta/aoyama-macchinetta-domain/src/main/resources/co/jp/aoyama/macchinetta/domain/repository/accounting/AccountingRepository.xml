@@ -40,30 +40,30 @@
        		dtb_cash cash,
        		mtb_shop shop 
 		WHERE
-			<if test="custCd!=null and custCd!=''">
-			cash.cust_cd LIKE '%${custCd}%' and
+			<if test="accounting.custCd!=null and accounting.custCd!=''">
+			cash.cust_cd LIKE '%${accounting.custCd}%' and
 			</if>
-			<if test="storeStaffNm!=null and storeStaffNm!=''">
-			cash.store_staff_nm LIKE '%${storeStaffNm}%' and
+			<if test="accounting.storeStaffNm!=null and accounting.storeStaffNm!=''">
+			cash.store_staff_nm LIKE '%${accounting.storeStaffNm}%' and
 			</if>
-			<if test="productOrderdDateFrom!=null">
-			cash.product_orderd_date &gt;= #{productOrderdDateFrom} and
+			<if test="accounting.productOrderdDateFrom!=null">
+			cash.product_orderd_date &gt;= #{accounting.productOrderdDateFrom} and
 			</if>
-			<if test="productOrderdDateTo!=null">
-			cash.product_orderd_date &lt;= #{productOrderdDateTo} and
+			<if test="accounting.productOrderdDateTo!=null">
+			cash.product_orderd_date &lt;= #{accounting.productOrderdDateTo} and
 			</if>
-			<if test="cashStatus!=null and cashStatus!=''">
-			cash.cash_status = #{cashStatus} and
+			<if test="accounting.isAccount">
+			cash.cash_status = '03' and
 			</if>
-			<if test="storeBrandCode!=null and storeBrandCode!=''">
-			cash.store_brand_code = #{storeBrandCode} and
+			<if test="accounting.storeBrandCode!=null and accounting.storeBrandCode!=''">
+			cash.store_brand_code = #{accounting.storeBrandCode} and
 			</if>
-			<if test="shopCode!=null and shopCode!=''">
-			cash.shop_code = #{shopCode} and
+			<if test="accounting.shopCode!=null and accounting.shopCode!=''">
+			cash.shop_code = #{accounting.shopCode} and
 			</if>
 			cash.shop_code = shop.shop_code and
 			cash.cash_status  != '02'
-			ORDER by cash.cash_id
+			ORDER by cash.cash_id DESC
 	</select>
 	
 </mapper>

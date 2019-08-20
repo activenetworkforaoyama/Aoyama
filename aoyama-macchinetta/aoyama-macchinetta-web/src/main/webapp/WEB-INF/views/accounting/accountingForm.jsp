@@ -17,6 +17,17 @@ a:link{color:blue;}
 .cell-money {
   text-align: right;
 }
+
+.col-grid {
+	position: relative;
+	width: 100%;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+	-ms-flex: 0 0 99%;
+	flex: 0 0 99%;
+	max-width: 99%
+}
 </style>
 <spring:eval var="sessionContent" expression="@sessionContent" />
 <div class="breadcrumbs">
@@ -36,6 +47,7 @@ a:link{color:blue;}
 		<div class="card" id="nav1_custom_div">
 			<div class="card-body">
 				<!-- 検索条件部分 End -->
+				<form:form id ="conditionForm" method="post" modelAttribute="accountingForm" enctype="multipart/form-data" class="form-horizontal">
 					<div class="row">
 						<!-- 左側項目 -->
 						<div class="col col-lg-6">
@@ -44,8 +56,8 @@ a:link{color:blue;}
 									<label class=" form-control-label">会員番号</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<input type="text" id="custCd" name="text-input" oninput="this.value=this.value.replace(/[^\d]/g,'')" maxlength="13"
-										placeholder="" class="input-sm form-control-sm form-control">
+									<form:input path="custCd" type="text" id="custCd" name="text-input" oninput="this.value=this.value.replace(/[^\d]/g,'')" maxlength="13"
+										placeholder="" class="input-sm form-control-sm form-control"/>
 								</div>
 							</div>
 							<div class="row form-group">
@@ -53,8 +65,8 @@ a:link{color:blue;}
 									<label class=" form-control-label">営業担当者</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<input type="text" id="storeStaffNm" name="text-input" maxlength="50"
-										placeholder="" class="input-sm form-control-sm form-control">
+									<form:input path="storeStaffNm" type="text" id="storeStaffNm" name="text-input" maxlength="50"
+										placeholder="" class="input-sm form-control-sm form-control"/>
 								</div>
 							</div>
 							<div class="row form-group">
@@ -63,12 +75,12 @@ a:link{color:blue;}
 								</div>
 								<div class="col-12 col-md-8">
 									<div class="form-check-inline form-check">
-										<input type="date" id="productOrderdDateFromStr" name="text-input"
-											placeholder="承り日" max= "9999-12-31"
-											class="input-sm form-control-sm form-control col-md-6">
-										&nbsp;～&nbsp; <input type="date" id="productOrderdDateToStr"
-											name="text-input" placeholder="承り日" max= "9999-12-31"
-											class="input-sm form-control-sm form-control col-md-6">
+										<form:input path="productOrderdDateFromStr" type="text" id="productOrderdDateFromStr" name="text-input"
+											placeholder="年/月/日" max= "9999-12-31"
+											class="input-sm form-control-sm form-control col-md-6"/>
+										&nbsp;～&nbsp; <form:input path="productOrderdDateToStr" type="text" id="productOrderdDateToStr"
+											name="text-input" placeholder="年/月/日" max= "9999-12-31"
+											class="input-sm form-control-sm form-control col-md-6"/>
 									</div>
 								</div>
 							</div>
@@ -76,9 +88,9 @@ a:link{color:blue;}
 							<div class="row form-group">
 								<div class="col-12 col-md-8">
 									<div class="form-check-inline form-check">
-										<label for="chkMustCheck" class="form-check-label"> <input
-											type="checkbox" id="cashStatus" name="text-checkbox" value=""
-											placeholder="" class="form-check-input"> 再確認要の会計のみ
+										<label for="isAccount" class="form-check-label"> <form:checkbox path="isAccount"
+											 id="isAccount" name="text-checkbox" value=""
+											placeholder="" class="form-check-input"/> 再確認要の会計のみ
 										</label>
 									</div>
 								</div>
@@ -97,7 +109,7 @@ a:link{color:blue;}
 									<label class=" form-control-label">業態</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<select class="input-sm form-control-sm form-control" id="storeBrandCode_1" name="storeBrandCode" disabled>
+									<select  class="input-sm form-control-sm form-control" id="storeBrandCode_1" name="storeBrandCode" disabled >
 										<option value=""></option>
 										<option value="01">AO</option>
 										<option value="03">TSC</option>
@@ -123,13 +135,13 @@ a:link{color:blue;}
 									<label class=" form-control-label">業態</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<select class="input-sm form-control-sm form-control" id="storeBrandCode" name="storeBrandCode">
-										<option value=""></option>
-										<option value="01">AO</option>
-										<option value="03">TSC</option>
-										<option value="12">UL</option>
-										<option value="21">ULM</option>
-									</select>	
+									<form:select path="storeBrandCode" class="input-sm form-control-sm form-control" id="storeBrandCode" name="storeBrandCode">
+										<form:option value=""></form:option>
+										<form:option value="01">AO</form:option>
+										<form:option value="03">TSC</form:option>
+										<form:option value="12">UL</form:option>
+										<form:option value="21">ULM</form:option>
+									</form:select>	
 								</div>
 							</div>
 							<div class="row form-group">	
@@ -137,13 +149,14 @@ a:link{color:blue;}
 									<label class=" form-control-label">店舗</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<select class="input-sm form-control-sm form-control" id="shopCode" name="shopName" data-placeholder="店舗を選択"></select>
+									<form:select path="shopCode"  class="input-sm form-control-sm form-control" data-placeholder="店舗を選択"></form:select>
 								</div>
 							</div>
 						</div>
 						</c:when>
         				</c:choose> 
 					</div>
+				</form:form>
 					<!-- 検索条件部分 End -->
 
 					<!-- 制御ボタン部分 Start -->
@@ -156,7 +169,7 @@ a:link{color:blue;}
 							</button>
 						</div>
 						<div class="col col-md-4">
-							<button type="button" id="select_button"
+							<button onclick="searchOrder();" type="button" id="select_button"
 								class="btn btn-primary btn-block">
 								<i class="fa fa-check-circle"></i> 検索
 							</button>
@@ -199,12 +212,19 @@ a:link{color:blue;}
 				</div>
 			</div>
 		</div>
-	<!-- SlickGridテーブルの表示領域となる要素 -->
-	<div id="myGrid" style="width: 100%; height: 500px;"></div>
+		<!-- SlickGridテーブルの表示領域となる要素 -->
+		<div class="row">
+			<div class="col-grid">
+				<div id="gridContainer">
+					<div id="myGrid" style="width: 100%; height: 500px;"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 <!-- 依存ライブラリの読み込み -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap-datepicker3.css" type="text/css">
 <script
 	src="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/lib/firebugx.js"></script>
 <script
@@ -239,6 +259,8 @@ a:link{color:blue;}
 	src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
 <script 
 	src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
 var dataView;
@@ -247,6 +269,76 @@ var sortcol = "cashId";
 var sortdir = 1;
 var contextPath = $("meta[name='contextPath']").attr("content");
 var Row;
+
+//サイズを調整する前に、最小の高さ/幅/塗りつぶしを定義します。
+var DATAGRID_MIN_HEIGHT = 180;
+var DATAGRID_MIN_WIDTH = 200;
+var DATAGRID_BOTTOM_PADDING = 20;
+
+//データグリッドに自動的にサイズを調整するトリガーを追加します。有効にすると、自分でサイズを利用可能な空間に調整します。
+function attachAutoResizeDataGrid(grid, gridId, gridContainerId) {
+	var gridDomElm = $('#' + gridId);
+	if (!gridDomElm || typeof gridDomElm.offset() === "undefined") {
+		return null;
+	}
+	resizeToFitBrowserWindow(grid, gridId, gridContainerId);
+	$(window).resize(function(){
+		resizeToFitBrowserWindow(grid, gridId, gridContainerId);
+		resizeToFitBrowserWindow(grid, gridId, gridContainerId);
+	});
+}
+
+//利用可能な空間からdatagridの新しい高さと幅を計算します。
+function calculateGridNewDimensions(gridId, gridContainerId) {
+	var availableHeight = $(window).height() - $('#' + gridId).offset().top - DATAGRID_BOTTOM_PADDING;
+	var availableWidth = $('#' + gridContainerId).width();
+	var newHeight = availableHeight;
+	var newWidth = availableWidth;
+	if (newHeight < DATAGRID_MIN_HEIGHT) {
+		newHeight = DATAGRID_MIN_HEIGHT;
+	}
+	if (newWidth < DATAGRID_MIN_WIDTH) {
+		newWidth = DATAGRID_MIN_WIDTH;
+	}
+	return {
+		height: 500,
+		width: newWidth
+	};
+}
+
+//データグリッドのサイズを調整して、ブラウザの高さと幅に合わせます。
+function resizeToFitBrowserWindow(grid, gridId, gridContainerId) {
+	var newSizes = calculateGridNewDimensions(gridId, gridContainerId);
+	if (newSizes) {
+		$('#' + gridId).height(newSizes.height);
+		$('#' + gridId).width(newSizes.width);
+		if (new RegExp('MSIE [6-8]').exec(navigator.userAgent) === null && grid) {
+			grid.resizeCanvas();
+		}
+	}
+    $("#pager").width($("#myGrid").width() + 2);
+}
+
+// カレンダー表示の設定
+$('#productOrderdDateFromStr').datepicker({
+	   format: 'yyyy/mm/dd',
+	    clearBtn: true,
+	    language: 'ja',
+	    todayBtn: "linked",
+	    orientation: 'buttom auto',
+	    todayHighlight: true,
+	    autoclose: true
+});
+// カレンダー表示の設定
+$('#productOrderdDateToStr').datepicker({
+	   format: 'yyyy/mm/dd',
+	    clearBtn: true,
+	    language: 'ja',
+	    todayBtn: "linked",
+	    orientation: 'buttom auto',
+	    todayHighlight: true,
+	    autoclose: true
+});
 
 function  addmulMonth(dtstr,n){   // n个月后 
 	   var s=dtstr.split("-");
@@ -271,15 +363,21 @@ function format(date) {
     minute = minute < 10 ? ('0' + minute) : minute;
     return y + '-' + m + '-' + d;
 }
-/* jQuery("#cashStatus").val("03"); */
-jQuery("#cashStatus").click(function () {
-         if ($(this).prop("checked")) {
-        	 jQuery("#cashStatus").val("03");
-         } 
-         else {
-        	 jQuery("#cashStatus").val('');
-         }
-     });
+
+//日付フォーマット
+function dateFormat(time){
+	var date = new Date(time);
+	var year = date.getFullYear();  
+	var month = date.getMonth() + 1
+	if(month<=9){
+		month = "0" + month;
+	}
+	var day = date.getDate();
+	if(day<=9){
+		day = "0" + day;
+	}
+	return year+"-"+month+"-"+day;
+}
 
 function comparer(a, b) {
 	  var x = a[sortcol], y = b[sortcol];
@@ -304,9 +402,12 @@ $(function () {
         xhr.setRequestHeader(headerName, tokenValue);
     });
 });
-$(document).ready(function(){
+//--------------------------------------------
+//他店舗のとき　店舗を検索した
+//--------------------------------------------
+function initCustomer() {
 	var authority = '${sessionContent.authority}';
-	if(authority == "02"){
+ 	if(authority == "02"){
 		var obj = document.getElementById("shopCode");
 		obj.options.length=0;
 		obj.add(new Option("",""));
@@ -316,10 +417,11 @@ $(document).ready(function(){
 	        async:false,
 	        success: function(data){
 	           jQuery.each(data, function (index, e) {
-	               obj.add(new Option(e.shopName,e.shopCode));
+	        	   obj.add(new Option(e.shopName,e.shopCode));
 	           });
 	           jQuery("#shopCode").trigger("chosen:updated");
 	           jQuery("#shopCode").chosen({
+	           allow_single_deselect:true,
 	       	   disable_search_threshold: 10,
 	       	   no_results_text: "この店舗が見つかりませんでした。!:",
 	       	   width: "100%"
@@ -327,6 +429,7 @@ $(document).ready(function(){
 	        }
 	    });
 	}
+	
 	if(authority == "01"){
 		var obj = document.getElementById("shopCode_1");
 		obj.options.length=0;
@@ -363,6 +466,7 @@ $(document).ready(function(){
 		           });
 		           jQuery("#shopCode").trigger("chosen:updated");
 		           jQuery("#shopCode").chosen({
+		           allow_single_deselect:true,
 		       	   disable_search_threshold: 10,
 		       	   no_results_text: "この店舗が見つかりませんでした。!:",
 		       	   width: "100%"
@@ -370,10 +474,9 @@ $(document).ready(function(){
 		    	 
 			});	
 		});
-});
-
+}
 $(document).ready(function() {
-	$("#areaResult").hide();	
+	//$("#areaResult").hide();	
   // (1) SlickGridのカラム定義
   //     6つのカラムのそれぞれにつき ID・表示名・マッピングするデータ を定義している。
   var columns = [
@@ -394,19 +497,82 @@ $(document).ready(function() {
 	  forceFitColumns: true,
 	  topPanelHeight: 25
 	};
+	
+	var initFlag = "${initFlag}";
+	if (initFlag == "0"){
+		initCustomer();
+		//初期化のとき、検索結果Divを表示しない
+		$("#areaResult").hide();
+	}
+	if (initFlag == "1"){
+		jQuery("#storeBrandCode").change();
+		initCustomer();
+		var shopCode = "${accountingForm.shopCode}";
+		jQuery("#shopCode").val(shopCode);
+		jQuery("#shopCode").trigger("chosen:updated");
+		searchOrder();
+	}
+
 	$("#clear_button").click(function(){
 		$("#custCd").val("");
 		$("#storeStaffNm").val("");
 		$("#productOrderdDateFromStr").val("");
 		$("#productOrderdDateToStr").val("");
-		$("#cashStatus").attr("checked",false);
-		$("#cashStatus").val('');
+		$("#isAccount").attr("checked",false);
 		$("#storeBrandCode").val("");
 		$("#shopCode").val("");
 		$("#shopCode").trigger("chosen:updated");
+		var authority = '${sessionContent.authority}';
+		if(authority == "02"){
+			var obj = document.getElementById("shopCode");
+			obj.options.length=0;
+			obj.add(new Option("",""));
+			jQuery.ajax({
+		        url: contextPath + "/accounting/selectShop",
+		        type: 'get',
+		        async:false,
+		        success: function(data){
+		           jQuery.each(data, function (index, e) {
+		               obj.add(new Option(e.shopName,e.shopCode));
+		           });
+		           jQuery("#shopCode").trigger("chosen:updated");
+		           jQuery("#shopCode").chosen({
+		       	   disable_search_threshold: 10,
+		       	   no_results_text: "この店舗が見つかりませんでした。!:",
+		       	   width: "100%"
+		       	   }); 
+		        }
+		    });
+		}
 		appendAlertDel('errorMassageIno');
 	});
-	$("#select_button").click(function(){
+
+});
+function searchOrder(){
+	var winWidth = 0;
+	if (window.innerWidth){
+		winWidth = window.innerWidth;
+	}
+	$("#areaResult").width(winWidth - 290);
+
+	  var columns = [
+		  	{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection", width: 40, resizable: false, selectable: false,sortable: false },
+		  	{id: 'shop_name', name: '店舗名', field: 'shopName', formatter: mineFormatter, sortable: true},
+		    {id: 'cash_id', name: '会計NO.', field: 'cashId', formatter: mineFormatter, sortable: true},
+		    {id: 'product_orderd_date', name: '承り日', field: 'productOrderdDate', formatter: mineFormatter, sortable: true},
+		    {id: 'order_amount', name: '点数', field: 'orderAmount', formatter: mineFormatter, cssClass: "cell-money", sortable: true},
+		    {id: 'cash_except_tax_price', name: '商品金額', field: 'cashExceptTaxPrice', formatter: mineFormatter, cssClass: "cell-money", sortable: true},
+		    {id: 'store_staff_nm', name: '営業担当者', field: 'storeStaffNm', formatter: mineFormatter, sortable: true}
+	 ];
+	  // (2) SlickGridの動作オプション
+		var options = {
+		  editable: true,
+		  enableAddRow: false,
+		  enableCellNavigation: true,
+		  asyncEditorLoading: false,
+		  forceFitColumns: true,
+		  topPanelHeight: 25
+		};
 		var sumAccount = 0;
 		var sumPoint = 0;
 		var sumAmount = 0;
@@ -415,8 +581,16 @@ $(document).ready(function() {
 		  var custCd = $("#custCd").val();
 		  var storeStaffNm = $("#storeStaffNm").val();
 		  var productOrderdDateFromStr = $("#productOrderdDateFromStr").val();
+		  if(isNotEmpty(productOrderdDateFromStr)){
+			  productOrderdDateFromStr = dateFormat(productOrderdDateFromStr);
+			  jQuery("#productOrderdDateFromStr").datepicker("update", productOrderdDateFromStr);
+			  }
 		  var productOrderdDateToStr = $("#productOrderdDateToStr").val();
-		  var cashStatus = $("#cashStatus").val();
+		  if(isNotEmpty(productOrderdDateToStr)){
+			  productOrderdDateToStr = dateFormat(productOrderdDateToStr);
+			  jQuery("#productOrderdDateToStr").datepicker("update", productOrderdDateToStr);
+			  }
+/* 		  var cashStatus = $("#cashStatus").val();
 		  var storeBrandCode = $("#storeBrandCode").val();
 		  if('${sessionContent.authority}' == "01"){
 			  var shopCode = '${sessionContent.belongCode}';
@@ -424,7 +598,7 @@ $(document).ready(function() {
 			  }
 		  else{
 			   var shopCode = $("#shopCode").val();
-			}
+			} */
 		  
 		  var data = [];
 		  if(productOrderdDateFromStr == null || productOrderdDateFromStr == ""){
@@ -436,21 +610,24 @@ $(document).ready(function() {
 		  if(!(productOrderdDateFromStr == "" || productOrderdDateFromStr == null || productOrderdDateFromStr == undefined)
 				  && (productOrderdDateToStr == "" || productOrderdDateToStr == null || productOrderdDateToStr == undefined)){
 			  productOrderdDateToStr = addmulMonth(productOrderdDateFromStr,12);
+			  jQuery("#productOrderdDateToStr").datepicker("update", productOrderdDateToStr);
 			  }
 		  if((productOrderdDateFromStr == "" || productOrderdDateFromStr == null || productOrderdDateFromStr == undefined)
 				  && !(productOrderdDateToStr == "" || productOrderdDateToStr == null || productOrderdDateToStr == undefined)){
 			  productOrderdDateFromStr = addmulMonth(productOrderdDateToStr,-12);
+			  jQuery("#productOrderdDateFromStr").datepicker("update", productOrderdDateFromStr);
 			  }
 		//日付変数に変換
 		  var startCompare = Date.parse(new Date(productOrderdDateFromStr));
 		  var endCompare = Date.parse(new Date(productOrderdDateToStr));
-		  var time = (Math.abs(parseInt((endCompare - startCompare) / 1000 / 3600 / 24)))
+		  var time = (Math.abs(parseInt((endCompare - startCompare) / 1000 / 3600 / 24)));
 		  if(!(productOrderdDateFromStr == "" || productOrderdDateFromStr == null || productOrderdDateFromStr == undefined) 
 					&& !(productOrderdDateToStr == "" || productOrderdDateToStr == null || productOrderdDateToStr == undefined) 
 					&& !(startCompare <= endCompare)){
 				//承り日fromが承り日toより小さくない
 				//msg068 = {0}は{1}以降の日付を入力してください。
 				appendAlert('errorMassageIno', getMsgByTwoArgs('msg068', '承り日TO', '承り日FROM'));
+				$("#areaResult").hide();
 				// (4) SlickGridテーブルを作成
 				dataView = new Slick.Data.DataView();
 				grid = new Slick.Grid("#myGrid", dataView,columns, options);
@@ -466,6 +643,7 @@ $(document).ready(function() {
 					&& !(productOrderdDateToStr == "" || productOrderdDateToStr == null || productOrderdDateToStr == undefined) 
 					&& time > 366){
 				appendAlert('errorMassageIno', getMsgByOneArg('msg096'));
+				$("#areaResult").hide();
 				// (4) SlickGridテーブルを作成
 				dataView = new Slick.Data.DataView();
 				grid = new Slick.Grid("#myGrid", dataView,columns, options);
@@ -479,8 +657,10 @@ $(document).ready(function() {
 			else{
 				$.ajax({url : contextPath + "/accounting/fuzzyQuery",
 					type : 'get',
-					data:{"custCd":custCd,"storeStaffNm":storeStaffNm,"productOrderdDateFromStr":productOrderdDateFromStr,"productOrderdDateToStr":productOrderdDateToStr,
-						  "cashStatus":cashStatus,"storeBrandCode":storeBrandCode,"shopCode":shopCode}
+					dataType: "json",
+					data: $('#conditionForm').serialize(),
+					/* data:{"custCd":custCd,"storeStaffNm":storeStaffNm,"productOrderdDateFromStr":productOrderdDateFromStr,"productOrderdDateToStr":productOrderdDateToStr,
+						  "cashStatus":cashStatus,"storeBrandCode":storeBrandCode,"shopCode":shopCode} */
 			}).then(function(result) {
 					if(Object.keys(result).length  == 0){
 						$("#areaResult").hide();
@@ -496,7 +676,7 @@ $(document).ready(function() {
 							d["num"] = i + 1;
 							d["shopName"] =result[i].shopName;
 							d["cashId"] = "<a href='javascript:void(0);' onclick='gotoAccount(\"" + result[i].cashId + "\")' >" + result[i].cashId + "</a>";
-							d["productOrderdDate"] = result[i].productOrderdDate;
+							d["productOrderdDate"] = result[i].productOrderdDate == null ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							d["orderAmount"] = result[i].orderAmount;
 							//d["cashExceptTaxPrice"] = result[i].cashExceptTaxPrice;
 							if (result[i].cashExceptTaxPrice == null){
@@ -574,10 +754,11 @@ $(document).ready(function() {
 						dataView.beginUpdate();
 						dataView.setItems(data);
 						dataView.endUpdate();
+						attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");
 			});
-		}	
-		});
-});
+		}
+}
+
 //金額フォーマット
 function formatMoney(number, places, symbol, thousand, decimal) {
     number = number || 0;
@@ -589,6 +770,15 @@ function formatMoney(number, places, symbol, thousand, decimal) {
         i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
         j = (a = i.length) > 3 ? a % 3 : 0;
     return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+}
+//時間格式を変更
+function ChangeTimeFormatYMD(nS)
+{
+	var timestamp4 = new Date(nS);
+	//var aa = timestamp4.toLocaleDateString().replace(/\//g, "-") + " " + timestamp4.toTimeString().substr(0, 8)
+  var aa = timestamp4.toLocaleDateString().replace(/\//g, "/")
+  return aa;
+
 }
 </script>
 

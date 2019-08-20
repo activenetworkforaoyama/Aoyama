@@ -23,12 +23,14 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.order.OrderHelper;
+import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderDetail;
 import co.jp.aoyama.macchinetta.domain.model.Shop;
+import co.jp.aoyama.macchinetta.domain.model.Stock;
 import co.jp.aoyama.macchinetta.domain.service.detail.OrderDetailService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
 import co.jp.aoyama.macchinetta.domain.service.order.NextGenerationService;
@@ -90,15 +92,21 @@ public class OrderDetailController {
 	/**
 	 * 要尺の取得
 	 */
-	public List<NextGenerationPrice> getYieldList(){
+	public List<NextGenerationPrice> getYieldList(Order order){
 		//JACKETのsubItemCode
-		String jkSubItemCode = "02";
+		String jkSubItemCode = null;
 		//GILETのsubItemCode
-		String gtSubItemCode = "04";
+		String gtSubItemCode = null;
 		//PANTSのsubItemCode
-		String ptSubItemCode = "03";
+		String ptSubItemCode = null;
 		//PANTS2のsubItemCode
-		String pt2SubItemCode = "07";
+		String pt2SubItemCode = null;
+		OrderHelper orderHelper = new OrderHelper();
+		Map<String, String> subItemCodeValue = orderHelper.subItemCodeValue(order,jkSubItemCode,gtSubItemCode,ptSubItemCode,pt2SubItemCode);
+		jkSubItemCode = subItemCodeValue.get("jkSubItemCode");
+		gtSubItemCode = subItemCodeValue.get("gtSubItemCode");
+		ptSubItemCode = subItemCodeValue.get("ptSubItemCode");
+		pt2SubItemCode = subItemCodeValue.get("pt2SubItemCode");
 		
 		List<NextGenerationPrice> yieldList= nextGenerationService.selectYield(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode);
 		return yieldList;
@@ -214,10 +222,101 @@ public class OrderDetailController {
 	public String toOrderPo(@PathVariable(value ="orderId") String orderId,Model model) {
 		String orderFlag = "orderDetail";
 		Order order= orderListService.findOrderByPk(orderId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//名簿納期
+		Date custDeliverDate = order.getCustDeliverDate();
+		if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+			String custDeliverDateFormat = sdf.format(custDeliverDate);
+			Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+			order.setCustDeliverDate(custDeliverDateParse);
+		}
+		//お渡し日
+		Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+		if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+			String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+			Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+			order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+		}
+		//出荷日
+		Date shippingDate = order.getShippingDate();
+		if(shippingDate != null && !"".equals(shippingDate.toString())) {
+			String shippingDateFormat = sdf.format(shippingDate);
+			Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+			order.setShippingDate(shippingDateParse);
+		}
+		//積載日
+		Date loadingDate = order.getLoadingDate();
+		if(loadingDate != null && !"".equals(loadingDate.toString())) {
+			String loadingDateFormat = sdf.format(loadingDate);
+			Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+			order.setLoadingDate(loadingDateParse);
+		}
+		//注文承り日
+		Date productOrderdDate = order.getProductOrderdDate();
+		if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+			String productOrderdDateFormat = sdf.format(productOrderdDate);
+			Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+			order.setProductOrderdDate(productOrderdDateParse);
+		}
 		model.addAttribute("order", order);
 		model.addAttribute("orderFlag", orderFlag);
 		return "forward:/order/orderPoUpdate"; 
 	}
+	
+	
+	/**
+	 *「オーダー登録」画面へ遷移する
+	 * @param orderId
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/orderDetailToOrderPo/{orderId}")
+	public String orderDetailToOrderPo(@PathVariable(value ="orderId") String orderId,Model model) {
+		String orderFlag = "orderLink";
+		model.addAttribute("orderFlag", orderFlag);
+		Order order= orderListService.findOrderByPk(orderId);
+		Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//名簿納期
+		Date custDeliverDate = order.getCustDeliverDate();
+		if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+			String custDeliverDateFormat = sdf.format(custDeliverDate);
+			Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+			order.setCustDeliverDate(custDeliverDateParse);
+		}
+		//お渡し日
+		Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+		if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+			String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+			Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+			order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+		}
+		//出荷日
+		Date shippingDate = order.getShippingDate();
+		if(shippingDate != null && !"".equals(shippingDate.toString())) {
+			String shippingDateFormat = sdf.format(shippingDate);
+			Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+			order.setShippingDate(shippingDateParse);
+		}
+		//積載日
+		Date loadingDate = order.getLoadingDate();
+		if(loadingDate != null && !"".equals(loadingDate.toString())) {
+			String loadingDateFormat = sdf.format(loadingDate);
+			Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+			order.setLoadingDate(loadingDateParse);
+		}
+		//注文承り日
+		Date productOrderdDate = order.getProductOrderdDate();
+		if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+			String productOrderdDateFormat = sdf.format(productOrderdDate);
+			Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+			order.setProductOrderdDate(productOrderdDateParse);
+		}
+		model.addAttribute("order", order);
+		model.addAttribute("measuring", measuring);
+		return "forward:/order/orderPoUpdate"; 
+	}
+	
 	
 	/**
 	 * TSCステータスを「お渡し済」に変更する、保存完了後、「オーダー登録結果」画面へ遷移する
@@ -243,10 +342,47 @@ public class OrderDetailController {
 		} catch (ResourceNotFoundException e) {
 			String authority = sessionContent.getAuthority();
 			Order order= orderListService.findOrderByPk(orderId);
+			SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdformat.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdformat.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDateOrder = order.getShippingDate();
+			if(shippingDateOrder != null && !"".equals(shippingDateOrder.toString())) {
+				String shippingDateFormat = sdformat.format(shippingDateOrder);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDateOrder = order.getLoadingDate();
+			if(loadingDateOrder != null && !"".equals(loadingDateOrder.toString())) {
+				String loadingDateFormat = sdformat.format(loadingDateOrder);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdformat.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 			model.addAttribute("resultMessages", e.getResultMessages());
 			model.addAttribute("order",order);
 			model.addAttribute("measuring", measuring);
+			model.addAttribute("userId", updatedUserId);
 			model.addAttribute("authority", authority);
 			return "detail/orderPoDetail";
 		}
@@ -271,7 +407,7 @@ public class OrderDetailController {
 		}else {
 			fabricUsedMountD =  new BigDecimal(fabricUsedMount);
 		}
-		SimpleDateFormat  sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat  sdf = new SimpleDateFormat("yyyy/MM/dd");
 		Date shippingDateD;
 		Date loadingDateD;
 		try {
@@ -298,6 +434,16 @@ public class OrderDetailController {
 			//最終更新日時
 			Date updatedAt = new Date();
 			Short orderVersionS = Short.parseShort(orderVersion);
+			
+			//商品情報_ITEM(ログ用)
+			String item = LogItemClassEnum.getLogItem(order);
+			Stock stock = orderService.getStock(fabricNo,order.getOrderPattern());
+			logger.info("オーダー登録確認明細で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+fabricNo
+			+ "、実在庫："+stock.getActualStock() + "」");
+			
 			if(oldShippingDate == null && shippingDateD != null) {
 				orderListService.updateSaveValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus0);
 			}
@@ -311,6 +457,13 @@ public class OrderDetailController {
 				orderListService.updateSaveValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,updatedUserId,updatedAt,orderVersionS);
 			}
 			
+			Stock stockAfter = orderService.getStock(fabricNo,order.getOrderPattern());
+			logger.info("オーダー登録確認明細で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+fabricNo
+			+ "、実在庫："+stockAfter.getActualStock() + "」");
+			
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -318,6 +471,42 @@ public class OrderDetailController {
 		} catch (ResourceNotFoundException e) {
 			String authority = sessionContent.getAuthority();
 			Order order= orderListService.findOrderByPk(orderId);
+			SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdformat.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdformat.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDateOrder = order.getShippingDate();
+			if(shippingDateOrder != null && !"".equals(shippingDateOrder.toString())) {
+				String shippingDateFormat = sdformat.format(shippingDateOrder);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDateOrder = order.getLoadingDate();
+			if(loadingDateOrder != null && !"".equals(loadingDateOrder.toString())) {
+				String loadingDateFormat = sdformat.format(loadingDateOrder);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdformat.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 			model.addAttribute("resultMessages", e.getResultMessages());
 			model.addAttribute("order",order);
@@ -339,17 +528,12 @@ public class OrderDetailController {
 	 * @param makerFactoryStatus
 	 * @return
 	 */
-	@RequestMapping(value = "/saveOrChangeValue/{orderId}/{fabricNo}/{fabricUsedMount}/{shippingDate}/{loadingDate}/{makerFactoryStatus}/{orderVersion}")
-	public String saveOrChangeValue(@PathVariable(value ="orderId") String orderId,
-									@PathVariable(value ="fabricNo") String fabricNo,
-									@PathVariable(value ="fabricUsedMount") String fabricUsedMount,
-									@PathVariable(value ="shippingDate") String shippingDate,
-									@PathVariable(value ="loadingDate") String loadingDate,
-									@PathVariable(value ="makerFactoryStatus") String makerFactoryStatus,
-									@PathVariable(value ="orderVersion") String orderVersion,Model model) {
+	@RequestMapping(value = "/saveOrChangeValue")
+	public String saveOrChangeValue(String orderId, String fabricNo, String fabricUsedMount, String shippingDate, String loadingDate, String makerFactoryStatus,
+									 String orderVersion,Model model) {
 		
 		BigDecimal fabricUsedMountD = new BigDecimal(fabricUsedMount);
-		SimpleDateFormat  sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat  sdf = new SimpleDateFormat("yyyy/MM/dd");
 		Date shippingDateD;
 		Date loadingDateD;
 		try {
@@ -366,6 +550,16 @@ public class OrderDetailController {
 			//最終更新日時
 			Date updatedAt = new Date();
 			Short orderVersionS = Short.parseShort(orderVersion);
+			
+			//商品情報_ITEM(ログ用)
+			String item = LogItemClassEnum.getLogItem(order);
+			Stock stock = orderService.getStock(fabricNo,order.getOrderPattern());
+			logger.info("オーダー登録確認明細で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+fabricNo
+			+ "、実在庫："+stock.getActualStock() + "」");
+			
 			if(oldShippingDate == null) {
 				orderListService.updateSaveOrChangeValueAndStatus(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS,shippingTransmitStatus0);
 			}
@@ -376,12 +570,55 @@ public class OrderDetailController {
 				orderListService.updateSaveOrChangeValue(orderId,fabricUsedMountD,shippingDateD,loadingDateD,makerFactoryStatus,updatedUserId,updatedAt,orderVersionS);
 			}
 			
+			Stock stockAfter = orderService.getStock(fabricNo,order.getOrderPattern());
+			logger.info("オーダー登録確認明細で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+fabricNo
+			+ "、実在庫："+stockAfter.getActualStock() + "」");
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
 		}catch(ResourceNotFoundException e) {
 			String authority = sessionContent.getAuthority();
 			Order order= orderListService.findOrderByPk(orderId);
+			SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdformat.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdformat.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDateOrder = order.getShippingDate();
+			if(shippingDateOrder != null && !"".equals(shippingDateOrder.toString())) {
+				String shippingDateFormat = sdformat.format(shippingDateOrder);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDateOrder = order.getLoadingDate();
+			if(loadingDateOrder != null && !"".equals(loadingDateOrder.toString())) {
+				String loadingDateFormat = sdformat.format(loadingDateOrder);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdformat.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 			model.addAttribute("resultMessages", e.getResultMessages());
 			model.addAttribute("order",order);
@@ -406,7 +643,7 @@ public class OrderDetailController {
 		ResultMessages resultMessages = null;
 		try {
 			Order order= orderListService.findOrderByPk(orderId);
-			List<NextGenerationPrice> yieldList = this.getYieldList();
+			List<NextGenerationPrice> yieldList = this.getYieldList(order);
 			List<NextGenerationPrice> wholesalePieceList = this.getWholesalePieceList(order);
 			List<NextGenerationPrice> basicNextGenerationPriceList = this.basicNextGenerationPrice(order);
 			NextGenerationPrice marginRate = this.getMarginRate(order);
@@ -469,6 +706,42 @@ public class OrderDetailController {
 		} catch (ResourceNotFoundException e) {
 			String authority = sessionContent.getAuthority();
 			Order order= orderListService.findOrderByPk(orderId);
+			SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdformat.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdformat.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDateOrder = order.getShippingDate();
+			if(shippingDateOrder != null && !"".equals(shippingDateOrder.toString())) {
+				String shippingDateFormat = sdformat.format(shippingDateOrder);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDateOrder = order.getLoadingDate();
+			if(loadingDateOrder != null && !"".equals(loadingDateOrder.toString())) {
+				String loadingDateFormat = sdformat.format(loadingDateOrder);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdformat.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 			model.addAttribute("resultMessages", e.getResultMessages());
 			model.addAttribute("order",order);
@@ -505,14 +778,8 @@ public class OrderDetailController {
 			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal actualStockAddOrder = actualStock.add(fabricUsedMountOrder);
-			String updatedUserId = sessionContent.getUserId();
-			Date updatedAt = new Date();
-			orderListService.updateActualStock(productFabricNo,actualStockAddOrder,updatedUserId,updatedAt);
-			
-			OrderDetail selectRecoveryActualStock = orderDetailService.selectActualStock(productFabricNo);
-			BigDecimal recoveryActualStock = selectRecoveryActualStock.getActualStock();
 			BigDecimal fabricUsedMount = new BigDecimal(fabricUsedMountValue);
-			int compareTo = recoveryActualStock.compareTo(fabricUsedMount);
+			int compareTo = actualStockAddOrder.compareTo(fabricUsedMount);
 			if(compareTo > 0) {
 				return true;
 			}

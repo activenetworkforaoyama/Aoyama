@@ -45,7 +45,7 @@ public class FactoryController {
 	}
 
 	// 实际用
-	@RequestMapping(value = "init", method = RequestMethod.GET)
+	@RequestMapping(value = "init")
 	public String PageSearch2(Model model) {
 
 		return "factory/factoryForm";
@@ -136,7 +136,7 @@ public class FactoryController {
 					Boolean factoryIsExist = factoryService.factoryIsExist(factoryFormList.get(i).getFactoryCode());
 					try {
 						Factory findOne = factoryService.findOne(factoryFormList.get(i).getFactoryCode());
-						String version = findOne.getVersion().toString();
+						String version = String.valueOf(findOne.getVersion());
 						if(findOne != null && !version.equals(factoryFormList.get(i).getVersion())) {
 							//updateFlag  0 : 更新成功       1 :更新失敗(その他)  2 : 更新失敗(一意制約)  6: 更新失敗(バージョン不正) 
 							factoryFormList.get(i).setUpdateFlag("6");

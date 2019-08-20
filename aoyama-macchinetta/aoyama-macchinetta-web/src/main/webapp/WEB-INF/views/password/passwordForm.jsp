@@ -47,7 +47,7 @@
 			<c:when test="${sessionContent.authority == '02'}">
 		    <div class="col col-md-4"><label class=" form-control-label">ユーザ ID:</label></div>
 		    <div class="col-12 col-md-4">
-		       <select name="userId" id="userId" data-placeholder="ユーザ IDを選択">
+		       <select name="myUserId" id="myUserId" data-placeholder="ユーザ IDを選択">
 	           </select>
 		    </div>
 			<br>
@@ -57,7 +57,7 @@
 	<div class="row form-group">
 	    <div class="col col-md-4"><label class=" form-control-label">新しいパスワード:</label></div>
 	    <div class="col-12 col-md-4">
-	        <form:password path="password" maxlength = "10" class="input-sm form-control-sm form-control"/>
+	        <form:password path="myPassword" maxlength = "10" autocomplete="new-password" class="input-sm form-control-sm form-control"/>
 	        
 	    </div>
 	    <br>
@@ -65,7 +65,7 @@
 	 <div class="row form-group">
 	    <div class="col col-md-4"><label class=" form-control-label">新しいパスワード(確認):</label></div>
 	    <div class="col-12 col-md-4">
-	        <form:password path="passwordConfirm" maxlength = "10" class="input-sm form-control-sm form-control"/>
+	        <form:password path="myPasswordConfirm" maxlength = "10" class="input-sm form-control-sm form-control"/>
 	        
 	    </div>
 	    <br>
@@ -96,10 +96,10 @@ function check() {
 	// エラーメッセージのDIVを表示しない
 	jQuery("div.alert-error").hide();
 	jQuery("div.alert-success").hide();
-	// localStorageで画面のuserIdの値を設定
-	localStorage.setItem("userId",jQuery("#userId option:selected").val());
-    var pw = jQuery("#password").val();
-    var pwCo = jQuery("#passwordConfirm").val();
+	// localStorageで画面のmyUserIdの値を設定
+	localStorage.setItem("myUserId",jQuery("#myUserId option:selected").val());
+    var pw = jQuery("#myPassword").val();
+    var pwCo = jQuery("#myPasswordConfirm").val();
 
     if(isEmpty(pw)) {
     	
@@ -108,9 +108,9 @@ function check() {
     }
     
     // 半角英数字チェック
-    if (isAlphabetNumeric(pw) || (pw.length < 6)) {
+    if (isAlphabetNumeric(pw)) {
 	    
-        appendAlert('errormssage', getMsgByTwoArgs('msg042', '新しいパスワード','半角英数字６'));
+        appendAlert('errormssage', getMsgByTwoArgs('msg012', '新しいパスワード','半角英数字'));
         return false;
 	}
 	
@@ -121,9 +121,9 @@ function check() {
     }
 
     // 半角英数字チェック
-    if (isAlphabetNumeric(pwCo) || (pwCo.length < 6)) {
+    if (isAlphabetNumeric(pwCo)) {
 	    
-        appendAlert('errormssage', getMsgByTwoArgs('msg042', '新しいパスワード（確認）','半角英数字６'));
+        appendAlert('errormssage', getMsgByTwoArgs('msg012', '新しいパスワード（確認）','半角英数字'));
         return false;
 	}
     
@@ -146,8 +146,8 @@ jQuery(document).ready(function() {
 	var sessionUserid = '${sessionContent.userId}';
 	
 	//　localStorageから画面の値を取得
-	var updateUserId = localStorage.getItem("userId");
-	jQuery("#password").focus();
+	var updateUserId = localStorage.getItem("myUserId");
+	jQuery("#myPassword").focus();
 	
 
 	if (updateUserId == null || updateUserId == "") {
@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
 		var msginfo = "";
 		// 02：商品部の場合
 		if (authority == "02") {
-			msginfo = getMsgByOneArg('msg039', jQuery("#userId option:selected").val());
+			msginfo = getMsgByOneArg('msg039', jQuery("#myUserId option:selected").val());
 		}else {
 			msginfo = getMsgByOneArg('msg039', sessionUserid);
 		}
@@ -169,8 +169,6 @@ jQuery(document).ready(function() {
 			  text: msginfo,
 			  icon: "info",
 			  buttons: ["キャンセル", true],
-			  dangerMode: true,
-			  closeOnEsc: false,
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
@@ -185,8 +183,8 @@ jQuery(document).ready(function() {
 
 	// クリア
 	jQuery("#clearButton").click(function(){
-		jQuery("#password").val("");
-		jQuery("#passwordConfirm").val("");
+		jQuery("#myPassword").val("");
+		jQuery("#myPasswordConfirm").val("");
 		// エラーメッセージのDIVを表示しない
 		jQuery("div.alert-error").hide();
 		jQuery("div.alert-success").hide();
@@ -196,7 +194,7 @@ jQuery(document).ready(function() {
 	// 02：商品部の場合
 	if (authority == "02") {
 		var msg = getMsg('msg045');
-		var obj = document.getElementById("userId");
+		var obj = document.getElementById("myUserId");
 		 obj.options.length=0;
 		 obj.add(new Option("",""));
 	        jQuery.ajax({
@@ -207,8 +205,8 @@ jQuery(document).ready(function() {
 	               jQuery.each(data, function (index, e) {
 	                   obj.add(new Option(e.userId, e.userId));
 	               });
-	               jQuery("#userId").trigger("chosen:updated");
-	               jQuery("#userId").chosen({
+	               jQuery("#myUserId").trigger("chosen:updated");
+	               jQuery("#myUserId").chosen({
 	           	   disable_search_threshold: 10,
 	           	   no_results_text: msg,
 	           	   width: "100%"
@@ -219,8 +217,8 @@ jQuery(document).ready(function() {
 		}
 
 	// 初期表示のユーザ値を設定
-	jQuery("#userId option[value='"+ updateUserId +"']").prop("selected", true);
-	jQuery("#userId").trigger("chosen:updated");
+	jQuery("#myUserId option[value='"+ updateUserId +"']").prop("selected", true);
+	jQuery("#myUserId").trigger("chosen:updated");
 	// クリアlocalStorageの値
 	localStorage.clear();
 

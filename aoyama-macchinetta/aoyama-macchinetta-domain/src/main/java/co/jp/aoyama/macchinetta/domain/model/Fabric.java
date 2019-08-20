@@ -69,6 +69,8 @@ public class Fabric implements Serializable {
     
     private BigDecimal theoreticalStock;
     private BigDecimal reservationStock;
+    private BigDecimal actualStock;
+    
     private String handleDiscriminate;
     private String[] errorArr;
     
@@ -540,6 +542,14 @@ public class Fabric implements Serializable {
 
 	public void setReservationStock(BigDecimal reservationStock) {
 		this.reservationStock = reservationStock;
+	}
+
+	public BigDecimal getActualStock() {
+		return actualStock;
+	}
+
+	public void setActualStock(BigDecimal actualStock) {
+		this.actualStock = actualStock;
 	}
 
 	public String getHandleDiscriminate() {

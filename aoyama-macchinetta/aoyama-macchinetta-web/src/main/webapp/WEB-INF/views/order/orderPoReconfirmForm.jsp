@@ -22,22 +22,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-4">
-	</div>
-	<div class="col-md-8">
-	<c:if test="${orderForm.status == 'T2' || orderForm.status == 'T3' || orderForm.status == 'T4' || orderForm.status == 'T5'}">
-		<div class="col col-md-7">
-		</div>
-		<div class="col col-md-5 ">
-			<button id="#" type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
-				お客様注文内容確認書
-			</button>
-		</div>
-	</c:if>
-	</div>
 </div>
 <div class="content mt-3">
 <t:messagesPanel  messagesAttributeName="resultMessages"/>
+<div class="alert alert-error" id="errormssage" style="display:none"></div>
 	<div class="animated fadeIn">
 		<div class="row">
 			<div class="col col-lg-6">
@@ -475,7 +463,7 @@
 									<strong><label class=" form-control-label-value">${orderForm.productEmbroideryNm}</label></strong>
 								</div>
 							</div>
-							<c:if test="${orderForm.productEmbroideryFont == '14'}">
+							<c:if test="${orderForm.productEmbroideryFont == '14（花文字）'}">
 								<div class="row">
 									<div class="col col-md-3">
 										<label class=" form-control-label">刺繍書体</label>
@@ -485,7 +473,7 @@
 									</div>
 								</div>
 							</c:if>
-							<c:if test="${orderForm.productEmbroideryFont == '48'}">
+							<c:if test="${orderForm.productEmbroideryFont == '48（ブロック）'}">
 								<div class="row">
 									<div class="col col-md-3">
 										<label class=" form-control-label">刺繍書体</label>
@@ -1055,7 +1043,6 @@
 								<label class=" form-control-label">裾幅</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label for="ap_hemWidth_absolute" class="form-check-label ">指定</label></strong>
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtHemwidthGross }</label>cm</strong>
 							</div>
 							
@@ -1234,7 +1221,6 @@
 								<label class=" form-control-label">裾幅</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label for="ap2_hemWidth_absolute" class="form-check-label "> 指定 </label></strong>
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthGross }cm</label></strong>
 							</div>
 							
@@ -1251,33 +1237,39 @@
 		</div>
 	</div>
 
-<div class="col-md-12" id="al_seikyukin_div">
-	<div class="card" id="nav_alter_div">
-		<div class="col col-lg-12">
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-body">
 			<div class="row">
-				<div class="col col-md-8">
-					<label class=" form-control-label">ご請求金額</label>
-				</div>
-				<div class="col-12 col-md-4" align="right">
-					<div class="row">
-						<div class="col text-right">
-							<strong>ご請求金額：￥<label id="bottom_billingAmount"></label>（内消費税￥<label id="bottom_consumptionTaxAmount"></label>）</strong>
+					<div class="col col-lg-6">
+						<label class=" form-control-label">ご請求金額</label>
+					</div>
+					<div class="col col-lg-6">
+						<div class="row">
+							<div class="col text-right">
+							<strong><span>ご請求金額：￥<label id="bottom_billingAmount"></label>（内消費税￥<label id="bottom_consumptionTaxAmount"></label>）</span></strong>
+							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col text-right">商品金額：￥<label id="bottom_productPrice"></label></div>
-					</div>
-					<div class="row">
-						<div class="col text-right">オプション金額：￥<label id="bottom_optionPrice"></label></div>
-					</div>
-					<div class="row">
-						<div class="col text-right">合計金額：￥<label id="bottom_totalPrice"></label></div>
+							<div class="row">
+							<div class="col text-right">
+							<span class="smlFnt85">商品金額：￥<label id="bottom_productPrice"></label></span><br /> 
+							</div>
+							</div>
+							<div class="row">
+							<div class="col text-right">
+							<span class="smlFnt85">オプション金額：￥<label id="bottom_optionPrice"></label></span><br /> 
+							</div>
+							</div>
+							<div class="row">
+							<div class="col text-right">
+							<span class="smlFnt85">合計金額：￥<label id="bottom_totalPrice"></label></span>
+							</div>
+							</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
 <div class="col-md-12">
 	<div class="card">
@@ -1290,7 +1282,7 @@
 							<button type="button" class="btn btn-success btn-block" id="goBack"><i class="fa fa-arrow-left"></i> 戻る</button>
 						</div>
 						<div class="col col-md-4">
-							<button id="confirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 確定</button>
+							<button id="confirm" type="submit" class="btn btn-primary btn-block" onclick="return imageCheck();"><i class="fa fa-check-circle"></i> 確定</button>
 						</div>
 						<div class="col col-md-2">　</div>
 					</div>
@@ -1300,6 +1292,7 @@
 	</div>
 </div>
 </form:form>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
 <script type="text/javascript">
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 jQuery("#goBack").click(function(){
@@ -1411,8 +1404,8 @@ else{
 }
 
 //商品情報_刺繍糸色の内容表示
-var productEmbroideryEhreadColor = {110:'110（金茶）',140:'140（白）',402:'402（黒）',760:'760（ネイビー）',145:'145（水色）',75:'75（ブルー）',9:'9（赤）',56:'56（グリーン）',89:'89（ライトブラウン）',94:'94（ブラウン）',152:'152（ボルドー）',169:'169（パープル）',343:'343（ベージュ）',701:'701（モカ）',401:'401（白）'};
-jQuery("#product_embroidery_thread_color").html(productEmbroideryEhreadColor["${orderForm.productEmbroideryThreadColor}"]);
+//var productEmbroideryEhreadColor = {110:'110（金茶）',140:'140（白）',402:'402（黒）',760:'760（ネイビー）',145:'145（水色）',75:'75（ブルー）',9:'9（赤）',56:'56（グリーン）',89:'89（ライトブラウン）',94:'94（ブラウン）',152:'152（ボルドー）',169:'169（パープル）',343:'343（ベージュ）',701:'701（モカ）',401:'401（白）'};
+jQuery("#product_embroidery_thread_color").html("${orderForm.productEmbroideryThreadColor}");
 
 
 //JACKETの胴裏素材表示
@@ -1861,11 +1854,17 @@ function formatMoney(number, places, symbol, thousand, decimal) {
 
 
 //承り日は現在の日
-var now = new Date();
-var day = ("0" + now.getDate()).slice(-2);
-var month = ("0" + (now.getMonth() + 1)).slice(-2);
+if("${orderForm.status}" == "" || "${orderForm.status}" == "T0" || "${orderForm.status}" == "T1"){
+	var now = new Date();
+	var day = ("0" + now.getDate()).slice(-2);
+	var month = ("0" + (now.getMonth() + 1)).slice(-2);
 
-jQuery("#License_day").html(now.getFullYear() + "/" + month + "/" + day);
+	jQuery("#License_day").html(now.getFullYear() + "/" + month + "/" + day);
+}
+else {
+	var productOrderdDate = "${productOrderdDateFormat}";
+	jQuery("#License_day").html(dateFormat(productOrderdDate));
+}
 
 var statusList = {T0:"一時保存",T1:"取り置き",T2:"登録済",T3:"会計済",T4:"商品部承認済",T5:"メーカー承認済",T6:"仕入済",T7:"お渡し済"};
 jQuery("#status_appear").html(statusList["${orderForm.status}"]);
@@ -2015,7 +2014,440 @@ jQuery("#productSparePantsClass_appear").html(formatMoney("${priceMap.sparePants
 
 function pdfDownload(sign){
 	var orderId = "${orderForm.customerMessageInfo.orderId}";
-	window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId;
+	var productItem = jQuery("#product_item").text();
+
+	jQuery.ajax({
+	    url:contextPath + "/pdfFile/poPdfFileCheck",
+	    type:"get",
+	    data:{"orderId" : orderId},
+	    contentType:"application/json",
+	    success:function(result){
+	    	var shippingNumber = result.shippingNumber;
+	    	var hostTransmitARow = result.hostTransmitARow;
+	    	if((shippingNumber == null || "" == shippingNumber) && "1" == sign){
+		    	//"1" == sign：注文内容確認書
+	    		//msg113 = {0}が未連携のためＰＤＦを生成できません。
+				appendAlert('errormssage', getMsgByOneArg('msg113', '出荷番号'));
+		    }else if((hostTransmitARow == null || "" == hostTransmitARow) && "1" == sign){
+		    	//"1" == sign：注文内容確認書
+		    	//msg113 = {0}が未連携のためＰＤＦを生成できません。
+				appendAlert('errormssage', getMsgByOneArg('msg113', 'A行'));
+			}else{
+				// 確認メッセージ
+				swal({
+					// 注文確定が完了していない場合、PDFと注文内容に差異が出る可能性があります。PDF出力後、速やかに注文確定を行ってください。
+					text: getMsg('msg112'),
+					icon: "info",
+				})
+				.then((isConfirm) => {
+					if (isConfirm) {
+						window.location.href = contextPath + "/pdfFile/poPdfFileDownload?sign="+sign+"&orderId="+orderId+"&productItem="+productItem;
+					}
+				});
+			}
+	    }
+	});
+
 }
+
+//--------------------------------------------
+//確認チェック
+//--------------------------------------------
+
+function imageCheck(){
+	//会員番号
+	var custCd = "${orderForm.customerMessageInfo.custCd}";
+
+	if(isEmpty(custCd)){
+		appendAlert('errormssage', getMsgByOneArg('msg114', '会員番号'));
+		return false;
+	}
+	else{
+		appendAlertDel('errormssage');
+	}
+
+	//名簿納期
+	var custDeliverDate = "${orderForm.customerMessageInfo.custDeliverDate}"; 
+
+	if(isEmpty(custDeliverDate)){
+		appendAlert('errormssage', getMsgByOneArg('msg114', '名簿納期'));
+		return false;
+	}
+	else{
+		appendAlertDel('errormssage');
+	}
+
+	//お渡し日
+	var custShopDeliveryDate = "${orderForm.customerMessageInfo.custShopDeliveryDate}";
+
+	if(isEmpty(custShopDeliveryDate)){
+		appendAlert('errormssage', getMsgByOneArg('msg114', 'お渡し日'));
+		return false;
+	}
+	else{
+		appendAlertDel('errormssage');
+	}
+
+	//スタッフ
+	var custStaff = "${orderForm.customerMessageInfo.custStaff}";
+
+	if(isEmpty(custStaff)){
+		appendAlert('errormssage', getMsgByOneArg('msg114', 'スタッフ'));
+		return false;
+	}
+	else{
+		appendAlertDel('errormssage');
+	}
+
+	//出荷先
+	var destination = "${orderForm.customerMessageInfo.custShippingDestination}";
+	//出荷先_他店舗コード
+	var custShippingDestnationOtherstore = "${orderForm.customerMessageInfo.custShippingDestnationOtherstore}";
+
+	if(destination == "05"){
+		if(isEmpty(custShippingDestnationOtherstore)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', '他店舗'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+	}
+
+	//生地品番
+	var productFabricNo = "${orderForm.productFabricNo}";
+
+	if(isEmpty(productFabricNo)){
+		appendAlert('errormssage', getMsgByOneArg('msg114', '生地品番'));
+		return false;
+	}
+	else{
+		appendAlertDel('errormssage');
+	}
+
+	//刺繍ネーム
+	var productEmbroideryNm = "${orderForm.productEmbroideryNm}";
+	//刺繍入れ
+	var productEmbroideryNecessity = "${orderForm.productEmbroideryNecessity}";
+
+	if(productEmbroideryNecessity == 1){
+		if(isEmpty(productEmbroideryNm)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', '刺繍ネーム'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+	}
+
+	//商品情報_ITEM
+	var item = "${orderForm.productItem}";
+	//商品情報_３Piece
+	var productIs3Piece = "${orderForm.productIs3Piece}";
+	//商品情報_スペアパンツ
+	var productSparePants = "${orderForm.productSparePantsClass}";
+	//３Pieceは有り、スペアパンツは有り
+	var productIs3PieceAndSparePantsIsYes = "0009902";
+	
+	//JACKET_モデル
+	var jkModel = "${orderForm.optionJacketStandardInfo.ojJacketModelMap[orderForm.optionJacketStandardInfo.ojJacketModel]}";
+	//JACKET_Drop
+	var corJkDrop = "${orderForm.adjustJacketStandardInfo.sizeFigure}";
+	//JACKET_号数
+	var corJkSize = "${orderForm.adjustJacketStandardInfo.sizeNumber}";
+	
+	//PANTS_モデル
+	var ptModel = "${orderForm.optionPantsStandardInfo.opPantsModelMap[orderForm.optionPantsStandardInfo.opPantsModel]}";
+	//PANTS_Drop
+	var corPtDrop = "${orderForm.adjustPantsStandardInfo.sizeFigure}";
+	//PANTS_号数
+	var corPtSize = "${orderForm.adjustPantsStandardInfo.sizeNumber}";
+	
+	//GILET_モデル
+	var glModel = "${orderForm.optionGiletStandardInfo.ogGiletModelMap[orderForm.optionGiletStandardInfo.ogGiletModel]}";
+	//GILET_Drop
+	var corGlDrop = "${orderForm.adjustGiletStandardInfo.sizeFigure}";
+	//GILET_号数
+	var corGlSize = "${orderForm.adjustGiletStandardInfo.sizeNumber}";
+	
+	//2PANTS_モデル
+	var pt2Model = "${orderForm.optionPants2StandardInfo.op2PantsModelMap[orderForm.optionPants2StandardInfo.op2PantsModel]}";
+	//2PANTS_Drop
+	var corPt2Drop = "${orderForm.adjustPants2StandardInfo.sizeFigure}";
+	//2PANTS_号数
+	var corPt2Size = "${orderForm.adjustPants2StandardInfo.sizeNumber}";
+	
+	
+	if(item == "01"){
+		//JACKET_モデル
+		if(isEmpty(jkModel)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKETモデル'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_ラペルデザイン
+		var jkLapelDesign = "${orderForm.optionJacketStandardInfo.ojLapelDesignMap[orderForm.optionJacketStandardInfo.ojLapelDesign]}";
+
+		if(isEmpty(jkLapelDesign)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'ラペルデザイン'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_Drop
+		if(isEmpty(corJkDrop)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKET体型'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_号数
+		if(isEmpty(corJkSize)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKET号数'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+
+
+		//PANTS_モデル
+		if(isEmpty(ptModel)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTSモデル'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		
+		//PANTS_Drop
+		if(isEmpty(corPtDrop)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+
+		//PANTS_号数
+		if(isEmpty(corPtSize)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS号数'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		
+		if(productIs3Piece == productIs3PieceAndSparePantsIsYes && productSparePants == productIs3PieceAndSparePantsIsYes){
+			//GILET_モデル
+			if(isEmpty(glModel)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', 'GILETモデル'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+			
+			//GILET_Drop
+			if(isEmpty(corGlDrop)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', 'GILET体型'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+
+			//GILET_号数
+			if(isEmpty(corGlSize)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', 'GILET号数'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+
+
+			//2PANTS_モデル
+			if(isEmpty(pt2Model)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTSモデル'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+			
+			//2PANTS_Drop
+			if(isEmpty(corPt2Drop)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS体型'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+
+			//2PANTS_号数
+			if(isEmpty(corPt2Size)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS号数'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+		}
+		else if(productIs3Piece == productIs3PieceAndSparePantsIsYes && productSparePants != productIs3PieceAndSparePantsIsYes){
+			//GILET_モデル
+			if(isEmpty(glModel)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', 'GILETモデル'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+			
+			//GILET_Drop
+			if(isEmpty(corGlDrop)){
+				appendAlert('errormssage', getMsgByOneArg('msg001', 'GILET体型'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+
+			//GILET_号数
+			if(isEmpty(corGlSize)){
+				appendAlert('errormssage', getMsgByOneArg('msg001', 'GILET号数'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+		}
+		else if(productIs3Piece != productIs3PieceAndSparePantsIsYes && productSparePants == productIs3PieceAndSparePantsIsYes){
+			//2PANTS_モデル
+			if(isEmpty(pt2Model)){
+				appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTSモデル'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+			
+			//2PANTS_Drop
+			if(isEmpty(corPt2Drop)){
+				appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTS体型'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+
+			//2PANTS_号数
+			if(isEmpty(corPt2Size)){
+				appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS号数'));
+				return false;
+			}
+			else{
+				appendAlertDel('errormssage');
+			}
+		}
+	}
+	else if(item == "02"){
+		//JACKET_モデル
+		if(isEmpty(jkModel)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKETモデル'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_ラペルデザイン
+		var jkLapelDesign = "${orderForm.optionJacketStandardInfo.ojLapelDesignMap[orderForm.optionJacketStandardInfo.ojLapelDesign]}";
+
+		if(isEmpty(jkLapelDesign)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'ラペルデザイン'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_Drop
+		if(isEmpty(corJkDrop)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKET体型'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		//JACKET_号数
+		if(isEmpty(corJkSize)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'JACKET号数'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+	}
+	else if(item == "03"){
+		//PANTS_モデル
+		if(isEmpty(ptModel)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTSモデル'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		
+		//PANTS_Drop
+		if(isEmpty(corPtDrop)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+
+		//PANTS_号数
+		if(isEmpty(corPtSize)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS号数'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+
+	}
+	else if(item == "04"){
+		//GILET_モデル
+		if(isEmpty(glModel)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'GILETモデル'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+		
+		//GILET_Drop
+		if(isEmpty(corGlDrop)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'GILET体型'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+
+		//GILET_号数
+		if(isEmpty(corGlSize)){
+			appendAlert('errormssage', getMsgByOneArg('msg114', 'GILET号数'));
+			return false;
+		}
+		else{
+			appendAlertDel('errormssage');
+		}
+	}
+ }
 </script>
 

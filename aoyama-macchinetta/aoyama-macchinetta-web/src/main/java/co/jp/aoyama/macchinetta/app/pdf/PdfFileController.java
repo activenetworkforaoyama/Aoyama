@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,25 +44,19 @@ public class PdfFileController {
 	private static final Logger logger = LoggerFactory
             .getLogger(PdfFileController.class);
 	
-	// (SUIT)
-	private static final String IS_CO_SUIT = "01";
-	// (SHIRT)
-	private static final String IS_CO_SHIRT = "05";
-	// (COAT)
-	private static final String IS_CO_COAT = "06";
-	
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public String list(Model model) {
+	public String list() {
 		return "pdf/pdfDownload";
 	}
     
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "poPdfFileDownload", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity poPdfFileDownload(HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public ResponseEntity poPdfFileDownload(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		String sign = request.getParameter("sign");
 		String orderId = request.getParameter("orderId");
+		String productItem = request.getParameter("productItem");
 		
 		//orderIdでorderオブジェクトを取得します
 		Order order = orderListService.findOrderByPk(orderId);
@@ -76,18 +68,18 @@ public class PdfFileController {
     	}
     	
     	try {
-			output = pdfFileService.outputSamplePoPdf(sign, order, measuring);
+			output = pdfFileService.outputSamplePoPdf(sign, order, measuring, productItem);
 			
-			String fileNameDefault = null;
+			String fileNameDefault = "";
 			if("1".equals(sign)) {
-				//注文内容確認書(SUIT)_工場向
-				fileNameDefault = "注文内容確認書(SUIT)_工場向.pdf";
+				//"注文内容確認書
+				fileNameDefault = "注文内容確認書（"+orderId+"）.pdf";
 			}else if("2".equals(sign)) {
-				//注文内容確認書(SUIT)_お客様向
-				fileNameDefault = "注文内容確認書(SUIT)_お客様向.pdf";
+				//"注文内容確認書_お客様向け
+				fileNameDefault = "注文内容確認書_お客様向け（"+orderId+"）.pdf";
 			}else if("3".equals(sign)) {
-				//工場指示書(SUIT)
-				fileNameDefault = "工場指示書(SUIT).pdf";
+				//工場指示書
+				fileNameDefault = "工場指示書（"+orderId+"）.pdf";
 			}else{
 				 logger.info("このスタイルはありません");
 			}
@@ -108,26 +100,52 @@ public class PdfFileController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "coPdfFileDownload", method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity createCoPDFFile(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity coPdfFileDownload(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		String sign = request.getParameter("sign");
 		String orderId = request.getParameter("orderId");
-		try {
-			ServletContext servletContext = request.getSession().getServletContext();
-		    //パスの設定する
-			String path = servletContext.getRealPath("/");
-			output = pdfFileService.outputSampleCoPdf(path, sign, orderId);
+		String productItem = request.getParameter("productItem");
+		
+		//orderIdでorderオブジェクトを取得します
+		Order order = orderListService.findOrderByPk(orderId);
+		//orderIdでmeasuringオブジェクトを取得します
+    	Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+    	
+    	if(measuring == null) {
+    		logger.info("measuring対象はnullです。");
+    	}
+    	
+    	try {
+			output = pdfFileService.outputSampleCoPdf(sign, order, measuring, productItem);
 			
-			String fileNameDefault = null;
+			String fileNameDefault = "";
 			if("1".equals(sign)) {
-				//注文内容確認書(SUIT)_工場向
-				fileNameDefault = "注文内容確認書(SUIT)_工場向.pdf";
+				//注文内容確認書（SUIT）
+				fileNameDefault = "注文内容確認書（SUIT）（"+orderId+"）.pdf";
 			}else if("2".equals(sign)) {
-				//注文内容確認書(SUIT)_お客様向
-				fileNameDefault = "注文内容確認書(SUIT)_お客様向.pdf";
+				//注文内容確認書_お客様向け（SUIT）
+				fileNameDefault = "注文内容確認書_お客様向け（SUIT）（"+orderId+"）.pdf";
 			}else if("3".equals(sign)) {
-				//工場指示書(SUIT)
-				fileNameDefault = "工場指示書(SUIT).pdf";
+				//工場指示書（SUIT）
+				fileNameDefault = "工場指示書（SUIT）（"+orderId+"）.pdf";
+			}else if("4".equals(sign)) {
+				//注文内容確認書（COAT）
+				fileNameDefault = "注文内容確認書（COAT）（"+orderId+"）.pdf";
+			}else if("5".equals(sign)) {
+				//注文内容確認書_お客様向け（COAT）
+				fileNameDefault = "注文内容確認書_お客様向け（COAT）（"+orderId+"）.pdf";
+			}else if("6".equals(sign)) {
+				//工場指示書（COAT）
+				fileNameDefault = "工場指示書（COAT）（"+orderId+"）.pdf";
+			}else if("7".equals(sign)) {
+				//注文内容確認書（SHIRT）
+				fileNameDefault = "注文内容確認書（SHIRT）（"+orderId+"）.pdf";
+			}else if("8".equals(sign)) {
+				//注文内容確認書_お客様向け（SHIRT）
+				fileNameDefault = "注文内容確認書_お客様向け（SHIRT）（"+orderId+"）.pdf";
+			}else if("9".equals(sign)) {
+				//工場指示書（SHIRT）
+				fileNameDefault = "工場指示書（SHIRT）（"+orderId+"）.pdf";
 			}else{
 				 logger.info("このスタイルはありません");
 			}
@@ -136,13 +154,12 @@ public class PdfFileController {
 			response.addHeader("Content-Disposition", "attachment; filename=" + new String(fileNameDefault.getBytes("UTF-8"),"ISO8859-1"));
 			response.getOutputStream().write(output.toByteArray());
 			response.setStatus(200);
-			logger.info("done");
+			logger.info("Download is OK");
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.info(e.toString());
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
-		//RunTime.getRunTime().exec("rundll32 url.dll,FileProtocolHandler " + url);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
@@ -157,7 +174,7 @@ public class PdfFileController {
 	 */
 	@RequestMapping(value = "poPdfFileCheck", method = RequestMethod.GET)
 	@ResponseBody
-	public Order poPdfFileCheck(HttpServletRequest request, HttpServletResponse response, Model model, String orderId) throws Exception {
+	public Order poPdfFileCheck(HttpServletRequest request, HttpServletResponse response, String orderId) throws Exception {
 		//orderIdでorderオブジェクトを取得します
 		Order order = orderListService.findOrderByPk(orderId);
 		
@@ -167,5 +184,5 @@ public class PdfFileController {
 		
 		return order;
 	}
-    
+	
 }
