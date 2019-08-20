@@ -43,15 +43,4 @@
         order by order_id
         ]]>
     </select>
-    
-    <update id="update"  parameterType="co.jp.aoyama.macchinetta.siireYoky.SiireYoteiYoky">
-        <![CDATA[
-        update
-            dtb_order
-            set schedule_data_transmit_status = '1',
-                updated_user_id = 'BATCH',
-                updated_at = #{updatedAt}
-        where order_id = #{orderId} 
-        ]]>
-    </update>
 </mapper>

@@ -47,7 +47,6 @@
   </select>
   <update id="updateActualStockByFabricNo">
    <foreach separator=";" collection="stockList" item="item" index="index">
-            <if test="item.factory_stock != null and item.factory_stock != '' ">
             update mtb_stock
             <set>
             actual_stock=#{item.factory_stock},
@@ -55,7 +54,6 @@
             updated_user_id=#{batchUpdateUserid}
             </set>
             where fabric_no =#{item.ftcode}
-            </if>
     </foreach>
   </update>
   <select id="selectfabricNoList" resultType="java.lang.String">

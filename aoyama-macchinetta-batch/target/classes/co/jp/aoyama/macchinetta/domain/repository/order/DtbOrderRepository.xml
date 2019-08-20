@@ -2992,7 +2992,7 @@
 		created_at, updated_user_id, updated_at
 		from dtb_order
 		WHERE maker_factory_status = 'F0'
-		  AND tsc_status = 'T3'
+		  AND tsc_status IN ( 'T3' , 'T4' ,'T5' )
 		  AND is_cancelled = '0'
           AND product_factory_cd = 'F00005'
           AND order_pattern = 'PO'
@@ -3004,6 +3004,7 @@
 			     send2factory_status = '3' OR
 			     send2factory_status = '4' )
 		</if>
+		order by order_id
 	</select>
 	<update id="updateByOrderIds"   parameterType="java.util.List">
 		update dtb_order
@@ -3054,6 +3055,7 @@
         AND order_pattern = 'PO'
 		AND is_cancelled = '0'
 		AND send2factory_status = '1'
+		order by order_id
 	</select>
 	<insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.DtbOrder" >
     insert into dtb_order (order_id, order_pattern, store_brand_code, 

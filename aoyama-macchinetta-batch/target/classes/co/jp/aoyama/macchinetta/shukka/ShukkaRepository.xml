@@ -18,6 +18,7 @@
             dtb_order
         where shipping_date is not null
               and shipping_transmit_status in ('0', '2')
+              and maker_factory_status = 'F2'
         order by order_id
         ]]>
     </select>

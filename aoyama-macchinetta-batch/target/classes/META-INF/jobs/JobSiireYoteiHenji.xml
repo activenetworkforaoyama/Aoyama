@@ -40,7 +40,11 @@
 			<batch:tasklet
 				transaction-manager="jobTransactionManager">
 				<batch:chunk reader="siireYoteiHenjiReader"
-					writer="siireYoteiHenjiWriter" commit-interval="100" />
+					writer="siireYoteiHenjiWriter" commit-interval="100"  skip-limit="1000">
+					<batch:skippable-exception-classes>
+                        <batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
+                    </batch:skippable-exception-classes>
+                    </batch:chunk>
 			</batch:tasklet>
 			<batch:listeners>
 		    <batch:listener ref="siireYoteiHenjiStepExecutionListener" />
