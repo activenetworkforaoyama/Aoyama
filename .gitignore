@@ -8,3 +8,14 @@ aoyama-macchinetta/aoyama-macchinetta-env/target
 aoyama-macchinetta/aoyama-macchinetta-initdb/target
 aoyama-macchinetta/aoyama-macchinetta-selenium/target
 aoyama-macchinetta-batch/target
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-solid-900.woff2
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-solid-900.woff
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-solid-900.ttf
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-solid-900.svg
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-solid-900.eot
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-brands-400.woff2
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-brands-400.woff
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-brands-400.ttf
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-brands-400.svg
+aoyama-macchinetta/aoyama-macchinetta-web/src/main/webapp/resources/app/webfonts/fa-brands-400.eot
+aoyama-macchinetta/aoyama-macchinetta-domain/src/main/resources/cfx/po/confirmationBook-Factory.cfx
