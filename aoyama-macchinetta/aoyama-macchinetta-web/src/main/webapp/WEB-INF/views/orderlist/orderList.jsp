@@ -1057,7 +1057,7 @@ function searchOrder(){
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
-								d["goto_order"] = "<button id='goto_order' class='btn_off btn_brown' onclick='gotoOrderDivert(\"" + result[i].orderId + "\")' ><font size='3'>流用</font> </button>";	    
+								d["goto_order"] = tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" :  "<button id='goto_order' class='btn_off btn_brown' onclick='gotoOrderDivert(\"" + result[i].orderId + "\")' ><font size='3'>流用</font> </button>";	    
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
 								d["shop_code"] = result[i].shopCode;    

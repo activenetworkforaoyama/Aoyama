@@ -5323,4 +5323,64 @@ public class OrderHelper {
 		}
 		return typeSizeList;
 	}
+	
+	/**
+	 * 
+	 * @param correct
+	 * @return
+	 */
+	public String addPlusSignCommonMethod(String correct) {
+		if(correct != null || "".equals(correct)) {
+			if(correct.contains("-")) {
+				return correct;
+			}
+			else {
+				correct = "+" + correct;
+			}
+			return correct;
+		}
+		else {
+			return "0";
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param orderForm
+	 */
+	public void addPlusSignToCorrect(OrderForm orderForm) {
+		//JK着丈補正値
+		String corJkBodyCorrectChange = orderForm.getAdjustJacketStandardInfo().getCorJkBodyCorrect();
+		orderForm.getAdjustJacketStandardInfo().setCorJkBodyCorrect(addPlusSignCommonMethod(corJkBodyCorrectChange));
+		//JKウエスト補正値
+		String corJkWaistCorrectChange = orderForm.getAdjustJacketStandardInfo().getCorJkWaistCorrect();
+		orderForm.getAdjustJacketStandardInfo().setCorJkWaistCorrect(addPlusSignCommonMethod(corJkWaistCorrectChange));
+		//JK袖丈右補正値
+		String corJkRightsleeveCorrectChange = orderForm.getAdjustJacketStandardInfo().getCorJkRightsleeveCorrect();
+		orderForm.getAdjustJacketStandardInfo().setCorJkRightsleeveCorrect(addPlusSignCommonMethod(corJkRightsleeveCorrectChange));
+		//JK袖丈左補正値
+		String corJkLeftsleeveCorrectChange = orderForm.getAdjustJacketStandardInfo().getCorJkLeftsleeveCorrect();
+		orderForm.getAdjustJacketStandardInfo().setCorJkLeftsleeveCorrect(addPlusSignCommonMethod(corJkLeftsleeveCorrectChange));
+		
+		//PTウエスト補正値
+		String corPtWaistCorrectChange = orderForm.getAdjustPantsStandardInfo().getCorPtWaistCorrect();
+		orderForm.getAdjustPantsStandardInfo().setCorPtWaistCorrect(addPlusSignCommonMethod(corPtWaistCorrectChange));
+		//PTワタリ補正値
+		String corPtThighCorrectChange = orderForm.getAdjustPantsStandardInfo().getCorPtThighCorrect();
+		orderForm.getAdjustPantsStandardInfo().setCorPtThighCorrect(addPlusSignCommonMethod(corPtThighCorrectChange));
+		//PT裾幅補正値
+		String corPtHemwidthCorrectChange = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrect();
+		orderForm.getAdjustPantsStandardInfo().setCorPtHemwidthCorrect(addPlusSignCommonMethod(corPtHemwidthCorrectChange));
+		
+		//PT2ウエスト補正値2
+		String corPt2WaistCorrectChange = orderForm.getAdjustPants2StandardInfo().getCorPt2WaistCorrect();
+		orderForm.getAdjustPants2StandardInfo().setCorPt2WaistCorrect(addPlusSignCommonMethod(corPt2WaistCorrectChange));
+		//PT2ワタリ補正値2
+		String corPt2ThighCorrectChange = orderForm.getAdjustPants2StandardInfo().getCorPt2ThighCorrect();
+		orderForm.getAdjustPants2StandardInfo().setCorPt2ThighCorrect(addPlusSignCommonMethod(corPt2ThighCorrectChange));
+		//PT2裾幅補正値2
+		String corPt2HemwidthCorrectChange = orderForm.getAdjustPants2StandardInfo().getCorPt2HemwidthCorrect();
+		orderForm.getAdjustPants2StandardInfo().setCorPt2HemwidthCorrect(addPlusSignCommonMethod(corPt2HemwidthCorrectChange));
+	}
 }

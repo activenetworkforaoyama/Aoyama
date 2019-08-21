@@ -43,7 +43,7 @@
         <sec:logout logout-url="/logout" invalidate-session="true"/>
         <sec:access-denied-handler ref="accessDeniedHandler"/>
         <sec:custom-filter ref="userIdMDCPutFilter" after="ANONYMOUS_FILTER"/>
-        <sec:session-management invalid-session-url="/user/login" />
+        <sec:session-management invalid-session-url="/user/invalidateSession" />
 	   <!--  <sec:session-management invalid-session-url="/sessionSystemError.jsp" /> -->
         <sec:session-management session-fixation-protection = "newSession">
         	<sec:concurrency-control max-sessions="5" error-if-maximum-exceeded="true"/>

@@ -1047,23 +1047,35 @@
 							<div class="col-12 col-md-3">
 								<label class=" form-control-label">着丈修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value" id="corJkBodylengthCorrect"></label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${order.corJkBodylengthGross}</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value" id="corJkWaistCorrect"></label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${order.corJkWaistGross}</label>cm</strong>
+								<strong><label class=" form-control-label-value">${order.corJkBodylengthGross}</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">袖丈右修正</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value" id="corJkRightsleeveCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${order.corJkRightsleeveGross}</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">袖丈左修正</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value" id="corJkLeftsleeveCorrect"></label>cm</strong> 
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${order.corJkLeftsleeveGross}</label>cm</strong> 
@@ -1304,17 +1316,26 @@
 						<div class="col-12 col-md-3">
 							<label class=" form-control-label">ウエスト修正</label>
 						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPtWaistCorrect"></label>cm</strong>
+						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPtWaistGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ワタリ修正</label>
 						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPtThighwidthCorrect"></label>cm</strong>
+						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPtThighwidthGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">裾幅</label>
+						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPtHemwidthCorrect"></label>cm</strong>
 						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPtHemwidthGross}</label>cm</strong>
@@ -1471,17 +1492,26 @@
 						<div class="col-12 col-md-3">
 							<label class=" form-control-label">ウエスト修正</label>
 						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPt2WaistCorrect"></label>cm</strong>
+						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPt2WaistGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ワタリ修正</label>
 						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPt2ThighwidthCorrect"></label>cm</strong>
+						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPt2ThighwidthGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">裾幅</label>
+						</div>
+						<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value" id="corPt2HemwidthCorrect"></label>cm</strong>
 						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${order.corPt2HemwidthGross}</label>cm</strong>
@@ -3304,6 +3334,53 @@ function formatMoney(number, places, symbol, thousand, decimal) {
 	            j = (a = i.length) > 3 ? a % 3 : 0;
 	        return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 	    }
+
+function CorrectChange(correct){
+	if(correct != null || correct != ""){
+		if(correct.indexOf("-") == -1){
+			return "+" + correct;
+		}
+		else{
+			return correct;
+		}
+	}
+	else{
+		return "0";
+	}
+}
+
+//jk着丈修正
+var corJkBodylengthCorrect = "${order.corJkBodylengthCorrect}";
+jQuery("#corJkBodylengthCorrect").html(CorrectChange(corJkBodylengthCorrect));
+//JKウエスト修正
+var corJkWaistCorrect = "${order.corJkWaistCorrect}";
+jQuery("#corJkWaistCorrect").html(CorrectChange(corJkWaistCorrect));
+//JK袖丈右修正
+var corJkRightsleeveCorrect = "${order.corJkRightsleeveCorrect}";
+jQuery("#corJkRightsleeveCorrect").html(CorrectChange(corJkRightsleeveCorrect));
+//JK袖丈左修正
+var corJkLeftsleeveCorrect = "${order.corJkLeftsleeveCorrect}";
+jQuery("#corJkLeftsleeveCorrect").html(CorrectChange(corJkLeftsleeveCorrect));
+
+//PTウエスト修正
+var corPtWaistCorrect = "${order.corPtWaistCorrect}";
+jQuery("#corPtWaistCorrect").html(CorrectChange(corPtWaistCorrect));
+//PTワタリ修正
+var corPtThighwidthCorrect = "${order.corPtThighwidthCorrect}";
+jQuery("#corPtThighwidthCorrect").html(CorrectChange(corPtThighwidthCorrect));
+//PT裾幅修正
+var corPtHemwidthCorrect = "${order.corPtHemwidthCorrect}";
+jQuery("#corPtHemwidthCorrect").html(CorrectChange(corPtHemwidthCorrect));
+
+//PT2ウエスト修正
+var corPt2WaistCorrect = "${order.corPt2WaistCorrect}";
+jQuery("#corPt2WaistCorrect").html(CorrectChange(corPt2WaistCorrect));
+//PT2ワタリ修正
+var corPt2ThighwidthCorrect = "${order.corPt2ThighwidthCorrect}";
+jQuery("#corPt2ThighwidthCorrect").html(CorrectChange(corPt2ThighwidthCorrect));
+//PT2裾幅修正
+var corPt2HemwidthCorrect = "${order.corPt2HemwidthCorrect}";
+jQuery("#corPt2HemwidthCorrect").html(CorrectChange(corPt2HemwidthCorrect));
 
 //画面上部のご請求金額の表示について
 jQuery("#header_billingAmount").html(formatMoney("${order.billingAmount}",0,""));

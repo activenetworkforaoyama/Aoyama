@@ -18,9 +18,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/slickGrid.css" type="text/css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/slickGrid-2.4.3/slick-default-theme.css" type="text/css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/brands.min.css" rel="stylesheet">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/solid.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/themify-icons.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/flag-icon.min.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/cs-skin-elastic.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/styles.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/app/css/chosen.css" type="text/css">
@@ -43,7 +44,7 @@
 
             <div class="navbar-header">
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
                 <c:if test="${sessionContent.category == 'PO'}">
                 	<span class="navbar-brand" >パターンオーダー</span>
@@ -61,20 +62,13 @@
         </nav>
     </aside>
 
-
-
-
-    
-    
     <div id="right-panel" class="right-panel" >
-
-
         <header id="header" class="header">
 
             <div class="header-menu">
 
                 <div class="col-sm-7">
-                    <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
+                    <a id="menuToggle" class="menutoggle pull-left"><i class="fas fa-tasks"></i></a>
                     <div class="header-left">
                         ${sessionContent.userId}【${sessionContent.belongName}】
                     </div>
@@ -83,7 +77,7 @@
                 <div class="col-sm-5">
                     <div class="user-area float-right">
                     	<form id="logoutForm" action="${pageContext.request.contextPath}/logout" method="post">
-                        	<a href="javascript:logoutSubmit()" style="color:black"><i class="fa fa-power-off"></i> ログアウト</a>
+                        	<a href="javascript:logoutSubmit()" style="color:black"><i class="fas fa-power-off"></i> ログアウト</a>
                         	<sec:csrfInput />
                         </form>
                     </div>
@@ -99,6 +93,28 @@
         function logoutSubmit() {
             document.getElementById("logoutForm").submit();
         }
+        
+        var contextPath = $("meta[name='contextPath']").attr("content");
+        /**
+         * 無効なセッション.
+         */
+        jQuery.ajaxSetup({
+        	contentType:"application/x-www-form-urlencoded;charset=utf-8",
+        	complete:function(xhr,textStatus){
+        		// Ajax 無効なセッション
+        		if(xhr.responseText == 'invalidSession'){
+
+        			swal({
+        				text: getMsg('msg125'),
+        				icon: "info"
+        			}).then(function(val){
+        				window.location.href= contextPath + "/user/login";
+        			});
+
+        		}
+        	}
+        });
+
 	</script>
 </body>
 </html>

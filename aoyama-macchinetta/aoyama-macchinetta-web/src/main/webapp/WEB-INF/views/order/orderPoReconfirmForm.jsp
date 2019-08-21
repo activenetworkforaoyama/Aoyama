@@ -751,11 +751,17 @@
 							<div class="col-12 col-md-3">
 								<label class=" form-control-label">着丈修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkBodyCorrect }</label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkBodyGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">ウエスト修正</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkWaistCorrect }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkWaistGross }</label>cm</strong>
@@ -763,11 +769,17 @@
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">袖丈右修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkRightsleeveCorrect}</label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkRightsleeveGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">袖丈左修正</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkLeftsleeveCorrect }</label>cm</strong> 
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkLeftsleeveGross }</label>cm</strong> 
@@ -1030,17 +1042,26 @@
 							<div class="col-12 col-md-3">
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}</label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtWaistGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">ワタリ修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtThighCorrect }</label>cm</strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtThighGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">裾幅</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtHemwidthCorrect }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtHemwidthGross }</label>cm</strong>
@@ -1208,17 +1229,26 @@
 							<div class="col-12 col-md-3">
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2WaistCorrect }cm</label></strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2WaistGross }cm</label></strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">ワタリ修正</label>
 							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2ThighCorrect }cm</label></strong>
+							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2ThighGross }cm</label></strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">裾幅</label>
+							</div>
+							<div class="col-12 col-md-2">
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthCorrect }cm</label></strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthGross }cm</label></strong>

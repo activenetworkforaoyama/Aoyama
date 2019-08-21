@@ -2623,17 +2623,6 @@ jQuery('#custDeliverDate').datepicker({
     autoclose: true
 });
 
-//session timeout
-jQuery.ajaxSetup({
-	contentType:"application/x-www-form-urlencoded;charset=utf-8",
-	complete:function(xhr,textStatus){
-		if(xhr.status == '403'){
-			window.location.href= contextPath + "/user/login";
-		}
-	}
-});
-
-
 jQuery(document).ready(function() {
 
 	var orderFlag = "${orderFlag}";

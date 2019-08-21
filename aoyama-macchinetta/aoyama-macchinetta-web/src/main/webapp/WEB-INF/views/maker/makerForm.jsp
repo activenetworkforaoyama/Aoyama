@@ -213,6 +213,7 @@ var grid;
 var sortcol = "maker_code";
 var sortdir = 1;
 var contextPath = $("meta[name='contextPath']").attr("content");
+
 //データ変更の行号
 var changeRowNum = new Array();
 //一意制約の行号

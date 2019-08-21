@@ -92,13 +92,14 @@
             var shortCode = settings.language.substring(0, 2);
             shortFileName = settings.path + file + '_' + shortCode + '.properties';
             // 3. with language code and country code (eg, Messages_pt_BR.properties)
-            if (settings.language.length >= 5) {
+/*            if (settings.language.length >= 5) {
                 var longCode = settings.language.substring(0, 5);
                 longFileName = settings.path + file + '_' + longCode + '.properties';
                 fileNames = [defaultFileName, shortFileName, longFileName];
             } else {
                 fileNames = [defaultFileName, shortFileName];
-            }
+            }*/
+            fileNames = [defaultFileName];
             loadAndParseFiles(fileNames, settings);
         });
 
