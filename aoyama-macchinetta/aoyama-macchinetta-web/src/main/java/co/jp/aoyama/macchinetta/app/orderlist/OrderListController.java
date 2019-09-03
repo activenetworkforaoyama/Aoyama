@@ -38,11 +38,13 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.common.CsvUtil;
+import co.jp.aoyama.macchinetta.app.detail.OrderDetailCoHelper;
 import co.jp.aoyama.macchinetta.app.message.MessageKeys;
 import co.jp.aoyama.macchinetta.app.order.enums.HeaderTitleEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.HeaderTitleMakerUseEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
+import co.jp.aoyama.macchinetta.domain.model.OrderDetailFormat;
 import co.jp.aoyama.macchinetta.domain.model.OrderMakerUse;
 import co.jp.aoyama.macchinetta.domain.model.ErrorResult;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
@@ -111,6 +113,12 @@ public class OrderListController {
 	
 	// 工場自動連携ステータス 送信前
 	private static final String SEND2FACTORY_STATUS0 = "0";
+	
+	// 工場自動連携ステータス送信済み
+	private static final String SEND2FACTORY_STATUS1 = "1";
+	
+	// 工場自動連携ステータス送信失敗 データエラー
+	private static final String SEND2FACTORY_STATUS4 = "4";
 	
 	// 取り消しフラグ 取り消しではない
 	private static final String IS_NOT_CANCELLED = "0";
@@ -277,6 +285,7 @@ public class OrderListController {
 					//本店の生産開始前の場合、登録画面へ遷移
 					if (order.getShopCode().equals(shopCode) && 
 							order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
+							(order.getSend2factoryStatus().equals(SEND2FACTORY_STATUS0) || order.getSend2factoryStatus().equals(SEND2FACTORY_STATUS4)) &&
 							order.getIsCancelled().equals("0")) {
 						if(TSC_STATUS_T2.equals(order.getTscStatus()) ||
 								TSC_STATUS_T3.equals(order.getTscStatus()) ||
@@ -344,15 +353,54 @@ public class OrderListController {
 	                            Model model) {
 		String authority = sessionContent.getAuthority();
 		String shopCode = sessionContent.getBelongCode();
-		
+		OrderDetailFormat orderFm = new OrderDetailFormat();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 		
 			Order order= orderListService.findOrderByPk(orderId);
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdf.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDate = order.getShippingDate();
+			if(shippingDate != null && !"".equals(shippingDate.toString())) {
+				String shippingDateFormat = sdf.format(shippingDate);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDate = order.getLoadingDate();
+			if(loadingDate != null && !"".equals(loadingDate.toString())) {
+				String loadingDateFormat = sdf.format(loadingDate);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdf.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
 			/*
 			 * if (measuring == null) { return "redirect:/orderlist/gotoOrderlistError"; }
 			 */
+			OrderDetailCoHelper orderDetailCoHelper = new OrderDetailCoHelper();
+			orderDetailCoHelper.getOptionDataFormat(order,orderFm);
 			model.addAttribute("order", order);
+			model.addAttribute("orderFm", orderFm);
 			model.addAttribute("measuring", measuring);
 			model.addAttribute("authority", authority);
 			String orderFlag = "orderLink";
@@ -367,7 +415,7 @@ public class OrderListController {
 					if (order.getShopCode().equals(shopCode) && 
 						order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
 						order.getIsCancelled().equals("0")) {
-						return "forward:/order/orderCoUpdate"; 
+						return "forward:/orderCo/orderCoUpdate"; 
 					}
 				}
 				//商品部の場合
@@ -379,7 +427,7 @@ public class OrderListController {
 						order.getTscStatus().equals(TSC_STATUS_T1) || 
 						order.getTscStatus().equals(TSC_STATUS_T2))
 						&& order.getIsCancelled().equals("0")) {
-						return "forward:/order/orderCoUpdate"; 
+						return "forward:/orderCo/orderCoUpdate"; 
 					}
 				}
 				//明細画面へ遷移

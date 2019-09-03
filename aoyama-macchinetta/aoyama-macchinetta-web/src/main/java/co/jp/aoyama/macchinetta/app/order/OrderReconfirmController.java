@@ -91,7 +91,6 @@ public class OrderReconfirmController {
 	@RequestMapping(value = "orderReForm")
 	@TransactionTokenCheck(value = "create",type = TransactionTokenType.BEGIN)
 	public String toOrderReForm(@ModelAttribute(value = "orderForm")OrderForm orderForm,HttpServletRequest req,Model model,Map<String, Map<String, Integer>> map) {
-		OrderHelper orderHelper = new OrderHelper();
 		String status = orderForm.getStatus();
 		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
 			//注文ID
@@ -105,7 +104,6 @@ public class OrderReconfirmController {
 				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
 			}
 		}
-		orderHelper.addPlusSignToCorrect(orderForm);
 		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
 		OrderFindFabric findStock = this.findStock(orderForm);
 		String color = findStock.getColor();
@@ -476,7 +474,7 @@ public class OrderReconfirmController {
 			String userId = sessionContent.getUserId();
 			String findMakerId = this.findMakerId(orderForm);
 			orderHelper.onlyUpdateItem(selectExistOrder,order,sessionContent.getAuthority());
-			orderHelper.orderMappingPo(orderForm, order,userId,findStock,orderId,findMakerId,retailPriceRelatedMap);
+			orderHelper.orderMappingPo(orderForm, order,userId,findStock,orderId,findMakerId,retailPriceRelatedMap,priceCode);
 			orderHelper.measuringMapping(orderForm, measuring,sessionContent.getUserId());
 			orderHelper.nextGenerationRelationCount(orderForm, order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate);
 			

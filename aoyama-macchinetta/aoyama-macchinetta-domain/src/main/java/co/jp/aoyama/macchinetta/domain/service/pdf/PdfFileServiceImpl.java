@@ -435,12 +435,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//取り扱い注意
 		form.getField("Product_notice_data").setData(stringChange(order.getProductNotice()));
 		//店舗名
-		Shop shop = shopRepository.findShopByPk(order.getShopCode());
-		if(shop != null) {
-			form.getField("Store_nm_data").setData(stringChange(shop.getShopName()));
-		}else {
-			logger.info(order.getShopCode()+"対応する店舗情報が存在しません。");
-		}
+		form.getField("Store_nm_data").setData(stringChange(order.getStoreNm()));
 		//担当者名
 		form.getField("Store_staff_nm_data").setData(stringChange(order.getCustStaff()));
 	}

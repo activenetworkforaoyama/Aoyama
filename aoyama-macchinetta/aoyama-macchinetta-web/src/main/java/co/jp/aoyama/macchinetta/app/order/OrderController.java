@@ -332,14 +332,19 @@ public class OrderController {
 			String orderId = null;
 			// 店舗コード
 			String belongCode = sessionContent.getBelongCode();
-			String orderIdCheckCd = belongCode.concat(ONE);
-			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-			if (maxOrderId == null) {
-				orderId = belongCode.concat(MIN_CODE);
-			} else {
-				long parseLong = Long.parseLong(maxOrderId) + 1;
-				orderId = String.format("%012d", parseLong);
-			}
+
+			String last8digits = orderService.selectOrderIdBySequence();
+
+			orderId = belongCode.concat(last8digits);
+			
+//			String orderIdCheckCd = belongCode.concat(ONE);
+//			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
+//			if (maxOrderId == null) {
+//				orderId = belongCode.concat(MIN_CODE);
+//			} else {
+//				long parseLong = Long.parseLong(maxOrderId) + 1;
+//				orderId = String.format("%012d", parseLong);
+//			}
 
 			// オーダーのデーター → orderForm
 			orderFormToOrder(orderForm, order, measuring);
@@ -423,14 +428,19 @@ public class OrderController {
 			String orderId = null;
 			// 店舗コード
 			String belongCode = sessionContent.getBelongCode();
-			String orderIdCheckCd = belongCode.concat(ONE);
-			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-			if (maxOrderId == null) {
-				orderId = belongCode.concat(MIN_CODE);
-			} else {
-				long parseLong = Long.parseLong(maxOrderId) + 1;
-				orderId = String.format("%012d", parseLong);
-			}
+			
+			String last8digits = orderService.selectOrderIdBySequence();
+			
+			orderId = belongCode.concat(last8digits);
+			
+//			String orderIdCheckCd = belongCode.concat(ONE);
+//			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
+//			if (maxOrderId == null) {
+//				orderId = belongCode.concat(MIN_CODE);
+//			} else {
+//				long parseLong = Long.parseLong(maxOrderId) + 1;
+//				orderId = String.format("%012d", parseLong);
+//			}
 
 			// オーダーのデーター → orderForm
 			orderFormToOrder(orderForm, order, measuring);
@@ -1016,6 +1026,12 @@ public class OrderController {
 	public OrderFindFabric findStock(String fabricNo, String orderPattern) {
 
 		OrderFindFabric orderFindFabric = orderService.getOrderFabric(fabricNo, orderPattern);
+		
+		BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
+		BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
+		BigDecimal result = theoretical.subtract(reservation);
+		
+		orderFindFabric.setStockResult(String.valueOf(result));
 
 		return orderFindFabric;
 	}
@@ -1307,5 +1323,12 @@ public class OrderController {
 		List<TypeSize> poTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern,subItemCode,modelCode,figure,number);
 		List<TypeSizeOptimization> poTypeSizeOptimization = orderHelper.getPoTypeSizeOptimization(poTypeSizeList);
 		return poTypeSizeOptimization;
+	}
+	
+	public String getCountUsage (String theoreticalStock,String reservationStock) {
+		BigDecimal theoretical = new BigDecimal(theoreticalStock);
+		BigDecimal reservation = new BigDecimal(reservationStock);
+		BigDecimal result = theoretical.subtract(reservation);
+		return String.valueOf(result);
 	}
 }

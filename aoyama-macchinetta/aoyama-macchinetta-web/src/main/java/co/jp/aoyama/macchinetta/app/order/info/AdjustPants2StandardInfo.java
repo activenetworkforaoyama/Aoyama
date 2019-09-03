@@ -31,6 +31,15 @@ public class AdjustPants2StandardInfo implements Serializable {
 	private String corPt2ThighCorrect;
 	// ワタリグロス2
 	private String corPt2ThighGross;
+	
+	// ヒップ修正
+	private Map<String, String> corPt2HipMap;
+	// ワタリ型サイズ2
+	private String corPt2HipSize;
+	// ワタリ補正値2
+	private String corPt2HipCorrect;
+	// ワタリグロス2
+	private String corPt2HipGross;
 
 	// 裾幅修正2
 	private Map<String, String> corPt2HemwidthMap;
@@ -57,6 +66,8 @@ public class AdjustPants2StandardInfo implements Serializable {
 	// 股下左グロス2
 	private String corPt2LeftinseamGross;
 
+	//Pt2再補正コメント
+	private String corPt2StoreCorrectionMemo;
 	// 再補正値
 
 	// ２PANTS_ウエスト_再補正値
@@ -94,6 +105,38 @@ public class AdjustPants2StandardInfo implements Serializable {
 
 	// ２PANTS_股下左_再補正値フラッグ
 	private String corPt2LeftinseamCorrectAgainFlag;
+
+	public Map<String, String> getCorPt2HipMap() {
+		return corPt2HipMap;
+	}
+
+	public void setCorPt2HipMap(Map<String, String> corPt2HipMap) {
+		this.corPt2HipMap = corPt2HipMap;
+	}
+
+	public String getCorPt2HipSize() {
+		return corPt2HipSize;
+	}
+
+	public void setCorPt2HipSize(String corPt2HipSize) {
+		this.corPt2HipSize = corPt2HipSize;
+	}
+
+	public String getCorPt2HipCorrect() {
+		return corPt2HipCorrect;
+	}
+
+	public void setCorPt2HipCorrect(String corPt2HipCorrect) {
+		this.corPt2HipCorrect = corPt2HipCorrect;
+	}
+
+	public String getCorPt2HipGross() {
+		return corPt2HipGross;
+	}
+
+	public void setCorPt2HipGross(String corPt2HipGross) {
+		this.corPt2HipGross = corPt2HipGross;
+	}
 
 	public Map<String, String> getSizeNumberMap() {
 		return sizeNumberMap;
@@ -373,6 +416,14 @@ public class AdjustPants2StandardInfo implements Serializable {
 
 	public void setCorPt2LeftinseamCorrectAgainFlag(String corPt2LeftinseamCorrectAgainFlag) {
 		this.corPt2LeftinseamCorrectAgainFlag = corPt2LeftinseamCorrectAgainFlag;
+	}
+
+	public String getCorPt2StoreCorrectionMemo() {
+		return corPt2StoreCorrectionMemo;
+	}
+
+	public void setCorPt2StoreCorrectionMemo(String corPt2StoreCorrectionMemo) {
+		this.corPt2StoreCorrectionMemo = corPt2StoreCorrectionMemo;
 	}
 	
 }

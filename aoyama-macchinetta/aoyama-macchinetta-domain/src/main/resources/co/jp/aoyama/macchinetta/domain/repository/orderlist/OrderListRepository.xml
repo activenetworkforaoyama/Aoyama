@@ -1252,7 +1252,22 @@
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_user_id" jdbcType="VARCHAR" property="updatedUserId" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="product_lcr_sewing" jdbcType="VARCHAR" property="productLcrSewing" />
+    <result column="product_lcr_sewing_rt_price" jdbcType="INTEGER" property="productLcrSewingRtPrice" />
+    <result column="product_lcr_sewing_ws_wage" jdbcType="NUMERIC" property="productLcrSewingWsWage" />
+    <result column="product_lcr_sewing_ws_price" jdbcType="INTEGER" property="productLcrSewingWsPrice" />
     
+    <result column="cor_jk_store_correction_memo" jdbcType="VARCHAR" property="corJkStoreCorrectionMemo" />
+    <result column="cor_pt_store_correction_memo" jdbcType="VARCHAR" property="corPtStoreCorrectionMemo" />
+    <result column="cor_pt2_store_correction_memo" jdbcType="VARCHAR" property="corPt2StoreCorrectionMemo" />
+    <result column="cor_ct_store_correction_memo" jdbcType="VARCHAR" property="corCtStoreCorrectionMemo" />
+    <result column="cor_gl_store_correction_memo" jdbcType="VARCHAR" property="corGlStoreCorrectionMemo" />
+    
+    <result column="ct_inner_body_cloth_type" jdbcType="VARCHAR" property="ctInnerBodyClothType" />
+    <result column="ct_inner_sleeve_cloth_type" jdbcType="VARCHAR" property="ctInnerSleeveClothType" />
+    <result column="ct_btn_material_type" jdbcType="VARCHAR" property="ctBtnMaterialType" />
+    <result column="fabric_price" jdbcType="INTEGER" property="fabricPrice" />
+    <result column="ws_price_adjust" jdbcType="INTEGER" property="wsPriceAdjust" />
   </resultMap>
     
     <sql id="SelectColumn">
@@ -1559,7 +1574,9 @@
 		    host_transmit_size, host_transmit_maker_product, factory_shipping_method, shipping_date, 
 		    loading_date, fabric_used_mount, theory_fabric_used_mount, tsc_status, maker_factory_status, 
 		    send2factory_status, is_cancelled, theoretical_stock_check,schedule_data_transmit_status,shipping_transmit_status, dtb_order.version,
-		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at
+		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at,product_lcr_sewing,product_lcr_sewing_rt_price,
+		    product_lcr_sewing_ws_wage,product_lcr_sewing_ws_price,ct_inner_body_cloth_type,ct_inner_sleeve_cloth_type,ct_btn_material_type,fabric_price,
+		    ws_price_adjust
     </sql>
 
     <select id="findOrderByPk" parameterType="string" resultMap="OrderResultMap">
@@ -1840,7 +1857,7 @@
         		(tsc_status = 'T0' OR tsc_status = 'T1')
         	]]>
         	</if>
-        	<if test="condition.tscStatus == '' or condition.tscStatus == 'T2' or 
+        	<if test="condition.tscStatus == 'T2' or 
         	          condition.tscStatus == 'T3' or
         	          condition.tscStatus == 'T4' or
         	          condition.tscStatus == 'T5' or
@@ -1854,6 +1871,21 @@
              tsc_status = 'T5' OR 
              tsc_status = 'T6' OR 
              tsc_status = 'T7' )
+        	]]>
+        	</if>
+        	<if test="condition.tscStatus == ''">
+        	<![CDATA[
+        	AND
+              (shop_code = #{condition.belongCode}
+        	    AND
+        		(tsc_status = 'T0' OR tsc_status = 'T1')
+            OR
+               (tsc_status = 'T2' OR
+               tsc_status = 'T3' OR
+               tsc_status = 'T4' OR 
+               tsc_status = 'T5' OR 
+               tsc_status = 'T6' OR 
+               tsc_status = 'T7' ))
         	]]>
         	</if>
         </if>
@@ -2017,5 +2049,280 @@
         <include refid="OrderCondition" />
         ORDER BY
             dtb_order.updated_at desc
+    </select>    
+    <select id="findOrderJkByPk" parameterType="string" resultMap="OrderResultMap">   
+        SELECT
+         cor_jk_drop,
+         cor_jk_size,
+         cor_jk_bodylength_size,
+         cor_jk_bodylength_correct,
+         cor_jk_bodylength_gross,
+         cor_jk_waist_size,
+         cor_jk_waist_correct,
+         cor_jk_waist_gross,
+         cor_jk_rightsleeve_size,
+         cor_jk_rightsleeve_correct,
+         cor_jk_rightsleeve_gross,
+         cor_jk_leftsleeve_size,
+         cor_jk_leftsleeve_correct,
+         cor_jk_leftsleeve_gross,
+         cor_jk_shoulderpad,
+         cor_jk_figure_correct,
+         cor_jk_shoulderpad,
+         cor_jk_figure_correct,
+         cor_jk_store_correction_memo
+        FROM
+            dtb_order
+        WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
     </select>
+    
+     <select id="findOrderPtByPk" parameterType="string" resultMap="OrderResultMap">   
+        SELECT
+         cor_pt_drop,
+         cor_pt_size,
+         cor_pt_waist_size,
+         cor_pt_waist_correct,
+         cor_pt_waist_gross,
+         cor_pt_hip_size,
+         cor_pt_hip_correct,
+         cor_pt_hip_gross,
+         cor_pt_thighwidth_size,
+         cor_pt_thighwidth_correct,
+         cor_pt_thighwidth_gross,
+         cor_pt_hemwidth_type,
+         cor_pt_hemwidth_size,
+         cor_pt_hemwidth_correct,
+         cor_pt_hemwidth_gross,
+         cor_pt_hemwidth_degignate,
+         cor_pt_rightinseam_size,
+         cor_pt_rightinseam_correct,
+         cor_pt_rightinseam_gross,
+         cor_pt_leftinseam_size,
+         cor_pt_leftinseam_correct,
+         cor_pt_leftinseam_gross,
+         cor_pt_store_correction_memo
+        FROM
+            dtb_order
+        WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
+	
+    </select>      
+     <select id="findOrderGlByPk" parameterType="string" resultMap="OrderResultMap">
+    
+        SELECT
+         cor_gl_drop,
+         cor_gl_size,
+         cor_gl_bodylength_size,
+         cor_gl_bodylength_correct,
+         cor_gl_bodylength_gross,
+         cor_gl_bust_size,
+         cor_gl_bust_correct,
+         cor_gl_bust_gross,
+         cor_gl_waist_size,
+         cor_gl_waist_correct,
+         cor_gl_waist_gross,
+         cor_gl_store_correction_memo
+        FROM
+            dtb_order
+        WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
+	
+    </select>
+    <select id="findOrderPt2ByPk" parameterType="string" resultMap="OrderResultMap">
+    
+        SELECT
+         cor_pt2_drop,
+         cor_pt2_size,
+         cor_pt2_waist_size,
+         cor_pt2_waist_correct,
+         cor_pt2_waist_gross,
+         cor_pt2_hip_size,
+         cor_pt2_hip_correct,
+         cor_pt2_hip_gross,
+         cor_pt2_thighwidth_size,
+         cor_pt2_thighwidth_correct,
+         cor_pt2_thighwidth_gross,
+         cor_pt2_hemwidth_type,
+         cor_pt2_hemwidth_size,
+         cor_pt2_hemwidth_correct,
+         cor_pt2_hemwidth_gross,
+         cor_pt2_rightinseam_size,
+         cor_pt2_rightinseam_correct,
+         cor_pt2_rightinseam_gross,
+         cor_pt2_leftinseam_size,
+         cor_pt2_leftinseam_correct,
+         cor_pt2_leftinseam_gross,
+         cor_pt2_store_correction_memo
+        FROM
+            dtb_order
+        WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
+	
+    </select>    
+     <select id="findOrderCtByPk" parameterType="string" resultMap="OrderResultMap">
+    
+       SELECT
+        cor_ct_size,
+        cor_ct_bodylength_size,
+        cor_ct_bodylength_correct,
+        cor_ct_bodylength_gross,
+        cor_ct_waist_size,
+        cor_ct_waist_correct,
+        cor_ct_waist_gross,
+        cor_ct_rightsleeve_size,
+        cor_ct_rightsleeve_correct,
+        cor_ct_rightsleeve_gross,
+        cor_ct_leftsleeve_size,
+        cor_ct_leftsleeve_correct,
+        cor_ct_leftsleeve_gross,
+        cor_ct_venthight_size,
+        cor_ct_venthight_correct,
+        cor_ct_venthight_gross,
+        cor_ct_pktpos_size,
+        cor_ct_pktpos_correct,
+        cor_ct_pktpos_gross,
+        cor_ct_store_correction_memo
+       FROM
+            dtb_order
+       WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
+	
+    </select>
+    <select id="findOrderStByPk" parameterType="string" resultMap="OrderResultMap">
+    
+        SELECT
+          cor_st_size,
+          cor_st_neck_size,
+          cor_st_neck_correct,
+          cor_st_neck_gross,
+          cor_st_bodylength_size,
+          cor_st_bodylength_correct,
+          cor_st_bodylength_gross,
+          cor_st_rightsleeve_size,
+          cor_st_rightsleeve_correct,
+          cor_st_rightsleeve_gross,
+          cor_st_leftsleeve_size,
+          cor_st_leftsleeve_correct,
+          cor_st_leftsleeve_gross,
+          cor_st_backdarts_pack_size,
+          cor_st_backdarts_pack_correct,
+          cor_st_backdarts_pack_gross,
+          cor_st_backdarts_unpack_size,
+          cor_st_backdarts_unpack_correct,
+          cor_st_backdarts_unpack_gross,
+          cor_st_rightcuffs_surrounding_size,
+          cor_st_rightcuffs_surrounding_correct,
+          cor_st_rightcuffs_surrounding_gross,
+          cor_st_leftcuffs_surrounding_size,
+          cor_st_leftcuffs_surrounding_correct,
+          cor_st_leftcuffs_surrounding_gross,
+          cor_store_correction_memo
+        FROM
+            dtb_order
+        WHERE
+        <![CDATA[
+            order_id = #{orderId}
+        ]]>
+	
+    </select>
+    <select id="findOrderJkOptionByOrderId" parameterType="string" resultMap="OrderResultMap">
+	SELECT
+		jk_model_cd,
+		jk_frt_btn_cd,
+		jk_lapel_design_cd,
+		jk_lapel_model_cd,
+		jk_grade_cd,
+		jk_inner_cloth_cd,
+		jk_daiba_cd,
+		jk_look_cloth_cd,
+		jk_collar_inner_cd,
+		jk_collar_hang_cd,
+		jk_lapel_width_cd,
+		jk_flower_hole_cd,
+		jk_breast_pkt_cd,
+		jk_waist_pkt_cd,
+		jk_chg_pkt_cd,
+		jk_slanted_pkt_cd,
+		jk_shinobi_pkt_cd,
+		jk_sleeve_type_cd,
+		jk_manica_cd,
+		jk_sleeve_btn_cd,
+		jk_cuff_cd,
+		jk_inner_pkt_cd,
+		jk_right_inner_pkt_type_cd,
+		jk_stitch_type_cd,
+		jk_stitch_plc_cd,
+		jk_dblstitch_plc_cd,
+		jk_amf_color_plc_cd,
+		jk_amf_color_cd,
+		jk_btnhole_color_plc_cd,
+		jk_btnhole_color_cd,
+		jk_btnthread_color_plc_cd,
+		jk_btnthread_color_cd,
+		jk_vent_cd,
+		jk_inner_body_cloth_cd,
+		jk_inner_sleeve_cloth_cd,
+		jk_btn_material_cd,
+		jk_shape_memory_cd,
+		jk_sleeve_btn_type,
+		jk_inner_pkt_type,
+		jk_stitch_plc_type,
+		jk_dblstitch_plc_type,
+		jk_amf_color_type,
+		jk_btnhole_color_type,
+		jk_btnthread_color_type,
+		jk_inner_body_cloth_type,
+		jk_inner_sleeve_cloth_type,
+		jk_btn_material_type,
+		jk_model_rt_price,
+		jk_frt_btn_rt_price,
+		jk_lapel_design_rt_price,
+		jk_lapel_model_rt_price,
+		jk_grade_rt_price,
+		jk_inner_cloth_rt_price,
+		jk_daiba_rt_price,
+		jk_look_cloth_rt_price,
+		jk_collar_inner_rt_price,
+		jk_collar_hang_rt_price,
+		jk_lapel_width_rt_price,
+		jk_flower_hole_rt_price,
+		jk_breast_pkt_rt_price,
+		jk_waist_pkt_rt_price,
+		jk_chg_pkt_rt_price,
+		jk_slanted_pkt_rt_price,
+		jk_shinobi_pkt_rt_price,
+		jk_sleeve_type_rt_price,
+		jk_manica_rt_price,
+		jk_sleeve_btn_rt_price,
+		jk_cuff_rt_price,
+		jk_inner_pkt_rt_price,
+		jk_right_inner_pkt_type_rt_price,
+		jk_stitch_type_rt_price,
+		jk_stitch_plc_rt_price,
+		jk_dblstitch_plc_rt_price,
+		jk_amf_color_rt_price,
+		jk_btnhole_plc_color_rt_price,
+		jk_btnthread_plc_color_rt_price,
+		jk_vent_rt_price,
+		jk_inner_body_cloth_rt_price,
+		jk_inner_sleeve_cloth_rt_price,
+		jk_btn_material_rt_price,
+		jk_shape_memory_rt_price,
+		jk_sleeve_btn_number
+	FROM
+	dtb_order
+	WHERE
+	order_id = #{orderId}
+</select>
 </mapper>

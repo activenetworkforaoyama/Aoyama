@@ -95,6 +95,10 @@ public class Order implements Serializable {
     private String fabricColor;
     
     private String fabricPattern;
+    
+    private Integer fabricPrice;
+    
+    private Integer wsPriceAdjust;
 
     private String productCategory;
 
@@ -1873,6 +1877,8 @@ public class Order implements Serializable {
     private BigDecimal ctCollarHangWsWage;
 
     private Integer ctCollarHangWsPrice;
+    
+    private String ctInnerBodyClothType;
 
     private String ctInnerBodyClothCd;
 
@@ -1883,6 +1889,8 @@ public class Order implements Serializable {
     private BigDecimal ctInnerBodyClothWsWage;
 
     private Integer ctInnerBodyClothWsPrice;
+    
+    private String ctInnerSleeveClothType;
 
     private String ctInnerSleeveClothCd;
 
@@ -1893,6 +1901,8 @@ public class Order implements Serializable {
     private BigDecimal ctInnerSleeveClothWsWage;
 
     private Integer ctInnerSleeveClothWsPrice;
+    
+    private String ctBtnMaterialType;
 
     private String ctBtnMaterialCd;
 
@@ -2495,6 +2505,24 @@ public class Order implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
+    
+    private String productLcrSewing;
+
+    private Integer productLcrSewingRtPrice;
+
+    private BigDecimal productLcrSewingWsWage;
+
+    private Integer productLcrSewingWsPrice;
+    
+    private String corJkStoreCorrectionMemo;
+    
+    private String corPtStoreCorrectionMemo;
+    
+    private String corPt2StoreCorrectionMemo;
+    
+    private String corCtStoreCorrectionMemo;
+    
+    private String corGlStoreCorrectionMemo;
 
     public String getOrderId() {
         return orderId;
@@ -12448,6 +12476,79 @@ public class Order implements Serializable {
 		this.shippingTransmitStatus = shippingTransmitStatus;
 	}
 
+	
+	public String getProductLcrSewing() {
+		return productLcrSewing;
+	}
+
+	public void setProductLcrSewing(String productLcrSewing) {
+		this.productLcrSewing = productLcrSewing;
+	}
+
+	public Integer getProductLcrSewingRtPrice() {
+		return productLcrSewingRtPrice;
+	}
+
+	public void setProductLcrSewingRtPrice(Integer productLcrSewingRtPrice) {
+		this.productLcrSewingRtPrice = productLcrSewingRtPrice;
+	}
+
+	public BigDecimal getProductLcrSewingWsWage() {
+		return productLcrSewingWsWage;
+	}
+
+	public void setProductLcrSewingWsWage(BigDecimal productLcrSewingWsWage) {
+		this.productLcrSewingWsWage = productLcrSewingWsWage;
+	}
+
+	public Integer getProductLcrSewingWsPrice() {
+		return productLcrSewingWsPrice;
+	}
+
+	public void setProductLcrSewingWsPrice(Integer productLcrSewingWsPrice) {
+		this.productLcrSewingWsPrice = productLcrSewingWsPrice;
+	}
+
+	public String getCorJkStoreCorrectionMemo() {
+		return corJkStoreCorrectionMemo;
+	}
+
+	public void setCorJkStoreCorrectionMemo(String corJkStoreCorrectionMemo) {
+		this.corJkStoreCorrectionMemo = corJkStoreCorrectionMemo;
+	}
+
+	public String getCorPtStoreCorrectionMemo() {
+		return corPtStoreCorrectionMemo;
+	}
+
+	public void setCorPtStoreCorrectionMemo(String corPtStoreCorrectionMemo) {
+		this.corPtStoreCorrectionMemo = corPtStoreCorrectionMemo;
+	}
+
+	public String getCorPt2StoreCorrectionMemo() {
+		return corPt2StoreCorrectionMemo;
+	}
+
+	public void setCorPt2StoreCorrectionMemo(String corPt2StoreCorrectionMemo) {
+		this.corPt2StoreCorrectionMemo = corPt2StoreCorrectionMemo;
+	}
+
+	public String getCorCtStoreCorrectionMemo() {
+		return corCtStoreCorrectionMemo;
+	}
+
+	public void setCorCtStoreCorrectionMemo(String corCtStoreCorrectionMemo) {
+		this.corCtStoreCorrectionMemo = corCtStoreCorrectionMemo;
+	}
+
+	public String getCorGlStoreCorrectionMemo() {
+		return corGlStoreCorrectionMemo;
+	}
+
+	public void setCorGlStoreCorrectionMemo(String corGlStoreCorrectionMemo) {
+		this.corGlStoreCorrectionMemo = corGlStoreCorrectionMemo;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -12537,11 +12638,23 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(fabricPattern == null ? "" : fabricPattern);
 		builder.append(",");
+		builder.append(fabricPrice == null ? "" : fabricPrice);
+		builder.append(",");
+		builder.append(wsPriceAdjust == null ? "" : wsPriceAdjust);
+		builder.append(",");
 		builder.append(productCategory == null ? "" : productCategory);
 		builder.append(",");
 		builder.append(productBrandType == null ? "" : productBrandType);
 		builder.append(",");
 		builder.append(productBrandNm == null ? "" : productBrandNm);
+		builder.append(",");
+		builder.append(productLcrSewing == null ? "" : productLcrSewing);
+		builder.append(",");
+		builder.append(productLcrSewingRtPrice == null ? "" : productLcrSewingRtPrice);
+		builder.append(",");
+		builder.append(productLcrSewingWsWage == null ? "" : productLcrSewingWsWage);
+		builder.append(",");
+		builder.append(productLcrSewingWsPrice == null ? "" : productLcrSewingWsPrice);
 		builder.append(",");
 		builder.append(productFabricNmNecessity == null ? "" : productFabricNmNecessity);
 		builder.append(",");
@@ -14315,6 +14428,8 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(ctCollarHangWsPrice == null ? "" : ctCollarHangWsPrice);
 		builder.append(",");
+		builder.append(ctInnerBodyClothType == null ? "" : ctInnerBodyClothType);
+		builder.append(",");
 		builder.append(ctInnerBodyClothCd == null ? "" : ctInnerBodyClothCd);
 		builder.append(",");
 		builder.append(ctInnerBodyClothNm == null ? "" : ctInnerBodyClothNm);
@@ -14325,6 +14440,8 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(ctInnerBodyClothWsPrice == null ? "" : ctInnerBodyClothWsPrice);
 		builder.append(",");
+		builder.append(ctInnerSleeveClothType == null ? "" : ctInnerSleeveClothType);
+		builder.append(",");
 		builder.append(ctInnerSleeveClothCd == null ? "" : ctInnerSleeveClothCd);
 		builder.append(",");
 		builder.append(ctInnerSleeveClothNm == null ? "" : ctInnerSleeveClothNm);
@@ -14334,6 +14451,8 @@ public class Order implements Serializable {
 		builder.append(ctInnerSleeveClothWsWage == null ? "" : ctInnerSleeveClothWsWage);
 		builder.append(",");
 		builder.append(ctInnerSleeveClothWsPrice == null ? "" : ctInnerSleeveClothWsPrice);
+		builder.append(",");
+		builder.append(ctBtnMaterialType == null ? "" : ctBtnMaterialType);
 		builder.append(",");
 		builder.append(ctBtnMaterialCd == null ? "" : ctBtnMaterialCd);
 		builder.append(",");
@@ -14645,6 +14764,8 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(corJkFigureCorrect == null ? "" : corJkFigureCorrect);
 		builder.append(",");
+		builder.append(corJkStoreCorrectionMemo == null ? "" : corJkStoreCorrectionMemo);
+		builder.append(",");
 		builder.append(corPtDrop == null ? "" : corPtDrop);
 		builder.append(",");
 		builder.append(corPtSize == null ? "" : corPtSize);
@@ -14688,6 +14809,8 @@ public class Order implements Serializable {
 		builder.append(corPtLeftinseamCorrect == null ? "" : corPtLeftinseamCorrect);
 		builder.append(",");
 		builder.append(corPtLeftinseamGross == null ? "" : corPtLeftinseamGross);
+		builder.append(",");
+		builder.append(corPtStoreCorrectionMemo == null ? "" : corPtStoreCorrectionMemo);
 		builder.append(",");
 		builder.append(corPt2Drop == null ? "" : corPt2Drop);
 		builder.append(",");
@@ -14733,6 +14856,8 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(corPt2LeftinseamGross == null ? "" : corPt2LeftinseamGross);
 		builder.append(",");
+		builder.append(corPt2StoreCorrectionMemo == null ? "" : corPt2StoreCorrectionMemo);
+		builder.append(",");
 		builder.append(corGlDrop == null ? "" : corGlDrop);
 		builder.append(",");
 		builder.append(corGlSize == null ? "" : corGlSize);
@@ -14754,6 +14879,8 @@ public class Order implements Serializable {
 		builder.append(corGlWaistCorrect == null ? "" : corGlWaistCorrect);
 		builder.append(",");
 		builder.append(corGlWaistGross == null ? "" : corGlWaistGross);
+		builder.append(",");
+		builder.append(corGlStoreCorrectionMemo == null ? "" : corGlStoreCorrectionMemo);
 		builder.append(",");
 		builder.append(corCtSize == null ? "" : corCtSize);
 		builder.append(",");
@@ -14792,6 +14919,8 @@ public class Order implements Serializable {
 		builder.append(corCtPktposCorrect == null ? "" : corCtPktposCorrect);
 		builder.append(",");
 		builder.append(corCtPktposGross == null ? "" : corCtPktposGross);
+		builder.append(",");
+		builder.append(corCtStoreCorrectionMemo == null ? "" : corCtStoreCorrectionMemo);
 		builder.append(",");
 		builder.append(corStSize == null ? "" : corStSize);
 		builder.append(",");
@@ -14937,6 +15066,46 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(updatedAt == null ? "" : updatedAt);
 		return builder.toString();
+	}
+
+	public String getCtInnerBodyClothType() {
+		return ctInnerBodyClothType;
+	}
+
+	public void setCtInnerBodyClothType(String ctInnerBodyClothType) {
+		this.ctInnerBodyClothType = ctInnerBodyClothType;
+	}
+
+	public String getCtInnerSleeveClothType() {
+		return ctInnerSleeveClothType;
+	}
+
+	public void setCtInnerSleeveClothType(String ctInnerSleeveClothType) {
+		this.ctInnerSleeveClothType = ctInnerSleeveClothType;
+	}
+
+	public String getCtBtnMaterialType() {
+		return ctBtnMaterialType;
+	}
+
+	public void setCtBtnMaterialType(String ctBtnMaterialType) {
+		this.ctBtnMaterialType = ctBtnMaterialType;
+	}
+
+	public Integer getFabricPrice() {
+		return fabricPrice;
+	}
+
+	public void setFabricPrice(Integer fabricPrice) {
+		this.fabricPrice = fabricPrice;
+	}
+
+	public Integer getWsPriceAdjust() {
+		return wsPriceAdjust;
+	}
+
+	public void setWsPriceAdjust(Integer wsPriceAdjust) {
+		this.wsPriceAdjust = wsPriceAdjust;
 	}
  
 }

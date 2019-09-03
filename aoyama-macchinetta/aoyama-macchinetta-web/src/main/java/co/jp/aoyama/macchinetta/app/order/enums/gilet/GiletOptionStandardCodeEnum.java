@@ -26,6 +26,8 @@ public enum GiletOptionStandardCodeEnum {
 	GILET_STANDARD_OPTION_CODE21("00021","setOgFrontBtnMateMap"),
 	GILET_STANDARD_OPTION_CODE23("00023","setOgBackBeltMap"),
 	GILET_STANDARD_OPTION_CODE24("00024","setOgWatchChainMap"),
+	GILET_STANDARD_OPTION_CODE26("00026","setOgDStitchModifyMap"),
+	GILET_STANDARD_OPTION_CODE27("00027","setOgDStitchModifyPlaceMap"),
 	GILET_STANDARD_OPTION_CODE99("00099","setThreePieceMap");	
 	
 	private final String key;

@@ -9,8 +9,7 @@ public enum ItemClassWashableEnum {
 	ITEM_CODE_JACKET("02","co.jp.aoyama.macchinetta.app.order.info.OptionJacketWashableInfo"),
 	ITEM_CODE_PANTS("03","co.jp.aoyama.macchinetta.app.order.info.OptionPantsWashableInfo"),
 	ITEM_CODE_GILET("04","co.jp.aoyama.macchinetta.app.order.info.OptionGiletWashableInfo"),
-	ITEM_CODE_SHIRTS("05",""),
-	ITEM_CODE_COAT("07","");
+	ITEM_CODE_PANTS2("07","co.jp.aoyama.macchinetta.app.order.info.OptionPants2WashableInfo");
 	
 	private final String key;
 	private final String value;

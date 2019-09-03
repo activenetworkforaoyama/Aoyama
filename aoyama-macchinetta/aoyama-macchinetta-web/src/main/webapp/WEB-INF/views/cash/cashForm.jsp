@@ -328,7 +328,7 @@ table.dataTable tbody td {
 							<div class="col col-md-2"></div>
 							<%-- <c:choose>
 			                	<c:when test="${cashForm != null && cashForm.cashStatus == '03'}">
-			                		<div class="col col-md-4"><button id="deleteButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 会計取消</button></div>
+			                		<div class="col col-md-4"><button id="deleteButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 会計取消</button></div>
 			                	</c:when>
 			                </c:choose> --%>
 						</div>
@@ -342,7 +342,7 @@ table.dataTable tbody td {
 								<button id="submit" type="submit" class="btn btn-primary btn-block" onclick="return imageCheck();"><i class="fa fa-check-circle"></i> 内容確認</button>
 							</div>
 							<div class="col col-md-4">
-								<button id="deleteButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 会計取消</button>
+								<button id="deleteButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 会計取消</button>
 							</div> 
 						</div>
 							</c:when>

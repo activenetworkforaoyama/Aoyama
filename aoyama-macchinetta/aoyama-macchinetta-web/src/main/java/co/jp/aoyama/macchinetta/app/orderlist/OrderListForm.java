@@ -26,6 +26,8 @@ public class OrderListForm implements Serializable {
     private String custCd;
 
     private String tscStatus;
+    
+    private String storeNm;
 
     private String storeStaffNm;
     
@@ -108,6 +110,14 @@ public class OrderListForm implements Serializable {
 
 	public void setTscStatus(String tscStatus) {
 		this.tscStatus = tscStatus;
+	}
+
+	public String getStoreNm() {
+		return storeNm;
+	}
+
+	public void setStoreNm(String storeNm) {
+		this.storeNm = storeNm;
 	}
 
 	public String getStoreStaffNm() {

@@ -11,7 +11,7 @@ public class AdjustPantsStandardInfo implements Serializable {
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-
+	
 	private String sizeFigure;
 	// ウエスト修正
 	private Map<String, String> corPtWaistMap;
@@ -41,6 +41,15 @@ public class AdjustPantsStandardInfo implements Serializable {
 	private String corPtHemwidthCorrect;
 	// 裾幅グロス
 	private String corPtHemwidthGross;
+	
+	//ヒップ修正
+	private Map<String, String> corPtHipMap;
+	// 裾幅型サイズ
+	private String corPtHipSize;
+	// 裾幅補正値
+	private String corPtHipCorrect;
+	// 裾幅グロス
+	private String corPtHipGross;
 
 	// 股下右型サイズ
 	private String corPtRightinseamSize;
@@ -55,7 +64,9 @@ public class AdjustPantsStandardInfo implements Serializable {
 	private String corPtLeftinseamCorrect;
 	// 股下左グロス
 	private String corPtLeftinseamGross;
-
+	
+	//Pt再補正コメント
+    private String corPtStoreCorrectionMemo;
 	// 再補正値
 
 	// PANTS_ウエスト_再補正値
@@ -93,6 +104,38 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	// PANTS_股下左_再補正値フラッグ
 	private String corPtLeftinseamCorrectAgainFlag;
+
+	public Map<String, String> getCorPtHipMap() {
+		return corPtHipMap;
+	}
+
+	public void setCorPtHipMap(Map<String, String> corPtHipMap) {
+		this.corPtHipMap = corPtHipMap;
+	}
+
+	public String getCorPtHipSize() {
+		return corPtHipSize;
+	}
+
+	public void setCorPtHipSize(String corPtHipSize) {
+		this.corPtHipSize = corPtHipSize;
+	}
+
+	public String getCorPtHipCorrect() {
+		return corPtHipCorrect;
+	}
+
+	public void setCorPtHipCorrect(String corPtHipCorrect) {
+		this.corPtHipCorrect = corPtHipCorrect;
+	}
+
+	public String getCorPtHipGross() {
+		return corPtHipGross;
+	}
+
+	public void setCorPtHipGross(String corPtHipGross) {
+		this.corPtHipGross = corPtHipGross;
+	}
 
 	public Map<String, String> getSizeNumberMap() {
 		return sizeNumberMap;
@@ -373,4 +416,13 @@ public class AdjustPantsStandardInfo implements Serializable {
 	public void setCorPtLeftinseamCorrectAgainFlag(String corPtLeftinseamCorrectAgainFlag) {
 		this.corPtLeftinseamCorrectAgainFlag = corPtLeftinseamCorrectAgainFlag;
 	}
+
+	public String getCorPtStoreCorrectionMemo() {
+		return corPtStoreCorrectionMemo;
+	}
+
+	public void setCorPtStoreCorrectionMemo(String corPtStoreCorrectionMemo) {
+		this.corPtStoreCorrectionMemo = corPtStoreCorrectionMemo;
+	}
+	
 }

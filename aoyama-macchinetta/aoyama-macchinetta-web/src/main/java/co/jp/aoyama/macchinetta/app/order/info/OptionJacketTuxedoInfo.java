@@ -5,6 +5,11 @@ import java.util.Map;
 
 public class OptionJacketTuxedoInfo implements Serializable{
 	private static final long serialVersionUID = -7241990558389021265L;
+	
+	//JACKETモデル
+	private String tjJacketModel;
+	
+	private Map<String,String> tjJacketModelMap;
 
 	//フロント釦数
     private String tjFrontBtnCnt;
@@ -15,6 +20,9 @@ public class OptionJacketTuxedoInfo implements Serializable{
     private String tjLapelDesign;
     
     private Map<String,String> tjLapelDesignMap;
+    
+    //ラペルモデル
+    private String tjJacketLapelModel;
     
     //グレード
     private String tjGrade;
@@ -96,6 +104,9 @@ public class OptionJacketTuxedoInfo implements Serializable{
     
     private Map<String,String> tjSleeveBtnTypeMap;
     
+    //袖釦数
+    private String tjSleeveBtnCnt;
+    
     //袖口
     private String tjCuffSpec;
     
@@ -116,18 +127,59 @@ public class OptionJacketTuxedoInfo implements Serializable{
     
     private Map<String,String> tjStitchMap;
     
+    //ステッチ箇所変更
+    private String tjStitchModify;
+    
+    //ダブルステッチ変更
+    private String tjDStitchModify;
+    
+    //AMF色指定
+    private String tjAmfColor;
+    
     //ボタンホール色指定
     private String tjBhColor;
     
     private Map<String,String> tjBhColorMap;
     
-    //ボタンホール色指定糸色
+    //ボタンホール色指定糸色,ボタンホール色指定糸色(プルダウン)
     private String tjBhColorPlaceAll;
     
     private Map<String,String> tjBhColorPlaceAllMap;
     
     //ボタンホール色指定箇所
-    private String tjBhColorPlace;
+    private String tjBhColorPlace1;
+    
+    private String tjBhColorPlace2;
+    
+    private String tjBhColorPlace3;
+    
+    private String tjBhColorPlace4;
+    
+    private String tjBhColorPlace5;
+    
+    private String tjBhColorPlace6;
+    
+    private String tjBhColorPlace7;
+    
+    private String tjBhColorPlace8;
+    
+    private String tjBhColorPlace9;
+    
+    private String tjBhColorPlace10;
+    
+    private String tjBhColorPlace11;
+    
+    private String tjBhColorPlace12;
+    
+    private String tjBhColorPlace13;
+    
+    private String tjBhColorPlace14;
+    
+    private String tjBhColorPlace15;
+    
+    private String tjBhColorPlace16;
+    
+    private String tjBhColorPlace17;
     
     private Map<String,String> tjBhColorPlaceMap;
     
@@ -190,13 +242,45 @@ public class OptionJacketTuxedoInfo implements Serializable{
     
     private Map<String,String> tjByColorMap;
     
-    //ボタン付け糸指定糸色
+    //ボタン付け糸指定糸色,ボタン付け糸指定糸色(プルダウン)
     private String tjByColorPlaceAll;
     
     private Map<String,String> tjByColorPlaceAllMap;
     
     //ボタン付け糸指定箇所
-    private String tjByColorPlace;
+    private String tjByColorPlace1;
+    
+    private String tjByColorPlace2;
+    
+    private String tjByColorPlace3;
+    
+    private String tjByColorPlace4;
+    
+    private String tjByColorPlace5;
+    
+    private String tjByColorPlace6;
+    
+    private String tjByColorPlace7;
+    
+    private String tjByColorPlace8;
+    
+    private String tjByColorPlace9;
+    
+    private String tjByColorPlace10;
+    
+    private String tjByColorPlace11;
+    
+    private String tjByColorPlace12;
+    
+    private String tjByColorPlace13;
+    
+    private String tjByColorPlace14;
+    
+    private String tjByColorPlace15;
+    
+    private String tjByColorPlace16;
+    
+    private String tjByColorPlace17;
     
     private Map<String,String> tjByColorPlaceMap;
     
@@ -261,15 +345,24 @@ public class OptionJacketTuxedoInfo implements Serializable{
     
     private Map<String,String> tjBodyBackMateMap;
     
+    //胴裏素材品番
+    private String tjBodyBackMateStkNo;
+    
     //袖裏素材
     private String tjCuffBackMate;
     
     private Map<String,String> tjCuffBackMateMap;
     
+    //袖裏素材品番
+    private String tjCuffBackMateStkNo;
+    
     //釦素材
     private String tjBtnMate;
     
     private Map<String,String> tjBtnMateMap;
+    
+    //釦素材品番
+    private String tjBtnMateStkNo;
     
     //形状記憶
     private String tjShapeMemory; 
@@ -564,6 +657,14 @@ public class OptionJacketTuxedoInfo implements Serializable{
 		this.tjSleeveBtnTypeMap = tjSleeveBtnTypeMap;
 	}
 
+	public String getTjSleeveBtnCnt() {
+		return tjSleeveBtnCnt;
+	}
+
+	public void setTjSleeveBtnCnt(String tjSleeveBtnCnt) {
+		this.tjSleeveBtnCnt = tjSleeveBtnCnt;
+	}
+
 	public String getTjCuffSpec() {
 		return tjCuffSpec;
 	}
@@ -658,14 +759,6 @@ public class OptionJacketTuxedoInfo implements Serializable{
 
 	public void setTjBhColorPlaceAllMap(Map<String, String> tjBhColorPlaceAllMap) {
 		this.tjBhColorPlaceAllMap = tjBhColorPlaceAllMap;
-	}
-
-	public String getTjBhColorPlace() {
-		return tjBhColorPlace;
-	}
-
-	public void setTjBhColorPlace(String tjBhColorPlace) {
-		this.tjBhColorPlace = tjBhColorPlace;
 	}
 
 	public Map<String, String> getTjBhColorPlaceMap() {
@@ -850,14 +943,6 @@ public class OptionJacketTuxedoInfo implements Serializable{
 
 	public void setTjByColorPlaceAllMap(Map<String, String> tjByColorPlaceAllMap) {
 		this.tjByColorPlaceAllMap = tjByColorPlaceAllMap;
-	}
-
-	public String getTjByColorPlace() {
-		return tjByColorPlace;
-	}
-
-	public void setTjByColorPlace(String tjByColorPlace) {
-		this.tjByColorPlace = tjByColorPlace;
 	}
 
 	public Map<String, String> getTjByColorPlaceMap() {
@@ -1083,6 +1168,349 @@ public class OptionJacketTuxedoInfo implements Serializable{
 	public void setTjShapeMemoryMap(Map<String, String> tjShapeMemoryMap) {
 		this.tjShapeMemoryMap = tjShapeMemoryMap;
 	}
-    
-    
+
+	public String getTjJacketModel() {
+		return tjJacketModel;
+	}
+
+	public void setTjJacketModel(String tjJacketModel) {
+		this.tjJacketModel = tjJacketModel;
+	}
+
+	public Map<String, String> getTjJacketModelMap() {
+		return tjJacketModelMap;
+	}
+
+	public void setTjJacketModelMap(Map<String, String> tjJacketModelMap) {
+		this.tjJacketModelMap = tjJacketModelMap;
+	}
+
+	public String getTjJacketLapelModel() {
+		return tjJacketLapelModel;
+	}
+
+	public void setTjJacketLapelModel(String tjJacketLapelModel) {
+		this.tjJacketLapelModel = tjJacketLapelModel;
+	}
+
+	public String getTjStitchModify() {
+		return tjStitchModify;
+	}
+
+	public void setTjStitchModify(String tjStitchModify) {
+		this.tjStitchModify = tjStitchModify;
+	}
+
+	public String getTjDStitchModify() {
+		return tjDStitchModify;
+	}
+
+	public void setTjDStitchModify(String tjDStitchModify) {
+		this.tjDStitchModify = tjDStitchModify;
+	}
+
+	public String getTjAmfColor() {
+		return tjAmfColor;
+	}
+
+	public void setTjAmfColor(String tjAmfColor) {
+		this.tjAmfColor = tjAmfColor;
+	}
+
+	public String getTjBodyBackMateStkNo() {
+		return tjBodyBackMateStkNo;
+	}
+
+	public void setTjBodyBackMateStkNo(String tjBodyBackMateStkNo) {
+		this.tjBodyBackMateStkNo = tjBodyBackMateStkNo;
+	}
+
+	public String getTjCuffBackMateStkNo() {
+		return tjCuffBackMateStkNo;
+	}
+
+	public void setTjCuffBackMateStkNo(String tjCuffBackMateStkNo) {
+		this.tjCuffBackMateStkNo = tjCuffBackMateStkNo;
+	}
+
+	public String getTjBtnMateStkNo() {
+		return tjBtnMateStkNo;
+	}
+
+	public void setTjBtnMateStkNo(String tjBtnMateStkNo) {
+		this.tjBtnMateStkNo = tjBtnMateStkNo;
+	}
+
+	public String getTjBhColorPlace1() {
+		return tjBhColorPlace1;
+	}
+
+	public void setTjBhColorPlace1(String tjBhColorPlace1) {
+		this.tjBhColorPlace1 = tjBhColorPlace1;
+	}
+
+	public String getTjBhColorPlace2() {
+		return tjBhColorPlace2;
+	}
+
+	public void setTjBhColorPlace2(String tjBhColorPlace2) {
+		this.tjBhColorPlace2 = tjBhColorPlace2;
+	}
+
+	public String getTjBhColorPlace3() {
+		return tjBhColorPlace3;
+	}
+
+	public void setTjBhColorPlace3(String tjBhColorPlace3) {
+		this.tjBhColorPlace3 = tjBhColorPlace3;
+	}
+
+	public String getTjBhColorPlace4() {
+		return tjBhColorPlace4;
+	}
+
+	public void setTjBhColorPlace4(String tjBhColorPlace4) {
+		this.tjBhColorPlace4 = tjBhColorPlace4;
+	}
+
+	public String getTjBhColorPlace5() {
+		return tjBhColorPlace5;
+	}
+
+	public void setTjBhColorPlace5(String tjBhColorPlace5) {
+		this.tjBhColorPlace5 = tjBhColorPlace5;
+	}
+
+	public String getTjBhColorPlace6() {
+		return tjBhColorPlace6;
+	}
+
+	public void setTjBhColorPlace6(String tjBhColorPlace6) {
+		this.tjBhColorPlace6 = tjBhColorPlace6;
+	}
+
+	public String getTjBhColorPlace7() {
+		return tjBhColorPlace7;
+	}
+
+	public void setTjBhColorPlace7(String tjBhColorPlace7) {
+		this.tjBhColorPlace7 = tjBhColorPlace7;
+	}
+
+	public String getTjBhColorPlace8() {
+		return tjBhColorPlace8;
+	}
+
+	public void setTjBhColorPlace8(String tjBhColorPlace8) {
+		this.tjBhColorPlace8 = tjBhColorPlace8;
+	}
+
+	public String getTjBhColorPlace9() {
+		return tjBhColorPlace9;
+	}
+
+	public void setTjBhColorPlace9(String tjBhColorPlace9) {
+		this.tjBhColorPlace9 = tjBhColorPlace9;
+	}
+
+	public String getTjBhColorPlace10() {
+		return tjBhColorPlace10;
+	}
+
+	public void setTjBhColorPlace10(String tjBhColorPlace10) {
+		this.tjBhColorPlace10 = tjBhColorPlace10;
+	}
+
+	public String getTjBhColorPlace11() {
+		return tjBhColorPlace11;
+	}
+
+	public void setTjBhColorPlace11(String tjBhColorPlace11) {
+		this.tjBhColorPlace11 = tjBhColorPlace11;
+	}
+
+	public String getTjBhColorPlace12() {
+		return tjBhColorPlace12;
+	}
+
+	public void setTjBhColorPlace12(String tjBhColorPlace12) {
+		this.tjBhColorPlace12 = tjBhColorPlace12;
+	}
+
+	public String getTjBhColorPlace13() {
+		return tjBhColorPlace13;
+	}
+
+	public void setTjBhColorPlace13(String tjBhColorPlace13) {
+		this.tjBhColorPlace13 = tjBhColorPlace13;
+	}
+
+	public String getTjBhColorPlace14() {
+		return tjBhColorPlace14;
+	}
+
+	public void setTjBhColorPlace14(String tjBhColorPlace14) {
+		this.tjBhColorPlace14 = tjBhColorPlace14;
+	}
+
+	public String getTjBhColorPlace15() {
+		return tjBhColorPlace15;
+	}
+
+	public void setTjBhColorPlace15(String tjBhColorPlace15) {
+		this.tjBhColorPlace15 = tjBhColorPlace15;
+	}
+
+	public String getTjBhColorPlace16() {
+		return tjBhColorPlace16;
+	}
+
+	public void setTjBhColorPlace16(String tjBhColorPlace16) {
+		this.tjBhColorPlace16 = tjBhColorPlace16;
+	}
+
+	public String getTjBhColorPlace17() {
+		return tjBhColorPlace17;
+	}
+
+	public void setTjBhColorPlace17(String tjBhColorPlace17) {
+		this.tjBhColorPlace17 = tjBhColorPlace17;
+	}
+
+	public String getTjByColorPlace1() {
+		return tjByColorPlace1;
+	}
+
+	public void setTjByColorPlace1(String tjByColorPlace1) {
+		this.tjByColorPlace1 = tjByColorPlace1;
+	}
+
+	public String getTjByColorPlace2() {
+		return tjByColorPlace2;
+	}
+
+	public void setTjByColorPlace2(String tjByColorPlace2) {
+		this.tjByColorPlace2 = tjByColorPlace2;
+	}
+
+	public String getTjByColorPlace3() {
+		return tjByColorPlace3;
+	}
+
+	public void setTjByColorPlace3(String tjByColorPlace3) {
+		this.tjByColorPlace3 = tjByColorPlace3;
+	}
+
+	public String getTjByColorPlace4() {
+		return tjByColorPlace4;
+	}
+
+	public void setTjByColorPlace4(String tjByColorPlace4) {
+		this.tjByColorPlace4 = tjByColorPlace4;
+	}
+
+	public String getTjByColorPlace5() {
+		return tjByColorPlace5;
+	}
+
+	public void setTjByColorPlace5(String tjByColorPlace5) {
+		this.tjByColorPlace5 = tjByColorPlace5;
+	}
+
+	public String getTjByColorPlace6() {
+		return tjByColorPlace6;
+	}
+
+	public void setTjByColorPlace6(String tjByColorPlace6) {
+		this.tjByColorPlace6 = tjByColorPlace6;
+	}
+
+	public String getTjByColorPlace7() {
+		return tjByColorPlace7;
+	}
+
+	public void setTjByColorPlace7(String tjByColorPlace7) {
+		this.tjByColorPlace7 = tjByColorPlace7;
+	}
+
+	public String getTjByColorPlace8() {
+		return tjByColorPlace8;
+	}
+
+	public void setTjByColorPlace8(String tjByColorPlace8) {
+		this.tjByColorPlace8 = tjByColorPlace8;
+	}
+
+	public String getTjByColorPlace9() {
+		return tjByColorPlace9;
+	}
+
+	public void setTjByColorPlace9(String tjByColorPlace9) {
+		this.tjByColorPlace9 = tjByColorPlace9;
+	}
+
+	public String getTjByColorPlace10() {
+		return tjByColorPlace10;
+	}
+
+	public void setTjByColorPlace10(String tjByColorPlace10) {
+		this.tjByColorPlace10 = tjByColorPlace10;
+	}
+
+	public String getTjByColorPlace11() {
+		return tjByColorPlace11;
+	}
+
+	public void setTjByColorPlace11(String tjByColorPlace11) {
+		this.tjByColorPlace11 = tjByColorPlace11;
+	}
+
+	public String getTjByColorPlace12() {
+		return tjByColorPlace12;
+	}
+
+	public void setTjByColorPlace12(String tjByColorPlace12) {
+		this.tjByColorPlace12 = tjByColorPlace12;
+	}
+
+	public String getTjByColorPlace13() {
+		return tjByColorPlace13;
+	}
+
+	public void setTjByColorPlace13(String tjByColorPlace13) {
+		this.tjByColorPlace13 = tjByColorPlace13;
+	}
+
+	public String getTjByColorPlace14() {
+		return tjByColorPlace14;
+	}
+
+	public void setTjByColorPlace14(String tjByColorPlace14) {
+		this.tjByColorPlace14 = tjByColorPlace14;
+	}
+
+	public String getTjByColorPlace15() {
+		return tjByColorPlace15;
+	}
+
+	public void setTjByColorPlace15(String tjByColorPlace15) {
+		this.tjByColorPlace15 = tjByColorPlace15;
+	}
+
+	public String getTjByColorPlace16() {
+		return tjByColorPlace16;
+	}
+
+	public void setTjByColorPlace16(String tjByColorPlace16) {
+		this.tjByColorPlace16 = tjByColorPlace16;
+	}
+
+	public String getTjByColorPlace17() {
+		return tjByColorPlace17;
+	}
+
+	public void setTjByColorPlace17(String tjByColorPlace17) {
+		this.tjByColorPlace17 = tjByColorPlace17;
+	}
+
 }

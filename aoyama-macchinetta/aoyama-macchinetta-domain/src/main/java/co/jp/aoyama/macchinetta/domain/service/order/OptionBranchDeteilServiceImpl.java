@@ -39,4 +39,22 @@ public class OptionBranchDeteilServiceImpl implements OptionBranchDeailService {
 		return detailList;
 	}
 
+	@Override
+	public List<OptionBranchDetail> getStandardButtonsList(String productItem, String orderPattern) {
+		List<OptionBranchDetail> detailList = optionBranchDetailRepository.getStandardButtonsList(productItem, orderPattern);
+		return detailList;
+	}
+
+	@Override
+	public List<OptionBranchDetail> getTuxedoButtonsList(String productItem, String orderPattern) {
+		List<OptionBranchDetail> tuxedoDetailList = optionBranchDetailRepository.getTuxedoButtonsList(productItem, orderPattern);
+		return tuxedoDetailList;
+	}
+
+	@Override
+	public List<OptionBranchDetail> getWashableButtonsList(String productItem, String orderPattern) {
+		List<OptionBranchDetail> washableDetailList = optionBranchDetailRepository.getWashableButtonsList(productItem, orderPattern);
+		return washableDetailList;
+	}
+
 }

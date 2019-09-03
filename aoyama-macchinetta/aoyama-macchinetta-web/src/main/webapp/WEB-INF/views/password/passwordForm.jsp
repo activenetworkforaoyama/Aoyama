@@ -72,7 +72,7 @@
 	 </div>
 	 <div class="row form-group">
 		<div class="col col-md-4">
-			<button type="button" id="clearButton" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> クリア</button>
+			<button type="button" id="clearButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> クリア</button>
 		</div>
 		<div class="col col-md-4">
 			<button type="submit" id="confirmButton" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 変更する</button>

@@ -11,5 +11,7 @@ public interface ModelService {
 
 	List<Model> getModel(String orderPattern, String itemCode);
 
+	List<Model> getItemModel(String orderPattern, String itemCode, String subitemCode);
+
 
 }

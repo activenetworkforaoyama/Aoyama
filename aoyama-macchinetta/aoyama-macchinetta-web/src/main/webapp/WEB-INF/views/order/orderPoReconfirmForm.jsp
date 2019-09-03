@@ -752,7 +752,7 @@
 								<label class=" form-control-label">着丈修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkBodyCorrect }</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corJkBodyCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkBodyGross }</label>cm</strong>
@@ -761,7 +761,7 @@
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkWaistCorrect }</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corJkWaistCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkWaistGross }</label>cm</strong>
@@ -770,7 +770,7 @@
 								<label class=" form-control-label">袖丈右修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkRightsleeveCorrect}</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corJkRightsleeveCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkRightsleeveGross }</label>cm</strong>
@@ -779,7 +779,7 @@
 								<label class=" form-control-label">袖丈左修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkLeftsleeveCorrect }</label>cm</strong> 
+								<strong><label class=" form-control-label-value" id="corJkLeftsleeveCorrect"></label>cm</strong> 
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkLeftsleeveGross }</label>cm</strong> 
@@ -1043,7 +1043,7 @@
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corPtWaistCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtWaistGross }</label>cm</strong>
@@ -1052,7 +1052,7 @@
 								<label class=" form-control-label">ワタリ修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtThighCorrect }</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corPtThighCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtThighGross }</label>cm</strong>
@@ -1061,7 +1061,7 @@
 								<label class=" form-control-label">裾幅</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtHemwidthCorrect }</label>cm</strong>
+								<strong><label class=" form-control-label-value" id="corPtHemwidthCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtHemwidthGross }</label>cm</strong>
@@ -1230,7 +1230,7 @@
 								<label class=" form-control-label">ウエスト修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2WaistCorrect }cm</label></strong>
+								<strong><label class=" form-control-label-value" id="corPt2WaistCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2WaistGross }cm</label></strong>
@@ -1239,19 +1239,19 @@
 								<label class=" form-control-label">ワタリ修正</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2ThighCorrect }cm</label></strong>
+								<strong><label class=" form-control-label-value" id="corPt2ThighCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2ThighGross }cm</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2ThighGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">裾幅</label>
 							</div>
 							<div class="col-12 col-md-2">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthCorrect }cm</label></strong>
+								<strong><label class=" form-control-label-value" id="corPt2HemwidthCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthGross }cm</label></strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2HemwidthGross }</label>cm</strong>
 							</div>
 							
 							<div class="col-12 col-md-3 offset-md-3">
@@ -1913,18 +1913,31 @@ jQuery("#bottom_productPrice").html(formatMoney("${orderForm.productPrice}",0,""
 jQuery("#bottom_optionPrice").html(formatMoney("${orderForm.optionPrice}",0,""));
 jQuery("#bottom_totalPrice").html(formatMoney("${orderForm.totalPrice}",0,""));
 
+//去除字符串头部空格或指定字符
+String.prototype.TrimStart = function (c) {
+    if (c == null || c == "") {
+        var str = this.replace(/^s*/, '');
+        return str;
+    }
+    else {
+        var rg = new RegExp("^" + c + "*");
+        var str = this.replace(rg, '');
+        return str;
+    }
+}
+
 //pants股下初期値表示
 if("${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }" == '' && "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }" == ''){
 	jQuery("#pantsCorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右 000.0');
 	}
 else if("${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }" == '' && "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }" != ''){
-	jQuery("#pantsCorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }");
+	jQuery("#pantsCorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }".TrimStart('0'));
 }
 else if("${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }" != '' && "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }" == ''){
-	jQuery("#pantsCorinseamGross" ).html('左 ' +"${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }" + 'cm &nbsp &nbsp &nbsp  右 000.0');
+	jQuery("#pantsCorinseamGross" ).html('左 ' +"${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }".TrimStart('0') + 'cm &nbsp &nbsp &nbsp  右 000.0');
 }
 else{
-	jQuery("#pantsCorinseamGross" ).html('左 ' +"${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }" + 'cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }");
+	jQuery("#pantsCorinseamGross" ).html('左 ' +"${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross }".TrimStart('0') + 'cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross }".TrimStart('0'));
 	}
 
 //pants2股下初期値表示
@@ -1932,13 +1945,13 @@ if("${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" == '' && "${or
 	jQuery("#pants2CorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右000.0');
 	}
 else if("${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" == '' && "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }" != ''){
-	jQuery("#pants2CorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }");
+	jQuery("#pants2CorinseamGross" ).html('左 000.0cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }".TrimStart('0'));
 }
 else if("${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" != '' && "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }" == ''){
-	jQuery("#pants2CorinseamGross" ).html('左 ' +"${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" + 'cm &nbsp &nbsp &nbsp 右000.0');
+	jQuery("#pants2CorinseamGross" ).html('左 ' +"${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }".TrimStart('0') + 'cm &nbsp &nbsp &nbsp 右000.0');
 }
 else{
-	jQuery("#pants2CorinseamGross" ).html('左 ' +"${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }" + 'cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }");
+	jQuery("#pants2CorinseamGross" ).html('左 ' +"${orderForm.adjustPants2StandardInfo.corPt2LeftinseamGross }".TrimStart('0') + 'cm &nbsp &nbsp &nbsp 右 ' + "${orderForm.adjustPants2StandardInfo.corPt2RightinseamGross }".TrimStart('0'));
 	}
 
 //組成表示　胴裏地
@@ -1952,19 +1965,6 @@ if(result.indexOf(" ") != -1 ){
  	 }else{
 	 	 jQuery("#composBodyLiner").html(result);
  	 }
-
-//去除字符串头部空格或指定字符
-String.prototype.TrimStart = function (c) {
-    if (c == null || c == "") {
-        var str = this.replace(/^s*/, '');
-        return str;
-    }
-    else {
-        var rg = new RegExp("^" + c + "*");
-        var str = this.replace(rg, '');
-        return str;
-    }
-}
 
 //画面にmeasuringについての項目
 var measuringList = ["${orderForm.measuringInfo.fullLength}",
@@ -2079,6 +2079,53 @@ function pdfDownload(sign){
 	});
 
 }
+
+function CorrectChange(correct){
+	if(correct != null || correct != ""){
+		if(correct.indexOf("-") == -1){
+			return "+" + correct;
+		}
+		else{
+			return correct;
+		}
+	}
+	else{
+		return "0";
+	}
+}
+
+//jk着丈修正
+var corJkBodyCorrect = "${orderForm.adjustJacketStandardInfo.corJkBodyCorrect}";
+jQuery("#corJkBodyCorrect").html(CorrectChange(corJkBodyCorrect));
+//JKウエスト修正
+var corJkWaistCorrect = "${orderForm.adjustJacketStandardInfo.corJkWaistCorrect}";
+jQuery("#corJkWaistCorrect").html(CorrectChange(corJkWaistCorrect));
+//JK袖丈右修正
+var corJkRightsleeveCorrect = "${orderForm.adjustJacketStandardInfo.corJkRightsleeveCorrect}";
+jQuery("#corJkRightsleeveCorrect").html(CorrectChange(corJkRightsleeveCorrect));
+//JK袖丈左修正
+var corJkLeftsleeveCorrect = "${orderForm.adjustJacketStandardInfo.corJkLeftsleeveCorrect}";
+jQuery("#corJkLeftsleeveCorrect").html(CorrectChange(corJkLeftsleeveCorrect));
+
+//PTウエスト修正
+var corPtWaistCorrect = "${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}";
+jQuery("#corPtWaistCorrect").html(CorrectChange(corPtWaistCorrect));
+//PTワタリ修正
+var corPtThighCorrect = "${orderForm.adjustPantsStandardInfo.corPtThighCorrect}";
+jQuery("#corPtThighCorrect").html(CorrectChange(corPtThighCorrect));
+//PT裾幅修正
+var corPtHemwidthCorrect = "${orderForm.adjustPantsStandardInfo.corPtHemwidthCorrect}";
+jQuery("#corPtHemwidthCorrect").html(CorrectChange(corPtHemwidthCorrect));
+
+//PT2ウエスト修正
+var corPt2WaistCorrect = "${orderForm.adjustPants2StandardInfo.corPt2WaistCorrect}";
+jQuery("#corPt2WaistCorrect").html(CorrectChange(corPt2WaistCorrect));
+//PT2ワタリ修正
+var corPt2ThighCorrect = "${orderForm.adjustPants2StandardInfo.corPt2ThighCorrect}";
+jQuery("#corPt2ThighCorrect").html(CorrectChange(corPt2ThighCorrect));
+//PT2裾幅修正
+var corPt2HemwidthCorrect = "${orderForm.adjustPants2StandardInfo.corPt2HemwidthCorrect}";
+jQuery("#corPt2HemwidthCorrect").html(CorrectChange(corPt2HemwidthCorrect));
 
 //--------------------------------------------
 //確認チェック

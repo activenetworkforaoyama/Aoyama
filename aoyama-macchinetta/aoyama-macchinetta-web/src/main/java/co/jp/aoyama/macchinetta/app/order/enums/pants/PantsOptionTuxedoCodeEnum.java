@@ -35,9 +35,9 @@ public enum PantsOptionTuxedoCodeEnum {
 	PANTS_TUXEDO_OPTION_CODE35("00035","setTpSuspenderBtnMap"),
 	PANTS_TUXEDO_OPTION_CODE36("00036","setTpEightMap"),
 	PANTS_TUXEDO_OPTION_CODE37("00037","setTpShapeMemoryMap"),
-	PANTS_TUXEDO_OPTION_CODE38("00038","setTpBlisterMap"),
 	PANTS_TUXEDO_OPTION_CODE39("00039","setTpSideStripeMap"),
-	PANTS_TUXEDO_OPTION_CODE40("00040","setTpSideStripeWidthMap");
+	PANTS_TUXEDO_OPTION_CODE40("00040","setTpSideStripeWidthMap"),
+	PANTS_TUXEDO_OPTION_CODE41("00041","setTpThickMap");
 	
 	
 	private final String key;

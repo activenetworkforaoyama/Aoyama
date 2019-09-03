@@ -380,4 +380,25 @@ public class OrderServiceImpl  implements OrderService {
 	}
 
 
+	@Override
+	public String selectOrderIdBySequence() {
+		String last8digits = orderRepository.selectOrderIdBySequence();
+		return last8digits;
+	}
+
+
+	@Override
+	public List<OrderPrice> getTuxedoOrderPrice(String orderPattern) {
+		List<OrderPrice> orderList = orderRepository.getTuxedoOrderPrice(orderPattern);
+		return orderList;
+	}
+
+
+	@Override
+	public List<OrderPrice> getWashableOrderPrice(String orderPattern) {
+		List<OrderPrice> orderList = orderRepository.getWashableOrderPrice(orderPattern);
+		return orderList;
+	}
+
+
 }

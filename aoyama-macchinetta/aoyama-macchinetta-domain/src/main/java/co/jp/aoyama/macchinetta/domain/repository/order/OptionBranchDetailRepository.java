@@ -23,6 +23,12 @@ public interface OptionBranchDetailRepository {
 	List<OptionBranchDetail> getWashableButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern);
 
 	List<OptionBranchDetail> getAllOption(@Param("orderPattern")String orderPattern);
+	
+	List<OptionBranchDetail> getStandardButtonsList(String productItem,String orderPattern);
+	
+	List<OptionBranchDetail> getTuxedoButtonsList(String productItem,String orderPattern);
+	
+	List<OptionBranchDetail> getWashableButtonsList(String productItem,String orderPattern);
 
     
 }

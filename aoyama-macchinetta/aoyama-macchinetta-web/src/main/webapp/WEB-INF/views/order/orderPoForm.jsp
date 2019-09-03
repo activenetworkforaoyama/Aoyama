@@ -1,5 +1,9 @@
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
+<script>
+$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
+</script>
 <spring:eval var="sessionContent" expression="@sessionContent" />
-
 <style type="text/css">
 span {
 	margin-right: 16px;
@@ -940,9 +944,6 @@ select.hidedown {
                                 <select name="optionGiletStandardInfo.ogFrontBtnMateStkNo" id="og_frontBtnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
-                            <div class="col col-md-2" align="right">
-                            	<output id="og_frontBtnMate_Msg"></output>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1157,6 +1158,9 @@ select.hidedown {
                             </div>
                             <div class="col col-md-2" align="right">
                             	<output id="op2_btnMate_Msg"></output>
+                            </div>
+                            <div class="col col-md-7" align="right">
+                            	<output id="op2BtnMateMsg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -1949,7 +1953,7 @@ select.hidedown {
                 <button id = "poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     </div>
                     	<div class="col">
-                			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 注文削除</button>
+                			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
                     	</div>
                 </div>
             </div>
@@ -1973,7 +1977,7 @@ select.hidedown {
                 			<button id="poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     	</div>
                     	<div class="col col-md-3">
-                			<button id="cancelButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 注文取消</button>
+                			<button id="cancelButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文取消</button>
                     	</div>
                     <div class="col">
                     </div>
@@ -2004,7 +2008,7 @@ select.hidedown {
                 <button id = "poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     </div>
                     	<div class="col">
-                			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 注文削除</button>
+                			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
                     	</div>
                 </div>
             </div>
@@ -2139,6 +2143,8 @@ select.hidedown {
 			
 			<input type="hidden" id="storeBrandCode"  name="storeBrandCode"   value="${sessionContent.storeBrandCode}" />
 			
+			<input type="hidden" id="storeNm"  name="storeNm"   value="${sessionContent.belongName}" />
+			
 			<input type="hidden" id="saveFlag"  name="saveFlag"   value="" />
 			
 			<input type="hidden" id="fabricFlag"  name="fabricFlag"   value="" />
@@ -2179,14 +2185,12 @@ select.hidedown {
 			</c:if>
 	</div>
 </form:form>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.unobtrusive.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
-
 <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 <script>
 /************************************************
@@ -4079,36 +4083,27 @@ jQuery(document).ready(function(){
 		
 		var glModel = jQuery(this).val();
 
-		if(isEmpty(glModel)){
-			swal({
-				  icon:"info",
-				  text: getMsg('msg086'),
-			 })
-			 jQuery('#giletModel').val(jQuery('#giletModel').attr("hook"));
-		}else{
-			jQuery('#giletModel').attr("hook",glModel);
 
-			var glFigure = document.getElementById("selectGiletFigure");
-     	    getSizeFigure(itemCode,subItemCode,glModel,glFigure);
+		var glFigure = document.getElementById("selectGiletFigure");
+     	getSizeFigure(itemCode,subItemCode,glModel,glFigure);
      	    
 
-			var glNumber = document.getElementById("selectGiletNumber");
-			getSizeNumber(itemCode,subItemCode,glModel,glNumber);
+		var glNumber = document.getElementById("selectGiletNumber");
+		getSizeNumber(itemCode,subItemCode,glModel,glNumber);
 			
 			//生地チェク成功の場合
-			if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
-				//モデルチェク
-				var checkResult = modelCheck(glModel,productFabricNo,orderPattern,itemCode,subItemCode);
-				if(checkResult == "true"){
-					//0はモデルチェク成功の場合
-					jQuery("#glModelFlag").val("0");
-					jQuery("#fabricMsg").empty();
-					jQuery("#giletModelMsg").empty();
-				}else if(checkResult == "false"){
-					//2はモデルチェク失敗の場合
-					jQuery("#glModelFlag").val("1"+"*"+getMsgByOneArg('msg065','GILET'));
-					appendAlertPo('giletModelMsg',getMsgByOneArg('msg065','GILET'));
-				}
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(glModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#glModelFlag").val("0");
+				jQuery("#fabricMsg").empty();
+				jQuery("#giletModelMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#glModelFlag").val("1"+"*"+getMsgByOneArg('msg065','GILET'));
+				appendAlertPo('giletModelMsg',getMsgByOneArg('msg065','GILET'));
 			}
 		}
 		
@@ -4475,8 +4470,9 @@ jQuery(document).ready(function(){
 					jQuery("#pantsModelMsg").empty();
 					jQuery("#2pantsModelMsg").empty();
 					jQuery("#giletModelMsg").empty();
-					
-					jQuery("#fabricMsg").empty();
+					jQuery("#fabricMsg").empty(); 
+					jQuery("#opBtnMateMsg").empty();
+					jQuery("#op2BtnMateMsg").empty();
 					
 					//オプションコード初期化
 				  	defaultOptionInit();
@@ -4653,6 +4649,7 @@ jQuery(document).ready(function(){
 			jQuery("#2pantsModelMsg").empty();
 			jQuery("#fabricMsg").empty();
 			jQuery("#op2_pants_div [id$=_Msg]").empty();
+			jQuery("#op2BtnMateMsg").empty();
 
 			//2PT　型サイズ値、補正値とグロス値を設定
 			jQuery("#corPt2Waist_div_Size").val("");
@@ -5451,6 +5448,12 @@ jQuery('#btnMate').change(function (){
 	var item = jQuery('#item option:selected').val();
 	if (item == "01") {
 		var sValue = jQuery('#btnMate option:selected').val();
+		if(sValue == "3000400"){
+			swal({
+				text: getMsg('msg126'),
+				icon: "info"
+			})
+		}
 		jQuery('#og_frontBtnMate').val(sValue);
 		jQuery('#og_frontBtnMate').change();
 		jQuery('#op_btnMate').val(sValue);
@@ -7436,7 +7439,7 @@ function fabricCheck(item,productFabricNo){
 	     			  var countUsage = Number(result.theoreticalStock) - (Number(result.reservationStock)-Number(fakeStock));
 	     			  //受注可能在庫数チェク　6
 	     			  if(countUsage<yieldNum){
-     					  appendAlertPo('stockMsg', getMsgByThreeArgs('msg063', result.color,result.pattern,Number(result.theoreticalStock) - Number(result.reservationStock)));
+     					  appendAlertPo('stockMsg', getMsgByThreeArgs('msg063', result.color,result.pattern,result.stockResult));
      					  //生地メッセージをクリア
      					  jQuery("#notice").empty();
         		    	  jQuery("#fabric_brand_nm_p").empty();
@@ -7458,7 +7461,7 @@ function fabricCheck(item,productFabricNo){
 						  allOptionPrice();
 						  //生地チェク失敗フラッグ
 						  fabricCheckValue = "1";
-        				  jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByThreeArgs('msg063', result.color,result.pattern,result.theoreticalStock));
+        				  jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByThreeArgs('msg063', result.color,result.pattern,result.stockResult));
         				  return false;	 
 	     		      }
 	     		      
@@ -9697,7 +9700,7 @@ function fabricView(item,productFabricNo){
 				 jQuery("#fabricColor").val(color);
 				 jQuery("#fabricPattern").val(pattern);
 				 
-				 var countUsage = Number(result.theoreticalStock) - Number(result.reservationStock);
+				 var countUsage = result.stockResult;
 				 jQuery("#stockMsg").html("-" + color + pattern + " 在庫 " + countUsage + "m");
 				 //理論在庫を表示
 				 jQuery("#fabric_brand_nm_p").html(result.brandName);
@@ -10739,4 +10742,21 @@ function colorSet(item,color){
 		 }
 	}
 }
+
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
+
 </script>

@@ -165,7 +165,7 @@ a:link{color:blue;}
 						<div class="col col-md-4">
 							<button type="button" id="clear_button"
 								class="btn btn-danger btn-block">
-								<i class="fa fa-trash-o"></i> クリア
+								<i class="fa fa-trash-alt"></i> クリア
 							</button>
 						</div>
 						<div class="col col-md-4">
@@ -261,6 +261,7 @@ a:link{color:blue;}
 	src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
 
 <script type="text/javascript">
 var dataView;
@@ -549,6 +550,8 @@ $(document).ready(function() {
 
 });
 function searchOrder(){
+	$("#areaResult").hide();
+	$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 	var winWidth = 0;
 	if (window.innerWidth){
 		winWidth = window.innerWidth;
@@ -662,6 +665,7 @@ function searchOrder(){
 					/* data:{"custCd":custCd,"storeStaffNm":storeStaffNm,"productOrderdDateFromStr":productOrderdDateFromStr,"productOrderdDateToStr":productOrderdDateToStr,
 						  "cashStatus":cashStatus,"storeBrandCode":storeBrandCode,"shopCode":shopCode} */
 			}).then(function(result) {
+				    $.unblockUI(); 
 					if(Object.keys(result).length  == 0){
 						$("#areaResult").hide();
 						//alert("検索結果が0件でした。条件を変更して再検索してください。");

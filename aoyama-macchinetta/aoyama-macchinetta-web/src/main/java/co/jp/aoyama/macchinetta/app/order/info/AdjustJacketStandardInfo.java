@@ -50,6 +50,15 @@ public class AdjustJacketStandardInfo implements Serializable {
 	// 袖丈左グロス
 	private String corJkLeftsleeveGross;
 	
+	// 肩パット
+	private String corJkShoulderPad;
+	
+	// 体型補正
+	private String corJkFigureCorrect;
+	
+	//JK再補正コメント
+	private String corJkStoreCorrectionMemo;
+	
 	//再補正値
 	
 	//JACKET_着丈_再補正値
@@ -244,4 +253,23 @@ public class AdjustJacketStandardInfo implements Serializable {
 	public void setCorJkLeftsleeveCorrectAgainFlag(String corJkLeftsleeveCorrectAgainFlag) {
 		this.corJkLeftsleeveCorrectAgainFlag = corJkLeftsleeveCorrectAgainFlag;
 	}
+	public String getCorJkShoulderPad() {
+		return corJkShoulderPad;
+	}
+	public void setCorJkShoulderPad(String corJkShoulderPad) {
+		this.corJkShoulderPad = corJkShoulderPad;
+	}
+	public String getCorJkFigureCorrect() {
+		return corJkFigureCorrect;
+	}
+	public void setCorJkFigureCorrect(String corJkFigureCorrect) {
+		this.corJkFigureCorrect = corJkFigureCorrect;
+	}
+	public String getCorJkStoreCorrectionMemo() {
+		return corJkStoreCorrectionMemo;
+	}
+	public void setCorJkStoreCorrectionMemo(String corJkStoreCorrectionMemo) {
+		this.corJkStoreCorrectionMemo = corJkStoreCorrectionMemo;
+	}
+	
 }

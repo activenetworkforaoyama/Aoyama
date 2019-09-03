@@ -9,8 +9,7 @@ public enum ItemClassTuxedoEnum {
 	ITEM_CODE_JACKET("02","co.jp.aoyama.macchinetta.app.order.info.OptionJacketTuxedoInfo"),
 	ITEM_CODE_PANTS("03","co.jp.aoyama.macchinetta.app.order.info.OptionPantsTuxedoInfo"),
 	ITEM_CODE_GILET("04","co.jp.aoyama.macchinetta.app.order.info.OptionGiletTuxedoInfo"),
-	ITEM_CODE_SHIRTS("05",""),
-	ITEM_CODE_COAT("07","");
+	ITEM_CODE_PANTS2("07","co.jp.aoyama.macchinetta.app.order.info.OptionPants2TuxedoInfo");
 	
 	private final String key;
 	private final String value;

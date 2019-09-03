@@ -44,6 +44,8 @@ public class StockForm implements Serializable {
 	
 	private String orderPattern;
 	
+	private BigDecimal theoretical;
+	
 	public String getFabricId() {
 		return fabricId;
 	}
@@ -186,6 +188,14 @@ public class StockForm implements Serializable {
 
 	public void setOrderPattern(String orderPattern) {
 		this.orderPattern = orderPattern;
+	}
+
+	public BigDecimal getTheoretical() {
+		return theoretical;
+	}
+
+	public void setTheoretical(BigDecimal theoretical) {
+		this.theoretical = theoretical;
 	}
 	
 }

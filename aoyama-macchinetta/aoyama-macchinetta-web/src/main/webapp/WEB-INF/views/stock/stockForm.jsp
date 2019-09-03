@@ -207,7 +207,7 @@
 						<div class="col"></div>
 						<div class="col col-md-4">
 							<button type="button" id="clear_button" class="btn btn-danger btn-block">
-								<i class="fa fa-trash-o"></i> クリア
+								<i class="fa fa-trash-alt"></i> クリア
 							</button>
 						</div>
 						<div class="col col-md-4">
@@ -448,7 +448,6 @@ function update_button(j){
 					for(var i=0;i<obj.length;i++){
 						if(j==obj[i].num){
 							obj[i].retailPrice=obj[i].retailPrice.replace(",","");
-							obj[i].theoreticalStock= Number(obj[i].reservationStock) + Number(obj[i].theoretical);
 							updData = obj[i];
 						}
 					}
@@ -688,7 +687,7 @@ $(document).ready(function() {
 						d["retailPrice"] = formatMoney(result[i].retailPrice, 0, "");
 					}
 					d["reservationStock"] = result[i].reservationStock;
-					d["theoretical"] = result[i].theoreticalStock - result[i].reservationStock;
+					d["theoretical"] = result[i].theoretical;
 					d["theoreticalStock"] = result[i].theoreticalStock;
 					d["actualStock"] = result[i].actualStock;
 					d["version"] = result[i].version;

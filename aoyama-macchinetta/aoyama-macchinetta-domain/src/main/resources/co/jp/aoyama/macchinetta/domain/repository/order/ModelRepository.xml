@@ -32,4 +32,13 @@
     from mtb_model where order_pattern=#{orderPattern} and item_code=#{itemCode} order by display_order
   </select>
   
+  <select id="getItemModel" resultMap="BaseResultMap">
+	select model_code,model_name
+	from mtb_model
+	where
+	order_pattern=#{orderPattern} and
+	item_code=#{itemCode} and
+	sub_item_code=#{subItemCode}
+	order by display_order
+  </select>
 </mapper>

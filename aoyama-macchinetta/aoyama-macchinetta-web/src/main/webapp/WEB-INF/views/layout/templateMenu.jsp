@@ -94,7 +94,7 @@
             document.getElementById("logoutForm").submit();
         }
         
-        var contextPath = $("meta[name='contextPath']").attr("content");
+        var contextPath = jQuery("meta[name='contextPath']").attr("content");
         /**
          * 無効なセッション.
          */

@@ -36,19 +36,33 @@ public class OptionGiletTuxedoInfo implements Serializable {
 	private String tgStitch;
 
 	private Map<String, String> tgStitchMap;
+	
+	// ステッチ箇所変更
+	private String tgStitchModify;
+	
+	// ダブルステッチ変更
+	private String tgDblstitchPlc;
+	
+	// AMF色指定
+	private String tgAmfColor;
 
 	// ボタンホール色指定
 	private String tgBhColor;
 
 	private Map<String, String> tgBhColorMap;
 
-	// ボタンホール色指定 糸色
+	// ボタンホール色指定 糸色,ボタンホール色指定糸色(プルダウン)
 	private String tgBhColorPlaceAll;
 
 	private Map<String, String> tgBhColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
-	private String tgBhColorPlace;
+	private String tgBhColorPlace1;
+	private String tgBhColorPlace2;
+	private String tgBhColorPlace3;
+	private String tgBhColorPlace4;
+	private String tgBhColorPlace5;
+	private String tgBhColorPlace6;
 
 	private Map<String, String> tgBhColorPlaceMap;
 
@@ -78,13 +92,22 @@ public class OptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgByColorMap;
 
-	// ボタンホール色指定 糸色
+	// ボタンホール色指定 糸色,ボタン付け糸指定糸色(プルダウン)
 	private String tgByColorPlaceAll;
 
 	private Map<String, String> tgByColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
-	private String tgByColorPlace;
+	private String tgByColorPlace1;
+	private String tgByColorPlace2;
+	private String tgByColorPlace3;
+	private String tgByColorPlace4;
+	private String tgByColorPlace5;
+	private String tgByColorPlace6;
+	private String tgByColorPlace7;
+	private String tgByColorPlace8;
+	private String tgByColorPlace9;
+	private String tgByColorPlace10;
 
 	private Map<String, String> tgByColorPlaceMap;
 
@@ -267,14 +290,6 @@ public class OptionGiletTuxedoInfo implements Serializable {
 		this.tgBhColorPlaceAllMap = tgBhColorPlaceAllMap;
 	}
 
-	public String getTgBhColorPlace() {
-		return tgBhColorPlace;
-	}
-
-	public void setTgBhColorPlace(String tgBhColorPlace) {
-		this.tgBhColorPlace = tgBhColorPlace;
-	}
-
 	public Map<String, String> getTgBhColorPlaceMap() {
 		return tgBhColorPlaceMap;
 	}
@@ -369,14 +384,6 @@ public class OptionGiletTuxedoInfo implements Serializable {
 
 	public void setTgByColorPlaceAllMap(Map<String, String> tgByColorPlaceAllMap) {
 		this.tgByColorPlaceAllMap = tgByColorPlaceAllMap;
-	}
-
-	public String getTgByColorPlace() {
-		return tgByColorPlace;
-	}
-
-	public void setTgByColorPlace(String tgByColorPlace) {
-		this.tgByColorPlace = tgByColorPlace;
 	}
 
 	public Map<String, String> getTgByColorPlaceMap() {
@@ -595,4 +602,156 @@ public class OptionGiletTuxedoInfo implements Serializable {
 		this.tgFrontBtnMateStkNo = tgFrontBtnMateStkNo;
 	}
 
+	public String getTgStitchModify() {
+		return tgStitchModify;
+	}
+
+	public void setTgStitchModify(String tgStitchModify) {
+		this.tgStitchModify = tgStitchModify;
+	}
+
+	public String getTgDblstitchPlc() {
+		return tgDblstitchPlc;
+	}
+
+	public void setTgDblstitchPlc(String tgDblstitchPlc) {
+		this.tgDblstitchPlc = tgDblstitchPlc;
+	}
+
+	public String getTgAmfColor() {
+		return tgAmfColor;
+	}
+
+	public void setTgAmfColor(String tgAmfColor) {
+		this.tgAmfColor = tgAmfColor;
+	}
+
+	public String getTgBhColorPlace1() {
+		return tgBhColorPlace1;
+	}
+
+	public void setTgBhColorPlace1(String tgBhColorPlace1) {
+		this.tgBhColorPlace1 = tgBhColorPlace1;
+	}
+
+	public String getTgBhColorPlace2() {
+		return tgBhColorPlace2;
+	}
+
+	public void setTgBhColorPlace2(String tgBhColorPlace2) {
+		this.tgBhColorPlace2 = tgBhColorPlace2;
+	}
+
+	public String getTgBhColorPlace3() {
+		return tgBhColorPlace3;
+	}
+
+	public void setTgBhColorPlace3(String tgBhColorPlace3) {
+		this.tgBhColorPlace3 = tgBhColorPlace3;
+	}
+
+	public String getTgBhColorPlace4() {
+		return tgBhColorPlace4;
+	}
+
+	public void setTgBhColorPlace4(String tgBhColorPlace4) {
+		this.tgBhColorPlace4 = tgBhColorPlace4;
+	}
+
+	public String getTgBhColorPlace5() {
+		return tgBhColorPlace5;
+	}
+
+	public void setTgBhColorPlace5(String tgBhColorPlace5) {
+		this.tgBhColorPlace5 = tgBhColorPlace5;
+	}
+
+	public String getTgBhColorPlace6() {
+		return tgBhColorPlace6;
+	}
+
+	public void setTgBhColorPlace6(String tgBhColorPlace6) {
+		this.tgBhColorPlace6 = tgBhColorPlace6;
+	}
+
+	public String getTgByColorPlace1() {
+		return tgByColorPlace1;
+	}
+
+	public void setTgByColorPlace1(String tgByColorPlace1) {
+		this.tgByColorPlace1 = tgByColorPlace1;
+	}
+
+	public String getTgByColorPlace2() {
+		return tgByColorPlace2;
+	}
+
+	public void setTgByColorPlace2(String tgByColorPlace2) {
+		this.tgByColorPlace2 = tgByColorPlace2;
+	}
+
+	public String getTgByColorPlace3() {
+		return tgByColorPlace3;
+	}
+
+	public void setTgByColorPlace3(String tgByColorPlace3) {
+		this.tgByColorPlace3 = tgByColorPlace3;
+	}
+
+	public String getTgByColorPlace4() {
+		return tgByColorPlace4;
+	}
+
+	public void setTgByColorPlace4(String tgByColorPlace4) {
+		this.tgByColorPlace4 = tgByColorPlace4;
+	}
+
+	public String getTgByColorPlace5() {
+		return tgByColorPlace5;
+	}
+
+	public void setTgByColorPlace5(String tgByColorPlace5) {
+		this.tgByColorPlace5 = tgByColorPlace5;
+	}
+
+	public String getTgByColorPlace6() {
+		return tgByColorPlace6;
+	}
+
+	public void setTgByColorPlace6(String tgByColorPlace6) {
+		this.tgByColorPlace6 = tgByColorPlace6;
+	}
+
+	public String getTgByColorPlace7() {
+		return tgByColorPlace7;
+	}
+
+	public void setTgByColorPlace7(String tgByColorPlace7) {
+		this.tgByColorPlace7 = tgByColorPlace7;
+	}
+
+	public String getTgByColorPlace8() {
+		return tgByColorPlace8;
+	}
+
+	public void setTgByColorPlace8(String tgByColorPlace8) {
+		this.tgByColorPlace8 = tgByColorPlace8;
+	}
+
+	public String getTgByColorPlace9() {
+		return tgByColorPlace9;
+	}
+
+	public void setTgByColorPlace9(String tgByColorPlace9) {
+		this.tgByColorPlace9 = tgByColorPlace9;
+	}
+
+	public String getTgByColorPlace10() {
+		return tgByColorPlace10;
+	}
+
+	public void setTgByColorPlace10(String tgByColorPlace10) {
+		this.tgByColorPlace10 = tgByColorPlace10;
+	}
+	
 }

@@ -48,6 +48,8 @@ public class Stock implements Serializable {
     private String fablicBrandNo;
     
     private Short version;
+    
+    private BigDecimal theoretical;
 
 	public String getFabricNo() {
 		return fabricNo;
@@ -207,6 +209,14 @@ public class Stock implements Serializable {
 
 	public void setOrderPattern(String orderPattern) {
 		this.orderPattern = orderPattern;
+	}
+
+	public BigDecimal getTheoretical() {
+		return theoretical;
+	}
+
+	public void setTheoretical(BigDecimal theoretical) {
+		this.theoretical = theoretical;
 	}
     
 }

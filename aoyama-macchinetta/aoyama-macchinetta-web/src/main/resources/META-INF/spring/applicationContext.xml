@@ -20,7 +20,25 @@
 	<bean id="beanMapper"
 		class="org.dozer.spring.DozerBeanMapperFactoryBean">
 		<property name="mappingFiles"
-			value="classpath*:/META-INF/dozer/**/*-mapping.xml" />
+			value="classpath*:/META-INF/dozer/order-mapping.xml" />
+	</bean>
+	
+	<bean id="standardBeanMapper"
+		class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles"
+			value="classpath*:/META-INF/dozer/orderCoStandard-mapping.xml" />
+	</bean>
+	
+	<bean id="tuxedoBeanMapper"
+		class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles"
+			value="classpath*:/META-INF/dozer/orderCoTuxedo-mapping.xml" />
+	</bean>
+	
+	<bean id="washableBeanMapper"
+		class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles"
+			value="classpath*:/META-INF/dozer/orderCoWashable-mapping.xml" />
 	</bean>
 
 	<!-- Message -->

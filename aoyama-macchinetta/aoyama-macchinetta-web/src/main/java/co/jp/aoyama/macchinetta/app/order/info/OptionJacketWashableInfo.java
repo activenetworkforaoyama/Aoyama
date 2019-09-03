@@ -5,6 +5,12 @@ import java.util.Map;
 
 public class OptionJacketWashableInfo implements Serializable{
 	private static final long serialVersionUID = -6866873681304245953L;
+	
+	//JACKETモデル
+	private String wjJacketModel;
+	
+	private Map<String,String> wjJacketModelMap;
+		
 	//フロント釦数
     private String wjFrontBtnCnt;
     
@@ -14,6 +20,9 @@ public class OptionJacketWashableInfo implements Serializable{
     private String wjLapelDesign;
     
     private Map<String,String> wjLapelDesignMap;
+    
+    //ラペルモデル
+    private String wjJacketLapelModel;
     
     //グレード
     private String wjGrade;
@@ -88,6 +97,9 @@ public class OptionJacketWashableInfo implements Serializable{
     
     private Map<String,String> wjSleeveBtnTypeMap;
     
+    //袖釦数
+    private String wjSleeveBtnCnt;
+    
     //袖口
     private String wjCuffSpec;
     
@@ -114,7 +126,23 @@ public class OptionJacketWashableInfo implements Serializable{
     private Map<String,String> wjStitchModifyMap;
     
     //ステッチ変更箇所
-    private String wjStitchModifyPlace;
+    private String wjStitchModifyPlace1;
+    
+    private String wjStitchModifyPlace2;
+    
+    private String wjStitchModifyPlace3;
+    
+    private String wjStitchModifyPlace4;
+    
+    private String wjStitchModifyPlace5;
+    
+    private String wjStitchModifyPlace6;
+    
+    private String wjStitchModifyPlace7;
+    
+    private String wjStitchModifyPlace8;
+    
+    private String wjStitchModifyPlace9;
     
     private Map<String,String> wjStitchModifyPlaceMap;
     
@@ -124,7 +152,23 @@ public class OptionJacketWashableInfo implements Serializable{
     private Map<String,String> wjDStitchModifyMap;
     
     //ダブルステッチ変更箇所
-    private String wjDStitchModifyPlace;
+    private String wjDStitchModifyPlace1;
+    
+    private String wjDStitchModifyPlace2;
+    
+    private String wjDStitchModifyPlace3;
+    
+    private String wjDStitchModifyPlace4;
+    
+    private String wjDStitchModifyPlace5;
+    
+    private String wjDStitchModifyPlace6;
+    
+    private String wjDStitchModifyPlace7;
+    
+    private String wjDStitchModifyPlace8;
+    
+    private String wjDStitchModifyPlace9;
     
     private Map<String,String> wjDStitchModifyPlaceMap;
     
@@ -139,7 +183,25 @@ public class OptionJacketWashableInfo implements Serializable{
     private Map<String,String> wjAmfColorPlaceAllMap;
     
     //AMF色指定箇所
-    private String wjAmfColorPlace;
+    private String wjAmfColorPlace1;
+    
+    private String wjAmfColorPlace2;
+    
+    private String wjAmfColorPlace3;
+    
+    private String wjAmfColorPlace4;
+    
+    private String wjAmfColorPlace5;
+    
+    private String wjAmfColorPlace6;
+    
+    private String wjAmfColorPlace7;
+    
+    private String wjAmfColorPlace8;
+    
+    private String wjAmfColorPlace9;
+    
+    private String wjAmfColorPlace10;
     
     private Map<String,String> wjAmfColorPlaceMap;
     
@@ -187,7 +249,39 @@ public class OptionJacketWashableInfo implements Serializable{
     private Map<String,String> wjBhColorPlaceAllMap;
     
     //ボタンホール色指定箇所
-    private String wjBhColorPlace;
+    private String wjBhColorPlace1;
+    
+    private String wjBhColorPlace2;
+    
+    private String wjBhColorPlace3;
+    
+    private String wjBhColorPlace4;
+    
+    private String wjBhColorPlace5;
+    
+    private String wjBhColorPlace6;
+    
+    private String wjBhColorPlace7;
+    
+    private String wjBhColorPlace8;
+    
+    private String wjBhColorPlace9;
+    
+    private String wjBhColorPlace10;
+    
+    private String wjBhColorPlace11;
+    
+    private String wjBhColorPlace12;
+    
+    private String wjBhColorPlace13;
+    
+    private String wjBhColorPlace14;
+    
+    private String wjBhColorPlace15;
+    
+    private String wjBhColorPlace16;
+    
+    private String wjBhColorPlace17;
     
     private Map<String,String> wjBhColorPlaceMap;
     
@@ -256,7 +350,39 @@ public class OptionJacketWashableInfo implements Serializable{
     private Map<String,String> wjByColorPlaceAllMap;
     
     //ボタン付け糸指定箇所
-    private String wjByColorPlace;
+    private String wjByColorPlace1;
+    
+    private String wjByColorPlace2;
+    
+    private String wjByColorPlace3;
+    
+    private String wjByColorPlace4;
+    
+    private String wjByColorPlace5;
+    
+    private String wjByColorPlace6;
+    
+    private String wjByColorPlace7;
+    
+    private String wjByColorPlace8;
+    
+    private String wjByColorPlace9;
+    
+    private String wjByColorPlace10;
+    
+    private String wjByColorPlace11;
+    
+    private String wjByColorPlace12;
+    
+    private String wjByColorPlace13;
+    
+    private String wjByColorPlace14;
+    
+    private String wjByColorPlace15;
+    
+    private String wjByColorPlace16;
+    
+    private String wjByColorPlace17;
     
     private Map<String,String> wjByColorPlaceMap;
     
@@ -321,20 +447,45 @@ public class OptionJacketWashableInfo implements Serializable{
     
     private Map<String,String> wjBodyBackMateMap;
     
+    //胴裏素材品番
+    private String wjBodyBackMateStkNo;
+    
     //袖裏素材
     private String wjCuffBackMate;
     
     private Map<String,String> wjCuffBackMateMap;
+    
+    //袖裏素材品番
+    private String wjCuffBackMateStkNo;
     
     //釦素材
     private String wjBtnMate;
     
     private Map<String,String> wjBtnMateMap;
     
+    //釦素材品番
+    private String wjBtnMateStkNo;
+    
     //形状記憶
     private String wjShapeMemory; 
     
     private Map<String,String> wjShapeMemoryMap;
+
+	public String getWjJacketModel() {
+		return wjJacketModel;
+	}
+
+	public void setWjJacketModel(String wjJacketModel) {
+		this.wjJacketModel = wjJacketModel;
+	}
+
+	public Map<String, String> getWjJacketModelMap() {
+		return wjJacketModelMap;
+	}
+
+	public void setWjJacketModelMap(Map<String, String> wjJacketModelMap) {
+		this.wjJacketModelMap = wjJacketModelMap;
+	}
 
 	public String getWjFrontBtnCnt() {
 		return wjFrontBtnCnt;
@@ -688,14 +839,6 @@ public class OptionJacketWashableInfo implements Serializable{
 		this.wjStitchModifyMap = wjStitchModifyMap;
 	}
 
-	public String getWjStitchModifyPlace() {
-		return wjStitchModifyPlace;
-	}
-
-	public void setWjStitchModifyPlace(String wjStitchModifyPlace) {
-		this.wjStitchModifyPlace = wjStitchModifyPlace;
-	}
-
 	public Map<String, String> getWjStitchModifyPlaceMap() {
 		return wjStitchModifyPlaceMap;
 	}
@@ -718,14 +861,6 @@ public class OptionJacketWashableInfo implements Serializable{
 
 	public void setWjDStitchModifyMap(Map<String, String> wjDStitchModifyMap) {
 		this.wjDStitchModifyMap = wjDStitchModifyMap;
-	}
-
-	public String getWjDStitchModifyPlace() {
-		return wjDStitchModifyPlace;
-	}
-
-	public void setWjDStitchModifyPlace(String wjDStitchModifyPlace) {
-		this.wjDStitchModifyPlace = wjDStitchModifyPlace;
 	}
 
 	public Map<String, String> getWjDStitchModifyPlaceMap() {
@@ -766,14 +901,6 @@ public class OptionJacketWashableInfo implements Serializable{
 
 	public void setWjAmfColorPlaceAllMap(Map<String, String> wjAmfColorPlaceAllMap) {
 		this.wjAmfColorPlaceAllMap = wjAmfColorPlaceAllMap;
-	}
-
-	public String getWjAmfColorPlace() {
-		return wjAmfColorPlace;
-	}
-
-	public void setWjAmfColorPlace(String wjAmfColorPlace) {
-		this.wjAmfColorPlace = wjAmfColorPlace;
 	}
 
 	public Map<String, String> getWjAmfColorPlaceMap() {
@@ -902,14 +1029,6 @@ public class OptionJacketWashableInfo implements Serializable{
 
 	public void setWjBhColorPlaceAllMap(Map<String, String> wjBhColorPlaceAllMap) {
 		this.wjBhColorPlaceAllMap = wjBhColorPlaceAllMap;
-	}
-
-	public String getWjBhColorPlace() {
-		return wjBhColorPlace;
-	}
-
-	public void setWjBhColorPlace(String wjBhColorPlace) {
-		this.wjBhColorPlace = wjBhColorPlace;
 	}
 
 	public Map<String, String> getWjBhColorPlaceMap() {
@@ -1094,14 +1213,6 @@ public class OptionJacketWashableInfo implements Serializable{
 
 	public void setWjByColorPlaceAllMap(Map<String, String> wjByColorPlaceAllMap) {
 		this.wjByColorPlaceAllMap = wjByColorPlaceAllMap;
-	}
-
-	public String getWjByColorPlace() {
-		return wjByColorPlace;
-	}
-
-	public void setWjByColorPlace(String wjByColorPlace) {
-		this.wjByColorPlace = wjByColorPlace;
 	}
 
 	public Map<String, String> getWjByColorPlaceMap() {
@@ -1312,6 +1423,30 @@ public class OptionJacketWashableInfo implements Serializable{
 		this.wjBtnMateMap = wjBtnMateMap;
 	}
 
+	public String getWjBodyBackMateStkNo() {
+		return wjBodyBackMateStkNo;
+	}
+
+	public void setWjBodyBackMateStkNo(String wjBodyBackMateStkNo) {
+		this.wjBodyBackMateStkNo = wjBodyBackMateStkNo;
+	}
+
+	public String getWjCuffBackMateStkNo() {
+		return wjCuffBackMateStkNo;
+	}
+
+	public void setWjCuffBackMateStkNo(String wjCuffBackMateStkNo) {
+		this.wjCuffBackMateStkNo = wjCuffBackMateStkNo;
+	}
+
+	public String getWjBtnMateStkNo() {
+		return wjBtnMateStkNo;
+	}
+
+	public void setWjBtnMateStkNo(String wjBtnMateStkNo) {
+		this.wjBtnMateStkNo = wjBtnMateStkNo;
+	}
+
 	public String getWjShapeMemory() {
 		return wjShapeMemory;
 	}
@@ -1328,4 +1463,515 @@ public class OptionJacketWashableInfo implements Serializable{
 		this.wjShapeMemoryMap = wjShapeMemoryMap;
 	}
 
+	public String getWjJacketLapelModel() {
+		return wjJacketLapelModel;
+	}
+
+	public void setWjJacketLapelModel(String wjJacketLapelModel) {
+		this.wjJacketLapelModel = wjJacketLapelModel;
+	}
+
+	public String getWjSleeveBtnCnt() {
+		return wjSleeveBtnCnt;
+	}
+
+	public void setWjSleeveBtnCnt(String wjSleeveBtnCnt) {
+		this.wjSleeveBtnCnt = wjSleeveBtnCnt;
+	}
+
+	public String getWjStitchModifyPlace1() {
+		return wjStitchModifyPlace1;
+	}
+
+	public void setWjStitchModifyPlace1(String wjStitchModifyPlace1) {
+		this.wjStitchModifyPlace1 = wjStitchModifyPlace1;
+	}
+
+	public String getWjStitchModifyPlace2() {
+		return wjStitchModifyPlace2;
+	}
+
+	public void setWjStitchModifyPlace2(String wjStitchModifyPlace2) {
+		this.wjStitchModifyPlace2 = wjStitchModifyPlace2;
+	}
+
+	public String getWjStitchModifyPlace3() {
+		return wjStitchModifyPlace3;
+	}
+
+	public void setWjStitchModifyPlace3(String wjStitchModifyPlace3) {
+		this.wjStitchModifyPlace3 = wjStitchModifyPlace3;
+	}
+
+	public String getWjStitchModifyPlace4() {
+		return wjStitchModifyPlace4;
+	}
+
+	public void setWjStitchModifyPlace4(String wjStitchModifyPlace4) {
+		this.wjStitchModifyPlace4 = wjStitchModifyPlace4;
+	}
+
+	public String getWjStitchModifyPlace5() {
+		return wjStitchModifyPlace5;
+	}
+
+	public void setWjStitchModifyPlace5(String wjStitchModifyPlace5) {
+		this.wjStitchModifyPlace5 = wjStitchModifyPlace5;
+	}
+
+	public String getWjStitchModifyPlace6() {
+		return wjStitchModifyPlace6;
+	}
+
+	public void setWjStitchModifyPlace6(String wjStitchModifyPlace6) {
+		this.wjStitchModifyPlace6 = wjStitchModifyPlace6;
+	}
+
+	public String getWjStitchModifyPlace7() {
+		return wjStitchModifyPlace7;
+	}
+
+	public void setWjStitchModifyPlace7(String wjStitchModifyPlace7) {
+		this.wjStitchModifyPlace7 = wjStitchModifyPlace7;
+	}
+
+	public String getWjStitchModifyPlace8() {
+		return wjStitchModifyPlace8;
+	}
+
+	public void setWjStitchModifyPlace8(String wjStitchModifyPlace8) {
+		this.wjStitchModifyPlace8 = wjStitchModifyPlace8;
+	}
+
+	public String getWjStitchModifyPlace9() {
+		return wjStitchModifyPlace9;
+	}
+
+	public void setWjStitchModifyPlace9(String wjStitchModifyPlace9) {
+		this.wjStitchModifyPlace9 = wjStitchModifyPlace9;
+	}
+
+	public String getWjDStitchModifyPlace1() {
+		return wjDStitchModifyPlace1;
+	}
+
+	public void setWjDStitchModifyPlace1(String wjDStitchModifyPlace1) {
+		this.wjDStitchModifyPlace1 = wjDStitchModifyPlace1;
+	}
+
+	public String getWjDStitchModifyPlace2() {
+		return wjDStitchModifyPlace2;
+	}
+
+	public void setWjDStitchModifyPlace2(String wjDStitchModifyPlace2) {
+		this.wjDStitchModifyPlace2 = wjDStitchModifyPlace2;
+	}
+
+	public String getWjDStitchModifyPlace3() {
+		return wjDStitchModifyPlace3;
+	}
+
+	public void setWjDStitchModifyPlace3(String wjDStitchModifyPlace3) {
+		this.wjDStitchModifyPlace3 = wjDStitchModifyPlace3;
+	}
+
+	public String getWjDStitchModifyPlace4() {
+		return wjDStitchModifyPlace4;
+	}
+
+	public void setWjDStitchModifyPlace4(String wjDStitchModifyPlace4) {
+		this.wjDStitchModifyPlace4 = wjDStitchModifyPlace4;
+	}
+
+	public String getWjDStitchModifyPlace5() {
+		return wjDStitchModifyPlace5;
+	}
+
+	public void setWjDStitchModifyPlace5(String wjDStitchModifyPlace5) {
+		this.wjDStitchModifyPlace5 = wjDStitchModifyPlace5;
+	}
+
+	public String getWjDStitchModifyPlace6() {
+		return wjDStitchModifyPlace6;
+	}
+
+	public void setWjDStitchModifyPlace6(String wjDStitchModifyPlace6) {
+		this.wjDStitchModifyPlace6 = wjDStitchModifyPlace6;
+	}
+
+	public String getWjDStitchModifyPlace7() {
+		return wjDStitchModifyPlace7;
+	}
+
+	public void setWjDStitchModifyPlace7(String wjDStitchModifyPlace7) {
+		this.wjDStitchModifyPlace7 = wjDStitchModifyPlace7;
+	}
+
+	public String getWjDStitchModifyPlace8() {
+		return wjDStitchModifyPlace8;
+	}
+
+	public void setWjDStitchModifyPlace8(String wjDStitchModifyPlace8) {
+		this.wjDStitchModifyPlace8 = wjDStitchModifyPlace8;
+	}
+
+	public String getWjDStitchModifyPlace9() {
+		return wjDStitchModifyPlace9;
+	}
+
+	public void setWjDStitchModifyPlace9(String wjDStitchModifyPlace9) {
+		this.wjDStitchModifyPlace9 = wjDStitchModifyPlace9;
+	}
+
+	public String getWjAmfColorPlace1() {
+		return wjAmfColorPlace1;
+	}
+
+	public void setWjAmfColorPlace1(String wjAmfColorPlace1) {
+		this.wjAmfColorPlace1 = wjAmfColorPlace1;
+	}
+
+	public String getWjAmfColorPlace2() {
+		return wjAmfColorPlace2;
+	}
+
+	public void setWjAmfColorPlace2(String wjAmfColorPlace2) {
+		this.wjAmfColorPlace2 = wjAmfColorPlace2;
+	}
+
+	public String getWjAmfColorPlace3() {
+		return wjAmfColorPlace3;
+	}
+
+	public void setWjAmfColorPlace3(String wjAmfColorPlace3) {
+		this.wjAmfColorPlace3 = wjAmfColorPlace3;
+	}
+
+	public String getWjAmfColorPlace4() {
+		return wjAmfColorPlace4;
+	}
+
+	public void setWjAmfColorPlace4(String wjAmfColorPlace4) {
+		this.wjAmfColorPlace4 = wjAmfColorPlace4;
+	}
+
+	public String getWjAmfColorPlace5() {
+		return wjAmfColorPlace5;
+	}
+
+	public void setWjAmfColorPlace5(String wjAmfColorPlace5) {
+		this.wjAmfColorPlace5 = wjAmfColorPlace5;
+	}
+
+	public String getWjAmfColorPlace6() {
+		return wjAmfColorPlace6;
+	}
+
+	public void setWjAmfColorPlace6(String wjAmfColorPlace6) {
+		this.wjAmfColorPlace6 = wjAmfColorPlace6;
+	}
+
+	public String getWjAmfColorPlace7() {
+		return wjAmfColorPlace7;
+	}
+
+	public void setWjAmfColorPlace7(String wjAmfColorPlace7) {
+		this.wjAmfColorPlace7 = wjAmfColorPlace7;
+	}
+
+	public String getWjAmfColorPlace8() {
+		return wjAmfColorPlace8;
+	}
+
+	public void setWjAmfColorPlace8(String wjAmfColorPlace8) {
+		this.wjAmfColorPlace8 = wjAmfColorPlace8;
+	}
+
+	public String getWjAmfColorPlace9() {
+		return wjAmfColorPlace9;
+	}
+
+	public void setWjAmfColorPlace9(String wjAmfColorPlace9) {
+		this.wjAmfColorPlace9 = wjAmfColorPlace9;
+	}
+
+	public String getWjAmfColorPlace10() {
+		return wjAmfColorPlace10;
+	}
+
+	public void setWjAmfColorPlace10(String wjAmfColorPlace10) {
+		this.wjAmfColorPlace10 = wjAmfColorPlace10;
+	}
+
+	public String getWjBhColorPlace1() {
+		return wjBhColorPlace1;
+	}
+
+	public void setWjBhColorPlace1(String wjBhColorPlace1) {
+		this.wjBhColorPlace1 = wjBhColorPlace1;
+	}
+
+	public String getWjBhColorPlace2() {
+		return wjBhColorPlace2;
+	}
+
+	public void setWjBhColorPlace2(String wjBhColorPlace2) {
+		this.wjBhColorPlace2 = wjBhColorPlace2;
+	}
+
+	public String getWjBhColorPlace3() {
+		return wjBhColorPlace3;
+	}
+
+	public void setWjBhColorPlace3(String wjBhColorPlace3) {
+		this.wjBhColorPlace3 = wjBhColorPlace3;
+	}
+
+	public String getWjBhColorPlace4() {
+		return wjBhColorPlace4;
+	}
+
+	public void setWjBhColorPlace4(String wjBhColorPlace4) {
+		this.wjBhColorPlace4 = wjBhColorPlace4;
+	}
+
+	public String getWjBhColorPlace5() {
+		return wjBhColorPlace5;
+	}
+
+	public void setWjBhColorPlace5(String wjBhColorPlace5) {
+		this.wjBhColorPlace5 = wjBhColorPlace5;
+	}
+
+	public String getWjBhColorPlace6() {
+		return wjBhColorPlace6;
+	}
+
+	public void setWjBhColorPlace6(String wjBhColorPlace6) {
+		this.wjBhColorPlace6 = wjBhColorPlace6;
+	}
+
+	public String getWjBhColorPlace7() {
+		return wjBhColorPlace7;
+	}
+
+	public void setWjBhColorPlace7(String wjBhColorPlace7) {
+		this.wjBhColorPlace7 = wjBhColorPlace7;
+	}
+
+	public String getWjBhColorPlace8() {
+		return wjBhColorPlace8;
+	}
+
+	public void setWjBhColorPlace8(String wjBhColorPlace8) {
+		this.wjBhColorPlace8 = wjBhColorPlace8;
+	}
+
+	public String getWjBhColorPlace9() {
+		return wjBhColorPlace9;
+	}
+
+	public void setWjBhColorPlace9(String wjBhColorPlace9) {
+		this.wjBhColorPlace9 = wjBhColorPlace9;
+	}
+
+	public String getWjBhColorPlace10() {
+		return wjBhColorPlace10;
+	}
+
+	public void setWjBhColorPlace10(String wjBhColorPlace10) {
+		this.wjBhColorPlace10 = wjBhColorPlace10;
+	}
+
+	public String getWjBhColorPlace11() {
+		return wjBhColorPlace11;
+	}
+
+	public void setWjBhColorPlace11(String wjBhColorPlace11) {
+		this.wjBhColorPlace11 = wjBhColorPlace11;
+	}
+
+	public String getWjBhColorPlace12() {
+		return wjBhColorPlace12;
+	}
+
+	public void setWjBhColorPlace12(String wjBhColorPlace12) {
+		this.wjBhColorPlace12 = wjBhColorPlace12;
+	}
+
+	public String getWjBhColorPlace13() {
+		return wjBhColorPlace13;
+	}
+
+	public void setWjBhColorPlace13(String wjBhColorPlace13) {
+		this.wjBhColorPlace13 = wjBhColorPlace13;
+	}
+
+	public String getWjBhColorPlace14() {
+		return wjBhColorPlace14;
+	}
+
+	public void setWjBhColorPlace14(String wjBhColorPlace14) {
+		this.wjBhColorPlace14 = wjBhColorPlace14;
+	}
+
+	public String getWjBhColorPlace15() {
+		return wjBhColorPlace15;
+	}
+
+	public void setWjBhColorPlace15(String wjBhColorPlace15) {
+		this.wjBhColorPlace15 = wjBhColorPlace15;
+	}
+
+	public String getWjBhColorPlace16() {
+		return wjBhColorPlace16;
+	}
+
+	public void setWjBhColorPlace16(String wjBhColorPlace16) {
+		this.wjBhColorPlace16 = wjBhColorPlace16;
+	}
+
+	public String getWjBhColorPlace17() {
+		return wjBhColorPlace17;
+	}
+
+	public void setWjBhColorPlace17(String wjBhColorPlace17) {
+		this.wjBhColorPlace17 = wjBhColorPlace17;
+	}
+
+	public String getWjByColorPlace1() {
+		return wjByColorPlace1;
+	}
+
+	public void setWjByColorPlace1(String wjByColorPlace1) {
+		this.wjByColorPlace1 = wjByColorPlace1;
+	}
+
+	public String getWjByColorPlace2() {
+		return wjByColorPlace2;
+	}
+
+	public void setWjByColorPlace2(String wjByColorPlace2) {
+		this.wjByColorPlace2 = wjByColorPlace2;
+	}
+
+	public String getWjByColorPlace3() {
+		return wjByColorPlace3;
+	}
+
+	public void setWjByColorPlace3(String wjByColorPlace3) {
+		this.wjByColorPlace3 = wjByColorPlace3;
+	}
+
+	public String getWjByColorPlace4() {
+		return wjByColorPlace4;
+	}
+
+	public void setWjByColorPlace4(String wjByColorPlace4) {
+		this.wjByColorPlace4 = wjByColorPlace4;
+	}
+
+	public String getWjByColorPlace5() {
+		return wjByColorPlace5;
+	}
+
+	public void setWjByColorPlace5(String wjByColorPlace5) {
+		this.wjByColorPlace5 = wjByColorPlace5;
+	}
+
+	public String getWjByColorPlace6() {
+		return wjByColorPlace6;
+	}
+
+	public void setWjByColorPlace6(String wjByColorPlace6) {
+		this.wjByColorPlace6 = wjByColorPlace6;
+	}
+
+	public String getWjByColorPlace7() {
+		return wjByColorPlace7;
+	}
+
+	public void setWjByColorPlace7(String wjByColorPlace7) {
+		this.wjByColorPlace7 = wjByColorPlace7;
+	}
+
+	public String getWjByColorPlace8() {
+		return wjByColorPlace8;
+	}
+
+	public void setWjByColorPlace8(String wjByColorPlace8) {
+		this.wjByColorPlace8 = wjByColorPlace8;
+	}
+
+	public String getWjByColorPlace9() {
+		return wjByColorPlace9;
+	}
+
+	public void setWjByColorPlace9(String wjByColorPlace9) {
+		this.wjByColorPlace9 = wjByColorPlace9;
+	}
+
+	public String getWjByColorPlace10() {
+		return wjByColorPlace10;
+	}
+
+	public void setWjByColorPlace10(String wjByColorPlace10) {
+		this.wjByColorPlace10 = wjByColorPlace10;
+	}
+
+	public String getWjByColorPlace11() {
+		return wjByColorPlace11;
+	}
+
+	public void setWjByColorPlace11(String wjByColorPlace11) {
+		this.wjByColorPlace11 = wjByColorPlace11;
+	}
+
+	public String getWjByColorPlace12() {
+		return wjByColorPlace12;
+	}
+
+	public void setWjByColorPlace12(String wjByColorPlace12) {
+		this.wjByColorPlace12 = wjByColorPlace12;
+	}
+
+	public String getWjByColorPlace13() {
+		return wjByColorPlace13;
+	}
+
+	public void setWjByColorPlace13(String wjByColorPlace13) {
+		this.wjByColorPlace13 = wjByColorPlace13;
+	}
+
+	public String getWjByColorPlace14() {
+		return wjByColorPlace14;
+	}
+
+	public void setWjByColorPlace14(String wjByColorPlace14) {
+		this.wjByColorPlace14 = wjByColorPlace14;
+	}
+
+	public String getWjByColorPlace15() {
+		return wjByColorPlace15;
+	}
+
+	public void setWjByColorPlace15(String wjByColorPlace15) {
+		this.wjByColorPlace15 = wjByColorPlace15;
+	}
+
+	public String getWjByColorPlace16() {
+		return wjByColorPlace16;
+	}
+
+	public void setWjByColorPlace16(String wjByColorPlace16) {
+		this.wjByColorPlace16 = wjByColorPlace16;
+	}
+
+	public String getWjByColorPlace17() {
+		return wjByColorPlace17;
+	}
+
+	public void setWjByColorPlace17(String wjByColorPlace17) {
+		this.wjByColorPlace17 = wjByColorPlace17;
+	}
 }

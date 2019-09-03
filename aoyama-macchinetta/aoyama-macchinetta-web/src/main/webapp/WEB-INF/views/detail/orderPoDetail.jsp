@@ -1814,7 +1814,7 @@
 				<div class="col-md-12">
 					<div class="card-body">
 						<div class="row">
-							<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5')}">		
+							<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">		
 								<div class="col col-md-2">
 								</div>
 								<div class="col col-md-4">
@@ -1828,6 +1828,17 @@
 									</button>
 								</div>
 								<div class="col col-md-2">
+								</div>
+							</c:if>
+							<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.send2factoryStatus == '1'}">		
+								<div class="col col-md-4">
+								</div>
+								<div class="col col-md-4">
+									<button type="button" class="btn btn-info btn-block" id="backButton" >
+										一覧へ戻る
+									</button>
+								</div>
+								<div class="col col-md-4">
 								</div>
 							</c:if>
 							<c:if test="${order.tscStatus == 'T6' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03')}">		
@@ -1939,7 +1950,7 @@
 <c:if test="${order.isCancelled != '1'}">
 	<div class="col-md-12">
 		<div class="card" id="nav2_alter_div">
-			<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2'}">		
+			<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">		
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card-body">
@@ -1957,6 +1968,25 @@
 								</button>
 							</div>
 							<div class="col col-md-2">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</c:if>
+			<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && order.send2factoryStatus == '1'}">		
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card-body">
+						<div class="row">
+							<div class="col col-md-4">
+							</div>
+							<div class="col col-md-4">
+								<button type="button" class="btn btn-info btn-block" id="backButton" >
+									一覧へ戻る
+								</button>
+							</div>
+							<div class="col col-md-4">
 							</div>
 						</div>
 					</div>

@@ -131,7 +131,7 @@ public class OptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpAmfColorMap;
     
-    //AMF糸色 
+    //AMF糸色 ,AMF色指定糸色(プルダウン)
     private String wpAmfColorPlaceAll;
     
     private Map<String,String> wpAmfColorPlaceAllMap;
@@ -161,7 +161,7 @@ public class OptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpBhColorMap;
     
-    //ボタンホール色指定糸色
+    //ボタンホール色指定糸色,ボタンホール色指定糸色(プルダウン)
     private String wpBhColorPlaceAll;
     
     private Map<String,String> wpBhColorPlaceAllMap;
@@ -191,7 +191,7 @@ public class OptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpByColorMap;
     
-    //ボタン付け糸指定糸色
+    //ボタン付け糸指定糸色,ボタン付け糸指定糸色(プルダウン)
     private String wpByColorPlaceAll;
     
     private Map<String,String> wpByColorPlaceAllMap;
@@ -234,6 +234,11 @@ public class OptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpEightMap;
     
+    //シック（股補強）
+    private String wpThick;
+    
+    private Map<String,String> wpThickMap;
+    
     //形状記憶
     private String wpShapeMemory; 
     
@@ -243,6 +248,22 @@ public class OptionPantsWashableInfo implements Serializable{
     private String wpBlister;
     
     private Map<String,String> wpBlisterMap;
+
+	public String getWpPantsModel() {
+		return wpPantsModel;
+	}
+
+	public void setWpPantsModel(String wpPantsModel) {
+		this.wpPantsModel = wpPantsModel;
+	}
+
+	public Map<String, String> getWpPantsModelMap() {
+		return wpPantsModelMap;
+	}
+
+	public void setWpPantsModelMap(Map<String, String> wpPantsModelMap) {
+		this.wpPantsModelMap = wpPantsModelMap;
+	}
 
 	public String getWpTack() {
 		return wpTack;
@@ -892,6 +913,14 @@ public class OptionPantsWashableInfo implements Serializable{
 		this.wpButtonMap = wpButtonMap;
 	}
 
+	public String getWpBtnMateStkNo() {
+		return wpBtnMateStkNo;
+	}
+
+	public void setWpBtnMateStkNo(String wpBtnMateStkNo) {
+		this.wpBtnMateStkNo = wpBtnMateStkNo;
+	}
+
 	public String getWpSuspenderBtn() {
 		return wpSuspenderBtn;
 	}
@@ -922,6 +951,22 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpEightMap(Map<String, String> wpEightMap) {
 		this.wpEightMap = wpEightMap;
+	}
+
+	public String getWpThick() {
+		return wpThick;
+	}
+
+	public void setWpThick(String wpThick) {
+		this.wpThick = wpThick;
+	}
+
+	public Map<String, String> getWpThickMap() {
+		return wpThickMap;
+	}
+
+	public void setWpThickMap(Map<String, String> wpThickMap) {
+		this.wpThickMap = wpThickMap;
 	}
 
 	public String getWpShapeMemory() {

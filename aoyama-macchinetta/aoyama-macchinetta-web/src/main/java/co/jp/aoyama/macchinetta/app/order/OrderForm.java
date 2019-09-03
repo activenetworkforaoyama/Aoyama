@@ -9,10 +9,12 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import co.jp.aoyama.macchinetta.app.order.info.AdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustJacketStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustPants2StandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustPantsStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.AdjustShirtStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.CustomerMessageInfo;
 import co.jp.aoyama.macchinetta.app.order.info.MeasuringInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo;
@@ -23,6 +25,8 @@ import co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionJacketTuxedoInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionJacketWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionPants2TuxedoInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionPants2WashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsTuxedoInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsWashableInfo;
@@ -48,9 +52,15 @@ public class OrderForm implements Serializable {
 
 	// PANTS Tuxedo
 	private OptionPantsTuxedoInfo optionPantsTuxedoInfo;
+	
+	// 2PANTS Tuxedo
+	private OptionPants2TuxedoInfo optionPants2TuxedoInfo;
 
 	// PANTS Washable
 	private OptionPantsWashableInfo optionPantsWashableInfo;
+	
+	// 2PANTS Washable
+	private OptionPants2WashableInfo optionPants2WashableInfo;
 
 	// JACKET Standard
 	private OptionJacketStandardInfo optionJacketStandardInfo;
@@ -90,6 +100,12 @@ public class OrderForm implements Serializable {
 
 	// GILET補正
 	private AdjustGiletStandardInfo adjustGiletStandardInfo;
+	
+	//Shirt補正
+	private AdjustShirtStandardInfo adjustShirtStandardInfo;
+	
+	//Coat補正
+	private AdjustCoatStandardInfo adjustCoatStandardInfo;
 	
 	//店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
 	private String shopCode;
@@ -140,6 +156,12 @@ public class OrderForm implements Serializable {
 
 	// 商品情報_ネーム刺繍位置
 	private String productEmbroideryNmPos;
+	
+	//商品情報_刺繍サイズ（縦）
+	private String productEmbroideryLength;
+	
+	//商品情報_刺繍サイズ（横）
+	private String productEmbroideryWidth;
 
 	// 商品情報_残布_type
 	private String productRemainingClothType;
@@ -216,6 +238,9 @@ public class OrderForm implements Serializable {
 	//商品情報_メーカーコード
 	private String productMakerCode;
 	
+	//商品情報_LCR縫製
+	private String productLcrSewing;
+	
 	//保存flag
 	private String saveFlag;
 	
@@ -223,6 +248,84 @@ public class OrderForm implements Serializable {
 	
 	private String version;
 	
+	//店舗・担当_店舗名
+	private String storeNm;
+	
+	private String jacketItemFlag;
+	
+	private String pantsItemFlag;
+	
+	private String giletItemFlag;
+	
+	private String shirtItemFlag;
+	
+	private String coatItemFlag;
+	
+	private String pants2ItemFlag;
+	
+	private String jacketFlag;
+	
+	private String pantsFlag;
+	
+	private String giletFlag;
+	
+	private String coatFlag;
+	
+	private String shirtFlag;
+	
+	//補正
+	private String jacketAdFlag;
+	
+	private String pantsAdFlag;
+	
+	private String pants2AdFlag;
+	
+	private String giletAdFlag;
+	
+	private String coatAdFlag;
+	
+	private String shirtAdFlag;
+	
+	public String getJacketFlag() {
+		return jacketFlag;
+	}
+
+	public void setJacketFlag(String jacketFlag) {
+		this.jacketFlag = jacketFlag;
+	}
+
+	public String getPantsFlag() {
+		return pantsFlag;
+	}
+
+	public void setPantsFlag(String pantsFlag) {
+		this.pantsFlag = pantsFlag;
+	}
+
+	public String getGiletFlag() {
+		return giletFlag;
+	}
+
+	public void setGiletFlag(String giletFlag) {
+		this.giletFlag = giletFlag;
+	}
+
+	public String getCoatFlag() {
+		return coatFlag;
+	}
+
+	public void setCoatFlag(String coatFlag) {
+		this.coatFlag = coatFlag;
+	}
+
+	public String getShirtFlag() {
+		return shirtFlag;
+	}
+
+	public void setShirtFlag(String shirtFlag) {
+		this.shirtFlag = shirtFlag;
+	}
+
 	public String getVersion() {
 		return version;
 	}
@@ -245,6 +348,14 @@ public class OrderForm implements Serializable {
 
 	public void setSaveFlag(String saveFlag) {
 		this.saveFlag = saveFlag;
+	}
+	
+	public String getStoreNm() {
+		return storeNm;
+	}
+
+	public void setStoreNm(String storeNm) {
+		this.storeNm = storeNm;
 	}
 
 	public String getProductFactoryCd() {
@@ -318,9 +429,25 @@ public class OrderForm implements Serializable {
 	public void setOptionPantsTuxedoInfo(OptionPantsTuxedoInfo optionPantsTuxedoInfo) {
 		this.optionPantsTuxedoInfo = optionPantsTuxedoInfo;
 	}
+	
+	public OptionPants2TuxedoInfo getOptionPants2TuxedoInfo() {
+		return optionPants2TuxedoInfo;
+	}
+
+	public void setOptionPants2TuxedoInfo(OptionPants2TuxedoInfo optionPants2TuxedoInfo) {
+		this.optionPants2TuxedoInfo = optionPants2TuxedoInfo;
+	}
 
 	public OptionPantsWashableInfo getOptionPantsWashableInfo() {
 		return optionPantsWashableInfo;
+	}
+
+	public OptionPants2WashableInfo getOptionPants2WashableInfo() {
+		return optionPants2WashableInfo;
+	}
+
+	public void setOptionPants2WashableInfo(OptionPants2WashableInfo optionPants2WashableInfo) {
+		this.optionPants2WashableInfo = optionPants2WashableInfo;
 	}
 
 	public void setOptionPantsWashableInfo(OptionPantsWashableInfo optionPantsWashableInfo) {
@@ -735,5 +862,141 @@ public class OrderForm implements Serializable {
 	public void setFabricPattern(String fabricPattern) {
 		this.fabricPattern = fabricPattern;
 	}
+
+	public AdjustShirtStandardInfo getAdjustShirtStandardInfo() {
+		return adjustShirtStandardInfo;
+	}
+
+	public void setAdjustShirtStandardInfo(AdjustShirtStandardInfo adjustShirtStandardInfo) {
+		this.adjustShirtStandardInfo = adjustShirtStandardInfo;
+	}
+
+	public AdjustCoatStandardInfo getAdjustCoatStandardInfo() {
+		return adjustCoatStandardInfo;
+	}
+
+	public void setAdjustCoatStandardInfo(AdjustCoatStandardInfo adjustCoatStandardInfo) {
+		this.adjustCoatStandardInfo = adjustCoatStandardInfo;
+	}
+	public String getProductEmbroideryLength() {
+		return productEmbroideryLength;
+	}
+
+	public void setProductEmbroideryLength(String productEmbroideryLength) {
+		this.productEmbroideryLength = productEmbroideryLength;
+	}
+
+	public String getProductEmbroideryWidth() {
+		return productEmbroideryWidth;
+	}
+
+	public void setProductEmbroideryWidth(String productEmbroideryWidth) {
+		this.productEmbroideryWidth = productEmbroideryWidth;
+	}
+
+	public String getJacketAdFlag() {
+		return jacketAdFlag;
+	}
+
+	public void setJacketAdFlag(String jacketAdFlag) {
+		this.jacketAdFlag = jacketAdFlag;
+	}
+
+	public String getPantsAdFlag() {
+		return pantsAdFlag;
+	}
+
+	public void setPantsAdFlag(String pantsAdFlag) {
+		this.pantsAdFlag = pantsAdFlag;
+	}
+
+	public String getPants2AdFlag() {
+		return pants2AdFlag;
+	}
+
+	public void setPants2AdFlag(String pants2AdFlag) {
+		this.pants2AdFlag = pants2AdFlag;
+	}
+
+	public String getGiletAdFlag() {
+		return giletAdFlag;
+	}
+
+	public void setGiletAdFlag(String giletAdFlag) {
+		this.giletAdFlag = giletAdFlag;
+	}
+
+	public String getCoatAdFlag() {
+		return coatAdFlag;
+	}
+
+	public void setCoatAdFlag(String coatAdFlag) {
+		this.coatAdFlag = coatAdFlag;
+	}
+
+	public String getShirtAdFlag() {
+		return shirtAdFlag;
+	}
+
+	public void setShirtAdFlag(String shirtAdFlag) {
+		this.shirtAdFlag = shirtAdFlag;
+	}
+
+	public String getJacketItemFlag() {
+		return jacketItemFlag;
+	}
+
+	public void setJacketItemFlag(String jacketItemFlag) {
+		this.jacketItemFlag = jacketItemFlag;
+	}
+
+	public String getPantsItemFlag() {
+		return pantsItemFlag;
+	}
+
+	public void setPantsItemFlag(String pantsItemFlag) {
+		this.pantsItemFlag = pantsItemFlag;
+	}
+
+	public String getGiletItemFlag() {
+		return giletItemFlag;
+	}
+
+	public void setGiletItemFlag(String giletItemFlag) {
+		this.giletItemFlag = giletItemFlag;
+	}
+
+	public String getShirtItemFlag() {
+		return shirtItemFlag;
+	}
+
+	public void setShirtItemFlag(String shirtItemFlag) {
+		this.shirtItemFlag = shirtItemFlag;
+	}
+
+	public String getCoatItemFlag() {
+		return coatItemFlag;
+	}
+
+	public void setCoatItemFlag(String coatItemFlag) {
+		this.coatItemFlag = coatItemFlag;
+	}
+
+	public String getPants2ItemFlag() {
+		return pants2ItemFlag;
+	}
+
+	public void setPants2ItemFlag(String pants2ItemFlag) {
+		this.pants2ItemFlag = pants2ItemFlag;
+	}
+
+	public String getProductLcrSewing() {
+		return productLcrSewing;
+	}
+
+	public void setProductLcrSewing(String productLcrSewing) {
+		this.productLcrSewing = productLcrSewing;
+	}
+	
 	
 }

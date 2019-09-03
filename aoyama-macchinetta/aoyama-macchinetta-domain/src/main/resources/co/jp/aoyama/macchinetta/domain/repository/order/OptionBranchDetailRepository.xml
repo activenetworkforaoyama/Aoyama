@@ -3,10 +3,12 @@
 <mapper namespace="co.jp.aoyama.macchinetta.domain.repository.order.OptionBranchDetailRepository" >
   <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail" >
     <id column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <id column="item_code" property="itemCode" jdbcType="VARCHAR" />
     <id column="sub_item_code" property="subItemCode" jdbcType="VARCHAR" />
     <id column="option_code" property="optionCode" jdbcType="VARCHAR" />
     <id column="option_branch_code" property="optionBranchCode" jdbcType="VARCHAR" />
     <id column="option_branch_detail_code" property="optionBranchDetailCode" jdbcType="VARCHAR" />
+    <result column="detailKeyCode" property="detailKeyCode" jdbcType="VARCHAR" />
     <result column="standard_available" property="standardAvailable" jdbcType="VARCHAR" />
     <result column="tuxedo_available" property="tuxedoAvailable" jdbcType="VARCHAR" />
     <result column="washable_available" property="washableAvailable" jdbcType="VARCHAR" />
@@ -94,6 +96,15 @@
     	and order_pattern = #{orderPattern}
     	and option_code = #{optionCode}
   </select>
+  
+  <select id="getStandardButtonsList" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code,
+  	option_branch_detail_name from mtb_option_branch_detail
+  	where item_code = #{arg0}
+  		and  order_pattern = #{arg1}
+  		and standard_available = '1'
+  </select>
+  
   <select id="getTuxedoButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
   	select DISTINCT option_branch_detail_code, option_branch_detail_name
     from mtb_option_branch_detail 
@@ -103,6 +114,15 @@
     	and tuxedo_available = '1'
     	and order_pattern = #{orderPattern}
   </select>
+  
+  <select id="getTuxedoButtonsList" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code,
+  	option_branch_detail_name from mtb_option_branch_detail
+  	where item_code = #{arg0}
+  		and  order_pattern = #{arg1}
+  		and tuxedo_available = '1'
+  </select>
+  
   <select id="getWashableButtons" resultMap="BaseResultMap" parameterType="java.lang.String">
   	select DISTINCT option_branch_detail_code, option_branch_detail_name
     from mtb_option_branch_detail 
@@ -111,6 +131,14 @@
     	and option_branch_code=#{optionBranchCode}
     	and washable_available = '1'
     	and order_pattern = #{orderPattern}
+  </select>
+  
+  <select id="getWashableButtonsList" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select option_branch_detail_code,
+  	option_branch_detail_name from mtb_option_branch_detail
+  	where item_code = #{arg0}
+  		and  order_pattern = #{arg1}
+  		and washable_available = '1'
   </select>
   
   <select id="getAllOption" resultMap="BaseResultMap" parameterType="java.lang.String">

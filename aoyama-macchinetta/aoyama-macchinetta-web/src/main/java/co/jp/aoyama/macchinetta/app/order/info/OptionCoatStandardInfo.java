@@ -10,56 +10,85 @@ public class OptionCoatStandardInfo implements Serializable {
 	private String coatModel;
 	
 	private Map<String, String> coatModelMap;
+	
+	private String coatModelRtPrice;
 
 	// ラペルデザイン
 	private String ocLapelDesign;
 
 	private Map<String, String> ocLapelDesignMap;
+	
+	private String ctLapelDesignRtPrice;
+	
+	// 袖仕様
+	private String ocSleeveSpec;
+
+	private Map<String, String> ocSleeveSpecMap;
+	
+	private String ctSleeveTypeRtPrice;
 
 	// 腰ポケット
 	private String ocWaistPkt;
 
 	private Map<String, String> ocWaistPktMap;
+	
+	private String ctWaistPktRtPrice;
 
 	// チェンジポケット
 	private String ocChangePkt;
 
 	private Map<String, String> ocChangePktMap;
+	
+	private String ctChgPktRtPrice;
 
 	// スランテッドポケット
 	private String ocSlantedPkt;
 
 	private Map<String, String> ocSlantedPktMap;
+	
+	private String ctSlantedPktRtPrice;
 
 	// ベント
 	private String ocVentSpec;
 
 	private Map<String, String> ocVentSpecMap;
+	
+	private String ctVentRtPrice;
 
 	// フロント釦数
 	private String ocFrontBtnCnt;
 
 	private Map<String, String> ocFrontBtnCntMap;
+	
+	private String ctFrtBtnRtPrice;
 
 	// 袖口
 	private String ocCuffSpec;
 
 	private Map<String, String> ocCuffSpecMap;
+	
+	private String ctCuffRtPrice;
 
 	// 袖釦
 	private String ocSleeveBtnType;
 
 	private Map<String, String> ocSleeveBtnTypeMap;
+	
+	private String ctSleeveBtnRtPrice;
 
 	// バックベルト
 	private String ocBackBelt;
 
 	private Map<String, String> ocBackBeltMap;
+	
+	private String ctBackBeltRtPrice;
 
 	// 襟吊
 	private String ocChainHange;
 
 	private Map<String, String> ocChainHangeMap;
+	
+	private String ctCollarHangRtPrice;
 
 	// 胴裏素材
 	private String ocBodyBackMate;
@@ -68,6 +97,8 @@ public class OptionCoatStandardInfo implements Serializable {
 	
 	//胴裏素材品番
 	private String ocBodyBackMateStkNo;
+	
+	private String ctInnerBodyClothRtPrice;
 
 	// 袖裏素材
 	private String ocCuffBackMate;
@@ -76,6 +107,8 @@ public class OptionCoatStandardInfo implements Serializable {
 	
 	//袖裏素材品番
 	private String ocCuffBackMateStkNo;
+	
+	private String ctInnerSleeveClothRtPrice;
 
 	// 釦素材
 	private String ocFrontBtnMate;
@@ -84,6 +117,32 @@ public class OptionCoatStandardInfo implements Serializable {
 	
 	//釦素材品番
 	private String ocFrontBtnMateStkNo;
+	
+	private String ctBtnMaterialRtPrice;
+
+	public String getCoatModel() {
+		return coatModel;
+	}
+
+	public void setCoatModel(String coatModel) {
+		this.coatModel = coatModel;
+	}
+
+	public Map<String, String> getCoatModelMap() {
+		return coatModelMap;
+	}
+
+	public void setCoatModelMap(Map<String, String> coatModelMap) {
+		this.coatModelMap = coatModelMap;
+	}
+
+	public String getCoatModelRtPrice() {
+		return coatModelRtPrice;
+	}
+
+	public void setCoatModelRtPrice(String coatModelRtPrice) {
+		this.coatModelRtPrice = coatModelRtPrice;
+	}
 
 	public String getOcLapelDesign() {
 		return ocLapelDesign;
@@ -99,6 +158,38 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcLapelDesignMap(Map<String, String> ocLapelDesignMap) {
 		this.ocLapelDesignMap = ocLapelDesignMap;
+	}
+
+	public String getCtLapelDesignRtPrice() {
+		return ctLapelDesignRtPrice;
+	}
+
+	public void setCtLapelDesignRtPrice(String ctLapelDesignRtPrice) {
+		this.ctLapelDesignRtPrice = ctLapelDesignRtPrice;
+	}
+
+	public String getOcSleeveSpec() {
+		return ocSleeveSpec;
+	}
+
+	public void setOcSleeveSpec(String ocSleeveSpec) {
+		this.ocSleeveSpec = ocSleeveSpec;
+	}
+
+	public Map<String, String> getOcSleeveSpecMap() {
+		return ocSleeveSpecMap;
+	}
+
+	public void setOcSleeveSpecMap(Map<String, String> ocSleeveSpecMap) {
+		this.ocSleeveSpecMap = ocSleeveSpecMap;
+	}
+
+	public String getCtSleeveTypeRtPrice() {
+		return ctSleeveTypeRtPrice;
+	}
+
+	public void setCtSleeveTypeRtPrice(String ctSleeveTypeRtPrice) {
+		this.ctSleeveTypeRtPrice = ctSleeveTypeRtPrice;
 	}
 
 	public String getOcWaistPkt() {
@@ -117,6 +208,14 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocWaistPktMap = ocWaistPktMap;
 	}
 
+	public String getCtWaistPktRtPrice() {
+		return ctWaistPktRtPrice;
+	}
+
+	public void setCtWaistPktRtPrice(String ctWaistPktRtPrice) {
+		this.ctWaistPktRtPrice = ctWaistPktRtPrice;
+	}
+
 	public String getOcChangePkt() {
 		return ocChangePkt;
 	}
@@ -131,6 +230,14 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcChangePktMap(Map<String, String> ocChangePktMap) {
 		this.ocChangePktMap = ocChangePktMap;
+	}
+
+	public String getCtChgPktRtPrice() {
+		return ctChgPktRtPrice;
+	}
+
+	public void setCtChgPktRtPrice(String ctChgPktRtPrice) {
+		this.ctChgPktRtPrice = ctChgPktRtPrice;
 	}
 
 	public String getOcSlantedPkt() {
@@ -149,6 +256,14 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocSlantedPktMap = ocSlantedPktMap;
 	}
 
+	public String getCtSlantedPktRtPrice() {
+		return ctSlantedPktRtPrice;
+	}
+
+	public void setCtSlantedPktRtPrice(String ctSlantedPktRtPrice) {
+		this.ctSlantedPktRtPrice = ctSlantedPktRtPrice;
+	}
+
 	public String getOcVentSpec() {
 		return ocVentSpec;
 	}
@@ -163,6 +278,14 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcVentSpecMap(Map<String, String> ocVentSpecMap) {
 		this.ocVentSpecMap = ocVentSpecMap;
+	}
+
+	public String getCtVentRtPrice() {
+		return ctVentRtPrice;
+	}
+
+	public void setCtVentRtPrice(String ctVentRtPrice) {
+		this.ctVentRtPrice = ctVentRtPrice;
 	}
 
 	public String getOcFrontBtnCnt() {
@@ -181,6 +304,14 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocFrontBtnCntMap = ocFrontBtnCntMap;
 	}
 
+	public String getCtFrtBtnRtPrice() {
+		return ctFrtBtnRtPrice;
+	}
+
+	public void setCtFrtBtnRtPrice(String ctFrtBtnRtPrice) {
+		this.ctFrtBtnRtPrice = ctFrtBtnRtPrice;
+	}
+
 	public String getOcCuffSpec() {
 		return ocCuffSpec;
 	}
@@ -195,6 +326,14 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcCuffSpecMap(Map<String, String> ocCuffSpecMap) {
 		this.ocCuffSpecMap = ocCuffSpecMap;
+	}
+
+	public String getCtCuffRtPrice() {
+		return ctCuffRtPrice;
+	}
+
+	public void setCtCuffRtPrice(String ctCuffRtPrice) {
+		this.ctCuffRtPrice = ctCuffRtPrice;
 	}
 
 	public String getOcSleeveBtnType() {
@@ -213,6 +352,14 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocSleeveBtnTypeMap = ocSleeveBtnTypeMap;
 	}
 
+	public String getCtSleeveBtnRtPrice() {
+		return ctSleeveBtnRtPrice;
+	}
+
+	public void setCtSleeveBtnRtPrice(String ctSleeveBtnRtPrice) {
+		this.ctSleeveBtnRtPrice = ctSleeveBtnRtPrice;
+	}
+
 	public String getOcBackBelt() {
 		return ocBackBelt;
 	}
@@ -227,6 +374,14 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcBackBeltMap(Map<String, String> ocBackBeltMap) {
 		this.ocBackBeltMap = ocBackBeltMap;
+	}
+
+	public String getCtBackBeltRtPrice() {
+		return ctBackBeltRtPrice;
+	}
+
+	public void setCtBackBeltRtPrice(String ctBackBeltRtPrice) {
+		this.ctBackBeltRtPrice = ctBackBeltRtPrice;
 	}
 
 	public String getOcChainHange() {
@@ -245,44 +400,12 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocChainHangeMap = ocChainHangeMap;
 	}
 
-	public String getOcBodyBackMateStkNo() {
-		return ocBodyBackMateStkNo;
+	public String getCtCollarHangRtPrice() {
+		return ctCollarHangRtPrice;
 	}
 
-	public void setOcBodyBackMateStkNo(String ocBodyBackMateStkNo) {
-		this.ocBodyBackMateStkNo = ocBodyBackMateStkNo;
-	}
-
-	public String getOcCuffBackMateStkNo() {
-		return ocCuffBackMateStkNo;
-	}
-
-	public void setOcCuffBackMateStkNo(String ocCuffBackMateStkNo) {
-		this.ocCuffBackMateStkNo = ocCuffBackMateStkNo;
-	}
-
-	public String getOcFrontBtnMateStkNo() {
-		return ocFrontBtnMateStkNo;
-	}
-
-	public void setOcFrontBtnMateStkNo(String ocFrontBtnMateStkNo) {
-		this.ocFrontBtnMateStkNo = ocFrontBtnMateStkNo;
-	}
-
-	public String getCoatModel() {
-		return coatModel;
-	}
-
-	public void setCoatModel(String coatModel) {
-		this.coatModel = coatModel;
-	}
-
-	public Map<String, String> getCoatModelMap() {
-		return coatModelMap;
-	}
-
-	public void setCoatModelMap(Map<String, String> coatModelMap) {
-		this.coatModelMap = coatModelMap;
+	public void setCtCollarHangRtPrice(String ctCollarHangRtPrice) {
+		this.ctCollarHangRtPrice = ctCollarHangRtPrice;
 	}
 
 	public String getOcBodyBackMate() {
@@ -301,6 +424,22 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocBodyBackMateMap = ocBodyBackMateMap;
 	}
 
+	public String getOcBodyBackMateStkNo() {
+		return ocBodyBackMateStkNo;
+	}
+
+	public void setOcBodyBackMateStkNo(String ocBodyBackMateStkNo) {
+		this.ocBodyBackMateStkNo = ocBodyBackMateStkNo;
+	}
+
+	public String getCtInnerBodyClothRtPrice() {
+		return ctInnerBodyClothRtPrice;
+	}
+
+	public void setCtInnerBodyClothRtPrice(String ctInnerBodyClothRtPrice) {
+		this.ctInnerBodyClothRtPrice = ctInnerBodyClothRtPrice;
+	}
+
 	public String getOcCuffBackMate() {
 		return ocCuffBackMate;
 	}
@@ -317,6 +456,22 @@ public class OptionCoatStandardInfo implements Serializable {
 		this.ocCuffBackMateMap = ocCuffBackMateMap;
 	}
 
+	public String getOcCuffBackMateStkNo() {
+		return ocCuffBackMateStkNo;
+	}
+
+	public void setOcCuffBackMateStkNo(String ocCuffBackMateStkNo) {
+		this.ocCuffBackMateStkNo = ocCuffBackMateStkNo;
+	}
+
+	public String getCtInnerSleeveClothRtPrice() {
+		return ctInnerSleeveClothRtPrice;
+	}
+
+	public void setCtInnerSleeveClothRtPrice(String ctInnerSleeveClothRtPrice) {
+		this.ctInnerSleeveClothRtPrice = ctInnerSleeveClothRtPrice;
+	}
+
 	public String getOcFrontBtnMate() {
 		return ocFrontBtnMate;
 	}
@@ -331,6 +486,22 @@ public class OptionCoatStandardInfo implements Serializable {
 
 	public void setOcFrontBtnMateMap(Map<String, String> ocFrontBtnMateMap) {
 		this.ocFrontBtnMateMap = ocFrontBtnMateMap;
+	}
+
+	public String getOcFrontBtnMateStkNo() {
+		return ocFrontBtnMateStkNo;
+	}
+
+	public void setOcFrontBtnMateStkNo(String ocFrontBtnMateStkNo) {
+		this.ocFrontBtnMateStkNo = ocFrontBtnMateStkNo;
+	}
+
+	public String getCtBtnMaterialRtPrice() {
+		return ctBtnMaterialRtPrice;
+	}
+
+	public void setCtBtnMaterialRtPrice(String ctBtnMaterialRtPrice) {
+		this.ctBtnMaterialRtPrice = ctBtnMaterialRtPrice;
 	}
 
 }

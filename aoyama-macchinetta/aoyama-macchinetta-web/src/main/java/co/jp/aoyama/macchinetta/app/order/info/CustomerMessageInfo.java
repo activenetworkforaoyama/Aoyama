@@ -21,6 +21,12 @@ public class CustomerMessageInfo implements Serializable{
 	//名簿納期
 	private String custDeliverDate;
 	
+	//納期短縮
+	private String custIsDeliverShortning;
+	
+	//早割
+	private String custIsEarlyDiscount;
+	
 	//お渡し日
 	private String custShopDeliveryDate;
 	
@@ -125,6 +131,22 @@ public class CustomerMessageInfo implements Serializable{
 
 	public void setCustShopDeliveryDate(String custShopDeliveryDate) {
 		this.custShopDeliveryDate = custShopDeliveryDate;
+	}
+
+	public String getCustIsDeliverShortning() {
+		return custIsDeliverShortning;
+	}
+
+	public void setCustIsDeliverShortning(String custIsDeliverShortning) {
+		this.custIsDeliverShortning = custIsDeliverShortning;
+	}
+
+	public String getCustIsEarlyDiscount() {
+		return custIsEarlyDiscount;
+	}
+
+	public void setCustIsEarlyDiscount(String custIsEarlyDiscount) {
+		this.custIsEarlyDiscount = custIsEarlyDiscount;
 	}
 	
 }

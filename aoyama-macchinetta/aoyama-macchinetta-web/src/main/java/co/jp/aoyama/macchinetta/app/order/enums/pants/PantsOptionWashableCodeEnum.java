@@ -44,7 +44,8 @@ public enum PantsOptionWashableCodeEnum {
 	PANTS_WASHABLE_OPTION_CODE37("00037","setWpShapeMemoryMap"),
 	PANTS_WASHABLE_OPTION_CODE38("00038","setWpBlisterMap"),
 	PANTS_WASHABLE_OPTION_CODE39("00039","setWpSideStripeMap"),
-	PANTS_WASHABLE_OPTION_CODE40("00040","setWpSideStripeWidthMap");
+	PANTS_WASHABLE_OPTION_CODE40("00040","setWpSideStripeWidthMap"),
+	PANTS_WASHABLE_OPTION_CODE41("00041","setWpThickMap");
 	
 	
 	private final String key;

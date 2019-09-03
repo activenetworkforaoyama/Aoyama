@@ -124,6 +124,9 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	// ボタン位置変更 フロント第2釦
 	private String osBtnPosChgFront2;
+	
+	//カジュアルヘムライン値
+	private String stCasualHemlineSize;
 
 	public String getOsChainModel() {
 		return osChainModel;
@@ -499,6 +502,14 @@ public class OptionShirtStandardInfo implements Serializable {
 
 	public void setOsBtnPosChgMap(Map<String, String> osBtnPosChgMap) {
 		this.osBtnPosChgMap = osBtnPosChgMap;
+	}
+
+	public String getStCasualHemlineSize() {
+		return stCasualHemlineSize;
+	}
+
+	public void setStCasualHemlineSize(String stCasualHemlineSize) {
+		this.stCasualHemlineSize = stCasualHemlineSize;
 	}
 	
 }

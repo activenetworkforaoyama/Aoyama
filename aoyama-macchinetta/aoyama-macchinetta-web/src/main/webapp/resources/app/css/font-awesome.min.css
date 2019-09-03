@@ -6,3 +6,9 @@
 .pull-left {
 	float: left
 }
+.fa-caret-square-o-down:before {
+  content: "\f150";
+}
+.fa-caret-square-o-up:before {
+  content: "\f151";
+}

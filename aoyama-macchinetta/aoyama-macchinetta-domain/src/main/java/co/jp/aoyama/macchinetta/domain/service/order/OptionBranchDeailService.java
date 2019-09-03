@@ -13,6 +13,12 @@ public interface OptionBranchDeailService {
 	List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern);
 
 	List<OptionBranchDetail> getAllOption(String orderPattern);
+	
+	List<OptionBranchDetail> getStandardButtonsList(String productItem,String orderPattern);
+	
+	List<OptionBranchDetail> getTuxedoButtonsList(String productItem,String orderPattern);
+	
+	List<OptionBranchDetail> getWashableButtonsList(String productItem,String orderPattern);
 
 
 }

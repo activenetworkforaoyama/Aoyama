@@ -85,7 +85,7 @@
 						<div class="row form-group">
 							<div class="col col-md-6">
 								<button type="button" id="clearButton" class="btn btn-danger btn-block">
-									<i class="fa fa-trash-o"></i>&nbsp;クリア</button>
+									<i class="fa fa-trash-alt"></i>&nbsp;クリア</button>
 							</div>
 							<div class="col col-md-6">
 								<button type="button" id="selectButton" class="btn btn-primary btn-block">
@@ -127,7 +127,7 @@
 							<div class="row form-group">
 								<div class="col col-md-6">
 									<button id="cancelButton" type="button" class="btn btn-danger btn-block">
-										<i class="fa fa-trash-o"></i> キャンセル</button>
+										<i class="fa fa-trash-alt"></i> キャンセル</button>
 								</div>
 								<div class="col col-md-6">
 									<button id="updateButton" type="button" class="btn btn-primary btn-block">

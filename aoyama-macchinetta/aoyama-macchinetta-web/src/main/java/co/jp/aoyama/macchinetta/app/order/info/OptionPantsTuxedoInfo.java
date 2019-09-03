@@ -5,7 +5,12 @@ import java.util.Map;
 
 public class OptionPantsTuxedoInfo implements Serializable{
 	private static final long serialVersionUID = -4505963757793347479L;
-
+	
+	//PANTSモデル
+	private String tpPantsModel;
+	
+	private Map<String,String> tpPantsModelMap;
+	
 	//タック
     private String tpTack;
     
@@ -15,18 +20,22 @@ public class OptionPantsTuxedoInfo implements Serializable{
     private String tpKneeBack;
     
     private Map<String,String> tpKneeBackMap;
+    
     //膝裏素材
     private String tpKneeBackMate;
 
     private Map<String,String> tpKneeBackMateMap;
+    
     //フロント仕様
   	private String tpFrontSpec;
       
     private Map<String,String> tpFrontSpecMap;
+    
     //パンチェリーナ
     private String tpPancherina;
     
     private Map<String,String> tpPancherinaMap;
+    
     //アジャスター仕様
     private String tpAdjuster;
     
@@ -92,17 +101,26 @@ public class OptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpDoubleWideMap;
     
-    //AMFステッチ
-    private String tpStitch;
-    
-    private Map<String,String> tpStitchMap;
+    // ステッチ種類
+ 	private String tpStitch;
+
+ 	private Map<String, String> tpStitchMap;
+ 	
+    // ステッチ箇所変更
+ 	private String tpStitchModify;
+ 	
+ 	// ダブルステッチ変更
+ 	private String tpDStitchPlace;
+ 	
+ 	// AMF色指定
+ 	private String tpAmfColor;
     
     //ボタンホール色指定
     private String tpBhColor;
     
     private Map<String,String> tpBhColorMap;
     
-    //ボタンホール色指定糸色
+    //ボタンホール色指定糸色,ボタンホール色指定糸色(プルダウン)
     private String tpBhColorPlaceAll;
     
     private Map<String,String> tpBhColorPlaceAllMap;
@@ -132,7 +150,7 @@ public class OptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpByColorMap;
     
-    //ボタン付け糸指定糸色
+    //ボタン付け糸指定糸色,ボタン付け糸指定糸色(プルダウン)
     private String tpByColorPlaceAll;
     
     private Map<String,String> tpByColorPlaceAllMap;
@@ -162,6 +180,9 @@ public class OptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpButtonMap;
     
+    //釦素材品番
+    private String tpBtnMateStkNo;
+    
     //サスペンダー釦
     private String tpSuspenderBtn;
     
@@ -172,15 +193,15 @@ public class OptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpEightMap;
     
+    //シック（股補強）
+    private String tpThick;
+    
+    private Map<String,String> tpThickMap;
+    
     //形状記憶
     private String tpShapeMemory; 
     
     private Map<String,String> tpShapeMemoryMap;
-    
-    //靴ずれ
-    private String tpBlister;
-    
-    private Map<String,String> tpBlisterMap;
     
     //側章
     private String tpSideStripe;
@@ -191,6 +212,22 @@ public class OptionPantsTuxedoInfo implements Serializable{
     private String tpSideStripeWidth;
     
     private Map<String,String> tpSideStripeWidthMap;
+
+	public String getTpPantsModel() {
+		return tpPantsModel;
+	}
+
+	public void setTpPantsModel(String tpPantsModel) {
+		this.tpPantsModel = tpPantsModel;
+	}
+
+	public Map<String, String> getTpPantsModelMap() {
+		return tpPantsModelMap;
+	}
+
+	public void setTpPantsModelMap(Map<String, String> tpPantsModelMap) {
+		this.tpPantsModelMap = tpPantsModelMap;
+	}
 
 	public String getTpTack() {
 		return tpTack;
@@ -496,6 +533,30 @@ public class OptionPantsTuxedoInfo implements Serializable{
 		this.tpStitchMap = tpStitchMap;
 	}
 
+	public String getTpStitchModify() {
+		return tpStitchModify;
+	}
+
+	public void setTpStitchModify(String tpStitchModify) {
+		this.tpStitchModify = tpStitchModify;
+	}
+
+	public String getTpDStitchPlace() {
+		return tpDStitchPlace;
+	}
+
+	public void setTpDStitchPlace(String tpDStitchPlace) {
+		this.tpDStitchPlace = tpDStitchPlace;
+	}
+
+	public String getTpAmfColor() {
+		return tpAmfColor;
+	}
+
+	public void setTpAmfColor(String tpAmfColor) {
+		this.tpAmfColor = tpAmfColor;
+	}
+
 	public String getTpBhColor() {
 		return tpBhColor;
 	}
@@ -688,6 +749,14 @@ public class OptionPantsTuxedoInfo implements Serializable{
 		this.tpButtonMap = tpButtonMap;
 	}
 
+	public String getTpBtnMateStkNo() {
+		return tpBtnMateStkNo;
+	}
+
+	public void setTpBtnMateStkNo(String tpBtnMateStkNo) {
+		this.tpBtnMateStkNo = tpBtnMateStkNo;
+	}
+
 	public String getTpSuspenderBtn() {
 		return tpSuspenderBtn;
 	}
@@ -720,6 +789,22 @@ public class OptionPantsTuxedoInfo implements Serializable{
 		this.tpEightMap = tpEightMap;
 	}
 
+	public String getTpThick() {
+		return tpThick;
+	}
+
+	public void setTpThick(String tpThick) {
+		this.tpThick = tpThick;
+	}
+
+	public Map<String, String> getTpThickMap() {
+		return tpThickMap;
+	}
+
+	public void setTpThickMap(Map<String, String> tpThickMap) {
+		this.tpThickMap = tpThickMap;
+	}
+
 	public String getTpShapeMemory() {
 		return tpShapeMemory;
 	}
@@ -734,22 +819,6 @@ public class OptionPantsTuxedoInfo implements Serializable{
 
 	public void setTpShapeMemoryMap(Map<String, String> tpShapeMemoryMap) {
 		this.tpShapeMemoryMap = tpShapeMemoryMap;
-	}
-
-	public String getTpBlister() {
-		return tpBlister;
-	}
-
-	public void setTpBlister(String tpBlister) {
-		this.tpBlister = tpBlister;
-	}
-
-	public Map<String, String> getTpBlisterMap() {
-		return tpBlisterMap;
-	}
-
-	public void setTpBlisterMap(Map<String, String> tpBlisterMap) {
-		this.tpBlisterMap = tpBlisterMap;
 	}
 
 	public String getTpSideStripe() {
@@ -783,5 +852,5 @@ public class OptionPantsTuxedoInfo implements Serializable{
 	public void setTpSideStripeWidthMap(Map<String, String> tpSideStripeWidthMap) {
 		this.tpSideStripeWidthMap = tpSideStripeWidthMap;
 	}
-    
 }
+	

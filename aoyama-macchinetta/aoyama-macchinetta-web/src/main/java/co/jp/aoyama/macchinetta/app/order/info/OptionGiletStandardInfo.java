@@ -3,92 +3,129 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
-public class OptionGiletStandardInfo implements Serializable{
+public class OptionGiletStandardInfo implements Serializable {
 	private static final long serialVersionUID = -6022359138897696244L;
-	
-	//3Piece
-	private Map<String,String> threePieceMap;
-	
-	//GILETモデル
+
+	// 3Piece
+	private Map<String, String> threePieceMap;
+
+	// GILETモデル
 	private String ogGiletModel;
-	
-	private Map<String,String> ogGiletModelMap;
-	
-	//胸ポケット
+
+	private Map<String, String> ogGiletModelMap;
+
+	// 胸ポケット
 	private String ogBreastPkt;
+
+	private Map<String, String> ogBreastPktMap;
 	
-	private Map<String,String> ogBreastPktMap;
+	private String glBreastPktRtPrice;
 	
-	//腰ポケット
+	// 腰ポケット
 	private String ogWaistPkt;
+
+	private Map<String, String> ogWaistPktMap;
 	
-	private Map<String,String> ogWaistPktMap;
-	
-	//腰ポケット形状
+	private String glWaistPktRtPrice;
+
+	// 腰ポケット形状
 	private String ogWaistPktSpec;
+
+	private Map<String, String> ogWaistPktSpecMap;
 	
-	private Map<String,String> ogWaistPktSpecMap;
-	
-	//AMFステッチ
+	private String glWaistPktShapeRtPrice;
+
+	// AMFステッチ
 	private String ogStitch;
+
+	private Map<String, String> ogStitchMap;
 	
-	private Map<String,String> ogStitchMap;
-	
-	//ステッチ箇所変更
+	private String glAmfStitchRtPrice;
+
+	// ステッチ箇所変更
 	private String ogStitchModify;
+
+	private Map<String, String> ogStitchModifyMap;
+
+	// ステッチ箇所変更箇所
+	private String ogStitchModifyPlace1;
+	private String ogStitchModifyPlace2;
+	private String ogStitchModifyPlace3;
+
+	private Map<String, String> ogStitchModifyPlaceMap;
 	
-	private Map<String,String> ogStitchModifyMap;
+	private String glStitchPlcRtPrice;
+
+	// ダブルステッチ変更
+	private String ogDStitchModify;
+
+	private Map<String, String> ogDStitchModifyMap;
 	
-	//ステッチ箇所変更箇所
-	private String ogStitchModifyPlace;
+	// ダブルステッチ変更箇所
+	private String ogDStitchModifyPlace1;
+	private String ogDStitchModifyPlace2;
+	private String ogDStitchModifyPlace3;
+
+	private Map<String, String> ogDStitchModifyPlaceMap;
 	
-	private Map<String,String> ogStitchModifyPlaceMap;
-	
-	//AMF色指定
+	private String glDblstitchPlcRtPrice;
+
+	// AMF色指定
 	private String ogAmfColor;
+
+	private Map<String, String> ogAmfColorMap;
 	
-	private Map<String,String> ogAmfColorMap;
+	private String glAmfColorRtPrice;
+
+	// AMF糸色
+	private String ogAmfColorPlaceAll;
+
+	private Map<String, String> ogAmfColorPlaceAllMap;
+
+	// AMF色指定箇所
+	private String ogAmfColorPlace1;
+	private String ogAmfColorPlace2;
+	private String ogAmfColorPlace3;
+
+	private Map<String, String> ogAmfColorPlaceMap;
+
+	// AMF糸色 襟・ラペル・フロント
+	private String ogAmfColor1;
+
+	// AMF糸色 胸ポケット
+	private String ogAmfColor2;
+
+	// AMF糸色 腰ポケット
+	private String ogAmfColor3;
+
+	// AMF色 key&value
+	private Map<String, String> ogAmfColorsMap;
+
+	// ボタンホール色指定
+	private String ogBhColor;
+
+	private Map<String, String> ogBhColorMap;
 	
-	//AMF糸色 
-    private String ogAmfColorPlaceAll;
-    
-    private Map<String,String> ogAmfColorPlaceAllMap;
-    
-    //AMF色指定箇所
-    private String ogAmfColorPlace;
-    
-    private Map<String,String> ogAmfColorPlaceMap;
-    
-    //AMF糸色  襟・ラペル・フロント
-    private String ogAmfColor1;
-    
-    //AMF糸色  胸ポケット
-    private String ogAmfColor2;
-    
-    //AMF糸色  腰ポケット
-    private String ogAmfColor3;
-    
-    //AMF色 key&value
-    private Map<String,String> ogAmfColorsMap;
-    
-    //ボタンホール色指定   
-    private String ogBhColor;
-    
-    private Map<String,String> ogBhColorMap;
-    
-    //ボタンホール色指定   糸色
-    private String ogBhColorPlaceAll;
-    
-    private Map<String,String> ogBhColorPlaceAllMap;
-    
-    //ボタンホール色指定   箇所
-    private String ogBhColorPlace;
-    
-    private Map<String,String> ogBhColorPlaceMap;
-    
-    //ボタンホール色指定   フロント1
-    private String ogBhColor1;
-    
+	private String glBtnholeColorRtPrice;
+	
+	// ボタンホール色指定 糸色
+	private String ogBhColorPlaceAll;
+
+	private Map<String, String> ogBhColorPlaceAllMap;
+
+	// ボタンホール色指定 箇所
+	private String ogBhColorPlace1;
+	private String ogBhColorPlace2;
+	private String ogBhColorPlace3;
+	private String ogBhColorPlace4;
+	private String ogBhColorPlace5;
+	private String ogBhColorPlace6;
+
+	private Map<String, String> ogBhColorPlaceMap;
+
+	// ボタンホール色指定 フロント1
+	private String ogBhColor1;
+
 	// ボタンホール色指定 フロント2
 	private String ogBhColor2;
 
@@ -103,14 +140,16 @@ public class OptionGiletStandardInfo implements Serializable{
 
 	// ボタンホール色指定 フロント6
 	private String ogBhColor6;
-	
-	//ボタンホール色指定色 key&value
-    private Map<String,String> ogBhColorsMap;
-	
+
+	// ボタンホール色指定色 key&value
+	private Map<String, String> ogBhColorsMap;
+
 	// ボタン付け糸指定
 	private String ogByColor;
 
 	private Map<String, String> ogByColorMap;
+	
+	private String glBtnthreadColorRtPrice;
 
 	// ボタンホール色指定 糸色
 	private String ogByColorPlaceAll;
@@ -118,7 +157,16 @@ public class OptionGiletStandardInfo implements Serializable{
 	private Map<String, String> ogByColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
-	private String ogByColorPlace;
+	private String ogByColorPlace1;
+	private String ogByColorPlace2;
+	private String ogByColorPlace3;
+	private String ogByColorPlace4;
+	private String ogByColorPlace5;
+	private String ogByColorPlace6;
+	private String ogByColorPlace7;
+	private String ogByColorPlace8;
+	private String ogByColorPlace9;
+	private String ogByColorPlace10;
 
 	private Map<String, String> ogByColorPlaceMap;
 
@@ -151,45 +199,55 @@ public class OptionGiletStandardInfo implements Serializable{
 
 	// ボタンホール色指定 フロント上前4
 	private String ogByColor10;
-	
-	//ボタン付け糸指定糸色 key&value
-    private Map<String,String> ogByColorsMap;
-    
-    //背裏地素材
-    private String ogBackLiningMate;
+
+	// ボタン付け糸指定糸色 key&value
+	private Map<String, String> ogByColorsMap;
+
+	// 背裏地素材
+	private String ogBackLiningMate;
 
 	private Map<String, String> ogBackLiningMateMap;
 	
-	//背裏地素材品番
+	// 背裏地素材品番
 	private String ogBackLiningMateStkNo;
 	
-	//内側裏地素材
+	private String glBackClothRtPrice;
+
+	// 内側裏地素材
 	private String ogInsideLiningMate;
 
 	private Map<String, String> ogInsideLiningMateMap;
-	
-	//内側裏地素材品番
+
+	// 内側裏地素材品番
 	private String ogInsideLiningMateStkNo;
 	
-	//フロント釦
+	private String glInnnerClothRtPrice;
+
+	// フロント釦
 	private String ogFrontBtnMate;
 
 	private Map<String, String> ogFrontBtnMateMap;
-	
-	//フロント釦品番
-	private String ogFrontBtnMateStkNo;
 
-	//バックベルト
+	// フロント釦品番
+	private String ogFrontBtnMateStkNo;
+	
+	private String glFrtBtnRtPrice;
+
+	// バックベルト
 	private String ogBackBelt;
 
 	private Map<String, String> ogBackBeltMap;
 	
-	//ウォッチチェーン
+	private String glBackBeltRtPrice;
+	
+	// ウォッチチェーン
 	private String ogWatchChain;
 
 	private Map<String, String> ogWatchChainMap;
 	
-	//品番Map
+	private String glWatchChainRtPrice;
+
+	// 品番Map
 	private Map<String, String> giletMateMap;
 
 	public Map<String, String> getGiletMateMap() {
@@ -280,14 +338,6 @@ public class OptionGiletStandardInfo implements Serializable{
 		this.ogStitchModifyMap = ogStitchModifyMap;
 	}
 
-	public String getOgStitchModifyPlace() {
-		return ogStitchModifyPlace;
-	}
-
-	public void setOgStitchModifyPlace(String ogStitchModifyPlace) {
-		this.ogStitchModifyPlace = ogStitchModifyPlace;
-	}
-
 	public Map<String, String> getOgStitchModifyPlaceMap() {
 		return ogStitchModifyPlaceMap;
 	}
@@ -326,14 +376,6 @@ public class OptionGiletStandardInfo implements Serializable{
 
 	public void setOgAmfColorPlaceAllMap(Map<String, String> ogAmfColorPlaceAllMap) {
 		this.ogAmfColorPlaceAllMap = ogAmfColorPlaceAllMap;
-	}
-
-	public String getOgAmfColorPlace() {
-		return ogAmfColorPlace;
-	}
-
-	public void setOgAmfColorPlace(String ogAmfColorPlace) {
-		this.ogAmfColorPlace = ogAmfColorPlace;
 	}
 
 	public Map<String, String> getOgAmfColorPlaceMap() {
@@ -406,14 +448,6 @@ public class OptionGiletStandardInfo implements Serializable{
 
 	public void setOgBhColorPlaceAllMap(Map<String, String> ogBhColorPlaceAllMap) {
 		this.ogBhColorPlaceAllMap = ogBhColorPlaceAllMap;
-	}
-
-	public String getOgBhColorPlace() {
-		return ogBhColorPlace;
-	}
-
-	public void setOgBhColorPlace(String ogBhColorPlace) {
-		this.ogBhColorPlace = ogBhColorPlace;
 	}
 
 	public Map<String, String> getOgBhColorPlaceMap() {
@@ -510,14 +544,6 @@ public class OptionGiletStandardInfo implements Serializable{
 
 	public void setOgByColorPlaceAllMap(Map<String, String> ogByColorPlaceAllMap) {
 		this.ogByColorPlaceAllMap = ogByColorPlaceAllMap;
-	}
-
-	public String getOgByColorPlace() {
-		return ogByColorPlace;
-	}
-
-	public void setOgByColorPlace(String ogByColorPlace) {
-		this.ogByColorPlace = ogByColorPlace;
 	}
 
 	public Map<String, String> getOgByColorPlaceMap() {
@@ -743,5 +769,343 @@ public class OptionGiletStandardInfo implements Serializable{
 	public void setThreePieceMap(Map<String, String> threePieceMap) {
 		this.threePieceMap = threePieceMap;
 	}
+
+	public String getOgDStitchModify() {
+		return ogDStitchModify;
+	}
+
+	public void setOgDStitchModify(String ogDStitchModify) {
+		this.ogDStitchModify = ogDStitchModify;
+	}
+
+	public Map<String, String> getOgDStitchModifyMap() {
+		return ogDStitchModifyMap;
+	}
+
+	public void setOgDStitchModifyMap(Map<String, String> ogDStitchModifyMap) {
+		this.ogDStitchModifyMap = ogDStitchModifyMap;
+	}
+
+	public Map<String, String> getOgDStitchModifyPlaceMap() {
+		return ogDStitchModifyPlaceMap;
+	}
+
+	public void setOgDStitchModifyPlaceMap(Map<String, String> ogDStitchModifyPlaceMap) {
+		this.ogDStitchModifyPlaceMap = ogDStitchModifyPlaceMap;
+	}
 	
+	
+
+	public String getGlBreastPktRtPrice() {
+		return glBreastPktRtPrice;
+	}
+
+	public void setGlBreastPktRtPrice(String glBreastPktRtPrice) {
+		this.glBreastPktRtPrice = glBreastPktRtPrice;
+	}
+
+	public String getGlWaistPktRtPrice() {
+		return glWaistPktRtPrice;
+	}
+
+	public void setGlWaistPktRtPrice(String glWaistPktRtPrice) {
+		this.glWaistPktRtPrice = glWaistPktRtPrice;
+	}
+
+	public String getGlWaistPktShapeRtPrice() {
+		return glWaistPktShapeRtPrice;
+	}
+
+	public void setGlWaistPktShapeRtPrice(String glWaistPktShapeRtPrice) {
+		this.glWaistPktShapeRtPrice = glWaistPktShapeRtPrice;
+	}
+
+	public String getGlAmfStitchRtPrice() {
+		return glAmfStitchRtPrice;
+	}
+
+	public void setGlAmfStitchRtPrice(String glAmfStitchRtPrice) {
+		this.glAmfStitchRtPrice = glAmfStitchRtPrice;
+	}
+
+	public String getGlStitchPlcRtPrice() {
+		return glStitchPlcRtPrice;
+	}
+
+	public void setGlStitchPlcRtPrice(String glStitchPlcRtPrice) {
+		this.glStitchPlcRtPrice = glStitchPlcRtPrice;
+	}
+
+	public String getGlDblstitchPlcRtPrice() {
+		return glDblstitchPlcRtPrice;
+	}
+
+	public void setGlDblstitchPlcRtPrice(String glDblstitchPlcRtPrice) {
+		this.glDblstitchPlcRtPrice = glDblstitchPlcRtPrice;
+	}
+
+	public String getGlAmfColorRtPrice() {
+		return glAmfColorRtPrice;
+	}
+
+	public void setGlAmfColorRtPrice(String glAmfColorRtPrice) {
+		this.glAmfColorRtPrice = glAmfColorRtPrice;
+	}
+
+	public String getGlBtnholeColorRtPrice() {
+		return glBtnholeColorRtPrice;
+	}
+
+	public void setGlBtnholeColorRtPrice(String glBtnholeColorRtPrice) {
+		this.glBtnholeColorRtPrice = glBtnholeColorRtPrice;
+	}
+
+	public String getGlBtnthreadColorRtPrice() {
+		return glBtnthreadColorRtPrice;
+	}
+
+	public void setGlBtnthreadColorRtPrice(String glBtnthreadColorRtPrice) {
+		this.glBtnthreadColorRtPrice = glBtnthreadColorRtPrice;
+	}
+
+	public String getGlBackClothRtPrice() {
+		return glBackClothRtPrice;
+	}
+
+	public void setGlBackClothRtPrice(String glBackClothRtPrice) {
+		this.glBackClothRtPrice = glBackClothRtPrice;
+	}
+
+	public String getGlInnnerClothRtPrice() {
+		return glInnnerClothRtPrice;
+	}
+
+	public void setGlInnnerClothRtPrice(String glInnnerClothRtPrice) {
+		this.glInnnerClothRtPrice = glInnnerClothRtPrice;
+	}
+
+	public String getGlFrtBtnRtPrice() {
+		return glFrtBtnRtPrice;
+	}
+
+	public void setGlFrtBtnRtPrice(String glFrtBtnRtPrice) {
+		this.glFrtBtnRtPrice = glFrtBtnRtPrice;
+	}
+
+	public String getGlBackBeltRtPrice() {
+		return glBackBeltRtPrice;
+	}
+
+	public void setGlBackBeltRtPrice(String glBackBeltRtPrice) {
+		this.glBackBeltRtPrice = glBackBeltRtPrice;
+	}
+
+	public String getGlWatchChainRtPrice() {
+		return glWatchChainRtPrice;
+	}
+
+	public void setGlWatchChainRtPrice(String glWatchChainRtPrice) {
+		this.glWatchChainRtPrice = glWatchChainRtPrice;
+	}
+
+	public String getOgStitchModifyPlace1() {
+		return ogStitchModifyPlace1;
+	}
+
+	public void setOgStitchModifyPlace1(String ogStitchModifyPlace1) {
+		this.ogStitchModifyPlace1 = ogStitchModifyPlace1;
+	}
+
+	public String getOgStitchModifyPlace2() {
+		return ogStitchModifyPlace2;
+	}
+
+	public void setOgStitchModifyPlace2(String ogStitchModifyPlace2) {
+		this.ogStitchModifyPlace2 = ogStitchModifyPlace2;
+	}
+
+	public String getOgStitchModifyPlace3() {
+		return ogStitchModifyPlace3;
+	}
+
+	public void setOgStitchModifyPlace3(String ogStitchModifyPlace3) {
+		this.ogStitchModifyPlace3 = ogStitchModifyPlace3;
+	}
+
+	public String getOgDStitchModifyPlace1() {
+		return ogDStitchModifyPlace1;
+	}
+
+	public void setOgDStitchModifyPlace1(String ogDStitchModifyPlace1) {
+		this.ogDStitchModifyPlace1 = ogDStitchModifyPlace1;
+	}
+
+	public String getOgDStitchModifyPlace2() {
+		return ogDStitchModifyPlace2;
+	}
+
+	public void setOgDStitchModifyPlace2(String ogDStitchModifyPlace2) {
+		this.ogDStitchModifyPlace2 = ogDStitchModifyPlace2;
+	}
+
+	public String getOgDStitchModifyPlace3() {
+		return ogDStitchModifyPlace3;
+	}
+
+	public void setOgDStitchModifyPlace3(String ogDStitchModifyPlace3) {
+		this.ogDStitchModifyPlace3 = ogDStitchModifyPlace3;
+	}
+
+	public String getOgAmfColorPlace1() {
+		return ogAmfColorPlace1;
+	}
+
+	public void setOgAmfColorPlace1(String ogAmfColorPlace1) {
+		this.ogAmfColorPlace1 = ogAmfColorPlace1;
+	}
+
+	public String getOgAmfColorPlace2() {
+		return ogAmfColorPlace2;
+	}
+
+	public void setOgAmfColorPlace2(String ogAmfColorPlace2) {
+		this.ogAmfColorPlace2 = ogAmfColorPlace2;
+	}
+
+	public String getOgAmfColorPlace3() {
+		return ogAmfColorPlace3;
+	}
+
+	public void setOgAmfColorPlace3(String ogAmfColorPlace3) {
+		this.ogAmfColorPlace3 = ogAmfColorPlace3;
+	}
+
+	public String getOgBhColorPlace1() {
+		return ogBhColorPlace1;
+	}
+
+	public void setOgBhColorPlace1(String ogBhColorPlace1) {
+		this.ogBhColorPlace1 = ogBhColorPlace1;
+	}
+
+	public String getOgBhColorPlace2() {
+		return ogBhColorPlace2;
+	}
+
+	public void setOgBhColorPlace2(String ogBhColorPlace2) {
+		this.ogBhColorPlace2 = ogBhColorPlace2;
+	}
+
+	public String getOgBhColorPlace3() {
+		return ogBhColorPlace3;
+	}
+
+	public void setOgBhColorPlace3(String ogBhColorPlace3) {
+		this.ogBhColorPlace3 = ogBhColorPlace3;
+	}
+
+	public String getOgBhColorPlace4() {
+		return ogBhColorPlace4;
+	}
+
+	public void setOgBhColorPlace4(String ogBhColorPlace4) {
+		this.ogBhColorPlace4 = ogBhColorPlace4;
+	}
+
+	public String getOgBhColorPlace5() {
+		return ogBhColorPlace5;
+	}
+
+	public void setOgBhColorPlace5(String ogBhColorPlace5) {
+		this.ogBhColorPlace5 = ogBhColorPlace5;
+	}
+
+	public String getOgBhColorPlace6() {
+		return ogBhColorPlace6;
+	}
+
+	public void setOgBhColorPlace6(String ogBhColorPlace6) {
+		this.ogBhColorPlace6 = ogBhColorPlace6;
+	}
+
+	public String getOgByColorPlace1() {
+		return ogByColorPlace1;
+	}
+
+	public void setOgByColorPlace1(String ogByColorPlace1) {
+		this.ogByColorPlace1 = ogByColorPlace1;
+	}
+
+	public String getOgByColorPlace2() {
+		return ogByColorPlace2;
+	}
+
+	public void setOgByColorPlace2(String ogByColorPlace2) {
+		this.ogByColorPlace2 = ogByColorPlace2;
+	}
+
+	public String getOgByColorPlace3() {
+		return ogByColorPlace3;
+	}
+
+	public void setOgByColorPlace3(String ogByColorPlace3) {
+		this.ogByColorPlace3 = ogByColorPlace3;
+	}
+
+	public String getOgByColorPlace4() {
+		return ogByColorPlace4;
+	}
+
+	public void setOgByColorPlace4(String ogByColorPlace4) {
+		this.ogByColorPlace4 = ogByColorPlace4;
+	}
+
+	public String getOgByColorPlace5() {
+		return ogByColorPlace5;
+	}
+
+	public void setOgByColorPlace5(String ogByColorPlace5) {
+		this.ogByColorPlace5 = ogByColorPlace5;
+	}
+
+	public String getOgByColorPlace6() {
+		return ogByColorPlace6;
+	}
+
+	public void setOgByColorPlace6(String ogByColorPlace6) {
+		this.ogByColorPlace6 = ogByColorPlace6;
+	}
+
+	public String getOgByColorPlace7() {
+		return ogByColorPlace7;
+	}
+
+	public void setOgByColorPlace7(String ogByColorPlace7) {
+		this.ogByColorPlace7 = ogByColorPlace7;
+	}
+
+	public String getOgByColorPlace8() {
+		return ogByColorPlace8;
+	}
+
+	public void setOgByColorPlace8(String ogByColorPlace8) {
+		this.ogByColorPlace8 = ogByColorPlace8;
+	}
+
+	public String getOgByColorPlace9() {
+		return ogByColorPlace9;
+	}
+
+	public void setOgByColorPlace9(String ogByColorPlace9) {
+		this.ogByColorPlace9 = ogByColorPlace9;
+	}
+
+	public String getOgByColorPlace10() {
+		return ogByColorPlace10;
+	}
+
+	public void setOgByColorPlace10(String ogByColorPlace10) {
+		this.ogByColorPlace10 = ogByColorPlace10;
+	}
+
 }

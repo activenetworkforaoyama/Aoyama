@@ -512,7 +512,7 @@
         <div class="row">
             <div class="col">　</div>
             <div class="col col-md-4">
-                <button onclick="reset();" id="clear_button" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i>&nbsp;クリア</button>
+                <button onclick="reset();" id="clear_button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i>&nbsp;クリア</button>
             </div>
             <div class="col col-md-4">
                 <button id="searchButton" onclick="searchOrder();" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i>&nbsp;検索</button>
@@ -531,7 +531,7 @@
         </div>
     </div>
     <!-- 表示変更部 End -->
-
+    
 	<!-- 検索結果のdiv -->
 	<div id="orderListDiv" style="display:none;">
 		<div id="AccountOrConfirm" style="visibility:hidden;">
@@ -604,6 +604,7 @@
     <!--<script src="${pageContext.request.contextPath}/resources/app/js/default.js"></script>-->
     <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
 
 <script>
 var dataView;
@@ -629,6 +630,14 @@ var makerFactoryStatusMap = new Map();
 makerFactoryStatusMap.set("F0","生産開始前");
 makerFactoryStatusMap.set("F1","生産開始");
 makerFactoryStatusMap.set("F2","生産終了");
+
+//工場自動連携ステータスのMap
+var send2factoryStatusMap = new Map();
+send2factoryStatusMap.set("0","送信前");
+send2factoryStatusMap.set("1","送信済");
+send2factoryStatusMap.set("2","再送信要");
+send2factoryStatusMap.set("3","送信失敗");
+send2factoryStatusMap.set("4","送信失敗");
 
 
 var itemMap = new Map();
@@ -782,6 +791,8 @@ function reset(){
 
 //検索
 function searchOrder(){
+	$('#orderListDiv').hide();
+	$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 	var winWidth = 0;
 	if (window.innerWidth){
 		winWidth = window.innerWidth;
@@ -813,9 +824,9 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
-					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 200},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"}
 				    ];
@@ -828,9 +839,9 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
-					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 200},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'goto_order', name: 'オーダー', field: 'goto_order', minWidth: 80, formatter: mineFormatter}
@@ -848,10 +859,10 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'ws_price', name: '下代', field: "ws_price", cssClass: "cell-money", formatter: mineFormatter, sortable: true,minWidth: 110, cssClass: "cell-money"},
-					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
-					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'cust_cd', name: '店舗名', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 200},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"}
 				    ];
@@ -866,10 +877,10 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'ws_price', name: '下代', field: "ws_price", cssClass: "cell-money", formatter: mineFormatter, sortable: true, minWidth: 110, cssClass: "cell-money"},
-					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
-					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'cust_cd', name: '店舗名', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 200},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"}
 				    ];
@@ -882,10 +893,10 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", minWidth: 150, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
 					    {id: 'ws_price', name: '下代', field: "ws_price", minWidth: 110, cssClass: "cell-money", formatter: mineFormatter, sortable: true, cssClass: "cell-money"},
-					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", minWidth: 200, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
-					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", minWidth: 150, formatter: mineFormatter, sortable: true},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', minWidth: 120, sortable: true, cssClass: "cell-other"},
+					    {id: 'cust_cd', name: '店舗名', field: "cust_cd", minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", minWidth: 150, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", minWidth: 200, formatter: mineFormatter, sortable: true},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', minWidth: 120, sortable: true, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', minWidth: 120, sortable: true, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', minWidth: 120, sortable: true, cssClass: "cell-other"}
 				    ];
@@ -902,10 +913,8 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'ws_price', name: '下代', field: "ws_price", cssClass: "cell-money", formatter: mineFormatter, sortable: true, minWidth: 110, cssClass: "cell-money"},
-					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
 					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"}
 				    ];
@@ -918,10 +927,8 @@ function searchOrder(){
 					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
 					    {id: 'ws_price', name: '下代', field: "ws_price", cssClass: "cell-money", formatter: mineFormatter, sortable: true, minWidth: 110, cssClass: "cell-money"},
-					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
 					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-					    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"}
 				    ];
@@ -936,10 +943,8 @@ function searchOrder(){
 				    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 				    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
 				    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
-				    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
-				    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 200, cssClass: "cell-other"},
 				    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 150},
-				    {id: 'product_orderd_date', name: '承り日時', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+				    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 				    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
 				    {id: 'updated_at', name: '更新日時', field: 'updated_at', sortable: true, minWidth: 180, cssClass: "cell-other"}
 			    ];
@@ -973,6 +978,7 @@ function searchOrder(){
 		      data: $('#conditionForm').serialize(),
 			      }).
 		      then(function(result) {
+		    	 $.unblockUI(); 
 			    if($('#orderListDiv').is(":hidden")){
 
 				}else{
@@ -1017,7 +1023,12 @@ function searchOrder(){
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1053,7 +1064,12 @@ function searchOrder(){
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1091,11 +1107,16 @@ function searchOrder(){
 								}else{
 									d["ws_price"] = formatMoney(result[i].wsPrice, 0, "￥");
 								}
-							    d["cust_cd"] = result[i].custCd;
+							    d["cust_cd"] = result[i].storeNm;
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1133,11 +1154,16 @@ function searchOrder(){
 								}else{
 									d["ws_price"] = formatMoney(result[i].wsPrice, 0, "￥");
 								}
-							    d["cust_cd"] = result[i].custCd;
+							    d["cust_cd"] = result[i].storeNm;
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1174,11 +1200,16 @@ function searchOrder(){
 								}else{
 									d["ws_price"] = formatMoney(result[i].wsPrice, 0, "￥");
 								}
-							    d["cust_cd"] = result[i].custCd;
+							    d["cust_cd"] = result[i].storeNm;
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1220,7 +1251,12 @@ function searchOrder(){
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1261,7 +1297,12 @@ function searchOrder(){
 							    d["store_staff_nm"] = result[i].custStaff;
 							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-							    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
 							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
@@ -1294,7 +1335,12 @@ function searchOrder(){
 						    d["store_staff_nm"] = result[i].custStaff;
 						    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
 						    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
-						    d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+						    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+						    if(result[i].makerFactoryStatus == "F0"){
+						    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+							 }else{
+								d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+							}
 						    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
 						    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
 						    d["updated_at"] = result[i].updatedAt == null ? "" : ChangeTimeFormatYMDHM(result[i].updatedAt);

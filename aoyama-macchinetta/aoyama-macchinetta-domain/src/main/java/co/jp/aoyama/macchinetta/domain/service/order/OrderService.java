@@ -15,6 +15,10 @@ public interface OrderService {
 	OrderFindFabric getOrderFabric(String fabricNo, String orderPattern);
 
 	List<OrderPrice> getOrderPrice(String orderPattern);
+	
+	List<OrderPrice> getTuxedoOrderPrice(String orderPattern);
+	
+	List<OrderPrice> getWashableOrderPrice(String orderPattern);
 
 	void insertOrder(Order order);
 
@@ -69,6 +73,8 @@ public interface OrderService {
 	void updateStockByPkAndOrder(Stock stockDb, Order order);
 
 	void deletOrderisExistence(Order order);
+
+	String selectOrderIdBySequence();
 
 
 }

@@ -18,4 +18,6 @@ public interface ModelRepository {
 	List<Model> getAllModel(@Param("orderPattern") String type);
 
 	List<Model> getModel(@Param("orderPattern")String orderPattern, @Param("itemCode")String itemCode);
+
+	List<Model> getItemModel(@Param("orderPattern")String orderPattern, @Param("itemCode")String itemCode, @Param("subItemCode")String subItemCode);
 }

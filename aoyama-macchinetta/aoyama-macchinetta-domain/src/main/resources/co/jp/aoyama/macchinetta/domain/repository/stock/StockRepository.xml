@@ -25,6 +25,7 @@
         <result property="updatedUserId" column="updated_user_id" />
         <result property="makerName" column="maker_name" />
         <result property="fablicBrandNo" column="fablic_brand_no" />
+        <result property="theoretical" column="theoretical" />
     </resultMap>
 
     <select id="findAllStock" resultMap="stockResultMap">
@@ -74,7 +75,8 @@
 			c.factory_name,
 			a.retail_price,
 			d.reservation_stock,
-			d.Theoretical_stock,
+			d.theoretical_stock,
+			d.theoretical_stock - d.reservation_stock as theoretical,
 			d.actual_stock,
 			d.fabric_no,
 			d.version
@@ -122,7 +124,7 @@
         SET
         	order_pattern = #{item.orderPattern},
         	fabric_no = #{item.fabricNo},
-            theoretical_stock = #{item.theoreticalStock}, 
+            theoretical_stock = #{item.reservationStock} + #{item.theoretical}, 
             actual_stock = #{item.actualStock},
             version = #{item.version} + 1,
             created_user_id =#{item.createdUserId},

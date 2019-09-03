@@ -342,4 +342,46 @@ public class OrderListServiceImpl implements OrderListService {
         return orderList;
 	}
 
+	@Override
+	public Order findOrderJkByPk(String orderId) {
+		Order order=orderListRepository.findOrderJkByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderPtByPk(String orderId) {
+		Order order=orderListRepository.findOrderPtByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderPt2ByPk(String orderId) {
+		Order order=orderListRepository.findOrderPt2ByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderGlByPk(String orderId) {
+		Order order=orderListRepository.findOrderGlByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderStByPk(String orderId) {
+		Order order=orderListRepository.findOrderStByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderCtByPk(String orderId) {
+		Order order=orderListRepository.findOrderCtByPk(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderJkOptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderJkOptionByOrderId(orderId);
+		return order;
+	}
+
 }

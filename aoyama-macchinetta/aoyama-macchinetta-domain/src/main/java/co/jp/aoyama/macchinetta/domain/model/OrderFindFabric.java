@@ -6,8 +6,8 @@ import java.util.Date;
 public class OrderFindFabric implements Serializable {
 
 	private static final long serialVersionUID = 2138047466949116046L;
-	
-	//生地ネーム有無
+
+	// 生地ネーム有無
 	private String fabricNameExis;
 
 	// 手帳(貿易)期限
@@ -97,6 +97,12 @@ public class OrderFindFabric implements Serializable {
 	// 店着納期区分（通常）
 	private String storeDelvNormal;
 
+	// 店着納期区分（コート専用）
+	private String storeDelvCoat;
+
+	// 店着納期区分（早割）
+	private String storeDelvEarly;
+
 	// 工場コード
 	private String factoryCode;
 
@@ -111,10 +117,27 @@ public class OrderFindFabric implements Serializable {
 
 	// 柄(青山表記)
 	private String patternAoyama;
-	
-	//予約生地量
+
+	// 予約生地量
 	private String reservationStock;
+
+	// ウォッシャブル可否
+	private String washableAvailable;
+
+	// タキシード可否
+	private String tuxedoAvailable;
 	
+	//
+	private String stockResult;
+
+	public String getStockResult() {
+		return stockResult;
+	}
+
+	public void setStockResult(String stockResult) {
+		this.stockResult = stockResult;
+	}
+
 	public String getFabricNameExis() {
 		return fabricNameExis;
 	}
@@ -140,7 +163,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getRetailPrice() {
-		return retailPrice == null?0:retailPrice;
+		return retailPrice == null ? 0 : retailPrice;
 	}
 
 	public void setRetailPrice(Integer retailPrice) {
@@ -148,7 +171,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalPantsRate() {
-		return additionalPantsRate == null?0:additionalPantsRate;
+		return additionalPantsRate == null ? 0 : additionalPantsRate;
 	}
 
 	public void setAdditionalPantsRate(Integer additionalPantsRate) {
@@ -156,7 +179,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalSingleGiletRate() {
-		return additionalSingleGiletRate == null?0:additionalSingleGiletRate;
+		return additionalSingleGiletRate == null ? 0 : additionalSingleGiletRate;
 	}
 
 	public void setAdditionalSingleGiletRate(Integer additionalSingleGiletRate) {
@@ -164,7 +187,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalDoubleGiletRate() {
-		return additionalDoubleGiletRate == null?0:additionalDoubleGiletRate;
+		return additionalDoubleGiletRate == null ? 0 : additionalDoubleGiletRate;
 	}
 
 	public void setAdditionalDoubleGiletRate(Integer additionalDoubleGiletRate) {
@@ -172,7 +195,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getAdditionalDoubleJacketRate() {
-		return additionalDoubleJacketRate == null ?0:additionalDoubleJacketRate;
+		return additionalDoubleJacketRate == null ? 0 : additionalDoubleJacketRate;
 	}
 
 	public void setAdditionalDoubleJacketRate(Integer additionalDoubleJacketRate) {
@@ -180,7 +203,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getSingleJacketOnlyRate() {
-		return singleJacketOnlyRate == null ?0:singleJacketOnlyRate;
+		return singleJacketOnlyRate == null ? 0 : singleJacketOnlyRate;
 	}
 
 	public void setSingleJacketOnlyRate(Integer singleJacketOnlyRate) {
@@ -188,7 +211,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getDoubleJacketOnlyRate() {
-		return doubleJacketOnlyRate == null ?0:doubleJacketOnlyRate;
+		return doubleJacketOnlyRate == null ? 0 : doubleJacketOnlyRate;
 	}
 
 	public void setDoubleJacketOnlyRate(Integer doubleJacketOnlyRate) {
@@ -196,7 +219,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getPantOnlyRate() {
-		return pantOnlyRate == null ?0:pantOnlyRate;
+		return pantOnlyRate == null ? 0 : pantOnlyRate;
 	}
 
 	public void setPantOnlyRate(Integer pantOnlyRate) {
@@ -204,7 +227,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getSingleGiletOnlyRate() {
-		return singleGiletOnlyRate == null ?0:singleGiletOnlyRate;
+		return singleGiletOnlyRate == null ? 0 : singleGiletOnlyRate;
 	}
 
 	public void setSingleGiletOnlyRate(Integer singleGiletOnlyRate) {
@@ -212,7 +235,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getDoubleGiletOnlyRate() {
-		return doubleGiletOnlyRate == null ?0:doubleGiletOnlyRate;
+		return doubleGiletOnlyRate == null ? 0 : doubleGiletOnlyRate;
 	}
 
 	public void setDoubleGiletOnlyRate(Integer doubleGiletOnlyRate) {
@@ -220,7 +243,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCoatSingleOnlyRate() {
-		return coatSingleOnlyRate == null ?0:coatSingleOnlyRate;
+		return coatSingleOnlyRate == null ? 0 : coatSingleOnlyRate;
 	}
 
 	public void setCoatSingleOnlyRate(Integer coatSingleOnlyRate) {
@@ -228,7 +251,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCoatDoubleOnlyRate() {
-		return coatDoubleOnlyRate == null ?0:coatDoubleOnlyRate;
+		return coatDoubleOnlyRate == null ? 0 : coatDoubleOnlyRate;
 	}
 
 	public void setCoatDoubleOnlyRate(Integer coatDoubleOnlyRate) {
@@ -236,7 +259,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getJkSingleOnlyPlusAlphaPrice() {
-		return jkSingleOnlyPlusAlphaPrice == null ?0:jkSingleOnlyPlusAlphaPrice;
+		return jkSingleOnlyPlusAlphaPrice == null ? 0 : jkSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setJkSingleOnlyPlusAlphaPrice(Integer jkSingleOnlyPlusAlphaPrice) {
@@ -244,7 +267,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getJkDoubleOnlyPlusAlphaPrice() {
-		return jkDoubleOnlyPlusAlphaPrice == null ?0:jkDoubleOnlyPlusAlphaPrice;
+		return jkDoubleOnlyPlusAlphaPrice == null ? 0 : jkDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setJkDoubleOnlyPlusAlphaPrice(Integer jkDoubleOnlyPlusAlphaPrice) {
@@ -252,7 +275,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getGlSingleOnlyPlusAlphaPrice() {
-		return glSingleOnlyPlusAlphaPrice == null ?0:glSingleOnlyPlusAlphaPrice;
+		return glSingleOnlyPlusAlphaPrice == null ? 0 : glSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setGlSingleOnlyPlusAlphaPrice(Integer glSingleOnlyPlusAlphaPrice) {
@@ -260,7 +283,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getGlDoubleOnlyPlusAlphaPrice() {
-		return glDoubleOnlyPlusAlphaPrice == null ?0:glDoubleOnlyPlusAlphaPrice;
+		return glDoubleOnlyPlusAlphaPrice == null ? 0 : glDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setGlDoubleOnlyPlusAlphaPrice(Integer glDoubleOnlyPlusAlphaPrice) {
@@ -268,7 +291,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getPtOnlyPlusAlphaPrice() {
-		return ptOnlyPlusAlphaPrice == null ?0:ptOnlyPlusAlphaPrice;
+		return ptOnlyPlusAlphaPrice == null ? 0 : ptOnlyPlusAlphaPrice;
 	}
 
 	public void setPtOnlyPlusAlphaPrice(Integer ptOnlyPlusAlphaPrice) {
@@ -276,7 +299,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCtSingleOnlyPlusAlphaPrice() {
-		return ctSingleOnlyPlusAlphaPrice == null ?0:ctSingleOnlyPlusAlphaPrice;
+		return ctSingleOnlyPlusAlphaPrice == null ? 0 : ctSingleOnlyPlusAlphaPrice;
 	}
 
 	public void setCtSingleOnlyPlusAlphaPrice(Integer ctSingleOnlyPlusAlphaPrice) {
@@ -284,7 +307,7 @@ public class OrderFindFabric implements Serializable {
 	}
 
 	public Integer getCtDoubleOnlyPlusAlphaPrice() {
-		return ctDoubleOnlyPlusAlphaPrice == null ?0:ctDoubleOnlyPlusAlphaPrice;
+		return ctDoubleOnlyPlusAlphaPrice == null ? 0 : ctDoubleOnlyPlusAlphaPrice;
 	}
 
 	public void setCtDoubleOnlyPlusAlphaPrice(Integer ctDoubleOnlyPlusAlphaPrice) {
@@ -402,4 +425,37 @@ public class OrderFindFabric implements Serializable {
 	public void setPatternAoyama(String patternAoyama) {
 		this.patternAoyama = patternAoyama;
 	}
+
+	public String getWashableAvailable() {
+		return washableAvailable;
+	}
+
+	public void setWashableAvailable(String washableAvailable) {
+		this.washableAvailable = washableAvailable;
+	}
+
+	public String getTuxedoAvailable() {
+		return tuxedoAvailable;
+	}
+
+	public void setTuxedoAvailable(String tuxedoAvailable) {
+		this.tuxedoAvailable = tuxedoAvailable;
+	}
+
+	public String getStoreDelvCoat() {
+		return storeDelvCoat;
+	}
+
+	public void setStoreDelvCoat(String storeDelvCoat) {
+		this.storeDelvCoat = storeDelvCoat;
+	}
+
+	public String getStoreDelvEarly() {
+		return storeDelvEarly;
+	}
+
+	public void setStoreDelvEarly(String storeDelvEarly) {
+		this.storeDelvEarly = storeDelvEarly;
+	}
+
 }

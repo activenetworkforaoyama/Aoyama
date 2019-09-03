@@ -15,6 +15,10 @@ public interface OrderRepository {
 	OrderFindFabric getOrderFabric(String fabricNo, String orderPattern);
 
 	List<OrderPrice> getOrderPrice(String orderPattern);
+	
+	List<OrderPrice> getTuxedoOrderPrice(String orderPattern);
+	
+	List<OrderPrice> getWashableOrderPrice(String orderPattern);
 
 	void insertOrder(Order order);
 
@@ -37,9 +41,15 @@ public interface OrderRepository {
 	String getFactories(String orderPattern,String itemCode, String jkModel, String subItemCode);
 
 	Short findOrderVersion(String orderId);
-
+	
 	void insertOrderWithNotVersion(Order order);
 
 	void insertOrder(Order order, @Param("saveFlag")String saveFlag);
+
+	String selectOrderIdBySequence();
+	
+	Order selectGiletByOrderId(@Param("orderId")String orderId);
+	
+	void updateGiletOrder(Order order);
 
 }

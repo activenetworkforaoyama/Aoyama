@@ -36,4 +36,18 @@ public interface OrderListRepository {
 	void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt);
 	
 	List<Order> fuzzyQuery(@Param("condition") OrderCondition condition);
+
+	Order findOrderJkByPk(String orderId);
+
+	Order findOrderPtByPk(String orderId);
+
+	Order findOrderPt2ByPk(String orderId);
+
+	Order findOrderGlByPk(String orderId);
+
+	Order findOrderStByPk(String orderId);
+
+	Order findOrderCtByPk(String orderId);
+
+	Order findOrderJkOptionByOrderId(String orderId);
 }

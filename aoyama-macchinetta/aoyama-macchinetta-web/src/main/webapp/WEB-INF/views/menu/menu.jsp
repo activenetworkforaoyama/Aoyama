@@ -15,7 +15,7 @@
 			    </c:when>
 		    	<c:when test="${sessionContent.category == 'CO'}">
 				    <li>
-				        <a href="javascript:menuSubmit('${pageContext.request.contextPath}/order/orderCo')"> <i class="menu-icon fas fa-edit"></i>オーダー登録(CO)</a>
+				        <a href="javascript:menuSubmit('${pageContext.request.contextPath}/orderCo/toOrderCoInit')"> <i class="menu-icon fas fa-edit"></i>オーダー登録(CO)</a>
 				    </li>
 			    </c:when>
 		    </c:choose>

@@ -37,7 +37,9 @@ public class OptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgStitchModifyMap;
 
 	// ステッチ変更箇所
-	private String wgStitchModifyPlace;
+	private String wgStitchModifyPlace1;
+	private String wgStitchModifyPlace2;
+	private String wgStitchModifyPlace3;
 
 	private Map<String, String> wgStitchModifyPlaceMap;
 	
@@ -47,7 +49,9 @@ public class OptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgDStitchModifyMap;
 	
 	//ダブルステッチ変更箇所
-	private String wgDStitchModifyPlace;
+	private String wgDStitchModifyPlace1;
+	private String wgDStitchModifyPlace2;
+	private String wgDStitchModifyPlace3;
 	
 	private Map<String, String> wgDStitchModifyPlaceMap;
 
@@ -56,14 +60,16 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgAmfColorMap;
 
-	// AMF糸色
+	// AMF糸色,AMF色指定糸色(プルダウン)
 	private String wgAmfColorPlaceAll;
 
 	private Map<String, String> wgAmfColorPlaceAllMap;
 
 	// AMF色指定箇所
-	private String wgAmfColorPlace;
-
+	private String wgAmfColorPlace1;
+	private String wgAmfColorPlace2;
+	private String wgAmfColorPlace3;
+	
 	private Map<String, String> wgAmfColorPlaceMap;
 
 	// AMF糸色 襟・ラペル・フロント
@@ -83,13 +89,18 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgBhColorMap;
 
-	// ボタンホール色指定 糸色
+	// ボタンホール色指定 糸色,ボタンホール色指定糸色(プルダウン)
 	private String wgBhColorPlaceAll;
 
 	private Map<String, String> wgBhColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
-	private String wgBhColorPlace;
+	private String wgBhColorPlace1;
+	private String wgBhColorPlace2;
+	private String wgBhColorPlace3;
+	private String wgBhColorPlace4;
+	private String wgBhColorPlace5;
+	private String wgBhColorPlace6;
 
 	private Map<String, String> wgBhColorPlaceMap;
 
@@ -119,13 +130,22 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgByColorMap;
 
-	// ボタンホール色指定 糸色
+	// ボタンホール色指定 糸色,ボタン付け糸指定糸色(プルダウン)
 	private String wgByColorPlaceAll;
 
 	private Map<String, String> wgByColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
-	private String wgByColorPlace;
+	private String wgByColorPlace1;
+	private String wgByColorPlace2;
+	private String wgByColorPlace3;
+	private String wgByColorPlace4;
+	private String wgByColorPlace5;
+	private String wgByColorPlace6;
+	private String wgByColorPlace7;
+	private String wgByColorPlace8;
+	private String wgByColorPlace9;
+	private String wgByColorPlace10;
 
 	private Map<String, String> wgByColorPlaceMap;
 
@@ -276,14 +296,6 @@ public class OptionGiletWashableInfo implements Serializable {
 		this.wgStitchModifyMap = wgStitchModifyMap;
 	}
 
-	public String getWgStitchModifyPlace() {
-		return wgStitchModifyPlace;
-	}
-
-	public void setWgStitchModifyPlace(String wgStitchModifyPlace) {
-		this.wgStitchModifyPlace = wgStitchModifyPlace;
-	}
-
 	public Map<String, String> getWgStitchModifyPlaceMap() {
 		return wgStitchModifyPlaceMap;
 	}
@@ -322,14 +334,6 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	public void setWgAmfColorPlaceAllMap(Map<String, String> wgAmfColorPlaceAllMap) {
 		this.wgAmfColorPlaceAllMap = wgAmfColorPlaceAllMap;
-	}
-
-	public String getWgAmfColorPlace() {
-		return wgAmfColorPlace;
-	}
-
-	public void setWgAmfColorPlace(String wgAmfColorPlace) {
-		this.wgAmfColorPlace = wgAmfColorPlace;
 	}
 
 	public Map<String, String> getWgAmfColorPlaceMap() {
@@ -402,14 +406,6 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	public void setWgBhColorPlaceAllMap(Map<String, String> wgBhColorPlaceAllMap) {
 		this.wgBhColorPlaceAllMap = wgBhColorPlaceAllMap;
-	}
-
-	public String getWgBhColorPlace() {
-		return wgBhColorPlace;
-	}
-
-	public void setWgBhColorPlace(String wgBhColorPlace) {
-		this.wgBhColorPlace = wgBhColorPlace;
 	}
 
 	public Map<String, String> getWgBhColorPlaceMap() {
@@ -506,14 +502,6 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	public void setWgByColorPlaceAllMap(Map<String, String> wgByColorPlaceAllMap) {
 		this.wgByColorPlaceAllMap = wgByColorPlaceAllMap;
-	}
-
-	public String getWgByColorPlace() {
-		return wgByColorPlace;
-	}
-
-	public void setWgByColorPlace(String wgByColorPlace) {
-		this.wgByColorPlace = wgByColorPlace;
 	}
 
 	public Map<String, String> getWgByColorPlaceMap() {
@@ -724,14 +712,6 @@ public class OptionGiletWashableInfo implements Serializable {
 		this.wgDStitchModifyMap = wgDStitchModifyMap;
 	}
 
-	public String getWgDStitchModifyPlace() {
-		return wgDStitchModifyPlace;
-	}
-
-	public void setWgDStitchModifyPlace(String wgDStitchModifyPlace) {
-		this.wgDStitchModifyPlace = wgDStitchModifyPlace;
-	}
-
 	public Map<String, String> getWgDStitchModifyPlaceMap() {
 		return wgDStitchModifyPlaceMap;
 	}
@@ -762,6 +742,206 @@ public class OptionGiletWashableInfo implements Serializable {
 
 	public void setWgFrontBtnMateStkNo(String wgFrontBtnMateStkNo) {
 		this.wgFrontBtnMateStkNo = wgFrontBtnMateStkNo;
+	}
+
+	public String getWgStitchModifyPlace1() {
+		return wgStitchModifyPlace1;
+	}
+
+	public void setWgStitchModifyPlace1(String wgStitchModifyPlace1) {
+		this.wgStitchModifyPlace1 = wgStitchModifyPlace1;
+	}
+
+	public String getWgStitchModifyPlace2() {
+		return wgStitchModifyPlace2;
+	}
+
+	public void setWgStitchModifyPlace2(String wgStitchModifyPlace2) {
+		this.wgStitchModifyPlace2 = wgStitchModifyPlace2;
+	}
+
+	public String getWgStitchModifyPlace3() {
+		return wgStitchModifyPlace3;
+	}
+
+	public void setWgStitchModifyPlace3(String wgStitchModifyPlace3) {
+		this.wgStitchModifyPlace3 = wgStitchModifyPlace3;
+	}
+
+	public String getWgDStitchModifyPlace1() {
+		return wgDStitchModifyPlace1;
+	}
+
+	public void setWgDStitchModifyPlace1(String wgDStitchModifyPlace1) {
+		this.wgDStitchModifyPlace1 = wgDStitchModifyPlace1;
+	}
+
+	public String getWgDStitchModifyPlace2() {
+		return wgDStitchModifyPlace2;
+	}
+
+	public void setWgDStitchModifyPlace2(String wgDStitchModifyPlace2) {
+		this.wgDStitchModifyPlace2 = wgDStitchModifyPlace2;
+	}
+
+	public String getWgDStitchModifyPlace3() {
+		return wgDStitchModifyPlace3;
+	}
+
+	public void setWgDStitchModifyPlace3(String wgDStitchModifyPlace3) {
+		this.wgDStitchModifyPlace3 = wgDStitchModifyPlace3;
+	}
+
+	public String getWgAmfColorPlace1() {
+		return wgAmfColorPlace1;
+	}
+
+	public void setWgAmfColorPlace1(String wgAmfColorPlace1) {
+		this.wgAmfColorPlace1 = wgAmfColorPlace1;
+	}
+
+	public String getWgAmfColorPlace2() {
+		return wgAmfColorPlace2;
+	}
+
+	public void setWgAmfColorPlace2(String wgAmfColorPlace2) {
+		this.wgAmfColorPlace2 = wgAmfColorPlace2;
+	}
+
+	public String getWgAmfColorPlace3() {
+		return wgAmfColorPlace3;
+	}
+
+	public void setWgAmfColorPlace3(String wgAmfColorPlace3) {
+		this.wgAmfColorPlace3 = wgAmfColorPlace3;
+	}
+
+	public String getWgBhColorPlace1() {
+		return wgBhColorPlace1;
+	}
+
+	public void setWgBhColorPlace1(String wgBhColorPlace1) {
+		this.wgBhColorPlace1 = wgBhColorPlace1;
+	}
+
+	public String getWgBhColorPlace2() {
+		return wgBhColorPlace2;
+	}
+
+	public void setWgBhColorPlace2(String wgBhColorPlace2) {
+		this.wgBhColorPlace2 = wgBhColorPlace2;
+	}
+
+	public String getWgBhColorPlace3() {
+		return wgBhColorPlace3;
+	}
+
+	public void setWgBhColorPlace3(String wgBhColorPlace3) {
+		this.wgBhColorPlace3 = wgBhColorPlace3;
+	}
+
+	public String getWgBhColorPlace4() {
+		return wgBhColorPlace4;
+	}
+
+	public void setWgBhColorPlace4(String wgBhColorPlace4) {
+		this.wgBhColorPlace4 = wgBhColorPlace4;
+	}
+
+	public String getWgBhColorPlace5() {
+		return wgBhColorPlace5;
+	}
+
+	public void setWgBhColorPlace5(String wgBhColorPlace5) {
+		this.wgBhColorPlace5 = wgBhColorPlace5;
+	}
+
+	public String getWgBhColorPlace6() {
+		return wgBhColorPlace6;
+	}
+
+	public void setWgBhColorPlace6(String wgBhColorPlace6) {
+		this.wgBhColorPlace6 = wgBhColorPlace6;
+	}
+
+	public String getWgByColorPlace1() {
+		return wgByColorPlace1;
+	}
+
+	public void setWgByColorPlace1(String wgByColorPlace1) {
+		this.wgByColorPlace1 = wgByColorPlace1;
+	}
+
+	public String getWgByColorPlace2() {
+		return wgByColorPlace2;
+	}
+
+	public void setWgByColorPlace2(String wgByColorPlace2) {
+		this.wgByColorPlace2 = wgByColorPlace2;
+	}
+
+	public String getWgByColorPlace3() {
+		return wgByColorPlace3;
+	}
+
+	public void setWgByColorPlace3(String wgByColorPlace3) {
+		this.wgByColorPlace3 = wgByColorPlace3;
+	}
+
+	public String getWgByColorPlace4() {
+		return wgByColorPlace4;
+	}
+
+	public void setWgByColorPlace4(String wgByColorPlace4) {
+		this.wgByColorPlace4 = wgByColorPlace4;
+	}
+
+	public String getWgByColorPlace5() {
+		return wgByColorPlace5;
+	}
+
+	public void setWgByColorPlace5(String wgByColorPlace5) {
+		this.wgByColorPlace5 = wgByColorPlace5;
+	}
+
+	public String getWgByColorPlace6() {
+		return wgByColorPlace6;
+	}
+
+	public void setWgByColorPlace6(String wgByColorPlace6) {
+		this.wgByColorPlace6 = wgByColorPlace6;
+	}
+
+	public String getWgByColorPlace7() {
+		return wgByColorPlace7;
+	}
+
+	public void setWgByColorPlace7(String wgByColorPlace7) {
+		this.wgByColorPlace7 = wgByColorPlace7;
+	}
+
+	public String getWgByColorPlace8() {
+		return wgByColorPlace8;
+	}
+
+	public void setWgByColorPlace8(String wgByColorPlace8) {
+		this.wgByColorPlace8 = wgByColorPlace8;
+	}
+
+	public String getWgByColorPlace9() {
+		return wgByColorPlace9;
+	}
+
+	public void setWgByColorPlace9(String wgByColorPlace9) {
+		this.wgByColorPlace9 = wgByColorPlace9;
+	}
+
+	public String getWgByColorPlace10() {
+		return wgByColorPlace10;
+	}
+
+	public void setWgByColorPlace10(String wgByColorPlace10) {
+		this.wgByColorPlace10 = wgByColorPlace10;
 	}
 	
 }
