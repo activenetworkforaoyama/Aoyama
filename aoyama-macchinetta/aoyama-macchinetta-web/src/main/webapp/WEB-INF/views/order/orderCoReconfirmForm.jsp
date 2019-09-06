@@ -748,7 +748,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">${orderForm.optionJacketStandardInfo.ojSleeveBtnTypeMap[orderForm.optionJacketStandardInfo.ojSleeveBtnType]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ojSleeveBtnType_appear">${jacketUpperPrice["ojSleeveBtnTypePrice"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ojSleeveBtnType_appear">無料</label></strong>
 								</div>
 							</div>
 							<div class="row">
@@ -766,7 +766,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value" id="ojInsidePktChangeAndSubItem"></label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ojInsidePktChange_appear">${jacketUpperPrice["ojInsidePktChangePrice"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ojInsidePktChange_appear">無料</label></strong>
 								</div>
 							</div>
 							<div class="row">
@@ -794,7 +794,7 @@ select.hidedown {
 										<strong><label class=" form-control-label-value" id="ojStitchModifyPlaceAndSubItem"></label></strong>
 									</div>
 									<div class="col-12 col-md-2 text-right">
-										<strong><label class=" form-control-label-value" id="ojStitchModifyPlace_appear">${jacketUpperPrice["ojStitchModifyPrice"]}</label></strong>
+										<strong><label class=" form-control-label-value" id="ojStitchModifyPlace_appear">${standardJkUpperCount["ojStitchModifyPlaceMap"]}</label></strong>
 									</div>
 								</div>
 								<div class="row">
@@ -802,9 +802,16 @@ select.hidedown {
 									<div class="col-12 col-md-7">
 										<strong><label class=" form-control-label-value" id="ojDStitchModifyAndSubItem"></label></strong>
 									</div>
-									<div class="col-12 col-md-2 text-right">
-										<strong><label class=" form-control-label-value" id="ojDStitchModify_appear">${jacketUpperPrice["ojDStitchModifyPrice"]}</label></strong>
-									</div>
+									<c:if test="${orderForm.optionJacketStandardInfo.ojDStitchModifyMap[orderForm.optionJacketStandardInfo.ojDStitchModify] == '有り'}">
+										<div class="col-12 col-md-2 text-right">
+											<strong><label class=" form-control-label-value" id="ojDStitchModify_appear">${jacketUpperPrice["ojDStitchModifyPrice"]}</label></strong>
+										</div>
+									</c:if>
+									<c:if test="${orderForm.optionJacketStandardInfo.ojDStitchModifyMap[orderForm.optionJacketStandardInfo.ojDStitchModify] == '無し'}">
+										<div class="col-12 col-md-2 text-right">
+											<strong><label class=" form-control-label-value" id="ojDStitchModify_appear">無料</label></strong>
+										</div>
+									</c:if>
 								</div>
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
@@ -812,26 +819,26 @@ select.hidedown {
 										<strong><label class=" form-control-label-value" id="ojAmfColorAndSubItem"></label></strong>
 									</div>
 									<div class="col-12 col-md-2 text-right">
-										<strong><label class=" form-control-label-value" id="ojAmfColor_appear">${jacketUpperPrice["ojAmfColorPrice"]}</label></strong>
+										<strong><label class=" form-control-label-value" id="ojAmfColor_appear">${standardJkOjAmfColorUpperCount["ojAmfColorsMap"]}</label></strong>
 									</div>
 								</div>
 							</c:if>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-8">
 									<strong><label class=" form-control-label-value" id="ojBhColorAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ojBhColor_appear">${jacketUpperPrice["ojBhColorPrice"]}</label></strong>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="ojBhColor_appear">${standardJkOjBhColorUpperCount["ojBhColorsMap"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-8">
 									<strong><label class=" form-control-label-value" id="ojByColorAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ojByColor_appear">${jacketUpperPrice["ojByColorPrice"]}</label></strong>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="ojByColor_appear">${standardJkOjByColorUpperCount["ojByColorsMap"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
@@ -1090,19 +1097,19 @@ select.hidedown {
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionJacketTuxedoInfo.tjBhColorMap[orderForm.optionJacketTuxedoInfo.tjBhColor]}</label></strong>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${tuxedoServelItemShow["tjBhColorPlaceAndColor"]}</label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="tjBhColor_appear">${tuxedoJacketUpperPrice["tjBhColorPrice"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionJacketTuxedoInfo.tjByColorMap[orderForm.optionJacketTuxedoInfo.tjByColor]}</label></strong>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${tuxedoServelItemShow["tjByColorPlaceAndColor"]}</label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="tjByColor_appear">${tuxedoJacketUpperPrice["tjByColorPrice"]}</label></strong>
 								</div>
 							</div>
@@ -1355,7 +1362,7 @@ select.hidedown {
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 									<div class="col-12 col-md-6">
-										<strong><label class=" form-control-label-value">${orderForm.optionJacketWashableInfo.wjStitchModifyPlaceMap[orderForm.optionJacketWashableInfo.wjStitchModifyPlace]}</label></strong>
+										<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjStitchModifyPlace"]}</label></strong>
 									</div>
 									<div class="col-12 col-md-3 text-right">
 										<strong><label class=" form-control-label-value" id="wjStitchModifyPlace_appear">${washableJacketUpperPrice["wjStitchModifyPrice"]}</label></strong>
@@ -1364,7 +1371,7 @@ select.hidedown {
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ変更</label></div>
 									<div class="col-12 col-md-6">
-										<strong><label class=" form-control-label-value">${orderForm.optionJacketWashableInfo.wjDStitchModifyMap[orderForm.optionJacketWashableInfo.wjDStitchModify]}</label></strong>
+										<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjDStitchModifyPlace"]}</label></strong>
 									</div>
 									<div class="col-12 col-md-3 text-right">
 										<strong><label class=" form-control-label-value" id="wjDStitchModify_appear">${washableJacketUpperPrice["wjDStitchModifyPrice"]}</label></strong>
@@ -1373,7 +1380,7 @@ select.hidedown {
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
 									<div class="col-12 col-md-6">
-										<strong><label class=" form-control-label-value">${orderForm.optionJacketWashableInfo.wjAmfColorMap[orderForm.optionJacketWashableInfo.wjAmfColor]}</label></strong>
+										<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjAmfColorPlaceAndColor"]}</label></strong>
 									</div>
 									<div class="col-12 col-md-3 text-right">
 										<strong><label class=" form-control-label-value" id="wjAmfColor_appear">${washableJacketUpperPrice["wjAmfColorPrice"]}</label></strong>
@@ -1382,19 +1389,19 @@ select.hidedown {
 							</c:if>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionJacketWashableInfo.wjBhColorMap[orderForm.optionJacketWashableInfo.wjBhColor]}</label></strong>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjBhColorPlaceAndColor"]}</label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="wjBhColor_appear">${washableJacketUpperPrice["wjBhColorPrice"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionJacketWashableInfo.wjByColorMap[orderForm.optionJacketWashableInfo.wjByColor]}</label></strong>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjBhColorPlaceAndColor"]}</label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="wjByColor_appear">${washableJacketUpperPrice["wjByColorPrice"]}</label></strong>
 								</div>
 							</div>
@@ -1485,13 +1492,13 @@ select.hidedown {
 								<label class=" form-control-label">肩パット</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkShoulderPad}</label>cm</strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkShoulderPad}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">体型補正</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkFigureCorrect}</label>cm</strong>
+								<strong><label class=" form-control-label-value">${orderForm.adjustJacketStandardInfo.corJkFigureCorrect}</label></strong>
 							</div>
 						</div>
 					</div>
@@ -1572,51 +1579,58 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="ogStitch_appear">${giletUpperPrice["ogStitchPrice"]}</label></strong>
 							</div>
 						</div>
-						<c:if test="">
+						<c:if test="${orderForm.optionGiletStandardInfo.ogStitch != '0000503'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogStitchModifyMap[orderForm.optionGiletStandardInfo.ogStitchModify]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ogStitchModifyAndSubItem"></label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ogStitchModify_appear">${giletUpperPrice["ogStitchModifyPrice"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ogStitchModify_appear">${standardOgStitchModifyPlaceUpperCount["ogStitchModifyPlaceMap"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogDStitchModifyMap[orderForm.optionGiletStandardInfo.ogDStitchModify]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ogDStitchModifyAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ogDStitchModify_appear">${giletUpperPrice["ogDStitchModifyPrice"]}</label></strong>
-								</div>
+								<c:if test="${orderForm.optionGiletStandardInfo.ogDStitchModifyMap[orderForm.optionGiletStandardInfo.ogDStitchModify] == '有り'}">
+									<div class="col-12 col-md-3 text-right">
+										<strong><label class=" form-control-label-value" id="ogDStitchModify_appear">${giletUpperPrice["ogDStitchModifyPrice"]}</label></strong>
+									</div>
+								</c:if>
+								<c:if test="${orderForm.optionGiletStandardInfo.ogDStitchModifyMap[orderForm.optionGiletStandardInfo.ogDStitchModify] == '無し'}">
+									<div class="col-12 col-md-3 text-right">
+										<strong><label class=" form-control-label-value" id="ogDStitchModify_appear">無料</label></strong>
+									</div>
+								</c:if>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogAmfColorMap[orderForm.optionGiletStandardInfo.ogAmfColor]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ogAmfColorAndSubItem"></label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="ogAmfColor_appear">${giletUpperPrice["ogAmfColorPrice"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="ogAmfColor_appear">${standardOgAmfColorUpperCount["ogAmfColorPlaceMap"]}</label></strong>
 								</div>
 							</div>
 						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogBhColorMap[orderForm.optionGiletStandardInfo.ogBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value" id="ogBhColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="ogBhColor_appear">${giletUpperPrice["ogBhColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="ogBhColor_appear">${standardOgBhColorUpperCount["ogBhColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletStandardInfo.ogByColorMap[orderForm.optionGiletStandardInfo.ogByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value" id="ogByColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="ogBhColor_appear">${giletUpperPrice["ogByColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="ogBhColor_appear">${standardOgByColorUpperCount["ogByColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -1665,7 +1679,7 @@ select.hidedown {
 							</div>
 						</div>
 					</c:if>
-					<c:if test="${orderForm.productCategory == '2' }">
+					<c:if test="${orderForm.productCategory == '2'}">
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label"><strong>GILETモデル</strong></label></div>
 							<div class="col-12 col-md-6">
@@ -1722,19 +1736,19 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletTuxedoInfo.tgBhColorMap[orderForm.optionGiletTuxedoInfo.tgBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoGlServelItemShow["tgBhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tgBhColor_appear">${tuxedoGiletUpperPrice["tgBhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletTuxedoInfo.tgBhColorMap[orderForm.optionGiletTuxedoInfo.tgBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoGlServelItemShow["tgByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tgBhColor_appear">${tuxedoGiletUpperPrice["tgByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -1834,7 +1848,7 @@ select.hidedown {
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletWashableInfo.wgStitchModifyMap[orderForm.optionGiletWashableInfo.wgStitchModify]}</label></strong>
+									<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgStitchModifyPlace"]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
 									<strong><label class=" form-control-label-value" id="wgStitchModify_appear">${washableGiletUpperPrice["wgStitchModifyPrice"]}</label></strong>
@@ -1843,7 +1857,7 @@ select.hidedown {
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletWashableInfo.wgDStitchModifyMap[orderForm.optionGiletWashableInfo.wgDStitchModify]}</label></strong>
+									<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgDStitchModifyPlace"]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
 									<strong><label class=" form-control-label-value" id="wgDStitchModify_appear">${washableGiletUpperPrice["wgDStitchModifyPrice"]}</label></strong>
@@ -1852,7 +1866,7 @@ select.hidedown {
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
 								<div class="col-12 col-md-6">
-									<strong><label class=" form-control-label-value">${orderForm.optionGiletWashableInfo.wgAmfColorMap[orderForm.optionGiletWashableInfo.wgAmfColor]}</label></strong>
+									<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgAmfColorPlaceAndColor"]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
 									<strong><label class=" form-control-label-value" id="wgAmfColor_appear">${washableGiletUpperPrice["wgAmfColorPrice"]}</label></strong>
@@ -1861,19 +1875,19 @@ select.hidedown {
 						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletWashableInfo.wgBhColorMap[orderForm.optionGiletWashableInfo.wgBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgBhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wgBhColor_appear">${washableGiletUpperPrice["wgBhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionGiletWashableInfo.wgByColorMap[orderForm.optionGiletWashableInfo.wgByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wgByColor_appear">${washableGiletUpperPrice["wgByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -2056,7 +2070,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="opBeltLoopAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
-								<strong><label class=" form-control-label-value" id="opBeltLoop_appear">${pantsUpperPrice["opBeltLoopPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="opBeltLoop_appear">無料</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2166,7 +2180,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="opStitchModifyAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opStitchModify_appear">${pantsUpperPrice["opStitchModifyPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="opStitchModify_appear">${standardOpStitchModifyPlaceUpperCount["opStitchModifyPlaceMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2174,9 +2188,16 @@ select.hidedown {
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value" id="opDStitchAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opDStitch_appear">${pantsUpperPrice["opDStitchPrice"]}</label></strong>
-							</div>
+							<c:if test="${orderForm.optionPantsStandardInfo.opDStitchMap[orderForm.optionPantsStandardInfo.opDStitch] == '有り'}">
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="opDStitch_appear">${pantsUpperPrice["opDStitchPrice"]}</label></strong>
+								</div>
+							</c:if>
+							<c:if test="${orderForm.optionPantsStandardInfo.opDStitchMap[orderForm.optionPantsStandardInfo.opDStitch] == '無し'}">
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="opDStitch_appear">無料</label></strong>
+								</div>
+							</c:if>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
@@ -2184,25 +2205,25 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="opAmfColorAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
-								<strong><label class=" form-control-label-value" id="opAmfColor_appear">${pantsUpperPrice["opAmfColorPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="opAmfColor_appear">${standardOpAmfColorUpperCount["opAmfColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value" id="opBhColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opBhColor_appear">${pantsUpperPrice["opBhColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="opBhColor_appear">${standardOpBhColorUpperCount["opBhColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value" id="opByColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opByColor_appear">${pantsUpperPrice["opByColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="opByColor_appear">${standardOpByColorUpperCount["opByColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2320,7 +2341,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
 							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsTuxedoInfo.tpBeltLoopMap[orderForm.optionPantsTuxedoInfo.tpBeltLoop]}</label></strong>
+								<strong><label class=" form-control-label-value">${tuxedoPtServelItemShow["tpBeltLoopPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tpBeltLoop_appear">${tuxedoPantsUpperPrice["tpBeltLoopPrice"]}</label></strong>
@@ -2429,19 +2450,19 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsTuxedoInfo.tpBhColorMap[orderForm.optionPantsTuxedoInfo.tpBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoPtServelItemShow["tpBhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tpBhColor_appear">${tuxedoPantsUpperPrice["tpBhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsTuxedoInfo.tpByColorMap[orderForm.optionPantsTuxedoInfo.tpByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoPtServelItemShow["tpByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tpByColor_appear">${tuxedoPantsUpperPrice["tpByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -2576,7 +2597,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
 							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpBeltLoopMap[orderForm.optionPantsWashableInfo.wpBeltLoop]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpBeltLoopPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wpBeltLoop_appear">${washablePantsUpperPrice["wpBeltLoopPrice"]}</label></strong>
@@ -2686,7 +2707,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpStitchModifyMap[orderForm.optionPantsWashableInfo.wpStitchModify]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpStitchModifyPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wpStitchModify_appear">${washablePantsUpperPrice["wpStitchModifyPrice"]}</label></strong>
@@ -2695,7 +2716,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpDStitchMap[orderForm.optionPantsWashableInfo.wpDStitch]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpDStitchPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wpDStitch_appear">${washablePantsUpperPrice["wpDStitchPrice"]}</label></strong>
@@ -2704,7 +2725,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpAmfColorMap[orderForm.optionPantsWashableInfo.wpAmfColor]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpAmfColorPlaceAndColor"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wpAmfColor_appear">${washablePantsUpperPrice["wpAmfColorPrice"]}</label></strong>
@@ -2712,19 +2733,19 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpBhColorMap[orderForm.optionPantsWashableInfo.wpBhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpBhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wpBhColor_appear">${washablePantsUpperPrice["wpBhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPantsWashableInfo.wpByColorMap[orderForm.optionPantsWashableInfo.wpByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wpByColor_appear">${washablePantsUpperPrice["wpByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -2917,10 +2938,10 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
 							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2BeltLoopMap[orderForm.optionPants2StandardInfo.op2BeltLoop]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2BeltLoopAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
-								<strong><label class=" form-control-label-value" id="op2BeltLoop_appear">${pants2UpperPrice["op2BeltLoopPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2BeltLoop_appear">無料</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3027,46 +3048,53 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2StitchModifyMap[orderForm.optionPants2StandardInfo.op2StitchModify]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2StitchModifyAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2StitchModify_appear">${pants2UpperPrice["op2StitchModifyPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2StitchModify_appear">${standardOp2StitchModifyPlaceUpperCount["op2StitchModifyPlaceMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2DStitchMap[orderForm.optionPants2StandardInfo.op2DStitch]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2DStitchAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2DStitch_appear">${pants2UpperPrice["op2DStitchPrice"]}</label></strong>
-							</div>
+							<c:if test="${orderForm.optionPants2StandardInfo.op2DStitchMap[orderForm.optionPants2StandardInfo.op2DStitch] == '有り'}">
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="op2DStitch_appear">${pants2UpperPrice["op2DStitchPrice"]}</label></strong>
+								</div>
+							</c:if>
+							<c:if test="${orderForm.optionPants2StandardInfo.op2DStitchMap[orderForm.optionPants2StandardInfo.op2DStitch] == '無し'}">
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="op2DStitch_appear">無料</label></strong>
+								</div>
+							</c:if>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2AmfColorMap[orderForm.optionPants2StandardInfo.op2AmfColor]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2AmfColorAndSubItem"></label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2AmfColor_appear">${pants2UpperPrice["op2AmfColorPrice"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2AmfColor_appear">${standardOp2AmfColorUpperCount["op2AmfColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2BhColorMap[orderForm.optionPants2StandardInfo.op2BhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value" id="op2BhColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2BhColor_appear">${pants2UpperPrice["op2BhColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="op2BhColor_appear">${standardOp2BhColorUpperCount["op2BhColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2StandardInfo.op2ByColorMap[orderForm.optionPants2StandardInfo.op2ByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value" id="op2ByColorAndSubItem"></label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2ByColor_appear">${pants2UpperPrice["op2ByColorPrice"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="op2ByColor_appear">${standardOp2ByColorUpperCount["op2ByColorsMap"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3182,7 +3210,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
 							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2TuxedoInfo.tp2BeltLoopMap[orderForm.optionPants2TuxedoInfo.tp2BeltLoop]}</label></strong>
+								<strong><label class=" form-control-label-value">${tuxedoPt2ServelItemShow["tp2BeltLoopPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tp2BeltLoop_appear">${tuxedoPants2UpperPrice["tp2BeltLoopPrice"]}</label></strong>
@@ -3291,19 +3319,19 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2TuxedoInfo.tp2BhColorMap[orderForm.optionPants2TuxedoInfo.tp2BhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoPt2ServelItemShow["tp2BhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tp2BhColor_appear">${tuxedoPants2UpperPrice["tp2BhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2TuxedoInfo.tp2ByColorMap[orderForm.optionPants2TuxedoInfo.tp2ByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${tuxedoPt2ServelItemShow["tp2ByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="tp2ByColor_appear">${tuxedoPants2UpperPrice["tp2ByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -3438,7 +3466,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
 							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2BeltLoopMap[orderForm.optionPants2WashableInfo.wp2BeltLoop]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2BeltLoopPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wp2BeltLoop_appear">${washablePants2UpperPrice["wp2BeltLoopPrice"]}</label></strong>
@@ -3548,7 +3576,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2StitchModifyMap[orderForm.optionPants2WashableInfo.wp2StitchModify]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2StitchModifyPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wp2StitchModify_appear">${washablePants2UpperPrice["wp2StitchModifyPrice"]}</label></strong>
@@ -3557,7 +3585,7 @@ select.hidedown {
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
 							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2DStitchMap[orderForm.optionPants2WashableInfo.wp2DStitch]}</label></strong>
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2DStitchPlace"]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wp2DStitch_appear">${washablePants2UpperPrice["wp2DStitchPrice"]}</label></strong>
@@ -3565,28 +3593,28 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2AmfColorMap[orderForm.optionPants2WashableInfo.wp2AmfColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2AmfColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wp2AmfColor_appear">${washablePants2UpperPrice["wp2AmfColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2BhColorMap[orderForm.optionPants2WashableInfo.wp2BhColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2BhColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wp2BhColor_appear">${washablePants2UpperPrice["wp2BhColorPrice"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderForm.optionPants2WashableInfo.wp2ByColorMap[orderForm.optionPants2WashableInfo.wp2ByColor]}</label></strong>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2ByColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wp2ByColor_appear">${washablePants2UpperPrice["wp2ByColorPrice"]}</label></strong>
 							</div>
 						</div>
@@ -3897,9 +3925,16 @@ select.hidedown {
 						<div class="col-12 col-md-6">
 							<strong><label class=" form-control-label-value">${orderForm.optionShirtStandardInfo.osCasHemLineMap[orderForm.optionShirtStandardInfo.osCasHemLine]}</label></strong>
 						</div>
-						<div class="col-12 col-md-3 text-right">
-							<strong><label class=" form-control-label-value" id="osCasHemLine_appear">${shirtUpperPrice["osCasHemLinePrice"]}</label></strong>
-						</div>
+						<c:if test="${orderForm.optionShirtStandardInfo.osCasHemLineMap[orderForm.optionShirtStandardInfo.osCasHemLine] == '有り'}">
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="osCasHemLine_appear">${shirtUpperPrice["osCasHemLinePrice"]}</label></strong>
+							</div>
+						</c:if>
+						<c:if test="${orderForm.optionShirtStandardInfo.osCasHemLineMap[orderForm.optionShirtStandardInfo.osCasHemLine] == '無し'}">
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="osCasHemLine_appear">無料</label></strong>
+							</div>
+						</c:if>
 					</div>
 					<div class="row">
 						<div class="col col-md-3"><label class=" form-control-label">ボタン位置変更</label></div>
@@ -3907,7 +3942,7 @@ select.hidedown {
 							<strong><label class=" form-control-label-value">${orderForm.optionShirtStandardInfo.osBtnPosChgMap[orderForm.optionShirtStandardInfo.osBtnPosChg]}</label></strong>
 						</div>
 						<div class="col-12 col-md-3 text-right">
-							<strong><label class=" form-control-label-value" id="osBtnPosChg_appear">${shirtUpperPrice["osBtnPosChgPrice"]}</label></strong>
+							<strong><label class=" form-control-label-value" id="osBtnPosChg_appear">無料</label></strong>
 						</div>
 					</div>
 				</div>
@@ -4519,412 +4554,728 @@ function isEmpty(parameter){
 		return false;
 	}
 }
+if("${orderForm.productCategory}" == '0'){
+	initStandardComplexOptions();
+}
+else if("${orderForm.productCategory}" == '2'){
+	
+}
+else if("${orderForm.productCategory}" == '1'){
+	
+}
 
-//標準JACKETの内ポケット変更
-var ojInsidePktChange = "${orderForm.optionJacketStandardInfo.ojInsidePktChangeMap[orderForm.optionJacketStandardInfo.ojInsidePktChange]}";
-var ojInsidePktPlace1 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace1]}";
-var ojInsidePktPlace2 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace2]}";
-var ojInsidePktPlace3 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace3]}";
-var ojInsidePktPlace4 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace4]}";
-var ojInsidePktPlace = '';
-if(isEmpty(ojInsidePktPlace1)){
-	ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace1 + '　';
-}
-if(isEmpty(ojInsidePktPlace2)){
-	ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace2 + '　';
-}
-if(isEmpty(ojInsidePktPlace3)){
-	ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace3 + '　';
-}
-if(isEmpty(ojInsidePktPlace4)){
-	ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace4;
-}
-jQuery("#ojInsidePktChangeAndSubItem").html(ojInsidePktChange + '　　' + ojInsidePktPlace);
 
-//標準JACKETのステッチ箇所変更
-var ojStitchModify = "${orderForm.optionJacketStandardInfo.ojStitchModifyMap[orderForm.optionJacketStandardInfo.ojStitchModify]}";
-var ojStitchModifyPlace1 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace1]}";
-var ojStitchModifyPlace2 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace2]}";
-var ojStitchModifyPlace3 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace3]}";
-var ojStitchModifyPlace4 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace4]}";
-var ojStitchModifyPlace5 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace5]}";
-var ojStitchModifyPlace6 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace6]}";
-var ojStitchModifyPlace7 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace7]}";
-var ojStitchModifyPlace8 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace8]}";
-var ojStitchModifyPlace9 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace9]}";
-var ojStitchModifyPlaceList = [ojStitchModifyPlace1,ojStitchModifyPlace2,ojStitchModifyPlace3,ojStitchModifyPlace4,
-	ojStitchModifyPlace5,ojStitchModifyPlace6,ojStitchModifyPlace7,ojStitchModifyPlace8,ojStitchModifyPlace9];
-var ojStitchModifyPlace = '';
-for(var i = 0;i < ojStitchModifyPlaceList.length;i++){
-	if(isEmpty(ojStitchModifyPlaceList[i])){
-		ojStitchModifyPlace = ojStitchModifyPlace + ojStitchModifyPlaceList[i] + '　';
+function initStandardComplexOptions(){
+	//標準JACKETの内ポケット変更
+	var ojInsidePktChange = "${orderForm.optionJacketStandardInfo.ojInsidePktChangeMap[orderForm.optionJacketStandardInfo.ojInsidePktChange]}";
+	var ojInsidePktPlace1 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace1]}";
+	var ojInsidePktPlace2 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace2]}";
+	var ojInsidePktPlace3 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace3]}";
+	var ojInsidePktPlace4 = "${orderForm.optionJacketStandardInfo.ojInsidePktPlaceMap[orderForm.optionJacketStandardInfo.ojInsidePktPlace4]}";
+	var ojInsidePktPlace = '';
+	if(isEmpty(ojInsidePktPlace1)){
+		ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace1 + '　';
 	}
+	if(isEmpty(ojInsidePktPlace2)){
+		ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace2 + '　';
+	}
+	if(isEmpty(ojInsidePktPlace3)){
+		ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace3 + '　';
+	}
+	if(isEmpty(ojInsidePktPlace4)){
+		ojInsidePktPlace = ojInsidePktPlace + ojInsidePktPlace4;
+	}
+	jQuery("#ojInsidePktChangeAndSubItem").html(ojInsidePktChange + '　　' + ojInsidePktPlace);
+
+	//標準JACKETのステッチ箇所変更
+	var ojStitchModify = "${orderForm.optionJacketStandardInfo.ojStitchModifyMap[orderForm.optionJacketStandardInfo.ojStitchModify]}";
+	var ojStitchModifyPlace1 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace1]}";
+	var ojStitchModifyPlace2 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace2]}";
+	var ojStitchModifyPlace3 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace3]}";
+	var ojStitchModifyPlace4 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace4]}";
+	var ojStitchModifyPlace5 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace5]}";
+	var ojStitchModifyPlace6 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace6]}";
+	var ojStitchModifyPlace7 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace7]}";
+	var ojStitchModifyPlace8 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace8]}";
+	var ojStitchModifyPlace9 = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojStitchModifyPlace9]}";
+	var ojStitchModifyPlaceList = [ojStitchModifyPlace1,ojStitchModifyPlace2,ojStitchModifyPlace3,ojStitchModifyPlace4,
+		ojStitchModifyPlace5,ojStitchModifyPlace6,ojStitchModifyPlace7,ojStitchModifyPlace8,ojStitchModifyPlace9];
+	var ojStitchModifyPlace = '';
+	for(var i = 0;i < ojStitchModifyPlaceList.length;i++){
+		if(isEmpty(ojStitchModifyPlaceList[i])){
+			ojStitchModifyPlace = ojStitchModifyPlace + ojStitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#ojStitchModifyPlaceAndSubItem").html(ojStitchModify + '　　' + ojStitchModifyPlace)
+
+	//標準JACKETのダブルステッチ変更
+	var ojDStitchModify = "${orderForm.optionJacketStandardInfo.ojDStitchModifyMap[orderForm.optionJacketStandardInfo.ojDStitchModify]}";
+	var ojDStitchModifyPlace1 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace1]}";
+	var ojDStitchModifyPlace2 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace2]}";
+	var ojDStitchModifyPlace3 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace3]}";
+	var ojDStitchModifyPlace4 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace4]}";
+	var ojDStitchModifyPlace5 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace5]}";
+	var ojDStitchModifyPlace6 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace6]}";
+	var ojDStitchModifyPlace7 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace7]}";
+	var ojDStitchModifyPlace8 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace8]}";
+	var ojDStitchModifyPlace9 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace9]}";
+
+	var ojDStitchModifyPlaceList = [ojDStitchModifyPlace1,ojDStitchModifyPlace2,ojDStitchModifyPlace3,ojDStitchModifyPlace4,
+		ojDStitchModifyPlace5,ojDStitchModifyPlace6,ojDStitchModifyPlace7,ojDStitchModifyPlace8,ojDStitchModifyPlace9];
+	var ojDStitchModifyPlace = '';
+	for(var i = 0;i < ojDStitchModifyPlaceList.length;i++){
+		if(isEmpty(ojDStitchModifyPlaceList[i])){
+			ojDStitchModifyPlace = ojDStitchModifyPlace + ojDStitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#ojDStitchModifyAndSubItem").html(ojDStitchModify　+ '　　' + ojDStitchModifyPlace);
+
+	//標準JACKETのAMF色指定
+	var ojAmfColor = "${orderForm.optionJacketStandardInfo.ojAmfColorMap[orderForm.optionJacketStandardInfo.ojAmfColor]}";
+	var ojAmfColorPlace1 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace1]}";
+	var ojAmfColorPlace2 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace2]}";
+	var ojAmfColorPlace3 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace3]}";
+	var ojAmfColorPlace4 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace4]}";
+	var ojAmfColorPlace5 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace5]}";
+	var ojAmfColorPlace6 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace6]}";
+	var ojAmfColorPlace7 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace7]}";
+	var ojAmfColorPlace8 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace8]}";
+	var ojAmfColorPlace9 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace9]}";
+	var ojAmfColor1 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor1]}";
+	var ojAmfColor2 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor2]}";
+	var ojAmfColor3 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor3]}";
+	var ojAmfColor4 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor4]}";
+	var ojAmfColor5 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor5]}";
+	var ojAmfColor6 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor6]}";
+	var ojAmfColor7 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor7]}";
+	var ojAmfColor8 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor8]}";
+	var ojAmfColor9 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor9]}";
+
+	var ojAmfColorPlaceAndColorList = {
+			activeOjAmfColorPlaceAndColor : [{"place":ojAmfColorPlace1,"color":ojAmfColor1},
+				{"place":ojAmfColorPlace2,"color":ojAmfColor2},
+				{"place":ojAmfColorPlace3,"color":ojAmfColor3},
+				{"place":ojAmfColorPlace4,"color":ojAmfColor4},
+				{"place":ojAmfColorPlace5,"color":ojAmfColor5},
+				{"place":ojAmfColorPlace6,"color":ojAmfColor6},
+				{"place":ojAmfColorPlace7,"color":ojAmfColor7},
+				{"place":ojAmfColorPlace8,"color":ojAmfColor8},
+				{"place":ojAmfColorPlace9,"color":ojAmfColor9}]
+	}
+	var ojAmfColorPlaceAndColor = '';
+	var amfFlag = 0;
+	for(var i = 0;i < ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor.length;i++){
+		if(isEmpty(ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place) && amfFlag != 3 && amfFlag != 6){
+			amfFlag +=1;
+			ojAmfColorPlaceAndColor = ojAmfColorPlaceAndColor + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place + '　' + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place) && (amfFlag == 3 || amfFlag == 6)){
+			amfFlag +=1;
+			ojAmfColorPlaceAndColor = ojAmfColorPlaceAndColor + "\<br\>　　　　" + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place + '　' + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#ojAmfColorAndSubItem").html(ojAmfColor + '　　'　+ ojAmfColorPlaceAndColor);
+
+	//標準JACKETのボタンホール色指定
+	var ojBhColor = "${orderForm.optionJacketStandardInfo.ojBhColorMap[orderForm.optionJacketStandardInfo.ojBhColor]}";
+
+	var ojBhColorPlace1 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace1]}";
+	var ojBhColorPlace2 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace2]}";
+	var ojBhColorPlace3 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace3]}";
+	var ojBhColorPlace4 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace4]}";
+	var ojBhColorPlace5 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace5]}";
+	var ojBhColorPlace6 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace6]}";
+	var ojBhColorPlace7 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace7]}";
+	var ojBhColorPlace8 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace8]}";
+	var ojBhColorPlace9 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace9]}";
+	var ojBhColorPlace10 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace10]}";
+	var ojBhColorPlace11 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace11]}";
+	var ojBhColorPlace12 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace12]}";
+	var ojBhColorPlace13 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace13]}";
+	var ojBhColorPlace14 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace14]}";
+	var ojBhColorPlace15 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace15]}";
+	var ojBhColorPlace16 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace16]}";
+	var ojBhColorPlace17 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace17]}";
+
+	var ojBhColor1 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor1]}";
+	var ojBhColor2 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor2]}";
+	var ojBhColor3 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor3]}";
+	var ojBhColor4 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor4]}";
+	var ojBhColor5 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor5]}";
+	var ojBhColor6 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor6]}";
+	var ojBhColor7 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor7]}";
+	var ojBhColor8 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor8]}";
+	var ojBhColor9 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor9]}";
+	var ojBhColor10 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor10]}";
+	var ojBhColor11 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor11]}";
+	var ojBhColor12 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor12]}";
+	var ojBhColor13 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor13]}";
+	var ojBhColor14 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor14]}";
+	var ojBhColor15 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor15]}";
+	var ojBhColor16 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor16]}";
+	var ojBhColor17 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor17]}";
+
+	var ojBhColorPlaceAndColorList = {
+			activeOjBhColorPlaceAndColor : [{"place":ojBhColorPlace1,"color":ojBhColor1},
+				{"place":ojBhColorPlace2,"color":ojBhColor2},
+				{"place":ojBhColorPlace3,"color":ojBhColor3},
+				{"place":ojBhColorPlace4,"color":ojBhColor4},
+				{"place":ojBhColorPlace5,"color":ojBhColor5},
+				{"place":ojBhColorPlace6,"color":ojBhColor6},
+				{"place":ojBhColorPlace7,"color":ojBhColor7},
+				{"place":ojBhColorPlace8,"color":ojBhColor8},
+				{"place":ojBhColorPlace9,"color":ojBhColor9},
+				{"place":ojBhColorPlace10,"color":ojBhColor10},
+				{"place":ojBhColorPlace11,"color":ojBhColor11},
+				{"place":ojBhColorPlace12,"color":ojBhColor12},
+				{"place":ojBhColorPlace13,"color":ojBhColor13},
+				{"place":ojBhColorPlace14,"color":ojBhColor14},
+				{"place":ojBhColorPlace15,"color":ojBhColor15},
+				{"place":ojBhColorPlace16,"color":ojBhColor16},
+				{"place":ojBhColorPlace17,"color":ojBhColor17}]
+	}
+	var ojBhColorPlaceAndColor = '';
+	var bnFlag = 0;
+	for(var i = 0;i < ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor.length;i++){
+		if(isEmpty(ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place) && bnFlag != 3 && bnFlag != 6 && bnFlag != 9 && bnFlag != 12 && bnFlag != 15){
+			bnFlag +=1;
+			ojBhColorPlaceAndColor = ojBhColorPlaceAndColor + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place + '　' + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place) && (bnFlag == 3 || bnFlag == 6 || bnFlag == 9 || bnFlag == 12 || bnFlag == 15)){
+			bnFlag +=1;
+			ojBhColorPlaceAndColor = ojBhColorPlaceAndColor + "\<br\>　　　　" + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place + '　' + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#ojBhColorAndSubItem").html(ojBhColor + '　　'　+ ojBhColorPlaceAndColor);
+	//標準JACKETのボタン付け糸指定
+	var ojByColor = "${orderForm.optionJacketStandardInfo.ojByColorMap[orderForm.optionJacketStandardInfo.ojByColor]}";
+
+	var ojByColorPlace1 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace1]}";
+	var ojByColorPlace2 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace2]}";
+	var ojByColorPlace3 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace3]}";
+	var ojByColorPlace4 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace4]}";
+	var ojByColorPlace5 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace5]}";
+	var ojByColorPlace6 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace6]}";
+	var ojByColorPlace7 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace7]}";
+	var ojByColorPlace8 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace8]}";
+	var ojByColorPlace9 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace9]}";
+	var ojByColorPlace10 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace10]}";
+	var ojByColorPlace11 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace11]}";
+	var ojByColorPlace12 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace12]}";
+	var ojByColorPlace13 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace13]}";
+	var ojByColorPlace14 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace14]}";
+	var ojByColorPlace15 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace15]}";
+	var ojByColorPlace16 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace16]}";
+
+	var ojByColor1 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor1]}";
+	var ojByColor2 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor2]}";
+	var ojByColor3 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor3]}";
+	var ojByColor4 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor4]}";
+	var ojByColor5 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor5]}";
+	var ojByColor6 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor6]}";
+	var ojByColor7 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor7]}";
+	var ojByColor8 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor8]}";
+	var ojByColor9 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor9]}";
+	var ojByColor10 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor10]}";
+	var ojByColor11 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor11]}";
+	var ojByColor12 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor12]}";
+	var ojByColor13 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor13]}";
+	var ojByColor14 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor14]}";
+	var ojByColor15 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor15]}";
+	var ojByColor16 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor16]}";
+
+	var ojByColorPlaceAndColorList = {
+			activeOjByColorPlaceAndColor : [{"place":ojByColorPlace1,"color":ojByColor1},
+				{"place":ojByColorPlace2,"color":ojByColor2},
+				{"place":ojByColorPlace3,"color":ojByColor3},
+				{"place":ojByColorPlace4,"color":ojByColor4},
+				{"place":ojByColorPlace5,"color":ojByColor5},
+				{"place":ojByColorPlace6,"color":ojByColor6},
+				{"place":ojByColorPlace7,"color":ojByColor7},
+				{"place":ojByColorPlace8,"color":ojByColor8},
+				{"place":ojByColorPlace9,"color":ojByColor9},
+				{"place":ojByColorPlace10,"color":ojByColor10},
+				{"place":ojByColorPlace11,"color":ojByColor11},
+				{"place":ojByColorPlace12,"color":ojByColor12},
+				{"place":ojByColorPlace13,"color":ojByColor13},
+				{"place":ojByColorPlace14,"color":ojByColor14},
+				{"place":ojByColorPlace15,"color":ojByColor15},
+				{"place":ojByColorPlace16,"color":ojByColor16}]
+	}
+	var ojByColorPlaceAndColor = '';
+	var byFlag = 0;
+	for(var i = 0;i < ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor.length;i++){
+		if(isEmpty(ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place) && byFlag != 3 && byFlag != 6 && byFlag != 9 && byFlag != 12 && byFlag != 15){
+			byFlag +=1;
+			ojByColorPlaceAndColor = ojByColorPlaceAndColor + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place + '　' + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place) && (byFlag == 3 || byFlag == 6 || byFlag == 9 || byFlag == 12 || byFlag == 15)){
+			byFlag +=1;
+			ojByColorPlaceAndColor = ojByColorPlaceAndColor + "\<br\>　　　　" + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place + '　' + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#ojByColorAndSubItem").html(ojByColor + '　　' +　ojByColorPlaceAndColor);
+
+	//標準Pantsのベルトループ 
+	var opBeltLoop = "${orderForm.optionPantsStandardInfo.opBeltLoopMap[orderForm.optionPantsStandardInfo.opBeltLoop]}";
+	var opBeltLoopPlace1 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace1]}";
+	var opBeltLoopPlace2 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace2]}";
+	var opBeltLoopPlace3 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace3]}";
+	var opBeltLoopPlace4 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace4]}";
+	var opBeltLoopPlace5 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace5]}";
+	var opBeltLoopPlace6 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace6]}";
+	var opBeltLoopPlace7 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace7]}";
+
+	var opBeltLoopPlaceList = [opBeltLoopPlace1,opBeltLoopPlace2,opBeltLoopPlace3,opBeltLoopPlace4,opBeltLoopPlace5,opBeltLoopPlace6,opBeltLoopPlace7];
+
+	var opBeltLoopPlace = '';
+	for(var i = 0;i < opBeltLoopPlaceList.length;i++){
+		if(isEmpty(opBeltLoopPlaceList[i])){
+			opBeltLoopPlace = opBeltLoopPlace + opBeltLoopPlaceList[i] + '　';
+		}
+	}
+	jQuery("#opBeltLoopAndSubItem").html(opBeltLoop　+ '　' + opBeltLoopPlace);
+
+	//標準Pantsのステッチ箇所変更
+	var opStitchModify = "${orderForm.optionPantsStandardInfo.opStitchModifyMap[orderForm.optionPantsStandardInfo.opStitchModify]}";
+	var opStitchModifyPlace1 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace1]}";
+	var opStitchModifyPlace2 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace2]}";
+	var opStitchModifyPlace3 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace3]}";
+	var opStitchModifyPlace4 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace4]}";
+
+	var opStitchModifyPlaceList = [opStitchModifyPlace1,opStitchModifyPlace2,opStitchModifyPlace3,opStitchModifyPlace4];
+	var opStitchModifyPlace = '';
+	for(var i = 0;i < opStitchModifyPlaceList.length;i++){
+		if(isEmpty(opStitchModifyPlaceList[i])){
+			opStitchModifyPlace = opStitchModifyPlace + opStitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#opStitchModifyAndSubItem").html(opStitchModify + '　　' + opStitchModifyPlace);
+
+	//標準Pantsのダブルステッチ
+	var opDStitch = "${orderForm.optionPantsStandardInfo.opDStitchMap[orderForm.optionPantsStandardInfo.opDStitch]}";
+	var opDStitchPlace1 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace1]}";
+	var opDStitchPlace2 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace2]}";
+	var opDStitchPlace3 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace3]}";
+	var opDStitchPlace4 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace4]}";
+
+	var opDStitchPlaceList = [opDStitchPlace1,opDStitchPlace2,opDStitchPlace3,opDStitchPlace4];
+	var opDStitchPlace = '';
+	for(var i = 0;i < opDStitchPlaceList.length;i++){
+		if(isEmpty(opDStitchPlaceList[i])){
+			opDStitchPlace = opDStitchPlace + opDStitchPlaceList[i] + '　';
+		}
+	}
+	jQuery("#opDStitchAndSubItem").html(opDStitch + '　　' + opDStitchPlace);
+
+	//標準PantsのAMF色指定
+	var opAmfColor = "${orderForm.optionPantsStandardInfo.opAmfColorMap[orderForm.optionPantsStandardInfo.opAmfColor]}";
+
+	var opAmfColorPlace1 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace1]}";
+	var opAmfColorPlace2 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace2]}";
+	var opAmfColorPlace3 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace3]}";
+	var opAmfColorPlace4 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace4]}";
+
+	var opAmfColor1 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor1]}";
+	var opAmfColor2 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor2]}";
+	var opAmfColor3 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor3]}";
+	var opAmfColor4 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor4]}";
+
+	var opAmfColorPlaceAndColorList = {
+			activeOpAmfColorPlaceAndColor : [{"place":opAmfColorPlace1,"color":opAmfColor1},
+				{"place":opAmfColorPlace2,"color":opAmfColor2},
+				{"place":opAmfColorPlace3,"color":opAmfColor3},
+				{"place":opAmfColorPlace4,"color":opAmfColor4}]
+	};
+	var opAmfColorPlaceAndColor = '';
+	var opAmfFlag = 0;
+	for(var i = 0; i < opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor.length; i++){
+		if(isEmpty(opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place) && opAmfFlag != 3){
+			opAmfFlag += 1;
+			opAmfColorPlaceAndColor = opAmfColorPlaceAndColor + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place + '　' + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place) && opAmfFlag == 3){
+			opAmfFlag += 1;
+			opAmfColorPlaceAndColor = opAmfColorPlaceAndColor + "\<br\>　　　　" + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place + '　' + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#opAmfColorAndSubItem").html(opAmfColor + '　　'　 + opAmfColorPlaceAndColor);
+
+	//標準Pantsのボタンホール色指定
+	var opBhColor = "${orderForm.optionPantsStandardInfo.opBhColorMap[orderForm.optionPantsStandardInfo.opBhColor]}";
+
+	var opBhColorPlace1 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace1]}";
+	var opBhColorPlace2 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace2]}";
+	var opBhColorPlace3 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace3]}";
+	var opBhColorPlace4 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace4]}";
+
+	var opBhColor1 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor1]}";
+	var opBhColor2 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor2]}";
+	var opBhColor3 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor3]}";
+	var opBhColor4 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor4]}";
+
+	var opBhColorPlaceAndColorList = {
+			activeOpBhColorPlaceAndColor : [{"place":opBhColorPlace1,"color":opBhColor1},
+				{"place":opBhColorPlace2,"color":opBhColor2},
+				{"place":opBhColorPlace3,"color":opBhColor3},
+				{"place":opBhColorPlace4,"color":opBhColor4}]
+	};
+	var opBhColorPlaceAndColor = '';
+	var opBhFlag = 0;
+	for(var i =0;i < opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor.length; i++){
+		if(isEmpty(opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place) && opBhFlag !=3){
+			opBhFlag += 1;
+			opBhColorPlaceAndColor = opBhColorPlaceAndColor + opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place + '　'　+ opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place) && opBhFlag ==3){
+			opBhFlag += 1;
+			opBhColorPlaceAndColor = opBhColorPlaceAndColor + "\<br\>　　　　" + opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place + '　'　+ opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#opBhColorAndSubItem").html(opBhColor + '　　' + opBhColorPlaceAndColor);
+
+	//標準Pantsのボタン付け糸指定
+	var opByColor = "${orderForm.optionPantsStandardInfo.opByColorMap[orderForm.optionPantsStandardInfo.opByColor]}";
+
+	var opByColorPlace1 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace1]}";
+	var opByColorPlace2 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace2]}";
+	var opByColorPlace3 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace3]}";
+	var opByColorPlace4 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace4]}";
+
+	var opByColor1 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor1]}";
+	var opByColor2 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor2]}";
+	var opByColor3 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor3]}";
+	var opByColor4 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor4]}";
+
+	var opByColorPlaceAndColorList = {
+			activeOpByColorPlaceAndColor : [{"place":opByColorPlace1,"color":opByColor1},
+				{"place":opByColorPlace2,"color":opByColor2},
+				{"place":opByColorPlace3,"color":opByColor3},
+				{"place":opByColorPlace4,"color":opByColor4}]
+	};
+	var opByColorPlaceAndColor = '';
+	var opByFlag = 0;
+	for(var i = 0;i < opByColorPlaceAndColorList.activeOpByColorPlaceAndColor.length;i++){
+		if(isEmpty(opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place) && opByFlag != 3){
+			opByFlag += 1;
+			opByColorPlaceAndColor = opByColorPlaceAndColor + opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place + '　' +  opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place) && opByFlag == 3){
+			opByFlag += 1;
+			opByColorPlaceAndColor = opByColorPlaceAndColor + "\<br\>　　　　" + opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place + '　' +  opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#opByColorAndSubItem").html(opByColor + '　　' +　opByColorPlaceAndColor);
+
+	//標準Giletのステッチ箇所変更
+	var ogStitchModify = "${orderForm.optionGiletStandardInfo.ogStitchModifyMap[orderForm.optionGiletStandardInfo.ogStitchModify]}";
+
+	var ogStitchModifyPlace1 = "${orderForm.optionGiletStandardInfo.ogStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogStitchModifyPlace1]}";
+	var ogStitchModifyPlace2 = "${orderForm.optionGiletStandardInfo.ogStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogStitchModifyPlace2]}";
+	var ogStitchModifyPlace3 = "${orderForm.optionGiletStandardInfo.ogStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogStitchModifyPlace3]}";
+
+	var ogStitchModifyPlaceList = [ogStitchModifyPlace1,ogStitchModifyPlace2,ogStitchModifyPlace3];
+	var ogStitchModifyPlace = '';
+	for(var i = 0;i < ogStitchModifyPlaceList.length;i++){
+		if(isEmpty(ogStitchModifyPlaceList[i])){
+			ogStitchModifyPlace = ogStitchModifyPlace + ogStitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#ogStitchModifyAndSubItem").html(ogStitchModify + '　　' + ogStitchModifyPlace);
+
+	//標準Giletのダブルステッチ
+	var ogDStitchModify = "${orderForm.optionGiletStandardInfo.ogDStitchModifyMap[orderForm.optionGiletStandardInfo.ogDStitchModify]}";
+
+	var ogDStitchModifyPlace1 = "${orderForm.optionGiletStandardInfo.ogDStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogDStitchModifyPlace1]}";
+	var ogDStitchModifyPlace2 = "${orderForm.optionGiletStandardInfo.ogDStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogDStitchModifyPlace2]}";
+	var ogDStitchModifyPlace3 = "${orderForm.optionGiletStandardInfo.ogDStitchModifyPlaceMap[orderForm.optionGiletStandardInfo.ogDStitchModifyPlace3]}";
+
+	var ogDStitchModifyPlaceList = [ogDStitchModifyPlace1,ogDStitchModifyPlace2,ogDStitchModifyPlace3];
+	var ogDStitchModifyPlace = '';
+	for(var i =0;i < ogDStitchModifyPlaceList.length;i++){
+		if(isEmpty(ogDStitchModifyPlaceList[i])){
+			ogDStitchModifyPlace = ogDStitchModifyPlace + ogDStitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#ogDStitchModifyAndSubItem").html(ogDStitchModify + '　　' + ogDStitchModifyPlace);
+
+	//標準GiletのAMF色指定
+	var ogAmfColor = "${orderForm.optionGiletStandardInfo.ogAmfColorMap[orderForm.optionGiletStandardInfo.ogAmfColor]}";
+
+	var ogAmfColorPlace1 = "${orderForm.optionGiletStandardInfo.ogAmfColorPlaceMap[orderForm.optionGiletStandardInfo.ogAmfColorPlace1]}";
+	var ogAmfColorPlace2 = "${orderForm.optionGiletStandardInfo.ogAmfColorPlaceMap[orderForm.optionGiletStandardInfo.ogAmfColorPlace2]}";
+	var ogAmfColorPlace3 = "${orderForm.optionGiletStandardInfo.ogAmfColorPlaceMap[orderForm.optionGiletStandardInfo.ogAmfColorPlace3]}";
+
+	var ogAmfColor1 = "${orderForm.optionGiletStandardInfo.ogAmfColorsMap[orderForm.optionGiletStandardInfo.ogAmfColor1]}";
+	var ogAmfColor2 = "${orderForm.optionGiletStandardInfo.ogAmfColorsMap[orderForm.optionGiletStandardInfo.ogAmfColor2]}";
+	var ogAmfColor3 = "${orderForm.optionGiletStandardInfo.ogAmfColorsMap[orderForm.optionGiletStandardInfo.ogAmfColor3]}";
+
+	var ogAmfColorPlaceAndColorList = {
+			activeOgAmfColorPlaceAndColor : [{"place":ogAmfColorPlace1,"color":ogAmfColor1},
+				{"place":ogAmfColorPlace2,"color":ogAmfColor2},
+				{"place":ogAmfColorPlace3,"color":ogAmfColor3}]
+	};
+	var ogAmfColorPlaceAndColor = '';
+	for(var i = 0;i < ogAmfColorPlaceAndColorList.activeOgAmfColorPlaceAndColor.length;i++){
+		if(isEmpty(ogAmfColorPlaceAndColorList.activeOgAmfColorPlaceAndColor[i].place)){
+			ogAmfColorPlaceAndColor = ogAmfColorPlaceAndColor + ogAmfColorPlaceAndColorList.activeOgAmfColorPlaceAndColor[i].place + '　' + ogAmfColorPlaceAndColorList.activeOgAmfColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#ogAmfColorAndSubItem").html(ogAmfColor + '　　' + ogAmfColorPlaceAndColor);
+
+	//標準Giletのボタンホール色指定
+	var ogBhColor = "${orderForm.optionGiletStandardInfo.ogBhColorMap[orderForm.optionGiletStandardInfo.ogBhColor]}";
+
+	var ogBhColorPlace1 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace1]}";
+	var ogBhColorPlace2 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace2]}";
+	var ogBhColorPlace3 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace3]}";
+	var ogBhColorPlace4 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace4]}";
+	var ogBhColorPlace5 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace5]}";
+	var ogBhColorPlace6 = "${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap[orderForm.optionGiletStandardInfo.ogBhColorPlace6]}";
+
+	var ogBhColor1 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor1]}";
+	var ogBhColor2 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor2]}";
+	var ogBhColor3 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor3]}";
+	var ogBhColor4 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor4]}";
+	var ogBhColor5 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor5]}";
+	var ogBhColor6 = "${orderForm.optionGiletStandardInfo.ogBhColorsMap[orderForm.optionGiletStandardInfo.ogBhColor6]}";
+
+	var ogBhColorPlaceAndColorList = {
+			activeOgBhColorPlaceAndColor : [{"place":ogBhColorPlace1,"color":ogBhColor1},
+				{"place":ogBhColorPlace2,"color":ogBhColor2},
+				{"place":ogBhColorPlace3,"color":ogBhColor3},
+				{"place":ogBhColorPlace4,"color":ogBhColor4},
+				{"place":ogBhColorPlace5,"color":ogBhColor5},
+				{"place":ogBhColorPlace6,"color":ogBhColor6}]
+	};
+	var ogBhColorPlaceAndColor = '';
+	var ogBhFlag = 0;
+	for(var i = 0;i < ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor.length;i++){
+		if(isEmpty(ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].place) && ogBhFlag != 3){
+			ogBhFlag += 1;
+			ogBhColorPlaceAndColor = ogBhColorPlaceAndColor + ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].place + '　' + ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if (isEmpty(ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].place) && ogBhFlag == 3){
+			ogBhFlag += 1;
+			ogBhColorPlaceAndColor = ogBhColorPlaceAndColor + "\<br\>　　　　" + ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].place + '　' + ogBhColorPlaceAndColorList.activeOgBhColorPlaceAndColor[i].color + '　　'
+			;
+		}
+	}
+	jQuery("#ogBhColorAndSubItem").html(ogBhColor + '　　' + ogBhColorPlaceAndColor);
+
+	//標準Giletのボタン付け糸指定
+	var ogByColor = "${orderForm.optionGiletStandardInfo.ogByColorMap[orderForm.optionGiletStandardInfo.ogByColor]}"; 
+
+	var ogByColorPlace1 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace1]}"; 
+	var ogByColorPlace2 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace2]}"; 
+	var ogByColorPlace3 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace3]}"; 
+	var ogByColorPlace4 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace4]}"; 
+	var ogByColorPlace5 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace5]}"; 
+	var ogByColorPlace6 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace6]}"; 
+	var ogByColorPlace7 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace7]}"; 
+	var ogByColorPlace8 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace8]}"; 
+	var ogByColorPlace9 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace9]}"; 
+	var ogByColorPlace10 = "${orderForm.optionGiletStandardInfo.ogByColorPlaceMap[orderForm.optionGiletStandardInfo.ogByColorPlace10]}"; 
+
+	var ogByColor1 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor1]}"; 
+	var ogByColor2 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor2]}"; 
+	var ogByColor3 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor3]}"; 
+	var ogByColor4 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor4]}"; 
+	var ogByColor5 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor5]}"; 
+	var ogByColor6 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor6]}"; 
+	var ogByColor7 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor7]}"; 
+	var ogByColor8 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor8]}"; 
+	var ogByColor9 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor9]}"; 
+	var ogByColor10 = "${orderForm.optionGiletStandardInfo.ogByColorsMap[orderForm.optionGiletStandardInfo.ogByColor10]}"; 
+
+	var ogByColorPlaceAndColorList = {
+			activeOgByColorPlaceAndColor : [{"place":ogByColorPlace1,"color":ogByColor1},
+				{"place":ogByColorPlace2,"color":ogByColor2},
+				{"place":ogByColorPlace3,"color":ogByColor3},
+				{"place":ogByColorPlace4,"color":ogByColor4},
+				{"place":ogByColorPlace5,"color":ogByColor5},
+				{"place":ogByColorPlace6,"color":ogByColor6},
+				{"place":ogByColorPlace7,"color":ogByColor7},
+				{"place":ogByColorPlace8,"color":ogByColor8},
+				{"place":ogByColorPlace9,"color":ogByColor9},
+				{"place":ogByColorPlace10,"color":ogByColor10}]
+	};
+	var ogByColorPlaceAndColor = '';
+	var ogByFlag = 0;
+	for(var i = 0;i < ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor.length;i++){
+		if(isEmpty(ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].place) && ogByFlag != 3 && ogByFlag != 6 && ogByFlag != 9){
+			ogByFlag += 1;
+			ogByColorPlaceAndColor = ogByColorPlaceAndColor + ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].place + '　' + ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].place) && (ogByFlag != 3 || ogByFlag != 6 || ogByFlag != 9)){
+			ogByFlag += 1;
+			ogByColorPlaceAndColor = ogByColorPlaceAndColor + "\<br\>　　　　" + ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].place + '　' + ogByColorPlaceAndColorList.activeOgByColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#ogByColorAndSubItem").html(ogByColor + '　　' + ogByColorPlaceAndColor);
+
+	//標準2PANTSのベルトループ
+	var op2BeltLoop = "${orderForm.optionPants2StandardInfo.op2BeltLoopMap[orderForm.optionPants2StandardInfo.op2BeltLoop]}";
+
+	var op2BeltLoopPlace1 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace1]}";
+	var op2BeltLoopPlace2 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace2]}";
+	var op2BeltLoopPlace3 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace3]}";
+	var op2BeltLoopPlace4 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace4]}";
+	var op2BeltLoopPlace5 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace5]}";
+	var op2BeltLoopPlace6 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace6]}";
+	var op2BeltLoopPlace7 = "${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap[orderForm.optionPants2StandardInfo.op2BeltLoopPlace7]}";
+
+	var op2BeltLoopPlaceList = [op2BeltLoopPlace1,op2BeltLoopPlace2,op2BeltLoopPlace3,op2BeltLoopPlace4,op2BeltLoopPlace5,op2BeltLoopPlace6,op2BeltLoopPlace7];
+	var op2BeltLoopPlace = '';
+	for(var i = 0;i < op2BeltLoopPlaceList.length;i++){
+		if(isEmpty(op2BeltLoopPlaceList[i])){
+			op2BeltLoopPlace = op2BeltLoopPlace + op2BeltLoopPlaceList[i] + '　';
+		}
+	}
+	jQuery("#op2BeltLoopAndSubItem").html(op2BeltLoop　+ '　　' +　op2BeltLoopPlace);
+
+	//標準2PANTSのステッチ箇所変更
+	var op2StitchModify = "${orderForm.optionPants2StandardInfo.op2StitchModifyMap[orderForm.optionPants2StandardInfo.op2StitchModify]}";
+
+	var op2StitchModifyPlace1 = "${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap[orderForm.optionPants2StandardInfo.op2StitchModifyPlace1]}";
+	var op2StitchModifyPlace2 = "${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap[orderForm.optionPants2StandardInfo.op2StitchModifyPlace2]}";
+	var op2StitchModifyPlace3 = "${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap[orderForm.optionPants2StandardInfo.op2StitchModifyPlace3]}";
+	var op2StitchModifyPlace4 = "${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap[orderForm.optionPants2StandardInfo.op2StitchModifyPlace4]}";
+
+	var op2StitchModifyPlaceList = [op2StitchModifyPlace1,op2StitchModifyPlace2,op2StitchModifyPlace3,op2StitchModifyPlace4];
+	var op2StitchModifyPlace = '';
+	for(var i = 0;i < op2StitchModifyPlaceList.length;i++){
+		if(isEmpty(op2StitchModifyPlaceList[i])){
+			op2StitchModifyPlace = op2StitchModifyPlace + op2StitchModifyPlaceList[i] + '　';
+		}
+	}
+	jQuery("#op2StitchModifyAndSubItem").html(op2StitchModify + '　　' + op2StitchModifyPlace);
+
+	//標準2PANTSのダブルステッチ
+	var op2DStitch = "${orderForm.optionPants2StandardInfo.op2DStitchMap[orderForm.optionPants2StandardInfo.op2DStitch]}";
+
+	var op2DStitchPlace1 = "${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap[orderForm.optionPants2StandardInfo.op2DStitchPlace1]}";
+	var op2DStitchPlace2 = "${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap[orderForm.optionPants2StandardInfo.op2DStitchPlace2]}";
+	var op2DStitchPlace3 = "${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap[orderForm.optionPants2StandardInfo.op2DStitchPlace3]}";
+	var op2DStitchPlace4 = "${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap[orderForm.optionPants2StandardInfo.op2DStitchPlace4]}";
+
+	var op2DStitchPlaceList = [op2DStitchPlace1,op2DStitchPlace2,op2DStitchPlace3,op2DStitchPlace4];
+	var op2DStitchPlace = '';
+	for(var i =0;i < op2DStitchPlaceList.length;i++){
+		if(isEmpty(op2DStitchPlaceList[i])){
+			op2DStitchPlace = op2DStitchPlace + op2DStitchPlaceList[i] + '　';
+		}
+	}
+	jQuery("#op2DStitchAndSubItem").html(op2DStitch + '　　' + op2DStitchPlace);
+
+	//標準2PANTSのAMF色指定
+	var op2AmfColor = "${orderForm.optionPants2StandardInfo.op2AmfColorMap[orderForm.optionPants2StandardInfo.op2AmfColor]}";
+
+	var op2AmfColorPlace1 = "${orderForm.optionPants2StandardInfo.op2AmfColorPlaceMap[orderForm.optionPants2StandardInfo.op2AmfColorPlace1]}";
+	var op2AmfColorPlace2 = "${orderForm.optionPants2StandardInfo.op2AmfColorPlaceMap[orderForm.optionPants2StandardInfo.op2AmfColorPlace2]}";
+	var op2AmfColorPlace3 = "${orderForm.optionPants2StandardInfo.op2AmfColorPlaceMap[orderForm.optionPants2StandardInfo.op2AmfColorPlace3]}";
+	var op2AmfColorPlace4 = "${orderForm.optionPants2StandardInfo.op2AmfColorPlaceMap[orderForm.optionPants2StandardInfo.op2AmfColorPlace4]}";
+
+	var op2AmfColor1 = "${orderForm.optionPants2StandardInfo.op2AmfColorsMap[orderForm.optionPants2StandardInfo.op2AmfColor1]}";
+	var op2AmfColor2 = "${orderForm.optionPants2StandardInfo.op2AmfColorsMap[orderForm.optionPants2StandardInfo.op2AmfColor2]}";
+	var op2AmfColor3 = "${orderForm.optionPants2StandardInfo.op2AmfColorsMap[orderForm.optionPants2StandardInfo.op2AmfColor3]}";
+	var op2AmfColor4 = "${orderForm.optionPants2StandardInfo.op2AmfColorsMap[orderForm.optionPants2StandardInfo.op2AmfColor4]}";
+
+	var op2AmfColorPlaceAndColorList = {
+			activeOp2AmfColorPlaceAndColor : [{"place":op2AmfColorPlace1,"color":op2AmfColor1},
+				{"place":op2AmfColorPlace2,"color":op2AmfColor2},
+				{"place":op2AmfColorPlace3,"color":op2AmfColor3},
+				{"place":op2AmfColorPlace4,"color":op2AmfColor4}]
+	};
+	var op2AmfColorPlaceAndColor = '';
+	var op2AmfFlag = 0;
+	for(var i = 0;i < op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor.length;i++){
+		if(isEmpty(op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].place)　&& op2AmfFlag != 3){
+			op2AmfFlag += 1;
+			op2AmfColorPlaceAndColor = op2AmfColorPlaceAndColor + op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].place + '　' + op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].place)　&& op2AmfFlag == 3){
+			op2AmfFlag += 1;
+			op2AmfColorPlaceAndColor = op2AmfColorPlaceAndColor + "\<br\>　　　　" + op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].place + '　' + op2AmfColorPlaceAndColorList.activeOp2AmfColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#op2AmfColorAndSubItem").html(op2AmfColor + '　　' + op2AmfColorPlaceAndColor);
+
+	//標準2PANTSのボタンホール色指定
+	var op2BhColor = "${orderForm.optionPants2StandardInfo.op2BhColorMap[orderForm.optionPants2StandardInfo.op2BhColor]}";
+
+	var op2BhColorPlace1 = "${orderForm.optionPants2StandardInfo.op2BhColorPlaceMap[orderForm.optionPants2StandardInfo.op2BhColorPlace1]}";
+	var op2BhColorPlace2 = "${orderForm.optionPants2StandardInfo.op2BhColorPlaceMap[orderForm.optionPants2StandardInfo.op2BhColorPlace2]}";
+	var op2BhColorPlace3 = "${orderForm.optionPants2StandardInfo.op2BhColorPlaceMap[orderForm.optionPants2StandardInfo.op2BhColorPlace3]}";
+	var op2BhColorPlace4 = "${orderForm.optionPants2StandardInfo.op2BhColorPlaceMap[orderForm.optionPants2StandardInfo.op2BhColorPlace4]}";
+
+	var op2BhColor1 = "${orderForm.optionPants2StandardInfo.op2BhColorsMap[orderForm.optionPants2StandardInfo.op2BhColor1]}";
+	var op2BhColor2 = "${orderForm.optionPants2StandardInfo.op2BhColorsMap[orderForm.optionPants2StandardInfo.op2BhColor2]}";
+	var op2BhColor3 = "${orderForm.optionPants2StandardInfo.op2BhColorsMap[orderForm.optionPants2StandardInfo.op2BhColor3]}";
+	var op2BhColor4 = "${orderForm.optionPants2StandardInfo.op2BhColorsMap[orderForm.optionPants2StandardInfo.op2BhColor4]}";
+
+	var op2BhColorPlaceAndColorList = {
+		activeOp2BhColorPlaceAndColor : [{"place":op2BhColorPlace1,"color":op2BhColor1},
+			{"place":op2BhColorPlace2,"color":op2BhColor2},
+			{"place":op2BhColorPlace3,"color":op2BhColor3},
+			{"place":op2BhColorPlace4,"color":op2BhColor4}]
+	};
+	var op2BhColorPlaceAndColor = '';
+	var op2BhFlag = 0;
+	for(var i = 0;i < op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor.length;i++){
+		if(isEmpty(op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].place) && op2BhFlag != 3){
+			op2BhFlag　+= 1;
+			op2BhColorPlaceAndColor = op2BhColorPlaceAndColor + op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].place + '　' + op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].color
+			+ '　　'; 
+		}
+		else if(isEmpty(op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].place) && op2BhFlag == 3){
+			op2BhFlag　+= 1;
+			op2BhColorPlaceAndColor = op2BhColorPlaceAndColor + "\<br\>　　　　" + op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].place + '　' + op2BhColorPlaceAndColorList.activeOp2BhColorPlaceAndColor[i].color + '　　'; 
+		}
+	}
+	jQuery("#op2BhColorAndSubItem").html(op2BhColor + '　　' + op2BhColorPlaceAndColor);
+
+	//標準2PANTSのボタン付け糸指定
+	var op2ByColor = "${orderForm.optionPants2StandardInfo.op2ByColorMap[orderForm.optionPants2StandardInfo.op2ByColor]}";
+
+	var op2ByColorPlace1 = "${orderForm.optionPants2StandardInfo.op2ByColorPlaceMap[orderForm.optionPants2StandardInfo.op2ByColorPlace1]}";
+	var op2ByColorPlace2 = "${orderForm.optionPants2StandardInfo.op2ByColorPlaceMap[orderForm.optionPants2StandardInfo.op2ByColorPlace2]}";
+	var op2ByColorPlace3 = "${orderForm.optionPants2StandardInfo.op2ByColorPlaceMap[orderForm.optionPants2StandardInfo.op2ByColorPlace3]}";
+	var op2ByColorPlace4 = "${orderForm.optionPants2StandardInfo.op2ByColorPlaceMap[orderForm.optionPants2StandardInfo.op2ByColorPlace4]}";
+
+	var op2ByColor1 = "${orderForm.optionPants2StandardInfo.op2ByColorsMap[orderForm.optionPants2StandardInfo.op2ByColor1]}";
+	var op2ByColor2 = "${orderForm.optionPants2StandardInfo.op2ByColorsMap[orderForm.optionPants2StandardInfo.op2ByColor2]}";
+	var op2ByColor3 = "${orderForm.optionPants2StandardInfo.op2ByColorsMap[orderForm.optionPants2StandardInfo.op2ByColor3]}";
+	var op2ByColor4 = "${orderForm.optionPants2StandardInfo.op2ByColorsMap[orderForm.optionPants2StandardInfo.op2ByColor4]}";
+
+	var op2ByColorPlaceAndColorList = {
+			activeOp2ByColorPlaceAndColor : [{"place":op2ByColorPlace1,"color":op2ByColor1},
+				{"place":op2ByColorPlace2,"color":op2ByColor2},
+				{"place":op2ByColorPlace3,"color":op2ByColor3},
+				{"place":op2ByColorPlace4,"color":op2ByColor4}] 
+	};
+	var op2ByColorPlaceAndColor = '';
+	var op2ByFlag = 0;
+	for(var i =0;i < op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor.length;i++){
+		if(isEmpty(op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].place) && op2ByFlag != 3){
+			op2ByFlag += 1;
+			op2ByColorPlaceAndColor = op2ByColorPlaceAndColor + op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].place + '　' + op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].color
+			+ '　　';
+		}
+		else if(isEmpty(op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].place) && op2ByFlag == 3){
+			op2ByFlag += 1;
+			op2ByColorPlaceAndColor = op2ByColorPlaceAndColor + "\<br\>　　　　" + op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].place + '　' + op2ByColorPlaceAndColorList.activeOp2ByColorPlaceAndColor[i].color + '　　';
+		}
+	}
+	jQuery("#op2ByColorAndSubItem").html(op2ByColor + '　　' + op2ByColorPlaceAndColor);
 }
-jQuery("#ojStitchModifyPlaceAndSubItem").html(ojStitchModify + '　　' + ojStitchModifyPlace)
-
-//標準JACKETのダブルステッチ変更
-var ojDStitchModify = "${orderForm.optionJacketStandardInfo.ojDStitchModifyMap[orderForm.optionJacketStandardInfo.ojDStitchModify]}";
-var ojDStitchModifyPlace1 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace1]}";
-var ojDStitchModifyPlace2 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace2]}";
-var ojDStitchModifyPlace3 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace3]}";
-var ojDStitchModifyPlace4 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace4]}";
-var ojDStitchModifyPlace5 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace5]}";
-var ojDStitchModifyPlace6 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace6]}";
-var ojDStitchModifyPlace7 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace7]}";
-var ojDStitchModifyPlace8 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace8]}";
-var ojDStitchModifyPlace9 = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlaceMap[orderForm.optionJacketStandardInfo.ojDStitchModifyPlace9]}";
-
-var ojDStitchModifyPlaceList = [ojDStitchModifyPlace1,ojDStitchModifyPlace2,ojDStitchModifyPlace3,ojDStitchModifyPlace4,
-	ojDStitchModifyPlace5,ojDStitchModifyPlace6,ojDStitchModifyPlace7,ojDStitchModifyPlace8,ojDStitchModifyPlace9];
-var ojDStitchModifyPlace = '';
-for(var i = 0;i < ojDStitchModifyPlaceList.length;i++){
-	if(isEmpty(ojDStitchModifyPlaceList[i])){
-		ojDStitchModifyPlace = ojDStitchModifyPlace + ojDStitchModifyPlaceList[i] + '　';
-	}
-}
-jQuery("#ojDStitchModifyAndSubItem").html(ojDStitchModify　+ '　　' + ojDStitchModifyPlace);
-
-//標準JACKETのAMF色指定
-var ojAmfColor = "${orderForm.optionJacketStandardInfo.ojAmfColorMap[orderForm.optionJacketStandardInfo.ojAmfColor]}";
-var ojAmfColorPlace1 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace1]}";
-var ojAmfColorPlace2 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace2]}";
-var ojAmfColorPlace3 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace3]}";
-var ojAmfColorPlace4 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace4]}";
-var ojAmfColorPlace5 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace5]}";
-var ojAmfColorPlace6 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace6]}";
-var ojAmfColorPlace7 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace7]}";
-var ojAmfColorPlace8 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace8]}";
-var ojAmfColorPlace9 = "${orderForm.optionJacketStandardInfo.ojAmfColorPlaceMap[orderForm.optionJacketStandardInfo.ojAmfColorPlace9]}";
-var ojAmfColor1 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor1]}";
-var ojAmfColor2 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor2]}";
-var ojAmfColor3 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor3]}";
-var ojAmfColor4 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor4]}";
-var ojAmfColor5 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor5]}";
-var ojAmfColor6 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor6]}";
-var ojAmfColor7 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor7]}";
-var ojAmfColor8 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor8]}";
-var ojAmfColor9 = "${orderForm.optionJacketStandardInfo.ojAmfColorsMap[orderForm.optionJacketStandardInfo.ojAmfColor9]}";
-
-var ojAmfColorPlaceAndColorList = {
-		activeOjAmfColorPlaceAndColor : [{"place":ojAmfColorPlace1,"color":ojAmfColor1},
-			{"place":ojAmfColorPlace2,"color":ojAmfColor2},
-			{"place":ojAmfColorPlace3,"color":ojAmfColor3},
-			{"place":ojAmfColorPlace4,"color":ojAmfColor4},
-			{"place":ojAmfColorPlace5,"color":ojAmfColor5},
-			{"place":ojAmfColorPlace6,"color":ojAmfColor6},
-			{"place":ojAmfColorPlace7,"color":ojAmfColor7},
-			{"place":ojAmfColorPlace8,"color":ojAmfColor8},
-			{"place":ojAmfColorPlace9,"color":ojAmfColor9}]
-}
-var ojAmfColorPlaceAndColor = '';
-var amfFlag = 0;
-for(var i = 0;i < ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor.length;i++){
-	if(isEmpty(ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place) && amfFlag != 3 && amfFlag != 6){
-		amfFlag +=1;
-		ojAmfColorPlaceAndColor = ojAmfColorPlaceAndColor + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place + '　' + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place) && (amfFlag == 3 || amfFlag == 6)){
-		amfFlag +=1;
-		ojAmfColorPlaceAndColor = ojAmfColorPlaceAndColor + "\<br\>　　　　" + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].place + '　' + ojAmfColorPlaceAndColorList.activeOjAmfColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#ojAmfColorAndSubItem").html(ojAmfColor + '　　'　+ ojAmfColorPlaceAndColor);
-
-//標準JACKETのボタンホール色指定
-var ojBhColor = "${orderForm.optionJacketStandardInfo.ojBhColorMap[orderForm.optionJacketStandardInfo.ojBhColor]}";
-
-var ojBhColorPlace1 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace1]}";
-var ojBhColorPlace2 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace2]}";
-var ojBhColorPlace3 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace3]}";
-var ojBhColorPlace4 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace4]}";
-var ojBhColorPlace5 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace5]}";
-var ojBhColorPlace6 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace6]}";
-var ojBhColorPlace7 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace7]}";
-var ojBhColorPlace8 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace8]}";
-var ojBhColorPlace9 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace9]}";
-var ojBhColorPlace10 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace10]}";
-var ojBhColorPlace11 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace11]}";
-var ojBhColorPlace12 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace12]}";
-var ojBhColorPlace13 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace13]}";
-var ojBhColorPlace14 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace14]}";
-var ojBhColorPlace15 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace15]}";
-var ojBhColorPlace16 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace16]}";
-var ojBhColorPlace17 = "${orderForm.optionJacketStandardInfo.ojBhColorPlaceMap[orderForm.optionJacketStandardInfo.ojBhColorPlace17]}";
-
-var ojBhColor1 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor1]}";
-var ojBhColor2 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor2]}";
-var ojBhColor3 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor3]}";
-var ojBhColor4 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor4]}";
-var ojBhColor5 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor5]}";
-var ojBhColor6 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor6]}";
-var ojBhColor7 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor7]}";
-var ojBhColor8 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor8]}";
-var ojBhColor9 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor9]}";
-var ojBhColor10 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor10]}";
-var ojBhColor11 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor11]}";
-var ojBhColor12 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor12]}";
-var ojBhColor13 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor13]}";
-var ojBhColor14 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor14]}";
-var ojBhColor15 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor15]}";
-var ojBhColor16 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor16]}";
-var ojBhColor17 = "${orderForm.optionJacketStandardInfo.ojBhColorsMap[orderForm.optionJacketStandardInfo.ojBhColor17]}";
-
-var ojBhColorPlaceAndColorList = {
-		activeOjBhColorPlaceAndColor : [{"place":ojBhColorPlace1,"color":ojBhColor1},
-			{"place":ojBhColorPlace2,"color":ojBhColor2},
-			{"place":ojBhColorPlace3,"color":ojBhColor3},
-			{"place":ojBhColorPlace4,"color":ojBhColor4},
-			{"place":ojBhColorPlace5,"color":ojBhColor5},
-			{"place":ojBhColorPlace6,"color":ojBhColor6},
-			{"place":ojBhColorPlace7,"color":ojBhColor7},
-			{"place":ojBhColorPlace8,"color":ojBhColor8},
-			{"place":ojBhColorPlace9,"color":ojBhColor9},
-			{"place":ojBhColorPlace10,"color":ojBhColor10},
-			{"place":ojBhColorPlace11,"color":ojBhColor11},
-			{"place":ojBhColorPlace12,"color":ojBhColor12},
-			{"place":ojBhColorPlace13,"color":ojBhColor13},
-			{"place":ojBhColorPlace14,"color":ojBhColor14},
-			{"place":ojBhColorPlace15,"color":ojBhColor15},
-			{"place":ojBhColorPlace16,"color":ojBhColor16},
-			{"place":ojBhColorPlace17,"color":ojBhColor17}]
-}
-var ojBhColorPlaceAndColor = '';
-var bnFlag = 0;
-for(var i = 0;i < ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor.length;i++){
-	if(isEmpty(ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place) && bnFlag != 3 && bnFlag != 6 && bnFlag != 9 && bnFlag != 12 && bnFlag != 15){
-		bnFlag +=1;
-		ojBhColorPlaceAndColor = ojBhColorPlaceAndColor + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place + '　' + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place) && (bnFlag == 3 || bnFlag == 6 || bnFlag == 9 || bnFlag == 12 || bnFlag == 15)){
-		bnFlag +=1;
-		ojBhColorPlaceAndColor = ojBhColorPlaceAndColor + "\<br\>　　　　" + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].place + '　' + ojBhColorPlaceAndColorList.activeOjBhColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#ojBhColorAndSubItem").html(ojBhColor + '　　'　+ ojBhColorPlaceAndColor);
-
-//標準JACKETのボタン付け糸指定
-var ojByColor = "${orderForm.optionJacketStandardInfo.ojByColorMap[orderForm.optionJacketStandardInfo.ojByColor]}";
-
-var ojByColorPlace1 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace1]}";
-var ojByColorPlace2 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace2]}";
-var ojByColorPlace3 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace3]}";
-var ojByColorPlace4 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace4]}";
-var ojByColorPlace5 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace5]}";
-var ojByColorPlace6 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace6]}";
-var ojByColorPlace7 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace7]}";
-var ojByColorPlace8 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace8]}";
-var ojByColorPlace9 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace9]}";
-var ojByColorPlace10 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace10]}";
-var ojByColorPlace11 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace11]}";
-var ojByColorPlace12 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace12]}";
-var ojByColorPlace13 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace13]}";
-var ojByColorPlace14 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace14]}";
-var ojByColorPlace15 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace15]}";
-var ojByColorPlace16 = "${orderForm.optionJacketStandardInfo.ojByColorPlaceMap[orderForm.optionJacketStandardInfo.ojByColorPlace16]}";
-
-var ojByColor1 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor1]}";
-var ojByColor2 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor2]}";
-var ojByColor3 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor3]}";
-var ojByColor4 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor4]}";
-var ojByColor5 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor5]}";
-var ojByColor6 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor6]}";
-var ojByColor7 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor7]}";
-var ojByColor8 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor8]}";
-var ojByColor9 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor9]}";
-var ojByColor10 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor10]}";
-var ojByColor11 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor11]}";
-var ojByColor12 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor12]}";
-var ojByColor13 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor13]}";
-var ojByColor14 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor14]}";
-var ojByColor15 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor15]}";
-var ojByColor16 = "${orderForm.optionJacketStandardInfo.ojByColorsMap[orderForm.optionJacketStandardInfo.ojByColor16]}";
-
-var ojByColorPlaceAndColorList = {
-		activeOjByColorPlaceAndColor : [{"place":ojByColorPlace1,"color":ojByColor1},
-			{"place":ojByColorPlace2,"color":ojByColor2},
-			{"place":ojByColorPlace3,"color":ojByColor3},
-			{"place":ojByColorPlace4,"color":ojByColor4},
-			{"place":ojByColorPlace5,"color":ojByColor5},
-			{"place":ojByColorPlace6,"color":ojByColor6},
-			{"place":ojByColorPlace7,"color":ojByColor7},
-			{"place":ojByColorPlace8,"color":ojByColor8},
-			{"place":ojByColorPlace9,"color":ojByColor9},
-			{"place":ojByColorPlace10,"color":ojByColor10},
-			{"place":ojByColorPlace11,"color":ojByColor11},
-			{"place":ojByColorPlace12,"color":ojByColor12},
-			{"place":ojByColorPlace13,"color":ojByColor13},
-			{"place":ojByColorPlace14,"color":ojByColor14},
-			{"place":ojByColorPlace15,"color":ojByColor15},
-			{"place":ojByColorPlace16,"color":ojByColor16}]
-}
-var ojByColorPlaceAndColor = '';
-var byFlag = 0;
-for(var i = 0;i < ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor.length;i++){
-	if(isEmpty(ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place) && byFlag != 3 && byFlag != 6 && byFlag != 9 && byFlag != 12 && byFlag != 15){
-		byFlag +=1;
-		ojByColorPlaceAndColor = ojByColorPlaceAndColor + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place + '　' + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place) && (byFlag == 3 || byFlag == 6 || byFlag == 9 || byFlag == 12 || byFlag == 15)){
-		byFlag +=1;
-		ojByColorPlaceAndColor = ojByColorPlaceAndColor + "\<br\>　　　　" + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].place + '　' + ojByColorPlaceAndColorList.activeOjByColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#ojByColorAndSubItem").html(ojByColor + '　　' +　ojByColorPlaceAndColor);
-
-//標準Pantsのベルトループ 
-var opBeltLoop = "${orderForm.optionPantsStandardInfo.opBeltLoopMap[orderForm.optionPantsStandardInfo.opBeltLoop]}";
-var opBeltLoopPlace1 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace1]}";
-var opBeltLoopPlace2 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace2]}";
-var opBeltLoopPlace3 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace3]}";
-var opBeltLoopPlace4 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace4]}";
-var opBeltLoopPlace5 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace5]}";
-var opBeltLoopPlace6 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace6]}";
-var opBeltLoopPlace7 = "${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap[orderForm.optionPantsStandardInfo.opBeltLoopPlace7]}";
-
-var opBeltLoopPlaceList = [opBeltLoopPlace1,opBeltLoopPlace2,opBeltLoopPlace3,opBeltLoopPlace4,opBeltLoopPlace5,opBeltLoopPlace6,opBeltLoopPlace7];
-
-var opBeltLoopPlace = '';
-for(var i = 0;i < opBeltLoopPlaceList.length;i++){
-	if(isEmpty(opBeltLoopPlaceList[i])){
-		opBeltLoopPlace = opBeltLoopPlace + opBeltLoopPlaceList[i] + '　';
-	}
-}
-jQuery("#opBeltLoopAndSubItem").html(opBeltLoop　+ '　' + opBeltLoopPlace);
-
-//標準Pantsのステッチ箇所変更
-var opStitchModify = "${orderForm.optionPantsStandardInfo.opStitchModifyMap[orderForm.optionPantsStandardInfo.opStitchModify]}";
-var opStitchModifyPlace1 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace1]}";
-var opStitchModifyPlace2 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace2]}";
-var opStitchModifyPlace3 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace3]}";
-var opStitchModifyPlace4 = "${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap[orderForm.optionPantsStandardInfo.opStitchModifyPlace4]}";
-
-var opStitchModifyPlaceList = [opStitchModifyPlace1,opStitchModifyPlace2,opStitchModifyPlace3,opStitchModifyPlace4];
-var opStitchModifyPlace = '';
-for(var i = 0;i < opStitchModifyPlaceList.length;i++){
-	if(isEmpty(opStitchModifyPlaceList[i])){
-		opStitchModifyPlace = opStitchModifyPlace + opStitchModifyPlaceList[i] + '　';
-	}
-}
-jQuery("#opStitchModifyAndSubItem").html(opStitchModify + '　　' + opStitchModifyPlace);
-
-//標準Pantsのダブルステッチ
-var opDStitch = "${orderForm.optionPantsStandardInfo.opDStitchMap[orderForm.optionPantsStandardInfo.opDStitch]}";
-var opDStitchPlace1 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace1]}";
-var opDStitchPlace2 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace2]}";
-var opDStitchPlace3 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace3]}";
-var opDStitchPlace4 = "${orderForm.optionPantsStandardInfo.opDStitchPlaceMap[orderForm.optionPantsStandardInfo.opDStitchPlace4]}";
-
-var opDStitchPlaceList = [opDStitchPlace1,opDStitchPlace2,opDStitchPlace3,opDStitchPlace4];
-var opDStitchPlace = '';
-for(var i = 0;i < opDStitchPlaceList.length;i++){
-	if(isEmpty(opDStitchPlaceList[i])){
-		opDStitchPlace = opDStitchPlace + opDStitchPlaceList[i] + '　';
-	}
-}
-jQuery("#opDStitchAndSubItem").html(opDStitch + '　　' + opDStitchPlace);
-
-//標準PantsのAMF色指定
-var opAmfColor = "${orderForm.optionPantsStandardInfo.opAmfColorMap[orderForm.optionPantsStandardInfo.opAmfColor]}";
-
-var opAmfColorPlace1 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace1]}";
-var opAmfColorPlace2 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace2]}";
-var opAmfColorPlace3 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace3]}";
-var opAmfColorPlace4 = "${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap[orderForm.optionPantsStandardInfo.opAmfColorPlace4]}";
-
-var opAmfColor1 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor1]}";
-var opAmfColor2 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor2]}";
-var opAmfColor3 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor3]}";
-var opAmfColor4 = "${orderForm.optionPantsStandardInfo.opAmfColorsMap[orderForm.optionPantsStandardInfo.opAmfColor4]}";
-
-var opAmfColorPlaceAndColorList = {
-		activeOpAmfColorPlaceAndColor : [{"place":opAmfColorPlace1,"color":opAmfColor1},
-			{"place":opAmfColorPlace2,"color":opAmfColor2},
-			{"place":opAmfColorPlace3,"color":opAmfColor3},
-			{"place":opAmfColorPlace4,"color":opAmfColor4}]
-};
-var opAmfColorPlaceAndColor = '';
-var opAmfFlag = 0;
-for(var i = 0; i < opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor.length; i++){
-	if(isEmpty(opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place) && opAmfFlag != 3){
-		opAmfFlag += 1;
-		opAmfColorPlaceAndColor = opAmfColorPlaceAndColor + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place + '　' + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place) && opAmfFlag == 3){
-		opAmfFlag += 1;
-		opAmfColorPlaceAndColor = opAmfColorPlaceAndColor + "\<br\>　　　　" + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].place + '　' + opAmfColorPlaceAndColorList.activeOpAmfColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#opAmfColorAndSubItem").html(opAmfColor + '　　'　 + opAmfColorPlaceAndColor);
-
-//標準Pantsのボタンホール色指定
-var opBhColor = "${orderForm.optionPantsStandardInfo.opBhColorMap[orderForm.optionPantsStandardInfo.opBhColor]}";
-
-var opBhColorPlace1 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace1]}";
-var opBhColorPlace2 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace2]}";
-var opBhColorPlace3 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace3]}";
-var opBhColorPlace4 = "${orderForm.optionPantsStandardInfo.opBhColorPlaceMap[orderForm.optionPantsStandardInfo.opBhColorPlace4]}";
-
-var opBhColor1 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor1]}";
-var opBhColor2 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor2]}";
-var opBhColor3 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor3]}";
-var opBhColor4 = "${orderForm.optionPantsStandardInfo.opBhColorsMap[orderForm.optionPantsStandardInfo.opBhColor4]}";
-
-var opBhColorPlaceAndColorList = {
-		activeOpBhColorPlaceAndColor : [{"place":opBhColorPlace1,"color":opBhColor1},
-			{"place":opBhColorPlace2,"color":opBhColor2},
-			{"place":opBhColorPlace3,"color":opBhColor3},
-			{"place":opBhColorPlace4,"color":opBhColor4}]
-};
-var opBhColorPlaceAndColor = '';
-var opBhFlag = 0;
-for(var i =0;i < opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor.length; i++){
-	if(isEmpty(opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place) && opBhFlag !=3){
-		opBhFlag += 1;
-		opBhColorPlaceAndColor = opBhColorPlaceAndColor + opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place + '　'　+ opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place) && opBhFlag ==3){
-		opBhFlag += 1;
-		opBhColorPlaceAndColor = opBhColorPlaceAndColor + "\<br\>　　　　" + opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].place + '　'　+ opBhColorPlaceAndColorList.activeOpBhColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#opBhColorAndSubItem").html(opBhColor + '　　' + opBhColorPlaceAndColor);
-
-//標準Pantsのボタン付け糸指定
-var opByColor = "${orderForm.optionPantsStandardInfo.opByColorMap[orderForm.optionPantsStandardInfo.opByColor]}";
-
-var opByColorPlace1 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace1]}";
-var opByColorPlace2 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace2]}";
-var opByColorPlace3 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace3]}";
-var opByColorPlace4 = "${orderForm.optionPantsStandardInfo.opByColorPlaceMap[orderForm.optionPantsStandardInfo.opByColorPlace4]}";
-
-var opByColor1 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor1]}";
-var opByColor2 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor2]}";
-var opByColor3 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor3]}";
-var opByColor4 = "${orderForm.optionPantsStandardInfo.opByColorsMap[orderForm.optionPantsStandardInfo.opByColor4]}";
-
-var opByColorPlaceAndColorList = {
-		activeOpByColorPlaceAndColor : [{"place":opByColorPlace1,"color":opByColor1},
-			{"place":opByColorPlace2,"color":opByColor2},
-			{"place":opByColorPlace3,"color":opByColor3},
-			{"place":opByColorPlace4,"color":opByColor4}]
-};
-var opByColorPlaceAndColor = '';
-var opByFlag = 0;
-for(var i = 0;i < opByColorPlaceAndColorList.activeOpByColorPlaceAndColor.length;i++){
-	if(isEmpty(opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place) && opByFlag != 3){
-		opByFlag += 1;
-		opByColorPlaceAndColor = opByColorPlaceAndColor + opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place + '　' +  opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].color
-		+ '　　';
-	}
-	else if(isEmpty(opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place) && opByFlag == 3){
-		opByFlag += 1;
-		opByColorPlaceAndColor = opByColorPlaceAndColor + "\<br\>　　　　" + opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].place + '　' +  opByColorPlaceAndColorList.activeOpByColorPlaceAndColor[i].color;
-	}
-}
-jQuery("#opByColorAndSubItem").html(opByColor + '　　' +　opByColorPlaceAndColor);
 </script>

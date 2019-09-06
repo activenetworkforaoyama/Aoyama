@@ -8,6 +8,7 @@
 
 
     <resultMap id="stockResultMap" type="Stock">
+    	<id property="orderPattern" column="order_pattern" />
         <id property="fabricNo" column="fabric_no" />
         <result property="color" column="color" />
         <result property="pattern" column="pattern" />
@@ -24,10 +25,12 @@
         <result property="updatedUserId" column="updated_user_id" />
         <result property="makerName" column="maker_name" />
         <result property="fablicBrandNo" column="fablic_brand_no" />
+        <result property="theoretical" column="theoretical" />
     </resultMap>
 
     <select id="findAllStock" resultMap="stockResultMap">
         SELECT 
+        	order_pattern,
         	a.fabric_no,
 			a.color,
 			a.pattern,
@@ -49,6 +52,7 @@
     
     <select id="findStockByPk" resultMap="stockResultMap">
 		SELECT 
+			order_pattern,
 		    fabric_no, 
             theoretical_stock, 
             actual_stock,
@@ -63,6 +67,7 @@
 	
 	<select id="fuzzyQuery" parameterType="string" resultMap="stockResultMap">
 		SELECT 
+			a.order_pattern,
         	a.fabric_no,
 			a.color,
 			a.pattern,
@@ -70,13 +75,17 @@
 			c.factory_name,
 			a.retail_price,
 			d.reservation_stock,
-			d.Theoretical_stock,
+			d.theoretical_stock,
+			d.theoretical_stock - d.reservation_stock as theoretical,
 			d.actual_stock,
 			d.fabric_no,
 			d.version
 		FROM
      		mtb_fabric AS a,mtb_fabric_brand AS b,mtb_factory AS c,mtb_stock AS d,mtb_maker e
  		WHERE
+ 		<if test="orderPattern!=null and orderPattern!=''">
+			a.order_pattern = #{orderPattern} and
+		</if>
  		<if test="fabricNo!=null and fabricNo!=''">
 			a.fabric_no LIKE '%${fabricNo}%' and
 		</if>
@@ -113,15 +122,16 @@
         UPDATE
             mtb_stock 
         SET
+        	order_pattern = #{item.orderPattern},
         	fabric_no = #{item.fabricNo},
-            theoretical_stock = #{item.theoreticalStock}, 
+            theoretical_stock = #{item.reservationStock} + #{item.theoretical}, 
             actual_stock = #{item.actualStock},
             version = #{item.version} + 1,
             created_user_id =#{item.createdUserId},
             updated_user_id =#{item.updatedUserId},
             updated_at = #{item.updatedAt} 
         WHERE
-            fabric_no = #{item.fabricNo} and version = #{item.version}
+            fabric_no = #{item.fabricNo} and order_pattern = #{item.orderPattern} and version = #{item.version}
 		</foreach>
     </update>
     

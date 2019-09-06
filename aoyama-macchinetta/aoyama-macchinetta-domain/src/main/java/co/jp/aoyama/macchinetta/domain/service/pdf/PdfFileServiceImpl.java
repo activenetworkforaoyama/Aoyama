@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
@@ -18,12 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.jp.aoyama.macchinetta.domain.model.Factory;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
+import co.jp.aoyama.macchinetta.domain.model.MemberName;
 import co.jp.aoyama.macchinetta.domain.model.Order;
-import co.jp.aoyama.macchinetta.domain.model.Shop;
 import co.jp.aoyama.macchinetta.domain.repository.factory.FactoryRepository;
 import co.jp.aoyama.macchinetta.domain.repository.measuring.MeasuringRepository;
 import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
 import co.jp.aoyama.macchinetta.domain.repository.shop.ShopRepository;
+import co.jp.aoyama.macchinetta.domain.service.member.MemberNameService;
 import jp.co.hos.coreports.CrDraw;
 import jp.co.hos.coreports.CrForm;
 import jp.co.hos.coreports.CrStreamOutJob;
@@ -51,6 +53,12 @@ public class PdfFileServiceImpl implements PdfFileService{
 	@Inject
 	ShopRepository shopRepository;
 	
+	@Inject
+	MemberNameService memberNameService;
+	
+	@Value("${member.url:http://202.214.88.88/member/api/v1/memname}")
+	String memberUrl;
+
 	private static final Logger logger = LoggerFactory
             .getLogger(PdfFileServiceImpl.class);
 	
@@ -447,7 +455,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 */
 	private void insertConfirmationBookFactorySpecial(CrForm form, Order order) {
 		//名前
-		form.getField("Name_data").setData("");
+		form.getField("Name_data").setData(stringChange(getNameByMemberUrl(order)));
 		//名簿納期
 		form.getField("Cust_deliver_date_data").setData(dateChange(order.getCustDeliverDate()));
 		//A行
@@ -464,8 +472,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @param order
 	 */
 	private void insertConfirmationBookGuestSpecial(CrForm form, Order order) {
+
 		//名前
-		form.getField("Name_data").setData("");
+		form.getField("Name_data").setData(stringChange(getNameByMemberUrl(order)));
 		//名簿納期
 		form.getField("Cust_deliver_date_data").setData(dateChange(order.getCustDeliverDate()));
 		//合計金額（税抜）
@@ -1932,6 +1941,33 @@ public class PdfFileServiceImpl implements PdfFileService{
 		String detailedFieldGilet = String.valueOf(sbGilet);
 		//GILET詳細情報
 		form.getField("Gl_detailed_field_data").setData(stringChange(detailedFieldGilet));
+	}
+	
+	public String getNameByMemberUrl(Order order) {
+		String storeBrandCode = order.getStoreBrandCode();
+		String gyotaiCd = "1";
+		if(storeBrandCode == null || "".equals(storeBrandCode)) {
+			gyotaiCd = "1";
+		}else if("01".equals(storeBrandCode)){
+			gyotaiCd = "1";
+		}else {
+			gyotaiCd = "3";
+		}
+		MemberName memberName = memberNameService.execute(memberUrl, order.getCustCd(), gyotaiCd);
+		if(memberName == null) {
+			return "";
+		}
+		String firstName = memberName.getFirstName();
+		String lastName = memberName.getLastName();
+		String firstNameOut = "";
+		String lastNameOut = "";
+		if(firstName != null) {
+			firstNameOut = firstName;
+		}
+		if(lastName != null) {
+			lastNameOut = lastName;
+		}
+		return lastNameOut + " " + firstNameOut;
 	}
 	
 }

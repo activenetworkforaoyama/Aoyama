@@ -15,6 +15,38 @@ function initOptionGiletTuxedo() {
 			// 未選択状態、または想定外の場合はスルー
 			return;
 		}
+		
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var itemCode = "";
+		var item = jQuery("#item").val();
+		var subItemCode = "04"
+		if(item == "01"){
+			itemCode = "01"
+		}else if(item == "04"){
+			itemCode = "04"
+		}
+		
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(giletModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#glModelFlag").val("0");
+				jQuery("#tg_giletModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#glModelFlag").val("1"+"*"+getMsgByOneArg('msg065','GILET'));
+				setAlert('tg_giletModelCheck',getMsgByOneArg('msg065','GILET'));
+			}
+		}
 
 		// GILETモデルに基づき、各項目をデフォルトへ変更
 		// 胸ポケット
@@ -527,3 +559,10 @@ function ctrlTgByColorPlace() {
 		}
 	});
 }
+
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
+}	

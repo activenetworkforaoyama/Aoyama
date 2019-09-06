@@ -15,7 +15,8 @@
                                     	<form:options items="${orderForm.optionJacketStandardInfo.ojJacketModelMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="jacketModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="jacketModelMsg" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="jacketModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -375,7 +376,7 @@
                                 		<c:forEach var="ojpBhColorsMap" items="${orderForm.optionJacketStandardInfo.ojBhColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="bhColor" class="form-check-label ">
-                                			    <input type="radio" id="bhColor_${opAmfColorsMap.key}" name="optionJacketStandardInfo.ojBhColor${row.count}" value="${ojpBhColorsMap.key}" class="form-check-input">${ojpBhColorsMap.value}
+                                			    <input type="radio" id="bhColor_${ojpBhColorsMap.key}" name="optionJacketStandardInfo.ojBhColor${row.count}" value="${ojpBhColorsMap.key}" class="form-check-input">${ojpBhColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -502,7 +503,8 @@
                                 	<form:options items="${orderForm.optionJacketTuxedoInfo.tjJacketModelMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelMsg" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -873,7 +875,8 @@
 									<form:options items="${orderForm.optionJacketWashableInfo.wjJacketModelMap}"/>
 								</form:select>
 							</div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelMsg" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -1332,6 +1335,7 @@
 			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
 			
             <input type="hidden" id="jacketFlag" name="jacketFlag" value="0"/>
+            <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="0" />
             
 </form:form>
 <!-- 標準 JACKET JACKETモデル -->
@@ -2013,16 +2017,6 @@
     </div>
 </div>
 
-
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script> 
-<script src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
-
-
 <!-- 自作js -->
 <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/common.js"></script>
@@ -2047,6 +2041,13 @@ var selectIdList = {
 };
 
 jQuery(function() {
+	var jacketAdFlag="${orderForm.jacketAdFlag}";
+	if(jacketAdFlag=="1"){
+		jQuery("#jacketAdFlag").val("${orderForm.jacketAdFlag}");
+		}
+	jQuery("#jacketModel").change(function(){
+		jQuery("#jacketAdFlag").val("0");
+	    })
 
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -2087,6 +2088,177 @@ jQuery(function() {
 	mateInit();
 	
 	jQuery("#jacketItemFlag").val("1");
+
+	var orderFlag = "${orderForm.orderFlag}";
+	if(orderFlag == "orderLink"){
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		if(productCategory == "0"){
+			var ojStitchModifyPlace = "${orderForm.optionJacketStandardInfo.ojStitchModifyPlace}";
+			ojStitchModifyPlace = ojStitchModifyPlace.split(",");
+			for(var i=0;i<ojStitchModifyPlace.length;i++){
+				if(ojStitchModifyPlace[i] == "0002501"){
+					jQuery("#stitchModifyPlace_id1").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002502"){
+					jQuery("#stitchModifyPlace_id2").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002503"){
+					jQuery("#stitchModifyPlace_id3").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002504"){
+					jQuery("#stitchModifyPlace_id4").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002505"){
+					jQuery("#stitchModifyPlace_id5").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002507"){
+					jQuery("#stitchModifyPlace_id6").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002508"){
+					jQuery("#stitchModifyPlace_id7").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002509"){
+					jQuery("#stitchModifyPlace_id8").prop("checked",true);
+				}else if(ojStitchModifyPlace[i] == "0002510"){
+					jQuery("#stitchModifyPlace_id9").prop("checked",true);
+				}
+			}
+			// 選択中のダブルステッチ変更
+			ctrlDStitchModifyPlace();
+			// AMF色指定の有効/無効を制御
+			ctrlAmfColor();
+
+			var ojDStitchModifyPlace = "${orderForm.optionJacketStandardInfo.ojDStitchModifyPlace}";
+			ojDStitchModifyPlace = ojDStitchModifyPlace.split(",");
+			for(var i=0;i<ojDStitchModifyPlace.length;i++){
+				if(ojDStitchModifyPlace[i] == "0002701"){
+					jQuery("#dStitchModifyPlace_id1").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002702"){
+					jQuery("#dStitchModifyPlace_id2").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002703"){
+					jQuery("#dStitchModifyPlace_id3").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002704"){
+					jQuery("#dStitchModifyPlace_id4").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002705"){
+					jQuery("#dStitchModifyPlace_id5").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002707"){
+					jQuery("#dStitchModifyPlace_id6").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002708"){
+					jQuery("#dStitchModifyPlace_id7").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002709"){
+					jQuery("#dStitchModifyPlace_id8").prop("checked",true);
+				}else if(ojDStitchModifyPlace[i] == "0002710"){
+					jQuery("#dStitchModifyPlace_id9").prop("checked",true);
+				}
+			}
+			
+			var ojAmfColorPlace = "${orderForm.optionJacketStandardInfo.ojAmfColorPlace}";
+			ojAmfColorPlace = ojAmfColorPlace.split(",");
+			for(var i=0;i<ojAmfColorPlace.length;i++){
+				if(ojAmfColorPlace[i] == "0002901"){
+					jQuery("#amfColorPlace_1").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002902"){
+					jQuery("#amfColorPlace_2").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002903"){
+					jQuery("#amfColorPlace_3").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002904"){
+					jQuery("#amfColorPlace_4").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002905"){
+					jQuery("#amfColorPlace_5").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002907"){
+					jQuery("#amfColorPlace_6").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002908"){
+					jQuery("#amfColorPlace_7").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002909"){
+					jQuery("#amfColorPlace_8").prop("checked",true);
+				}else if(ojAmfColorPlace[i] == "0002910"){
+					jQuery("#amfColorPlace_9").prop("checked",true);
+				}
+			}
+			jQuery('input[id^="amfColorPlace_"]').change();
+
+			var ojBhColorPlace = "${orderForm.optionJacketStandardInfo.ojBhColorPlace}";
+			ojBhColorPlace = ojBhColorPlace.split(",");
+			for(var i=0;i<ojBhColorPlace.length;i++){
+				if(ojBhColorPlace[i] == "0003201"){
+					jQuery("#bhColorPlace_1").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003202"){
+					jQuery("#bhColorPlace_2").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003203"){
+					jQuery("#bhColorPlace_3").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003204"){
+					jQuery("#bhColorPlace_4").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003205"){
+					jQuery("#bhColorPlace_5").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003206"){
+					jQuery("#bhColorPlace_6").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003207"){
+					jQuery("#bhColorPlace_7").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003208"){
+					jQuery("#bhColorPlace_8").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003209"){
+					jQuery("#bhColorPlace_9").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003210"){
+					jQuery("#bhColorPlace_10").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003211"){
+					jQuery("#bhColorPlace_11").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003212"){
+					jQuery("#bhColorPlace_12").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003213"){
+					jQuery("#bhColorPlace_13").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003214"){
+					jQuery("#bhColorPlace_14").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003215"){
+					jQuery("#bhColorPlace_15").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003216"){
+					jQuery("#bhColorPlace_16").prop("checked",true);
+				}else if(ojBhColorPlace[i] == "0003217"){
+					jQuery("#bhColorPlace_17").prop("checked",true);
+				}
+			}
+			jQuery('input[id^="bhColorPlace_"]').change();
+
+			var ojByColorPlace = "${orderForm.optionJacketStandardInfo.ojByColorPlace}";
+			ojByColorPlace = ojByColorPlace.split(",");
+			for(var i=0;i<ojByColorPlace.length;i++){
+				if(ojByColorPlace[i] == "0003501"){
+					jQuery("#byColorPlace_1").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003502"){
+					jQuery("#byColorPlace_2").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003503"){
+					jQuery("#byColorPlace_3").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003504"){
+					jQuery("#byColorPlace_4").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003505"){
+					jQuery("#byColorPlace_5").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003506"){
+					jQuery("#byColorPlace_6").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003507"){
+					jQuery("#byColorPlace_7").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003508"){
+					jQuery("#byColorPlace_8").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003509"){
+					jQuery("#byColorPlace_9").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003510"){
+					jQuery("#byColorPlace_10").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003511"){
+					jQuery("#byColorPlace_11").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003512"){
+					jQuery("#byColorPlace_12").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003513"){
+					jQuery("#byColorPlace_13").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003514"){
+					jQuery("#byColorPlace_14").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003515"){
+					jQuery("#byColorPlace_15").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003516"){
+					jQuery("#byColorPlace_16").prop("checked",true);
+				}else if(ojByColorPlace[i] == "0003517"){
+					jQuery("#byColorPlace_17").prop("checked",true);
+				}
+			}
+			jQuery('input[id^="byColorPlace_"]').change();
+			
+		}else if(productCategory == "2"){
+			
+		}else if(productCategory == "1"){
+			
+		}
+		
+	}
 
 })	
 

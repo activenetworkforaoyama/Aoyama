@@ -15,6 +15,7 @@
     <result column="cash_discount_price" jdbcType="INTEGER" property="cashDiscountPrice" />
     <result column="cash_product_price" jdbcType="INTEGER" property="cashProductPrice" />
     <result column="cash_contail_tax_product_price" jdbcType="INTEGER" property="cashContailTaxProductPrice" />
+    <result column="cust_cd" property="custCd" jdbcType="VARCHAR" />
     <result column="cust_nm" jdbcType="VARCHAR" property="custNm" />
     <result column="cust_staff" jdbcType="VARCHAR" property="custStaff" />
     <result column="tsc_status" jdbcType="VARCHAR" property="tscStatus" />
@@ -32,6 +33,7 @@
        order_pattern,
        store_brand_code,
        shop_code,
+       cust_cd,
        cust_nm,
        total_price,
        cash_discount_price,
@@ -70,6 +72,7 @@
        ord.order_pattern,
        ord.store_brand_code,
        ord.shop_code,
+       ord.cust_cd,
        ord.cust_nm,
        ord.total_price,
        ord.cash_discount_price,

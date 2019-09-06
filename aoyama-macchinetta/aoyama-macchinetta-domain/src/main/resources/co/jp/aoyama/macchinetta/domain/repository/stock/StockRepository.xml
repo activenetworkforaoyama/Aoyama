@@ -143,6 +143,7 @@
             reservation_stock = #{arg2}
         WHERE
             fabric_no = #{arg0}
+            and order_pattern = #{arg3}
     </update>
     
     <update id="updateTheoreticalStock">
@@ -152,6 +153,7 @@
             theoretical_stock = #{arg1}
         WHERE
             fabric_no = #{arg0}
+            and order_pattern = #{arg2}
     </update>
 
 </mapper>

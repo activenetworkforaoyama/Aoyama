@@ -10,6 +10,42 @@ function initOptionJacketStandard() {
 	jQuery('#jacketModel').change(function(){
 		// 選択されたJacketモデルを取得
 		var jacketModel = jQuery(this).val();
+		if (jacketModel == '') {
+			// 未選択時は何もしない
+			return;
+		}
+		
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var itemCode = "";
+		var item = jQuery("#item").val();
+		var subItemCode = "02"
+		if(item == "01"){
+			itemCode = "01"
+		}else if(item == "02"){
+			itemCode = "02"
+		}
+		
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(jacketModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#jkModelFlag").val("0");
+				jQuery("#jacketModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
+				setAlert('jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
+			}
+		}
 
 		// 選択中のフロント釦数
 		var frontBtnCntElem = jQuery('#oj_frontBtnCnt');
@@ -291,7 +327,7 @@ function initOptionJacketStandard() {
 	ctrlStitchModify();
 
 	// ステッチ箇所変更(選択肢)
-	jQuery('input[name="optionJacketStandardInfo.ojStitchModifyPlace"]').each(function() {
+	jQuery('input[id^="stitchModifyPlace_id"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のダブルステッチ変更
 			ctrlDStitchModifyPlace();
@@ -1209,4 +1245,10 @@ function ctrlByColorPlace() {
 			elem.prop("disabled", true);
 		}
 	});
+}
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
 }

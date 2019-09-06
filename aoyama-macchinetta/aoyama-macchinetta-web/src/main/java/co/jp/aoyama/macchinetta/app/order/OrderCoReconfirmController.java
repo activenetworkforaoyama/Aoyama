@@ -100,6 +100,23 @@ public class OrderCoReconfirmController {
 			String productItem = orderForm.getProductItem();
 			List<OptionBranchDetail> mateList = this.getMateList(orderForm);
 			List<OrderCodePrice> optionBranchPriceList = this.getOptionBranchPriceList(orderForm);
+			List<OrderPrice> standardOjStitchModifyPlacePriceList = this.getStandardOjStitchModifyPlacePriceList(orderForm);
+			List<OrderPrice> standardOjAmfColorPriceList = this.getStandardOjAmfColorPriceList(orderForm);
+			List<OrderPrice> standardOjBhColorPriceList = this.getStandardOjBhColorPriceList(orderForm);
+			List<OrderPrice> standardOjByColorPriceList = this.getStandardOjByColorPriceList(orderForm);
+			List<OrderPrice> standardOgStitchModifyPlaceList = this.getStandardOgStitchModifyPlaceList(orderForm);
+			List<OrderPrice> standardOgAmfColorPlaceList = this.getStandardOgAmfColorPlaceList(orderForm);
+			List<OrderPrice> standardOgBhColorPlacePriceList = this.getStandardOgBhColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOgByColorPlacePriceList = this.getStandardOgByColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOpStitchModifyPlacePriceList = this.getStandardOpStitchModifyPlacePriceList(orderForm);
+			List<OrderPrice> standardOpAmfColorPlacePriceList = this.getStandardOpAmfColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOpBhColorPlacePriceList = this.getStandardOpBhColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOpByColorPlacePriceList = this.getStandardOpByColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOp2StitchModifyPlacePriceList = this.getStandardOp2StitchModifyPlacePriceList(orderForm);
+			List<OrderPrice> standardOp2AmfColorPlacePriceList = this.getStandardOp2AmfColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOp2BhColorPlacePriceList = this.getStandardOp2BhColorPlacePriceList(orderForm);
+			List<OrderPrice> standardOp2ByColorPlacePriceList = this.getStandardOp2ByColorPlacePriceList(orderForm);
+			
 			if("01".equals(productItem)) {
 				String productIs3Piece = orderForm.getProductIs3Piece();
 				String productSparePantsClass = orderForm.getProductSparePantsClass();
@@ -116,8 +133,25 @@ public class OrderCoReconfirmController {
 				
 				Map<String, String> pantsUpperPrice = this.getPantsUpperPrice(orderForm,optionBranchPriceList);
 				Map<String, String> jacketUpperPrice = this.getJacketUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> standardJkUpperCount = this.standardJkUpperCount(orderForm, standardOjStitchModifyPlacePriceList);
+				Map<String, String> standardJkOjAmfColorUpperCount = this.standardJkOjAmfColorUpperCount(orderForm, standardOjAmfColorPriceList);
+				Map<String, String> standardJkOjBhColorUpperCount = this.standardJkOjBhColorUpperCount(orderForm, standardOjBhColorPriceList);
+				Map<String, String> standardJkOjByColorUpperCount = this.standardJkOjByColorUpperCount(orderForm, standardOjByColorPriceList);
+				Map<String, String> standardOpStitchModifyPlaceUpperCount = this.standardOpStitchModifyPlaceUpperCount(orderForm, standardOpStitchModifyPlacePriceList);
+				Map<String, String> standardOpAmfColorUpperCount = this.standardOpAmfColorUpperCount(orderForm, standardOpAmfColorPlacePriceList);
+				Map<String, String> standardOpBhColorUpperCount = this.standardOpBhColorUpperCount(orderForm, standardOpBhColorPlacePriceList);
+				Map<String, String> standardOpByColorUpperCount = this.standardOpByColorUpperCount(orderForm, standardOpByColorPlacePriceList);
 				model.addAttribute("pantsUpperPrice",pantsUpperPrice);
 				model.addAttribute("jacketUpperPrice",jacketUpperPrice);
+				model.addAttribute("standardJkUpperCount",standardJkUpperCount);
+				model.addAttribute("standardJkOjAmfColorUpperCount",standardJkOjAmfColorUpperCount);
+				model.addAttribute("standardJkOjBhColorUpperCount",standardJkOjBhColorUpperCount);
+				model.addAttribute("standardJkOjByColorUpperCount",standardJkOjByColorUpperCount);
+				model.addAttribute("standardOpStitchModifyPlaceUpperCount",standardOpStitchModifyPlaceUpperCount);
+				model.addAttribute("standardOpAmfColorUpperCount",standardOpAmfColorUpperCount);
+				model.addAttribute("standardOpBhColorUpperCount",standardOpBhColorUpperCount);
+				model.addAttribute("standardOpByColorUpperCount",standardOpByColorUpperCount);
+				
 				if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 					Map<String, String> standardGlMateSelectMap = this.standardGlMateSelect(mateList, orderForm);
 					Map<String, String> standardPt2MateSelectMap = this.standardPt2MateSelect(mateList, orderForm);
@@ -126,12 +160,41 @@ public class OrderCoReconfirmController {
 					
 					Map<String, String> pants2UpperPrice = this.getPants2UpperPrice(orderForm,optionBranchPriceList);
 					Map<String, String> giletUpperPrice = this.getGiletUpperPrice(orderForm, optionBranchPriceList);
+					Map<String, String> standardOgStitchModifyPlaceUpperCount = this.standardOgStitchModifyPlaceUpperCount(orderForm, standardOgStitchModifyPlaceList);
+					Map<String, String> standardOgAmfColorUpperCount = this.standardOgAmfColorUpperCount(orderForm, standardOgAmfColorPlaceList);
+					Map<String, String> standardOgBhColorUpperCount = this.standardOgBhColorUpperCount(orderForm, standardOgBhColorPlacePriceList);
+					Map<String, String> standardOgByColorUpperCount = this.standardOgByColorUpperCount(orderForm, standardOgByColorPlacePriceList);
+					Map<String, String> standardOp2StitchModifyPlaceUpperCount = this.standardOp2StitchModifyPlaceUpperCount(orderForm, standardOp2StitchModifyPlacePriceList);
+					Map<String, String> standardOp2AmfColorUpperCount = this.standardOp2AmfColorUpperCount(orderForm, standardOp2AmfColorPlacePriceList);
+					Map<String, String> standardOp2BhColorUpperCount = this.standardOp2BhColorUpperCount(orderForm, standardOp2BhColorPlacePriceList);
+					Map<String, String> standardOp2ByColorUpperCount = this.standardOp2ByColorUpperCount(orderForm, standardOp2ByColorPlacePriceList);
 					model.addAttribute("pants2UpperPrice",pants2UpperPrice);
 					model.addAttribute("giletUpperPrice", giletUpperPrice);
+					model.addAttribute("standardOgStitchModifyPlaceUpperCount", standardOgStitchModifyPlaceUpperCount);
+					model.addAttribute("standardOgAmfColorUpperCount", standardOgAmfColorUpperCount);
+					model.addAttribute("standardOgBhColorUpperCount", standardOgBhColorUpperCount);
+					model.addAttribute("standardOgByColorUpperCount", standardOgByColorUpperCount);
+					model.addAttribute("standardOp2StitchModifyPlaceUpperCount", standardOp2StitchModifyPlaceUpperCount);
+					model.addAttribute("standardOp2AmfColorUpperCount", standardOp2AmfColorUpperCount);
+					model.addAttribute("standardOp2BhColorUpperCount", standardOp2BhColorUpperCount);
+					model.addAttribute("standardOp2ByColorUpperCount", standardOp2ByColorUpperCount);
+					
 				}
 				else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 					Map<String, String> standardPt2MateSelectMap = this.standardPt2MateSelect(mateList, orderForm);
 					model.addAttribute("standardPt2MateSelectMap",standardPt2MateSelectMap);
+					
+					Map<String, String> standardOp2StitchModifyPlaceUpperCount = this.standardOp2StitchModifyPlaceUpperCount(orderForm, standardOp2StitchModifyPlacePriceList);
+					model.addAttribute("standardOp2StitchModifyPlaceUpperCount", standardOp2StitchModifyPlaceUpperCount);
+					
+					Map<String, String> standardOp2AmfColorUpperCount = this.standardOp2AmfColorUpperCount(orderForm, standardOp2AmfColorPlacePriceList);
+					model.addAttribute("standardOp2AmfColorUpperCount", standardOp2AmfColorUpperCount);
+					
+					Map<String, String> standardOp2BhColorUpperCount = this.standardOp2BhColorUpperCount(orderForm, standardOp2BhColorPlacePriceList);
+					model.addAttribute("standardOp2BhColorUpperCount", standardOp2BhColorUpperCount);
+					
+					Map<String, String> standardOp2ByColorUpperCount = this.standardOp2ByColorUpperCount(orderForm, standardOp2ByColorPlacePriceList);
+					model.addAttribute("standardOp2ByColorUpperCount", standardOp2ByColorUpperCount);
 					
 					Map<String, String> pants2UpperPrice = this.getPants2UpperPrice(orderForm,optionBranchPriceList);
 					model.addAttribute("pants2UpperPrice",pants2UpperPrice);
@@ -142,18 +205,55 @@ public class OrderCoReconfirmController {
 					
 					Map<String, String> giletUpperPrice = this.getGiletUpperPrice(orderForm, optionBranchPriceList);
 					model.addAttribute("giletUpperPrice", giletUpperPrice);
+					
+					Map<String, String> standardOgStitchModifyPlaceUpperCount = this.standardOgStitchModifyPlaceUpperCount(orderForm, standardOgStitchModifyPlaceList);
+					model.addAttribute("standardOgStitchModifyPlaceUpperCount", standardOgStitchModifyPlaceUpperCount);
+					
+					Map<String, String> standardOgAmfColorUpperCount = this.standardOgAmfColorUpperCount(orderForm, standardOgAmfColorPlaceList);
+					model.addAttribute("standardOgAmfColorUpperCount", standardOgAmfColorUpperCount);
+					
+					Map<String, String> standardOgBhColorUpperCount = this.standardOgBhColorUpperCount(orderForm, standardOgBhColorPlacePriceList);
+					model.addAttribute("standardOgBhColorUpperCount", standardOgBhColorUpperCount);
+					
+					Map<String, String> standardOgByColorUpperCount = this.standardOgByColorUpperCount(orderForm, standardOgByColorPlacePriceList);
+					model.addAttribute("standardOgByColorUpperCount", standardOgByColorUpperCount);
 				}
 			}
 			else if("02".equals(productItem)) {
 				Map<String, String> standardJkMateSelectMap = this.standardJkMateSelect(mateList, orderForm);
 				model.addAttribute("standardJkMateSelectMap",standardJkMateSelectMap);
-
+				
+				Map<String, String> standardJkUpperCount = this.standardJkUpperCount(orderForm, standardOjStitchModifyPlacePriceList);
+				model.addAttribute("standardJkUpperCount",standardJkUpperCount);
+				
+				Map<String, String> standardJkOjAmfColorUpperCount = this.standardJkOjAmfColorUpperCount(orderForm, standardOjAmfColorPriceList);
+				model.addAttribute("standardJkOjAmfColorUpperCount",standardJkOjAmfColorUpperCount);
+				
+				Map<String, String> standardJkOjBhColorUpperCount = this.standardJkOjBhColorUpperCount(orderForm, standardOjBhColorPriceList);
+				model.addAttribute("standardJkOjBhColorUpperCount",standardJkOjBhColorUpperCount);
+				
+				Map<String, String> standardJkOjByColorUpperCount = this.standardJkOjByColorUpperCount(orderForm, standardOjByColorPriceList);
+				model.addAttribute("standardJkOjByColorUpperCount",standardJkOjByColorUpperCount);
+				
 				Map<String, String> jacketUpperPrice = this.getJacketUpperPrice(orderForm, optionBranchPriceList);
 				model.addAttribute("jacketUpperPrice",jacketUpperPrice);
+				
 			}
 			else if("03".equals(productItem)) {
 				Map<String, String> standardPtMateSelectMap = this.standardPtMateSelect(mateList, orderForm);
 				model.addAttribute("standardPtMateSelectMap",standardPtMateSelectMap);
+				
+				Map<String, String> standardOpStitchModifyPlaceUpperCount = this.standardOpStitchModifyPlaceUpperCount(orderForm, standardOpStitchModifyPlacePriceList);
+				model.addAttribute("standardOpStitchModifyPlaceUpperCount",standardOpStitchModifyPlaceUpperCount);
+				
+				Map<String, String> standardOpAmfColorUpperCount = this.standardOpAmfColorUpperCount(orderForm, standardOpAmfColorPlacePriceList);
+				model.addAttribute("standardOpAmfColorUpperCount",standardOpAmfColorUpperCount);
+				
+				Map<String, String> standardOpBhColorUpperCount = this.standardOpBhColorUpperCount(orderForm, standardOpBhColorPlacePriceList);
+				model.addAttribute("standardOpBhColorUpperCount",standardOpBhColorUpperCount);
+				
+				Map<String, String> standardOpByColorUpperCount = this.standardOpByColorUpperCount(orderForm, standardOpByColorPlacePriceList);
+				model.addAttribute("standardOpByColorUpperCount",standardOpByColorUpperCount);
 				
 				Map<String, String> pantsUpperPrice = this.getPantsUpperPrice(orderForm,optionBranchPriceList);
 				model.addAttribute("pantsUpperPrice",pantsUpperPrice);
@@ -161,6 +261,18 @@ public class OrderCoReconfirmController {
 			else if("04".equals(productItem)) {
 				Map<String, String> standardGlMateSelectMap = this.standardGlMateSelect(mateList, orderForm);
 				model.addAttribute("standardGlMateSelectMap",standardGlMateSelectMap);
+
+				Map<String, String> standardOgStitchModifyPlaceUpperCount = this.standardOgStitchModifyPlaceUpperCount(orderForm, standardOgStitchModifyPlaceList);
+				model.addAttribute("standardOgStitchModifyPlaceUpperCount", standardOgStitchModifyPlaceUpperCount);
+				
+				Map<String, String> standardOgAmfColorUpperCount = this.standardOgAmfColorUpperCount(orderForm, standardOgAmfColorPlaceList);
+				model.addAttribute("standardOgAmfColorUpperCount", standardOgAmfColorUpperCount);
+				
+				Map<String, String> standardOgBhColorUpperCount = this.standardOgBhColorUpperCount(orderForm, standardOgBhColorPlacePriceList);
+				model.addAttribute("standardOgBhColorUpperCount", standardOgBhColorUpperCount);
+				
+				Map<String, String> standardOgByColorUpperCount = this.standardOgByColorUpperCount(orderForm, standardOgByColorPlacePriceList);
+				model.addAttribute("standardOgByColorUpperCount", standardOgByColorUpperCount);
 				
 				Map<String, String> giletUpperPrice = this.getGiletUpperPrice(orderForm, optionBranchPriceList);
 				model.addAttribute("giletUpperPrice", giletUpperPrice);
@@ -194,6 +306,10 @@ public class OrderCoReconfirmController {
 				Map<String, String> tuxedoPtMateSelectMap = this.tuxedoPtMateSelect(tuxedoMateList, orderForm);
 				model.addAttribute("tuxedoJkMateSelectMap",tuxedoJkMateSelectMap);
 				model.addAttribute("tuxedoPtMateSelectMap",tuxedoPtMateSelectMap);
+				Map<String, String> tuxedoServelItemShow = orderHelper.tuxedoJkServelItemShow(orderForm);
+				model.addAttribute("tuxedoServelItemShow",tuxedoServelItemShow);
+				Map<String, String> tuxedoPtServelItemShow = orderHelper.tuxedoPtServelItemShow(orderForm);
+				model.addAttribute("tuxedoPtServelItemShow",tuxedoPtServelItemShow);
 				
 				Map<String, String> tuxedoJacketUpperPrice = this.getTuxedoJacketUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 				Map<String, String> tuxedoPantsUpperPrice = this.getTuxedoPantsUpperPrice(orderForm, tuxedoOptionBranchPriceList);
@@ -205,6 +321,10 @@ public class OrderCoReconfirmController {
 					Map<String, String> tuxedoPt2MateSelectMap = this.tuxedoPt2MateSelect(tuxedoMateList, orderForm);
 					model.addAttribute("tuxedoGlMateSelectMap",tuxedoGlMateSelectMap);
 					model.addAttribute("tuxedoPt2MateSelectMap",tuxedoPt2MateSelectMap);
+					Map<String, String> tuxedoGlServelItemShow = orderHelper.tuxedoGlServelItemShow(orderForm);
+					model.addAttribute("tuxedoGlServelItemShow",tuxedoGlServelItemShow);
+					Map<String, String> tuxedoPt2ServelItemShow = orderHelper.tuxedoPt2ServelItemShow(orderForm);
+					model.addAttribute("tuxedoPt2ServelItemShow",tuxedoPt2ServelItemShow);
 					
 					Map<String, String> tuxedoGiletUpperPrice = this.getTuxedoGiletUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 					Map<String, String> tuxedoPants2UpperPrice = this.getTuxedoPants2UpperPrice(orderForm, tuxedoOptionBranchPriceList);
@@ -217,10 +337,16 @@ public class OrderCoReconfirmController {
 					
 					Map<String, String> tuxedoPants2UpperPrice = this.getTuxedoPants2UpperPrice(orderForm, tuxedoOptionBranchPriceList);
 					model.addAttribute("tuxedoPants2UpperPrice",tuxedoPants2UpperPrice);
+					
+					Map<String, String> tuxedoPt2ServelItemShow = orderHelper.tuxedoPt2ServelItemShow(orderForm);
+					model.addAttribute("tuxedoPt2ServelItemShow",tuxedoPt2ServelItemShow);
 				}
 				else if(productYes.equals(productIs3Piece) && productNo.equals(productSparePantsClass)) {
 					Map<String, String> tuxedoGlMateSelectMap = this.tuxedoGlMateSelect(tuxedoMateList, orderForm);
 					model.addAttribute("tuxedoGlMateSelectMap",tuxedoGlMateSelectMap);
+					
+					Map<String, String> tuxedoGlServelItemShow = orderHelper.tuxedoGlServelItemShow(orderForm);
+					model.addAttribute("tuxedoGlServelItemShow",tuxedoGlServelItemShow);
 					
 					Map<String, String> tuxedoGiletUpperPrice = this.getTuxedoGiletUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 					model.addAttribute("tuxedoGiletUpperPrice",tuxedoGiletUpperPrice);
@@ -232,6 +358,9 @@ public class OrderCoReconfirmController {
 				
 				Map<String, String> tuxedoJacketUpperPrice = this.getTuxedoJacketUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 				model.addAttribute("tuxedoJacketUpperPrice",tuxedoJacketUpperPrice);
+				
+				Map<String, String> tuxedoServelItemShow = orderHelper.tuxedoJkServelItemShow(orderForm);
+				model.addAttribute("tuxedoServelItemShow",tuxedoServelItemShow);
 
 			}
 			else if("03".equals(productItem)) {
@@ -241,6 +370,9 @@ public class OrderCoReconfirmController {
 				Map<String, String> tuxedoPantsUpperPrice = this.getTuxedoPantsUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 				model.addAttribute("tuxedoPantsUpperPrice",tuxedoPantsUpperPrice);
 				
+				Map<String, String> tuxedoPtServelItemShow = orderHelper.tuxedoPtServelItemShow(orderForm);
+				model.addAttribute("tuxedoPtServelItemShow",tuxedoPtServelItemShow);
+				
 			}
 			else if("04".equals(productItem)) {
 				Map<String, String> tuxedoGlMateSelectMap = this.tuxedoGlMateSelect(tuxedoMateList, orderForm);
@@ -248,6 +380,9 @@ public class OrderCoReconfirmController {
 				
 				Map<String, String> tuxedoGiletUpperPrice = this.getTuxedoGiletUpperPrice(orderForm, tuxedoOptionBranchPriceList);
 				model.addAttribute("tuxedoGiletUpperPrice",tuxedoGiletUpperPrice);
+				
+				Map<String, String> tuxedoGlServelItemShow = orderHelper.tuxedoGlServelItemShow(orderForm);
+				model.addAttribute("tuxedoGlServelItemShow",tuxedoGlServelItemShow);
 			}
 		}
 		else if("1".equals(productCategory)) {
@@ -270,23 +405,41 @@ public class OrderCoReconfirmController {
 				
 				Map<String, String> washableJacketUpperPrice = this.getWashableJacketUpperPrice(orderForm, washableOptionBranchPriceList);
 				Map<String, String> washablePantsUpperPrice = this.getWashablePantsUpperPrice(orderForm, washableOptionBranchPriceList);
+				
+				Map<String, String> washablePtServelItemShow = orderHelper.washablePtServelItemShow(orderForm);
+				model.addAttribute("washablePtServelItemShow",washablePtServelItemShow);
+				
 				model.addAttribute("washableJacketUpperPrice",washableJacketUpperPrice);
 				model.addAttribute("washablePantsUpperPrice",washablePantsUpperPrice);
 				
+				Map<String, String> washableJkServelItemShow = orderHelper.washableJkServelItemShow(orderForm);
+				model.addAttribute("washableJkServelItemShow",washableJkServelItemShow);
+				
 				if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 					Map<String, String> washableGlMateSelectMap = this.washableGlMateSelect(washableMateList, orderForm);
-					Map<String, String> washablePt2MateSelectMap = this.washablePt2MateSelect(washableMateList, orderForm);
 					model.addAttribute("washableGlMateSelectMap",washableGlMateSelectMap);
+					
+					Map<String, String> washablePt2MateSelectMap = this.washablePt2MateSelect(washableMateList, orderForm);
 					model.addAttribute("washablePt2MateSelectMap",washablePt2MateSelectMap);
+					
+					Map<String, String> washableGlServelItemShow = orderHelper.washableGlServelItemShow(orderForm);
+					model.addAttribute("washableGlServelItemShow",washableGlServelItemShow);
+					
+					Map<String, String> washablePt2ServelItemShow = orderHelper.washablePt2ServelItemShow(orderForm);
+					model.addAttribute("washablePt2ServelItemShow",washablePt2ServelItemShow);
 					
 					Map<String, String> washableGiletUpperPrice = this.getWashableGiletUpperPrice(orderForm, washableOptionBranchPriceList);
 					Map<String, String> washablePants2UpperPrice = this.getWashablePants2UpperPrice(orderForm, washableOptionBranchPriceList);
 					model.addAttribute("washableGiletUpperPrice",washableGiletUpperPrice);
 					model.addAttribute("washablePants2UpperPrice",washablePants2UpperPrice);
+					
 				}
 				else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 					Map<String, String> washablePt2MateSelectMap = this.washablePt2MateSelect(washableMateList, orderForm);
 					model.addAttribute("washablePt2MateSelectMap",washablePt2MateSelectMap);
+					
+					Map<String, String> washablePt2ServelItemShow = orderHelper.washablePt2ServelItemShow(orderForm);
+					model.addAttribute("washablePt2ServelItemShow",washablePt2ServelItemShow);
 					
 					Map<String, String> washablePants2UpperPrice = this.getWashablePants2UpperPrice(orderForm, washableOptionBranchPriceList);
 					model.addAttribute("washablePants2UpperPrice",washablePants2UpperPrice);
@@ -295,6 +448,9 @@ public class OrderCoReconfirmController {
 					Map<String, String> washableGlMateSelectMap = this.washableGlMateSelect(washableMateList, orderForm);
 					model.addAttribute("washableGlMateSelectMap",washableGlMateSelectMap);
 					
+					Map<String, String> washableGlServelItemShow = orderHelper.washableGlServelItemShow(orderForm);
+					model.addAttribute("washableGlServelItemShow",washableGlServelItemShow);
+					
 					Map<String, String> washableGiletUpperPrice = this.getWashableGiletUpperPrice(orderForm, washableOptionBranchPriceList);
 					model.addAttribute("washableGiletUpperPrice",washableGiletUpperPrice);
 				}
@@ -302,6 +458,9 @@ public class OrderCoReconfirmController {
 			else if("02".equals(productItem)) {
 				Map<String, String> washableJkMateSelectMap = this.washableJkMateSelect(washableMateList, orderForm);
 				model.addAttribute("washableJkMateSelectMap",washableJkMateSelectMap);
+				
+				Map<String, String> washableJkServelItemShow = orderHelper.washableJkServelItemShow(orderForm);
+				model.addAttribute("washableJkServelItemShow",washableJkServelItemShow);
 				
 				Map<String, String> washableJacketUpperPrice = this.getWashableJacketUpperPrice(orderForm, washableOptionBranchPriceList);
 				model.addAttribute("washableJacketUpperPrice",washableJacketUpperPrice);
@@ -312,10 +471,16 @@ public class OrderCoReconfirmController {
 				
 				Map<String, String> washablePantsUpperPrice = this.getWashablePantsUpperPrice(orderForm, washableOptionBranchPriceList);
 				model.addAttribute("washablePantsUpperPrice",washablePantsUpperPrice);
+				
+				Map<String, String> washablePtServelItemShow = orderHelper.washablePtServelItemShow(orderForm);
+				model.addAttribute("washablePtServelItemShow",washablePtServelItemShow);
 			}
 			else if("04".equals(productItem)) {
 				Map<String, String> washableGlMateSelectMap = this.washableGlMateSelect(washableMateList, orderForm);
 				model.addAttribute("washableGlMateSelectMap",washableGlMateSelectMap);
+				
+				Map<String, String> washableGlServelItemShow = orderHelper.washableGlServelItemShow(orderForm);
+				model.addAttribute("washableGlServelItemShow",washableGlServelItemShow);
 				
 				Map<String, String> washableGiletUpperPrice = this.getWashableGiletUpperPrice(orderForm, washableOptionBranchPriceList);
 				model.addAttribute("washableGiletUpperPrice",washableGiletUpperPrice);
@@ -412,6 +577,311 @@ public class OrderCoReconfirmController {
 		List<OrderCodePrice> optionBranchPriceList = orderHelper.optionBranchPriceData(priceList);
 		return optionBranchPriceList;
 	}
+	
+	/**
+	 * JACKETステッチ箇所変更の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOjStitchModifyPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00025";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "02";
+		List<OrderPrice> standardSomePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardSomePriceList;
+	}
+	
+	public  Map<String, String> standardJkUpperCount(OrderForm orderForm,List<OrderPrice> standardSomePriceList){
+		Map<String, String> standardJkUpperCount = orderHelper.standardJkOjStitchModifyPlaceUpperCount(orderForm, standardSomePriceList);
+		return standardJkUpperCount;
+	}
+	
+	/**
+	 * JACKETAMF色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOjAmfColorPriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00030";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "02";
+		List<OrderPrice> standardOjAmfColorPriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOjAmfColorPriceList;
+	}
+	
+	public  Map<String, String> standardJkOjAmfColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOjAmfColorPriceList){
+		Map<String, String> standardJkOjAmfColorUpperCount = orderHelper.standardJkOjAmfColorUpperCount(orderForm, standardOjAmfColorPriceList);
+		return standardJkOjAmfColorUpperCount;
+	}
+	
+	/**
+	 * JACKETボタンホール色の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOjBhColorPriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00033";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "02";
+		List<OrderPrice> standardOjBhColorPriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOjBhColorPriceList;
+	}
+	
+	public  Map<String, String> standardJkOjBhColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOjBhColorPriceList){
+		Map<String, String> standardJkOjBhColorUpperCount = orderHelper.standardJkOjBhColorPlaceUpperCount(orderForm, standardOjBhColorPriceList);
+		return standardJkOjBhColorUpperCount;
+	}
+	
+	/**
+	 * JACKETボタン付け糸指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOjByColorPriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00036";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "02";
+		List<OrderPrice> standardOjByColorPriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOjByColorPriceList;
+	}
+	
+	public  Map<String, String> standardJkOjByColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOjByColorPriceList){
+		Map<String, String> standardJkOjBhColorUpperCount = orderHelper.standardJkOjByColorPlaceUpperCount(orderForm, standardOjByColorPriceList);
+		return standardJkOjBhColorUpperCount;
+	}
+	
+	/**
+	 * GILETステッチ箇所変更の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOgStitchModifyPlaceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00007";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "04";
+		List<OrderPrice> standardOgStitchModifyPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOgStitchModifyPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOgStitchModifyPlaceUpperCount(OrderForm orderForm,List<OrderPrice> standardOgStitchModifyPlacePriceList){
+		Map<String, String> standardGlOgStitchModifyPlaceUpperCount = orderHelper.standardGlOgStitchModifyPlaceUpperCount(orderForm, standardOgStitchModifyPlacePriceList);
+		return standardGlOgStitchModifyPlaceUpperCount;
+	}
+	
+	/**
+	 * GILETAMF色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOgAmfColorPlaceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00010";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "04";
+		List<OrderPrice> standardOgAmfColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOgAmfColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOgAmfColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOgAmfColorPlacePriceList){
+		Map<String, String> standardGlOgAmfColorUpperCount = orderHelper.standardGlOgAmfColorPlaceUpperCount(orderForm, standardOgAmfColorPlacePriceList);
+		return standardGlOgAmfColorUpperCount;
+	}
+	
+	/**
+	 * GILETボタンホール色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOgBhColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00013";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "04";
+		List<OrderPrice> standardOgBhColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOgBhColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOgBhColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOgBhColorPlacePriceList){
+		Map<String, String> standardGlOgBhColorUpperCount = orderHelper.standardGlOgBhColorPlaceUpperCount(orderForm, standardOgBhColorPlacePriceList);
+		return standardGlOgBhColorUpperCount;
+	}
+	
+	/**
+	 * GILETボタン付け糸指定糸色の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOgByColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00016";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "04";
+		List<OrderPrice> standardOgByColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOgByColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOgByColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOgByColorPlacePriceList){
+		Map<String, String> standardGlOgByColorUpperCount = orderHelper.standardGlOgByColorPlaceUpperCount(orderForm, standardOgByColorPlacePriceList);
+		return standardGlOgByColorUpperCount;
+	}
+	
+	/**
+	 * PANTSステッチ箇所変更の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOpStitchModifyPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00021";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "03";
+		List<OrderPrice> standardOpStitchModifyPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOpStitchModifyPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOpStitchModifyPlaceUpperCount(OrderForm orderForm,List<OrderPrice> standardOpStitchModifyPlacePriceList){
+		Map<String, String> standardPtOpStitchModifyPlaceUpperCount = orderHelper.standardPtOgStitchModifyPlaceUpperCount(orderForm, standardOpStitchModifyPlacePriceList);
+		return standardPtOpStitchModifyPlaceUpperCount;
+	}
+	
+	/**
+	 * PANTSAMF色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOpAmfColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00025";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "03";
+		List<OrderPrice> standardOpAmfColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOpAmfColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOpAmfColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOpAmfColorPlacePriceList){
+		Map<String, String> standardPtOpAmfColorUpperCount = orderHelper.standardPtOpAmfColorPlaceUpperCount(orderForm, standardOpAmfColorPlacePriceList);
+		return standardPtOpAmfColorUpperCount;
+	}
+	
+	/**
+	 * PANTSボタンホール色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOpBhColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00028";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "03";
+		List<OrderPrice> standardOpBhColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOpBhColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOpBhColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOpBhColorPlacePriceList){
+		Map<String, String> standardPtOpBhColorUpperCount = orderHelper.standardPtOpBhColorPlaceUpperCount(orderForm, standardOpBhColorPlacePriceList);
+		return standardPtOpBhColorUpperCount;
+	}
+	
+	/**
+	 * PANTSボタン付け糸指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOpByColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00031";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "03";
+		List<OrderPrice> standardOpByColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOpByColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOpByColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOpByColorPlacePriceList){
+		Map<String, String> standardPtOpByColorUpperCount = orderHelper.standardPtOpByColorPlaceUpperCount(orderForm, standardOpByColorPlacePriceList);
+		return standardPtOpByColorUpperCount;
+	}
+	
+	/**
+	 * PANTS2ステッチ箇所変更の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOp2StitchModifyPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00021";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "07";
+		List<OrderPrice> standardOp2StitchModifyPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOp2StitchModifyPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOp2StitchModifyPlaceUpperCount(OrderForm orderForm,List<OrderPrice> standardOp2StitchModifyPlacePriceList){
+		Map<String, String> standardPt2Op2StitchModifyPlaceUpperCount = orderHelper.standardPt2Op2StitchModifyPlaceUpperCount(orderForm, standardOp2StitchModifyPlacePriceList);
+		return standardPt2Op2StitchModifyPlaceUpperCount;
+	}
+	
+	/**
+	 * PANTS2AMF色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOp2AmfColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00025";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "07";
+		List<OrderPrice> standardOp2AmfColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOp2AmfColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOp2AmfColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOp2AmfColorPlacePriceList){
+		Map<String, String> standardPt2Op2AmfColorUpperCount = orderHelper.standardPt2Op2AmfColorPlaceUpperCount(orderForm, standardOp2AmfColorPlacePriceList);
+		return standardPt2Op2AmfColorUpperCount;
+	}
+	
+	/**
+	 * PANTS2ボタンホール色指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOp2BhColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00028";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "07";
+		List<OrderPrice> standardOp2BhColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOp2BhColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOp2BhColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOp2BhColorPlacePriceList){
+		Map<String, String> standardPt2Op2BhColorUpperCount = orderHelper.standardPt2Op2BhColorPlaceUpperCount(orderForm, standardOp2BhColorPlacePriceList);
+		return standardPt2Op2BhColorUpperCount;
+	}
+	
+	/**
+	 * PANTS2ボタン付け糸指定の上代
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderPrice> getStandardOp2ByColorPlacePriceList(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String optionCode = "00031";
+		String itemCode = orderForm.getProductItem();
+		String subItemCode = "07";
+		List<OrderPrice> standardOp2ByColorPlacePriceList = orderService.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardOp2ByColorPlacePriceList;
+	}
+	
+	public  Map<String, String> standardOp2ByColorUpperCount(OrderForm orderForm,List<OrderPrice> standardOp2ByColorPlacePriceList){
+		Map<String, String> standardPt2Op2ByColorUpperCount = orderHelper.standardPt2Op2ByColorPlaceUpperCount(orderForm, standardOp2ByColorPlacePriceList);
+		return standardPt2Op2ByColorUpperCount;
+	}
+	
 	
 	/**
 	 * 標準のオーダー内容確認画面PANTSの上代表示map
@@ -798,49 +1268,114 @@ public class OrderCoReconfirmController {
 			//標準の場合
 			if("0".equals(orderForm.getProductCategory())) {
 				List<OptionBranchDetail> mateList = this.getMateList(orderForm);
+				List<OrderCodePrice> optionBranchPriceList = this.getOptionBranchPriceList(orderForm);
+				List<OrderPrice> standardOjStitchModifyPlacePriceList = this.getStandardOjStitchModifyPlacePriceList(orderForm);
+				List<OrderPrice> standardOjAmfColorPriceList = this.getStandardOjAmfColorPriceList(orderForm);
+				List<OrderPrice> standardOjBhColorPriceList = this.getStandardOjBhColorPriceList(orderForm);
+				List<OrderPrice> standardOjByColorPriceList = this.getStandardOjByColorPriceList(orderForm);
+				List<OrderPrice> standardOgStitchModifyPlaceList = this.getStandardOgStitchModifyPlaceList(orderForm);
+				List<OrderPrice> standardOgAmfColorPlaceList = this.getStandardOgAmfColorPlaceList(orderForm);
+				List<OrderPrice> standardOgBhColorPlacePriceList = this.getStandardOgBhColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOgByColorPlacePriceList = this.getStandardOgByColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOpStitchModifyPlacePriceList = this.getStandardOpStitchModifyPlacePriceList(orderForm);
+				List<OrderPrice> standardOpAmfColorPlacePriceList = this.getStandardOpAmfColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOpBhColorPlacePriceList = this.getStandardOpBhColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOpByColorPlacePriceList = this.getStandardOpByColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOp2StitchModifyPlacePriceList = this.getStandardOp2StitchModifyPlacePriceList(orderForm);
+				List<OrderPrice> standardOp2AmfColorPlacePriceList = this.getStandardOp2AmfColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOp2BhColorPlacePriceList = this.getStandardOp2BhColorPlacePriceList(orderForm);
+				List<OrderPrice> standardOp2ByColorPlacePriceList = this.getStandardOp2ByColorPlacePriceList(orderForm);
+				
 				Map<String, String> selectStandardJkMaterialName = this.standardJkMateSelect(mateList, orderForm);
 				Map<String, String> standardGlMateSelectName = this.standardGlMateSelect(mateList, orderForm);
 				Map<String, String> standardPtMateSelectName = this.standardPtMateSelect(mateList, orderForm);
 				Map<String, String> standardPt2MateSelectName = this.standardPt2MateSelect(mateList, orderForm);
 				Map<String, String> standardCtMateSelectName = this.standardCtMateSelect(mateList, orderForm);
+				Map<String, String> jacketUpperPrice = this.getJacketUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> pantsUpperPrice = this.getPantsUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> giletUpperPrice = this.getGiletUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> pants2UpperPrice = this.getPants2UpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> shirtUpperPrice = this.getShirtUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> coatUpperPrice = this.getCoatUpperPrice(orderForm, optionBranchPriceList);
+				Map<String, String> standardJkUpperCount = this.standardJkUpperCount(orderForm, standardOjStitchModifyPlacePriceList);
+				Map<String, String> standardJkOjAmfColorUpperCount = this.standardJkOjAmfColorUpperCount(orderForm, standardOjAmfColorPriceList);
+				Map<String, String> standardJkOjBhColorUpperCount = this.standardJkOjBhColorUpperCount(orderForm, standardOjBhColorPriceList);
+				Map<String, String> standardJkOjByColorUpperCount = this.standardJkOjByColorUpperCount(orderForm, standardOjByColorPriceList);
+				Map<String, String> standardOpStitchModifyPlaceUpperCount = this.standardOpStitchModifyPlaceUpperCount(orderForm, standardOpStitchModifyPlacePriceList);
+				Map<String, String> standardOpAmfColorUpperCount = this.standardOpAmfColorUpperCount(orderForm, standardOpAmfColorPlacePriceList);
+				Map<String, String> standardOpBhColorUpperCount = this.standardOpBhColorUpperCount(orderForm, standardOpBhColorPlacePriceList);
+				Map<String, String> standardOpByColorUpperCount = this.standardOpByColorUpperCount(orderForm, standardOpByColorPlacePriceList);
+				Map<String, String> standardOgStitchModifyPlaceUpperCount = this.standardOgStitchModifyPlaceUpperCount(orderForm, standardOgStitchModifyPlaceList);
+				Map<String, String> standardOgAmfColorUpperCount = this.standardOgAmfColorUpperCount(orderForm, standardOgAmfColorPlaceList);
+				Map<String, String> standardOgBhColorUpperCount = this.standardOgBhColorUpperCount(orderForm, standardOgBhColorPlacePriceList);
+				Map<String, String> standardOgByColorUpperCount = this.standardOgByColorUpperCount(orderForm, standardOgByColorPlacePriceList);
+				Map<String, String> standardOp2StitchModifyPlaceUpperCount = this.standardOp2StitchModifyPlaceUpperCount(orderForm, standardOp2StitchModifyPlacePriceList);
+				Map<String, String> standardOp2AmfColorUpperCount = this.standardOp2AmfColorUpperCount(orderForm, standardOp2AmfColorPlacePriceList);
+				Map<String, String> standardOp2BhColorUpperCount = this.standardOp2BhColorUpperCount(orderForm, standardOp2BhColorPlacePriceList);
+				Map<String, String> standardOp2ByColorUpperCount = this.standardOp2ByColorUpperCount(orderForm, standardOp2ByColorPlacePriceList);
+				
 				//SUITの場合、itemCodeは"01"
 				if("01".equals(productItem)) {
 					orderHelper.setProductItemDisplayCode(orderForm, order);
 					//JACKETについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
 					orderHelper.orderCoStandardJacketMapping(orderForm, order);
 					orderHelper.orderCoStandardJkNameMapping(selectStandardJkMaterialName, order);
+					orderHelper.aboutJacketCheckBoxInDb(orderForm, order);
+					orderHelper.standardJacketUpperPriceInDb(orderForm, order, jacketUpperPrice);
+					orderHelper.setJkCheckBoxInDb(orderForm, order, standardJkUpperCount, jacketUpperPrice, standardJkOjAmfColorUpperCount, standardJkOjBhColorUpperCount, standardJkOjByColorUpperCount);
 					
 					//PANTSについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
 					orderHelper.orderCoStandardPantsMapping(orderForm, order);
 					orderHelper.orderCoStandardPtNameMapping(standardPtMateSelectName, order);
+					orderHelper.aboutPantsCheckBoxInDb(orderForm, order);
+					orderHelper.standardPantsUpperPriceInDb(orderForm, order, pantsUpperPrice);
+					orderHelper.setPtCheckBoxInDb(orderForm, order, standardOpStitchModifyPlaceUpperCount, pantsUpperPrice, standardOpAmfColorUpperCount, standardOpBhColorUpperCount, standardOpByColorUpperCount);
 					
 					//３Pieceは有り、スペアパンツは有りの場合
 					if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 						//GILETについてのマピンッグ
 						standardBeanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+						standardBeanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
 						orderHelper.orderCoStandardGiletMapping(orderForm, order);
 						orderHelper.orderCoStandardGlNameMapping(standardGlMateSelectName, order);
+						orderHelper.aboutGiletCheckBoxInDb(orderForm, order);
+						orderHelper.standardGiletUpperPriceInDb(orderForm, order, giletUpperPrice);
+						orderHelper.setGlCheckBoxInDb(orderForm, order, standardOgStitchModifyPlaceUpperCount, giletUpperPrice, standardOgAmfColorUpperCount, standardOgBhColorUpperCount, standardOgByColorUpperCount);
 						
 						//2PANTSについてのマピンッグ
 						standardBeanMapper.map(orderForm.getOptionPants2StandardInfo(), order);
+						standardBeanMapper.map(orderForm.getAdjustPants2StandardInfo(), order);
 						orderHelper.orderCoStandardPants2Mapping(orderForm, order);
 						orderHelper.orderCoStandardPt2NameMapping(standardPt2MateSelectName, order);
+						orderHelper.aboutPants2CheckBoxInDb(orderForm, order);
+						orderHelper.standardPants2UpperPriceInDb(orderForm, order, pants2UpperPrice);
+						orderHelper.setPt2CheckBoxInDb(orderForm, order, standardOp2StitchModifyPlaceUpperCount, pants2UpperPrice, standardOp2AmfColorUpperCount, standardOp2BhColorUpperCount, standardOp2ByColorUpperCount);
 					}
 					//３Pieceは有り、スペアパンツは無しの場合
 					else if(productYes.equals(productIs3Piece) && productNo.equals(productSparePantsClass)) {
 						//GILETについてのマピンッグ
 						standardBeanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+						standardBeanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
 						orderHelper.orderCoStandardGiletMapping(orderForm, order);
 						orderHelper.orderCoStandardGlNameMapping(standardGlMateSelectName, order);
+						orderHelper.aboutGiletCheckBoxInDb(orderForm, order);
+						orderHelper.standardGiletUpperPriceInDb(orderForm, order, giletUpperPrice);
+						orderHelper.setGlCheckBoxInDb(orderForm, order, standardOgStitchModifyPlaceUpperCount, giletUpperPrice, standardOgAmfColorUpperCount, standardOgBhColorUpperCount, standardOgByColorUpperCount);
 					}
 					//３Pieceは無し、スペアパンツは有りの場合
 					else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 						//2PANTSについてのマピンッグ
 						standardBeanMapper.map(orderForm.getOptionPants2StandardInfo(), order);
+						standardBeanMapper.map(orderForm.getAdjustPants2StandardInfo(), order);
 						orderHelper.orderCoStandardPants2Mapping(orderForm, order);
 						orderHelper.orderCoStandardPt2NameMapping(standardPt2MateSelectName, order);
+						orderHelper.aboutPants2CheckBoxInDb(orderForm, order);
+						orderHelper.standardPants2UpperPriceInDb(orderForm, order, pants2UpperPrice);
+						orderHelper.setPt2CheckBoxInDb(orderForm, order, standardOp2StitchModifyPlaceUpperCount, pants2UpperPrice, standardOp2AmfColorUpperCount, standardOp2BhColorUpperCount, standardOp2ByColorUpperCount);
 					}
 					else {
 						order.setProductIs3pieceRtPrice(0);
@@ -852,33 +1387,49 @@ public class OrderCoReconfirmController {
 				else if("02".equals(productItem)) {
 					//JACKETについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionJacketStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustJacketStandardInfo(), order);
 					orderHelper.orderCoStandardJacketMapping(orderForm, order);
 					orderHelper.orderCoStandardJkNameMapping(selectStandardJkMaterialName, order);
+					orderHelper.aboutJacketCheckBoxInDb(orderForm, order);
+					orderHelper.standardJacketUpperPriceInDb(orderForm, order, jacketUpperPrice);
+					orderHelper.setJkCheckBoxInDb(orderForm, order, standardJkUpperCount, jacketUpperPrice, standardJkOjAmfColorUpperCount, standardJkOjBhColorUpperCount, standardJkOjByColorUpperCount);
 				}
 				//PANTSの場合、itemCodeは"03"
 				else if("03".equals(productItem)) {
 					//PANTSについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionPantsStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustPantsStandardInfo(), order);
 					orderHelper.orderCoStandardPantsMapping(orderForm, order);
 					orderHelper.orderCoStandardPtNameMapping(standardPtMateSelectName, order);
+					orderHelper.aboutPantsCheckBoxInDb(orderForm, order);
+					orderHelper.standardPantsUpperPriceInDb(orderForm, order, pantsUpperPrice);
+					orderHelper.setPtCheckBoxInDb(orderForm, order, standardOpStitchModifyPlaceUpperCount, pantsUpperPrice, standardOpAmfColorUpperCount, standardOpBhColorUpperCount, standardOpByColorUpperCount);
 				}
 				//GILETの場合、itemCodeは"04"
 				else if("04".equals(productItem)) {
 					//GILETについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustGiletStandardInfo(), order);
 					orderHelper.orderCoStandardGiletMapping(orderForm, order);
 					orderHelper.orderCoStandardGlNameMapping(standardGlMateSelectName, order);
+					orderHelper.aboutGiletCheckBoxInDb(orderForm, order);
+					orderHelper.standardGiletUpperPriceInDb(orderForm, order, giletUpperPrice);
+					orderHelper.setGlCheckBoxInDb(orderForm, order, standardOgStitchModifyPlaceUpperCount, giletUpperPrice, standardOgAmfColorUpperCount, standardOgBhColorUpperCount, standardOgByColorUpperCount);
 				}
 				//SHIRTの場合、itemCodeは"05"
 				else if("05".equals(productItem)) {
 					standardBeanMapper.map(orderForm.getOptionShirtStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustShirtStandardInfo(), order);
 					orderHelper.orderCoStandardShirtMapping(orderForm, order);
+					orderHelper.standardShirtUpperPriceInDb(orderForm, order, shirtUpperPrice);
 				}
 				//COATの場合、itemCodeは"06"
 				else if("06".equals(productItem)) {
 					standardBeanMapper.map(orderForm.getOptionCoatStandardInfo(), order);
+					standardBeanMapper.map(orderForm.getAdjustCoatStandardInfo(), order);
 					orderHelper.orderCoStandardCoatMapping(orderForm, order);
 					orderHelper.orderCoStandardCtNameMapping(standardCtMateSelectName, order);
+					orderHelper.standardCoatUpperPriceInDb(orderForm, order, coatUpperPrice);
 				}
 			}
 			//タキシードの場合
@@ -1036,6 +1587,7 @@ public class OrderCoReconfirmController {
 //			String findMakerId = this.findMakerId(orderForm);
 			orderHelper.onlyUpdateItem(selectExistOrder,order,sessionContent.getAuthority());
 			orderHelper.orderCoMapping(orderForm, order, userId, findStock, orderId);
+//			orderHelper.orderMappingPo(orderForm, order,userId,findStock,orderId,findMakerId,retailPriceRelatedMap,priceCode);
 			orderHelper.measuringMapping(orderForm, measuring,sessionContent.getUserId());
 			
 			//挿入の場合

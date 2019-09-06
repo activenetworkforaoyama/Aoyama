@@ -396,7 +396,8 @@ function adjustSession(){
 	if("${orderForm.adjustGiletStandardInfo.corGlBustGross}"==""){
 		jQuery("#corGlBust_div_html").html("000.0cm");
 		}
-	jQuery("#corGlBust_out").html("${orderForm.adjustGiletStandardInfo.corGlBustCorrect}");
+	
+	jQuery("#corGlBustRange_out").html("${orderForm.adjustGiletStandardInfo.corGlBustCorrect}");
 	jQuery("#corGlBustRange").val("${orderForm.adjustGiletStandardInfo.corGlBustCorrect}");
 	setFont("corGlBustRange");
 
@@ -406,7 +407,7 @@ function adjustSession(){
 	if("${orderForm.adjustGiletStandardInfo.corGlWaistGross}"==""){
 		jQuery("#corGlWaist_div_html").html("000.0cm");
 		}
-	jQuery("#corGlWaist_out").html("${orderForm.adjustGiletStandardInfo.corGlWaistCorrect}");
+	jQuery("#corGlWaistRange_out").html("${orderForm.adjustGiletStandardInfo.corGlWaistCorrect}");
 	jQuery("#corGlWaistRange").val("${orderForm.adjustGiletStandardInfo.corGlWaistCorrect}");
 	setFont("corGlWaistRange");
 	jQuery("#corGlStoreCorrectionMemo").val("${orderForm.adjustGiletStandardInfo.corGlStoreCorrectionMemo}");

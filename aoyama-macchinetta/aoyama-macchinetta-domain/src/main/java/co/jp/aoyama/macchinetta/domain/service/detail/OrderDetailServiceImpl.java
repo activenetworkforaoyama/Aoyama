@@ -15,9 +15,9 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 	OrderDetailRepository orderDetailRepository;
 	
 	@Override
-	public OrderDetail selectActualStock(String fabricNo) {
+	public OrderDetail selectActualStock(String fabricNo, String orderPattern) {
 		
-		OrderDetail selectActualStock = orderDetailRepository.selectActualStock(fabricNo);
+		OrderDetail selectActualStock = orderDetailRepository.selectActualStock(fabricNo, orderPattern);
 		return selectActualStock;
 	}
 

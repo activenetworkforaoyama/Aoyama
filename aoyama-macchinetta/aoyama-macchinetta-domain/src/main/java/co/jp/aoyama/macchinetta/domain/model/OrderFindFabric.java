@@ -109,6 +109,9 @@ public class OrderFindFabric implements Serializable {
 	// メーカーコード
 	private String makerCode;
 
+	//LCR縫製可否
+	private String lcrSewingAvailable;
+	
 	// 年季
 	private String season;
 
@@ -127,9 +130,42 @@ public class OrderFindFabric implements Serializable {
 	// タキシード可否
 	private String tuxedoAvailable;
 	
-	//
+	//理論在庫 - 予約生地量
 	private String stockResult;
-
+	
+	private Boolean jkModelCheck;
+	
+	private Boolean ptModelCheck; 
+	
+	private Boolean pt2ModelCheck; 
+	
+	private Boolean glModelCheck; 
+	
+	private Boolean ctModelCheck; 
+	
+	private Boolean shModelCheck; 
+	
+//	private String suit2PGoodsPrice;
+//	
+//	private String jkSingleGoodsPrice;
+//	
+//	private String jkDoubleGoodsPrice;
+//	
+//	private String glSingleGoodsPrice;
+//	
+//	private String glDoubleGoodsPrice;
+//	
+//	private String ptGoodsPrice;
+//	
+//	//COAT単品
+//	private String ctSingleGoodsPrice;
+//	
+//	private String ctDoubleGoodsPrice;
+//	
+//	private String shGoodsPrice;.
+	
+	private String productPrice;
+	
 	public String getStockResult() {
 		return stockResult;
 	}
@@ -456,6 +492,70 @@ public class OrderFindFabric implements Serializable {
 
 	public void setStoreDelvEarly(String storeDelvEarly) {
 		this.storeDelvEarly = storeDelvEarly;
+	}
+
+	public String getLcrSewingAvailable() {
+		return lcrSewingAvailable;
+	}
+
+	public void setLcrSewingAvailable(String lcrSewingAvailable) {
+		this.lcrSewingAvailable = lcrSewingAvailable;
+	}
+
+	public Boolean getJkModelCheck() {
+		return jkModelCheck;
+	}
+
+	public void setJkModelCheck(Boolean jkModelCheck) {
+		this.jkModelCheck = jkModelCheck;
+	}
+
+	public Boolean getPtModelCheck() {
+		return ptModelCheck;
+	}
+
+	public void setPtModelCheck(Boolean ptModelCheck) {
+		this.ptModelCheck = ptModelCheck;
+	}
+
+	public Boolean getPt2ModelCheck() {
+		return pt2ModelCheck;
+	}
+
+	public void setPt2ModelCheck(Boolean pt2ModelCheck) {
+		this.pt2ModelCheck = pt2ModelCheck;
+	}
+
+	public Boolean getGlModelCheck() {
+		return glModelCheck;
+	}
+
+	public void setGlModelCheck(Boolean glModelCheck) {
+		this.glModelCheck = glModelCheck;
+	}
+
+	public Boolean getCtModelCheck() {
+		return ctModelCheck;
+	}
+
+	public void setCtModelCheck(Boolean ctModelCheck) {
+		this.ctModelCheck = ctModelCheck;
+	}
+
+	public Boolean getShModelCheck() {
+		return shModelCheck;
+	}
+
+	public void setShModelCheck(Boolean shModelCheck) {
+		this.shModelCheck = shModelCheck;
+	}
+
+	public String getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(String productPrice) {
+		this.productPrice = productPrice;
 	}
 
 }

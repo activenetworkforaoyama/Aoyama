@@ -40,7 +40,7 @@
 			<div class="col col-md-7">
 			</div>
 			<div class="col col-md-5">
-				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 					お客様注文内容確認書
 				</button>
 			</div>
@@ -54,7 +54,7 @@
 				<div class="col col-md-7">
 				</div>
 				<div class="col col-md-5">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 						お客様注文内容確認書
 					</button>
 				</div>
@@ -64,12 +64,12 @@
 			<div class="col col-md-4">
 			</div>
 			<div class="col col-md-5">
-				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 					お客様注文内容確認書
 				</button>
 			</div>
 			<div class="col col-md-3">
-				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 					工場指示書
 				</button>
 			</div>
@@ -83,19 +83,19 @@
 				<c:choose>
 					<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 						<div class="col col-md-5">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 								お客様注文内容確認書
 							</button>
 						</div>
 						
 						<div class="col col-md-4">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 								注文内容確認書
 							</button>
 						</div>
 						
 						<div class="col col-md-3">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 								工場指示書
 							</button>
 						</div>
@@ -105,12 +105,12 @@
 						<div class="col col-md-4">
 						</div>
 						<div class="col col-md-5">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 								お客様注文内容確認書
 							</button>
 						</div>
 						<div class="col col-md-3">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 								工場指示書
 							</button>
 						</div>
@@ -129,13 +129,13 @@
 						<div class="col col-md-3">
 						</div>
 						<div class="col col-md-5">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 								お客様注文内容確認書
 							</button>
 						</div>
 						
 						<div class="col col-md-4">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 								注文内容確認書
 							</button>
 						</div>
@@ -148,7 +148,7 @@
 						<div class="col col-md-3">
 						</div>
 						<div class="col col-md-5">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(2)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 								お客様注文内容確認書
 							</button>
 						</div>
@@ -164,7 +164,7 @@
 				<div class="col col-md-9">
 				</div>
 				<div class="col col-md-3">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
 					</button>
 				</div>
@@ -181,13 +181,13 @@
 						</div>
 						
 						<div class="col col-md-4">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 								注文内容確認書
 							</button>
 						</div>
 						
 						<div class="col col-md-3">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 								工場指示書
 							</button>
 						</div>
@@ -200,7 +200,7 @@
 						</div>
 						
 						<div class="col col-md-3">
-							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 								工場指示書
 							</button>
 						</div>
@@ -221,7 +221,7 @@
 					</div>
 					
 					<div class="col col-md-4">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 							注文内容確認書
 						</button>
 					</div>
@@ -237,7 +237,7 @@
 				<div class="col col-md-9">
 				</div>
 				<div class="col col-md-3">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
 					</button>
 				</div>
@@ -254,12 +254,12 @@
 					</div>
 					
 					<div class="col col-md-5">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 							注文内容確認書
 						</button>
 					</div>
 					<div class="col col-md-3">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
 					</div>
@@ -271,7 +271,7 @@
 					<div class="col col-md-5">
 					</div>
 					<div class="col col-md-3">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(3)">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
 					</div>
@@ -292,7 +292,7 @@
 					</div>
 					
 					<div class="col col-md-5">
-						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(1)">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninSign})">
 							注文内容確認書
 						</button>
 					</div>
@@ -973,25 +973,26 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionJacketMemoAgain"
-			style="display: none;">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corJkStoreCorrectionMemo)}</textarea>
+	</div>
+	<c:if test="${authority != '03' && authority != '04'}">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<strong class="card-title">店舗補正入力欄</strong>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col col-lg-12">
+								<textarea readonly name="textarea-input" id="textarea-input"
+									rows="3" class="form-control">${f:h(order.corJkStoreCorrectionMemo)}</textarea>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		</c:if>
-	</div>
+	</c:if>
 </div>
 </div>
 </div>
@@ -1159,25 +1160,26 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionGiletMemoAgain"
-			style="display: none;">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corGlStoreCorrectionMemo)}</textarea>
-						</div>
+	</div>
+	<c:if test="${authority != '03' && authority != '04'}">
+	<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+			<div class="card-header">
+				<strong class="card-title">店舗補正入力欄</strong>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<textarea readonly name="textarea-input" id="textarea-input"
+							rows="3" class="form-control">${f:h(order.corGlStoreCorrectionMemo)}</textarea>
 					</div>
 				</div>
 			</div>
 		</div>
-		</c:if>
 	</div>
+	</div>
+	</c:if>
 </div>
 </div>
 <!-- GILET End -->
@@ -1433,9 +1435,10 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionPantsMemoAgain"
-			style="display: none;">
+	</div>
+	<div class="row">
+	<c:if test="${authority != '03' && authority != '04'}">
+		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
 					<strong class="card-title">店舗補正入力欄</strong>
@@ -1450,7 +1453,7 @@
 				</div>
 			</div>
 		</div>
-		</c:if>
+	</c:if>
 	</div>
 </div>
 </div>
@@ -1707,9 +1710,10 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionPants2MemoAgain"
-			style="display: none;">
+    </div>
+	<div class="row">
+	<c:if test="${authority != '03' && authority != '04'}">
+		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
 					<strong class="card-title">店舗補正入力欄</strong>
@@ -1724,8 +1728,8 @@
 				</div>
 			</div>
 		</div>
-		</c:if>
-	</div>
+	</c:if>
+</div>
 </div>
 </div>
 <!-- PANTS 2 End -->
@@ -1869,9 +1873,10 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionCoatMemoAgain"
-			style="display: none;">
+	</div>
+	<div class="row">
+	<c:if test="${authority != '03' && authority != '04'}">
+		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
 					<strong class="card-title">店舗補正入力欄</strong>
@@ -1886,7 +1891,7 @@
 				</div>
 			</div>
 		</div>
-		</c:if>
+	</c:if>
 	</div>
 </div>
 </div>
@@ -2100,9 +2105,11 @@
 				</div>
 			</div>
 		</div>
-		<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12" id="correctionShirtMemoAgain"
-			style="display: none;">
+		
+	</div>
+	<div class="row">
+	<c:if test="${authority != '03' && authority != '04'}">
+		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
 					<strong class="card-title">店舗補正入力欄</strong>
@@ -2117,8 +2124,8 @@
 				</div>
 			</div>
 		</div>
-		</c:if>
-	</div>
+	</c:if>
+     </div>
 </div>
 </div>
 </div>
@@ -2473,7 +2480,7 @@
 										</div>
 										<div class="col col-md-2"></div>
 									</c:if>
-									<c:if test="${order.tscStatus == 'T6' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03')}">
+									<c:if test="${order.tscStatus == 'T6' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03' || order.productItem == '04')}">
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
 												id="backButton">一覧へ戻る</button>
@@ -2487,7 +2494,7 @@
 												id="ChangeStatus">お渡し済</button>
 										</div>
 									</c:if>
-									<c:if test="${order.tscStatus == 'T6' && (order.productItem == '04' || order.productItem == '05' || order.productItem == '06')}">
+									<c:if test="${order.tscStatus == 'T6' && (order.productItem == '05' || order.productItem == '06')}">
 										<div class="col col-md-2"></div>
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2499,7 +2506,7 @@
 										</div>
 										<div class="col col-md-2"></div>
 									</c:if>
-									<c:if test="${order.tscStatus == 'T7' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03')}">
+									<c:if test="${order.tscStatus == 'T7' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03' || order.productItem == '04')}">
 										<div class="col col-md-2"></div>
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2511,7 +2518,7 @@
 										</div>
 										<div class="col col-md-2"></div>
 									</c:if>
-									<c:if test="${order.tscStatus == 'T7' && (order.productItem == '04' || order.productItem == '05' || order.productItem == '06')}">
+									<c:if test="${order.tscStatus == 'T7' && (order.productItem == '05' || order.productItem == '06')}">
 										<div class="col col-md-4"></div>
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2816,13 +2823,13 @@
 	jQuery("#ChangeOrderValue").click(function(){
 		//注文ID
 		var orderId = "${order.orderId}"
-		window.location.href= contextPath + "/orderDetail/orderDetailToOrderCo/" + orderId;
+		window.location.href= contextPath + "/orderCoDetail/orderDetailToOrderCo/" + orderId;
 	})
 
 	//お渡し時再補正入力画面にジャンプ	
 	var orderId = "${order.orderId}";
 	jQuery("#goRecorrection").click(function(){
-		window.location.href= contextPath + "/orderDetail/orderDetailToCo/" + orderId;
+		window.location.href= contextPath + "/orderCoDetail/orderDetailToCo/" + orderId;
 	})
 
 	//TSCステータスを「お渡し済」に変更する、保存完了後、「オーダー登録結果」画面へ遷移する
@@ -2846,7 +2853,7 @@
 		var hasPrivileage = true;
 		jQuery.ajax({
 			 type:"post",
-			 url: contextPath + "/orderDetail/decideFabricUsedMount",
+			 url: contextPath + "/orderCoDetail/decideFabricUsedMount",
 			 data:{"productFabricNo":productFabricNo,"fabricUsedMountValue":fabricUsedMountValue,"orderId":orderId},
 			 async:false,
 			 success:function(result){
@@ -2910,7 +2917,7 @@
 								var loadingDate = jQuery("#loadingDate").val();
 								//バージョン
 								var orderVersion = "${order.version}";
-								window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+								window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
 								  }
 							})		
 						  }
@@ -2949,7 +2956,7 @@
 								var loadingDate = jQuery("#loadingDate").val();
 								//バージョン
 								var orderVersion = "${order.version}";
-								window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+								window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
 								  }
 							})		
 						  }
@@ -2982,7 +2989,7 @@
 						var loadingDate = jQuery("#loadingDate").val();
 						//バージョン
 						var orderVersion = "${order.version}";
-						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
 						  }
 					})	
 				  }		
@@ -3013,7 +3020,7 @@
 						var loadingDate = jQuery("#loadingDate").val();
 						//バージョン
 						var orderVersion = "${order.version}";
-						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
 						  }
 					})	
 				  }		
@@ -3044,7 +3051,7 @@
 						var loadingDate = jQuery("#loadingDate").val();
 						//バージョン
 						var orderVersion = "${order.version}";
-						window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
+						window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;
 						  }
 					})	
 				  }		
@@ -3069,7 +3076,7 @@
 				var loadingDate = jQuery("#loadingDate").val();
 				//バージョン
 				var orderVersion = "${order.version}";
-				window.location.href= contextPath + "/orderDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;	
+				window.location.href= contextPath + "/orderCoDetail/saveValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&orderVersion=" + orderVersion;	
 				  }		
 			})
 	}
@@ -3105,7 +3112,7 @@ jQuery("#saveOrChangeValue").click(function(){
 	var hasPrivileage = true;
 	jQuery.ajax({
 		 type:"post",
-		 url: contextPath + "/orderDetail/decideFabricUsedMount",
+		 url: contextPath + "/orderCoDetail/decideFabricUsedMount",
 		 data:{"productFabricNo":productFabricNo,"fabricUsedMountValue":fabricUsedMountValue,"orderId":orderId},
 		 async:false,
 		 success:function(result){
@@ -3163,7 +3170,7 @@ jQuery("#saveOrChangeValue").click(function(){
 									var makerFactoryStatus = 'F2'; 
 									//バージョン
 									var orderVersion = "${order.version}";
-									window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+									window.location.href= contextPath + "/orderCoDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
 								  }
 							})
 						  }
@@ -3198,7 +3205,7 @@ jQuery("#saveOrChangeValue").click(function(){
 							var makerFactoryStatus = 'F2'; 
 							//バージョン
 							var orderVersion = "${order.version}";
-							window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+							window.location.href= contextPath + "/orderCoDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
 						  }
 					})
 				  }
@@ -3231,7 +3238,7 @@ jQuery("#saveOrChangeValue").click(function(){
 							var makerFactoryStatus = 'F2'; 
 							//バージョン
 							var orderVersion = "${order.version}";
-							window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+							window.location.href= contextPath + "/orderCoDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
 						  }
 					})
 				  }
@@ -3258,7 +3265,7 @@ jQuery("#saveOrChangeValue").click(function(){
 					var makerFactoryStatus = 'F2'; 
 					//バージョン
 					var orderVersion = "${order.version}";
-					window.location.href= contextPath + "/orderDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
+					window.location.href= contextPath + "/orderCoDetail/saveOrChangeValue/?orderId=" + orderId + "&fabricNo=" + fabricNo + "&fabricUsedMount=" + fabricUsedMount + "&shippingDate=" + shippingDate + "&loadingDate=" + loadingDate + "&makerFactoryStatus=" + makerFactoryStatus + "&orderVersion=" + orderVersion;
 				  }
 			})
 	}
@@ -3272,7 +3279,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		var orderId = "${order.orderId}";
 		jQuery.ajax({
 			 type:"post",
-			 url: contextPath + "/orderDetail/nextGenerationCount",
+			 url: contextPath + "/orderCoDetail/nextGenerationCoCount",
 			 data:{"orderId":orderId},
 			 success:function(result){
 				 if(result == "1"){
@@ -3312,7 +3319,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		var orderVersion = "${order.version}";
 		var nextGenerationPrice = jQuery("#nextGenerationDisplay").val();
 		var status = "${order.tscStatus}";
-		window.location.href= contextPath + "/orderDetail/nextGenerationPrice/" + orderId + "/" + nextGenerationPrice + "/" + orderVersion + "/" + status;
+		window.location.href= contextPath + "/orderCoDetail/nextGenerationCoPrice/" + orderId + "/" + nextGenerationPrice + "/" + orderVersion + "/" + status;
 			
 	})
 
@@ -3421,19 +3428,6 @@ jQuery("#saveOrChangeValue").click(function(){
 			day = "0" + day;
 		}
 		return year + "/" + month + "/" + day;
-	}
-
-	//去除字符串头部空格或指定字符
-	String.prototype.TrimStart = function (c) {
-	    if (c == null || c == "") {
-	        var str = this.replace(/^s*/, '');
-	        return str;
-	    }
-	    else {
-	        var rg = new RegExp("^" + c + "*");
-	        var str = this.replace(rg, '');
-	        return str;
-	    }
 	}
 
 	if ("${authority}" == "03" || "${authority}" == "04"
@@ -3631,7 +3625,6 @@ jQuery("#saveOrChangeValue").click(function(){
 		var authority = "${authority}";
 		var makerFactoryStatus = "${order.makerFactoryStatus}";
 		var productItem = jQuery("#product_item").text();
-
 		jQuery.ajax({
 		    url:contextPath + "/pdfFile/poPdfFileCheck",
 		    type:"get",
@@ -3784,11 +3777,6 @@ jQuery("#saveOrChangeValue").click(function(){
 			jQuery('#op_pants_div').show();
 
 			jQuery('#op2_pants_div').show();
-
-			jQuery('#correctionJacketMemoAgain').show();
-			jQuery('#correctionGiletMemoAgain').show();
-			jQuery('#correctionPantsMemoAgain').show();
-			jQuery('#correctionPants2MemoAgain').show();
 		} else if ("${order.productIs3piece}" == '0009902'
 				&& "${order.productSparePantsClass}" == '0009901') {
 			jQuery('#op_jacket_div').show();
@@ -3796,10 +3784,6 @@ jQuery("#saveOrChangeValue").click(function(){
 			jQuery('#op_gilet_div').show();
 
 			jQuery('#op_pants_div').show();
-			
-			jQuery('#correctionJacketMemoAgain').show();
-			jQuery('#correctionGiletMemoAgain').show();
-			jQuery('#correctionPantsMemoAgain').show();
 		} else if ("${order.productIs3piece}" == '0009901'
 				&& "${order.productSparePantsClass}" == '0009902') {
 			jQuery('#op_jacket_div').show();
@@ -3807,38 +3791,26 @@ jQuery("#saveOrChangeValue").click(function(){
 			jQuery('#op_pants_div').show();
 
 			jQuery('#op2_pants_div').show();
-
-			jQuery('#correctionJacketMemoAgain').show();
-			jQuery('#correctionPantsMemoAgain').show();
-			jQuery('#correctionPants2MemoAgain').show();
 		} else if ("${order.productIs3piece}" == '0009901'
 				&& "${order.productSparePantsClass}" == '0009901') {
 			jQuery('#op_jacket_div').show();
 
 			jQuery('#op_pants_div').show();
-
-			jQuery('#correctionJacketMemoAgain').show();
-			jQuery('#correctionPantsMemoAgain').show();
 		}
 	} else if (item == "JACKET") {
 		jQuery('#op_jacket_div').show();
-		jQuery('#correctionJacketMemoAgain').show();
 		
 	} else if (item == "PANTS") {
 		jQuery('#op_pants_div').show();
-		jQuery('#correctionPantsMemoAgain').show();
 		
 	} else if (item == "GILET") {
 		jQuery('#op_gilet_div').show();
-		jQuery('#correctionGiletMemoAgain').show();
 		
 	} else if (item == "SHIRT") {
 		jQuery('#op_shirt_div').show();
-		jQuery('#correctionShirtMemoAgain').show();
 		
 	}else if (item == "COAT") {
 		jQuery('#op_coat_div').show();
-		jQuery('#correctionCoatMemoAgain').show();
 	}
 
 	//再補正内容表示

@@ -43,7 +43,22 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2BeltLoopMap;
     
     //ベルトループ箇所 
+   // private String op2BeltLoopPlace;
     private String op2BeltLoopPlace;
+    
+    private String op2BeltLoopPlace1;
+    
+    private String op2BeltLoopPlace2;
+    
+    private String op2BeltLoopPlace3;
+    
+    private String op2BeltLoopPlace4;
+    
+    private String op2BeltLoopPlace5;
+    
+    private String op2BeltLoopPlace6;
+    
+    private String op2BeltLoopPlace7;
     
     private Map<String,String> op2BeltLoopPlaceMap;
     
@@ -108,7 +123,16 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2StitchModifyMap;
     
     //ステッチ箇所変更箇所
+   // private String op2StitchModifyPlace;
     private String op2StitchModifyPlace;
+    
+    private String op2StitchModifyPlace1;
+    
+    private String op2StitchModifyPlace2;
+    
+    private String op2StitchModifyPlace3;
+    
+    private String op2StitchModifyPlace4;
     
     private Map<String,String> op2StitchModifyPlaceMap;
     
@@ -118,7 +142,16 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2DStitchMap;
     
     //ダブルステッチ箇所
+    //private String op2DStitchPlace;
     private String op2DStitchPlace;
+    
+    private String op2DStitchPlace1;
+
+    private String op2DStitchPlace2;
+    
+    private String op2DStitchPlace3;
+    
+    private String op2DStitchPlace4;
     
     private Map<String,String> op2DStitchPlaceMap;
 
@@ -133,7 +166,16 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2AmfColorPlaceAllMap;
     
     //AMF色指定箇所
+    //private String op2AmfColorPlace;
     private String op2AmfColorPlace;
+    
+    private String op2AmfColorPlace1;
+    
+    private String op2AmfColorPlace2;
+    
+    private String op2AmfColorPlace3;
+    
+    private String op2AmfColorPlace4;
     
     private Map<String,String> op2AmfColorPlaceMap;
     
@@ -163,7 +205,16 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2BhColorPlaceAllMap;
     
     //ボタンホール色指定箇所
+    //private String op2BhColorPlace;
     private String op2BhColorPlace;
+   
+    private String op2BhColorPlace1;
+    
+    private String op2BhColorPlace2;
+    
+    private String op2BhColorPlace3;
+    
+    private String op2BhColorPlace4;
     
     private Map<String,String> op2BhColorPlaceMap;
     
@@ -193,7 +244,16 @@ public class OptionPants2StandardInfo implements Serializable{
     private Map<String,String> op2ByColorPlaceAllMap;
     
     //ボタン付け糸指定箇所
+    //private String op2ByColorPlace;
     private String op2ByColorPlace;
+    
+    private String op2ByColorPlace1;
+    
+    private String op2ByColorPlace2;
+    
+    private String op2ByColorPlace3;
+    
+    private String op2ByColorPlace4;
     
     private Map<String,String> op2ByColorPlaceMap;
     
@@ -367,14 +427,6 @@ public class OptionPants2StandardInfo implements Serializable{
 
 	public void setOp2BeltLoopMap(Map<String, String> op2BeltLoopMap) {
 		this.op2BeltLoopMap = op2BeltLoopMap;
-	}
-
-	public String getOp2BeltLoopPlace() {
-		return op2BeltLoopPlace;
-	}
-
-	public void setOp2BeltLoopPlace(String op2BeltLoopPlace) {
-		this.op2BeltLoopPlace = op2BeltLoopPlace;
 	}
 
 	public Map<String, String> getOp2BeltLoopPlaceMap() {
@@ -577,14 +629,6 @@ public class OptionPants2StandardInfo implements Serializable{
 		this.op2StitchModifyMap = op2StitchModifyMap;
 	}
 
-	public String getOp2StitchModifyPlace() {
-		return op2StitchModifyPlace;
-	}
-
-	public void setOp2StitchModifyPlace(String op2StitchModifyPlace) {
-		this.op2StitchModifyPlace = op2StitchModifyPlace;
-	}
-
 	public Map<String, String> getOp2StitchModifyPlaceMap() {
 		return op2StitchModifyPlaceMap;
 	}
@@ -607,14 +651,6 @@ public class OptionPants2StandardInfo implements Serializable{
 
 	public void setOp2DStitchMap(Map<String, String> op2dStitchMap) {
 		op2DStitchMap = op2dStitchMap;
-	}
-
-	public String getOp2DStitchPlace() {
-		return op2DStitchPlace;
-	}
-
-	public void setOp2DStitchPlace(String op2dStitchPlace) {
-		op2DStitchPlace = op2dStitchPlace;
 	}
 
 	public Map<String, String> getOp2DStitchPlaceMap() {
@@ -655,14 +691,6 @@ public class OptionPants2StandardInfo implements Serializable{
 
 	public void setOp2AmfColorPlaceAllMap(Map<String, String> op2AmfColorPlaceAllMap) {
 		this.op2AmfColorPlaceAllMap = op2AmfColorPlaceAllMap;
-	}
-
-	public String getOp2AmfColorPlace() {
-		return op2AmfColorPlace;
-	}
-
-	public void setOp2AmfColorPlace(String op2AmfColorPlace) {
-		this.op2AmfColorPlace = op2AmfColorPlace;
 	}
 
 	public Map<String, String> getOp2AmfColorPlaceMap() {
@@ -745,14 +773,6 @@ public class OptionPants2StandardInfo implements Serializable{
 		this.op2BhColorPlaceAllMap = op2BhColorPlaceAllMap;
 	}
 
-	public String getOp2BhColorPlace() {
-		return op2BhColorPlace;
-	}
-
-	public void setOp2BhColorPlace(String op2BhColorPlace) {
-		this.op2BhColorPlace = op2BhColorPlace;
-	}
-
 	public Map<String, String> getOp2BhColorPlaceMap() {
 		return op2BhColorPlaceMap;
 	}
@@ -831,14 +851,6 @@ public class OptionPants2StandardInfo implements Serializable{
 
 	public void setOp2ByColorPlaceAllMap(Map<String, String> op2ByColorPlaceAllMap) {
 		this.op2ByColorPlaceAllMap = op2ByColorPlaceAllMap;
-	}
-
-	public String getOp2ByColorPlace() {
-		return op2ByColorPlace;
-	}
-
-	public void setOp2ByColorPlace(String op2ByColorPlace) {
-		this.op2ByColorPlace = op2ByColorPlace;
 	}
 
 	public Map<String, String> getOp2ByColorPlaceMap() {
@@ -1008,7 +1020,272 @@ public class OptionPants2StandardInfo implements Serializable{
 	public void setOp2BtnMateStkNo(String op2BtnMateStkNo) {
 		this.op2BtnMateStkNo = op2BtnMateStkNo;
 	}
-    
+
+	public String getOp2BeltLoopPlace1() {
+		return op2BeltLoopPlace1;
+	}
+
+	public void setOp2BeltLoopPlace1(String op2BeltLoopPlace1) {
+		this.op2BeltLoopPlace1 = op2BeltLoopPlace1;
+	}
+
+	public String getOp2BeltLoopPlace2() {
+		return op2BeltLoopPlace2;
+	}
+
+	public void setOp2BeltLoopPlace2(String op2BeltLoopPlace2) {
+		this.op2BeltLoopPlace2 = op2BeltLoopPlace2;
+	}
+
+	public String getOp2BeltLoopPlace3() {
+		return op2BeltLoopPlace3;
+	}
+
+	public void setOp2BeltLoopPlace3(String op2BeltLoopPlace3) {
+		this.op2BeltLoopPlace3 = op2BeltLoopPlace3;
+	}
+
+	public String getOp2BeltLoopPlace4() {
+		return op2BeltLoopPlace4;
+	}
+
+	public void setOp2BeltLoopPlace4(String op2BeltLoopPlace4) {
+		this.op2BeltLoopPlace4 = op2BeltLoopPlace4;
+	}
+
+	public String getOp2BeltLoopPlace5() {
+		return op2BeltLoopPlace5;
+	}
+
+	public void setOp2BeltLoopPlace5(String op2BeltLoopPlace5) {
+		this.op2BeltLoopPlace5 = op2BeltLoopPlace5;
+	}
+
+	public String getOp2BeltLoopPlace6() {
+		return op2BeltLoopPlace6;
+	}
+
+	public void setOp2BeltLoopPlace6(String op2BeltLoopPlace6) {
+		this.op2BeltLoopPlace6 = op2BeltLoopPlace6;
+	}
+
+	public String getOp2BeltLoopPlace7() {
+		return op2BeltLoopPlace7;
+	}
+
+	public void setOp2BeltLoopPlace7(String op2BeltLoopPlace7) {
+		this.op2BeltLoopPlace7 = op2BeltLoopPlace7;
+	}
+
+	public String getOp2StitchModifyPlace1() {
+		return op2StitchModifyPlace1;
+	}
+
+	public void setOp2StitchModifyPlace1(String op2StitchModifyPlace1) {
+		this.op2StitchModifyPlace1 = op2StitchModifyPlace1;
+	}
+
+	public String getOp2StitchModifyPlace2() {
+		return op2StitchModifyPlace2;
+	}
+
+	public void setOp2StitchModifyPlace2(String op2StitchModifyPlace2) {
+		this.op2StitchModifyPlace2 = op2StitchModifyPlace2;
+	}
+
+	public String getOp2StitchModifyPlace3() {
+		return op2StitchModifyPlace3;
+	}
+
+	public void setOp2StitchModifyPlace3(String op2StitchModifyPlace3) {
+		this.op2StitchModifyPlace3 = op2StitchModifyPlace3;
+	}
+
+	public String getOp2StitchModifyPlace4() {
+		return op2StitchModifyPlace4;
+	}
+
+	public void setOp2StitchModifyPlace4(String op2StitchModifyPlace4) {
+		this.op2StitchModifyPlace4 = op2StitchModifyPlace4;
+	}
+
+	public String getOp2DStitchPlace1() {
+		return op2DStitchPlace1;
+	}
+
+	public void setOp2DStitchPlace1(String op2dStitchPlace1) {
+		op2DStitchPlace1 = op2dStitchPlace1;
+	}
+
+	public String getOp2DStitchPlace2() {
+		return op2DStitchPlace2;
+	}
+
+	public void setOp2DStitchPlace2(String op2dStitchPlace2) {
+		op2DStitchPlace2 = op2dStitchPlace2;
+	}
+
+	public String getOp2DStitchPlace3() {
+		return op2DStitchPlace3;
+	}
+
+	public void setOp2DStitchPlace3(String op2dStitchPlace3) {
+		op2DStitchPlace3 = op2dStitchPlace3;
+	}
+
+	public String getOp2DStitchPlace4() {
+		return op2DStitchPlace4;
+	}
+
+	public void setOp2DStitchPlace4(String op2dStitchPlace4) {
+		op2DStitchPlace4 = op2dStitchPlace4;
+	}
+
+	public String getOp2AmfColorPlace1() {
+		return op2AmfColorPlace1;
+	}
+
+	public void setOp2AmfColorPlace1(String op2AmfColorPlace1) {
+		this.op2AmfColorPlace1 = op2AmfColorPlace1;
+	}
+
+	public String getOp2AmfColorPlace2() {
+		return op2AmfColorPlace2;
+	}
+
+	public void setOp2AmfColorPlace2(String op2AmfColorPlace2) {
+		this.op2AmfColorPlace2 = op2AmfColorPlace2;
+	}
+
+	public String getOp2AmfColorPlace3() {
+		return op2AmfColorPlace3;
+	}
+
+	public void setOp2AmfColorPlace3(String op2AmfColorPlace3) {
+		this.op2AmfColorPlace3 = op2AmfColorPlace3;
+	}
+
+	public String getOp2AmfColorPlace4() {
+		return op2AmfColorPlace4;
+	}
+
+	public void setOp2AmfColorPlace4(String op2AmfColorPlace4) {
+		this.op2AmfColorPlace4 = op2AmfColorPlace4;
+	}
+
+	public String getOp2BhColorPlace1() {
+		return op2BhColorPlace1;
+	}
+
+	public void setOp2BhColorPlace1(String op2BhColorPlace1) {
+		this.op2BhColorPlace1 = op2BhColorPlace1;
+	}
+
+	public String getOp2BhColorPlace2() {
+		return op2BhColorPlace2;
+	}
+
+	public void setOp2BhColorPlace2(String op2BhColorPlace2) {
+		this.op2BhColorPlace2 = op2BhColorPlace2;
+	}
+
+	public String getOp2BhColorPlace3() {
+		return op2BhColorPlace3;
+	}
+
+	public void setOp2BhColorPlace3(String op2BhColorPlace3) {
+		this.op2BhColorPlace3 = op2BhColorPlace3;
+	}
+
+	public String getOp2BhColorPlace4() {
+		return op2BhColorPlace4;
+	}
+
+	public void setOp2BhColorPlace4(String op2BhColorPlace4) {
+		this.op2BhColorPlace4 = op2BhColorPlace4;
+	}
+
+	public String getOp2ByColorPlace1() {
+		return op2ByColorPlace1;
+	}
+
+	public void setOp2ByColorPlace1(String op2ByColorPlace1) {
+		this.op2ByColorPlace1 = op2ByColorPlace1;
+	}
+
+	public String getOp2ByColorPlace2() {
+		return op2ByColorPlace2;
+	}
+
+	public void setOp2ByColorPlace2(String op2ByColorPlace2) {
+		this.op2ByColorPlace2 = op2ByColorPlace2;
+	}
+
+	public String getOp2ByColorPlace3() {
+		return op2ByColorPlace3;
+	}
+
+	public void setOp2ByColorPlace3(String op2ByColorPlace3) {
+		this.op2ByColorPlace3 = op2ByColorPlace3;
+	}
+
+	public String getOp2ByColorPlace4() {
+		return op2ByColorPlace4;
+	}
+
+	public void setOp2ByColorPlace4(String op2ByColorPlace4) {
+		this.op2ByColorPlace4 = op2ByColorPlace4;
+	}
+
+	public String getOp2BeltLoopPlace() {
+		return op2BeltLoopPlace;
+	}
+
+	public void setOp2BeltLoopPlace(String op2BeltLoopPlace) {
+		this.op2BeltLoopPlace = op2BeltLoopPlace;
+	}
+
+	public String getOp2StitchModifyPlace() {
+		return op2StitchModifyPlace;
+	}
+
+	public void setOp2StitchModifyPlace(String op2StitchModifyPlace) {
+		this.op2StitchModifyPlace = op2StitchModifyPlace;
+	}
+
+	public String getOp2DStitchPlace() {
+		return op2DStitchPlace;
+	}
+
+	public void setOp2DStitchPlace(String op2dStitchPlace) {
+		op2DStitchPlace = op2dStitchPlace;
+	}
+
+	public String getOp2AmfColorPlace() {
+		return op2AmfColorPlace;
+	}
+
+	public void setOp2AmfColorPlace(String op2AmfColorPlace) {
+		this.op2AmfColorPlace = op2AmfColorPlace;
+	}
+
+	public String getOp2BhColorPlace() {
+		return op2BhColorPlace;
+	}
+
+	public void setOp2BhColorPlace(String op2BhColorPlace) {
+		this.op2BhColorPlace = op2BhColorPlace;
+	}
+
+	public String getOp2ByColorPlace() {
+		return op2ByColorPlace;
+	}
+
+	public void setOp2ByColorPlace(String op2ByColorPlace) {
+		this.op2ByColorPlace = op2ByColorPlace;
+	}
+
+	
     
 }
     

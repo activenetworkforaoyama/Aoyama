@@ -22,16 +22,17 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
 import co.jp.aoyama.macchinetta.domain.model.OrderDetail;
+import co.jp.aoyama.macchinetta.domain.repository.detail.OrderDetailRepository;
 import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
-import co.jp.aoyama.macchinetta.domain.service.detail.OrderDetailService;
 
 @Service
 @Transactional
 public class OrderListServiceImpl implements OrderListService {
 	@Inject
 	OrderListRepository orderListRepository;
+	
 	@Inject
-	OrderDetailService orderDetailService;
+	OrderDetailRepository orderDetailRepository;
 
 	@Override
 	public List<Order> findAllOrder() {
@@ -125,11 +126,12 @@ public class OrderListServiceImpl implements OrderListService {
 	public void updateSaveValue(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,String updatedUserId,Date updatedAt,Short orderVersion) {
 		Order order = orderListRepository.findOrderByPk(orderId);
 		String productFabricNo = order.getProductFabricNo();
+		String orderPattern = order.getOrderPattern();
 		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		Short version = order.getVersion();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveValue(orderId, fabricUsedMount, shippingDate, loadingDate,updatedUserId,updatedAt,orderVersion);
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailRepository.selectActualStock(productFabricNo, orderPattern);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal remainActualStock;
 			if(fabricUsedMountOld == null) {
@@ -162,11 +164,12 @@ public class OrderListServiceImpl implements OrderListService {
 	public void updateSaveValueAndStatus(String orderId, BigDecimal fabricUsedMount, Date shippingDate, Date loadingDate,String updatedUserId,Date updatedAt,Short orderVersion,String shippingTransmitStatus) {
 		Order order = orderListRepository.findOrderByPk(orderId);
 		String productFabricNo = order.getProductFabricNo();
+		String orderPattern = order.getOrderPattern();
 		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		Short version = order.getVersion();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveValueAndStatus(orderId, fabricUsedMount, shippingDate, loadingDate,updatedUserId,updatedAt,orderVersion,shippingTransmitStatus);
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailRepository.selectActualStock(productFabricNo, orderPattern);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal remainActualStock;
 			if(fabricUsedMountOld == null) {
@@ -202,10 +205,11 @@ public class OrderListServiceImpl implements OrderListService {
 		Order order = orderListRepository.findOrderByPk(orderId);
 		Short version = order.getVersion();
 		String productFabricNo = order.getProductFabricNo();
+		String orderPattern = order.getOrderPattern();
 		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveOrChangeValue(orderId, fabricUsedMount, shippingDate, loadingDate, makerFactoryStatus,updatedUserId,updatedAt,orderVersion);
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailRepository.selectActualStock(productFabricNo, orderPattern);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal remainActualStock;
 			if(fabricUsedMountOld == null) {
@@ -233,10 +237,11 @@ public class OrderListServiceImpl implements OrderListService {
 		Order order = orderListRepository.findOrderByPk(orderId);
 		Short version = order.getVersion();
 		String productFabricNo = order.getProductFabricNo();
+		String orderPattern = order.getOrderPattern();
 		BigDecimal fabricUsedMountOld = order.getFabricUsedMount();
 		if(version.equals(orderVersion)) {
 			orderListRepository.updateSaveOrChangeValueAndStatus(orderId, fabricUsedMount, shippingDate, loadingDate, makerFactoryStatus,updatedUserId,updatedAt,orderVersion,shippingTransmitStatus);
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailRepository.selectActualStock(productFabricNo, orderPattern);
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal remainActualStock;
 			if(fabricUsedMountOld == null) {
@@ -381,6 +386,24 @@ public class OrderListServiceImpl implements OrderListService {
 	@Override
 	public Order findOrderJkOptionByOrderId(String orderId) {
 		Order order = orderListRepository.findOrderJkOptionByOrderId(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderPtOptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderPtOptionByOrderId(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderPt2OptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderPt2OptionByOrderId(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderCtOptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderCtOptionByOrderId(orderId);
 		return order;
 	}
 

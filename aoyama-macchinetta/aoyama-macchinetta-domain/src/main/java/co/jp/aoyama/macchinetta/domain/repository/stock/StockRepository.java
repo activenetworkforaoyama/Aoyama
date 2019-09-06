@@ -17,7 +17,7 @@ public interface StockRepository {
 	
 	List<Stock> fuzzyQuery(@Param("orderPattern")String orderPattern,@Param("fabricNo")String fabricNo,@Param("color")String color,@Param("pattern")String pattern,@Param("brandName")String brandName,@Param("retailPrice")Integer retailPrice,@Param("retailPriceTo")Integer retailPriceTo,@Param("makerName")String makerName,@Param("factoryName")String factoryName);
     
-	void updateStockValue(String fabricId,BigDecimal theoreticalStockUpdate,BigDecimal reservationStockUpdate);
+	void updateStockValue(String fabricId,BigDecimal theoreticalStockUpdate,BigDecimal reservationStockUpdate,String orderPattern);
 	
-	void updateTheoreticalStock(String fabricId,BigDecimal theoreticalStockUpdate);
+	void updateTheoreticalStock(String fabricId,BigDecimal theoreticalStockUpdate,String orderPattern);
 }

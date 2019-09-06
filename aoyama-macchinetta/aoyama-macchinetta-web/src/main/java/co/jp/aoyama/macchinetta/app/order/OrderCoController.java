@@ -1,9 +1,12 @@
 package co.jp.aoyama.macchinetta.app.order;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +15,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dozer.Mapper;
+import org.dozer.util.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,6 +30,13 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
+import co.jp.aoyama.macchinetta.app.order.enums.coat.CoatCoOptionStandardPriceEnum;
+import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionCoStandardPriceEnum;
+import co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.app.shop.ShopForm;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
@@ -201,7 +212,11 @@ public class OrderCoController {
 			orderForm.setOrderFlag(orderFlag);
 			orderForm.setStatus("");
 			// デフォルト値設定
-			// orderHelper.setDefaultValue(orderForm);
+			//orderHelper.setDefaultValue(orderForm);
+			orderHelper.customerAndProductDefaultValue(orderForm);
+			orderHelper.jacketDefaultValue(orderForm);
+			orderHelper.giletDefaultValue(orderForm);
+			orderHelper.coatDefaultValue(orderForm);
 
 			model.addAttribute("orderForm", orderForm);
 		} catch (Exception e) {
@@ -218,7 +233,7 @@ public class OrderCoController {
 			OrderForm orderForm = new OrderForm();
 			orderForm.setAuthority(sessionContent.getAuthority());
 			
-			orderHelper.setCustomerMessageInfo(req,orderForm);
+			orderHelper.setCustomerMessageAndProduct(req,orderForm);
 			
 //			CustomerMessageInfo customerMessageInfo = new CustomerMessageInfo();
 //			customerMessageInfo.setOrderId("1231332132");
@@ -594,7 +609,6 @@ public class OrderCoController {
 				if (productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
 					// GILETについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionGiletStandardInfo(), order);
-
 					// 2PANTSについてのマピンッグ
 					standardBeanMapper.map(orderForm.getOptionPants2StandardInfo(), order);
 				}
@@ -1001,9 +1015,9 @@ public class OrderCoController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "getShopDeliveryOn", method = RequestMethod.GET)
-	public String getShopDeliveryOn(String storeDelvNormal) {
+	public String getShopDeliveryOn(String storeDelv) {
 		Date nowDate = new Date();
-		String shopDeliveryOn = orderService.getShopDeliveryOn(nowDate, storeDelvNormal);
+		String shopDeliveryOn = orderService.getShopDeliveryOn(nowDate, storeDelv);
 		return shopDeliveryOn;
 	}
 
@@ -1016,9 +1030,277 @@ public class OrderCoController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "findStock", method = RequestMethod.GET)
-	public OrderFindFabric findStock(String fabricNo, String orderPattern) {
-
+	public OrderFindFabric findStock(OrderForm orderForm, String fabricNo, String orderPattern) {
+		Boolean checkFlag = true;
+		Boolean jkCheckFlag = true;
+		Boolean ptCheckFlag = true;
+		Boolean pt2CheckFlag = true;
+		Boolean glCheckFlag = true;
+		
+		String itemCode = orderForm.getProductItem();
+		String category = orderForm.getProductCategory();
+		String productIs3Piece = orderForm.getProductIs3Piece();
+		String productSparePantsClass = orderForm.getProductSparePantsClass();
 		OrderFindFabric orderFindFabric = orderService.getOrderFabric(fabricNo, orderPattern);
+		orderHelper.setGoodsPrice(orderFindFabric,orderForm);
+		BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
+		BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
+		BigDecimal result = theoretical.subtract(reservation);
+		orderFindFabric.setStockResult(String.valueOf(result));
+		
+		String factoryCode = orderFindFabric.getFactoryCode();
+		if ("01".equals(itemCode)) {
+			String subItemCode = null;
+			if ("0".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketStandardInfo().getOjJacketModel();
+				subItemCode = "02";
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					jkCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}
+				String pantsModel = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
+				subItemCode = "03";
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					ptCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}
+				if("0009902".equals(productIs3Piece)) {
+					String giletModel = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
+					subItemCode = "04";
+					if("".equals(giletModel)||giletModel == null) {
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+						glCheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}
+				}else {
+					orderFindFabric.setGlModelCheck(glCheckFlag);
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					String pants2Model = orderForm.getOptionPants2StandardInfo().getOp2PantsModel();
+					subItemCode = "07";
+					if("".equals(pants2Model)||pants2Model == null) {
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, pants2Model, subItemCode);
+						pt2CheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}
+				}else {
+					orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+				}
+			}else if ("2".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketTuxedoInfo().getTjJacketModel();
+				subItemCode = "02";
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					jkCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}
+				
+				String pantsModel = orderForm.getOptionPantsTuxedoInfo().getTpPantsModel();
+				subItemCode = "03";
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					ptCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}
+				if("0009902".equals(productIs3Piece)) {
+					String giletModel = orderForm.getOptionGiletTuxedoInfo().getTgGiletModel();
+					subItemCode = "04";
+					if("".equals(giletModel)||giletModel == null) {
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+						glCheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}
+				}else {
+					orderFindFabric.setGlModelCheck(glCheckFlag);
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					String pants2Model = orderForm.getOptionPants2TuxedoInfo().getTp2PantsModel();
+					subItemCode = "07";
+					if("".equals(pants2Model)||pants2Model == null) {
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, pants2Model, subItemCode);
+						pt2CheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}
+				}else {
+					orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+				}
+			}else if ("1".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketWashableInfo().getWjJacketModel();
+				subItemCode = "02";
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					jkCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(jkCheckFlag);
+				}
+				
+				String pantsModel = orderForm.getOptionPantsWashableInfo().getWpPantsModel();
+				subItemCode = "03";
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					ptCheckFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(ptCheckFlag);
+				}
+				
+				if("0009902".equals(productIs3Piece)) {
+					String giletModel = orderForm.getOptionGiletWashableInfo().getWgGiletModel();
+					subItemCode = "04";
+					if("".equals(giletModel)||giletModel == null) {
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+						glCheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setGlModelCheck(glCheckFlag);
+					}
+				}else {
+					orderFindFabric.setGlModelCheck(glCheckFlag);
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					String pants2Model = orderForm.getOptionPants2WashableInfo().getWp2PantsModel();
+					subItemCode = "07";
+					if("".equals(pants2Model)||pants2Model == null) {
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}else {
+						String factories = orderService.getFactories(orderPattern, itemCode, pants2Model, subItemCode);
+						pt2CheckFlag = factories.contains(factoryCode);
+						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+					}
+				}else {
+					orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
+				}
+			}
+		} else if ("02".equals(itemCode)) {
+			String subItemCode = itemCode;
+			if ("0".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketStandardInfo().getOjJacketModel();
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}
+			} else if ("2".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketTuxedoInfo().getTjJacketModel();
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}
+			} else if ("1".equals(category)) {
+				String jacketModel = orderForm.getOptionJacketWashableInfo().getWjJacketModel();
+				if("".equals(jacketModel)||jacketModel == null) {
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, jacketModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setJkModelCheck(checkFlag);
+				}
+			}
+		} else if ("03".equals(itemCode)) {
+			String subItemCode = itemCode;
+			if ("0".equals(category)) {
+				String pantsModel = orderForm.getOptionPantsStandardInfo().getOpPantsModel();
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}
+			} else if ("2".equals(category)) {
+				String pantsModel = orderForm.getOptionPantsTuxedoInfo().getTpPantsModel();
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}
+			} else if ("1".equals(category)) {
+				String pantsModel = orderForm.getOptionPantsWashableInfo().getWpPantsModel();
+				if("".equals(pantsModel)||pantsModel==null) {
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, pantsModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setPtModelCheck(checkFlag);
+				}
+			}
+		} else if ("04".equals(itemCode)) {
+			String subItemCode = itemCode;
+			if ("0".equals(category)) {
+				String giletModel = orderForm.getOptionGiletStandardInfo().getOgGiletModel();
+				if("".equals(giletModel)||giletModel == null) {
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}
+			} else if ("2".equals(category)) {
+				String giletModel = orderForm.getOptionGiletTuxedoInfo().getTgGiletModel();
+				if("".equals(giletModel)||giletModel == null) {
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}
+			} else if ("1".equals(category)) {
+				String giletModel = orderForm.getOptionGiletWashableInfo().getWgGiletModel();
+				if("".equals(giletModel)||giletModel == null) {
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}else {
+					String factories = orderService.getFactories(orderPattern, itemCode, giletModel, subItemCode);
+					checkFlag = factories.contains(factoryCode);
+					orderFindFabric.setGlModelCheck(checkFlag);
+				}
+			}
+		} else if ("05".equals(itemCode)) {
+			String subItemCode = itemCode;
+			String shirtModel = orderForm.getOptionShirtStandardInfo().getOsShirtModel();
+			if("".equals(shirtModel)||shirtModel == null) {
+				orderFindFabric.setShModelCheck(checkFlag);
+			}else {
+				String factories = orderService.getFactories(orderPattern, itemCode, shirtModel, subItemCode);
+				checkFlag = factories.contains(factoryCode);
+				orderFindFabric.setShModelCheck(checkFlag);
+			}
+		} else if ("06".equals(itemCode)) {
+			String subItemCode = itemCode;
+			String coatModel = orderForm.getOptionCoatStandardInfo().getCoatModel();
+			if("".equals(coatModel)||coatModel == null) {
+				orderFindFabric.setCtModelCheck(checkFlag);
+			}else {
+				String factories = orderService.getFactories(orderPattern, itemCode, coatModel, subItemCode);
+				checkFlag = factories.contains(factoryCode);
+				orderFindFabric.setCtModelCheck(checkFlag);
+			}
+		}
 
 		return orderFindFabric;
 	}
@@ -1123,7 +1405,7 @@ public class OrderCoController {
 	public Boolean checkModel(String modelCode, String productFabricNo, String orderPattern, String itemCode,
 			String subItemCode) {
 		Boolean checkFlag = true;
-		OrderFindFabric orderFindFabric = findStock(productFabricNo, orderPattern);
+		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
 		String factoryCode = orderFindFabric.getFactoryCode();
 		String factories = orderService.getFactories(orderPattern, itemCode, modelCode, subItemCode);
 		checkFlag = factories.contains(factoryCode);
@@ -1283,36 +1565,77 @@ public class OrderCoController {
 	}
 
 	@RequestMapping(value = "/goToPants1Option", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView pantsStandardJsp(OrderForm orderForm, ModelAndView m) {
-		String itemFlag = orderForm.getPantsItemFlag();
+	public @ResponseBody ModelAndView pantsStandardJsp(OrderForm orderForm, ModelAndView m) {	
+		String orderFlag = orderForm.getOrderFlag();
 		String productItem = orderForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS_SUBITEM);
 		orderHelper.getPantsModelMap(orderForm, modelList);
-		if ("0".equals(itemFlag)) {
-			orderHelper.pantsDefaultValue(orderForm);
-		} else if ("1".equals(itemFlag)) {
-
-		}
+		if("orderCo".equals(orderFlag)) {
+			String itemFlag = orderForm.getPantsItemFlag();
+			if ("0".equals(itemFlag)) {
+				orderHelper.pantsDefaultValue(orderForm);
+			} else if ("1".equals(itemFlag)) {
+			}
+			
+		}else if("orderLink".equals(orderFlag)) {
+			String itemFlag = orderForm.getPantsItemFlag();
+			if ("0".equals(itemFlag)) {
+				Order orderPt = orderListService.findOrderPtOptionByOrderId(orderForm.getCustomerMessageInfo().getOrderId());
+				//タック
+				String ptTackCd = orderPt.getPtTackCd();
+				//膝裏
+				String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
+				//フロント仕様
+				String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
+				if((ptTackCd == null||"".equals(ptTackCd))&&(ptKneeinnerTypeCd == null||"".equals(ptKneeinnerTypeCd))&&
+				   (ptFrtTypeCd == null||"".equals(ptFrtTypeCd))) {
+					orderHelper.pantsDefaultValue(orderForm);
+				}else {
+					orderHelper.pantsDefaultValueFromDb(orderForm,orderPt);
+				}
+			}else {
+			}
+		}		
 		m.addObject("orderForm", orderForm);
 		m.setViewName("order/orderJsp/optionPants1");
-
 		return m;
-
 	}
 
 	@RequestMapping(value = "/goToPants2Option", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView pants2StandardJsp(OrderForm orderForm, ModelAndView m) {
-		String itemFlag = orderForm.getPantsItemFlag();
+		String orderFlag = orderForm.getOrderFlag();
 		String productItem = orderForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS2_SUBITEM);
 		orderHelper.getPants2ModelMap(orderForm, modelList);
-		if ("0".equals(itemFlag)) {
-			orderHelper.pants2DefaultValue(orderForm);
-		} else if ("1".equals(itemFlag)) {
+		if("orderCo".equals(orderFlag)) {
+			String itemFlag = orderForm.getPants2ItemFlag();
+			if ("0".equals(itemFlag)) {
+				orderHelper.pants2DefaultValue(orderForm);
+			} else if ("1".equals(itemFlag)) {
 
-		}
+			}
+			
+		}else if("orderLink".equals(orderFlag)) {
+			String itemFlag = orderForm.getPants2ItemFlag();
+			if ("0".equals(itemFlag)) {
+				Order orderPt2 = orderListService.findOrderPt2OptionByOrderId(orderForm.getCustomerMessageInfo().getOrderId());
+				//タック
+				String pt2TackCd = orderPt2.getPt2TackCd();
+				//膝裏
+				String pt2KneeinnerTypeCd = orderPt2.getPt2KneeinnerTypeCd();
+				//フロント仕様
+				String pt2FrtTypeCd = orderPt2.getPt2FrtTypeCd();
+				if((pt2TackCd == null||"".equals(pt2TackCd))&&(pt2KneeinnerTypeCd == null||"".equals(pt2KneeinnerTypeCd))&&
+				   (pt2FrtTypeCd == null||"".equals(pt2FrtTypeCd))) {
+					orderHelper.pants2DefaultValue(orderForm);
+				}else {
+					orderHelper.pants2DefaultValueFromDb(orderForm,orderPt2);
+				}
+			}else {
+			}
+		}		
 		m.addObject("orderForm", orderForm);
 		m.setViewName("order/orderJsp/optionPants2");
 
@@ -1361,16 +1684,39 @@ public class OrderCoController {
 
 	@RequestMapping(value = "/goToCoatOption", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView coatStandardJsp(OrderForm orderForm, ModelAndView m) {
+		String orderFlag = orderForm.getOrderFlag();
 		String productItem = orderForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				COAT_SUBITEM);
 		orderHelper.getCoatModelMap(orderForm, modelList);
-		String itemFlag = orderForm.getCoatItemFlag();
-		if ("0".equals(itemFlag)) {
-			orderHelper.coatDefaultValue(orderForm);
-		} else if ("1".equals(itemFlag)) {
+		if("orderCo".equals(orderFlag)) {
+			String itemFlag = orderForm.getCoatItemFlag();
+			if ("0".equals(itemFlag)) {
+				orderHelper.coatDefaultValue(orderForm);
+			} else if ("1".equals(itemFlag)) {
 
+			}
+		}else if("orderLink".equals(orderFlag)) {
+			String itemFlag = orderForm.getCoatItemFlag();
+			if ("0".equals(itemFlag)) {
+				Order orderCt = orderListService.findOrderCtOptionByOrderId(orderForm.getCustomerMessageInfo().getOrderId());
+				//フロント釦数
+				String jkFrtBtnCd = orderCt.getJkFrtBtnCd();
+				//ラペルデザイン
+				String jkLapelDesignCd = orderCt.getJkLapelDesignCd();
+				//裏仕様
+				String jkInnerClothCd = orderCt.getJkInnerClothCd();
+				if((jkFrtBtnCd == null||"".equals(jkFrtBtnCd))&&(jkLapelDesignCd == null||"".equals(jkLapelDesignCd))&&
+				   (jkInnerClothCd == null||"".equals(jkInnerClothCd))) {
+					orderHelper.coatDefaultValue(orderForm);
+				}else {
+					orderHelper.coatDefaultValueFromDb(orderForm,orderCt);
+				}
+			}else {
+				
+			}
 		}
+		
 		m.addObject("orderForm", orderForm);
 		m.setViewName("order/orderJsp/optionCoat");
 
@@ -1463,6 +1809,12 @@ public class OrderCoController {
 			String orderDetailKeyCode = orderCodePrice.getOrderDetailKeyCode();
 			String orderBranchPrice = orderCodePrice.getOrderBranchPrice();
 			String orderBranchDetailPrice = orderCodePrice.getOrderBranchDetailPrice();
+			if(orderDetailKeyCode == null) {
+				orderDetailKeyCode = "";
+			}
+			if(orderBranchDetailPrice == null) {
+				orderBranchDetailPrice = "0";
+			}
 			if (orderKeyCode.equals(code) && orderDetailKeyCode.equals(codeDetail)) {
 				if (orderBranchPrice.equals("0") && orderBranchDetailPrice.equals("0")) {
 					resultPrice = "0";
@@ -1546,5 +1898,415 @@ public class OrderCoController {
 		Order order = orderListService.findOrderCtByPk(orderForm.getCustomerMessageInfo().getOrderId());
 		orderHelper.coatAdjustFormDb(orderForm,order);
 	}
+	
+	@RequestMapping(value = "/getOrderPriceForGiletModel", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getOrderPriceForGiletModel(OrderForm orderForm, String code, Model model) {
+		OptionGiletStandardInfo optionGiletStandardInfo = orderForm.getOptionGiletStandardInfo();
+		
+		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
+		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			try {
+				Method methodOne = optionGiletStandardInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(optionGiletStandardInfo);
+				Object invokeTwo = "";
+				if(!("".equals(valueTwo))) {
+					Method methodTwo = optionGiletStandardInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(optionGiletStandardInfo);
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne + invokeTwo;
+				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderForm);
+				
+				Class<?> cls;
+				Object[] args = {orderPrice};
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo");
+				Method methodThree = getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderForm.getOptionGiletStandardInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		String[] arrStr = new String[priceEnum.length];
+		Integer arrCount = 0;
+		Integer optionPriceInt = 0;
+		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+			
+			try {
+				Method methodSix = optionGiletStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionGiletStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				
+				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				if("0".equals(valueOf)) {
+					arrStr[arrCount] = "無料";
+				}else {
+					arrStr[arrCount] = "￥" + formatPrice(valueOf);
+				}
+				arrCount++;
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("ogPriceMsg", arrStr);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		return resultMap;
+		
+	}
+	
+	@RequestMapping(value = "/getOrderPriceForGiletProject", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, String> getOrderPriceForGiletProject(OrderForm orderForm, String code, Model model, 
+			String idValueName, String colorCount) {
+		OptionGiletStandardInfo optionGiletStandardInfo = orderForm.getOptionGiletStandardInfo();
+		
+		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
+		String orderPrice = "";
+		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String valueFive = price.getValueFive();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			
+			boolean hasIdvalueName = false;
+			try {
+				if(idValueName.equals(valueFour)) {
+					Method methodOne = optionGiletStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(optionGiletStandardInfo);
+					Object invokeTwo = null;
+					if(!("".equals(valueTwo))) {
+						Method methodTwo = optionGiletStandardInfo.getClass().getMethod(valueTwo);
+						invokeTwo = methodTwo.invoke(optionGiletStandardInfo);
+					}
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					if(invokeTwo != null) {
+						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					}
+					hasIdvalueName = true;
+				}else if(idValueName.equals(valueFive)) {
+					Method methodOne = optionGiletStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(optionGiletStandardInfo);
+					Method methodTwo = optionGiletStandardInfo.getClass().getMethod(valueTwo);
+					Object invokeTwo = methodTwo.invoke(optionGiletStandardInfo);
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					hasIdvalueName = true;
+				}
+				
+				if(hasIdvalueName == true) {
+					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderForm);
+					if("0".equals(orderPrice)) {
+						//orderPrice = "無料";
+					}
+					
+					Class<?> cls;
+					Object[] args = {orderPrice};
+					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo");
+					Method methodThree = getMethod(cls, valueThree);
+					ReflectionUtils.invoke(methodThree, orderForm.getOptionGiletStandardInfo(), args);
+					
+					break;
+				}
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Integer optionPriceInt = 0;
+		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+			
+			try {
+				Method methodSix = optionGiletStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionGiletStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				if(!("0".equals(valueOf))) {
+					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if("og_amfColor_id".equals(idValueName)) {
+			Integer colorPrice = 0;
+			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
+				colorPrice = colorPrice + 100;
+			}
+			orderPrice = String.valueOf(colorPrice);
+		}
+		
+		if("0".equals(orderPrice)) {
+			orderPrice = "無料";
+		}else {
+			orderPrice = "￥" + formatPrice(orderPrice);
+		}
+		
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("idValuePrice", orderPrice);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		return resultMap;
+		
+	}
+	/**
+	 * 
+	 * @param orderForm
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping(value = "/getOrderPriceForCoatModel", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getOrderPriceForCoatModel(OrderForm orderForm, String code) {
+		// orderHelper.coatDefaultValue(orderForm);
+		// String ogBackLiningMateStkNo =
+		// orderForm.getOptionGiletStandardInfo().getOgBackLiningMateStkNo();
+		OptionCoatStandardInfo optionCoatStandardInfo = orderForm.getOptionCoatStandardInfo();
+		CoatCoOptionStandardPriceEnum[] priceEnum = CoatCoOptionStandardPriceEnum.values();
+		String[] arrStr = new String[priceEnum.length];
+		Integer count = 0;
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			// String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			try {
+				Class<?> cls;
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo");
+
+				// Method methodOne = optionCoatStandardInfo.getClass().getMethod(valueOne);
+				Method methodOne = getMethod(cls, valueOne);
+				Method methodThree = getMethod(cls, valueThree);
+
+				Object invokeOne = methodOne.invoke(optionCoatStandardInfo);
+				splicingCodeForFindUniquePrice = code + key + invokeOne;
+				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderForm);
+				Object[] args = { orderPrice };
+				ReflectionUtils.invoke(methodThree, orderForm.getOptionCoatStandardInfo(), args);
+				if ("0".equals(orderPrice)) {
+					orderPrice = "無料";
+				}else {
+					orderPrice = "￥" + formatPrice(orderPrice);
+				}
+				arrStr[count] = orderPrice;
+				count++;
+			} catch (ClassNotFoundException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		Integer optionPriceInt = 0;
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = optionCoatStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionCoatStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				if (!("無料".equals(valueOf))) {
+					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("coPrice", arrStr);
+		resultMap.put("optionPrice", formatPrice(String.valueOf(optionPriceInt)));
+		return resultMap;
+
+	}
+
+	/**
+	 * 
+	 * @param orderForm
+	 * @param code
+	 * @param model
+	 * @param idValue
+	 * @return
+	 */
+	@RequestMapping(value = "/getOrderPriceForCoatProject", method = RequestMethod.GET)
+	@ResponseBody
+	public Map<String, String> getOrderPriceForCoatProject(OrderForm orderForm, String code, Model model,
+			String idValue) {
+		OptionCoatStandardInfo optionCoatStandardInfo = orderForm.getOptionCoatStandardInfo();
+
+		CoatCoOptionStandardPriceEnum[] priceEnum = CoatCoOptionStandardPriceEnum.values();
+		String orderPrice = "";
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String valueFive = price.getValueFive();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			boolean hasIdvalueName = false;
+			try {
+				if (idValue.equals(valueFour)) {
+					Method methodOne = optionCoatStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(optionCoatStandardInfo);
+					Object invokeTwo = null;
+					hasIdvalueName = true;
+					if (!("".equals(valueTwo))) {
+						Method methodTwo = optionCoatStandardInfo.getClass().getMethod(valueTwo);
+						invokeTwo = methodTwo.invoke(optionCoatStandardInfo);
+					}
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					if (invokeTwo != null) {
+						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					}
+				} else if (idValue.equals(valueFive)) {
+					hasIdvalueName = true;
+					Method methodOne = optionCoatStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(optionCoatStandardInfo);
+					Method methodTwo = optionCoatStandardInfo.getClass().getMethod(valueTwo);
+					Object invokeTwo = methodTwo.invoke(optionCoatStandardInfo);
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+
+				if (hasIdvalueName == true) {
+					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderForm);
+					if ("0".equals(orderPrice)) {
+						//orderPrice = "無料";
+					}
+
+					Class<?> cls;
+					Object[] args = { orderPrice };
+					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo");
+					Method methodThree = getMethod(cls, valueThree);
+					ReflectionUtils.invoke(methodThree, orderForm.getOptionCoatStandardInfo(), args);
+					break;
+				}
+
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		Integer optionPriceInt = 0;
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = optionCoatStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionCoatStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				if (!("無料".equals(valueOf)))  {
+					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("idValuePrice", orderPrice);
+		resultMap.put("optionPrice", formatPrice(String.valueOf(optionPriceInt)));
+		return resultMap;
+
+	}
+
+	@RequestMapping(value = "/getComposBodyIiner", method = RequestMethod.POST)
+	@ResponseBody
+	public ProductCompos getComposBodyIiner(OrderForm orderForm) {
+		ProductCompos productCompos = orderHelper.getComposBodyIiner(orderForm);
+		return productCompos;
+	}
+	
+	@RequestMapping(value = "/optionInit", method = RequestMethod.GET)
+	@ResponseBody
+	public void allOptionInit(OrderForm orderForm,String oldItem) {
+		// デフォルト値設定
+		if("01".equals(oldItem)) {
+			orderHelper.jacketDefaultValue(orderForm);
+			orderHelper.pantsDefaultValue(orderForm);
+			String productIs3Piece = orderForm.getProductIs3Piece();
+			String productSparePantsClass = orderForm.getProductSparePantsClass();
+			if("0009902".equals(productIs3Piece)) {
+				orderHelper.giletDefaultValue(orderForm);
+			}
+			if("0009902".equals(productSparePantsClass)) {
+				orderHelper.pants2DefaultValue(orderForm);
+			}
+		}else if("02".equals(oldItem)) {
+			orderHelper.jacketDefaultValue(orderForm);
+		}else if("03".equals(oldItem)) {
+			orderHelper.pantsDefaultValue(orderForm);
+		}else if("04".equals(oldItem)) {
+			orderHelper.giletDefaultValue(orderForm);
+		}else if("05".equals(oldItem)) {
+			orderHelper.shirtDefaultValue(orderForm);
+		}else if("06".equals(oldItem)) {
+			orderHelper.coatDefaultValue(orderForm);
+		}else if("07".equals(oldItem)) {
+			orderHelper.pants2DefaultValue(orderForm);
+		}
+	}
+	/**
+	 * クラスと列挙の方法名によって、方法を取得
+	 * 
+	 * @param clazz
+	 * @param methodName
+	 * @return
+	 */
+	private Method getMethod(Class<?> classOne, String methodName) {
+		Method[] methods = classOne.getMethods();
+		Method result = null;
+		for (Method method : methods) {
+			if (method.getName().equals(methodName)) {
+				result = method;
+				break;
+			}
+		}
+		return result;
+	}
+	/**
+	 * 
+	 * @param price
+	 * @return
+	 */
+	public String formatPrice(String price) {  
+		  
+        price = new StringBuffer(price).reverse().toString();
+        String str2 = "";  
+        int size = (price.length() % 3 == 0) ? (price.length() / 3) : (price.length() / 3 + 1);
+        if (price.length() < 3) { 
+            str2 = price;  
+        } else {  
+            for (int i = 0; i < size - 1; i++) {// 前n-1段  
+                str2 += price.substring(i * 3, i * 3 + 3) + ",";  
+            }  
+            for (int i = size - 1; i < size; i++) {// 第n段  
+                str2 += price.substring(i * 3, price.length());  
+            }  
+        }  
+        str2 = new StringBuffer(str2).reverse().toString();// 再将字符串颠倒顺序  
+        return str2;
+    } 
 
 }

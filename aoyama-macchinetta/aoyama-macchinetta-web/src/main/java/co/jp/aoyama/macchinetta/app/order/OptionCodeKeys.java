@@ -180,14 +180,15 @@ public class OptionCodeKeys {
 	public static final String CT_0001401 = "0001401";
 
 	// GILET
-	// GILETモデル
-	// public static final String GL_ = "";
 	// 胸ポケット
-	// public static final String GL_ = "";
+	public static final String GL_0000101 = "0000101";
+	public static final String GL_0000102 = "0000102";
+	public static final String GL_0000103 = "0000103";
 	// 腰ポケット
-	// public static final String GL_ = "";
+	public static final String GL_0000201 = "0000201";
 	// 腰ポケット形状
-	// public static final String GL_ = "";
+	public static final String GL_0000301 = "0000301";
+	public static final String GL_0000303 = "0000303";
 	// 腰ポケット素材
 	public static final String GL_0000401 = "0000401";
 	// ステッチ種類
@@ -209,7 +210,8 @@ public class OptionCodeKeys {
 	// 釦素材
 	public static final String GL_3000800 = "3000800";
 	// バックベルト
-	// public static final String GL_ = "";
+	public static final String GL_0002301 = "0002301";
+	public static final String GL_0002302 = "0002302";
 	// ウォッチチェーン
 	public static final String GL_0002401 = "0002401";
 

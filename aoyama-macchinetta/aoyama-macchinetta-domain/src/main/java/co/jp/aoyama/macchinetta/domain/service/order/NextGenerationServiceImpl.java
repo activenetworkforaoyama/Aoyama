@@ -131,4 +131,76 @@ public class NextGenerationServiceImpl implements NextGenerationService{
 		return mfaFactoryCode;
 	}
 
+	@Override
+	public List<NextGenerationPrice> selectCoYield(String jkSubItemCode, String ptSubItemCode, String gtSubItemCode,
+			String pt2SubItemCode, String shirtSubItemCode, String coatSubItemCode) {
+		List<NextGenerationPrice> yieldCoList = nextGenerationRepository.selectCoYield(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode,shirtSubItemCode,coatSubItemCode);
+		if(yieldCoList.isEmpty()) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return yieldCoList;
+	}
+
+	@Override
+	public List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo) {
+		List<NextGenerationPrice> coWholesalePieceList = nextGenerationRepository.selectCoWholesalePiece(fabricNo);
+		if(coWholesalePieceList.isEmpty()) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return coWholesalePieceList;
+	}
+
+	@Override
+	public List<NextGenerationPrice> selectCoBasicNextGenerationPrice(String jkSubItemCode, String ptSubItemCode,
+			String gtSubItemCode, String pt2SubItemCode, String shirtSubItemCode, String coatSubItemCode,
+			String itemCode, String fabricNo) {
+		List<NextGenerationPrice> coBasicNextGenerationPrice = nextGenerationRepository.selectCoBasicNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode,shirtSubItemCode,coatSubItemCode, itemCode, fabricNo);
+		if(coBasicNextGenerationPrice.isEmpty()) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return coBasicNextGenerationPrice;
+	}
+
+	@Override
+	public NextGenerationPrice selectCoMarginRate(String fabricNo) {
+		String orderPattern = "CO";
+		OrderFindFabric orderFabric = orderRepository.getOrderFabric(fabricNo, orderPattern);
+		NextGenerationPrice marginRate = nextGenerationRepository.selectCoMarginRate(fabricNo);
+		
+		if(marginRate == null) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024", orderFabric.getMakerCode());
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		
+		return marginRate;
+	}
+
+	@Override
+	public NextGenerationPrice selectCoFactoryCode(String fabricNo) {
+		NextGenerationPrice mfaFactoryCode = nextGenerationRepository.selectCoFactoryCode(fabricNo);
+		if(mfaFactoryCode == null) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return mfaFactoryCode;
+	}
+
 }

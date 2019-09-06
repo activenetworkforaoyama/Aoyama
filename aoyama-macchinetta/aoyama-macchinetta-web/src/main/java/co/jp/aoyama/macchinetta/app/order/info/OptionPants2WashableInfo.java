@@ -49,6 +49,20 @@ public class OptionPants2WashableInfo implements Serializable{
     //ベルトループ箇所 
     private String wp2BeltLoopPlace;
     
+    private String wp2BeltLoopPlace1;
+    
+    private String wp2BeltLoopPlace2;
+    
+    private String wp2BeltLoopPlace3;
+    
+    private String wp2BeltLoopPlace4;
+    
+    private String wp2BeltLoopPlace5;
+    
+    private String wp2BeltLoopPlace6;
+    
+    private String wp2BeltLoopPlace7;
+    
     private Map<String,String> wp2BeltLoopPlaceMap;
     
     //ピンループ
@@ -114,6 +128,14 @@ public class OptionPants2WashableInfo implements Serializable{
     //ステッチ箇所変更箇所
     private String wp2StitchModifyPlace;
     
+    private String wp2StitchModifyPlace1;
+    
+    private String wp2StitchModifyPlace2;
+    
+    private String wp2StitchModifyPlace3;
+    
+    private String wp2StitchModifyPlace4;
+    
     private Map<String,String> wp2StitchModifyPlaceMap;
     
     //ダブルステッチ
@@ -123,6 +145,14 @@ public class OptionPants2WashableInfo implements Serializable{
     
     //ダブルステッチ箇所
     private String wp2DStitchPlace;
+    
+    private String wp2DStitchPlace1;
+    
+    private String wp2DStitchPlace2;
+    
+    private String wp2DStitchPlace3;
+    
+    private String wp2DStitchPlace4;
     
     private Map<String,String> wp2DStitchPlaceMap;
     
@@ -138,6 +168,14 @@ public class OptionPants2WashableInfo implements Serializable{
     
     //AMF色指定箇所
     private String wp2AmfColorPlace;
+    
+    private String wp2AmfColorPlace1;
+    
+    private String wp2AmfColorPlace2;
+    
+    private String wp2AmfColorPlace3;
+    
+    private String wp2AmfColorPlace4;
     
     private Map<String,String> wp2AmfColorPlaceMap;
     
@@ -169,6 +207,14 @@ public class OptionPants2WashableInfo implements Serializable{
     //ボタンホール色指定箇所
     private String wp2BhColorPlace;
     
+    private String wp2BhColorPlace1;
+    
+    private String wp2BhColorPlace2;
+    
+    private String wp2BhColorPlace3;
+    
+    private String wp2BhColorPlace4;
+    
     private Map<String,String> wp2BhColorPlaceMap;
     
     //ボタンホール色指定糸色  フロント
@@ -198,6 +244,14 @@ public class OptionPants2WashableInfo implements Serializable{
     
     //ボタン付け糸指定箇所
     private String wp2ByColorPlace;
+    
+    private String wp2ByColorPlace1;
+    
+    private String wp2ByColorPlace2;
+    
+    private String wp2ByColorPlace3;
+    
+    private String wp2ByColorPlace4;
     
     private Map<String,String> wp2ByColorPlaceMap;
     
@@ -361,13 +415,6 @@ public class OptionPants2WashableInfo implements Serializable{
 		this.wp2BeltLoopMap = wp2BeltLoopMap;
 	}
 
-	public String getWp2BeltLoopPlace() {
-		return wp2BeltLoopPlace;
-	}
-
-	public void setWp2BeltLoopPlace(String wp2BeltLoopPlace) {
-		this.wp2BeltLoopPlace = wp2BeltLoopPlace;
-	}
 
 	public Map<String, String> getWp2BeltLoopPlaceMap() {
 		return wp2BeltLoopPlaceMap;
@@ -569,13 +616,6 @@ public class OptionPants2WashableInfo implements Serializable{
 		this.wp2StitchModifyMap = wp2StitchModifyMap;
 	}
 
-	public String getWp2StitchModifyPlace() {
-		return wp2StitchModifyPlace;
-	}
-
-	public void setWp2StitchModifyPlace(String wp2StitchModifyPlace) {
-		this.wp2StitchModifyPlace = wp2StitchModifyPlace;
-	}
 
 	public Map<String, String> getWp2StitchModifyPlaceMap() {
 		return wp2StitchModifyPlaceMap;
@@ -599,14 +639,6 @@ public class OptionPants2WashableInfo implements Serializable{
 
 	public void setWp2DStitchMap(Map<String, String> wp2DStitchMap) {
 		this.wp2DStitchMap = wp2DStitchMap;
-	}
-
-	public String getWp2DStitchPlace() {
-		return wp2DStitchPlace;
-	}
-
-	public void setWp2DStitchPlace(String wp2DStitchPlace) {
-		this.wp2DStitchPlace = wp2DStitchPlace;
 	}
 
 	public Map<String, String> getWp2DStitchPlaceMap() {
@@ -649,13 +681,7 @@ public class OptionPants2WashableInfo implements Serializable{
 		this.wp2AmfColorPlaceAllMap = wp2AmfColorPlaceAllMap;
 	}
 
-	public String getWp2AmfColorPlace() {
-		return wp2AmfColorPlace;
-	}
-
-	public void setWp2AmfColorPlace(String wp2AmfColorPlace) {
-		this.wp2AmfColorPlace = wp2AmfColorPlace;
-	}
+	
 
 	public Map<String, String> getWp2AmfColorPlaceMap() {
 		return wp2AmfColorPlaceMap;
@@ -737,14 +763,6 @@ public class OptionPants2WashableInfo implements Serializable{
 		this.wp2BhColorPlaceAllMap = wp2BhColorPlaceAllMap;
 	}
 
-	public String getWp2BhColorPlace() {
-		return wp2BhColorPlace;
-	}
-
-	public void setWp2BhColorPlace(String wp2BhColorPlace) {
-		this.wp2BhColorPlace = wp2BhColorPlace;
-	}
-
 	public Map<String, String> getWp2BhColorPlaceMap() {
 		return wp2BhColorPlaceMap;
 	}
@@ -823,14 +841,6 @@ public class OptionPants2WashableInfo implements Serializable{
 
 	public void setWp2ByColorPlaceAllMap(Map<String, String> wp2ByColorPlaceAllMap) {
 		this.wp2ByColorPlaceAllMap = wp2ByColorPlaceAllMap;
-	}
-
-	public String getWp2ByColorPlace() {
-		return wp2ByColorPlace;
-	}
-
-	public void setWp2ByColorPlace(String wp2ByColorPlace) {
-		this.wp2ByColorPlace = wp2ByColorPlace;
 	}
 
 	public Map<String, String> getWp2ByColorPlaceMap() {
@@ -999,6 +1009,270 @@ public class OptionPants2WashableInfo implements Serializable{
 
 	public void setWp2BtnMateStkNo(String wp2BtnMateStkNo) {
 		this.wp2BtnMateStkNo = wp2BtnMateStkNo;
+	}
+
+	public String getWp2BeltLoopPlace1() {
+		return wp2BeltLoopPlace1;
+	}
+
+	public void setWp2BeltLoopPlace1(String wp2BeltLoopPlace1) {
+		this.wp2BeltLoopPlace1 = wp2BeltLoopPlace1;
+	}
+
+	public String getWp2BeltLoopPlace2() {
+		return wp2BeltLoopPlace2;
+	}
+
+	public void setWp2BeltLoopPlace2(String wp2BeltLoopPlace2) {
+		this.wp2BeltLoopPlace2 = wp2BeltLoopPlace2;
+	}
+
+	public String getWp2BeltLoopPlace3() {
+		return wp2BeltLoopPlace3;
+	}
+
+	public void setWp2BeltLoopPlace3(String wp2BeltLoopPlace3) {
+		this.wp2BeltLoopPlace3 = wp2BeltLoopPlace3;
+	}
+
+	public String getWp2BeltLoopPlace4() {
+		return wp2BeltLoopPlace4;
+	}
+
+	public void setWp2BeltLoopPlace4(String wp2BeltLoopPlace4) {
+		this.wp2BeltLoopPlace4 = wp2BeltLoopPlace4;
+	}
+
+	public String getWp2BeltLoopPlace5() {
+		return wp2BeltLoopPlace5;
+	}
+
+	public void setWp2BeltLoopPlace5(String wp2BeltLoopPlace5) {
+		this.wp2BeltLoopPlace5 = wp2BeltLoopPlace5;
+	}
+
+	public String getWp2BeltLoopPlace6() {
+		return wp2BeltLoopPlace6;
+	}
+
+	public void setWp2BeltLoopPlace6(String wp2BeltLoopPlace6) {
+		this.wp2BeltLoopPlace6 = wp2BeltLoopPlace6;
+	}
+
+	public String getWp2BeltLoopPlace7() {
+		return wp2BeltLoopPlace7;
+	}
+
+	public void setWp2BeltLoopPlace7(String wp2BeltLoopPlace7) {
+		this.wp2BeltLoopPlace7 = wp2BeltLoopPlace7;
+	}
+
+	public String getWp2StitchModifyPlace1() {
+		return wp2StitchModifyPlace1;
+	}
+
+	public void setWp2StitchModifyPlace1(String wp2StitchModifyPlace1) {
+		this.wp2StitchModifyPlace1 = wp2StitchModifyPlace1;
+	}
+
+	public String getWp2StitchModifyPlace2() {
+		return wp2StitchModifyPlace2;
+	}
+
+	public void setWp2StitchModifyPlace2(String wp2StitchModifyPlace2) {
+		this.wp2StitchModifyPlace2 = wp2StitchModifyPlace2;
+	}
+
+	public String getWp2StitchModifyPlace3() {
+		return wp2StitchModifyPlace3;
+	}
+
+	public void setWp2StitchModifyPlace3(String wp2StitchModifyPlace3) {
+		this.wp2StitchModifyPlace3 = wp2StitchModifyPlace3;
+	}
+
+	public String getWp2StitchModifyPlace4() {
+		return wp2StitchModifyPlace4;
+	}
+
+	public void setWp2StitchModifyPlace4(String wp2StitchModifyPlace4) {
+		this.wp2StitchModifyPlace4 = wp2StitchModifyPlace4;
+	}
+
+	public String getWp2DStitchPlace1() {
+		return wp2DStitchPlace1;
+	}
+
+	public void setWp2DStitchPlace1(String wp2dStitchPlace1) {
+		wp2DStitchPlace1 = wp2dStitchPlace1;
+	}
+
+	public String getWp2DStitchPlace2() {
+		return wp2DStitchPlace2;
+	}
+
+	public void setWp2DStitchPlace2(String wp2dStitchPlace2) {
+		wp2DStitchPlace2 = wp2dStitchPlace2;
+	}
+
+	public String getWp2DStitchPlace3() {
+		return wp2DStitchPlace3;
+	}
+
+	public void setWp2DStitchPlace3(String wp2dStitchPlace3) {
+		wp2DStitchPlace3 = wp2dStitchPlace3;
+	}
+
+	public String getWp2DStitchPlace4() {
+		return wp2DStitchPlace4;
+	}
+
+	public void setWp2DStitchPlace4(String wp2dStitchPlace4) {
+		wp2DStitchPlace4 = wp2dStitchPlace4;
+	}
+
+	public String getWp2BhColorPlace1() {
+		return wp2BhColorPlace1;
+	}
+
+	public void setWp2BhColorPlace1(String wp2BhColorPlace1) {
+		this.wp2BhColorPlace1 = wp2BhColorPlace1;
+	}
+
+	public String getWp2BhColorPlace2() {
+		return wp2BhColorPlace2;
+	}
+
+	public void setWp2BhColorPlace2(String wp2BhColorPlace2) {
+		this.wp2BhColorPlace2 = wp2BhColorPlace2;
+	}
+
+	public String getWp2BhColorPlace3() {
+		return wp2BhColorPlace3;
+	}
+
+	public void setWp2BhColorPlace3(String wp2BhColorPlace3) {
+		this.wp2BhColorPlace3 = wp2BhColorPlace3;
+	}
+
+	public String getWp2BhColorPlace4() {
+		return wp2BhColorPlace4;
+	}
+
+	public void setWp2BhColorPlace4(String wp2BhColorPlace4) {
+		this.wp2BhColorPlace4 = wp2BhColorPlace4;
+	}
+
+	public String getWp2ByColorPlace1() {
+		return wp2ByColorPlace1;
+	}
+
+	public void setWp2ByColorPlace1(String wp2ByColorPlace1) {
+		this.wp2ByColorPlace1 = wp2ByColorPlace1;
+	}
+
+	public String getWp2ByColorPlace2() {
+		return wp2ByColorPlace2;
+	}
+
+	public void setWp2ByColorPlace2(String wp2ByColorPlace2) {
+		this.wp2ByColorPlace2 = wp2ByColorPlace2;
+	}
+
+	public String getWp2ByColorPlace3() {
+		return wp2ByColorPlace3;
+	}
+
+	public void setWp2ByColorPlace3(String wp2ByColorPlace3) {
+		this.wp2ByColorPlace3 = wp2ByColorPlace3;
+	}
+
+	public String getWp2ByColorPlace4() {
+		return wp2ByColorPlace4;
+	}
+
+	public void setWp2ByColorPlace4(String wp2ByColorPlace4) {
+		this.wp2ByColorPlace4 = wp2ByColorPlace4;
+	}
+
+	public String getWp2AmfColorPlace1() {
+		return wp2AmfColorPlace1;
+	}
+
+	public void setWp2AmfColorPlace1(String wp2AmfColorPlace1) {
+		this.wp2AmfColorPlace1 = wp2AmfColorPlace1;
+	}
+
+	public String getWp2AmfColorPlace2() {
+		return wp2AmfColorPlace2;
+	}
+
+	public void setWp2AmfColorPlace2(String wp2AmfColorPlace2) {
+		this.wp2AmfColorPlace2 = wp2AmfColorPlace2;
+	}
+
+	public String getWp2AmfColorPlace3() {
+		return wp2AmfColorPlace3;
+	}
+
+	public void setWp2AmfColorPlace3(String wp2AmfColorPlace3) {
+		this.wp2AmfColorPlace3 = wp2AmfColorPlace3;
+	}
+
+	public String getWp2AmfColorPlace4() {
+		return wp2AmfColorPlace4;
+	}
+
+	public void setWp2AmfColorPlace4(String wp2AmfColorPlace4) {
+		this.wp2AmfColorPlace4 = wp2AmfColorPlace4;
+	}
+
+	public String getWp2BeltLoopPlace() {
+		return wp2BeltLoopPlace;
+	}
+
+	public void setWp2BeltLoopPlace(String wp2BeltLoopPlace) {
+		this.wp2BeltLoopPlace = wp2BeltLoopPlace;
+	}
+
+	public String getWp2StitchModifyPlace() {
+		return wp2StitchModifyPlace;
+	}
+
+	public void setWp2StitchModifyPlace(String wp2StitchModifyPlace) {
+		this.wp2StitchModifyPlace = wp2StitchModifyPlace;
+	}
+
+	public String getWp2DStitchPlace() {
+		return wp2DStitchPlace;
+	}
+
+	public void setWp2DStitchPlace(String wp2dStitchPlace) {
+		wp2DStitchPlace = wp2dStitchPlace;
+	}
+
+	public String getWp2AmfColorPlace() {
+		return wp2AmfColorPlace;
+	}
+
+	public void setWp2AmfColorPlace(String wp2AmfColorPlace) {
+		this.wp2AmfColorPlace = wp2AmfColorPlace;
+	}
+
+	public String getWp2BhColorPlace() {
+		return wp2BhColorPlace;
+	}
+
+	public void setWp2BhColorPlace(String wp2BhColorPlace) {
+		this.wp2BhColorPlace = wp2BhColorPlace;
+	}
+
+	public String getWp2ByColorPlace() {
+		return wp2ByColorPlace;
+	}
+
+	public void setWp2ByColorPlace(String wp2ByColorPlace) {
+		this.wp2ByColorPlace = wp2ByColorPlace;
 	}
     
 }

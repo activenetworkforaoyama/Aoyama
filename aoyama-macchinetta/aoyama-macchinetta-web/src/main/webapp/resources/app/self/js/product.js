@@ -118,6 +118,10 @@ function initProduct() {
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
+				    defaultGoodsInit();
+				    jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"oldItem":jQuery('#item').attr("hook")},type: "get",async:false});
+				  	stockCheck();
+				    compositionExpress();
 				  	jQuery("#jacketItemFlag").val("0");
 				  	jQuery("#pantsItemFlag").val("0");
 				  	jQuery("#giletItemFlag").val("0");
@@ -242,16 +246,6 @@ function initProduct() {
 	});
 	//jQuery('#item').change();
 
-	// ３Piece
-	jQuery('input[name="productIs3Piece"]').each(function() {
-		jQuery(this).change(changeViewArea);
-	});
-
-	// スペアパンツ
-	jQuery('input[name="productSparePantsClass"]').each(function() {
-		jQuery(this).change(changeViewArea);
-	});
-
 	/*// 生地品番 在庫チェック
 	jQuery('#productFabricNo').blur(function() {
 		if (jQuery(this).val() == "") {
@@ -263,25 +257,8 @@ function initProduct() {
 	/*jQuery('#stockCheck').click(function() {
 		jQuery('#stockMsg').show();
 	});*/
-
-	// カテゴリ
-	jQuery('input[name="productCategory"]').each(function() {
-		jQuery(this).change(function(){
-			swal({
-				  text: getMsg('msg125'),
-				  icon: "info",
-				  buttons: ["キャンセル", true],
-				})
-				.then((isConfirm) => {
-				  if (isConfirm) {
-					  changeViewArea();
-				  }else{
-					 
-				  }
-			});
-		});
-	});
-
+	
+	
 	// 刺繍入れ
 	jQuery('input[name="productEmbroideryNecessity"]').each(function() {
 		jQuery(this).change(function(){

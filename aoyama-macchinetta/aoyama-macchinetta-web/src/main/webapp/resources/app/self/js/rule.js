@@ -21,7 +21,36 @@ var lapelDesignImageMap = {
 				{val:"0000105",text:"ダブル６つボタン"},
 				{val:"0000106",text:"ダブル４つボタン"}],
 			defaultValue:'0000101'
-		},	
+		},
+		'CH14':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				{val:"0000105",text:"ダブル６つボタン"},
+				{val:"0000106",text:"ダブル４つボタン"}],
+			defaultValue:'0000102'
+		},
+		'NR05':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
+		'NZ01':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
+		'BS05':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
 }
 var lapelDesignTuxedoImageMap = {
 		'TR02':{
@@ -32,7 +61,36 @@ var lapelDesignTuxedoImageMap = {
 				{val:"0000105",text:"ダブル６つボタン"},
 				{val:"0000106",text:"ダブル４つボタン"}],
 			defaultValue:'0000101'
-		},	
+		},
+		'CH14':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				{val:"0000105",text:"ダブル６つボタン"},
+				{val:"0000106",text:"ダブル４つボタン"}],
+			defaultValue:'0000102'
+		},
+		'NR05':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
+		'NZ01':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
+		'BS05':{
+			activeList:[
+				{val:"0000102",text:"2つボタン"},
+				{val:"0000103",text:"1つボタン"},
+				],
+			defaultValue:'0000102'
+		},
 }
 var lapelDesignMap = {
 	'TR02':{
@@ -67,60 +125,60 @@ var lapelDesignMap = {
 	},
 	'CH14':{
 		activeList:{
-			'2つボタン':{
-				activeList:['notch'],
-				defaultValue:'notch'
+			'0000102':{
+				activeList:['0000201'],
+				defaultValue:'0000201'
 			},
-			'1つボタン':{
-				activeList:['notch'],
-				defaultValue:'notch'
+			'0000103':{
+				activeList:['0000201'],
+				defaultValue:'0000201'
 			},
-			'ダブル６つボタン':{
-				activeList:['peaked'],
-				defaultValue:'peaked'
+			'0000105':{
+				activeList:['0000202'],
+				defaultValue:'0000202'
 			},
-			'ダブル４つボタン':{
-				activeList:['peaked'],
-				defaultValue:'peaked'
+			'0000106':{
+				activeList:['0000202'],
+				defaultValue:'0000202'
 			}
 		},
-		defaultValue:'2つボタン'
+		defaultValue:'0000102'
 	},
 	'NR05':{
 		activeList:{
-			'2つボタン':{
-				activeList:['notch','peaked'],
-				defaultValue:'notch'
+			'0000102':{
+				activeList:['0000201','0000202'],
+				defaultValue:'0000201'
 			},
-			'1つボタン':{
-				activeList:['notch','peaked'],
-				defaultValue:'notch'
+			'0000103':{
+				activeList:['0000201','0000202'],
+				defaultValue:'0000201'
 			}
 		},
-		defaultValue:'2つボタン'
+		defaultValue:'0000102'
 	},
 	'NZ01':{
 		activeList:{
-			'2つボタン':{
-				activeList:['notch'],
-				defaultValue:'notch'
+			'0000102':{
+				activeList:['0000201'],
+				defaultValue:'0000201'
 			},
-			'1つボタン':{
-				activeList:['notch'],
-				defaultValue:'notch'
+			'0000103':{
+				activeList:['0000201'],
+				defaultValue:'0000201'
 			}
 		},
-		defaultValue:'2つボタン'
+		defaultValue:'0000102'
 	},
 	'BS05':{
 		activeList:{
-			'2つボタン':{
-				activeList:['notch','peaked','shawl'],
-				defaultValue:'notch'
+			'0000102':{
+				activeList:['0000201','0000202','0000203'],
+				defaultValue:'0000201'
 			},
-			'1つボタン':{
-				activeList:['notch','peaked','shawl'],
-				defaultValue:'notch'
+			'0000103':{
+				activeList:['0000201','0000202','0000203'],
+				defaultValue:'0000201'
 			},
 /*
 			'ダブル６つボタン':{
@@ -133,7 +191,7 @@ var lapelDesignMap = {
 			}
 */
 		},
-		defaultValue:'2つボタン'
+		defaultValue:'0000102'
 	}
 };
 
@@ -292,7 +350,7 @@ var stitchModifyList = {
 			//shoulderLine
 			"id5"			: { disabled:true, default:false},
 			//sleeveCap
-			"sleeveCap"		: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
 			//outsideSleeve
 			"id6"			: { disabled:true, default:false},
 			//sleeveOpen
@@ -300,7 +358,7 @@ var stitchModifyList = {
 			//backSeam
 			"id8"			: { disabled:true, default:false},
 			//anderarm
-			"anderarm"		: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
 			//vent
 			"id9"			: { disabled:true, default:false}
 		},
@@ -317,7 +375,7 @@ var stitchModifyList = {
 			//shoulderLine
 			"id5"			: { disabled:true, default:false},
 			//sleeveCap
-			"sleeveCap"		: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
 			//outsideSleeve
 			"id6"			: { disabled:true, default:false},
 			//sleeveOpen
@@ -325,7 +383,7 @@ var stitchModifyList = {
 			//backSeam
 			"id8"			: { disabled:true, default:false},
 			//anderarm
-			"anderarm"		: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
 			//vent
 			"id9"			: { disabled:true, default:false}
 		},
@@ -355,7 +413,7 @@ var stitchModifyList = {
 			//shoulderLine
 			"id5"			: { disabled:true, default:false},
 			//sleeveCap
-			"sleeveCap"		: { disabled:true, default:false},
+		//	"sleeveCap"		: { disabled:true, default:false},
 			//outsideSleeve
 			"id6"			: { disabled:true, default:false},
 			//sleeveOpen
@@ -363,26 +421,26 @@ var stitchModifyList = {
 			//backSeam
 			"id8"			: { disabled:true, default:false},
 			//anderarm
-			"anderarm"		: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
 			//vent
 			"id9"			: { disabled:true, default:false}
 		}
 	},
 	"CH14" : {
-		"notch" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:true},
-			"shoulderLine"	: { disabled:false, default:true},
-			"sleeveCap"		: { disabled:true, default:true},
-			"outsideSleeve"	: { disabled:false, default:true},
-			"sleeveOpen"	: { disabled:false, default:true},
-			"backSeam"		: { disabled:false, default:true},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:false, default:true}
+		"0000201" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:true},
+			"id5"			: { disabled:false, default:true},
+			//"sleeveCap"		: { disabled:true, default:true},
+			"id6"			: { disabled:false, default:true},
+			"id7"			: { disabled:false, default:true},
+			"id8"			: { disabled:false, default:true},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:false, default:true}
 		},
-		"peaked" : {
+		"0000202" : {
 		},
 		"double" : {
 			"lapel"			: { disabled:false, default:true},
@@ -397,103 +455,103 @@ var stitchModifyList = {
 			"anderarm"		: { disabled:true, default:false},
 			"vent"			: { disabled:false, default:true}
 		},
-		"shawl" : {
+		"0000203" : {
 		}
 	},
 	"NR05" : {
-		"notch" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:true},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:false, default:true},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:false, default:true}
+		"0000201" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:true},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:false, default:true},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:false, default:true}
 		},
-		"peaked" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:true},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:false, default:true},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:false, default:true}
+		"0000202" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:true},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:false, default:true},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:false, default:true}
 		},
 		"double" : {
 		},
-		"shawl" : {
+		"0000203" : {
 		}
 	},
 	"NZ01" : {
-		"notch" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:true},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:true, default:false},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:false, default:true}
+		"0000201" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:true},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:true, default:false},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:false, default:true}
 		},
-		"peaked" : {
+		"0000202" : {
 		},
 		"double" : {
 		},
-		"shawl" : {
+		"0000203" : {
 		}
 	},
 	"BS05" : {
-		"notch" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:false},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:true, default:false},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:true, default:false}
+		"0000201" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:false},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:true, default:false},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:true, default:false}
 		},
-		"peaked" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:false},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:true, default:false},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:true, default:false}
+		"0000202" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"			: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:false},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:true, default:false},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:true, default:false}
 		},
 		"double" : {
 		},
-		"shawl" : {
-			"lapel"			: { disabled:false, default:true},
-			"breastPk"		: { disabled:false, default:true},
-			"hipPk"			: { disabled:false, default:true},
-			"darts"			: { disabled:true, default:false},
-			"shoulderLine"	: { disabled:true, default:false},
-			"sleeveCap"		: { disabled:true, default:false},
-			"outsideSleeve"	: { disabled:true, default:false},
-			"sleeveOpen"	: { disabled:true, default:false},
-			"backSeam"		: { disabled:true, default:false},
-			"anderarm"		: { disabled:true, default:false},
-			"vent"			: { disabled:true, default:false}
+		"0000203" : {
+			"id1"			: { disabled:false, default:true},
+			"id2"				: { disabled:false, default:true},
+			"id3"			: { disabled:false, default:true},
+			"id4"			: { disabled:true, default:false},
+			"id5"			: { disabled:true, default:false},
+			//"sleeveCap"		: { disabled:true, default:false},
+			"id6"			: { disabled:true, default:false},
+			"id7"			: { disabled:true, default:false},
+			"id8"			: { disabled:true, default:false},
+			//"anderarm"		: { disabled:true, default:false},
+			"id9"			: { disabled:true, default:false}
 		}
 	}
 };

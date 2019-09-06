@@ -24,7 +24,7 @@ function initOptionPants2Tuxedo() {
 		tackElem.empty();
 		var tmpTack = null;
 		for (tmpTack of tackList[pantsModel].activeList) {
-			tackElem.append(jQuery('<option />').val(tmpTack).text(tmpTack));
+			tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
 		}
 		// デフォルトを選択
 		tackElem.val(tackList[pantsModel].defaultValue);
@@ -416,9 +416,9 @@ function initOptionPants2Tuxedo() {
 	jQuery('input[id^="tp2_bhColorPlace_"]').each(function() {
 		jQuery(this).change(function(){
 			if (jQuery(this).prop("checked")) {
-				// 選択されているの場合、色指定エリアを表示
+				// 選択されているの場合、色指定エリアを表示						
 				jQuery('#'+this.id+'_div').show();
-			} else {
+			} else {			
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -817,129 +817,4 @@ jQuery('input[name="optionPants2TuxedoInfo.tp2Adjuster"]').change(function(index
 });
 jQuery('#tp2_adjuster_id1').change();
 
-//PANTS2本目（1本目と同じ）
-jQuery('#btn_tp2_samePants').click(function (){
-	jQuery('#tp2_pantsModel').val([jQuery('#tp_pantsModel').val()]);
-	jQuery('#tp2_tack').val([jQuery('#tp_tack').val()]);
-	jQuery('input[name="tp2_kneeBack"]').val([jQuery('input[name="tp_kneeBack"]:checked').val()]);
-	jQuery('input[name="tp2_kneeBack"]').change();
-	jQuery('input[name="tp2_kneeBackMate"]').val([jQuery('input[name="tp_kneeBackMate"]:checked').val()]);
-	jQuery('input[name="tp2_kneeBackMate"]').change();
-	jQuery('input[name="tp2_frontSpec"]').val([jQuery('input[name="tp_frontSpec"]:checked').val()]);
-	jQuery('input[name="tp2_frontSpec"]').change();
-	jQuery('input[name="tp2_pancherina"]').val([jQuery('input[name="tp_pancherina"]:checked').val()]);
-	jQuery('input[name="tp2_pancherina"]').change();
-	jQuery('input[name="tp2_adjuster"]').val([jQuery('input[name="tp_adjuster"]:checked').val()]);
-	jQuery('input[name="tp2_adjuster"]').change();
-	jQuery('input[name="tp2_beltLoop"]').val([jQuery('input[name="tp_beltLoop"]:checked').val()]);
-	jQuery('input[name="tp2_beltLoop"]').change();
-	
-	jQuery('input[name="tp2_beltLoopPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	
-	jQuery('input[name="tp2_pinLoop"]').val([jQuery('input[name="tp_pinLoop"]:checked').val()]);
-	jQuery('input[name="tp2_pinLoop"]').change();
-	jQuery('input[name="tp2_sidePkt"]').val([jQuery('input[name="tp_sidePkt"]:checked').val()]);
-	jQuery('input[name="tp2_sidePkt"]').change();
-	jQuery('input[name="tp2_sinobiPkt"]').val([jQuery('input[name="tp_sinobiPkt"]:checked').val()]);
-	jQuery('input[name="tp2_sinobiPkt"]').change();
-	jQuery('#tp2_coinPkt').val([jQuery('#tp_coinPkt').val()]);
-	jQuery('input[name="tp2_coinPkt"]').change();
-	jQuery('input[name="tp2_flapCoinPkt"]').val([jQuery('input[name="tp_flapCoinPkt"]:checked').val()]);
-	jQuery('input[name="tp2_flapCoinPkt"]').change();
-	jQuery('input[name="tp2_pisPktUf"]').val([jQuery('input[name="tp_pisPktUf"]:checked').val()]);
-	jQuery('input[name="tp2_pisPktUf"]').change();
-	jQuery('input[name="tp2_pisPktDf"]').val([jQuery('input[name="tp_pisPktDf"]:checked').val()]);
-	jQuery('input[name="tp2_pisPktDf"]').change();
-	jQuery('input[name="tp2_vCut"]').val([jQuery('input[name="tp_vCut"]:checked').val()]);
-	jQuery('input[name="tp2_vCut"]').change();
-	jQuery('#tp2_hemUp').val([jQuery('#tp_hemUp').val()]);
-	jQuery('#tp2_hemUp').change();
-	jQuery('#tp2_doubleWide').val([jQuery('#tp_doubleWide').val()]);
-	jQuery('#tp2_doubleWide').change();
-	jQuery('input[name="tp2_stitch"]').val([jQuery('input[name="tp_stitch"]:checked').val()]);
-	jQuery('input[name="tp2_stitch"]').change();
-	jQuery('input[name="tp2_stitchModify"]').val([jQuery('input[name="tp_stitchModify"]:checked').val()]);
-	jQuery('input[name="tp2_stitchModify"]').change();
-	jQuery('input[name="tp2_stitchModifyPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_dStitch"]').val([jQuery('input[name="tp_dStitch"]:checked').val()]);
-	jQuery('input[name="tp2_dStitch"]').change();
-	jQuery('input[name="tp2_dStitchPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-	});
-	jQuery('input[name="tp2_amfColor"]').val([jQuery('input[name="tp_amfColor"]:checked').val()]);
-	jQuery('input[name="tp2_amfColor"]').change();
-	jQuery('#tp2_amfColorPlaceAll').val([jQuery('#tp_amfColorPlaceAll').val()]);
-	jQuery('#tp2_amfColorPlaceAll').change();
-	jQuery('input[name="tp2_amfColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_amfColorSidePkt"]').val([jQuery('input[name="tp_amfColorSidePkt"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorSidePkt"]').change();
-	jQuery('input[name="tp2_amfColorSideSeam"]').val([jQuery('input[name="tp_amfColorSideSeam"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorSideSeam"]').change();
-	jQuery('input[name="tp2_amfColorDarts"]').val([jQuery('input[name="tp_amfColorDarts"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorDarts"]').change();
-	jQuery('input[name="tp2_amfColorPisFlap"]').val([jQuery('input[name="tp_amfColorPisFlap"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorPisFlap"]').change();
-	jQuery('input[name="tp2_bhColor"]').val([jQuery('input[name="tp_bhColor"]:checked').val()]);
-	jQuery('input[name="tp2_bhColor"]').change();
-	jQuery('#tp2_bhColorPlaceAll').val([jQuery('#tp_bhColorPlaceAll').val()]);
-	jQuery('#tp2_bhColorPlaceAll').change();
-	jQuery('input[name="tp2_bhColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_bhColorPlaceFront"]').val([jQuery('input[name="tp_bhColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceFront"]').change();
-	jQuery('input[name="tp2_bhColorPlaceUfbp"]').val([jQuery('input[name="tp_bhColorPlaceUfbp"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceUfbp"]').change();
-	jQuery('input[name="tp2_bhColorPlaceDfbp"]').val([jQuery('input[name="tp_bhColorPlaceDfbp"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceDfbp"]').change();
-	jQuery('input[name="tp2_bhColorPlaceCoin"]').val([jQuery('input[name="tp_bhColorPlaceCoin"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceCoin"]').change();
-	jQuery('input[name="tp2_byColor"]').val([jQuery('input[name="tp_byColor"]:checked').val()]);
-	jQuery('input[name="tp2_byColor"]').change();
-	jQuery('#tp2_byColorPlaceAll').val([jQuery('#tp_byColorPlaceAll').val()]);
-	jQuery('#tp2_byColorPlaceAll').change();
-	jQuery('input[name="tp2_byColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_byColorPlaceFront"]').val([jQuery('input[name="tp_byColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceFront"]').change();
-	jQuery('input[name="tp2_byColorPlaceUf"]').val([jQuery('input[name="tp_byColorPlaceUf"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceUf"]').change();
-	jQuery('input[name="tp2_byColorPlaceDf"]').val([jQuery('input[name="tp_byColorPlaceDf"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceDf"]').change();
-	jQuery('input[name="tp2_byColorPlaceCoinPkt"]').val([jQuery('input[name="tp_byColorPlaceCoinPkt"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceCoinPkt"]').change();
-	jQuery('#tp2_button').val([jQuery('#tp_button').val()]);
-	jQuery('#tp2_button').change();
-	jQuery('#tp2_btnMateStkNo').val([jQuery('#tp_btnMateStkNo').val()]);
-	jQuery('#tp2_btnMateStkNo').change();
-	jQuery('input[name="tp2_suspenderBtn"]').val([jQuery('input[name="tp_suspenderBtn"]:checked').val()]);
-	jQuery('input[name="tp2_suspenderBtn"]').change();
-	jQuery('input[name="tp2_thick"]').val([jQuery('input[name="tp_thick"]:checked').val()]);
-	jQuery('input[name="tp2_thick"]').change();
-	jQuery('input[name="tp2_eight"]').val([jQuery('input[name="tp_eight"]:checked').val()]);
-	jQuery('input[name="tp2_eight"]').change();
-	jQuery('input[name="tp2_shapeMemory"]').val([jQuery('input[name="tp_shapeMemory"]:checked').val()]);
-	jQuery('input[name="tp2_shapeMemory"]').change();
-	jQuery('input[name="tp2_sideStripe"]').val([jQuery('input[name="tp_sideStripe"]:checked').val()]);
-	jQuery('input[name="tp2_sideStripe"]').change();
-	jQuery('input[name="tp2_sideStripeWidth"]').val([jQuery('input[name="tp_sideStripeWidth"]:checked').val()]);
-	jQuery('input[name="tp2_sideStripeWidth"]').change();
-});
+

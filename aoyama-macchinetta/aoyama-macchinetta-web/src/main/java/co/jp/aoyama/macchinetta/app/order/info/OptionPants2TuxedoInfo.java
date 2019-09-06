@@ -49,6 +49,20 @@ public class OptionPants2TuxedoInfo implements Serializable{
     //ベルトループ箇所 
     private String tp2BeltLoopPlace;
     
+    private String tp2BeltLoopPlace1;
+    
+    private String tp2BeltLoopPlace2;
+    
+    private String tp2BeltLoopPlace3;
+    
+    private String tp2BeltLoopPlace4;
+    
+    private String tp2BeltLoopPlace5;
+    
+    private String tp2BeltLoopPlace6;
+    
+    private String tp2BeltLoopPlace7;
+    
     private Map<String,String> tp2BeltLoopPlaceMap;
     
     //ピンループ
@@ -128,6 +142,16 @@ public class OptionPants2TuxedoInfo implements Serializable{
     //ボタンホール色指定箇所
     private String tp2BhColorPlace;
     
+    private String tp2BhColorPlace1;
+    
+    private String tp2BhColorPlace2;
+    
+    private String tp2BhColorPlace3;
+    
+    private String tp2BhColorPlace4;
+    
+    private String tp2BhColorPlace5;
+    
     private Map<String,String> tp2BhColorPlaceMap;
     
     //ボタンホール色指定糸色  フロント
@@ -157,6 +181,14 @@ public class OptionPants2TuxedoInfo implements Serializable{
     
     //ボタン付け糸指定箇所
     private String tp2ByColorPlace;
+    
+    private String tp2ByColorPlace1;
+    
+    private String tp2ByColorPlace2;
+    
+    private String tp2ByColorPlace3;
+    
+    private String tp2ByColorPlace4;
     
     private Map<String,String> tp2ByColorPlaceMap;
     
@@ -330,13 +362,7 @@ public class OptionPants2TuxedoInfo implements Serializable{
 		this.tp2BeltLoopMap = tp2BeltLoopMap;
 	}
 
-	public String getTp2BeltLoopPlace() {
-		return tp2BeltLoopPlace;
-	}
-
-	public void setTp2BeltLoopPlace(String tp2BeltLoopPlace) {
-		this.tp2BeltLoopPlace = tp2BeltLoopPlace;
-	}
+	
 
 	public Map<String, String> getTp2BeltLoopPlaceMap() {
 		return tp2BeltLoopPlaceMap;
@@ -554,13 +580,7 @@ public class OptionPants2TuxedoInfo implements Serializable{
 		this.tp2BhColorPlaceAllMap = tp2BhColorPlaceAllMap;
 	}
 
-	public String getTp2BhColorPlace() {
-		return tp2BhColorPlace;
-	}
-
-	public void setTp2BhColorPlace(String tp2BhColorPlace) {
-		this.tp2BhColorPlace = tp2BhColorPlace;
-	}
+	
 
 	public Map<String, String> getTp2BhColorPlaceMap() {
 		return tp2BhColorPlaceMap;
@@ -642,13 +662,6 @@ public class OptionPants2TuxedoInfo implements Serializable{
 		this.tp2ByColorPlaceAllMap = tp2ByColorPlaceAllMap;
 	}
 
-	public String getTp2ByColorPlace() {
-		return tp2ByColorPlace;
-	}
-
-	public void setTp2ByColorPlace(String tp2ByColorPlace) {
-		this.tp2ByColorPlace = tp2ByColorPlace;
-	}
 
 	public Map<String, String> getTp2ByColorPlaceMap() {
 		return tp2ByColorPlaceMap;
@@ -880,6 +893,158 @@ public class OptionPants2TuxedoInfo implements Serializable{
 
 	public void setTp2BtnMateStkNo(String tp2BtnMateStkNo) {
 		this.tp2BtnMateStkNo = tp2BtnMateStkNo;
+	}
+
+	public String getTp2BeltLoopPlace1() {
+		return tp2BeltLoopPlace1;
+	}
+
+	public void setTp2BeltLoopPlace1(String tp2BeltLoopPlace1) {
+		this.tp2BeltLoopPlace1 = tp2BeltLoopPlace1;
+	}
+
+	public String getTp2BeltLoopPlace2() {
+		return tp2BeltLoopPlace2;
+	}
+
+	public void setTp2BeltLoopPlace2(String tp2BeltLoopPlace2) {
+		this.tp2BeltLoopPlace2 = tp2BeltLoopPlace2;
+	}
+
+	public String getTp2BeltLoopPlace3() {
+		return tp2BeltLoopPlace3;
+	}
+
+	public void setTp2BeltLoopPlace3(String tp2BeltLoopPlace3) {
+		this.tp2BeltLoopPlace3 = tp2BeltLoopPlace3;
+	}
+
+	public String getTp2BeltLoopPlace4() {
+		return tp2BeltLoopPlace4;
+	}
+
+	public void setTp2BeltLoopPlace4(String tp2BeltLoopPlace4) {
+		this.tp2BeltLoopPlace4 = tp2BeltLoopPlace4;
+	}
+
+	public String getTp2BeltLoopPlace5() {
+		return tp2BeltLoopPlace5;
+	}
+
+	public void setTp2BeltLoopPlace5(String tp2BeltLoopPlace5) {
+		this.tp2BeltLoopPlace5 = tp2BeltLoopPlace5;
+	}
+
+	public String getTp2BeltLoopPlace6() {
+		return tp2BeltLoopPlace6;
+	}
+
+	public void setTp2BeltLoopPlace6(String tp2BeltLoopPlace6) {
+		this.tp2BeltLoopPlace6 = tp2BeltLoopPlace6;
+	}
+
+	public String getTp2BeltLoopPlace7() {
+		return tp2BeltLoopPlace7;
+	}
+
+	public void setTp2BeltLoopPlace7(String tp2BeltLoopPlace7) {
+		this.tp2BeltLoopPlace7 = tp2BeltLoopPlace7;
+	}
+
+	public String getTp2BhColorPlace1() {
+		return tp2BhColorPlace1;
+	}
+
+	public void setTp2BhColorPlace1(String tp2BhColorPlace1) {
+		this.tp2BhColorPlace1 = tp2BhColorPlace1;
+	}
+
+	public String getTp2BhColorPlace2() {
+		return tp2BhColorPlace2;
+	}
+
+	public void setTp2BhColorPlace2(String tp2BhColorPlace2) {
+		this.tp2BhColorPlace2 = tp2BhColorPlace2;
+	}
+
+	public String getTp2BhColorPlace3() {
+		return tp2BhColorPlace3;
+	}
+
+	public void setTp2BhColorPlace3(String tp2BhColorPlace3) {
+		this.tp2BhColorPlace3 = tp2BhColorPlace3;
+	}
+
+	public String getTp2BhColorPlace4() {
+		return tp2BhColorPlace4;
+	}
+
+	public void setTp2BhColorPlace4(String tp2BhColorPlace4) {
+		this.tp2BhColorPlace4 = tp2BhColorPlace4;
+	}
+
+	public String getTp2BhColorPlace5() {
+		return tp2BhColorPlace5;
+	}
+
+	public void setTp2BhColorPlace5(String tp2BhColorPlace5) {
+		this.tp2BhColorPlace5 = tp2BhColorPlace5;
+	}
+
+	public String getTp2ByColorPlace1() {
+		return tp2ByColorPlace1;
+	}
+
+	public void setTp2ByColorPlace1(String tp2ByColorPlace1) {
+		this.tp2ByColorPlace1 = tp2ByColorPlace1;
+	}
+
+	public String getTp2ByColorPlace2() {
+		return tp2ByColorPlace2;
+	}
+
+	public void setTp2ByColorPlace2(String tp2ByColorPlace2) {
+		this.tp2ByColorPlace2 = tp2ByColorPlace2;
+	}
+
+	public String getTp2ByColorPlace3() {
+		return tp2ByColorPlace3;
+	}
+
+	public void setTp2ByColorPlace3(String tp2ByColorPlace3) {
+		this.tp2ByColorPlace3 = tp2ByColorPlace3;
+	}
+
+	public String getTp2ByColorPlace4() {
+		return tp2ByColorPlace4;
+	}
+
+	public void setTp2ByColorPlace4(String tp2ByColorPlace4) {
+		this.tp2ByColorPlace4 = tp2ByColorPlace4;
+	}
+
+	public String getTp2BeltLoopPlace() {
+		return tp2BeltLoopPlace;
+	}
+
+	public void setTp2BeltLoopPlace(String tp2BeltLoopPlace) {
+		this.tp2BeltLoopPlace = tp2BeltLoopPlace;
+	}
+
+	public String getTp2BhColorPlace() {
+		return tp2BhColorPlace;
+	}
+
+	public void setTp2BhColorPlace(String tp2BhColorPlace) {
+		this.tp2BhColorPlace = tp2BhColorPlace;
+	}
+
+	public String getTp2ByColorPlace() {
+		return tp2ByColorPlace;
+	}
+
+	public void setTp2ByColorPlace(String tp2ByColorPlace) {
+		this.tp2ByColorPlace = tp2ByColorPlace;
 	}
     
 }

@@ -309,7 +309,6 @@ jQuery(document).ready(function() {
 	 } */
 	    if(pantsAdFlag==""){
 	    	adjustReInit();
-	    	getFigureAndNumberByItem();
 		}else if(pantsAdFlag=="0"){
 			adjustReInit();
 			getFigureAndNumberByItem();

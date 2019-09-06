@@ -367,7 +367,7 @@ function initOptionPants2Standard() {
 	});
 
 	// AMF色指定箇所
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace"]').each(function() {
+	jQuery('input[id^="op2_amfColorPlace_"]').each(function() {
 		jQuery(this).change(function(){
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
@@ -718,7 +718,7 @@ function changedBeltLoop2() {
 	}	
 
 	// フラシループ設定
-	var frsAreaElem = jQuery('#op2_beltLoopPlace_id7');
+	var frsAreaElem = jQuery('#op2_beltLoopPlace_id17');
 	if (jQuery('#op2_pantsModel').val() == 'NZ01') {
 		// 表示
 		frsAreaElem.show();
@@ -1007,125 +1007,3 @@ jQuery('input[name="optionPants2StandardInfo.op2Adjuster"]').change(function(ind
 });
 jQuery('#op2_adjuster_id1').change();
 
-//PANTS2本目（1本目と同じ）
-jQuery('#btn_op2_samePants').click(function (){
-	jQuery('#op2_pantsModel').val([jQuery('#op_pantsModel').val()]);
-	jQuery('#op2_tack').val([jQuery('#op_tack').val()]);
-	jQuery('input[name="op2_kneeBack"]').val([jQuery('input[name="op_kneeBack"]:checked').val()]);
-	jQuery('input[name="op2_kneeBack"]').change();
-	jQuery('input[name="op2_kneeBackMate"]').val([jQuery('input[name="op_kneeBackMate"]:checked').val()]);
-	jQuery('input[name="op2_kneeBackMate"]').change();
-	jQuery('input[name="op2_frontSpec"]').val([jQuery('input[name="op_frontSpec"]:checked').val()]);
-	jQuery('input[name="op2_frontSpec"]').change();
-	jQuery('input[name="op2_pancherina"]').val([jQuery('input[name="op_pancherina"]:checked').val()]);
-	jQuery('input[name="op2_pancherina"]').change();
-	jQuery('input[name="op2_adjuster"]').val([jQuery('input[name="op_adjuster"]:checked').val()]);
-	jQuery('input[name="op2_adjuster"]').change();
-	jQuery('input[name="op2_beltLoop"]').val([jQuery('input[name="op_beltLoop"]:checked').val()]);
-	jQuery('input[name="op2_beltLoop"]').change();
-	
-	jQuery('input[name="op2_beltLoopPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	
-	jQuery('input[name="op2_pinLoop"]').val([jQuery('input[name="op_pinLoop"]:checked').val()]);
-	jQuery('input[name="op2_pinLoop"]').change();
-	jQuery('input[name="op2_sidePkt"]').val([jQuery('input[name="op_sidePkt"]:checked').val()]);
-	jQuery('input[name="op2_sidePkt"]').change();
-	jQuery('input[name="op2_sinobiPkt"]').val([jQuery('input[name="op_sinobiPkt"]:checked').val()]);
-	jQuery('input[name="op2_sinobiPkt"]').change();
-	jQuery('#op2_coinPkt').val([jQuery('#op_coinPkt').val()]);
-	jQuery('input[name="op2_coinPkt"]').change();
-	jQuery('input[name="op2_flapCoinPkt"]').val([jQuery('input[name="op_flapCoinPkt"]:checked').val()]);
-	jQuery('input[name="op2_flapCoinPkt"]').change();
-	jQuery('input[name="op2_pisPktUf"]').val([jQuery('input[name="op_pisPktUf"]:checked').val()]);
-	jQuery('input[name="op2_pisPktUf"]').change();
-	jQuery('input[name="op2_pisPktDf"]').val([jQuery('input[name="op_pisPktDf"]:checked').val()]);
-	jQuery('input[name="op2_pisPktDf"]').change();
-	jQuery('input[name="op2_vCut"]').val([jQuery('input[name="op_vCut"]:checked').val()]);
-	jQuery('input[name="op2_vCut"]').change();
-	jQuery('#op2_hemUp').val([jQuery('#op_hemUp').val()]);
-	jQuery('#op2_hemUp').change();
-	jQuery('#op2_doubleWide').val([jQuery('#op_doubleWide').val()]);
-	jQuery('#op2_doubleWide').change();
-	jQuery('input[name="op2_stitch"]').val([jQuery('input[name="op_stitch"]:checked').val()]);
-	jQuery('input[name="op2_stitch"]').change();
-	jQuery('input[name="op2_stitchModify"]').val([jQuery('input[name="op_stitchModify"]:checked').val()]);
-	jQuery('input[name="op2_stitchModify"]').change();
-	jQuery('input[name="op2_stitchModifyPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="op2_dStitch"]').val([jQuery('input[name="op_dStitch"]:checked').val()]);
-	jQuery('input[name="op2_dStitch"]').change();
-	jQuery('input[name="op2_dStitchPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-	});
-	jQuery('input[name="op2_amfColor"]').val([jQuery('input[name="op_amfColor"]:checked').val()]);
-	jQuery('input[name="op2_amfColor"]').change();
-	jQuery('#op2_amfColorPlaceAll').val([jQuery('#op_amfColorPlaceAll').val()]);
-	jQuery('#op2_amfColorPlaceAll').change();
-	jQuery('input[name="op2_amfColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="op2_amfColorSidePkt"]').val([jQuery('input[name="op_amfColorSidePkt"]:checked').val()]);
-	jQuery('input[name="op2_amfColorSidePkt"]').change();
-	jQuery('input[name="op2_amfColorSideSeam"]').val([jQuery('input[name="op_amfColorSideSeam"]:checked').val()]);
-	jQuery('input[name="op2_amfColorSideSeam"]').change();
-	jQuery('input[name="op2_amfColorDarts"]').val([jQuery('input[name="op_amfColorDarts"]:checked').val()]);
-	jQuery('input[name="op2_amfColorDarts"]').change();
-	jQuery('input[name="op2_amfColorPisFlap"]').val([jQuery('input[name="op_amfColorPisFlap"]:checked').val()]);
-	jQuery('input[name="op2_amfColorPisFlap"]').change();
-	jQuery('input[name="op2_bhColor"]').val([jQuery('input[name="op_bhColor"]:checked').val()]);
-	jQuery('input[name="op2_bhColor"]').change();
-	jQuery('#op2_bhColorPlaceAll').val([jQuery('#op_bhColorPlaceAll').val()]);
-	jQuery('#op2_bhColorPlaceAll').change();
-	jQuery('input[name="op2_bhColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="op2_bhColorPlaceFront"]').val([jQuery('input[name="op_bhColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="op2_bhColorPlaceFront"]').change();
-	jQuery('input[name="op2_bhColorPlaceUfbp"]').val([jQuery('input[name="op_bhColorPlaceUfbp"]:checked').val()]);
-	jQuery('input[name="op2_bhColorPlaceUfbp"]').change();
-	jQuery('input[name="op2_bhColorPlaceDfbp"]').val([jQuery('input[name="op_bhColorPlaceDfbp"]:checked').val()]);
-	jQuery('input[name="op2_bhColorPlaceDfbp"]').change();
-	jQuery('input[name="op2_bhColorPlaceCoin"]').val([jQuery('input[name="op_bhColorPlaceCoin"]:checked').val()]);
-	jQuery('input[name="op2_bhColorPlaceCoin"]').change();
-	jQuery('input[name="op2_byColor"]').val([jQuery('input[name="op_byColor"]:checked').val()]);
-	jQuery('input[name="op2_byColor"]').change();
-	jQuery('#op2_byColorPlaceAll').val([jQuery('#op_byColorPlaceAll').val()]);
-	jQuery('#op2_byColorPlaceAll').change();
-	jQuery('input[name="op2_byColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('op2_', 'op_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="op2_byColorPlaceFront"]').val([jQuery('input[name="op_byColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="op2_byColorPlaceFront"]').change();
-	jQuery('input[name="op2_byColorPlaceUf"]').val([jQuery('input[name="op_byColorPlaceUf"]:checked').val()]);
-	jQuery('input[name="op2_byColorPlaceUf"]').change();
-	jQuery('input[name="op2_byColorPlaceDf"]').val([jQuery('input[name="op_byColorPlaceDf"]:checked').val()]);
-	jQuery('input[name="op2_byColorPlaceDf"]').change();
-	jQuery('input[name="op2_byColorPlaceCoinPkt"]').val([jQuery('input[name="op_byColorPlaceCoinPkt"]:checked').val()]);
-	jQuery('input[name="op2_byColorPlaceCoinPkt"]').change();
-	jQuery('#op2_button').val([jQuery('#op_button').val()]);
-	jQuery('#op2_button').change();
-	jQuery('#op2_btnMateStkNo').val([jQuery('#op_btnMateStkNo').val()]);
-	jQuery('#op2_btnMateStkNo').change();
-	jQuery('input[name="op2_suspenderBtn"]').val([jQuery('input[name="op_suspenderBtn"]:checked').val()]);
-	jQuery('input[name="op2_suspenderBtn"]').change();
-	jQuery('input[name="op2_thick"]').val([jQuery('input[name="op_thick"]:checked').val()]);
-	jQuery('input[name="op2_thick"]').change();
-	jQuery('input[name="op2_eight"]').val([jQuery('input[name="op_eight"]:checked').val()]);
-	jQuery('input[name="op2_eight"]').change();
-	jQuery('input[name="op2_shapeMemory"]').val([jQuery('input[name="op_shapeMemory"]:checked').val()]);
-	jQuery('input[name="op2_shapeMemory"]').change();
-});

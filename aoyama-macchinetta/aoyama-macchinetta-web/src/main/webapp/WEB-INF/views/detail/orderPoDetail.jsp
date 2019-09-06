@@ -1060,7 +1060,7 @@
 								<strong><label class=" form-control-label-value" id="corJkWaistCorrect"></label>cm</strong>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${order.corJkBodylengthGross}</label>cm</strong>
+								<strong><label class=" form-control-label-value">${order.corJkWaistGross}</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">袖丈右修正</label>

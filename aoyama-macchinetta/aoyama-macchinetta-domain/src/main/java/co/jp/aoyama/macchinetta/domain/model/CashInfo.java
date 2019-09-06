@@ -32,6 +32,8 @@ public class CashInfo implements Serializable {
 
     private String custNm;
     
+    private String custCd;
+    
     private String custStaff;
     
     private String tscStatus;
@@ -134,6 +136,14 @@ public class CashInfo implements Serializable {
 
 	public void setCustNm(String custNm) {
 		this.custNm = custNm;
+	}
+
+	public String getCustCd() {
+		return custCd;
+	}
+
+	public void setCustCd(String custCd) {
+		this.custCd = custCd;
 	}
 
 	public String getCustStaff() {

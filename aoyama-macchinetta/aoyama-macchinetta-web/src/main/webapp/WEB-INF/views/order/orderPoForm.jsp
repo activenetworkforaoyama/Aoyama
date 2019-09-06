@@ -150,20 +150,24 @@ select.hidedown {
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">会員番号</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6" style="padding-right:0;">
+                                <div class="input-group">
                                 <input type="text" id="custCd" name="customerMessageInfo.custCd" class="input-sm form-control-sm form-control" maxlength="13">
+                                    <span class="input-group-btn"><button type="button" id="custSearchButton" class="btn btn-primary btn-sm">会員検索</button></span>
                             </div>
+                        </div>
+                            <div class="col col-md-3" style="padding-left:0;"><button type="button" id="searchButton" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#infotext_2">非会員検索</button></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">お客様氏名</label></div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="custNm" name="customerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50">
+                                <input type="text" id="custNm" name="customerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50" readonly="readonly">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フリガナ</label></div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="custKanaNm" name="customerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60">
+                                <input type="text" id="custKanaNm" name="customerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60" readonly="readonly">
                             </div>
                         </div>
                          <div class="row form-group">
@@ -429,6 +433,17 @@ select.hidedown {
                                 </select>cm
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="row form-group">
+                            <div class="col col-md-2"     style="max-width: 12.5%;"><label class=" form-control-label">メジャーリング備考</label></div>
+                            <div class="col-12 col-md-12" style="max-width: 77.5%;">
+                                <textarea name="measureringInfo" id="measureringInfo" rows="3" placeholder="" class="form-control"></textarea>
+                            </div>
+                            <button type="button" id="updMeasureButton" class="btn btn-info btn-sm" style="height:38px;">情報登録</button>
                         </div>
                     </div>
                 </div>
@@ -943,6 +958,9 @@ select.hidedown {
                             <div class="col col-md-4">
                                 <select name="optionGiletStandardInfo.ogFrontBtnMateStkNo" id="og_frontBtnMateStkNo" class="form-control-sm form-control">
                                 </select>
+                            </div>
+                            <div class="col col-md-2" align="right">
+                            	<output id="og_frontBtnMate_Msg"></output>
                             </div>
                         </div>
                     </div>
@@ -2185,6 +2203,158 @@ select.hidedown {
 			</c:if>
 	</div>
 </form:form>
+<div class="modal fade" id="infotext_2" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document" style="max-width:900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediumModalLabel">非会員検索</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content mt-3">
+                    <form action="" id="frmSearch" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <input type="hidden" id="chkSearch" value="">
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" id="nav3_search">検索</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="nav3_regist">登録</a>
+                            </li>
+                        </ul>
+                        <div class="card" id="nav3_search_div">
+                            <div class="card-body">
+                                <!-- 検索条件部分 Start -->
+                                <div class="row">
+                                    <!-- 左側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">電話番号</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchTelNo" name="text-input" placeholder="" class="input-sm form-control-sm form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchSei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 右側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">　</label></div>
+                                            <div class="col-12 col-md-8">　</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchMei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 制御ボタン部分 Start -->
+                                <div class="row">
+                                    <div class="col">　</div>
+                                    <div class="col col-md-4">
+                                        <button type="button" id="clearButton" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> クリア</button>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <button type="button" id="search2Button" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 検索</button>
+                                    </div>
+                                    <div class="col">　</div>
+                                </div>
+                                <!-- 制御ボタン部分 End -->
+                            </div><!-- card body -->
+                            <div class="card" id="areaResult" style="display:none;">
+                                <div class="card-body" id="areaResult1">
+                                    <div class="row">
+                                        <div class="col">
+                                            <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- card -->
+                        <div class="card" id="nav3_regist_div">
+                            <div class="card-body">
+                                <!-- 登録部分 Start -->
+                                <div class="row">
+                                    <!-- 左側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">電話番号</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updTelNo" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="1">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updSei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan" tabindex="2">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓</label></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updSeiJ" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 右側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">　</label></div>
+                                            <div class="col-12 col-md-8">　</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updMei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan" tabindex="3">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名</label></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updMeiJ" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-lg-12">
+                                        <div class="row form-group">
+                                            <div class="col col-md-2"><label class=" form-control-label small">メールアドレス</label></div>
+                                            <div class="col-12 col-md-10">
+                                                <input type="text" id="updEmail" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="6">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 検索条件部分 End -->
+                                <!-- 制御ボタン部分 Start -->
+                                <div class="row">
+                                    <div class="col">　</div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="registButton" class="btn btn-info btn-block"><i class="fa fa-save"></i> 入力内容で登録</button>
+                                    </div>
+                                    <div class="col">　</div>
+                                </div>
+                                <!-- 制御ボタン部分 End -->
+                            </div><!-- card body -->
+                        </div><!-- card -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.unobtrusive.min.js"></script>
@@ -2193,6 +2363,52 @@ select.hidedown {
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 <script>
+function zenkakuToHankaku(mae){
+	  let zen = new Array('ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ヰ','ユ','ヱ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','゛','°','、','。','「','」','ー','・');
+	  let han = new Array('ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ｲ','ﾕ','ｴ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ｦ','ﾝ','ｶﾞ','ｷﾞ','ｸﾞ','ｹﾞ','ｺﾞ','ｻﾞ','ｼﾞ','ｽﾞ','ｾﾞ','ｿﾞ','ﾀﾞ','ﾁﾞ','ﾂﾞ','ﾃﾞ','ﾄﾞ','ﾊﾞ','ﾋﾞ','ﾌﾞ','ﾍﾞ','ﾎﾞ','ﾊﾟ','ﾋﾟ','ﾌﾟ','ﾍﾟ','ﾎﾟ','ｧ','ｨ','ｩ','ｪ','ｫ','ｬ','ｭ','ｮ','ｯ','ﾞ','ﾟ','､','｡','｢','｣','ｰ','･');
+	 
+	  let ato = "";
+	  for (let i=0;i<mae.length;i++){
+	    let maechar = mae.charAt(i);
+	    let zenindex = zen.indexOf(maechar);
+	    if(zenindex >= 0){
+	      maechar = han[zenindex];
+	    }
+	    ato += maechar;
+	  }
+	  return ato;
+	}
+
+	jQuery(function() {
+	    jQuery('.zentohan').on('blur', function() {
+	        var str = jQuery(this).val();
+	        jQuery(this).val(zenkakuToHankaku(str));
+	    });
+	});
+	function isHanKana(str){
+	  var reg = new RegExp(/^[ｦ-ﾟ]*$/);
+	  return reg.test(str);
+	}
+	/**
+	 * 業態コードを取得する
+	 */
+	function getGyotaiCd() {
+		var gyotaiCd = 1;
+			var shopCodePrefix = jQuery("#shopCode").val().substring(0, 1);
+		if (shopCodePrefix == "1") {
+			gyotaiCd = 1;
+		} else if (shopCodePrefix == "3") {
+			gyotaiCd = 3;
+		} else {
+			var custCdPrefix = jQuery("#custCd").val().substring(0, 2);
+			if ((custCdPrefix == "62") || (custCdPrefix == "63")) {
+				gyotaiCd = 3;
+			} else {
+				gyotaiCd = 1;
+			}
+		}
+			return gyotaiCd;
+	}
 /************************************************
  * ルールMAP
  ************************************************/
@@ -2709,9 +2925,11 @@ jQuery(document).ready(function() {
 		var productFabricNo = "${order.productFabricNo}";
 		jQuery("#productFabricNo").val(productFabricNo);
 
-		//生地によって、商品を表示
-		fabricView(item,productFabricNo);
-
+		if(isNotEmpty(productFabricNo)){
+			//生地によって、商品を表示
+			fabricView(item,productFabricNo);
+		}
+		
 		var yieldNum = "${order.theoryFabricUsedMount}";
 		jQuery("#theoryFabricUsedMountId").val(yieldNum);
 		
@@ -3612,7 +3830,67 @@ jQuery(document).ready(function() {
 	
 	//料金の制御
 	getPrice();
-	
+	//お客様名初期表示
+    var gyotaiCd = getGyotaiCd();
+    var membersId = jQuery("#custCd").val();
+    if (membersId != "") {
+        if ("7" == membersId.substring(0, 1)) {
+            var data = {"gyotai": gyotaiCd,"kokNo": membersId,"telNo": "","sei": "","mei": ""};
+            jQuery.ajax({
+                url: location.protocol+ '//' + location.host + "/member/api/v1/nonmemInfo",
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                async:false,
+                data: JSON.stringify(data),
+                success: function(data){
+                    if(!isEmpty(data)){
+                        for(var i=0; i<data.dataCnt; i++){
+                            var retSei = data.nonMemberDataResponse[i]['sei'];
+                            var retMei = data.nonMemberDataResponse[i]['mei'];
+                            var retSeiJ = data.nonMemberDataResponse[i]['seij'];
+                            var retMeiJ = data.nonMemberDataResponse[i]['meij'];
+                            $('#custNm').val(retSeiJ + ' ' + retMeiJ);
+                            $('#custKanaNm').val(retSei + ' ' + retMei);
+                            var custNm = $('#custNm').val();
+                            var custKanaNm = $('#custKanaNm').val();
+                            if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                            	$('#custNmDiv').text(retSeiJ + ' ' + retMeiJ);
+                            }else if(isEmpty(custNm)|| custNm == ' '){
+                            	$('#custNmDiv').text(retSei + ' ' + retMei);
+                            }else{
+                            	$('#custNmDiv').text(retSeiJ + ' ' + retMeiJ + "(" + retSei + ' ' + retMei + ")");
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            var request = new XMLHttpRequest();
+            var pathName = '/member/api/v1/memInfo?membersId=';
+            var parmName = '&gyotaiCd=';
+            request.open('GET', location.protocol+ '//' + location.host + pathName + membersId + parmName + gyotaiCd, true);
+            request.responseType = 'json';
+            request.onload = function () {
+                var data = this.response;
+                    if (isEmpty(data)){
+                        return false;
+                    }
+                    $('#custNm').val(data.lastName + ' ' + data.firstName);
+                    $('#custKanaNm').val(data.lastNameKana + ' ' + data.firstNameKana);
+                    var custNm = $('#custNm').val();
+                    var custKanaNm = $('#custKanaNm').val();
+                    if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                    	$('#custNmDiv').text(data.lastName + ' ' + data.firstName);
+                    }else if(isEmpty(custNm)|| custNm == ' '){
+                    	$('#custNmDiv').text(data.lastNameKana + ' ' + data.firstNameKana);
+                    }else{
+                    	$('#custNmDiv').text(data.lastName + ' ' + data.firstName + "(" + data.lastNameKana + ' ' + data.firstNameKana + ")");
+                    }
+                    $('#measureringInfo').val(data.clothPre);
+                };
+            request.send();
+        }
+    }
 });
 		
 jQuery(document).ready(function(){
@@ -3661,87 +3939,112 @@ jQuery(document).ready(function(){
 		}
 	}
 
- 	//30s自動保存
- 	//注文のTSCステータス
-	var orderStatus = "${order.tscStatus}";
-	//戻るの場合、orderFormのTSCステータス
-	var orderFormStatus = "${orderForm.status}";
-	//T0 ：一時保存、T1 ：取り置き、""：ステータス無し
-	//「オーダー一覧」画面から来たの場合
-	if(　((orderStatus=="T0"||orderStatus=="T1")&&orderFormStatus=="")||
-		//「内容確認」画面来たの場合	
-		((orderFormStatus=="T0"||orderFormStatus=="T1")&&orderStatus=="")||
-		//新規登録の場合
-		(orderStatus==""&&orderFormStatus=="")){
-			
-		setInterval(function(){
 
-			//バージョンフラッグ
-			//var versionFlag = "";
-			//保存flag
-			jQuery("#saveFlag").val("1");
-			//TSCステータス  一時保存
-			var statusInput = jQuery("#statusInput").val();
-
-			if(statusInput==""||statusInput==null){
-				jQuery("#statusInput").val("T0");
-			}else{
-				jQuery("#statusInput").val(jQuery("#statusInput").val());
-			}
-			
-			var result = temporarySaveCheck();
+	var authority = "${sessionContent.authority}";
+	if(authority == "02"){
+		
+	}else{
+		//30s自動保存
+	 	//注文のTSCステータス
+		var orderStatus = "${order.tscStatus}";
+		//戻るの場合、orderFormのTSCステータス
+		var orderFormStatus = "${orderForm.status}";
+		//T0 ：一時保存、T1 ：取り置き、""：ステータス無し
+		//「オーダー一覧」画面から来たの場合
+		if(　((orderStatus=="T0"||orderStatus=="T1")&&orderFormStatus=="")||
+			//「内容確認」画面来たの場合	
+			((orderFormStatus=="T0"||orderFormStatus=="T1")&&orderStatus=="")||
+			//新規登録の場合
+			(orderStatus==""&&orderFormStatus=="")){
 				
-			if(!result){
-				jQuery("div.alert-success").hide();
-				return false;
-			}
-			
-			jQuery('select').removeAttr("disabled");
-			jQuery('input').not("#clothName_yes").removeAttr("disabled");
-			jQuery.ajax({
-	              url : contextPath + "/order/orderPoTemporarySave",
-			      type: "post",
-			      async:false,
-			      dataType:"text",
-			      data: jQuery('#formId').serialize(),
-				  }).then(function(data) {
-					  if(data == "true"){
-						  //ステータス設定
-					   	  jQuery("#status").empty();
-					   	  var statusInput = jQuery("#statusInput").val();
-						  if(statusInput=="T0"){
-						 	  jQuery("#status").html("一時保存");
+			setInterval(function(){
+
+				//バージョンフラッグ
+				//var versionFlag = "";
+				//保存flag
+				jQuery("#saveFlag").val("1");
+				//TSCステータス  一時保存
+				var statusInput = jQuery("#statusInput").val();
+
+				if(statusInput==""||statusInput==null){
+					jQuery("#statusInput").val("T0");
+				}else{
+					jQuery("#statusInput").val(jQuery("#statusInput").val());
+				}
+				
+				var result = temporarySaveCheck();
+					
+				if(!result){
+					jQuery("div.alert-success").hide();
+					return false;
+				}
+				
+				jQuery('select').removeAttr("disabled");
+				jQuery('input').not("#clothName_yes").removeAttr("disabled");
+				jQuery.ajax({
+		              url : contextPath + "/order/orderPoTemporarySave",
+				      type: "post",
+				      async:false,
+				      data: jQuery('#formId').serialize(),
+					  }).then(function(data) {
+						  if(!data.orderMsgFlag){
+							  if(data.orderMsg == 'T2ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }else if(data.orderMsg == 'T3ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }
 						  }else{
-							  jQuery("#status").html("取り置き");
+							  if(data.orderId == "true"){
+								  //ステータス設定
+							   	  jQuery("#status").empty();
+							   	  var statusInput = jQuery("#statusInput").val();
+								  if(statusInput=="T0"){
+								 	  jQuery("#status").html("一時保存");
+								  }else{
+									  jQuery("#status").html("取り置き");
+								  }
+								  /* versionFlag = data;
+								  jQuery("#versionFlag").val(versionFlag); */
+							  }else if(data.orderId.length == 12){
+								  jQuery("#orderId").val(data.orderId);
+							      //ステータス設定
+								  jQuery("#status").empty();
+							   	  var statusInput = jQuery("#statusInput").val();
+								  if(statusInput=="T0"){
+								 	  jQuery("#status").html("一時保存");
+								  }else{
+									  jQuery("#status").html("取り置き");
+								  }
+								  var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":data.orderId},async:false});
+								  version = version.responseText;
+								  jQuery("#version").val(version);
+								  /* versionFlag = "true";
+								  jQuery("#versionFlag").val(versionFlag); */
+							  }
 						  }
-						  /* versionFlag = data;
-						  jQuery("#versionFlag").val(versionFlag); */
-					  }else if(data.length == 12){
-						  jQuery("#orderId").val(data);
-					      //ステータス設定
-						  jQuery("#status").empty();
-					   	  var statusInput = jQuery("#statusInput").val();
-						  if(statusInput=="T0"){
-						 	  jQuery("#status").html("一時保存");
-						  }else{
-							  jQuery("#status").html("取り置き");
-						  }
-						  var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":data},async:false});
-						  version = version.responseText;
-						  jQuery("#version").val(version);
-						  /* versionFlag = "true";
-						  jQuery("#versionFlag").val(versionFlag); */
-					  }/* else if(data == "1"){
-						  versionFlag = "false";
-						  jQuery("#versionFlag").val(versionFlag);
-						  appendAlert('errormssage', getMsg('msg048'));
-					  } */
+						  /* else if(data == "1"){
+							  versionFlag = "false";
+							  jQuery("#versionFlag").val(versionFlag);
+							  appendAlert('errormssage', getMsg('msg048'));
+						  } */
+						  
+					  })
 					  
-				  })
-				  
-			changeViewArea();
-		  },30000)
-};
+				changeViewArea();
+			  },30000)
+		};
+	}
+ 	
 	//一時保存ボタンをクリック
 	jQuery("#temporarySave").click(function(){
 
@@ -3765,28 +4068,47 @@ jQuery(document).ready(function(){
 		    async:false,
 			data: jQuery('#formId').serialize(),
 		    }).then(function(data){
-			    if(data == "true"){
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("一時保存");
-				   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-					/* versionFlag = data;
-					jQuery("#versionFlag").val(versionFlag); */
-				}else if(data.length == 12){
-					jQuery("#orderId").val(data);
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("一時保存");
-				   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-					/* versionFlag = "true";
-					jQuery("#versionFlag").val(versionFlag); */
-				}/* else if(data == "1"){
+		    	if(!data.orderMsgFlag){
+					  if(data.orderMsg == 'T2ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }else if(data.orderMsg == 'T3ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }
+				}else{
+					if(data.orderId == "true"){
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("一時保存");
+					   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = data;
+						jQuery("#versionFlag").val(versionFlag); */
+					}else if(data.orderId.length == 12){
+						jQuery("#orderId").val(data.orderId);
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("一時保存");
+					   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+						jQuery("#versionFlag").val(versionFlag); */
+					}
+				}
+			    /* else if(data == "1"){
 					versionFlag = "false";
 					jQuery("#versionFlag").val(versionFlag);
 					appendAlert('errormssage', getMsg('msg048'));
@@ -3821,28 +4143,47 @@ jQuery(document).ready(function(){
 		    async:false,
 		    data: jQuery('#formId').serialize(),
 		    }).then(function(data){
-		    	if(data == "true"){
-			  	    //ステータス設定
-				   	jQuery("#status").empty();
-				   	jQuery("#status").html("取り置き");
-				   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-				  	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-					/* versionFlag = "true";
-		    		jQuery("#versionFlag").val(versionFlag); */
-				}else if(data.length == 12){
-					jQuery("#orderId").val(data);
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("取り置き");
-				   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-					/* versionFlag = "true";
-					jQuery("#versionFlag").val(versionFlag); */
-				}/* else if(data == "1"){
+		    	if(!data.orderMsgFlag){
+					  if(data.orderMsg == 'T2ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }else if(data.orderMsg == 'T3ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }
+				}else{
+					if(data.orderId == "true"){
+				  	    //ステータス設定
+					   	jQuery("#status").empty();
+					   	jQuery("#status").html("取り置き");
+					   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
+					  	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+			    		jQuery("#versionFlag").val(versionFlag); */
+					}else if(data.orderId.length == 12){
+						jQuery("#orderId").val(data.orderId);
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("取り置き");
+					   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+						jQuery("#versionFlag").val(versionFlag); */
+					}
+				}
+		    	/* else if(data == "1"){
 					versionFlag = "false";
 					jQuery("#versionFlag").val(versionFlag);
 					appendAlert('errormssage', getMsg('msg048'));
@@ -3898,6 +4239,473 @@ jQuery(document).ready(function(){
 		});
 	});
 
+	// メジャーリング情報登録ボタンクリック
+	jQuery('#updMeasureButton').on('click', function() {
+		var membersId = jQuery("#custCd").val();
+		if (!membersId) {
+			return;
+		}
+		if ("7" == membersId.substring(0, 1)) {
+			swal({
+				text:"非会員のメジャーリング情報は登録できません。",
+				icon:"warning"
+			});
+			return;
+		}
+
+		var gyotaiCd = getGyotaiCd();
+		var tenCd = jQuery("#shopCode").val();
+// TODO:社員コードを動的に取得する
+		var syainNo = jQuery("#custStaff").val();
+		var fullLength = getPartsSize(jQuery("#fullLengthTe"), jQuery("#fullLengthSe"), "フルレングス");
+		if (fullLength == null) {
+			return;
+		}
+		var shoulder = getPartsSize(jQuery("#shoulderTe"), jQuery("#shoulderSe"), "ショルダー");
+		if (shoulder == null) {
+			return;
+		}
+		var reachRight = getPartsSize(jQuery("#reachRightTe"), jQuery("#reachRightSe"), "リーチ（右）");
+		if (reachRight == null) {
+			return;
+		}
+		var reachLeft = getPartsSize(jQuery("#reachLeftTe"), jQuery("#reachLeftSe"), "リーチ（左）");
+		if (reachLeft == null) {
+			return;
+		}
+		var outBust = getPartsSize(jQuery("#outBustTe"), jQuery("#outBustSe"), "アウトバスト");
+		if (outBust == null) {
+			return;
+		}
+		var bust = getPartsSize(jQuery("#bustTe"), jQuery("#bustSe"), "バスト");
+		if (bust == null) {
+			return;
+		}
+		var jacketWaist = getPartsSize(jQuery("#jacketWaistTe"), jQuery("#jacketWaistSe"), "JKウエスト");
+		if (jacketWaist == null) {
+			return;
+		}
+		var pantsWaist = getPartsSize(jQuery("#pantsWaistTe"), jQuery("#pantsWaistSe"), "PTウエスト");
+		if (pantsWaist == null) {
+			return;
+		}
+		var hip = getPartsSize(jQuery("#hipTe"), jQuery("#hipSe"), "ヒップ");
+		if (hip == null) {
+			return;
+		}
+		var spanRight = getPartsSize(jQuery("#spanRightTe"), jQuery("#spanRightSe"), "ワタリ（右）");
+		if (spanRight == null) {
+			return;
+		}
+		var spanLeft = getPartsSize(jQuery("#spanLeftTe"), jQuery("#spanLeftSe"), "ワタリ（左）");
+		if (spanLeft == null) {
+			return;
+		}
+		var calfRight = getPartsSize(jQuery("#calfRightTe"), jQuery("#calfRightSe"), "ふくらはぎ（右）");
+		if (calfRight == null) {
+			return;
+		}
+		var calfLeft = getPartsSize(jQuery("#calfLeftTe"), jQuery("#calfLeftSe"), "ふくらはぎ（左）");
+		if (calfLeft == null) {
+			return;
+		}
+		var neck = getPartsSize(jQuery("#neckTe"), jQuery("#neckSe"), "ネック");
+		if (neck == null) {
+			return;
+		}
+		var measureringInfo = jQuery("#measureringInfo").val();
+
+		var data = {
+				"gyotaiCd"  : gyotaiCd,
+				"kokNo"     : membersId,
+				"size01"    : fullLength,
+				"size02"    : shoulder,
+				"size03"    : reachRight,
+				"size04"    : reachLeft,
+				"size05"    : outBust,
+				"size06"    : bust,
+				"size07"    : jacketWaist,
+				"size08"    : pantsWaist,
+				"size09"    : hip,
+				"size10"    : spanRight,
+				"size11"    : spanLeft,
+				"size12"    : calfRight,
+				"size13"    : calfLeft,
+				"size14"    : neck,
+				"size15"    : NaN,
+				"size16"    : NaN,
+				"size17"    : NaN,
+				"size18"    : NaN,
+				"size19"    : NaN,
+				"size20"    : NaN,
+				"sizeUpdYmd": "",
+				"biko01"    : measureringInfo,
+				"biko02"    : "",
+				"biko03"    : "",
+				"updTenCd"  : tenCd,
+				"updSyainNo": syainNo,
+				"updYmd"    : "",
+				"updHms"    : ""
+		};
+
+		jQuery.ajax({
+			url: location.protocol+ '//' + location.host + "/member/api/v1/upKarte",
+			type: 'post',
+			contentType: 'application/json;charset=UTF-8',
+			async:false,
+			data: JSON.stringify(data)
+		}).then(
+			// 通信成功時のコールバック
+			function(data){
+				if(isEmpty(data)){
+					swal({
+						text:"メジャーリング情報の登録に失敗しました。",
+						icon:"error"
+					});
+				} else {
+					swal({
+						text:"メジャーリング情報を登録しました。",
+						icon:"info"
+					});
+				}
+			},
+			// 通信失敗時のコールバック
+			function(){
+				swal({
+					text:"メジャーリング情報の登録に失敗しました。",
+					icon:"error"
+				});
+			}
+		);
+	});
+
+	/**
+	 * JSONにNaNを渡すためのreplacer
+	 */
+	var replacer = function(key, value) {
+		if (Number.isNaN(value)) {
+			return {
+				__extendData__: true,
+				type: 'number',
+				value: 'NaN',
+			};
+		}
+		return value;
+	};
+
+	/**
+	 * パーツごとの採寸情報を取得する、
+	 * return
+	 *   NaN     : 整数部、小数部ともに未入力の場合
+	 *   null    : 整数部、小数部のいずれかの入力に不備がある場合
+	 *   上記以外: サイズ情報（整数部 + "." + 小数部）
+	 */
+	function getPartsSize(objTe, objSe, partsText) {
+		var regex = new RegExp(/^[0-9]+$/);
+		if (!objTe.val()) {
+			// 少数部だけ入力されている場合はエラー
+			if (objSe.val()) {
+				swal({
+					text:partsText + "を入力してください。",
+					icon:"warning"
+				}).then(function(val){
+					objTe.focus();
+				});
+				return null;
+			} else {
+				return NaN;
+			}
+		} else {
+			// 整数部が整数でない場合はエラー
+			if (!regex.test(objTe.val())) {
+				swal({
+					text:partsText + "には数値を入力してください。",
+					icon:"warning"
+				}).then(function(val){
+					objTe.focus();
+				});
+				return null;
+			}
+
+			// 小数部が入力されている場合
+			if (objSe.val()) {
+				// 少数部が整数でない場合はエラー
+				if (!regex.test(objSe.val())) {
+					swal({
+						text:partsText + "には数値を入力してください。",
+						icon:"warning"
+					}).then(function(val){
+						objSe.focus();
+					});
+					return null;
+				} else {
+					return parseFloat(objTe.val() + "." + objSe.val());
+				}
+			} else {
+				return parseFloat(objTe.val());
+			}
+		}
+	}
+
+    //会員検索ボタンクリック
+    jQuery('#custSearchButton').on('click', function() {
+            var membersId = jQuery("#custCd").val();
+            var shopCode = jQuery("#shopCode").val();
+            var gyotaiCd = "1";
+            if (!isEmpty(shopCode)) {
+                if (shopCode[0] == '1' || shopCode[0] == '3') {
+                    gyotaiCd = shopCode[0];
+                } else {
+                    if (membersId.length >= 2) {
+                        switch(membersId.substr(0,2)){
+                          case '62':
+                          case '63':
+                            gyotaiCd = '3';
+                            break;
+                          default:
+                            gyotaiCd = '1';
+                        }
+                    }
+                }
+            } else {
+                if (membersId.length >= 2) {
+                    switch(membersId.substr(0,2)){
+                      case '62':
+                      case '63':
+                        gyotaiCd = '3';
+                        break;
+                      default:
+                        gyotaiCd = '1';
+                    }
+                }
+            }
+            if (membersId == "") {
+                    swal({
+                            text:"会員番号を入力してください。",
+                            icon:"error"
+                    }).then(function(val){
+                            jQuery("#custCd").focus();
+                    });
+                    jQuery("#custNm").val('');
+                    jQuery("#custKanaNm").val('');
+                    return false;
+            }
+            jQuery.ajax({
+                url: location.protocol+ '//' + location.host + "/member/api/v1/memInfo",
+                type: 'get',
+                async:false,
+                data:{"membersId":membersId,"gyotaiCd":gyotaiCd},
+                success: function(data){
+                    if(isEmpty(data)){
+                        swal({
+                            text:"会員番号が存在しません。確認して再入力してください。", 
+                            icon:"error"
+                        }).then(function(val){
+                            jQuery("#custCd").focus();
+                        });
+                        return false;
+                    } else {
+                        $('#custNm').val(data.lastName + ' ' + data.firstName);
+                        $('#custKanaNm').val(data.lastNameKana + ' ' + data.firstNameKana);
+                        var custNm = $('#custNm').val();
+                        var custKanaNm = $('#custKanaNm').val();
+                        if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                        	$('#custNmDiv').text(data.lastName + ' ' + data.firstName);
+                        }else if(isEmpty(custNm)|| custNm == ' '){
+                        	$('#custNmDiv').text(data.lastNameKana + ' ' + data.firstNameKana);
+                        }else{
+                        	$('#custNmDiv').text(data.lastName + ' ' + data.firstName + "(" + data.lastNameKana + ' ' + data.firstNameKana + ")");
+                        }
+                        $('#measureringInfo').val(data.clothPre);
+                    }
+                }
+            });
+
+    });
+
+	// 非会員検索ボタンクリック
+	jQuery('#search2Button').on('click', function() {
+                jQuery('#bootstrap-data-table').empty();
+                var membersId = jQuery("#custCd").val();
+                var shopCode = jQuery("#shopCode").val();
+		var phoneNo = jQuery("#searchTelNo").val();
+		var firstNameKana = jQuery("#searchSei").val();
+		var secondNameKana = jQuery("#searchMei").val();
+                var gyotaiCd = "1";
+                if (!isEmpty(shopCode)) {
+                    if (shopCode[0] == '1' || shopCode[0] == '3') {
+                        gyotaiCd = shopCode[0];
+                    } else {
+                        if (membersId.length >= 2) {
+                            switch(membersId.substr(0,2)){
+                              case '62':
+                              case '63':
+                                gyotaiCd = '3';
+                                break;
+                              default:
+                                gyotaiCd = '1';
+                            }
+                        }
+                    }
+                } else {
+                    if (membersId.length >= 2) {
+                        switch(membersId.substr(0,2)){
+                          case '62':
+                          case '63':
+                            gyotaiCd = '3';
+                            break;
+                          default:
+                            gyotaiCd = '1';
+                        }
+                    }
+                }
+		if (phoneNo == "") {
+			swal({
+				text:"電話番号を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchTelNo").focus();
+			});
+			return false;
+		} else if (firstNameKana == "") {
+			swal({
+				text:"姓（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchSei").focus();
+			});
+			return false;
+		} else if (secondNameKana == "") {
+			swal({
+				text:"名（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchMei").focus();
+			});
+			return false;
+		}
+		if (!isHanKana(firstNameKana)) {
+            swal({
+                    text:"姓（カナ）は半角カナで入力してください。",
+                    icon:"error"
+            }).then(function(val){
+                    jQuery("#searchSei").focus();
+            });
+            return false;
+		}
+        var data = {"gyotai": gyotaiCd,"kokNo": 0,"telNo": phoneNo,"sei": firstNameKana,"mei": secondNameKana};
+        jQuery.ajax({
+            url: location.protocol+ '//' + location.host + "/member/api/v1/nonmemInfo",
+            type: 'post',
+            contentType: 'application/json;charset=UTF-8',
+            async:false,
+            data: JSON.stringify(data),
+            success: function(data){
+                if(isEmpty(data)){
+                    swal({
+                        text:"会員情報が存在しません。確認して再入力してください。",
+                        icon:"error"
+                    }).then(function(val){
+                        jQuery("#custCd").focus();
+                    });
+                    return false;
+                } else {
+                    $('#bootstrap-data-table').append('<thead><tr><th><label class="small">顧客No</label></th>' +
+                               '<th><label class="small">電話番号</label></th>' +
+                               '<th><label class="small">メールアドレス</label></th>' +
+                               '<th><label class="small">姓名</label></th>' +
+                               '<th><label class="small">姓名（カナ）</label></th>' +
+                               '<th></th></tr></thead>');
+                    for(var i=0; i<data.dataCnt; i++){
+                        var retKokNo = data.nonMemberDataResponse[i]['kokno'];
+                        var retTelno = data.nonMemberDataResponse[i]['telno'];
+                        var retEmail = data.nonMemberDataResponse[i]['email'];
+                        var retSei = data.nonMemberDataResponse[i]['sei'];
+                        var retMei = data.nonMemberDataResponse[i]['mei'];
+                        var retSeiJ = data.nonMemberDataResponse[i]['seij'];
+                        var retMeiJ = data.nonMemberDataResponse[i]['meij'];
+                        $('#bootstrap-data-table').append(
+                               '<tr><td><label id="cust_num_' + i + '">' + retKokNo + '</label></td>' +
+                               '<td><label class="small" id="cust_phone_' + i + '">' + retTelno + '</label></td>' +
+                               '<td><label class="small" id="cust_email_' + i + '">' + retEmail + '</label></td>' +
+                               '<td><label class="small" id="cust_Nam_' + i + '">' + retSeiJ + ' ' + retMeiJ + '</label></td>' +
+                               '<td><label class="small" id="cust_knam_' + i + '">' + retSei + ' ' + retMei + '</label></td><td>' +
+                               '<button type="button" id="selectButton_' + i +
+                               '" class="btn btn-info btn-block selectbtn">選択</button></td></tr>');
+                    }
+                }
+            }
+        });
+
+        // 一覧部を非表示
+        jQuery('#areaResult').show();
+	});
+
+	// 登録ボタンクリック
+	jQuery('#registButton').on('click', function() {
+                var gyotaiCd = getGyotaiCd();
+		var phoneNo = jQuery("#updTelNo").val();
+		var firstNameKana = jQuery("#updSei").val();
+		var secondNameKana = jQuery("#updMei").val();
+		var firstName = jQuery("#updSeiJ").val();
+		var secondName = jQuery("#updMeiJ").val();
+		var Email = jQuery("#updEmail").val();
+		if (phoneNo == "") {
+			swal({
+				text:"電話番号を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updTelNo").focus();
+			});
+			return false;
+		} else if (firstNameKana == "") {
+			swal({
+				text:"姓（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updSei").focus();
+			});
+			return false;
+		} else if (secondNameKana == "") {
+			swal({
+				text:"名（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updMei").focus();
+			});
+			return false;
+		}
+        var data = {"gyotai": gyotaiCd,"kokNo": 0,"telNo": phoneNo,"sei": firstNameKana,"mei": secondNameKana,"seiJ":firstName,"meiJ":secondName,"email":Email};
+        jQuery.ajax({
+            url: location.protocol+ '//' + location.host + "/member/api/v1/updNonMem",
+            type: 'post',
+            contentType: 'application/json;charset=UTF-8',
+            async:false,
+            data: JSON.stringify(data),
+            success: function(data){
+                if(isEmpty(data)){
+                    swal({
+                        text:"非会員登録に失敗しました。",
+                        icon:"error"
+                    }).then(function(val){
+                        jQuery("#custCd").focus();
+                    });
+                    return false;
+                } else {
+                    swal({
+                        text:"非会員情報を登録しました。",
+                        icon:"info"
+                    });
+                    jQuery('#areaResult').hide();
+                    jQuery('#custCd').val(data.kokNo);
+                    jQuery('#custKanaNm').val(firstNameKana + ' ' + secondNameKana);
+                    jQuery('#custNmDiv').text(firstNameKana + ' ' + secondNameKana);
+                    jQuery('#custNm').val(firstName + ' ' + secondName);
+                    jQuery('#infotext_2').modal('hide');
+                }
+            }
+        });
+	});
 
 	//JACKET モデル
 	jQuery("#jacketModel").change(function(){
@@ -4423,6 +5231,28 @@ jQuery(document).ready(function(){
 			}
 			var id = this.id;
 			jQuery('a[id^="nav2_"]').each(function(index, element) {
+				if (element.id == id) {
+					jQuery(element).addClass("active");
+				} else {
+					jQuery(element).removeClass("active");
+					jQuery('#'+element.id+'_div').hide();
+				}
+			});
+			jQuery('#'+id+'_div').fadeIn(200);
+			return false;
+		});
+
+		if (!jQuery(this).hasClass('active')) {
+			jQuery('#'+this.id+'_div').hide();
+		}
+	});
+	jQuery('a[id^="nav3_"]').each(function() {
+		jQuery(this).click(function(){
+			if (jQuery(this).hasClass('acrive')) {
+				return false;
+			}
+			var id = this.id;
+			jQuery('a[id^="nav3_"]').each(function(index, element) {
 				if (element.id == id) {
 					jQuery(element).addClass("active");
 				} else {
@@ -9379,37 +10209,56 @@ function stockCheck(){
 			    async:false,
 			    data: jQuery('#formId').serialize(),
 			 }).then(function(result){
-				 if(result == "true"){
-					//ステータス設定
-				   	jQuery("#status").empty();
-				   	var statusInput = jQuery("#statusInput").val();
-					if(statusInput=="T0"){
-					   jQuery("#status").html("一時保存");
-					}else{
-					   jQuery("#status").html("取り置き");
-					}
-					var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-					/* versionFlag = result;
-					jQuery("#versionFlag").val(versionFlag); */
-				 }else if(result.length == 12){
-					 appendAlertDel('errormssage');
-					 jQuery("#orderId").val(result);
-				     //ステータス設定
-					 jQuery("#status").empty();
-				   	 var statusInput = jQuery("#statusInput").val();
-					 if(statusInput=="T0"){
-					 	 jQuery("#status").html("一時保存");
-					 }else{
-						 jQuery("#status").html("取り置き");
+				if(!result.orderMsgFlag){
+					  if(result.orderMsg == 'T2ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }else if(result.orderMsg == 'T3ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }
+				}else{
+					if(result.orderId == "true"){
+						//ステータス設定
+					   	jQuery("#status").empty();
+					   	var statusInput = jQuery("#statusInput").val();
+						if(statusInput=="T0"){
+						   jQuery("#status").html("一時保存");
+						}else{
+						   jQuery("#status").html("取り置き");
+						}
+						var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = result;
+						jQuery("#versionFlag").val(versionFlag); */
+					 }else if(result.orderId.length == 12){
+						 appendAlertDel('errormssage');
+						 jQuery("#orderId").val(result.orderId);
+					     //ステータス設定
+						 jQuery("#status").empty();
+					   	 var statusInput = jQuery("#statusInput").val();
+						 if(statusInput=="T0"){
+						 	 jQuery("#status").html("一時保存");
+						 }else{
+							 jQuery("#status").html("取り置き");
+						 }
+						 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
+						 version = version.responseText;
+						 jQuery("#version").val(version);
+						 /* versionFlag = "true";
+						 jQuery("#versionFlag").val(versionFlag); */
 					 }
-					 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result},async:false});
-					 version = version.responseText;
-					 jQuery("#version").val(version);
-					 /* versionFlag = "true";
-					 jQuery("#versionFlag").val(versionFlag); */
-				 }/* else if(result == "1"){
+				}		 
+				 /* else if(result == "1"){
 					 versionFlag = "false";
 					 jQuery("#versionFlag").val(versionFlag);
 					 jQuery("#version").val(jQuery("#version").val());
@@ -9435,36 +10284,55 @@ function stockCheck(){
 				    async:false,
 				    data: jQuery('#formId').serialize(),
 			        }).then(function(result){
-			        	if(result == "true"){
-							jQuery("#status").empty();
-						   	 var statusInput = jQuery("#statusInput").val();
-							 if(statusInput=="T0"){
-							 	 jQuery("#status").html("一時保存");
-							 }else{
-								 jQuery("#status").html("取り置き");
+			        	if(!result.orderMsgFlag){
+							  if(result.orderMsg == 'T2ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }else if(result.orderMsg == 'T3ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }
+						}else{
+							if(result.orderId == "true"){
+								jQuery("#status").empty();
+							   	 var statusInput = jQuery("#statusInput").val();
+								 if(statusInput=="T0"){
+								 	 jQuery("#status").html("一時保存");
+								 }else{
+									 jQuery("#status").html("取り置き");
+								 }
+				        		var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+								version = version.responseText;
+								jQuery("#version").val(version);
+								/* versionFlag = result;
+								jQuery("#versionFlag").val(versionFlag); */
+						    }else if(result.orderId.length == 12){
+								 appendAlertDel('errormssage');
+								 jQuery("#orderId").val(result.orderId);
+							     //ステータス設定
+								 jQuery("#status").empty();
+							   	 var statusInput = jQuery("#statusInput").val();
+								 if(statusInput=="T0"){
+								 	 jQuery("#status").html("一時保存");
+								 }else{
+									 jQuery("#status").html("取り置き");
+								 }
+								 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
+								 version = version.responseText;
+								 jQuery("#version").val(version);
+								 /* versionFlag = "true";
+								 jQuery("#versionFlag").val(versionFlag); */
 							 }
-			        		var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-							version = version.responseText;
-							jQuery("#version").val(version);
-							/* versionFlag = result;
-							jQuery("#versionFlag").val(versionFlag); */
-					    }else if(result.length == 12){
-							 appendAlertDel('errormssage');
-							 jQuery("#orderId").val(result);
-						     //ステータス設定
-							 jQuery("#status").empty();
-						   	 var statusInput = jQuery("#statusInput").val();
-							 if(statusInput=="T0"){
-							 	 jQuery("#status").html("一時保存");
-							 }else{
-								 jQuery("#status").html("取り置き");
-							 }
-							 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result},async:false});
-							 version = version.responseText;
-							 jQuery("#version").val(version);
-							 /* versionFlag = "true";
-							 jQuery("#versionFlag").val(versionFlag); */
-						 }/* else if(result == "1"){
+						}
+			        	/* else if(result == "1"){
 						    	versionFlag = "false";
 								jQuery("#versionFlag").val(versionFlag);
 						    	appendAlert('errormssage', getMsg('msg048'));
@@ -10758,5 +11626,44 @@ else
                 }  
         }  
 }
+jQuery('#areaResult').on('click', '.selectbtn', function() {
+    var id =  $(this).attr("id");
+    var result = id.split('_');
+    var idx = result[1];
+    var custNum = jQuery('#cust_num_' + idx).text();
+    var phoneNo = jQuery('#cust_phone_' + idx).text();
+    var nameKana = jQuery('#cust_knam_' + idx).text();
+    var custName = jQuery('#cust_Nam_' + idx).text();
 
+    jQuery('#areaResult').hide();
+    jQuery('#custCd').val(custNum);
+    jQuery('#custKanaNm').val(nameKana);
+    jQuery('#custNmDiv').text(nameKana);
+    jQuery('#custNm').val(custName);
+    jQuery('#infotext_2').modal('hide');
+    jQuery('#bootstrap-data-table').empty();
+});
+
+	// クリアボタンクリック
+jQuery('#clearButton').on('click', function() {
+
+	// form内のテキストボックスを初期化
+	jQuery("#frmSearch").find("input[type='text'], input[type='date']")
+		.each(function(i, elem) {
+			// 表示のみ項目はクリアしない
+			if (elem.readOnly == false) {
+				elem.value = "";
+			}
+		});
+	// form内のチェックボックスボックスを初期化
+	jQuery("#frmSearch").find("input[type='checkbox']")
+		.each(function(i, elem) {
+			elem.checked = false;
+		});
+	// form内のコンボボックスを初期化
+	jQuery("#frmSearch").find("select")
+		.each(function(i, elem) {
+			elem.selectedIndex = 0;
+		});
+});
 </script>

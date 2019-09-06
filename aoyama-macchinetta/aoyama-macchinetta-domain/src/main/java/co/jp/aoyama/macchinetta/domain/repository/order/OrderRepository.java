@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
+import co.jp.aoyama.macchinetta.domain.model.Model;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
 import co.jp.aoyama.macchinetta.domain.model.OrderPrice;
@@ -15,6 +16,8 @@ public interface OrderRepository {
 	OrderFindFabric getOrderFabric(String fabricNo, String orderPattern);
 
 	List<OrderPrice> getOrderPrice(String orderPattern);
+	
+	List<OrderPrice> getStandardSomePrice(String orderPattern,String optionCode,String itemCode,String subItemCode);
 	
 	List<OrderPrice> getTuxedoOrderPrice(String orderPattern);
 	
@@ -51,5 +54,7 @@ public interface OrderRepository {
 	Order selectGiletByOrderId(@Param("orderId")String orderId);
 	
 	void updateGiletOrder(Order order);
+
+	List<Model> getFactoriesCo(String orderPattern, String itemCode);
 
 }

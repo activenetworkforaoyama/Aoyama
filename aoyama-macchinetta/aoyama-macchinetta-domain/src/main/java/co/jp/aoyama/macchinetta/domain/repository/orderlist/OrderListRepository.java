@@ -50,4 +50,10 @@ public interface OrderListRepository {
 	Order findOrderCtByPk(String orderId);
 
 	Order findOrderJkOptionByOrderId(String orderId);
+
+	Order findOrderPtOptionByOrderId(String orderId);
+	
+	Order findOrderPt2OptionByOrderId(String orderId);
+	
+	Order findOrderCtOptionByOrderId(String orderId);
 }

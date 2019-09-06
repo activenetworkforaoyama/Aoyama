@@ -16,6 +16,7 @@
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -91,7 +92,7 @@
                                         <form:checkboxes id="op_beltLoopPlace_id" items="${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap }" path="optionPantsStandardInfo.opBeltLoopPlace" class="form-check-input"/>
                                     </div> --%>
                                     <c:forEach var="opBeltLoopPlaceMap" items="${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap }" varStatus="row">
-                                		<div class="form-check-inline form-check">
+                                		<div class="form-check-inline form-check" id="op_beltLoopPlace_id1${row.count}">
                                 			<input type="checkbox" id="op_beltLoopPlace_id${row.count}" name="optionPantsStandardInfo.opBeltLoopPlace${row.count}" value="${opBeltLoopPlaceMap.key}" class="form-check-input">${opBeltLoopPlaceMap.value}
                                 		</div>
                                 	</c:forEach>
@@ -446,6 +447,7 @@
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -508,7 +510,7 @@
                             </div>
                             <div class="col-12 col-md-9">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_beltLoop_id" path="optionPantsTuxedoInfo.tpBeltLoop" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopMap}"/>
+                                    <form:radiobuttons id="tp_beltLoop_id" path="optionPantsTuxedoInfo.tpBeltLoop" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopMap}"/>                    
                                 </div>
                                 <div class="offset-md-1" id="tp_beltLoopPlace">
                                     <div>
@@ -517,9 +519,14 @@
                                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_tp_beltLoopPlace">全解除</button>
                                         </div>
                                     </div>
-                                    <div class="form-check-inline form-check">
+                                   <%--  <div class="form-check-inline form-check">
                                     	<form:checkboxes id="tp_beltLoopPlace_id" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlaceMap }" path="optionPantsTuxedoInfo.tpBeltLoopPlace" class="form-check-input"/>
-                                    </div>
+                                    </div> --%>
+                                    <c:forEach var="tpBeltLoopPlaceMap" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check">
+                                		<input type="checkbox" id="tp_beltLoopPlace_id${row.count}" name="optionPantsTuxedoInfo.tpBeltLoopPlace${row.count}" value="${tpBeltLoopPlaceMap.key}" class="form-check-input">${tpBeltLoopPlaceMap.value}
+                                	</div>
+                                </c:forEach>
                                 </div>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="tp_beltLoopMsg"></div>
@@ -720,7 +727,7 @@
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="tp_btnMateStkNo" id="tp_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="optionPantsTuxedoInfo.tpBtnMateStkNo" id="tp_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
                         </div>
@@ -801,6 +808,7 @@
 								</form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelMsg"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -872,9 +880,15 @@
                                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp_beltLoopPlace">全解除</button>
                                         </div>
                                     </div>
-                                    <div class="form-check-inline form-check">
+                                   <%--  <div class="form-check-inline form-check">
 										<form:checkboxes id="wp_beltLoopPlace_id" path="optionPantsWashableInfo.wpBeltLoopPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpBeltLoopPlaceMap}"/>
-									</div>
+									</div> --%>
+									 <c:forEach var="wpBeltLoopPlaceMap" items="${orderForm.optionPantsWashableInfo.wpBeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check">
+                                		<input type="checkbox" id="wp_beltLoopPlace_id${row.count}" name="optionPantsWashableInfo.wpBeltLoopPlace${row.count}" value="${wpBeltLoopPlaceMap.key}" class="form-check-input">${wpBeltLoopPlaceMap.value}
+                                	</div>
+                                </c:forEach>
+									
                                 </div>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="wp_beltLoopMsg"></div>
@@ -998,9 +1012,14 @@
                                 </div>
                                 </div>
                                 <div class="offset-md-1" id="wp_stitchModifyPlace">
-                                <div class="form-check-inline form-check">
+                                <%-- <div class="form-check-inline form-check">
 									<form:checkboxes id="wp_stitchModifyPlace_id" path="optionPantsWashableInfo.wpStitchModifyPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpStitchModifyPlaceMap}"/>
-								</div>
+								</div> --%>
+								<c:forEach var="wpStitchModifyPlaceMap" items="${orderForm.optionPantsWashableInfo.wpStitchModifyPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check">
+                                		<input type="checkbox" id="wp_stitchModifyPlace_id${row.count}" name="optionPantsWashableInfo.wpStitchModifyPlace${row.count}" value="${wpStitchModifyPlaceMap.key}" class="form-check-input">${wpStitchModifyPlaceMap.value}
+                                	</div>
+                                </c:forEach>
                                 </div>
                                 </div>
                             </div>
@@ -1019,9 +1038,14 @@
                                 </div>
                                 </div>
                                 <div class="offset-md-1" id="wp_dStitchPlace">
-                                <div class="form-check-inline form-check">
+                                <%-- <div class="form-check-inline form-check">
 									<form:checkboxes id="wp_dStitchPlace_id" path="optionPantsWashableInfo.wpDStitchPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpDStitchPlaceMap}"/>
-								</div>
+								</div> --%>
+								<c:forEach var="wpDStitchPlaceMap" items="${orderForm.optionPantsWashableInfo.wpDStitchPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check">
+                                		<input type="checkbox" id="wp_dStitchPlace_id${row.count}" name="optionPantsWashableInfo.wpDStitchPlace${row.count}" value="${wpDStitchPlaceMap.key}" class="form-check-input">${wpDStitchPlaceMap.value}
+                                	</div>
+                                </c:forEach>
                                 </div>
                                 </div>
                             </div>
@@ -1158,7 +1182,7 @@
 								</form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="wp_btnMateStkNo" id="wp_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="optionPantsWashableInfo.wpBtnMateStkNo" id="wp_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
                             <div class="col col-md-2">
@@ -1210,7 +1234,7 @@
 			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderForm.shirtItemFlag }"/>
 			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
 			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
-            
+            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="0" />
 </form:form>
 <!-- 標準 PANTS PANTSモデル-->
 <div class="modal fade" id="infotext_op_pantsModel" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -3395,28 +3419,29 @@
         </div>
     </div>
 </div>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script> 
-<script src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
-
-
 <!-- 自作js -->
 <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/config.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/customer.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/tabMenu.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.standard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.tuxedo.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.washable.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
 
 jQuery(function() {
+	var pantsAdFlag="${orderForm.pantsAdFlag}";
+	if(pantsAdFlag=="1"){
+		jQuery("#pantsAdFlag").val("${orderForm.pantsAdFlag}");
+		}
+	jQuery("#op_pantsModel,#tp_pantsModel,wp_pantsModel").change(function(){
+		jQuery("#pantsAdFlag").val("0");
+	    })   
 
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -3531,11 +3556,11 @@ function mateInit(){
 	var mateChecked;
 	var optionCode;
 	// 標準の場合　pants ptStandardMateListのid List
-	var ptStandardMateList = ["op_btnMate"];
+	//var ptStandardMateList = ["op_btnMate"];
 	// タキシードの場合　pants ptTuxedoMateListのid List
-	var ptTuxedoMateList = ["tp_btnMate"];
+	//var ptTuxedoMateList = ["tp_btnMate"];
 	// ウォッシャブルの場合　pants ptWashableMateListのid List
-	var ptWashableMateList = ["wp_btnMate"];
+	//var ptWashableMateList = ["wp_btnMate"];
 	//var item = jQuery("#item option:selected").val();
 	var item = jQuery("#item").val();
 	//jQuery("#category option:first").prop("selected",true);
@@ -3588,21 +3613,22 @@ function mateInit(){
 
 	function initSuitTuxedo(itemCode,category){
 		subItemCode = "03";
-		initPtStandard(itemCode,subItemCode,category);
+		initPtTuxedo(itemCode,subItemCode,category);
 	}
 
 	function initSuitWashable(itemCode,category){
 		subItemCode = "03";
-		initPtStandard(itemCode,subItemCode,category);
+		initPtWashable(itemCode,subItemCode,category);
 	}
 			
 	function initPtStandard(itemCode,subItemCode,category){
-		for(var i in ptStandardMateList){
+		/* for(var i in ptStandardMateList){
 			optionCode = selectStandardIdList[ptStandardMateList[i]];
 			mateChecked = jQuery("#"+ptStandardMateList[i]+" option:checked").val();
 			StkNo = "#"+ptStandardMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		}
+		} */
+		mateSelect(itemCode,subItemCode,"#op_btnMate option:checked","00033","#op_btnMateStkNo",category,orderPattern);
 		jQuery("#op_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectStandardIdList[idValue];
@@ -3613,12 +3639,13 @@ function mateInit(){
 	}
 
 	function initPtTuxedo(itemCode,subItemCode,category){
-		for(var i in ptTuxedoMateList){
+		/* for(var i in ptTuxedoMateList){
 			optionCode = selectTuxedoIdList[ptTuxedoMateList[i]];
 			mateChecked = jQuery("#"+ptTuxedoMateList[i]+" option:checked").val();
 			StkNo = "#"+ptTuxedoMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		}
+		} */
+		mateSelect(itemCode,subItemCode,"#tp_btnMate option:checked","00033","#tp_btnMateStkNo",category,orderPattern);
 		jQuery("#tp_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectTuxedoIdList[idValue];
@@ -3629,12 +3656,13 @@ function mateInit(){
 	}
 
 	function initPtWashable(itemCode,subItemCode,category){
-		for(var i in ptWashableMateList){
+		/* for(var i in ptWashableMateList){
 			optionCode = selectWashableIdList[ptWashableMateList[i]];
 			mateChecked = jQuery("#"+ptWashableMateList[i]+" option:checked").val();
 			StkNo = "#"+ptWashableMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		}
+		} */
+		mateSelect(itemCode,subItemCode,"#wp_btnMate option:checked","00033","#wp_btnMateStkNo",category,orderPattern);
 		jQuery("#wp_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectWashableIdList[idValue];
@@ -3674,6 +3702,411 @@ function mateInit(){
 			 }
 		});
 	}
+}
+function  opSession(){
+
+	//コインポケット
+	jQuery("#op_coinPkt").val("${orderForm.optionPantsStandardInfo.opCoinPkt}");
+	jQuery("#op_coinPkt").change();
+
+	//裾上げ
+	jQuery('#op_hemUp').val("${orderForm.optionPantsStandardInfo.opHemUp}");
+	jQuery('#op_hemUp').change();
+	
+	//ベルトループ
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoop"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoop}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoop"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace4"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace5"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace5}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace5"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace6"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace6}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace6"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace7"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace7}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace7"]').change();
+
+	//ステッチ箇所変更
+	jQuery('input[name="optionPantsStandardInfo.opStitchModify"]').val(["${orderForm.optionPantsStandardInfo.opStitchModify}"]);
+	jQuery('input[name="optionPantsStandardInfo.opStitchModify"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace1"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace2"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace3"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace4"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace4"]').change();
+
+	//ダブルステッチ
+	jQuery('input[name="optionPantsStandardInfo.op2DStitch"]').val(["${orderForm.optionPantsStandardInfo.opDStitch}"]);
+	jQuery('input[name="optionPantsStandardInfo.op2DStitch"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.op2DStitchPlace1"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.op2DStitchPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace2"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace3"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace4"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace4"]').change();	
+
+	//AMF色指定
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor"]').change();
+
+	jQuery("#op_amfColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opAmfColorPlaceAll}");
+	jQuery("#op_amfColorPlaceAll").change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opAmfColor4"]').change();
+
+	//ボタンホール色指定
+	jQuery('input[name="optionPantsStandardInfo.opBhColor"]').val(["${orderForm.optionPantsStandardInfo.opBhColor}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColor"]').change();
+
+	jQuery("#op_bhColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opBhColorPlaceAll}");
+	jQuery("#op_bhColorPlaceAll").change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColor1"]').val(["${orderForm.optionPantsStandardInfo.opBhColor1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColor1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColor2"]').val(["${orderForm.optionPantsStandardInfo.opBhColor2}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColor2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColor3"]').val(["${orderForm.optionPantsStandardInfo.opBhColor3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColor3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opBhColor4"]').val(["${orderForm.optionPantsStandardInfo.opBhColor4}"]);
+	jQuery('input[name="optionPantsStandardInfo.opBhColor4"]').change();
+
+	//ボタン付け糸指定
+	jQuery('input[name="optionPantsStandardInfo.opByColor"]').val(["${orderForm.optionPantsStandardInfo.opByColor}"]);
+	jQuery('input[name="optionPantsStandardInfo.opByColor"]').change();
+	
+	jQuery("#op_byColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opByColorPlaceAll}");
+	jQuery("#op_byColorPlaceAll").change();
+
+	jQuery('input[name="optionPantsStandardInfo.opByColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace1}"]);
+	jQuery('input[name="optionPantsStandardInfo.opByColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace2}"]);
+	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.opByColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace3}"]);
+	jQuery('input[name="optionPantsStandardInfo.opByColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace4}"]);
+	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace4"]').change();
+
+	//釦素材
+	jQuery('#op_btnMate').val("${orderForm.optionPantsStandardInfo.opButton}");
+	jQuery('#op_btnMate').change();
+
+	jQuery('#op_btnMateStkNo').val("${orderForm.optionPantsStandardInfo.opBtnMateStkNo}");
+	jQuery('#op_btnMateStkNo').change();
+}
+
+function  tp2Session(){
+
+	//コインポケット
+	jQuery("#tp_coinPkt").val("${orderForm.optionPantsTuxedoInfo.tpCoinPkt}");
+	jQuery("#tp_coinPkt").change();
+
+	//裾上げ
+	jQuery("#tp_hemUp").val("${orderForm.optionPantsTuxedoInfo.tpHemUp}");
+	jQuery("#tp_hemUp").change();
+
+   //ベルトループ 
+    jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoop}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace1}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace1"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace2}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace2"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace3}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace3"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace4}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace4"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace5}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace5"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace6"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace6}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace6"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace7"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace7}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace7"]').change();
+
+	//ステッチ種類
+	jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').val(["${orderForm.optionPantsTuxedoInfo.tpStitch}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').change();
+	//ボタンホール色指定
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace1}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace2}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace3}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace4}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace5}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace5"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor1}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor1"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor2}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor2"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor3}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor3"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor4}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor4"]').change();
+
+	//ボタン付け糸指定
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]').change();
+	jQuery("#tp_byColorPlaceAll").val("${orderForm.optionPantsTuxedoInfo.tpByColorPlaceAll}");
+	jQuery("#tp_byColorPlaceAll").change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace1}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace2}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace3}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace4}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor1}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor1"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor2}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor2"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor3}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor3"]').change();
+
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor4}"]);
+	jQuery('input[name="optionPantsTuxedoInfo.tpByColor4"]').change();
+	
+}
+function  wp2Session(){
+
+	//ベルトループ
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoop}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace4"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace5"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace5}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace5"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace6"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace6}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace6"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace7"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace7}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace7"]').change();
+
+	//ステッチ種類
+	jQuery('input[name="optionPantsWashableInfo.wpStitch"]').val(["${orderForm.optionPantsWashableInfo.wpStitch}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitch"]').change();
+	//ステッチ箇所変更
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModify}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace4"]').change();
+	
+	//ダブルステッチ
+	jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').val(["${orderForm.optionPantsWashableInfo.wpDStitch}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace4"]').change();
+
+	//AMF色指定
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpAmfColor4"]').change();
+
+	//ボタンホール色指定
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpBhColor4"]').change();
+
+	//ボタン付け糸指定
+	jQuery('input[name="optionPantsWashableInfo.wpByColor"]').val(["${orderForm.optionPantsWashableInfo.wpByColor}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColor"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace2}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace2"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace3}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace3"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace4}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace4"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
 }
 
 </script>

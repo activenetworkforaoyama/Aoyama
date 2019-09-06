@@ -5,26 +5,7 @@
 // 読み込み時
 //--------------------------------------------
 function initCustomer() {
-	// 納期短縮
-	jQuery('#expediteDelivery').change(function(){
-		var expediteDelivery = jQuery('#expediteDelivery').val();
-		// 納期短縮と早割の両立はできないため、納期短縮が有の場合は早割を無に変更
-		if (expediteDelivery == "1") {
-			jQuery('#earlyDiscount').val('0');
-		}
-	});
-	jQuery('#expediteDelivery').change();
-
-	// 早割
-	jQuery('#earlyDiscount').change(function(){
-		var earlyDiscount = jQuery('#earlyDiscount').val();
-		// 納期短縮と早割の両立はできないため、早割が有の場合は納期短縮を無に変更
-		if (earlyDiscount == "1") {
-			jQuery('#expediteDelivery').val('0');
-		}
-	});
-	jQuery('#earlyDiscount').change();
-
+	
 	//出荷先
 	var allShop = jQuery("#shopName");
 	jQuery('#destination').change(function(){
@@ -59,6 +40,46 @@ function initCustomer() {
 	jQuery('#destination').change();
 }
 
-//--------------------------------------------
-// 部品
-//--------------------------------------------
+function dateEarlyCheck(productFabricNo,item){
+	if(isNotEmpty(productFabricNo)){
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		fabricCheckValue = fabricCheckValue.split("*");
+		//生地チェク成功の場合
+		if(fabricCheckValue[0]=="0"){
+			jQuery.ajax({
+				 type:"get",
+				 url: contextPath + "/order/findStock",
+				 data:{"fabricNo":productFabricNo,"orderPattern":"CO"},
+				 async:false,
+				 success:function(result){
+					 if(!isShopDeliveryEmpty(result,item)){
+		         			setAlert('stockMsg', getMsgByOneArg('msg072',productFabricNo));
+		         			//生地メッセージをクリア
+		         			jQuery("#notice").empty();
+		     			    jQuery("#fabric_brand_nm_p").empty();
+		     			    jQuery("#service_nm_p").empty();
+		     				jQuery("#compos_frt_fabric_p").empty();
+		     				jQuery("#goodsPrice").html('0');
+		       				jQuery("productPriceId").val("");
+		       				jQuery("#theoryFabricUsedMountId").val("");
+		       				jQuery("#fabricColor").val("");
+							jQuery("#fabricPattern").val("");
+							jQuery("#factoryCode").val("");
+							jQuery("#custShopDeliveryDate").val("");
+							jQuery("#makerCode").val("");
+							jQuery("#fabricMsg").empty();
+							jQuery("#threePiece_Msg").empty();
+							jQuery("#sparePants_Msg").empty();
+							jQuery("#jacketModel_Msg").empty();
+							jQuery("#clothName_yes").removeAttr("disabled","disabled");
+							allOptionPrice();
+							//生地チェク失敗フラッグ
+							fabricCheckValue = "1";
+		     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg072',productFabricNo));
+		     			 }	 
+				 }
+			})
+		}
+	}
+}

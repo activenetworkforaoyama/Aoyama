@@ -24,7 +24,7 @@ function initOptionPants2Washable() {
 		tackElem.empty();
 		var tmpTack = null;
 		for (tmpTack of tackList[pantsModel].activeList) {
-			tackElem.append(jQuery('<option />').val(tmpTack).text(tmpTack));
+			tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
 		}
 		// デフォルトを選択
 		tackElem.val(tackList[pantsModel].defaultValue);
@@ -360,7 +360,7 @@ function initOptionPants2Washable() {
 	});
 
 	// AMF色指定箇所
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace"]').each(function() {
+	jQuery('input[id^="wp2_amfColorPlace_"]').each(function() {
 		jQuery(this).change(function(){
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
@@ -949,7 +949,7 @@ function ctrlWp2AmfColor() {
 		if (amfColorValue == "0002402") {
 			// 有りの場合はステッチ箇所変更に基づく
 			var id = this.id;
-			id = id.replace("wp2_amfColorPlace", "wp2_stitchModifyPlace");
+			id = id.replace("wp2_amfColorPlace_", "wp2_stitchModifyPlace_id");
 			if (jQuery('#'+id).prop("checked")) {
 				jQuery(this).prop("disabled", false);
 			} else {
@@ -1008,125 +1008,4 @@ jQuery('input[name="optionPants2WashableInfo.wp2Adjuster"]').change(function(ind
 
 });
 jQuery('#wp2_adjuster_id1').change();
-//PANTS2本目（1本目と同じ）
-jQuery('#btn_wp2_samePants').click(function (){
-	jQuery('#wp2_pantsModel').val([jQuery('#wp_pantsModel').val()]);
-	jQuery('#wp2_tack').val([jQuery('#wp_tack').val()]);
-	jQuery('input[name="wp2_kneeBack"]').val([jQuery('input[name="wp_kneeBack"]:checked').val()]);
-	jQuery('input[name="wp2_kneeBack"]').change();
-	jQuery('input[name="wp2_kneeBackMate"]').val([jQuery('input[name="wp_kneeBackMate"]:checked').val()]);
-	jQuery('input[name="wp2_kneeBackMate"]').change();
-	jQuery('input[name="wp2_frontSpec"]').val([jQuery('input[name="wp_frontSpec"]:checked').val()]);
-	jQuery('input[name="wp2_frontSpec"]').change();
-	jQuery('input[name="wp2_pancherina"]').val([jQuery('input[name="wp_pancherina"]:checked').val()]);
-	jQuery('input[name="wp2_pancherina"]').change();
-	jQuery('input[name="wp2_adjuster"]').val([jQuery('input[name="wp_adjuster"]:checked').val()]);
-	jQuery('input[name="wp2_adjuster"]').change();
-	jQuery('input[name="wp2_beltLoop"]').val([jQuery('input[name="wp_beltLoop"]:checked').val()]);
-	jQuery('input[name="wp2_beltLoop"]').change();
-	
-	jQuery('input[name="wp2_beltLoopPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	
-	jQuery('input[name="wp2_pinLoop"]').val([jQuery('input[name="wp_pinLoop"]:checked').val()]);
-	jQuery('input[name="wp2_pinLoop"]').change();
-	jQuery('input[name="wp2_sidePkt"]').val([jQuery('input[name="wp_sidePkt"]:checked').val()]);
-	jQuery('input[name="wp2_sidePkt"]').change();
-	jQuery('input[name="wp2_sinobiPkt"]').val([jQuery('input[name="wp_sinobiPkt"]:checked').val()]);
-	jQuery('input[name="wp2_sinobiPkt"]').change();
-	jQuery('#wp2_coinPkt').val([jQuery('#wp_coinPkt').val()]);
-	jQuery('input[name="wp2_coinPkt"]').change();
-	jQuery('input[name="wp2_flapCoinPkt"]').val([jQuery('input[name="wp_flapCoinPkt"]:checked').val()]);
-	jQuery('input[name="wp2_flapCoinPkt"]').change();
-	jQuery('input[name="wp2_pisPktUf"]').val([jQuery('input[name="wp_pisPktUf"]:checked').val()]);
-	jQuery('input[name="wp2_pisPktUf"]').change();
-	jQuery('input[name="wp2_pisPktDf"]').val([jQuery('input[name="wp_pisPktDf"]:checked').val()]);
-	jQuery('input[name="wp2_pisPktDf"]').change();
-	jQuery('input[name="wp2_vCut"]').val([jQuery('input[name="wp_vCut"]:checked').val()]);
-	jQuery('input[name="wp2_vCut"]').change();
-	jQuery('#wp2_hemUp').val([jQuery('#wp_hemUp').val()]);
-	jQuery('#wp2_hemUp').change();
-	jQuery('#wp2_doubleWide').val([jQuery('#wp_doubleWide').val()]);
-	jQuery('#wp2_doubleWide').change();
-	jQuery('input[name="wp2_stitch"]').val([jQuery('input[name="wp_stitch"]:checked').val()]);
-	jQuery('input[name="wp2_stitch"]').change();
-	jQuery('input[name="wp2_stitchModify"]').val([jQuery('input[name="wp_stitchModify"]:checked').val()]);
-	jQuery('input[name="wp2_stitchModify"]').change();
-	jQuery('input[name="wp2_stitchModifyPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_dStitch"]').val([jQuery('input[name="wp_dStitch"]:checked').val()]);
-	jQuery('input[name="wp2_dStitch"]').change();
-	jQuery('input[name="wp2_dStitchPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-	});
-	jQuery('input[name="wp2_amfColor"]').val([jQuery('input[name="wp_amfColor"]:checked').val()]);
-	jQuery('input[name="wp2_amfColor"]').change();
-	jQuery('#wp2_amfColorPlaceAll').val([jQuery('#wp_amfColorPlaceAll').val()]);
-	jQuery('#wp2_amfColorPlaceAll').change();
-	jQuery('input[name="wp2_amfColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_amfColorSidePkt"]').val([jQuery('input[name="wp_amfColorSidePkt"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorSidePkt"]').change();
-	jQuery('input[name="wp2_amfColorSideSeam"]').val([jQuery('input[name="wp_amfColorSideSeam"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorSideSeam"]').change();
-	jQuery('input[name="wp2_amfColorDarts"]').val([jQuery('input[name="wp_amfColorDarts"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorDarts"]').change();
-	jQuery('input[name="wp2_amfColorPisFlap"]').val([jQuery('input[name="wp_amfColorPisFlap"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorPisFlap"]').change();
-	jQuery('input[name="wp2_bhColor"]').val([jQuery('input[name="wp_bhColor"]:checked').val()]);
-	jQuery('input[name="wp2_bhColor"]').change();
-	jQuery('#wp2_bhColorPlaceAll').val([jQuery('#wp_bhColorPlaceAll').val()]);
-	jQuery('#wp2_bhColorPlaceAll').change();
-	jQuery('input[name="wp2_bhColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_bhColorPlaceFront"]').val([jQuery('input[name="wp_bhColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceFront"]').change();
-	jQuery('input[name="wp2_bhColorPlaceUfbp"]').val([jQuery('input[name="wp_bhColorPlaceUfbp"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceUfbp"]').change();
-	jQuery('input[name="wp2_bhColorPlaceDfbp"]').val([jQuery('input[name="wp_bhColorPlaceDfbp"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceDfbp"]').change();
-	jQuery('input[name="wp2_bhColorPlaceCoin"]').val([jQuery('input[name="wp_bhColorPlaceCoin"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceCoin"]').change();
-	jQuery('input[name="wp2_byColor"]').val([jQuery('input[name="wp_byColor"]:checked').val()]);
-	jQuery('input[name="wp2_byColor"]').change();
-	jQuery('#wp2_byColorPlaceAll').val([jQuery('#wp_byColorPlaceAll').val()]);
-	jQuery('#wp2_byColorPlaceAll').change();
-	jQuery('input[name="wp2_byColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_byColorPlaceFront"]').val([jQuery('input[name="wp_byColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceFront"]').change();
-	jQuery('input[name="wp2_byColorPlaceUf"]').val([jQuery('input[name="wp_byColorPlaceUf"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceUf"]').change();
-	jQuery('input[name="wp2_byColorPlaceDf"]').val([jQuery('input[name="wp_byColorPlaceDf"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceDf"]').change();
-	jQuery('input[name="wp2_byColorPlaceCoinPkt"]').val([jQuery('input[name="wp_byColorPlaceCoinPkt"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceCoinPkt"]').change();
-	jQuery('#wp2_button').val([jQuery('#wp_button').val()]);
-	jQuery('#wp2_button').change();
-	jQuery('#wp2_btnMateStkNo').val([jQuery('#wp_btnMateStkNo').val()]);
-	jQuery('#wp2_btnMateStkNo').change();
-	jQuery('input[name="wp2_suspenderBtn"]').val([jQuery('input[name="wp_suspenderBtn"]:checked').val()]);
-	jQuery('input[name="wp2_suspenderBtn"]').change();
-	jQuery('input[name="wp2_thick"]').val([jQuery('input[name="wp_thick"]:checked').val()]);
-	jQuery('input[name="wp2_thick"]').change();
-	jQuery('input[name="wp2_eight"]').val([jQuery('input[name="wp_eight"]:checked').val()]);
-	jQuery('input[name="wp2_eight"]').change();
-	jQuery('input[name="wp2_shapeMemory"]').val([jQuery('input[name="wp_shapeMemory"]:checked').val()]);
-	jQuery('input[name="wp2_shapeMemory"]').change();
-});
+

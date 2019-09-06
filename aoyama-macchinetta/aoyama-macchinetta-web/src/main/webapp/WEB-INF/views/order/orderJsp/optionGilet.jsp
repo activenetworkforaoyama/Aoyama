@@ -16,6 +16,7 @@
                         </form:select>
                     </div>
                     <div class="col-12 col-md-9 offset-md-3" id="giletModelMsg"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
@@ -24,14 +25,14 @@
                             <form:radiobuttons id="og_breastPkt_id" path="optionGiletStandardInfo.ogBreastPkt" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogBreastPktMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_breastPkt_Msg">
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_breastPkt_Msg">
                        	<%-- <c:if test="${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice == '0'}">
                      		無料
                      	</c:if>
                      	<c:if test="${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice != '0'}">
                      		${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice}
                      	</c:if> --%>
-						${orderForm.optionGiletStandardInfo.glBreastPktRtPrice }
+<%-- 						${orderForm.optionGiletStandardInfo.glBreastPktRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -41,8 +42,8 @@
                           	<form:radiobuttons id="og_waistPkt_id" path="optionGiletStandardInfo.ogWaistPkt" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWaistPktMap}"/>
                   		</div>
 	                </div>
-                    <div class="col-12 col-md-3" align="right" id="og_waistPkt_Msg">
-                    	${orderForm.optionGiletStandardInfo.glWaistPktRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_waistPkt_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glWaistPktRtPrice } --%>
                     </div>
                 </div>
                 <div id="og_waistPkt_yes_area">
@@ -53,8 +54,8 @@
                             <form:radiobuttons id="og_waistPktSpec_id" path="optionGiletStandardInfo.ogWaistPktSpec" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWaistPktSpecMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_waistPktSpec_Msg">
-                    	${orderForm.optionGiletStandardInfo.glWaistPktShapeRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_waistPktSpec_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glWaistPktShapeRtPrice } --%>
                     </div>
                 </div>
                 </div>
@@ -67,8 +68,8 @@
                             <form:radiobuttons id="og_stitch_id" path="optionGiletStandardInfo.ogStitch" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogStitchMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_stitch_Msg">
-                    	${orderForm.optionGiletStandardInfo.glAmfStitchRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_stitch_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glAmfStitchRtPrice } --%>
                     </div>
                 </div>
                 <div id="og_stitch_yes_area">
@@ -97,8 +98,8 @@
                         </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_stitchPlc_Msg">
-                    	${orderForm.optionGiletStandardInfo.glStitchPlcRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_stitchModify_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glStitchPlcRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -126,8 +127,8 @@
                         </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_dStitchPlc_Msg">
-                    	${orderForm.optionGiletStandardInfo.glDblstitchPlcRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_dStitchModify_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glDblstitchPlcRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -152,12 +153,12 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_amfColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_amfColorPlace_${row.count}" name="optionGiletStandardInfo.ogAmfColorPlace" value="${ogAmfColorPlaceMap.key }" class="form-check-input">${ogAmfColorPlaceMap.value }
+                                <input type="checkbox" id="og_amfColorPlace_${row.count}" name="optionGiletStandardInfo.ogAmfColorPlace${row.count}" value="${ogAmfColorPlaceMap.key }" class="form-check-input">${ogAmfColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
-                        	<div class="offset-md-2" id="og_amfColorPlace_${row.count}_div">
+                        	<div class="offset-md-2" id="og_amfColorPlace_${row.count}_div"  style="display:none">
                         		<c:forEach var="ogAmfColorsMap" items="${orderForm.optionGiletStandardInfo.ogAmfColorPlaceAllMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="og_amfColor" class="form-check-label ">
@@ -170,8 +171,8 @@
                         
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_amfColor_Msg">
-                    	${orderForm.optionGiletStandardInfo.glAmfColorRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_amfColor_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glAmfColorRtPrice } --%>
                     </div>
                 </div>
                 </div>
@@ -198,7 +199,7 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_bhColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_bhColorPlace_${row.count}" name="optionGiletStandardInfo.ogBhColorPlace" value="${ogBhColorPlaceMap.key }" class="form-check-input">${ogBhColorPlaceMap.value }
+                                <input type="checkbox" id="og_bhColorPlace_${row.count}" name="optionGiletStandardInfo.ogBhColorPlace${row.count}" value="${ogBhColorPlaceMap.key }" class="form-check-input">${ogBhColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
@@ -215,8 +216,8 @@
                         </c:forEach>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_btnholeColor_Msg">
-                    	${orderForm.optionGiletStandardInfo.glBtnholeColorRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_bhColor_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glBtnholeColorRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -241,7 +242,7 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_byColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_byColorPlace_${row.count}" name="optionGiletStandardInfo.ogByColorPlace" value="${ogByColorPlaceMap.key }" class="form-check-input">${ogByColorPlaceMap.value }
+                                <input type="checkbox" id="og_byColorPlace_${row.count}" name="optionGiletStandardInfo.ogByColorPlace${row.count}" value="${ogByColorPlaceMap.key }" class="form-check-input">${ogByColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
@@ -258,8 +259,8 @@
                         </c:forEach>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_btnthreadColor_Msg">
-                    	${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_byColor_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -275,8 +276,8 @@
                         <select name="optionGiletStandardInfo.ogBackLiningMateStkNo" id="og_backLiningMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_backCloth_Msg">
-                    	${orderForm.optionGiletStandardInfo.glBackClothRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_backLiningMate_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glBackClothRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -292,8 +293,8 @@
                         <select name="optionGiletStandardInfo.ogInsideLiningMateStkNo" id="og_insideLiningMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_innnerCloth_Msg">
-                    	${orderForm.optionGiletStandardInfo.glInnnerClothRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_insideLiningMate_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glInnnerClothRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -309,30 +310,30 @@
                         <select name="optionGiletStandardInfo.ogFrontBtnMateStkNo" id="og_frontBtnMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_frtBtn_Msg">
-                    	${orderForm.optionGiletStandardInfo.glFrtBtnRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_frontBtnMate_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glFrtBtnRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">バックベルト</label></div>
                     <div class="col-12 col-md-6">
-                        <form:select id="backBelt" path="optionGiletStandardInfo.ogBackBelt" class="form-control-sm form-control">
+                        <form:select id="og_backBelt" path="optionGiletStandardInfo.ogBackBelt" class="form-control-sm form-control">
                             	<form:options items="${orderForm.optionGiletStandardInfo.ogBackBeltMap}"/>
                         </form:select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_backBelt_Msg">
-                    	${orderForm.optionGiletStandardInfo.glBackBeltRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_backBelt_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glBackBeltRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ウォッチチェーン</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="watchChain_id" path="optionGiletStandardInfo.ogWatchChain" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWatchChainMap}"/>
+                            <form:radiobuttons id="og_watchChain_id" path="optionGiletStandardInfo.ogWatchChain" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWatchChainMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" id="og_watchChain_Msg">
-                    	${orderForm.optionGiletStandardInfo.glWatchChainRtPrice }
+                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_watchChain_Msg">
+<%--                     	${orderForm.optionGiletStandardInfo.glWatchChainRtPrice } --%>
                     </div>
                 </div>
             </div>
@@ -359,6 +360,7 @@
                         </form:select>
                     </div>
                     <div class="col-12 col-md-9 offset-md-3" id="tg_giletModelMsg"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="tg_giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
@@ -440,12 +442,12 @@
                          </div>
                          <div class="offset-md-2" id="tg_bhColorPlace_${row.count}_div" style="display:none">
                          	<c:forEach var="tgBhColorsMap" items="${orderForm.optionGiletTuxedoInfo.tgBhColorsMap}">
-                        		  <div class="form-check-inline form-check">
-                        		     <label for="tg_bhColor" class="form-check-label ">
-                        			    <input type="radio" id="tg_bhColor_${tgBhColorsMap.key}" name="optionGiletTuxedoInfo.tgBhColor${row.count}" value="${tgBhColorsMap.key}" class="form-check-input">${tgBhColorsMap.value}
-                        		     </label>
-                        		  </div>
-                        		</c:forEach>
+                       		  <div class="form-check-inline form-check">
+                       		     <label for="tg_bhColor" class="form-check-label ">
+                       			    <input type="radio" id="tg_bhColor_${tgBhColorsMap.key}" name="optionGiletTuxedoInfo.tgBhColor${row.count}" value="${tgBhColorsMap.key}" class="form-check-input">${tgBhColorsMap.value}
+                       		     </label>
+                       		  </div>
+                       		</c:forEach>
                          </div>
                      </c:forEach>
                      </div>
@@ -576,6 +578,7 @@
 						</form:select>
                     </div>
                     <div class="col-12 col-md-9 offset-md-3" id="wg_giletModelMsg"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="wg_giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
@@ -691,7 +694,7 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_amfColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_amfColorPlace_${row.count}" name="optionGiletWashableInfo.wgAmfColorPlace" value="${wgAmfColorPlaceMap.key }" class="form-check-input">${wgAmfColorPlaceMap.value }
+                                <input type="checkbox" id="wg_amfColorPlace_${row.count}" name="optionGiletWashableInfo.wgAmfColorPlace${row.count}" value="${wgAmfColorPlaceMap.key }" class="form-check-input">${wgAmfColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
@@ -731,7 +734,7 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_bhColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_bhColorPlace_${row.count}" name="optionGiletWashableInfo.wgBhColorPlace" value="${wgBhColorPlaceMap.key }" class="form-check-input">${wgBhColorPlaceMap.value }
+                                <input type="checkbox" id="wg_bhColorPlace_${row.count}" name="optionGiletWashableInfo.wgBhColorPlace${row.count}" value="${wgBhColorPlaceMap.key }" class="form-check-input">${wgBhColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
@@ -771,7 +774,7 @@
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_byColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_byColorPlace_${row.count}" name="optionGiletWashableInfo.wgByColorPlace" value="${wgByColorPlaceMap.key }" class="form-check-input">${wgByColorPlaceMap.value }
+                                <input type="checkbox" id="wg_byColorPlace_${row.count}" name="optionGiletWashableInfo.wgByColorPlace${row.count}" value="${wgByColorPlaceMap.key }" class="form-check-input">${wgByColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
@@ -867,15 +870,10 @@
 	<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
     
     <input type="hidden" id="giletFlag" name="giletFlag" value="0"/>
+    
+    <input type="hidden" id="giletAdFlag"
+		name="giletAdFlag" value="0" />	
 </form:form>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script> 
-<script src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
-
 
 <!-- 自作js -->
 <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
@@ -905,7 +903,6 @@ var selectIdList = {
 };
 
 jQuery(function() {
-
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -1112,149 +1109,135 @@ function mateInit(){
 	}
 }
 
+function getAllPrice(subItemCode, optionPrice){
+	jQuery("#glOptionPriceId").val(optionPrice);
+    var jkOptionPriceId = jQuery("#jkOptionPriceId").val();
+    var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
+    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+    var glOptionPriceId = optionPrice;
+    var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+    var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+    var allPrice = 0;
+    if(subItemCode == "01"){
+        if(threePiece == "0009901" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId);
+        }
+        else if(threePiece == "0009902" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(glOptionPriceId);
+        }
+        else if(threePiece == "0009901" && twoPants == "0009902"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId);
+        }else{
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId);
+        }
+    }else{
+    	allPrice = Number(glOptionPriceId);
+    }
+    jQuery("#optionPriceId").val(allPrice);
+    jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
+}
+
+
 //--------------------------------------------
 //全部のitem金額制御
 //--------------------------------------------
 function getPrice(){
-	//GILETの料金を表示
+// 	GILETの料金を表示
 	jQuery("#giletModel").change(function(){
-		/* jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
 		var giletModel = jQuery("#giletModel option:selected").val();
 		var itemCode = "04";
 		var subItemCode = jQuery("#item").val();
 
 		var code = itemCode + subItemCode + giletModel;
-		jQuery.ajax({url:contextPath + "/orderCo/getOrderPriceForModel",data:{"code":code},async:false});
-		document.getElementById("nav2_GILET").click(); */
+		$.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForGiletModel",
+			data:{"code":code},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+				var ogPriceMsg = document.getElementsByName("ogPriceMsg");
+				for(var i=0; i<ogPriceMsg.length; i++){
+					ogPriceMsg[i].innerHTML = result.ogPriceMsg[i];
+				}
+				getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+		//document.getElementById("nav2_GILET").click();
 	})
 	
-	//プルダウンの変更処理
-	//項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番
-	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo")
-	   .change(function(){
-		/* jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 	プルダウンの変更処理
+// 	項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番
+	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt")
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   
 		var giletModel = jQuery("#giletModel option:selected").val();
 		var itemCode = "04";
 		var subItemCode = jQuery("#item").val();
-// 		optionCode = selectIdList[idValue];
-// 		subItemCode = subList[idValue];
-		var idValue = jQuery(this).find("option:selected").val();
-		alert(idValue); */
-// 		var stkNo = idValue+"StkNo";
-// 		var stkNoVal = jQuery("#"+stkNo).val();
-// 		var code = itemCode + subItemCode + modelCode + optionCode  + thisVal;
-// 		var codeDetail = itemCode + subItemCode + modelCode + optionCode + thisVal + stkNoVal;
-		 
-// 		if(isNotEmpty(giletModel)){
-// 			var code = itemCode + subItemCode + giletModel;
-// 			jQuery.ajax({url:contextPath + "/orderCo/getOrderPriceForSelect",data:{"code":code},async:false});
-// 			document.getElementById("nav2_GILET").click();
-// 		}
-	});
-// 	//ラジオボタンの変更処理
-// 	//項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊
-// 	jQuery('input[id^="lapelDesign_"],[id^="fort_"],[id^="backSpec_"],[id^="waistPkt_"],[id^="changePkt_"],[id^="slantedPkt_"],[id^="cuffSpec_"],[id^="stitch_"],[id^="ventSpec_"]')
-// 	.change(function(){
-// 		giletModel = jQuery("#giletModel option:selected").val();
-// 		if(isNotEmpty(giletModel)){
-// 			var idValue = jQuery(this).attr("id");
-// 			var thisVal = jQuery(this).val();
-// 			frontBtnCntVal = jQuery("#og_frontBtnCnt").val();
-// 			dealWithPice(idValue,thisVal,giletModel);
-// 		}
-// 	});
-}
-//--------------------------------------------
-//GILET 金額変更制御
-//--------------------------------------------
-function giletChangePrice(glModelCode){
-	var giletModel = jQuery("#giletModel").val();
-	for(i of glPriceList){
-		//プルダウンの場合
-		if(i.type == "2"){
-			var idValue = i.id;
-			var thisVal = jQuery("#"+idValue).val();
-			dealWithPice(idValue,thisVal,glModelCode);
-		//ラジオボタンの場合
-		}else if(i.type == "1"){
-			var idValue = i.id;
-			var thisVal = jQuery(":radio[name='" + i.idVal + "']:checked").val();
-			dealWithPice(idValue,thisVal,glModelCode);
-		}
-	}
-}
-//--------------------------------------------
-//シングル金額制御
-//--------------------------------------------
-function dealWithPice(idValue,thisVal,modelCode){
-	//アイテムコード
-	var itemCode = "04";
-	//*_id1 ⇒　*
-	if(idValue.indexOf("_id")!=-1){
-		idValue = idValue.substr(0, idValue.length - 1);
-		idValue = idValue.replace("_id","");
-	}
-	//オプションコード
-	optionCode = selectIdList[idValue];
-	//サブアイテムコード
-	subItemCode = subList[idValue];
-	//アイテムコード + サブアイテムコード + モデルコード + オプションコード + オプション選択肢コード
-	var code = itemCode + subItemCode + modelCode + optionCode  + thisVal;
-	//各素材の変更処理
-	if(idValue=="og_bodyBackMate"||idValue=="og_cuffBackMate"||idValue=="og_frontBtnMate"){
-		var stkNo = idValue+"StkNo";
-		var stkNoVal = jQuery("#"+stkNo).val();
-		//アイテムコード + サブアイテムコード + モデルコード + オプションコード + オプション選択肢コード + オプション選択肢詳細コード
-		var codeDetail = itemCode + subItemCode + modelCode + optionCode + thisVal + stkNoVal;
-		var price = jQuery.ajax({url:contextPath + "/orderCo/getOrderPrice",data:{"code":code,"codeDetail":codeDetail},async:false});
-		price = price.responseText;
-		if(price == "0"){
-			price = "無料";
-		}else{
-			price = formatMoney(price,0,"￥");
-		}
-		jQuery("#"+idValue+"_Msg").html(price);
-		//allOptionPrice();
+		var idValueName = jQuery(this).attr("id");
 		
-	//各素材品番の変更処理
-	}else if(idValue=="og_bodyBackMateStkNo"||idValue=="og_cuffBackMateStkNo"||idValue=="og_frontBtnMateStkNo"){
-		//*StkNo　⇒　*
-		idValue = idValue.substr(0, idValue.length - 5);
-		
-		subItemCode = subList[idValue];
-		optionCode = selectIdList[idValue];
-		
-		var valCode = jQuery("#"+idValue).val();
-		//アイテムコード + サブアイテムコード + モデルコード + オプションコード + オプション選択肢コード
-		var code = itemCode + subItemCode + modelCode + optionCode  + valCode;
-		//アイテムコード + サブアイテムコード + モデルコード + オプションコード + オプション選択肢コード + オプション選択肢詳細コード
-		var codeDetail = itemCode + subItemCode + modelCode + optionCode + valCode + thisVal;
-		var price = jQuery.ajax({url:contextPath + "/orderCo/getOrderPrice",data:{"code":code,"codeDetail":codeDetail},async:false});
-		price = price.responseText;
-		if(price == "0"){
-			price = "無料";
-		}else{
-			price = formatMoney(price,0,"￥");
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/getOrderPriceForGiletProject",
+				data:{"code":code,"idValueName":idValueName},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					if(jQuery("#"+idValueName+"_Msg").length>0){
+						jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+					}else{
+						var lengthforLastFive = idValueName.length - 5;
+						var idValueTemp = idValueName.substring(0,lengthforLastFive);
+						jQuery("#"+idValueTemp+"_Msg").html(result.idValuePrice);
+					}
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
 		}
-		jQuery("#"+idValue+"_Msg").html(price);
-		//allOptionPrice();
-			//他の項目の変更処理
-	}else{
-		var price = jQuery.ajax({url:contextPath + "/orderCo/getOrderNormalPrice",data:{"code":code,"codeDetail":codeDetail},async:false});
-		price = price.responseText;
-		if(price == "0"){
-			price = "無料";
-		}else{
-			price = formatMoney(price,0,"￥");
-		}
-		jQuery("#"+idValue+"_Msg").html(price);
-		//allOptionPrice();
-			
-	}
-}
 
+	});
+	
+// 	ラジオボタンの変更処理
+// 	項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊[id^="og_amfColor_id"],[id^="og_bhColor_id"],[id^="og_byColor_id"]
+	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_stitch_id"],[id^="og_stitchModify_id"],[id^="og_dStitchModify_id"],[id^="og_watchChain_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		   
+		var giletModel = jQuery("#giletModel option:selected").val();
+		var itemCode = "04";
+		var subItemCode = jQuery("#item").val();
+		var idValueName = jQuery(this).attr("id");
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		 
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/getOrderPriceForGiletProject",
+				data:{"code":code,"idValueName":interceptedIdValueName},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+
+}
 //--------------------------------------------
 //金額フォーマット
 //--------------------------------------------
@@ -1269,10 +1252,6 @@ var negative = number < 0 ? "-" : "",
     j = (a = i.length) > 3 ? a % 3 : 0;
 return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 }
-/************************************************
-* 部品メソッド
-************************************************/
-// 自作jsに記載
 
 jQuery("#giletModel").change(function(){
 	jQuery("#giletFlag").val("1");

@@ -41,15 +41,26 @@ public class AdjustGiletStandardInfo implements Serializable {
 	// ウエストグロス
 	private String corGlWaistGross;
 
-	//gl再補正コメント
+	//再補正コメント
 	private String corGlStoreCorrectionMemo;
-	// 再補正値
 
 	// GILET_着丈_再補正値
 	private String corGlBodylengthCorrectAgain;
+	
+	// GILET_着丈_再補正値フラッグ
+	private String corGlBodylengthCorrectAgainFlag;
 
 	// GILET_バスト_再補正値
 	private String corGlBustCorrectAgain;
+	
+	// GILET_バスト_再補正値フラッグ
+	private String corGlBustCorrectAgainFlag;
+	
+	// GILET_ウエスト_再補正値
+	private String corGlWaistCorrectAgain;
+	
+	// GILET_ウエスト_再補正値フラッグ
+	private String corGlWaistCorrectAgainFlag;
 
 	public Map<String, String> getSizeNumberMap() {
 		return sizeNumberMap;
@@ -201,6 +212,38 @@ public class AdjustGiletStandardInfo implements Serializable {
 
 	public void setCorGlStoreCorrectionMemo(String corGlStoreCorrectionMemo) {
 		this.corGlStoreCorrectionMemo = corGlStoreCorrectionMemo;
+	}
+
+	public String getCorGlWaistCorrectAgain() {
+		return corGlWaistCorrectAgain;
+	}
+
+	public void setCorGlWaistCorrectAgain(String corGlWaistCorrectAgain) {
+		this.corGlWaistCorrectAgain = corGlWaistCorrectAgain;
+	}
+
+	public String getCorGlBodylengthCorrectAgainFlag() {
+		return corGlBodylengthCorrectAgainFlag;
+	}
+
+	public void setCorGlBodylengthCorrectAgainFlag(String corGlBodylengthCorrectAgainFlag) {
+		this.corGlBodylengthCorrectAgainFlag = corGlBodylengthCorrectAgainFlag;
+	}
+
+	public String getCorGlBustCorrectAgainFlag() {
+		return corGlBustCorrectAgainFlag;
+	}
+
+	public void setCorGlBustCorrectAgainFlag(String corGlBustCorrectAgainFlag) {
+		this.corGlBustCorrectAgainFlag = corGlBustCorrectAgainFlag;
+	}
+
+	public String getCorGlWaistCorrectAgainFlag() {
+		return corGlWaistCorrectAgainFlag;
+	}
+
+	public void setCorGlWaistCorrectAgainFlag(String corGlWaistCorrectAgainFlag) {
+		this.corGlWaistCorrectAgainFlag = corGlWaistCorrectAgainFlag;
 	}
 	
 }

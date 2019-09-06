@@ -1,58 +1,10 @@
 /*********************************************
  * COAT用JS
  *********************************************/
-/*option_code: 00001,option_name: ラペルデザイン
-option_code: 00002,option_name: 腰ポケット
-option_code: 00003,option_name: チェンジポケット
-option_code: 00004,option_name: スランテッドポケット
-option_code: 00005,option_name: ベント
-option_code: 00006,option_name: フロント釦数
-option_code: 00007,option_name: 袖口
-option_code: 00008,option_name: 袖釦
-option_code: 00009,option_name: バックベルト
-option_code: 00010,option_name: 襟吊
-option_code: 00011,option_name: 胴裏地
-option_code: 00012,option_name: 袖裏地
-option_code: 00013,option_name: 釦素材*/
-
-//COATデフォルト値リスト
-var coatDefaultList = {
-  		   activeList : [{id:"coatModel",dVal:"",type:"2"},
-	  			{id:"oc_lapelDesign",dVal:"0000101",type:"2"},
-	  			{id:"oc_waistPkt",dVal:"0000201",type:"2"},
-				{id:"optionCoatStandardInfo.ocChangePkt",dVal:"0000301",type:"1"},
-				{id:"optionCoatStandardInfo.ocSlantedPkt",dVal:"0000401",type:"1"},
-				{id:"optionCoatStandardInfo.ocVentSpec",dVal:"",type:"1"},
-				{id:"oc_frontBtnCnt",dVal:"0000601",type:"2"},
-				{id:"oc_cuffSpec",dVal:"0000701",type:"2"},
-				{id:"oc_sleeveBtnType",dVal:"0000801",type:"2"},
-				{id:"optionCoatStandardInfo.ocBackBelt",dVal:"0000901",type:"1"},
-				{id:"optionCoatStandardInfo.ocChainHange",dVal:"0001001",type:"1"},
-				{id:"oc_bodyBackMate",dVal:"4000100",type:"2"},
-				{id:"oc_cuffBackMate",dVal:"5000100",type:"2"},
-				{id:"oc_frontBtnMate",dVal:"6000100",type:"2"}
-			]
-};
-//--------------------------------------------
-//オプションコードの初期値を設定
-//--------------------------------------------
-function defaultCoatOptionInit() {
-	var c = null;
-	for (c of coatDefaultList.activeList) {
-		//プルダウンの場合
-		if(c.type == "2"){
-			jQuery("#"+c.id+" option[value='"+c.dVal+"']").prop("selected", true);
-		//ラジオボタンの場合
-		}else if(c.type == "1"){
-			jQuery(":radio[name='" + c.id + "'][value='" + c.dVal + "']").prop("checked", true);
-		}
-	}
-}
 //--------------------------------------------
 // 読み込み時
 //--------------------------------------------
 function initOptionCoat() {
-	//defaultCoatOptionInit();
 	// 選択中のCOATモデル
 	var coatModel = jQuery('#coatModel').val();
 
@@ -89,10 +41,60 @@ function initOptionCoat() {
 	if (coatModel == "SoutienCollar" || coatModel == "ステンカラー（ラグラン）") {
 		for (var index = 0; index < oc_waistPkt_stenOptions.length; index++) {
 			oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_stenOptions_code[index]).text(oc_waistPkt_stenOptions[index]));
+			// 腰ポケット
+			jQuery('#oc_waistPkt').change(function(){
+				var oc_waistPkt = jQuery('#oc_waistPkt').val();
+				if (oc_waistPkt == "0000201") {
+					// チェンジポケット　選択可
+					jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', false);
+					});
+					// スランテッドポケット　選択可
+					jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', false);
+					});
+				} else {
+					// チェンジポケット　選択不可
+					jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', true);
+					});
+					jQuery('#oc_changePkt_id1').prop('checked', true);
+					// スランテッドポケット　選択不可
+					jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', true);
+					});
+					jQuery('#oc_slantedPkt_id1').prop('checked', true);
+				}
+			});
 		}
 	} else {
 		for (var index = 0; index < oc_waistPkt_options.length; index++) {
 			oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_options_code[index]).text(oc_waistPkt_options[index]));
+			// 腰ポケット
+			jQuery('#oc_waistPkt').change(function(){
+				var oc_waistPkt = jQuery('#oc_waistPkt').val();
+				if (oc_waistPkt == "0000201") {
+					// チェンジポケット　選択可
+					jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', false);
+					});
+					// スランテッドポケット　選択可
+					jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', false);
+					});
+				} else {
+					// チェンジポケット　選択不可
+					jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', true);
+					});
+					jQuery('#oc_changePkt_id1').prop('checked', true);
+					// スランテッドポケット　選択不可
+					jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+						jQuery(elem).prop('disabled', true);
+					});
+					jQuery('#oc_slantedPkt_id1').prop('checked', true);
+				}
+			});
 		}
 		oc_waistPktElem.val(before_oc_waistPkt);
 	}
@@ -135,7 +137,7 @@ function initOptionCoat() {
 	jQuery('#oc_cuffSpec').change();
 
 	// バックベルトの制御
-	if (coatModel == "選択") {
+	if (coatModel == "") {
 		jQuery('#oc_backBelt_id2').prop('disabled', true);
 		jQuery('#oc_backBelt_id3').prop('disabled', true);
 		jQuery('#oc_backBelt_id1').prop('checked', true);
@@ -176,6 +178,32 @@ function initOptionCoat() {
 	jQuery('#coatModel').change(function(){
 		// 選択中のCOATモデル
 		var coatModel = jQuery('#coatModel').val();
+		
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var itemCode = "06";
+		var subItemCode = "06"
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2") && isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(coatModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#ctModelFlag").val("0");
+				jQuery("#coatModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#ctModelFlag").val("1"+"*"+getMsgByOneArg('msg065','COAT'));
+				setAlert('coatModelCheck',getMsgByOneArg('msg065','COAT'));
+			}
+		}
+		
 
 		// ラペルデザインの制御
 		if (coatModel == "SingleChester") {
@@ -209,10 +237,60 @@ function initOptionCoat() {
 		if (coatModel == "SoutienCollar" || coatModel == "ステンカラー（ラグラン）") {
 			for (var index = 0; index < oc_waistPkt_stenOptions.length; index++) {
 				oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_stenOptions_code[index]).text(oc_waistPkt_stenOptions[index]));
+				// 腰ポケット
+				jQuery('#oc_waistPkt').change(function(){
+					var oc_waistPkt = jQuery('#oc_waistPkt').val();
+					if (oc_waistPkt == "0000201") {
+						// チェンジポケット　選択可
+						jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', false);
+						});
+						// スランテッドポケット　選択可
+						jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', false);
+						});
+					} else {
+						// チェンジポケット　選択不可
+						jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', true);
+						});
+						jQuery('#oc_changePkt_id1').prop('checked', true);
+						// スランテッドポケット　選択不可
+						jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', true);
+						});
+						jQuery('#oc_slantedPkt_id1').prop('checked', true);
+					}
+				});
 			}
 		} else {
 			for (var index = 0; index < oc_waistPkt_options.length; index++) {
 				oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_options_code[index]).text(oc_waistPkt_options[index]));
+				// 腰ポケット
+				jQuery('#oc_waistPkt').change(function(){
+					var oc_waistPkt = jQuery('#oc_waistPkt').val();
+					if (oc_waistPkt == "0000201") {
+						// チェンジポケット　選択可
+						jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', false);
+						});
+						// スランテッドポケット　選択可
+						jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', false);
+						});
+					} else {
+						// チェンジポケット　選択不可
+						jQuery(':radio[name="optionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', true);
+						});
+						jQuery('#oc_changePkt_id1').prop('checked', true);
+						// スランテッドポケット　選択不可
+						jQuery(':radio[name="optionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+							jQuery(elem).prop('disabled', true);
+						});
+						jQuery('#oc_slantedPkt_id1').prop('checked', true);
+					}
+				});
 			}
 			oc_waistPktElem.val(before_oc_waistPkt);
 		}
@@ -255,7 +333,7 @@ function initOptionCoat() {
 		jQuery('#oc_cuffSpec').change();
 
 		// バックベルトの制御
-		if (coatModel == "選択") {
+		if (coatModel == "") {
 			jQuery('#oc_backBelt_id2').prop('disabled', true);
 			jQuery('#oc_backBelt_id3').prop('disabled', true);
 			jQuery('#oc_backBelt_id1').prop('checked', true);
@@ -287,7 +365,7 @@ function initOptionCoat() {
 		}
 
 		// 別モデルに変更された場合はアラート表示
-		if (tmpCoatModel != '選択' && coatModel != tmpCoatModel) {
+		if (tmpCoatModel != '' && coatModel != tmpCoatModel) {
 		    setAlert('coatModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
@@ -435,6 +513,12 @@ function initOptionCoat() {
 	});
 	jQuery('#oc_frontBtnMate').change();
 
+}
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
 }
 //--------------------------------------------
 // 部品

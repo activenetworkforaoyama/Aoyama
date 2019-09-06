@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,6 +33,7 @@ import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Cash;
 import co.jp.aoyama.macchinetta.domain.model.Item;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
+import co.jp.aoyama.macchinetta.domain.model.MemberName;
 import co.jp.aoyama.macchinetta.domain.model.OptionBranch;
 import co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail;
 import co.jp.aoyama.macchinetta.domain.model.Order;
@@ -46,6 +48,7 @@ import co.jp.aoyama.macchinetta.domain.model.Yield;
 import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
 import co.jp.aoyama.macchinetta.domain.service.consumption.ConsumptionService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
+import co.jp.aoyama.macchinetta.domain.service.member.MemberNameService;
 import co.jp.aoyama.macchinetta.domain.service.order.AdjustService;
 import co.jp.aoyama.macchinetta.domain.service.order.ItemService;
 import co.jp.aoyama.macchinetta.domain.service.order.ModelService;
@@ -65,6 +68,8 @@ import co.jp.aoyama.macchinetta.domain.service.yield.YieldService;
 @SessionAttributes(value = { "orderForm" })
 public class OrderController {
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+	@Value("${member.url:http://202.214.88.88/member/api/v1/memname}")
+	String memberUrl;
 	@Inject
 	OptionBranchService optionBranchService;
 	@Inject
@@ -77,6 +82,8 @@ public class OrderController {
 	SizeNumberService sizeNumberService;
 	@Inject
 	ShopService shopService;
+	@Inject
+	MemberNameService memberNameService;
 	@Inject
 	TypeSizeService typeSizeService;
 	@Inject
@@ -260,9 +267,9 @@ public class OrderController {
 	@RequestMapping(value = "orderPoReconfirm")
 	public String toOrderPoReconfirm(HttpServletRequest request, OrderForm orderForm) {
 
-		Order order = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
-		
-		orderForm.setVersion(order.getVersion().toString());
+//		Order order = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+//		
+//		orderForm.setVersion(order.getVersion().toString());
 		
 		// 素材品番のMapを取得
 		List<OptionBranchDetail> detailList = optionBranchDeailService.getAllOption(PO_TYPE);
@@ -318,10 +325,12 @@ public class OrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "stockDecrease", method = RequestMethod.POST)
-	public String stockDecrease(OrderForm orderForm) {
+	public OrderMessage stockDecrease(OrderForm orderForm) {
 		Order order = new Order();
 
 		Measuring measuring = new Measuring();
+		
+		OrderMessage orderMessage = new OrderMessage();
 
 		String orderIdImage = orderForm.getCustomerMessageInfo().getOrderId();
 
@@ -337,15 +346,6 @@ public class OrderController {
 
 			orderId = belongCode.concat(last8digits);
 			
-//			String orderIdCheckCd = belongCode.concat(ONE);
-//			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-//			if (maxOrderId == null) {
-//				orderId = belongCode.concat(MIN_CODE);
-//			} else {
-//				long parseLong = Long.parseLong(maxOrderId) + 1;
-//				orderId = String.format("%012d", parseLong);
-//			}
-
 			// オーダーのデーター → orderForm
 			orderFormToOrder(orderForm, order, measuring);
 
@@ -354,23 +354,39 @@ public class OrderController {
 			measuring.setOrderId(orderId);
 
 			String stockCheck = stockCheck(order, measuring);
-
-			return stockCheck;
+			
+			orderMessage.setOrderId(stockCheck);
+			orderMessage.setOrderMsg("");
+			orderMessage.setOrderMsgFlag(true);
+			return orderMessage;
 		} else {
 			version = orderForm.getVersion();
 			Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+			String tscStatus = orderIsExist.getTscStatus();
+			if("T2".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T2ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else if("T3".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T3ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else {
+				Measuring measuringIsExist = measuringService
+						.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
 
-			Measuring measuringIsExist = measuringService
-					.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+				// オーダーのデーター → orderForm
+				orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
 
-			// オーダーのデーター → orderForm
-			orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
+				order.setVersion(Short.parseShort(version));
 
-			order.setVersion(Short.parseShort(version));
+				String stockCheck = stockCheck(order, orderIsExist, measuring);
+				orderMessage.setOrderId(stockCheck);
+				orderMessage.setOrderMsg("");
+				orderMessage.setOrderMsgFlag(true);
+			}
 
-			String stockCheck = stockCheck(order, orderIsExist, measuring);
-
-			return stockCheck;
+			return orderMessage;
 		}
 
 	}
@@ -415,11 +431,13 @@ public class OrderController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "orderPoTemporarySave", method = RequestMethod.POST)
-	public String orderPoTemporarySave(OrderForm orderForm, Model model) {
+	public OrderMessage orderPoTemporarySave(OrderForm orderForm, Model model) {
 
 		Order order = new Order();
 
 		Measuring measuring = new Measuring();
+		
+		OrderMessage orderMessage = new OrderMessage();
 
 		String orderIdImage = orderForm.getCustomerMessageInfo().getOrderId();
 
@@ -433,51 +451,58 @@ public class OrderController {
 			
 			orderId = belongCode.concat(last8digits);
 			
-//			String orderIdCheckCd = belongCode.concat(ONE);
-//			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-//			if (maxOrderId == null) {
-//				orderId = belongCode.concat(MIN_CODE);
-//			} else {
-//				long parseLong = Long.parseLong(maxOrderId) + 1;
-//				orderId = String.format("%012d", parseLong);
-//			}
-
 			// オーダーのデーター → orderForm
 			orderFormToOrder(orderForm, order, measuring);
 
 			order.setOrderId(orderId);
 
 			measuring.setOrderId(orderId);
-
+			
+			orderMessage.setOrderId(orderId);
+			orderMessage.setOrderMsg("");
+			orderMessage.setOrderMsgFlag(true);
 		} else {
 			Order orderIsExist = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
+			String tscStatus = orderIsExist.getTscStatus();
+			if("T2".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T2ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else if("T3".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T3ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else {
+				Measuring measuringIsExist = measuringService
+						.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
 
-			Measuring measuringIsExist = measuringService
-					.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
+				// オーダーのデーター → orderForm
+				orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
 
-			// オーダーのデーター → orderForm
-			orderFormToOrder(orderForm, order, measuring, orderIsExist, measuringIsExist);
-
-			order.setVersion(orderIsExist.getVersion());
+				order.setVersion(orderIsExist.getVersion());
+				orderMessage.setOrderId("true");
+				orderMessage.setOrderMsg("");
+				orderMessage.setOrderMsgFlag(true);
+			}
 		}
 
-		String saveFlag = orderForm.getSaveFlag();
+		Boolean orderMsgFlag = orderMessage.getOrderMsgFlag();
+		
+		if(orderMsgFlag) {
+			String saveFlag = orderForm.getSaveFlag();
 
-		// 保存flag 1：自動保存
-		if ("1".equals(saveFlag)) {
-			orderService.deletOrderWithNotVersion(order);
-			orderService.deleteMeasuring(measuring);
-		} else {
-			orderService.deletOrderisExistence(order);
-			orderService.deleteMeasuring(measuring);
+			// 保存flag 1：自動保存
+			if ("1".equals(saveFlag)) {
+				orderService.deletOrderWithNotVersion(order);
+				orderService.deleteMeasuring(measuring);
+			} else {
+				orderService.deletOrderisExistence(order);
+				orderService.deleteMeasuring(measuring);
+			}
+		}else {
+			
 		}
-
-		if (orderIdImage == null || "".equals(orderIdImage)) {
-			return order.getOrderId();
-		} else {
-			return "true";
-		}
-
+		return orderMessage;
 	}
 
 	
@@ -1027,12 +1052,14 @@ public class OrderController {
 
 		OrderFindFabric orderFindFabric = orderService.getOrderFabric(fabricNo, orderPattern);
 		
-		BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
-		BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
-		BigDecimal result = theoretical.subtract(reservation);
+		if(orderFindFabric != null) {
+			BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
+			BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
+			BigDecimal result = theoretical.subtract(reservation);
+			
+			orderFindFabric.setStockResult(String.valueOf(result));
+		}
 		
-		orderFindFabric.setStockResult(String.valueOf(result));
-
 		return orderFindFabric;
 	}
 
@@ -1331,4 +1358,13 @@ public class OrderController {
 		BigDecimal result = theoretical.subtract(reservation);
 		return String.valueOf(result);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getMemberMessage", method = RequestMethod.GET)
+	public MemberName getMemberMessage (String membersId,String gyotaiCd) {
+		MemberName execute = memberNameService.execute(memberUrl, membersId, gyotaiCd);
+		return execute;
+	}
+	
+	
 }

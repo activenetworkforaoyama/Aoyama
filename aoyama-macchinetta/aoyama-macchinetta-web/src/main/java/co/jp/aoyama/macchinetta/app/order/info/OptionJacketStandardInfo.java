@@ -135,6 +135,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojStitchModifyMap;
 
 	// ステッチ変更箇所
+	private String ojStitchModifyPlace;
+	
 	private String ojStitchModifyPlace1;
 	
 	private String ojStitchModifyPlace2;
@@ -161,6 +163,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojDStitchModifyMap;
 
 	// ダブルステッチ変更箇所
+	private String ojDStitchModifyPlace;
+	
 	private String ojDStitchModifyPlace1;
 	
 	private String ojDStitchModifyPlace2;
@@ -192,6 +196,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojAmfColorPlaceAllMap;
 
 	// AMF色指定箇所
+	private String ojAmfColorPlace;
+	
 	private String ojAmfColorPlace1;
 	
 	private String ojAmfColorPlace2;
@@ -212,6 +218,8 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	private Map<String, String> ojAmfColorPlaceMap;
 
+	private String ojAmfAllColor;
+	
 	// AMF糸色 ラペル・フロント
 	private String ojAmfColor1;
 
@@ -256,6 +264,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojBhColorPlaceAllMap;
 
 	// ボタンホール色指定箇所
+	private String ojBhColorPlace;
+	
 	private String ojBhColorPlace1;
 	
 	private String ojBhColorPlace2;
@@ -360,6 +370,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojByColorPlaceAllMap;
 
 	// ボタン付け糸指定箇所
+	private String ojByColorPlace;
+	
 	private String ojByColorPlace1;
 	
 	private String ojByColorPlace2;
@@ -2005,4 +2017,53 @@ public class OptionJacketStandardInfo implements Serializable {
 	public void setOjDStitchModifyPlace9(String ojDStitchModifyPlace9) {
 		this.ojDStitchModifyPlace9 = ojDStitchModifyPlace9;
 	}
+
+	public String getOjAmfColorPlace() {
+		return ojAmfColorPlace;
+	}
+
+	public void setOjAmfColorPlace(String ojAmfColorPlace) {
+		this.ojAmfColorPlace = ojAmfColorPlace;
+	}
+
+	public String getOjStitchModifyPlace() {
+		return ojStitchModifyPlace;
+	}
+
+	public void setOjStitchModifyPlace(String ojStitchModifyPlace) {
+		this.ojStitchModifyPlace = ojStitchModifyPlace;
+	}
+
+	public String getOjAmfAllColor() {
+		return ojAmfAllColor;
+	}
+
+	public void setOjAmfAllColor(String ojAmfAllColor) {
+		this.ojAmfAllColor = ojAmfAllColor;
+	}
+
+	public String getOjDStitchModifyPlace() {
+		return ojDStitchModifyPlace;
+	}
+
+	public void setOjDStitchModifyPlace(String ojDStitchModifyPlace) {
+		this.ojDStitchModifyPlace = ojDStitchModifyPlace;
+	}
+
+	public String getOjBhColorPlace() {
+		return ojBhColorPlace;
+	}
+
+	public void setOjBhColorPlace(String ojBhColorPlace) {
+		this.ojBhColorPlace = ojBhColorPlace;
+	}
+
+	public String getOjByColorPlace() {
+		return ojByColorPlace;
+	}
+
+	public void setOjByColorPlace(String ojByColorPlace) {
+		this.ojByColorPlace = ojByColorPlace;
+	}
+	
 }

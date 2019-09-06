@@ -765,7 +765,7 @@ public class OrderDetailController {
 		Order order= orderListService.findOrderByPk(orderId);
 		BigDecimal fabricUsedMountOrder = order.getFabricUsedMount();
 		if(fabricUsedMountOrder == null) {
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo, order.getOrderPattern());
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal fabricUsedMount = new BigDecimal(fabricUsedMountValue);
 			int compareTo = actualStock.compareTo(fabricUsedMount);
@@ -775,7 +775,7 @@ public class OrderDetailController {
 		}
 		else{
 			//実在庫を修正する
-			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo);
+			OrderDetail selectActualStock = orderDetailService.selectActualStock(productFabricNo, order.getOrderPattern());
 			BigDecimal actualStock = selectActualStock.getActualStock();
 			BigDecimal actualStockAddOrder = actualStock.add(fabricUsedMountOrder);
 			BigDecimal fabricUsedMount = new BigDecimal(fabricUsedMountValue);

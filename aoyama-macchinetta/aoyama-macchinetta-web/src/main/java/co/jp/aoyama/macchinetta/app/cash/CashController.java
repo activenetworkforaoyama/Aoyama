@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.dozer.Mapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,14 +25,22 @@ import com.google.gson.Gson;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Cash;
 import co.jp.aoyama.macchinetta.domain.model.CashInfo;
+import co.jp.aoyama.macchinetta.domain.model.MemberName;
 import co.jp.aoyama.macchinetta.domain.service.cash.CashInfoService;
 import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
 import co.jp.aoyama.macchinetta.domain.service.consumption.ConsumptionService;
+import co.jp.aoyama.macchinetta.domain.service.member.MemberNameService;
 
 @Controller
 @RequestMapping(value = "cash")
 @SessionAttributes(value = {"cashForm"})
 public class CashController {
+	@Value("${member.url:http://202.214.88.88/member/api/v1/memname}")
+	String memberUrl;
+	
+	@Inject
+	MemberNameService memberNameService;
+	
 	@Inject
 	SessionContent sessionContent;
 	
@@ -107,6 +116,32 @@ public class CashController {
 		Arrays.sort(arr); 
 		cashForm.setHelpCashForm(helpCashForm);
 		Cash cash = cashService.selectOrderByOrderId(strs[0].toString());
+		String custCd = cash.getCustCd();
+		String storeBrandCode = cash.getStoreBrandCode();
+		String gyotaiCd = "1";
+		if(storeBrandCode != null && "01".equals(storeBrandCode)) {
+			gyotaiCd = "1";
+		}
+		else if(storeBrandCode != null && ("03".equals(storeBrandCode) || "12".equals(storeBrandCode) || "21".equals(storeBrandCode))) {
+			gyotaiCd = "3";
+		}
+		MemberName MemberName = memberNameService.execute(memberUrl,custCd,gyotaiCd);
+		if(MemberName != null) {
+			String firstName = MemberName.getFirstName();
+			String lastName = MemberName.getLastName();
+			if(firstName != null && lastName != null) {
+				String custNm = lastName + " " + firstName;
+				cash.setCustNm(custNm);
+			}
+			else if(firstName == null && lastName != null) {
+				String custNm = lastName;
+				cash.setCustNm(custNm);
+			}
+			else if(firstName != null && lastName == null) {
+				String custNm = firstName;
+				cash.setCustNm(custNm);
+			}
+		}
 		//会計No.採番ルール:YYMMDDhhmmssSSS＋"－"＋店（４桁）
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
 		String cashId = sdf.format(new Date()) + "-" + cash.getShopCode();
@@ -152,6 +187,33 @@ public class CashController {
 				helpCashForm.add(cashInfoList.get(i));
 			}
 		}
+		String custCd = helpCashForm.get(0).getCustCd();
+		String storeBrandCode = cash.getStoreBrandCode();
+		String gyotaiCd = "1";
+		if(storeBrandCode != null && "01".equals(storeBrandCode)) {
+			gyotaiCd = "1";
+		}
+		else if(storeBrandCode != null && ("03".equals(storeBrandCode) || "12".equals(storeBrandCode) || "21".equals(storeBrandCode))) {
+			gyotaiCd = "3";
+		}
+		MemberName MemberName = memberNameService.execute(memberUrl,custCd,gyotaiCd);
+		if(MemberName != null) {
+			String firstName = MemberName.getFirstName();
+			String lastName = MemberName.getLastName();
+			if(firstName != null && lastName != null) {
+				String custNm = lastName + " " + firstName;
+				cash.setCustNm(custNm);
+			}
+			else if(firstName == null && lastName != null) {
+				String custNm = lastName;
+				cash.setCustNm(custNm);
+			}
+			else if(firstName != null && lastName == null) {
+				String custNm = firstName;
+				cash.setCustNm(custNm);
+			}
+		}
+		
 		Short amount = (short)helpCashForm.size();
 		List<String> factoryStatus=new ArrayList<>();
 		for(int i = 0;i<cashList.size();i++) {
@@ -164,7 +226,7 @@ public class CashController {
 			String flag = "cashInit";
 			cashForm.setBackFlag(flag);
 			cash.setOrderAmount(amount);
-			cash.setCustNm(cashList.get(0).getCustNm());
+			//cash.setCustNm(cashList.get(0).getCustCd());
 			beanMapper.map(cash, cashForm);
 			Date date = new Date();
 			// 消費税を取得
@@ -175,7 +237,7 @@ public class CashController {
 			model.addAttribute("json", json);
 			return "cash/cashForm";
 		}else {
-			cash.setCustNm(cashList.get(0).getCustNm());
+			//cash.setCustNm(cashList.get(0).getCustNm());
 			cashForm.setHelpCashForm(helpCashForm);
 			beanMapper.map(cash, cashForm);
 			String json = new Gson().toJson(helpCashForm);

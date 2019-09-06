@@ -94,13 +94,13 @@ public class StockServiceImpl implements StockService {
 
 	@Override
 	public void updateStockValue(String fabricNo, BigDecimal theoreticalStockUpdate,
-			BigDecimal reservationStockUpdate) {
-		stockRepository.updateStockValue(fabricNo, theoreticalStockUpdate, reservationStockUpdate);
+			BigDecimal reservationStockUpdate,String OrderPattern) {
+		stockRepository.updateStockValue(fabricNo, theoreticalStockUpdate, reservationStockUpdate,OrderPattern);
 	}
 
 	@Override
-	public void updateTheoreticalStock(String fabricNo, BigDecimal theoreticalStockUpdate) {
-		stockRepository.updateTheoreticalStock(fabricNo, theoreticalStockUpdate);
+	public void updateTheoreticalStock(String fabricNo, BigDecimal theoreticalStockUpdate,String OrderPattern) {
+		stockRepository.updateTheoreticalStock(fabricNo, theoreticalStockUpdate,OrderPattern);
 	}
 
 }

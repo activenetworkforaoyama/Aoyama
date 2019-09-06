@@ -19,4 +19,14 @@ public interface NextGenerationRepository {
 	NextGenerationPrice selectMarginRate(String fabricNo);
 	
 	NextGenerationPrice selectFactoryCode(String fabricNo);
+	
+	List<NextGenerationPrice> selectCoYield(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String shirtSubItemCode, String coatSubItemCode);
+	
+	List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo);
+	
+	List<NextGenerationPrice> selectCoBasicNextGenerationPrice(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String shirtSubItemCode, String coatSubItemCode,String itemCode,String fabricNo);
+	
+	NextGenerationPrice selectCoMarginRate(String fabricNo);
+	
+	NextGenerationPrice selectCoFactoryCode(String fabricNo);
 }

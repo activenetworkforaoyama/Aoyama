@@ -187,7 +187,9 @@ public class OrderDetailFormat implements Serializable{
 	private String corStBackdartsUnpackCorrectFm;
 	private String corStRightcuffsSurroundingCorrectFm;
 	private String corStLeftcuffsSurroundingCorrectFm;
-
+	private String orderKakuninSign;
+	private String orderKakuninKyakSign;
+	private String factorySijiSign;
 	
 	public String getBillingAmountFm() {
 		return billingAmountFm;
@@ -1274,6 +1276,24 @@ public class OrderDetailFormat implements Serializable{
 	}
 	public void setCorStLeftcuffsSurroundingCorrectFm(String corStLeftcuffsSurroundingCorrectFm) {
 		this.corStLeftcuffsSurroundingCorrectFm = corStLeftcuffsSurroundingCorrectFm;
+	}
+	public String getOrderKakuninSign() {
+		return orderKakuninSign;
+	}
+	public void setOrderKakuninSign(String orderKakuninSign) {
+		this.orderKakuninSign = orderKakuninSign;
+	}
+	public String getOrderKakuninKyakSign() {
+		return orderKakuninKyakSign;
+	}
+	public void setOrderKakuninKyakSign(String orderKakuninKyakSign) {
+		this.orderKakuninKyakSign = orderKakuninKyakSign;
+	}
+	public String getFactorySijiSign() {
+		return factorySijiSign;
+	}
+	public void setFactorySijiSign(String factorySijiSign) {
+		this.factorySijiSign = factorySijiSign;
 	}
 
 }

@@ -23,6 +23,21 @@
         <result property="makerName" column="maker_name" />
         <result property="fablicBrandNo" column="fablic_brand_no" />
     </resultMap>
+    
+  <resultMap id="modelResultMap" type="co.jp.aoyama.macchinetta.domain.model.Model" >
+    <id column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+    <id column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <id column="sub_item_code" property="subItemCode" jdbcType="VARCHAR" />
+    <id column="model_code" property="modelCode" jdbcType="VARCHAR" />
+    <result column="model_name" property="modelName" jdbcType="VARCHAR" />
+    <result column="support_factorys" property="supportFactorys" jdbcType="VARCHAR" />
+    <result column="style_name" property="styleName" jdbcType="VARCHAR" />
+    <result column="display_order" property="displayOrder" jdbcType="SMALLINT" />
+    <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
   
   <resultMap id="OrderFabricResultMap" type="OrderFindFabric">
 		<result property="materialName" column="material_name" />
@@ -60,7 +75,11 @@
 		<result property="ctSingleOnlyPlusAlphaPrice" column="ct_single_only_plus_alpha_price" />
 		<result property="ctDoubleOnlyPlusAlphaPrice" column="ct_double_only_plus_alpha_price" />
 		<result property="fabricNameExis" column="fabric_name_exist" />
-		
+		<result property="washableAvailable" column="washable_available" />
+		<result property="tuxedoAvailable" column="tuxedo_available" />
+		<result property="storeDelvEarly" column="store_delv_early" />
+		<result property="storeDelvCoat" column="store_delv_coat" />
+		<result property="lcrSewingAvailable" column="lcr_sewing_available" />
    </resultMap>
 
 	<resultMap id="OrderPriceResultMap" type="OrderPrice">
@@ -83,6 +102,11 @@
 	<select id="getOrderFabric" resultMap="OrderFabricResultMap"
 		parameterType="java.lang.String">
 		select
+		mf.lcr_sewing_available,
+		mf.store_delv_coat,
+		mf.store_delv_early,
+		mf.washable_available,
+		mf.tuxedo_available,
 		mf.fabric_name_exist,
 		ms.reservation_stock,
 		mf.coat_single_only_rate,
@@ -158,6 +182,42 @@
 		and mob.order_pattern = mobd.order_pattern
 		where mob.order_pattern =
 		#{arg0} and mob.standard_available = '1'
+
+	</select>
+	
+	<select id="getStandardSomePrice" resultMap="OrderPriceResultMap"
+		parameterType="java.lang.String">
+		select
+		mob.item_code as branchItemCode,
+		mob.sub_item_code as branchSubItemCode,
+		mob.model_code as branchModelCode ,
+		mob.option_code as branchOptionCode,
+		mob.option_branch_code as optinBranchCode,
+		COALESCE(mob.option_branch_price, 0) as optionBranchprice,
+		COALESCE(mob.option_branch_double_price, 0) as optionBranchDoublePrice,
+		mobd.item_code as detailItemCode,
+		mobd.sub_item_code as detailSubItemCode,
+		mobd.option_code as detailOptionCode,
+		mobd.option_branch_code as
+		detailOptionBranchCode,
+		mobd.option_branch_detail_code as
+		optionBranchDetailCode,
+		COALESCE(mobd.option_branch_price, 0) as detailBranchPrice,
+		COALESCE(mobd.option_branch_double_price, 0) as detailBranchDoublePrice
+		from
+		mtb_option_branch mob left join
+		mtb_option_branch_detail mobd
+		on
+		mob.item_code = mobd.item_code
+		and mob.sub_item_code = mobd.sub_item_code
+		and mob.option_code = mobd.option_code
+		and mob.option_branch_code = mobd.option_branch_code
+		and mob.order_pattern = mobd.order_pattern
+		where mob.order_pattern =
+		#{arg0} and mob.standard_available = '1'
+		and mob.option_code = #{arg1}
+		and mob.item_code = #{arg2}
+		and mob.sub_item_code = #{arg3}
 
 	</select>
 	
@@ -3545,6 +3605,12 @@
     	and item_code = #{arg1} 
     	and sub_item_code = #{arg3} 
     	and model_code = #{arg2}
+    </select>
+    
+    <select id="getFactoriesCo" resultMap="modelResultMap">
+    	select model_code,sub_item_code,support_factorys from mtb_model where 
+    	order_pattern = #{arg0} 
+    	and item_code = #{arg1} 
     </select>
     
     <select id="findOrderVersion" resultType="java.lang.Short">

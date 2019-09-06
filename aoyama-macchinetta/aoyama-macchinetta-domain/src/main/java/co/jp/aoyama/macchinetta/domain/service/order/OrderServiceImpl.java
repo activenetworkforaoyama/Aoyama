@@ -16,6 +16,7 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.domain.model.Cash;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
+import co.jp.aoyama.macchinetta.domain.model.Model;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
 import co.jp.aoyama.macchinetta.domain.model.OrderPrice;
@@ -24,8 +25,7 @@ import co.jp.aoyama.macchinetta.domain.repository.cash.CashRepository;
 import co.jp.aoyama.macchinetta.domain.repository.measuring.MeasuringRepository;
 import co.jp.aoyama.macchinetta.domain.repository.order.OrderRepository;
 import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
-import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
-import co.jp.aoyama.macchinetta.domain.service.stock.StockService;
+import co.jp.aoyama.macchinetta.domain.repository.stock.StockRepository;
 
 @Service
 @Transactional
@@ -45,13 +45,7 @@ public class OrderServiceImpl  implements OrderService {
 	MeasuringRepository measuringRepository;
 	
 	@Inject
-	OrderService orderService;
-	
-	@Inject
-	StockService stockService;
-	
-	@Inject
-	CashService cashService;
+	StockRepository stockRepository;
 
 
 	@Override
@@ -102,6 +96,7 @@ public class OrderServiceImpl  implements OrderService {
 		Order findOrderByPk = orderListRepository.findOrderByPk(order.getOrderId());
 		Short version = findOrderByPk.getVersion();
 		Short orderVersion = order.getVersion();
+		String orderPattern = order.getOrderPattern();
 		//会計ID
 		String cashId = findOrderByPk.getCashId();
 		//最終更新者
@@ -126,32 +121,32 @@ public class OrderServiceImpl  implements OrderService {
 				if(productFabricNoExit != null && productFabricNo != null && theoryFabricUsedMountOrder != null && reservationStockValue != null) {
 					if(productFabricNoExit.equals(productFabricNo)) {
 						if(theoryFabricUsedMountOrder.compareTo(reservationStockValue)!=0) {
-							Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
+							Stock stock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
 							
 							BigDecimal theoreticalStock = stock.getTheoreticalStock();
 							BigDecimal oldTheoreticalStockUpdate = theoreticalStock.add(theoryFabricUsedMountOrder);
 							BigDecimal newTheoreticalStockUpdate = oldTheoreticalStockUpdate.subtract(reservationStockValue);
-							stockService.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate);
+							stockRepository.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate,orderPattern);
 						}
 					}
 					else if(!productFabricNoExit.equals(productFabricNo)) {
 						//古い理論在庫を修正する
-						Stock oldStock = orderService.getStock(productFabricNoExit,order.getOrderPattern());
+						Stock oldStock = orderRepository.getStock(productFabricNoExit,order.getOrderPattern());
 						BigDecimal oldTheoreticalStock = oldStock.getTheoreticalStock();
 						BigDecimal oldTheoreticalStockUpdate = oldTheoreticalStock.add(theoryFabricUsedMountOrder);
-						stockService.updateTheoreticalStock(productFabricNoExit,oldTheoreticalStockUpdate);
+						stockRepository.updateTheoreticalStock(productFabricNoExit,oldTheoreticalStockUpdate,orderPattern);
 						
 						//新しい理論在庫を修正する
-						Stock newStock = orderService.getStock(productFabricNo,order.getOrderPattern());
+						Stock newStock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
 						BigDecimal newTheoreticalStock = newStock.getTheoreticalStock();
 						BigDecimal newTheoreticalStockUpdate = newTheoreticalStock.subtract(reservationStockValue);
-						stockService.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate);
+						stockRepository.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate,orderPattern);
 					}
 				}
 					
 				if("T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
 					if(cashId != null || !("".equals(cashId))) {
-						cashService.updateCashStatus(cashId, cashStatus, updatedUserId, updatedAt);
+						cashRepository.updateCashStatus(cashId, cashStatus, updatedUserId, updatedAt);
 					}
 				}
 			}
@@ -164,19 +159,26 @@ public class OrderServiceImpl  implements OrderService {
 			
 		}
 		else {
-			
-			orderRepository.updateOrder(order);
-			
-			//TSCステータスは空、T0（一時保存）、T1（取り置き）の場合
-			if("".equals(status) || "T0".equals(status) || "T1".equals(status)) {
-				if(productFabricNo != null && reservationStockValue != null) {
-					Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
-					BigDecimal theoreticalStock = stock.getTheoreticalStock();
-					BigDecimal stockReservationStock = stock.getReservationStock();
-					BigDecimal theoreticalStockUpdate = theoreticalStock.subtract(reservationStockValue);
-					BigDecimal reservationStockUpdate = stockReservationStock.subtract(reservationStockValue);
-					stockService.updateStockValue(productFabricNo,theoreticalStockUpdate,reservationStockUpdate);
+			if(orderVersion.equals(version)) {
+				orderRepository.updateOrder(order);
+				
+				//TSCステータスは空、T0（一時保存）、T1（取り置き）の場合
+				if("".equals(status) || "T0".equals(status) || "T1".equals(status)) {
+					if(productFabricNo != null && reservationStockValue != null) {
+						Stock stock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+						BigDecimal theoreticalStock = stock.getTheoreticalStock();
+						BigDecimal stockReservationStock = stock.getReservationStock();
+						BigDecimal theoreticalStockUpdate = theoreticalStock.subtract(reservationStockValue);
+						BigDecimal reservationStockUpdate = stockReservationStock.subtract(reservationStockValue);
+						stockRepository.updateStockValue(productFabricNo,theoreticalStockUpdate,reservationStockUpdate,orderPattern);
+					}
 				}
+			}
+			else {
+				ResultMessages resultMessages = ResultMessages.error();
+				resultMessages.add("E023", order.getOrderId());
+	            logger.error(resultMessages.toString());
+	            throw new ResourceNotFoundException(resultMessages);
 			}
 		}
 	}
@@ -398,6 +400,18 @@ public class OrderServiceImpl  implements OrderService {
 	public List<OrderPrice> getWashableOrderPrice(String orderPattern) {
 		List<OrderPrice> orderList = orderRepository.getWashableOrderPrice(orderPattern);
 		return orderList;
+	}
+
+	@Override
+	public List<OrderPrice> getStandardSomePrice(String orderPattern,String optionCode,String itemCode,String subItemCode) {
+		List<OrderPrice> standardSomePriceList = orderRepository.getStandardSomePrice(orderPattern,optionCode,itemCode,subItemCode);
+		return standardSomePriceList;
+	}
+
+	@Override
+	public List<Model> getFactoriesCo(String orderPattern, String itemCode) {
+		List<Model> modelList = orderRepository.getFactoriesCo(orderPattern,itemCode);
+		return modelList;
 	}
 
 

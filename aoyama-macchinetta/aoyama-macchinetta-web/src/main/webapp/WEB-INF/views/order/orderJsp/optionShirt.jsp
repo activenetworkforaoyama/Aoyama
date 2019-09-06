@@ -13,6 +13,8 @@
                                 	<form:options items="${orderForm.optionShirtStandardInfo.osShirtModelMap}"/>
                                 </form:select>
                             </div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="shirtModelMsg" style="margin-top:8px"></div> -->
+                            <div class="col-12 col-md-9 offset-md-3" id="shirtModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">襟型</label></div>
@@ -282,14 +284,8 @@
 			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
 			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
             <input type="hidden" id="stCasualHemlineSize" name="optionShirtStandardInfo.stCasualHemlineSize"  value="" />
+<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="0" />
 </form:form>
-<script	src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/chosen.jquery.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 
 <!-- 自作js -->
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.shirt.js"></script>
@@ -305,7 +301,13 @@ var shirtItemFlag="${orderForm.shirtItemFlag}";
  ************************************************/
  // 自作jsに記載
 jQuery(function() {
-
+	var shirtAdFlag="${orderForm.shirtAdFlag}";
+	if(shirtAdFlag=="1"){
+		jQuery("#shirtAdFlag").val("${orderForm.shirtAdFlag}");
+		}
+	jQuery("#shirtModel").change(function(){
+		jQuery("#shirtAdFlag").val("0");
+	    })   
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -323,6 +325,31 @@ jQuery(function() {
 	setShirtModelDisable();
 	
 	jQuery("#shirtModel").change(function(){
+		var shirtModel = jQuery(this).val();
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var itemCode = "05";
+		var subItemCode = "05"
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+			
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(shirtModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#shModelFlag").val("0");
+				jQuery("#shirtModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#shModelFlag").val("1"+"*"+getMsgByOneArg('msg065','SHIRT'));
+				setAlert('shirtModelCheck',getMsgByOneArg('msg065','SHIRT'));
+			}
+		}	
 		jQuery("#shirtFlag").val("1");
 	})
 	
@@ -513,5 +540,12 @@ function changeAddCuffSession() {
 		jQuery('#os_AddCuff_id1').prop('checked', true);
 		jQuery('#os_AddCuff_id2').prop('disabled', true);
 	}
+}
+
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
 }
 </script>

@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration>
 
-	<property name="app.log.dir" value="/opt/tomcat9/logs/" />
+	<property name="app.log.dir" value="/var/log/webapp/" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern><![CDATA[date:%d{yyyy-MM-dd HH:mm:ss}\tthread:%thread\tX-Track:%X{X-Track}\tlevel:%-5level\tlogger:%-48logger{48}\tmessage:%msg%n]]></pattern>

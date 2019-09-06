@@ -46,6 +46,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opBeltLoopMap;
     
     //ベルトループ箇所 
+    private String opBeltLoopPlace;
+    
     private String opBeltLoopPlace1;
     
     private String opBeltLoopPlace2;
@@ -123,6 +125,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opStitchModifyMap;
     
     //ステッチ箇所変更箇所
+    private String opStitchModifyPlace;
+    
     private String opStitchModifyPlace1;
     
     private String opStitchModifyPlace2;
@@ -139,6 +143,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opDStitchMap;
     
     //ダブルステッチ箇所
+    private String opDStitchPlace;
+    
     private String opDStitchPlace1;
 
     private String opDStitchPlace2;
@@ -160,6 +166,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opAmfColorPlaceAllMap;
     
     //AMF色指定箇所
+    private String opAmfColorPlace;
+    
     private String opAmfColorPlace1;
     
     private String opAmfColorPlace2;
@@ -196,6 +204,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opBhColorPlaceAllMap;
     
     //ボタンホール色指定箇所
+    private String opBhColorPlace;
+    
     private String opBhColorPlace1;
     
     private String opBhColorPlace2;
@@ -232,6 +242,8 @@ public class OptionPantsStandardInfo implements Serializable{
     private Map<String,String> opByColorPlaceAllMap;
     
     //ボタン付け糸指定箇所
+    private String opByColorPlace;
+    
     private String opByColorPlace1;
     
     private String opByColorPlace2;
@@ -1229,6 +1241,54 @@ public class OptionPantsStandardInfo implements Serializable{
 
 	public void setOpByColorPlace4(String opByColorPlace4) {
 		this.opByColorPlace4 = opByColorPlace4;
+	}
+
+	public String getOpBeltLoopPlace() {
+		return opBeltLoopPlace;
+	}
+
+	public void setOpBeltLoopPlace(String opBeltLoopPlace) {
+		this.opBeltLoopPlace = opBeltLoopPlace;
+	}
+
+	public String getOpStitchModifyPlace() {
+		return opStitchModifyPlace;
+	}
+
+	public void setOpStitchModifyPlace(String opStitchModifyPlace) {
+		this.opStitchModifyPlace = opStitchModifyPlace;
+	}
+
+	public String getOpDStitchPlace() {
+		return opDStitchPlace;
+	}
+
+	public void setOpDStitchPlace(String opDStitchPlace) {
+		this.opDStitchPlace = opDStitchPlace;
+	}
+
+	public String getOpAmfColorPlace() {
+		return opAmfColorPlace;
+	}
+
+	public void setOpAmfColorPlace(String opAmfColorPlace) {
+		this.opAmfColorPlace = opAmfColorPlace;
+	}
+
+	public String getOpBhColorPlace() {
+		return opBhColorPlace;
+	}
+
+	public void setOpBhColorPlace(String opBhColorPlace) {
+		this.opBhColorPlace = opBhColorPlace;
+	}
+
+	public String getOpByColorPlace() {
+		return opByColorPlace;
+	}
+
+	public void setOpByColorPlace(String opByColorPlace) {
+		this.opByColorPlace = opByColorPlace;
 	}
 
 }

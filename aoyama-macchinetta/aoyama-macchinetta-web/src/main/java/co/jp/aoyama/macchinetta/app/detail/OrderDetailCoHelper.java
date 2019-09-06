@@ -16,40 +16,42 @@ public class OrderDetailCoHelper {
 
 	/**
 	 * 項目変換処理
-	 * @param 注文情報 order
-	 * @param 注文情報 orderFm
+	 * @param 注文情報
 	 */
 	public void getOptionDataFormat(Order order, OrderDetailFormat orderFm) {
 		
+		//ベルトループ、内ポケット変更、ステッチ箇所変更、ダブルステッチ変更、
+		//AMF色指定、ボタンホール色指定、ボタン付け糸指定の分割処理
+		
 		//JACKETモデル
-		order.setJkInnerPktNm(getvalue(order.getJkInnerPktNm()));
-		order.setJkStitchTypeNm(getvalue(order.getJkStitchTypeNm()));
-		order.setJkDblstitchPlcNm(getvalue(order.getJkDblstitchPlcNm()));
-		order.setJkAmfColorPlcNm(getvalue(order.getJkAmfColorPlcNm()));
-		order.setJkBtnholeColorPlcN(getvalue(order.getJkBtnholeColorPlcN()));
-		order.setJkBtnthreadColorPlcN(getvalue(order.getJkBtnthreadColorPlcN()));
+		order.setJkInnerPktNm(getHalfReplaceValue(order.getJkInnerPktNm()));
+		order.setJkStitchTypeNm(getHalfReplaceValue(order.getJkStitchTypeNm()));
+		order.setJkDblstitchPlcNm(getHalfReplaceValue(order.getJkDblstitchPlcNm()));
+		order.setJkAmfColorPlcNm(getHalfReplaceValue(order.getJkAmfColorPlcNm()));
+		order.setJkBtnholeColorPlcN(getHalfReplaceValue(order.getJkBtnholeColorPlcN()));
+		order.setJkBtnthreadColorPlcN(getHalfReplaceValue(order.getJkBtnthreadColorPlcN()));
 
 		//GILETモデル
-		order.setGlStitchPlcNm(getvalue(order.getGlStitchPlcNm()));
-		order.setGlDblstitchPlcNm(getvalue(order.getGlDblstitchPlcNm()));
-		order.setGlBtnholeColorPlcNm(getvalue(order.getGlBtnholeColorPlcNm()));
-		order.setGlBtnthreadColorPlcNm(getvalue(order.getGlBtnthreadColorPlcNm()));
+		order.setGlStitchPlcNm(getHalfReplaceValue(order.getGlStitchPlcNm()));
+		order.setGlDblstitchPlcNm(getHalfReplaceValue(order.getGlDblstitchPlcNm()));
+		order.setGlBtnholeColorPlcNm(getHalfReplaceValue(order.getGlBtnholeColorPlcNm()));
+		order.setGlBtnthreadColorPlcNm(getHalfReplaceValue(order.getGlBtnthreadColorPlcNm()));
 		
 		//PANTSモデル
-		order.setPtBeltloopNm(getvalue(order.getPtBeltloopNm()));
-		order.setPtStitchPlcNm(getvalue(order.getPtStitchPlcNm()));
-		order.setPtDblstitchPlcNm(getvalue(order.getPtDblstitchPlcNm()));
-		order.setPtAmfColorPlcNm(getvalue(order.getPtAmfColorPlcNm()));
-		order.setPtBtnholeColorPlcNm(getvalue(order.getPtBtnholeColorPlcNm()));
-		order.setPtBtnthreadColorPlcNm(getvalue(order.getPtBtnthreadColorPlcNm()));
+		order.setPtBeltloopNm(getHalfReplaceValue(order.getPtBeltloopNm()));
+		order.setPtStitchPlcNm(getHalfReplaceValue(order.getPtStitchPlcNm()));
+		order.setPtDblstitchPlcNm(getHalfReplaceValue(order.getPtDblstitchPlcNm()));
+		order.setPtAmfColorPlcNm(getHalfReplaceValue(order.getPtAmfColorPlcNm()));
+		order.setPtBtnholeColorPlcNm(getHalfReplaceValue(order.getPtBtnholeColorPlcNm()));
+		order.setPtBtnthreadColorPlcNm(getHalfReplaceValue(order.getPtBtnthreadColorPlcNm()));
 		
 		//2PANTSモデル
-		order.setPt2BeltloopNm(getvalue(order.getPt2BeltloopNm()));
-		order.setPt2StitchPlcNm(getvalue(order.getPt2StitchPlcNm()));
-		order.setPt2DblstitchPlcNm(getvalue(order.getPt2DblstitchPlcNm()));
-		order.setPt2AmfColorPlcNm(getvalue(order.getPt2AmfColorPlcNm()));
-		order.setPt2BtnholeColorPlcNm(getvalue(order.getPt2BtnholeColorPlcNm()));
-		order.setPt2BtnthreadColorPlcNm(getvalue(order.getPt2BtnthreadColorPlcNm()));
+		order.setPt2BeltloopNm(getHalfReplaceValue(order.getPt2BeltloopNm()));
+		order.setPt2StitchPlcNm(getHalfReplaceValue(order.getPt2StitchPlcNm()));
+		order.setPt2DblstitchPlcNm(getHalfReplaceValue(order.getPt2DblstitchPlcNm()));
+		order.setPt2AmfColorPlcNm(getHalfReplaceValue(order.getPt2AmfColorPlcNm()));
+		order.setPt2BtnholeColorPlcNm(getHalfReplaceValue(order.getPt2BtnholeColorPlcNm()));
+		order.setPt2BtnthreadColorPlcNm(getHalfReplaceValue(order.getPt2BtnthreadColorPlcNm()));
 
 		//上代価格の変換
 		orderFm.setProductIs3pieceRtPriceFm(getRtValue(order.getProductIs3pieceRtPrice()));
@@ -252,15 +254,44 @@ public class OrderDetailCoHelper {
 		orderFm.setCorStRightcuffsSurroundingCorrectFm(getCorrectValue(order.getCorStRightcuffsSurroundingCorrect()));
 		orderFm.setCorStLeftcuffsSurroundingCorrectFm(getCorrectValue(order.getCorStLeftcuffsSurroundingCorrect()));
 		
+		//注文内容確認書と工場指示書の標示設定
+		String productItem = order.getProductItem();
+		
+		//SUIT（01）、JACKET（02）、PANTS（03）、GILET（04）の場合
+		if ("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+			//注文内容確認書
+			orderFm.setOrderKakuninSign("1");
+			//注文内容確認書_お客様向け
+			orderFm.setOrderKakuninKyakSign("2");
+			//工場指示書
+			orderFm.setFactorySijiSign("3");
+			
+		//SHIRT（05）の場合
+		} else if ("05".equals(productItem)) {
+			//注文内容確認書
+			orderFm.setOrderKakuninSign("7");
+			//注文内容確認書_お客様向け
+			orderFm.setOrderKakuninKyakSign("8");
+			//工場指示書
+			orderFm.setFactorySijiSign("9");
+			
+		//COAT（06）の場合
+		}  else if ("06".equals(productItem)) {
+			//注文内容確認書
+			orderFm.setOrderKakuninSign("4");
+			//注文内容確認書_お客様向け
+			orderFm.setOrderKakuninKyakSign("5");
+			//工場指示書
+			orderFm.setFactorySijiSign("6");
+		}
+		
 	}
 	
 	/**
-	 * 
-	 * @param 入力パラメーター
-	 *  半角コンマを半角スペースに置換する
-	 * @return
+	 * 半角コンマを半角スペースに置換する
+	 * @return　置換後の文字列
 	 */
-	public String getvalue(String src) {
+	public String getHalfReplaceValue(String src) {
 		String sourceString = "";
 		
 		//文字列が空もしくはnullの場合、空を返す
@@ -276,10 +307,8 @@ public class OrderDetailCoHelper {
 	
 	
 	/**
-	 * 
-	 * @param 上代価格
-	 *　上代価格の変換
-	 * @return
+	 * 上代価格の変換
+	 * @return　変換後の上代価格
 	 */
 	public String getRtValue(Integer src) {
 		
@@ -296,7 +325,6 @@ public class OrderDetailCoHelper {
 				sourceString = "￥" + df.format(value);
 				
 			} catch (NumberFormatException e) {
-				//何にもなし
 				sourceString = "無料";
 			}
 		}
@@ -305,10 +333,8 @@ public class OrderDetailCoHelper {
 	}
 	
 	/**
-	 * 
-	 * @param オプション金額
-	    *　オプション金額の変換
-	 * @return
+	 * オプション金額の変換
+	 * @return　変換後のオプション金額
 	 */
 	public String getFormatMoneyValue(Integer src) {
 		
@@ -330,7 +356,7 @@ public class OrderDetailCoHelper {
 	}
 	
 	/**
-	 * @param 補正値
+	 * 補正値の設定
 	 * @return 変換後の補正値
 	 */
 	public String getCorrectValue(BigDecimal src) {

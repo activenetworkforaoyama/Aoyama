@@ -255,4 +255,108 @@
 	  where mfa.fabric_no = #{arg0}
 	  		and mfa.order_pattern = 'PO'
   </select>
+  <select id="selectCoYield" resultMap="NextGenerationResultMap">
+	  select sub_item_code as subItemCode,
+			 nomal_fabric_amount as nomalFabricAmount,
+			 double_breasted_fabric_amount as  doubleBreastedFabricAmount
+	  from mtb_yield
+	where sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5})
+  </select>
+   <select id="selectCoWholesalePiece" resultMap="NextGenerationResultMap">
+	  select mwp.factory_code || mwp.item_code as wholesaleKeyCode,
+	  		 dollar_exchange as dollarExchange,
+		     product_tariff as productTariff,
+		     product_shipping as productShipping,
+		     shipping_error as shippingError
+ 	  from mtb_wholesale_piece as mwp,
+      		mtb_fabric as mfa
+ 	  where mwp.factory_code = mfa.factory_code
+	       and mfa.fabric_no = #{arg0}
+	       and mfa.order_pattern = 'CO'
+  </select>
+  
+  
+  <select id="selectCoBasicNextGenerationPrice" resultMap="NextGenerationResultMap"> 
+  <if test='param7 == "01" or param7 == "02"'>
+  	select mdbw.item_code || mdbw.sub_item_code keyItemCode,
+       COALESCE(mfa.fabric_price, 0) as fabricPrice,
+       mfa.factory_code as mfaFactoryCode,
+       COALESCE(mbw.wage, 0) as mbwWage,
+       COALESCE(mdbw.wage, 0) as mdbwWage,
+       COALESCE(mnap.price, 0) as mnapPrice,
+       COALESCE(mdbap.price, 0) as mdbapPrice,
+       mdbw.item_code as mbwItemCode,
+       mdbw.sub_item_code as mdbwSubItemCode
+	from mtb_fabric as mfa,
+	   mtb_base_wage as mbw left join mtb_double_breasted_wage as mdbw on mdbw.factory_code = mbw.factory_code and mbw.item_code = mdbw.item_code,
+	   mtb_nomal_accessory_price as mnap left join mtb_double_breasted_accessory_price as mdbap on mdbap.factory_code = mnap.factory_code and mnap.item_code = mdbap.item_code and mnap.order_pattern = mdbap.order_pattern
+ 	where  mnap.factory_code = mfa.factory_code
+       and mbw.factory_code = mfa.factory_code 
+       and mbw.item_code = mnap.item_code
+       and mdbw.sub_item_code = mdbap.sub_item_code
+       and mfa.fabric_no = #{arg7}
+       and mbw.item_code = #{arg6}
+       and mnap.order_pattern = 'CO'
+       <if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4!=null and param4!=''">	
+       		and mdbw.sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3})	
+	   </if>
+	   <if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4==null">	
+      		and mdbw.sub_item_code in (#{arg0},#{arg1},#{arg2})	
+		</if>
+		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4!=null and param4!=''">	
+      		and mdbw.sub_item_code in (#{arg0},#{arg1},#{arg3})	
+		</if>
+		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4==null">	
+      		and mdbw.sub_item_code in (#{arg0},#{arg1})	
+		</if>
+		<if test="param1!=null and param1!='' and param2==null and param3==null and param4==null">	
+      		and mdbw.sub_item_code in (#{arg0})	
+		</if>
+		<if test="param1==null and param2!=null and param2!=''and param3==null and param4==null">	
+      		and mdbw.sub_item_code in (#{arg1})	
+		</if>
+		<if test="param1==null and param2==null and param3!=null and param3!=''and param4==null">	
+      		and mdbw.sub_item_code in (#{arg2})	
+		</if>
+	</if>
+	<if test='param7 == "03" or param7 == "04" or param7 == "05" or param7 == "06"'>
+	select mbw.item_code || mbw.item_code keyItemCode,
+       COALESCE(mfa.fabric_price, 0) as fabricPrice,
+       mfa.factory_code as mfaFactoryCode,
+       COALESCE(mbw.wage, 0) as mbwWage,
+       COALESCE(mdbw.wage, 0) as mdbwWage,
+       COALESCE(mnap.price, 0) as mnapPrice,
+       COALESCE(mdbap.price, 0) as mdbapPrice,
+       mdbw.item_code as mbwItemCode,
+       mdbw.sub_item_code as mdbwSubItemCode
+	from mtb_fabric as mfa,
+	   mtb_base_wage as mbw left join mtb_double_breasted_wage as mdbw on mdbw.factory_code = mbw.factory_code and mbw.item_code = mdbw.item_code,
+	   mtb_nomal_accessory_price as mnap left join mtb_double_breasted_accessory_price as mdbap on mdbap.factory_code = mnap.factory_code and mnap.item_code = mdbap.item_code and mnap.order_pattern = mdbap.order_pattern
+ 	where  mnap.factory_code = mfa.factory_code
+       and mbw.factory_code = mfa.factory_code 
+       and mbw.item_code = mnap.item_code
+       and mfa.fabric_no = #{arg7}
+       and mbw.item_code = #{arg6}
+       and mnap.order_pattern = 'CO'
+	</if>
+  </select>
+  
+  <select id="selectCoMarginRate" resultMap="NextGenerationResultMap">
+	  select margin_rate as marginRate
+	  from mtb_maker_margin as mmm,
+		   mtb_fabric as mfa
+	  where mmm.maker_code = mfa.maker_code
+	        and mfa.fabric_no = #{arg0}
+	        and mfa.order_pattern = 'CO'
+  </select>
+  
+  <select id="selectCoFactoryCode" resultMap="NextGenerationResultMap">
+	  select mfa.factory_code as mfaFactoryCode,
+	  		 COALESCE(mfa.fabric_price, 0) as fabricPrice,
+	  		 COALESCE(mfa.ws_price_adjust, 0) as wsPriceAdjust
+	  from mtb_fabric as mfa
+	  where mfa.fabric_no = #{arg0}
+	  		and mfa.order_pattern = 'CO'
+  </select>
+  
  </mapper>

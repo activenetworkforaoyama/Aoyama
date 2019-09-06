@@ -15,6 +15,38 @@ function initOptionPants1Standard() {
 			// 未選択時は何もしない
 			return;
 		}
+		
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var item = jQuery("#item").val();
+		var subItemCode = "03"
+		var itemCode = "";
+		if(item == "01"){
+			itemCode = "01"
+		}else if(item == "03"){
+			itemCode = "03";
+		}
+		
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(pantsModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#ptModelFlag").val("0");
+				jQuery("#op_pantsModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#ptModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS'));
+				appendAlertPo('op_pantsModelCheck',getMsgByOneArg('msg065','PANTS'));
+			}
+		}
 
 		// 選択中のタック
 		var tackElem = jQuery('#op_tack');
@@ -727,7 +759,7 @@ function changedBeltLoop() {
 	}	
 
 	// フラシループ設定
-	var frsAreaElem = jQuery('#op_beltLoopPlace_id7');
+	var frsAreaElem = jQuery('#op_beltLoopPlace_id17');
 	if (jQuery('#op_pantsModel').val() == 'NZ01') {
 		// 表示
 		frsAreaElem.show();
@@ -1140,3 +1172,10 @@ jQuery('#btn_op2_samePants').click(function (){
 	jQuery('input[name="op2_shapeMemory"]').val([jQuery('input[name="op_shapeMemory"]:checked').val()]);
 	jQuery('input[name="op2_shapeMemory"]').change();
 });
+
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
+}

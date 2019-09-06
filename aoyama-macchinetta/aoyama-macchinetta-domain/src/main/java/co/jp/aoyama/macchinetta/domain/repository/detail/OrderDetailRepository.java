@@ -7,7 +7,7 @@ import co.jp.aoyama.macchinetta.domain.model.OrderDetail;
 
 public interface OrderDetailRepository {
 
-	OrderDetail selectActualStock(String fabricNo);
+	OrderDetail selectActualStock(String fabricNo, String orderPattern);
 	
 	void updateActualStock(String fabricId,BigDecimal remainActualStock,String updatedUserId,Date updatedAt);
 	

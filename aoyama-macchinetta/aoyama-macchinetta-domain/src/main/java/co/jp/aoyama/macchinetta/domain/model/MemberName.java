@@ -52,9 +52,11 @@ public class MemberName implements Serializable {
         // String→Mapに変換
         HashMap<String, String> map = new HashMap<String, String>();
         if (null != plainText) {
-            String[] lines = plainText.split("\r\n");
+        	String replace = plainText.replace("\\r\\n",",");
+            String[] lines = replace.split(",");
             for (String line : lines) {
-                String[] s = line.split("\t");
+            	String replace2 = line.replace("\\t",",");
+                String[] s = replace2.split(",");
                 if ((null != s) && (2 <= s.length)) {
                     map.put(s[0], s[1]);
                 }

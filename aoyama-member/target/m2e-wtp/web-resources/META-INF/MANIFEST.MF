@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: Macchinetta Server Framework (1.x) Web Blank Pro
+ ject
+Implementation-Version: 1.0.0-SNAPSHOT
+Built-By: gaoxiang-pc
+Implementation-Vendor-Id: aoyama
+Build-Jdk: 1.8.0_202-ea
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Macchinetta Framework Team
+

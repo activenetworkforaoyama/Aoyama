@@ -15,6 +15,38 @@ function initOptionPants1Tuxedo() {
 			// 未選択時は何もしない
 			return;
 		}
+		
+		var productFabricNo = jQuery("#productFabricNo").val();
+		var item = jQuery("#item").val();
+		var subItemCode = "03"
+		var itemCode = "";
+		if(item == "01"){
+			itemCode = "01"
+		}else if(item == "03"){
+			itemCode = "03";
+		}
+		
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+			//モデルチェク
+			var checkResult = modelCheck(pantsModel,productFabricNo,orderPattern,itemCode,subItemCode);
+			if(checkResult == "true"){
+				//0はモデルチェク成功の場合
+				jQuery("#ptModelFlag").val("0");
+				jQuery("#tp_pantsModelCheck").empty();
+				jQuery("#fabricMsg").empty();
+			}else if(checkResult == "false"){
+				//2はモデルチェク失敗の場合
+				jQuery("#ptModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS'));
+				appendAlertPo('tp_pantsModelCheck',getMsgByOneArg('msg065','PANTS'));
+			}
+		}
 
 		// 選択中のタック
 		var tackElem = jQuery('#tp_tack');
@@ -24,7 +56,7 @@ function initOptionPants1Tuxedo() {
 		tackElem.empty();
 		var tmpTack = null;
 		for (tmpTack of tackList[pantsModel].activeList) {
-			tackElem.append(jQuery('<option />').val(tmpTack).text(tmpTack));
+			tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
 		}
 		// デフォルトを選択
 		tackElem.val(tackList[pantsModel].defaultValue);
@@ -945,3 +977,9 @@ jQuery('#btn_tp2_samePants').click(function (){
 	jQuery('input[name="tp2_sideStripeWidth"]').val([jQuery('input[name="tp_sideStripeWidth"]:checked').val()]);
 	jQuery('input[name="tp2_sideStripeWidth"]').change();
 });
+
+function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
+	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});
+	checkResult = checkResult.responseText;
+	return checkResult;
+}

@@ -49,6 +49,20 @@ public class OptionPantsWashableInfo implements Serializable{
     //ベルトループ箇所 
     private String wpBeltLoopPlace;
     
+    private String wpBeltLoopPlace1;
+    
+    private String wpBeltLoopPlace2;
+    
+    private String wpBeltLoopPlace3;
+    
+    private String wpBeltLoopPlace4;
+    
+    private String wpBeltLoopPlace5;
+    
+    private String wpBeltLoopPlace6;
+    
+    private String wpBeltLoopPlace7;
+    
     private Map<String,String> wpBeltLoopPlaceMap;
     
     //ピンループ
@@ -114,6 +128,14 @@ public class OptionPantsWashableInfo implements Serializable{
     //ステッチ箇所変更箇所
     private String wpStitchModifyPlace;
     
+    private String wpStitchModifyPlace1;
+    
+    private String wpStitchModifyPlace2;
+    
+    private String wpStitchModifyPlace3;
+    
+    private String wpStitchModifyPlace4;
+    
     private Map<String,String> wpStitchModifyPlaceMap;
     
     //ダブルステッチ
@@ -123,6 +145,14 @@ public class OptionPantsWashableInfo implements Serializable{
     
     //ダブルステッチ箇所
     private String wpDStitchPlace;
+    
+    private String wpDStitchPlace1;
+    
+    private String wpDStitchPlace2;
+    
+    private String wpDStitchPlace3;
+    
+    private String wpDStitchPlace4;
     
     private Map<String,String> wpDStitchPlaceMap;
     
@@ -138,6 +168,14 @@ public class OptionPantsWashableInfo implements Serializable{
     
     //AMF色指定箇所
     private String wpAmfColorPlace;
+    
+    private String wpAmfColorPlace1;
+    
+    private String wpAmfColorPlace2;
+    
+    private String wpAmfColorPlace3;
+    
+    private String wpAmfColorPlace4;
     
     private Map<String,String> wpAmfColorPlaceMap;
     
@@ -169,6 +207,14 @@ public class OptionPantsWashableInfo implements Serializable{
     //ボタンホール色指定箇所
     private String wpBhColorPlace;
     
+    private String wpBhColorPlace1;
+    
+    private String wpBhColorPlace2;
+    
+    private String wpBhColorPlace3;
+    
+    private String wpBhColorPlace4;
+    
     private Map<String,String> wpBhColorPlaceMap;
     
     //ボタンホール色指定糸色  フロント
@@ -198,6 +244,14 @@ public class OptionPantsWashableInfo implements Serializable{
     
     //ボタン付け糸指定箇所
     private String wpByColorPlace;
+    
+    private String wpByColorPlace1;
+    
+    private String wpByColorPlace2;
+    
+    private String wpByColorPlace3;
+    
+    private String wpByColorPlace4;
     
     private Map<String,String> wpByColorPlaceMap;
     
@@ -375,14 +429,6 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpBeltLoopMap(Map<String, String> wpBeltLoopMap) {
 		this.wpBeltLoopMap = wpBeltLoopMap;
-	}
-
-	public String getWpBeltLoopPlace() {
-		return wpBeltLoopPlace;
-	}
-
-	public void setWpBeltLoopPlace(String wpBeltLoopPlace) {
-		this.wpBeltLoopPlace = wpBeltLoopPlace;
 	}
 
 	public Map<String, String> getWpBeltLoopPlaceMap() {
@@ -585,14 +631,6 @@ public class OptionPantsWashableInfo implements Serializable{
 		this.wpStitchModifyMap = wpStitchModifyMap;
 	}
 
-	public String getWpStitchModifyPlace() {
-		return wpStitchModifyPlace;
-	}
-
-	public void setWpStitchModifyPlace(String wpStitchModifyPlace) {
-		this.wpStitchModifyPlace = wpStitchModifyPlace;
-	}
-
 	public Map<String, String> getWpStitchModifyPlaceMap() {
 		return wpStitchModifyPlaceMap;
 	}
@@ -615,14 +653,6 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpDStitchMap(Map<String, String> wpDStitchMap) {
 		this.wpDStitchMap = wpDStitchMap;
-	}
-
-	public String getWpDStitchPlace() {
-		return wpDStitchPlace;
-	}
-
-	public void setWpDStitchPlace(String wpDStitchPlace) {
-		this.wpDStitchPlace = wpDStitchPlace;
 	}
 
 	public Map<String, String> getWpDStitchPlaceMap() {
@@ -663,14 +693,6 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpAmfColorPlaceAllMap(Map<String, String> wpAmfColorPlaceAllMap) {
 		this.wpAmfColorPlaceAllMap = wpAmfColorPlaceAllMap;
-	}
-
-	public String getWpAmfColorPlace() {
-		return wpAmfColorPlace;
-	}
-
-	public void setWpAmfColorPlace(String wpAmfColorPlace) {
-		this.wpAmfColorPlace = wpAmfColorPlace;
 	}
 
 	public Map<String, String> getWpAmfColorPlaceMap() {
@@ -753,14 +775,6 @@ public class OptionPantsWashableInfo implements Serializable{
 		this.wpBhColorPlaceAllMap = wpBhColorPlaceAllMap;
 	}
 
-	public String getWpBhColorPlace() {
-		return wpBhColorPlace;
-	}
-
-	public void setWpBhColorPlace(String wpBhColorPlace) {
-		this.wpBhColorPlace = wpBhColorPlace;
-	}
-
 	public Map<String, String> getWpBhColorPlaceMap() {
 		return wpBhColorPlaceMap;
 	}
@@ -839,14 +853,6 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpByColorPlaceAllMap(Map<String, String> wpByColorPlaceAllMap) {
 		this.wpByColorPlaceAllMap = wpByColorPlaceAllMap;
-	}
-
-	public String getWpByColorPlace() {
-		return wpByColorPlace;
-	}
-
-	public void setWpByColorPlace(String wpByColorPlace) {
-		this.wpByColorPlace = wpByColorPlace;
 	}
 
 	public Map<String, String> getWpByColorPlaceMap() {
@@ -999,6 +1005,270 @@ public class OptionPantsWashableInfo implements Serializable{
 
 	public void setWpBlisterMap(Map<String, String> wpBlisterMap) {
 		this.wpBlisterMap = wpBlisterMap;
+	}
+
+	public String getWpBeltLoopPlace1() {
+		return wpBeltLoopPlace1;
+	}
+
+	public void setWpBeltLoopPlace1(String wpBeltLoopPlace1) {
+		this.wpBeltLoopPlace1 = wpBeltLoopPlace1;
+	}
+
+	public String getWpBeltLoopPlace2() {
+		return wpBeltLoopPlace2;
+	}
+
+	public void setWpBeltLoopPlace2(String wpBeltLoopPlace2) {
+		this.wpBeltLoopPlace2 = wpBeltLoopPlace2;
+	}
+
+	public String getWpBeltLoopPlace3() {
+		return wpBeltLoopPlace3;
+	}
+
+	public void setWpBeltLoopPlace3(String wpBeltLoopPlace3) {
+		this.wpBeltLoopPlace3 = wpBeltLoopPlace3;
+	}
+
+	public String getWpBeltLoopPlace4() {
+		return wpBeltLoopPlace4;
+	}
+
+	public void setWpBeltLoopPlace4(String wpBeltLoopPlace4) {
+		this.wpBeltLoopPlace4 = wpBeltLoopPlace4;
+	}
+
+	public String getWpBeltLoopPlace5() {
+		return wpBeltLoopPlace5;
+	}
+
+	public void setWpBeltLoopPlace5(String wpBeltLoopPlace5) {
+		this.wpBeltLoopPlace5 = wpBeltLoopPlace5;
+	}
+
+	public String getWpBeltLoopPlace6() {
+		return wpBeltLoopPlace6;
+	}
+
+	public void setWpBeltLoopPlace6(String wpBeltLoopPlace6) {
+		this.wpBeltLoopPlace6 = wpBeltLoopPlace6;
+	}
+
+	public String getWpBeltLoopPlace7() {
+		return wpBeltLoopPlace7;
+	}
+
+	public void setWpBeltLoopPlace7(String wpBeltLoopPlace7) {
+		this.wpBeltLoopPlace7 = wpBeltLoopPlace7;
+	}
+
+	public String getWpStitchModifyPlace1() {
+		return wpStitchModifyPlace1;
+	}
+
+	public void setWpStitchModifyPlace1(String wpStitchModifyPlace1) {
+		this.wpStitchModifyPlace1 = wpStitchModifyPlace1;
+	}
+
+	public String getWpStitchModifyPlace2() {
+		return wpStitchModifyPlace2;
+	}
+
+	public void setWpStitchModifyPlace2(String wpStitchModifyPlace2) {
+		this.wpStitchModifyPlace2 = wpStitchModifyPlace2;
+	}
+
+	public String getWpStitchModifyPlace3() {
+		return wpStitchModifyPlace3;
+	}
+
+	public void setWpStitchModifyPlace3(String wpStitchModifyPlace3) {
+		this.wpStitchModifyPlace3 = wpStitchModifyPlace3;
+	}
+
+	public String getWpStitchModifyPlace4() {
+		return wpStitchModifyPlace4;
+	}
+
+	public void setWpStitchModifyPlace4(String wpStitchModifyPlace4) {
+		this.wpStitchModifyPlace4 = wpStitchModifyPlace4;
+	}
+
+	public String getWpDStitchPlace1() {
+		return wpDStitchPlace1;
+	}
+
+	public void setWpDStitchPlace1(String wpDStitchPlace1) {
+		this.wpDStitchPlace1 = wpDStitchPlace1;
+	}
+
+	public String getWpDStitchPlace2() {
+		return wpDStitchPlace2;
+	}
+
+	public void setWpDStitchPlace2(String wpDStitchPlace2) {
+		this.wpDStitchPlace2 = wpDStitchPlace2;
+	}
+
+	public String getWpDStitchPlace3() {
+		return wpDStitchPlace3;
+	}
+
+	public void setWpDStitchPlace3(String wpDStitchPlace3) {
+		this.wpDStitchPlace3 = wpDStitchPlace3;
+	}
+
+	public String getWpDStitchPlace4() {
+		return wpDStitchPlace4;
+	}
+
+	public void setWpDStitchPlace4(String wpDStitchPlace4) {
+		this.wpDStitchPlace4 = wpDStitchPlace4;
+	}
+
+	public String getWpAmfColorPlace1() {
+		return wpAmfColorPlace1;
+	}
+
+	public void setWpAmfColorPlace1(String wpAmfColorPlace1) {
+		this.wpAmfColorPlace1 = wpAmfColorPlace1;
+	}
+
+	public String getWpAmfColorPlace2() {
+		return wpAmfColorPlace2;
+	}
+
+	public void setWpAmfColorPlace2(String wpAmfColorPlace2) {
+		this.wpAmfColorPlace2 = wpAmfColorPlace2;
+	}
+
+	public String getWpAmfColorPlace3() {
+		return wpAmfColorPlace3;
+	}
+
+	public void setWpAmfColorPlace3(String wpAmfColorPlace3) {
+		this.wpAmfColorPlace3 = wpAmfColorPlace3;
+	}
+
+	public String getWpAmfColorPlace4() {
+		return wpAmfColorPlace4;
+	}
+
+	public void setWpAmfColorPlace4(String wpAmfColorPlace4) {
+		this.wpAmfColorPlace4 = wpAmfColorPlace4;
+	}
+
+	public String getWpBhColorPlace1() {
+		return wpBhColorPlace1;
+	}
+
+	public void setWpBhColorPlace1(String wpBhColorPlace1) {
+		this.wpBhColorPlace1 = wpBhColorPlace1;
+	}
+
+	public String getWpBhColorPlace2() {
+		return wpBhColorPlace2;
+	}
+
+	public void setWpBhColorPlace2(String wpBhColorPlace2) {
+		this.wpBhColorPlace2 = wpBhColorPlace2;
+	}
+
+	public String getWpBhColorPlace3() {
+		return wpBhColorPlace3;
+	}
+
+	public void setWpBhColorPlace3(String wpBhColorPlace3) {
+		this.wpBhColorPlace3 = wpBhColorPlace3;
+	}
+
+	public String getWpBhColorPlace4() {
+		return wpBhColorPlace4;
+	}
+
+	public void setWpBhColorPlace4(String wpBhColorPlace4) {
+		this.wpBhColorPlace4 = wpBhColorPlace4;
+	}
+
+	public String getWpByColorPlace1() {
+		return wpByColorPlace1;
+	}
+
+	public void setWpByColorPlace1(String wpByColorPlace1) {
+		this.wpByColorPlace1 = wpByColorPlace1;
+	}
+
+	public String getWpByColorPlace2() {
+		return wpByColorPlace2;
+	}
+
+	public void setWpByColorPlace2(String wpByColorPlace2) {
+		this.wpByColorPlace2 = wpByColorPlace2;
+	}
+
+	public String getWpByColorPlace3() {
+		return wpByColorPlace3;
+	}
+
+	public void setWpByColorPlace3(String wpByColorPlace3) {
+		this.wpByColorPlace3 = wpByColorPlace3;
+	}
+
+	public String getWpByColorPlace4() {
+		return wpByColorPlace4;
+	}
+
+	public void setWpByColorPlace4(String wpByColorPlace4) {
+		this.wpByColorPlace4 = wpByColorPlace4;
+	}
+
+	public String getWpBeltLoopPlace() {
+		return wpBeltLoopPlace;
+	}
+
+	public void setWpBeltLoopPlace(String wpBeltLoopPlace) {
+		this.wpBeltLoopPlace = wpBeltLoopPlace;
+	}
+
+	public String getWpStitchModifyPlace() {
+		return wpStitchModifyPlace;
+	}
+
+	public void setWpStitchModifyPlace(String wpStitchModifyPlace) {
+		this.wpStitchModifyPlace = wpStitchModifyPlace;
+	}
+
+	public String getWpDStitchPlace() {
+		return wpDStitchPlace;
+	}
+
+	public void setWpDStitchPlace(String wpDStitchPlace) {
+		this.wpDStitchPlace = wpDStitchPlace;
+	}
+
+	public String getWpAmfColorPlace() {
+		return wpAmfColorPlace;
+	}
+
+	public void setWpAmfColorPlace(String wpAmfColorPlace) {
+		this.wpAmfColorPlace = wpAmfColorPlace;
+	}
+
+	public String getWpBhColorPlace() {
+		return wpBhColorPlace;
+	}
+
+	public void setWpBhColorPlace(String wpBhColorPlace) {
+		this.wpBhColorPlace = wpBhColorPlace;
+	}
+
+	public String getWpByColorPlace() {
+		return wpByColorPlace;
+	}
+
+	public void setWpByColorPlace(String wpByColorPlace) {
+		this.wpByColorPlace = wpByColorPlace;
 	}
     
 }

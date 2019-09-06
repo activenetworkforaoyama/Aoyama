@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,9 +49,11 @@ import co.jp.aoyama.macchinetta.domain.model.OrderDetailFormat;
 import co.jp.aoyama.macchinetta.domain.model.OrderMakerUse;
 import co.jp.aoyama.macchinetta.domain.model.ErrorResult;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
+import co.jp.aoyama.macchinetta.domain.model.MemberName;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.service.errorResult.ErrorResultService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
+import co.jp.aoyama.macchinetta.domain.service.member.MemberNameService;
 import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
 import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 
@@ -59,9 +62,14 @@ import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 @SessionAttributes(value = {"orderListForm"})
 public class OrderListController {
 	
+	@Value("${member.url:http://202.214.88.88/member/api/v1/memname}")
+	String memberUrl;
+
 	@Inject
 	OrderListService orderListService;
 	
+	@Inject
+	MemberNameService memberNameService;
     @Inject
     SessionContent sessionContent;
     
@@ -210,6 +218,46 @@ public class OrderListController {
 			//StringBuffer errorResult;
 			String errorResult = "";
 			Order order= orderListService.findOrderByPk(orderId);
+			String custCd = order.getCustCd();
+			String storeBrandCode = order.getStoreBrandCode();
+			String gyotaiCd = "1";
+			if(storeBrandCode != null && "01".equals(storeBrandCode)) {
+				gyotaiCd = "1";
+			}
+			else if(storeBrandCode != null && ("03".equals(storeBrandCode) || "12".equals(storeBrandCode) || "21".equals(storeBrandCode))) {
+				gyotaiCd = "3";
+			}
+			MemberName MemberName = memberNameService.execute(memberUrl,custCd,gyotaiCd);
+			if(MemberName != null) {
+				String firstName = MemberName.getFirstName();
+				String lastName = MemberName.getLastName();
+				if(firstName != null && lastName != null) {
+					String custNm = lastName + " " + firstName;
+					order.setCustNm(custNm);
+				}
+				else if(firstName == null && lastName != null) {
+					String custNm = lastName;
+					order.setCustNm(custNm);
+				}
+				else if(firstName != null && lastName == null) {
+					String custNm = firstName;
+					order.setCustNm(custNm);
+				}
+				String firstNameKana = MemberName.getFirstNameKana();
+				String lastNameKana = MemberName.getLastNameKana();
+				if(firstNameKana != null && lastNameKana != null) {
+					String custKanaNm = lastNameKana + " " + firstNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+				else if(firstNameKana == null && lastNameKana != null) {
+					String custKanaNm = lastNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+				else if(firstName != null && lastNameKana == null) {
+					String custKanaNm = firstNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+			}
 			
 			//名簿納期
 			Date custDeliverDate = order.getCustDeliverDate();
@@ -353,6 +401,7 @@ public class OrderListController {
 	                            Model model) {
 		String authority = sessionContent.getAuthority();
 		String shopCode = sessionContent.getBelongCode();
+		String userId = sessionContent.getUserId();
 		OrderDetailFormat orderFm = new OrderDetailFormat();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -405,6 +454,8 @@ public class OrderListController {
 			model.addAttribute("authority", authority);
 			String orderFlag = "orderLink";
 			model.addAttribute("orderFlag", orderFlag);
+			model.addAttribute("userId", userId);
+			
 			//本店オーダー 、商品部の場合
 			//店舗の場合
 			if (order.getMakerFactoryStatus() != null &&

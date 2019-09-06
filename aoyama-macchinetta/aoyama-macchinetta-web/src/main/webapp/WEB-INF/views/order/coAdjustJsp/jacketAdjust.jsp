@@ -218,7 +218,6 @@ jQuery(document).ready(function() {
 			   getAdjustByItem();		   
 			     jQuery("#oj_shoulderPat_no").prop("checked", true);
 			     jQuery("#oj_figureAlter_no").prop("checked", true);
-			     getFigureAndNumberByItem();
 			}else if(jacketAdFlag=="0"){
 				getAdjustByItem();
 				//adjustReInit();				
