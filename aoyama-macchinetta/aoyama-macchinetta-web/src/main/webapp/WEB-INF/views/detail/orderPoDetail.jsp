@@ -332,9 +332,9 @@
 							<label class=" form-control-label-value">${f:h(order.custNm)}</label>様
 						</div>
 						</c:if>
-						<c:if test="${order.custNm != null && order.custKanaNm == null}">
+						<c:if test="${order.custNm == null && order.custKanaNm != null}">
 						<div class="col-12 col-md-8">
-							<label class=" form-control-label-value">(${f:h(order.custKanaNm)})</label>様
+							<label class=" form-control-label-value">${f:h(order.custKanaNm)}</label>様
 						</div>
 						</c:if>
 						<c:if test="${order.custNm == null && order.custKanaNm == null}">

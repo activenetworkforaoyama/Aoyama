@@ -19,29 +19,21 @@ public class OptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogBreastPktMap;
 	
-	private String glBreastPktRtPrice;
-	
 	// 腰ポケット
 	private String ogWaistPkt;
 
 	private Map<String, String> ogWaistPktMap;
 	
-	private String glWaistPktRtPrice;
-
 	// 腰ポケット形状
 	private String ogWaistPktSpec;
 
 	private Map<String, String> ogWaistPktSpecMap;
 	
-	private String glWaistPktShapeRtPrice;
-
 	// AMFステッチ
 	private String ogStitch;
 
 	private Map<String, String> ogStitchMap;
 	
-	private String glAmfStitchRtPrice;
-
 	// ステッチ箇所変更
 	private String ogStitchModify;
 
@@ -54,8 +46,6 @@ public class OptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogStitchModifyPlaceMap;
 	
-	private String glStitchPlcRtPrice;
-
 	// ダブルステッチ変更
 	private String ogDStitchModify;
 
@@ -68,15 +58,11 @@ public class OptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogDStitchModifyPlaceMap;
 	
-	private String glDblstitchPlcRtPrice;
-
 	// AMF色指定
 	private String ogAmfColor;
 
 	private Map<String, String> ogAmfColorMap;
 	
-	private String glAmfColorRtPrice;
-
 	// AMF糸色
 	private String ogAmfColorPlaceAll;
 
@@ -105,8 +91,6 @@ public class OptionGiletStandardInfo implements Serializable {
 	private String ogBhColor;
 
 	private Map<String, String> ogBhColorMap;
-	
-	private String glBtnholeColorRtPrice;
 	
 	// ボタンホール色指定 糸色
 	private String ogBhColorPlaceAll;
@@ -149,8 +133,6 @@ public class OptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogByColorMap;
 	
-	private String glBtnthreadColorRtPrice;
-
 	// ボタンホール色指定 糸色
 	private String ogByColorPlaceAll;
 
@@ -211,8 +193,6 @@ public class OptionGiletStandardInfo implements Serializable {
 	// 背裏地素材品番
 	private String ogBackLiningMateStkNo;
 	
-	private String glBackClothRtPrice;
-
 	// 内側裏地素材
 	private String ogInsideLiningMate;
 
@@ -221,8 +201,6 @@ public class OptionGiletStandardInfo implements Serializable {
 	// 内側裏地素材品番
 	private String ogInsideLiningMateStkNo;
 	
-	private String glInnnerClothRtPrice;
-
 	// フロント釦
 	private String ogFrontBtnMate;
 
@@ -231,22 +209,16 @@ public class OptionGiletStandardInfo implements Serializable {
 	// フロント釦品番
 	private String ogFrontBtnMateStkNo;
 	
-	private String glFrtBtnRtPrice;
-
 	// バックベルト
 	private String ogBackBelt;
 
 	private Map<String, String> ogBackBeltMap;
-	
-	private String glBackBeltRtPrice;
 	
 	// ウォッチチェーン
 	private String ogWatchChain;
 
 	private Map<String, String> ogWatchChainMap;
 	
-	private String glWatchChainRtPrice;
-
 	// 品番Map
 	private Map<String, String> giletMateMap;
 
@@ -792,120 +764,6 @@ public class OptionGiletStandardInfo implements Serializable {
 
 	public void setOgDStitchModifyPlaceMap(Map<String, String> ogDStitchModifyPlaceMap) {
 		this.ogDStitchModifyPlaceMap = ogDStitchModifyPlaceMap;
-	}
-	
-	
-
-	public String getGlBreastPktRtPrice() {
-		return glBreastPktRtPrice;
-	}
-
-	public void setGlBreastPktRtPrice(String glBreastPktRtPrice) {
-		this.glBreastPktRtPrice = glBreastPktRtPrice;
-	}
-
-	public String getGlWaistPktRtPrice() {
-		return glWaistPktRtPrice;
-	}
-
-	public void setGlWaistPktRtPrice(String glWaistPktRtPrice) {
-		this.glWaistPktRtPrice = glWaistPktRtPrice;
-	}
-
-	public String getGlWaistPktShapeRtPrice() {
-		return glWaistPktShapeRtPrice;
-	}
-
-	public void setGlWaistPktShapeRtPrice(String glWaistPktShapeRtPrice) {
-		this.glWaistPktShapeRtPrice = glWaistPktShapeRtPrice;
-	}
-
-	public String getGlAmfStitchRtPrice() {
-		return glAmfStitchRtPrice;
-	}
-
-	public void setGlAmfStitchRtPrice(String glAmfStitchRtPrice) {
-		this.glAmfStitchRtPrice = glAmfStitchRtPrice;
-	}
-
-	public String getGlStitchPlcRtPrice() {
-		return glStitchPlcRtPrice;
-	}
-
-	public void setGlStitchPlcRtPrice(String glStitchPlcRtPrice) {
-		this.glStitchPlcRtPrice = glStitchPlcRtPrice;
-	}
-
-	public String getGlDblstitchPlcRtPrice() {
-		return glDblstitchPlcRtPrice;
-	}
-
-	public void setGlDblstitchPlcRtPrice(String glDblstitchPlcRtPrice) {
-		this.glDblstitchPlcRtPrice = glDblstitchPlcRtPrice;
-	}
-
-	public String getGlAmfColorRtPrice() {
-		return glAmfColorRtPrice;
-	}
-
-	public void setGlAmfColorRtPrice(String glAmfColorRtPrice) {
-		this.glAmfColorRtPrice = glAmfColorRtPrice;
-	}
-
-	public String getGlBtnholeColorRtPrice() {
-		return glBtnholeColorRtPrice;
-	}
-
-	public void setGlBtnholeColorRtPrice(String glBtnholeColorRtPrice) {
-		this.glBtnholeColorRtPrice = glBtnholeColorRtPrice;
-	}
-
-	public String getGlBtnthreadColorRtPrice() {
-		return glBtnthreadColorRtPrice;
-	}
-
-	public void setGlBtnthreadColorRtPrice(String glBtnthreadColorRtPrice) {
-		this.glBtnthreadColorRtPrice = glBtnthreadColorRtPrice;
-	}
-
-	public String getGlBackClothRtPrice() {
-		return glBackClothRtPrice;
-	}
-
-	public void setGlBackClothRtPrice(String glBackClothRtPrice) {
-		this.glBackClothRtPrice = glBackClothRtPrice;
-	}
-
-	public String getGlInnnerClothRtPrice() {
-		return glInnnerClothRtPrice;
-	}
-
-	public void setGlInnnerClothRtPrice(String glInnnerClothRtPrice) {
-		this.glInnnerClothRtPrice = glInnnerClothRtPrice;
-	}
-
-	public String getGlFrtBtnRtPrice() {
-		return glFrtBtnRtPrice;
-	}
-
-	public void setGlFrtBtnRtPrice(String glFrtBtnRtPrice) {
-		this.glFrtBtnRtPrice = glFrtBtnRtPrice;
-	}
-
-	public String getGlBackBeltRtPrice() {
-		return glBackBeltRtPrice;
-	}
-
-	public void setGlBackBeltRtPrice(String glBackBeltRtPrice) {
-		this.glBackBeltRtPrice = glBackBeltRtPrice;
-	}
-
-	public String getGlWatchChainRtPrice() {
-		return glWatchChainRtPrice;
-	}
-
-	public void setGlWatchChainRtPrice(String glWatchChainRtPrice) {
-		this.glWatchChainRtPrice = glWatchChainRtPrice;
 	}
 
 	public String getOgStitchModifyPlace1() {

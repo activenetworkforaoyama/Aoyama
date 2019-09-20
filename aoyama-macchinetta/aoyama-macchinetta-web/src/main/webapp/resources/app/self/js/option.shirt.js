@@ -7,14 +7,18 @@
 function initOptionShirt() {
 	jQuery('.casHemLineSizeArea').hide();
 	// カジュアルヘムライン仕様
-	jQuery(':radio[name="optionShirtStandardInfo.osCasHemLine"]').each(function(){
+	jQuery(':radio[name="coOptionShirtStandardInfo.osCasHemLine"]').each(function(){
 		jQuery(this).change(function(){
-			var casHemLine = jQuery(':radio[name="optionShirtStandardInfo.osCasHemLine"]:checked').val();
+			var casHemLine = jQuery(':radio[name="coOptionShirtStandardInfo.osCasHemLine"]:checked').val();
 			if (casHemLine == "0002002") {
 				// カジュアルヘムライン仕様が有りの場合、後ろ丈を表示
 				jQuery('.casHemLineSizeArea').show();
 			} else {
 				jQuery('.casHemLineSizeArea').hide();
+				jQuery('#os_casHemLineSize100').val("0");
+				jQuery('#os_casHemLineSize10').val("0");
+				jQuery('#os_casHemLineSize1').val("0");
+				jQuery('#os_casHemLineSizeM1').val("0");
 			}
 		});
 	});
@@ -27,9 +31,9 @@ function initOptionShirt() {
 		//ピンホールピン
 		if (os_chainModel == "0000113" || os_chainModel == "0000114") {
 			// 襟型「ピンホール・ラウンドピンホール」選択時のみ「ピンホールピン」選択可
-			jQuery(':radio[name="optionShirtStandardInfo.osPinHolePin"]').prop('disabled', false);
+			jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', false);
 		} else {
-			jQuery(':radio[name="optionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
+			jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
 			jQuery('#os_pinHolePin_id1').prop('checked', true);
 		}
 
@@ -41,9 +45,9 @@ function initOptionShirt() {
 			// 「襟型」ボタンダウン・ショートボタンダウン・ピンホール・ラウンドピンホール・ウイング選択時、
 			// 「カラーキーパー」は「無し」にて選択不可
 			jQuery('#os_colorKeeper_id2').prop('checked', true);
-			jQuery(':radio[name="optionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
+			jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
 		} else {
-			jQuery(':radio[name="optionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
+			jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 			if (os_colorKeeper_disabled) {
 				// 元々無効化されていた場合、デフォルトの「有り」を選択状態にする
 				jQuery('#os_colorKeeper_id2').prop('checked', true);
@@ -89,6 +93,7 @@ function initOptionShirt() {
 	jQuery('#os_cuffs').change();
 
 	// コンバーチブル
+	var os_convertible = jQuery('#os_convertible').val();
 	jQuery('#os_convertible').change(function(){
 		var os_convertible = jQuery('#os_convertible').val();
 		if (os_convertible == '0000302') {
@@ -99,34 +104,47 @@ function initOptionShirt() {
 			jQuery('#os_adjustBtn').prop('disabled', true);
 			jQuery('#os_adjustBtn').val("0000401");
 		}
-
 		// カフスボタン追加の変更
 		changeAddCuff();
 	});
-	//jQuery('#os_convertible').change();
+	if (os_convertible != '0000302') {
+		jQuery('#os_convertible').change();
+	}
 	
 	// 胸ポケット
-	jQuery(':radio[name="optionShirtStandardInfo.osBreastPk"]').each(function(){
+	jQuery(':radio[name="coOptionShirtStandardInfo.osBreastPk"]').each(function(){
 		jQuery(this).change(function(){
 
 			jQuery('#os_breastPkSizeArea').show();
 
-			var sSelected = jQuery(':radio[name="optionShirtStandardInfo.osBreastPk"]:checked').val();
+			var sSelected = jQuery(':radio[name="coOptionShirtStandardInfo.osBreastPk"]:checked').val();
 			if (sSelected == "0001202") {
+				jQuery("input[name='coOptionShirtStandardInfo.osBreastPkSize'][value='0001301']").prop("checked", true);
 				jQuery('#os_breastPkSizeArea').hide();
 			}
 		});
 	});
 	
 	// ボタン位置変更
-	jQuery(':radio[name="optionShirtStandardInfo.osBtnPosChg"]').each(function(){
+	jQuery(':radio[name="coOptionShirtStandardInfo.osBtnPosChg"]').each(function(){
 		jQuery(this).change(function(){
 			// 選択中のクレリック仕様
-			var os_clericSpec = jQuery(':radio[name="optionShirtStandardInfo.osBtnPosChg"]:checked').val();
+			var os_clericSpec = jQuery(':radio[name="coOptionShirtStandardInfo.osBtnPosChg"]:checked').val();
 			if (os_clericSpec == "0002102") {
 				jQuery('#os_btnPosChg_area').show();
 			} else if (os_clericSpec == "0002101") {
 				jQuery('#os_btnPosChg_area').hide();
+				jQuery('#os_btnPosChg_collar').val("0");
+				setFont("os_btnPosChg_collar");	
+				
+				jQuery('#os_btnPosChg_collar_out').val("0");
+				jQuery('#os_btnPosChg_front1').val("0");
+				setFont("os_btnPosChg_front1");	
+				
+				jQuery('#os_btnPosChg_front1_out').val("0");
+				jQuery('#os_btnPosChg_front2').val("0");
+				jQuery('#os_btnPosChg_front2_out').val("0");
+				setFont("os_btnPosChg_front2");	
 			}
 		});
 	});

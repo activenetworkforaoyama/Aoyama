@@ -3,11 +3,27 @@
 
 <!--JACKET Tuxedo -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionJacketTuxedoInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketTuxedoInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
+	<field>
+		<a>tjJacketModel</a> 
+		<b>jkLapelModelCd</b> 
+	</field>
+	<field>
+		<a>tjJacketModel</a> 
+		<b>jkLapelModelNm</b> 
+	</field>
 	<field>
 		<a>tjAmfColor</a> 
 		<b>jkAmfColorType</b> 
+	</field>
+		<field>
+		<a>tjStitchModify</a> 
+		<b>jkStitchPlcType</b> 
+	</field>
+	<field>
+		<a>tjDStitchModify</a> 
+		<b>jkDblstitchPlcType</b> 
 	</field>
 	<field>
 		<a>tjBhColor</a> 
@@ -31,7 +47,7 @@
 	</field>
 	<field>
 		<a>tjSleeveBtnType</a> 
-		<b>jkSleeveBtnType</b> 
+		<b>jkSleeveBtnCd</b> 
 	</field>
 	<field>
 		<a>tjSleeveBtnCnt</a> 
@@ -161,7 +177,7 @@
 
 <!--GILET Tuxedo  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionGiletTuxedoInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>tgGiletModel</a> 
@@ -190,6 +206,26 @@
 	<field>
 		<a>tgStitch</a> 
 		<b>glAmfStitchCd</b> 
+	</field>
+	<field>
+		<a>tgStitchModify</a> 
+		<b>glStitchPlcType</b> 
+	</field>
+	<field>
+		<a>tgDblstitchPlc</a> 
+		<b>glDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>tgAmfColor</a> 
+		<b>glAmfColorType</b> 
+	</field>
+	<field>
+		<a>tgBhColor</a> 
+		<b>glBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>tgByColor</a> 
+		<b>glBtnthreadColorType</b> 
 	</field>
 	<field>
 		<a>tgBackLiningMate</a> 
@@ -227,7 +263,7 @@
 
 <!--PANTS Tuxedo  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPantsTuxedoInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsTuxedoInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>tpPantsModel</a> 
@@ -260,6 +296,10 @@
 	<field>
 		<a>tpAdjuster</a> 
 		<b>ptAdjusterCd</b> 
+	</field>
+	<field>
+		<a>tpBeltLoop</a> 
+		<b>ptBeltloopType</b> 
 	</field>
 	<field>
 		<a>tpPinLoop</a> 
@@ -306,6 +346,26 @@
 		<b>ptAmfStitchCd</b> 
 	</field>
 	<field>
+		<a>tpStitchModify</a> 
+		<b>ptStitchPlcType</b> 
+	</field>
+	<field>
+		<a>tpDStitchPlace</a> 
+		<b>ptDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>tpAmfColor</a> 
+		<b>ptAmfColorType</b> 
+	</field>
+	<field>
+		<a>tpBhColor</a> 
+		<b>ptBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>tpByColor</a> 
+		<b>ptBtnthreadColorType</b> 
+	</field>
+	<field>
 		<a>tpButton</a> 
 		<b>ptBtnMaterialType</b> 
 	</field>
@@ -337,11 +397,19 @@
 		<a>tpSideStripeWidth</a> 
 		<b>ptSideStripeWidthCd</b> 
 	</field>
+		<field>
+		<a>ptBeltLoopRtPrice</a> 
+		<b>ptBeltloopRtPrice</b> 
+	</field>
+	<field>
+		<a>ptPinLoopRtPrice</a> 
+		<b>ptPinloopRtPrice</b> 
+	</field>
 </mapping>
 
 <!--2PANTS Tuxedo  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPants2TuxedoInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2TuxedoInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>tp2PantsModel</a> 
@@ -374,6 +442,10 @@
 	<field>
 		<a>tp2Adjuster</a> 
 		<b>pt2AdjusterCd</b> 
+	</field>
+	<field>
+		<a>tp2BeltLoop</a> 
+		<b>pt2BeltloopType</b> 
 	</field>
 	<field>
 		<a>tp2PinLoop</a> 
@@ -418,6 +490,26 @@
 	<field>
 		<a>tp2Stitch</a> 
 		<b>pt2AmfStitchCd</b> 
+	</field>
+	<field>
+		<a>tp2StitchModify</a> 
+		<b>pt2StitchPlcType</b> 
+	</field>
+	<field>
+		<a>tp2DStitchPlace</a> 
+		<b>pt2DblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>tp2AmfColor</a> 
+		<b>pt2AmfColorType</b> 
+	</field>
+	<field>
+		<a>tp2BhColor</a> 
+		<b>pt2BtnholeColorType</b> 
+	</field>
+	<field>
+		<a>tp2ByColor</a> 
+		<b>pt2BtnthreadColorType</b> 
 	</field>
 	<field>
 		<a>tp2Button</a> 

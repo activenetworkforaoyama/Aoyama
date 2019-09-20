@@ -1,6 +1,10 @@
 package co.jp.aoyama.macchinetta.app.order;
 
 public class OptionCodeKeys {
+	
+	public static final String TWO_PANTS = "0009902";
+	
+	
 	// JACKET
 	// フロント釦数:段返り3つボタン
 	public static final String JK_0000101 = "0000101";
@@ -8,6 +12,8 @@ public class OptionCodeKeys {
 	public static final String JK_0000201 = "0000201";
 	// グレード:ハーフ毛芯
 	public static final String JK_0000301 = "0000301";
+	
+	public static final String JK_0000304 = "0000304";
 	// 裏仕様:総裏
 	public static final String JK_0000401 = "0000401";
 
@@ -68,10 +74,16 @@ public class OptionCodeKeys {
 	public static final String JK_0002601 = "0002601";
 	// AMF色指定
 	public static final String JK_0002801 = "0002801";
+	
+	public static final String JK_0002802 = "0002802";
 	// ボタンホール色指定
 	public static final String JK_0003101 = "0003101";
+	
+	public static final String JK_0003102 = "0003102";
 	// ボタン付け糸指定
 	public static final String JK_0003401 = "0003401";
+	
+	public static final String JK_0003402 = "0003402";
 	// ベント
 	public static final String JK_0003701 = "0003701";
 	// 胴裏素材
@@ -126,14 +138,24 @@ public class OptionCodeKeys {
 	public static final String PT_0001901 = "0001901";
 	// ステッチ箇所変更:無し
 	public static final String PT_0002001 = "0002001";
+	
+	public static final String PT_0002002 = "0002002";
 	// ダブルステッチ:無し
 	public static final String PT_0002201 = "0002201";
+	
+	public static final String PT_0002202 = "0002202";
 	// AMF色指定:無し
 	public static final String PT_0002401 = "0002401";
+	
+	public static final String PT_0002402 = "0002402";
 	// ボタンホール色指定:無し
 	public static final String PT_0002701 = "0002701";
+	
+	public static final String PT_0002702 = "0002702";
 	// ボタン付け糸指定:無し
 	public static final String PT_0003001 = "0003001";
+	
+	public static final String PT_0003002 = "0003002";
 	// 釦素材:ユリア
 	public static final String PT_3000800 = "3000800";
 	// サスペンダー釦:無し
@@ -159,7 +181,7 @@ public class OptionCodeKeys {
 	// スランテッドポケット
 	public static final String CT_0000401 = "0000401";
 	// ベント
-	public static final String CT_0000501 = "";
+	public static final String CT_0000501 = "0000501";
 	// フロント釦数
 	public static final String CT_0000601 = "0000601";
 	// 袖口
@@ -302,14 +324,24 @@ public class OptionCodeKeys {
 	public static final String PT2_0001901 = "0001901";
 	// ステッチ箇所変更:無し
 	public static final String PT2_0002001 = "0002001";
+	
+	public static final String PT2_0002002 = "0002002";
 	// ダブルステッチ:無し
 	public static final String PT2_0002201 = "0002201";
+	
+	public static final String PT2_0002202 = "0002202";
 	// AMF色指定:無し
 	public static final String PT2_0002401 = "0002401";
+	
+	public static final String PT2_0002402 = "0002402";
 	// ボタンホール色指定:無し
 	public static final String PT2_0002701 = "0002701";
+	
+	public static final String PT2_0002702 = "0002702";
 	// ボタン付け糸指定:無し
 	public static final String PT2_0003001 = "0003001";
+	
+	public static final String PT2_0003002 = "0003002";
 	// 釦素材:ユリア
 	public static final String PT2_3000800 = "3000800";
 	// サスペンダー釦:無し

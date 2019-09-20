@@ -23,9 +23,11 @@ public class JobLauncher_JobGetOrderStatus {
 		try {
 
 			Map<String, JobParameter> map = new LinkedHashMap<String, JobParameter>();
-			
+
 			JobParameter jb = new JobParameter(new Date(), true);
 			map.put("id", jb);
+			jb = new JobParameter("F1", true);
+//			map.put("makerFactoryStatus", jb);
 			JobParameters jobParameters = new JobParameters(map);
 
 			// JOB实行

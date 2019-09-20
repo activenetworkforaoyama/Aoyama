@@ -18,6 +18,11 @@
     <bean id="getOrderStatusReader" class="org.mybatis.spring.batch.MyBatisCursorItemReader" scope="step"
           p:queryId="co.jp.aoyama.macchinetta.domain.repository.order.DtbOrderRepository.selectConfrimOrderId"
           p:sqlSessionFactory-ref="jobSqlSessionFactory">
+        <property name="parameterValues">
+            <map>
+                <entry key="makerFactoryStatus" value="#{jobParameters['makerFactoryStatus']}" value-type="java.lang.String"/>
+            </map>
+        </property>
     </bean>
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 

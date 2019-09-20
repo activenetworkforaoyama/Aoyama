@@ -19,6 +19,9 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Http请求
  * 
@@ -26,8 +29,19 @@ import javax.net.ssl.SSLSession;
  *
  */
 public class HttpUtil {
-	private static final int TIMEOUT = 45000;
-	public static final String ENCODING = "UTF-8";
+	int connectTimeout;
+
+	int readTimeout;
+
+	/** log */
+	private final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+
+	public final String ENCODING = "UTF-8";
+
+	public HttpUtil(int connectTimeout, int readTimeout) {
+		this.connectTimeout = connectTimeout;
+		this.readTimeout = readTimeout;
+	}
 
 	/**
 	 * 创建HTTP连接
@@ -39,13 +53,16 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	private static HttpURLConnection createConnection(String urlStr, String method,
-			Map<String, String> headerParameters, String body) throws Exception {
+	private HttpURLConnection createConnection(String urlStr, String method, Map<String, String> headerParameters,
+			String body) throws Exception {
 		URL url = new URL(urlStr);
 		trustAllHttpsCertificates();
 		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 		// 设置请求时间
-		httpConnection.setConnectTimeout(TIMEOUT);
+		logger.info("HTTPproxy connectTimeout: {}", connectTimeout);
+		httpConnection.setConnectTimeout(connectTimeout);
+		logger.info("HTTPproxy readTimeout: {}", readTimeout);
+		httpConnection.setReadTimeout(readTimeout);
 		// 设置 header
 		if (headerParameters != null) {
 			Iterator<String> iteratorHeader = headerParameters.keySet().iterator();
@@ -91,7 +108,7 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String post(String address, Map<String, String> headerParameters, String body) throws Exception {
+	public String post(String address, Map<String, String> headerParameters, String body) throws Exception {
 
 		return proxyHttpRequest(address, "POST", null, getRequestBody(headerParameters));
 	}
@@ -105,7 +122,7 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String get(String address, Map<String, String> headerParameters, String body) throws Exception {
+	public String get(String address, Map<String, String> headerParameters, String body) throws Exception {
 
 		return proxyHttpRequest(address + "?" + getRequestBody(headerParameters), "GET", null, null);
 	}
@@ -120,7 +137,7 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getFile(String address, Map<String, String> headerParameters, File file) throws Exception {
+	public String getFile(String address, Map<String, String> headerParameters, File file) throws Exception {
 		String result = "fail";
 
 		HttpURLConnection httpConnection = null;
@@ -140,7 +157,7 @@ public class HttpUtil {
 		return result;
 	}
 
-	public static byte[] getFileByte(String address, Map<String, String> headerParameters) throws Exception {
+	public byte[] getFileByte(String address, Map<String, String> headerParameters) throws Exception {
 		byte[] result = null;
 
 		HttpURLConnection httpConnection = null;
@@ -167,7 +184,7 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String readInputStream(InputStream in, File file) throws Exception {
+	public String readInputStream(InputStream in, File file) throws Exception {
 		FileOutputStream out = null;
 		ByteArrayOutputStream output = null;
 
@@ -195,7 +212,7 @@ public class HttpUtil {
 		return "success";
 	}
 
-	public static byte[] readInputStreamToByte(InputStream in) throws Exception {
+	public byte[] readInputStreamToByte(InputStream in) throws Exception {
 		FileOutputStream out = null;
 		ByteArrayOutputStream output = null;
 		byte[] byteFile = null;
@@ -232,27 +249,24 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String proxyHttpRequest(String address, String method, Map<String, String> headerParameters,
-			String body) throws Exception {
+	public String proxyHttpRequest(String address, String method, Map<String, String> headerParameters, String body)
+			throws Exception {
 		String result = null;
 		HttpURLConnection httpConnection = null;
 
 		try {
 			httpConnection = createConnection(address, method, headerParameters, body);
-			httpConnection.setConnectTimeout(10 * 1000);
-			httpConnection.setReadTimeout(10 * 1000);
 
-			String encoding = "UTF-8";
+			String encoding = ENCODING;
 			if (httpConnection.getContentType() != null && httpConnection.getContentType().indexOf("charset=") >= 0) {
 				encoding = httpConnection.getContentType()
 						.substring(httpConnection.getContentType().indexOf("charset=") + 8);
 			}
 			result = inputStream2String(httpConnection.getInputStream(), encoding);
-			// logger.info("HTTPproxy response: {},{}", address,
-			// result.toString());
+			logger.info("HTTPproxy response: {},{}", address, result.toString());
 
 		} catch (Exception e) {
-			// logger.info("HTTPproxy error: {}", e.getMessage());
+			logger.info("HTTPproxy error: {}", e.getMessage());
 			throw e;
 		} finally {
 			if (httpConnection != null) {
@@ -268,7 +282,7 @@ public class HttpUtil {
 	 * @param params
 	 * @return
 	 */
-	public static String getRequestBody(Map<String, String> params) {
+	public String getRequestBody(Map<String, String> params) {
 		return getRequestBody(params, true);
 	}
 
@@ -278,7 +292,7 @@ public class HttpUtil {
 	 * @param params
 	 * @return
 	 */
-	public static String getRequestBody(Map<String, String> params, boolean urlEncode) {
+	public String getRequestBody(Map<String, String> params, boolean urlEncode) {
 		StringBuilder body = new StringBuilder();
 
 		Iterator<String> iteratorHeader = params.keySet().iterator();
@@ -311,7 +325,7 @@ public class HttpUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	private static String inputStream2String(InputStream input, String encoding) throws IOException {
+	private String inputStream2String(InputStream input, String encoding) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(input, encoding));
 		StringBuilder result = new StringBuilder();
 		String temp = null;
@@ -328,7 +342,7 @@ public class HttpUtil {
 	 * 
 	 * @throws Exception
 	 */
-	private static void trustAllHttpsCertificates() throws Exception {
+	private void trustAllHttpsCertificates() throws Exception {
 		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
 			@Override
 			public boolean verify(String str, SSLSession session) {

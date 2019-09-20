@@ -203,61 +203,63 @@ public class PdfFileServiceImpl implements PdfFileService{
             // （５）フォームファイルを開きます
             if("1".equals(sign)) {
             	//注文内容確認書(SUIT)_工場向
-            	doc.setDocumentName("注文内容確認書(SUIT)_工場向");
+            	doc.setDocumentName("注文内容確認書_工場向");
             	Resource resource = customerService.getResource("classpath:cfx" + File.separator 
             			+ "co" + File.separator + "confirmationBookSuit-Factory.cfx");
             	form = CrForm.open(draw, resource.getInputStream());
 			}else if("2".equals(sign)) {
 				//注文内容確認書(SUIT)_お客様向
-				doc.setDocumentName("注文内容確認書(SUIT)_お客様向");
+				doc.setDocumentName("注文内容確認書_お客様向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "confirmationBookSuit-Guest.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("3".equals(sign)) {
 				//工場指示書(SUIT)
-				doc.setDocumentName("工場指示書(SUIT)");
+				doc.setDocumentName("工場指示書");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "factoryInstructionsSuit.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("4".equals(sign)) {
 				//注文内容確認書(COAT)_工場向
-				doc.setDocumentName("注文内容確認書(COAT)_工場向");
+				doc.setDocumentName("注文内容確認書_工場向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "confirmationBookCoat-Factory.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("5".equals(sign)) {
 				//注文内容確認書(COAT)_お客様向
-				doc.setDocumentName("注文内容確認書(COAT)_お客様向");
+				doc.setDocumentName("注文内容確認書_お客様向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "confirmationBookCoat-Guest.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("6".equals(sign)) {
 				//工場指示書(COAT)
-				doc.setDocumentName("工場指示書(COAT)");
+				doc.setDocumentName("工場指示書");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "factoryInstructionsCoat.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("7".equals(sign)) {
 				//注文内容確認書(SHIRT)_工場向
-				doc.setDocumentName("注文内容確認書(SHIRT)_工場向");
+				doc.setDocumentName("注文内容確認書_工場向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "confirmationBookShirt-Factory.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("8".equals(sign)) {
 				//注文内容確認書(SHIRT)_お客様向
-				doc.setDocumentName("注文内容確認書(SHIRT)_お客様向");
+				doc.setDocumentName("注文内容確認書_お客様向");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "confirmationBookShirt-Guest.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else if("9".equals(sign)) {
 				//工場指示書(SHIRT)
-				doc.setDocumentName("工場指示書(SHIRT)");
+				doc.setDocumentName("工場指示書");
 				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
 						+ "co" + File.separator + "factoryInstructionsShirt.cfx");
 				form = CrForm.open(draw, resource.getInputStream());
 			}else{
 				logger.info("このスタイルはありません");
 			}
+            
+//            CrForm formTwo = null;
             
             try {
                 // （６）ファイル出力ジョブを開始します
@@ -277,20 +279,6 @@ public class PdfFileServiceImpl implements PdfFileService{
             		insertPantsdetailedFieldDataCo(form, order);
             		insertPants2detailedFieldDataCo(form, order);
             		insertGiletdetailedFieldDataCo(form, order);
-                	
-//                	if("21".equals(order.getProductItemDisplaycode())) {
-//                		//SUIT(2p)
-//                		
-//                	}else if("22".equals(order.getProductItemDisplaycode())) {
-//                		//SUIT(2pp)
-//                		
-//                	}else if("31".equals(order.getProductItemDisplaycode())) {
-//                		//SUIT(3p)
-//                		
-//                	}else if("32".equals(order.getProductItemDisplaycode())) {
-//                		//SUIT(3p2pp)
-//                		
-//                	}
                 	
     			}else if("2".equals(sign)) {
     				//注文内容確認書(SUIT)_お客様向
@@ -363,11 +351,57 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}
             	// （９）１ページ出力します
                 form.printOut();
+                
+//                if("1".equals(sign)) {
+//                	//注文内容確認書(SUIT)_工場向
+//                	doc.setDocumentName("注文内容確認書_工場向");
+//                	Resource resourceTwo = customerService.getResource("classpath:cfx" + File.separator 
+//                			+ "co" + File.separator + "suitTwo.cfx");
+//                	formTwo = CrForm.open(draw, resourceTwo.getInputStream());
+//    			}else if("2".equals(sign)) {
+//    				//注文内容確認書(SUIT)_お客様向
+//    				doc.setDocumentName("注文内容確認書_お客様向");
+//    				Resource resourceTwo = customerService.getResource("classpath:cfx" + File.separator 
+//    						+ "co" + File.separator + "suitTwo.cfx");
+//    				formTwo = CrForm.open(draw, resourceTwo.getInputStream());
+//    			}else if("3".equals(sign)) {
+//    				//工場指示書(SUIT)
+//    				doc.setDocumentName("工場指示書");
+//    				Resource resourceTwo = customerService.getResource("classpath:cfx" + File.separator 
+//    						+ "co" + File.separator + "suitTwo.cfx");
+//    				formTwo = CrForm.open(draw, resourceTwo.getInputStream());
+//    				form.getField("Order_id_data").setData(stringChange(order.getOrderId()));
+//    			}else{
+//    				logger.info("このスタイルはありません");
+//    			}
+//                strjob.getCrPrinter().setFormSize(formTwo);
+//                if("1".equals(sign)) {
+//                	//注文内容確認書(SUIT)_工場向
+//                	insertJacketdetailedFieldDataCo(form, order);
+//            		insertPantsdetailedFieldDataCo(form, order);
+//            		insertPants2detailedFieldDataCo(form, order);
+//            		insertGiletdetailedFieldDataCo(form, order);
+//    			}else if("2".equals(sign)) {
+//    				//注文内容確認書(SUIT)_お客様向
+//    				insertJacketdetailedFieldDataCo(form, order);
+//            		insertPantsdetailedFieldDataCo(form, order);
+//            		insertPants2detailedFieldDataCo(form, order);
+//            		insertGiletdetailedFieldDataCo(form, order);
+//    			}else if("3".equals(sign)) {
+//    				//工場指示書(SUIT)
+//    				insertJacketdetailedFieldDataCo(form, order);
+//            		insertPantsdetailedFieldDataCo(form, order);
+//            		insertPants2detailedFieldDataCo(form, order);
+//            		insertGiletdetailedFieldDataCo(form, order);
+//    			}
+                
+//				formTwo.printOut();
                 // （１０）ファイル出力ジョブを終了します
                 draw.endJob();
             } finally {
                 // （１１）フォームを閉じます
                 form.close();
+//                formTwo.close();
             }
         } catch (Exception cex) {
             // シーオーリポーツ内で発生した例外を処理します
@@ -398,11 +432,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//COLOR,糸色
 		form.getField("product_embroidery_thread_color_data").setData(stringChange(order.getProductEmbroideryThreadColor()));
 		//カテゴリ
-		if("0".equals(stringChange(order.getProductCategory()))) {
+		if("9000101".equals(stringChange(order.getProductCategory()))) {
 			form.getField("Product_category_data").setData("標準");
-		}else if("1".equals(stringChange(order.getProductCategory()))) {
+		}else if("9000103".equals(stringChange(order.getProductCategory()))) {
 			form.getField("Product_category_data").setData("ウォッシャブル");
-		}else if("2".equals(stringChange(order.getProductCategory()))) {
+		}else if("9000102".equals(stringChange(order.getProductCategory()))) {
 			form.getField("Product_category_data").setData("タキシード");
 		}
 		//承り日
@@ -428,14 +462,16 @@ public class PdfFileServiceImpl implements PdfFileService{
 				ProductCompos = "【袖裏地】"+order.getProductComposSleeveLiner();
     		}
 		}
+		ProductCompos = ProductCompos.replace("<br>", " ");
     	form.getField("Product_compos_data").setData(ProductCompos);
     	//お客様備考
     	form.getField("Cust_remark_data").setData(stringChange(order.getCustRemark()));
 		
 		//品名,ITEM
 		form.getField("Product_item_data").setData(stringChange(productItem));
-		//工場ID.,FABRIC ID.
-		form.getField("Product_fabric_no_data").setData(stringChange(order.getProductFabricNo()));
+		//工場品番,FABRIC ID.
+		form.getField("Product_fabric_no_data").setData(stringChange(order.getProductFabricNo()) + "-" 
+				+ stringChange(order.getFabricColor()) + stringChange(order.getFabricPattern()));
 		//生地ブランド,BRAND　NAME　
 		form.getField("Product_brand_nm_data").setData(stringChange(order.getProductFabricBrandNm()));
 		//サービスネーム,SERVICE　NAME　
@@ -789,7 +825,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 	private void insertSuitDataCo(CrForm form, Order order) {
 		//JACKET
 		//サイズ
-		form.getField("Cor_jk_size_data").setData(order.getCorJkDrop()+" - "+order.getCorJkSize());
+		form.getField("Cor_jk_size_data").setData(stringChange(order.getCorJkDrop())+" - "+stringChange(order.getCorJkSize()));
 		
 		//型サイズ
 		//着丈
@@ -801,9 +837,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//袖丈左
 		form.getField("Cor_jk_leftsleeve_size_data").setData(bigDecimalChange(order.getCorJkLeftsleeveSize()));
 		//肩パット
-		form.getField("Cor_jk_shoulderpad_data").setData(order.getCorJkShoulderpad());
+		form.getField("Cor_jk_shoulderpad_data").setData(stringChange(order.getCorJkShoulderpad()));
 		//体型補正
-		form.getField("Cor_jk_figure_correct_data").setData(order.getCorJkFigureCorrect());
+		form.getField("Cor_jk_figure_correct_data").setData(stringChange(order.getCorJkFigureCorrect()));
 								
 		//補正値
 		//着丈
@@ -827,7 +863,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//PANTS
 		//サイズ
-		form.getField("Cor_pt_size_data1").setData(order.getCorPtDrop()+" - "+order.getCorPtSize());
+		form.getField("Cor_pt_size_data1").setData(stringChange(order.getCorPtDrop())+" - "+stringChange(order.getCorPtSize()));
 		
 		//型サイズ
 		//ウエスト
@@ -873,7 +909,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//PANTS
 		//サイズ
-		form.getField("Cor_pt2_size_data").setData(order.getCorPt2Drop()+" - "+order.getCorPt2Size());
+		form.getField("Cor_pt2_size_data").setData(stringChange(order.getCorPt2Drop())+" - "+stringChange(order.getCorPt2Size()));
 		
 		//型サイズ
 		//ウエスト
@@ -919,7 +955,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//GILET
 		//サイズ
-		form.getField("cor_gl_size_data").setData(order.getCorGlDrop()+" - "+order.getCorGlSize());
+		form.getField("cor_gl_size_data").setData(stringChange(order.getCorGlDrop())+" - "+stringChange(order.getCorGlSize()));
 		
 		//型サイズ
 		//ウエスト
@@ -947,233 +983,325 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//JACKET
 		//JACKETモデル
-		form.getField("Jk_model_cd_data").setData("");
+		form.getField("Jk_model_cd_data").setData(stringChange(order.getJkModelNm()));
 		//フロント釦数
-		form.getField("Jk_frt_btn_data").setData(order.getJkFrtBtnNm());
+		form.getField("Jk_frt_btn_data").setData(stringChange(order.getJkFrtBtnNm()));
 		//ラペルデザイン
-		form.getField("Jk_lapel_design_data").setData(order.getJkLapelDesignNm());
+		form.getField("Jk_lapel_design_data").setData(stringChange(order.getJkLapelDesignNm()));
 		//グレード
-		form.getField("Jk_grade_data").setData(order.getJkGradeNm());
+		form.getField("Jk_grade_data").setData(stringChange(order.getJkGradeNm()));
 		//裏仕様
-		form.getField("Jk_inner_cloth_data").setData(order.getJkInnerClothNm());
+		form.getField("Jk_inner_cloth_data").setData(stringChange(order.getJkInnerClothNm()));
 		//台場
-		form.getField("Jk_daiba_data").setData(order.getJkDaibaNm());
+		form.getField("Jk_daiba_data").setData(stringChange(order.getJkDaibaNm()));
 		//拝見地
-		form.getField("Jk_look_cloth_data").setData(order.getJkLookClothNm());
+		form.getField("Jk_look_cloth_data").setData(stringChange(order.getJkLookClothNm()));
 		//襟裏（ヒゲ）
-		form.getField("Jk_collar_inner_data").setData(order.getJkCollarInnerNm());
+		form.getField("Jk_collar_inner_data").setData(stringChange(order.getJkCollarInnerNm()));
 		//襟吊
-		form.getField("Jk_collar_hang_data").setData(order.getJkCollarHangNm());
+		form.getField("Jk_collar_hang_data").setData(stringChange(order.getJkCollarHangNm()));
 		//ラペル幅
-		form.getField("Jk_lapel_width_data").setData(order.getJkLapelWidthNm());
+		form.getField("Jk_lapel_width_data").setData(stringChange(order.getJkLapelWidthNm()));
 		//フラワーホール
-		form.getField("Jk_flower_hole_data").setData(order.getJkFlowerHoleNm());
+		form.getField("Jk_flower_hole_data").setData(stringChange(order.getJkFlowerHoleNm()));
 		//胸ポケット
-		form.getField("Jk_breast_pkt_data").setData(order.getJkBreastPktNm());
+		form.getField("Jk_breast_pkt_data").setData(stringChange(order.getJkBreastPktNm()));
 		//腰ポケット
-		form.getField("Jk_waist_pkt_data").setData(order.getJkWaistPktNm());
+		form.getField("Jk_waist_pkt_data").setData(stringChange(order.getJkWaistPktNm()));
 		//チェンジポケット
-		form.getField("Jk_chg_pkt_data").setData(order.getJkChgPktNm());
+		form.getField("Jk_chg_pkt_data").setData(stringChange(order.getJkChgPktNm()));
 		//スランテッドポケット
-		form.getField("Jk_slanted_pkt_data").setData(order.getJkSlantedPktNm());
+		form.getField("Jk_slanted_pkt_data").setData(stringChange(order.getJkSlantedPktNm()));
 		//忍びポケット
-		form.getField("Jk_shinobi_pkt_data").setData(order.getJkShinobiPktNm());
+		form.getField("Jk_shinobi_pkt_data").setData(stringChange(order.getJkShinobiPktNm()));
 		//袖仕様
-		form.getField("Jk_sleeve_type_data").setData(order.getJkSleeveTypeNm());
+		form.getField("Jk_sleeve_type_data").setData(stringChange(order.getJkSleeveTypeNm()));
 		//マニカ
-		form.getField("Jk_manica_data").setData(order.getJkManicaNm());
+		form.getField("Jk_manica_data").setData(stringChange(order.getJkManicaNm()));
 		//袖釦
-		form.getField("Jk_sleeve_btn_data").setData(order.getJkSleeveBtnNm());
+		form.getField("Jk_sleeve_btn_data").setData(stringChange(order.getJkSleeveBtnNm()) + order.getJkSleeveBtnNumber());
 		//袖口
-		form.getField("Jk_cuff_data").setData(order.getJkCuffNm());
+		form.getField("Jk_cuff_data").setData(stringChange(order.getJkCuffNm()));
 		//内ポケット変更
-		form.getField("Jk_inner_pkt_data").setData(order.getJkInnerPktType());
+		if("0002001".equals(stringChange(order.getJkInnerPktType()))) {
+			form.getField("Jk_inner_pkt_data").setData("無し");
+		}else if("0002002".equals(stringChange(order.getJkInnerPktType()))){
+			form.getField("Jk_inner_pkt_data").setData("有り");
+		}
 		//下前胸内ポケット仕様
-		form.getField("Jk_right_inner_pkt_type_data").setData(order.getJkRightInnerPktTypeNm());
+		form.getField("Jk_right_inner_pkt_type_data").setData(stringChange(order.getJkRightInnerPktTypeNm()));
 		//ステッチ種類
-		form.getField("Jk_stitch_type_data").setData(order.getJkStitchTypeNm());
+		form.getField("Jk_stitch_type_data").setData(stringChange(order.getJkStitchTypeNm()));
 		//ステッチ箇所変更
-		form.getField("Jk_stitch_plc_data").setData(order.getJkStitchPlcType());
+		if("0002401".equals(stringChange(order.getJkStitchPlcType()))) {
+			form.getField("Jk_stitch_plc_data").setData("無し");
+		}else if("0002402".equals(stringChange(order.getJkStitchPlcType()))){
+			form.getField("Jk_stitch_plc_data").setData("有り");
+		}
 		//ダブルステッチ変更
-		form.getField("Jk_dblstitch_plc_data").setData(order.getJkDblstitchPlcType());
+		if("0002601".equals(stringChange(order.getJkDblstitchPlcType()))) {
+			form.getField("Jk_dblstitch_plc_data").setData("無し");
+		}else if("0002602".equals(stringChange(order.getJkDblstitchPlcType()))){
+			form.getField("Jk_dblstitch_plc_data").setData("有り");
+		}
 		//AMF色指定
-		form.getField("Jk_amf_color_data").setData(order.getJkAmfColorType());
+		if("0002801".equals(stringChange(order.getJkAmfColorType()))) {
+			form.getField("Jk_amf_color_data").setData("無し");
+		}else if("0002802".equals(stringChange(order.getJkAmfColorType()))){
+			form.getField("Jk_amf_color_data").setData("有り");
+		}
 		//ボタンホール色指定
-		form.getField("Jk_btnhole_color_data").setData(order.getJkBtnholeColorType());
+		if("0003101".equals(stringChange(order.getJkBtnholeColorType()))) {
+			form.getField("Jk_btnhole_color_data").setData("無し");
+		}else if("0003102".equals(stringChange(order.getJkBtnholeColorType()))){
+			form.getField("Jk_btnhole_color_data").setData("有り");
+		}
 		//ボタン付け糸指定
-		form.getField("Jk_btnthread_color_data").setData(order.getJkBtnthreadColorType());
+		if("0003401".equals(stringChange(order.getJkBtnthreadColorType()))) {
+			form.getField("Jk_btnthread_color_data").setData("無し");
+		}else if("0003402".equals(stringChange(order.getJkBtnthreadColorType()))){
+			form.getField("Jk_btnthread_color_data").setData("有り");
+		}
 		//ベント
-		form.getField("Jk_vent_data").setData(order.getJkVentNm());
+		form.getField("Jk_vent_data").setData(stringChange(order.getJkVentNm()));
 		//胴裏素材
-		form.getField("Jk_inner_body_cloth_data").setData(order.getJkInnerBodyClothNm());
+		form.getField("Jk_inner_body_cloth_data").setData(stringChange(order.getJkInnerBodyClothNm()));
 		//袖裏素材
-		form.getField("Jk_inner_sleeve_cloth_data").setData(order.getJkInnerSleeveClothNm());
+		form.getField("Jk_inner_sleeve_cloth_data").setData(stringChange(order.getJkInnerSleeveClothNm()));
 		//釦素材
-		form.getField("Jk_btn_material_data").setData(order.getJkBtnMaterialNm());
+		form.getField("Jk_btn_material_data").setData(stringChange(order.getJkBtnMaterialNm()));
 		//形状記憶
-		form.getField("Jk_shape_memory_data").setData(order.getJkShapeMemoryNm());
+		form.getField("Jk_shape_memory_data").setData(stringChange(order.getJkShapeMemoryNm()));
 		
 		//PANTS
 		//PANTSモデル
-		form.getField("Pt_model_data").setData(order.getPtModelNm());
+		form.getField("Pt_model_data").setData(stringChange(order.getPtModelNm()));
 		//タック
-		form.getField("Pt_tack_data").setData(order.getPtTackNm());
+		form.getField("Pt_tack_data").setData(stringChange(order.getPtTackNm()));
 		//膝裏
-		form.getField("Pt_kneeinner_type_data").setData(order.getPtKneeinnerTypeNm());
+		form.getField("Pt_kneeinner_type_data").setData(stringChange(order.getPtKneeinnerTypeNm()));
 		//膝裏素材
-		form.getField("Pt_kneeinner_cloth_data").setData(order.getPtKneeinnerClothNm());
+		form.getField("Pt_kneeinner_cloth_data").setData(stringChange(order.getPtKneeinnerClothNm()));
 		//フロント仕様
-		form.getField("Pt_frt_type_data").setData(order.getPtFrtTypeNm());
+		form.getField("Pt_frt_type_data").setData(stringChange(order.getPtFrtTypeNm()));
 		//パンチェリーナ
-		form.getField("Pt_pancherina_data").setData(order.getPtPancherinaNm());
+		form.getField("Pt_pancherina_data").setData(stringChange(order.getPtPancherinaNm()));
 		//アジャスター仕様
-		form.getField("Pt_adjuster_data").setData(order.getPtAdjusterNm());
+		form.getField("Pt_adjuster_data").setData(stringChange(order.getPtAdjusterNm()));
 		//ベルトループ
-		form.getField("Pt_beltloop_data").setData(order.getPtBeltloopType());
+		if("0000702".equals(stringChange(order.getPtBeltloopType()))) {
+			form.getField("Pt_beltloop_data").setData("無し");
+		}else if("0000701".equals(stringChange(order.getPtBeltloopType()))){
+			form.getField("Pt_beltloop_data").setData("有り");
+		}
 		//ピンループ
-		form.getField("Pt_pinloop_data").setData(order.getPtPinloopNm());
+		form.getField("Pt_pinloop_data").setData(stringChange(order.getPtPinloopNm()));
 		//脇ポケット
-		form.getField("Pt_side_pkt_data").setData(order.getPtSidePktNm());
+		form.getField("Pt_side_pkt_data").setData(stringChange(order.getPtSidePktNm()));
 		//忍びポケット
-		form.getField("Pt_shinobi_pkt_data").setData(order.getPtShinobiPktNm());
+		form.getField("Pt_shinobi_pkt_data").setData(stringChange(order.getPtShinobiPktNm()));
 		//コインポケット
-		form.getField("Pt_coin_pkt_cd_data").setData(order.getPtCoinPktNm());
+		form.getField("Pt_coin_pkt_cd_data").setData(stringChange(order.getPtCoinPktNm()));
 		//フラップ付コインポケット
-		form.getField("Pt_flapcoin_pkt_data").setData(order.getPtFlapcoinPktNm());
+		form.getField("Pt_flapcoin_pkt_data").setData(stringChange(order.getPtFlapcoinPktNm()));
 		//上前ピスポケット
-		form.getField("Pt_left_pis_pkt_data").setData(order.getPtLeftPisPktNm());
+		form.getField("Pt_left_pis_pkt_data").setData(stringChange(order.getPtLeftPisPktNm()));
 		//下前ピスポケット
-		form.getField("Pt_right_pis_pkt_data").setData(order.getPtRightPisPktNm());
+		form.getField("Pt_right_pis_pkt_data").setData(stringChange(order.getPtRightPisPktNm()));
 		//Vカット
-		form.getField("Pt_v_cut_data").setData(order.getPtVCutNm());
+		form.getField("Pt_v_cut_data").setData(stringChange(order.getPtVCutNm()));
 		//裾上げ
-		form.getField("Pt_hem_up_data").setData(order.getPtHemUpNm());
+		form.getField("Pt_hem_up_data").setData(stringChange(order.getPtHemUpNm()));
 		//ダブル幅
-		form.getField("Pt_dbl_width_data").setData(order.getPtDblWidthNm());
+		form.getField("Pt_dbl_width_data").setData(stringChange(order.getPtDblWidthNm()));
 		//ステッチ種類
-		form.getField("Pt_stitch_type_data").setData("");
+		form.getField("Pt_stitch_type_data").setData(stringChange(order.getPtAmfStitchNm()));
 		//ステッチ箇所変更
-		form.getField("Pt_stitch_plc_data").setData(order.getPtStitchPlcType());
+		if("0002001".equals(stringChange(order.getPtStitchPlcType()))) {
+			form.getField("Pt_stitch_plc_data").setData("無し");
+		}else if("0002002".equals(stringChange(order.getPtStitchPlcType()))){
+			form.getField("Pt_stitch_plc_data").setData("有り");
+		}
 		//ダブルステッチ
-		form.getField("Pt_dblstitch_plc_data").setData(order.getPtDblstitchPlcType());
+		if("0002201".equals(stringChange(order.getPtDblstitchPlcType()))) {
+			form.getField("Pt_dblstitch_plc_data").setData("無し");
+		}else if("0002202".equals(stringChange(order.getPtDblstitchPlcType()))){
+			form.getField("Pt_dblstitch_plc_data").setData("有り");
+		}
 		//AMF色指定
-		form.getField("Pt_amf_color_data").setData(order.getPtAmfColorType());
+		if("0002401".equals(stringChange(order.getPtAmfColorType()))) {
+			form.getField("Pt_amf_color_data").setData("無し");
+		}else if("0002402".equals(stringChange(order.getPtAmfColorType()))){
+			form.getField("Pt_amf_color_data").setData("有り");
+		}
 		//ボタンホール色指定
-		form.getField("Pt_btnhole_color_data").setData(order.getPtBtnholeColorType());
+		if("0002701".equals(stringChange(order.getPtBtnholeColorType()))) {
+			form.getField("Pt_btnhole_color_data").setData("無し");
+		}else if("0002702".equals(stringChange(order.getPtBtnholeColorType()))){
+			form.getField("Pt_btnhole_color_data").setData("有り");
+		}
 		//ボタン付け糸指定
-		form.getField("Pt_btnthread_color_data").setData(order.getPtBtnthreadColorType());
+		if("0003001".equals(stringChange(order.getPtBtnthreadColorType()))) {
+			form.getField("Pt_btnthread_color_data").setData("無し");
+		}else if("0003002".equals(stringChange(order.getPtBtnthreadColorType()))){
+			form.getField("Pt_btnthread_color_data").setData("有り");
+		}
 		//釦素材
-		form.getField("Pt_btn_material_data").setData(order.getPtBtnMaterialNm());
+		form.getField("Pt_btn_material_data").setData(stringChange(order.getPtBtnMaterialNm()));
 		//サスペンダー釦
-		form.getField("Pt_suspender_btn_data").setData(order.getPtSuspenderBtnNm());
+		form.getField("Pt_suspender_btn_data").setData(stringChange(order.getPtSuspenderBtnNm()));
 		//エイト（滑り止め）
-		form.getField("Pt_non_slip_data").setData(order.getPtNonSlipNm());
+		form.getField("Pt_non_slip_data").setData(stringChange(order.getPtNonSlipNm()));
 		//シック（股補強）
-		form.getField("Pt_chic_slip_data").setData(order.getPtChicSlipNm());
+		form.getField("Pt_chic_slip_data").setData(stringChange(order.getPtChicSlipNm()));
 		//形状記憶
-		form.getField("Pt_shape_memory_data").setData(order.getPtShapeMemoryNm());
+		form.getField("Pt_shape_memory_data").setData(stringChange(order.getPtShapeMemoryNm()));
 		//側章
-		form.getField("Pt_side_stripe_data").setData(order.getPtSideStripeNm());
+		form.getField("Pt_side_stripe_data").setData(stringChange(order.getPtSideStripeNm()));
 		//側章幅
-		form.getField("Pt_side_stripe_width_data").setData(order.getPtSideStripeWidthNm());
+		form.getField("Pt_side_stripe_width_data").setData(stringChange(order.getPtSideStripeWidthNm()));
 		
 		//PANTS
 		//PANTSモデル
-		form.getField("Pt_model_data2").setData(order.getPt2ModelNm());
+		form.getField("Pt_model_data2").setData(stringChange(order.getPt2ModelNm()));
 		//タック
-		form.getField("Pt_tack_data2").setData(order.getPt2TackNm());
+		form.getField("Pt_tack_data2").setData(stringChange(order.getPt2TackNm()));
 		//膝裏
-		form.getField("Pt_kneeinner_type_data2").setData(order.getPt2KneeinnerTypeNm());
+		form.getField("Pt_kneeinner_type_data2").setData(stringChange(order.getPt2KneeinnerTypeNm()));
 		//膝裏素材
-		form.getField("Pt_kneeinner_cloth_data2").setData(order.getPt2KneeinnerClothNm());
+		form.getField("Pt_kneeinner_cloth_data2").setData(stringChange(order.getPt2KneeinnerClothNm()));
 		//フロント仕様
-		form.getField("Pt_frt_type_data2").setData(order.getPt2FrtTypeNm());
+		form.getField("Pt_frt_type_data2").setData(stringChange(order.getPt2FrtTypeNm()));
 		//パンチェリーナ
-		form.getField("Pt_pancherina_data2").setData(order.getPt2PancherinaNm());
+		form.getField("Pt_pancherina_data2").setData(stringChange(order.getPt2PancherinaNm()));
 		//アジャスター仕様
-		form.getField("Pt_adjuster_data2").setData(order.getPt2AdjusterNm());
+		form.getField("Pt_adjuster_data2").setData(stringChange(order.getPt2AdjusterNm()));
 		//ベルトループ
-		form.getField("Pt_beltloop_data2").setData(order.getPt2BeltloopType());
+		if("0000702".equals(stringChange(order.getPt2BeltloopType()))) {
+			form.getField("Pt_beltloop_data2").setData("無し");
+		}else if("0000701".equals(stringChange(order.getPt2BeltloopType()))){
+			form.getField("Pt_beltloop_data2").setData("有り");
+		}
 		//ピンループ
-		form.getField("Pt_pinloop_data2").setData(order.getPt2PinloopNm());
+		form.getField("Pt_pinloop_data2").setData(stringChange(order.getPt2PinloopNm()));
 		//脇ポケット
-		form.getField("Pt_side_pkt_data2").setData(order.getPt2SidePktNm());
+		form.getField("Pt_side_pkt_data2").setData(stringChange(order.getPt2SidePktNm()));
 		//忍びポケット
-		form.getField("Pt_shinobi_pkt_data2").setData(order.getPt2ShinobiPktNm());
+		form.getField("Pt_shinobi_pkt_data2").setData(stringChange(order.getPt2ShinobiPktNm()));
 		//コインポケット
-		form.getField("Pt_coin_pkt_cd_data2").setData(order.getPt2CoinPktNm());
+		form.getField("Pt_coin_pkt_cd_data2").setData(stringChange(order.getPt2CoinPktNm()));
 		//フラップ付コインポケット
-		form.getField("Pt_flapcoin_pkt_data2").setData(order.getPt2FlapcoinPktNm());
+		form.getField("Pt_flapcoin_pkt_data2").setData(stringChange(order.getPt2FlapcoinPktNm()));
 		//上前ピスポケット
-		form.getField("Pt_left_pis_pkt_data2").setData(order.getPt2LeftPisPktNm());
+		form.getField("Pt_left_pis_pkt_data2").setData(stringChange(order.getPt2LeftPisPktNm()));
 		//下前ピスポケット
-		form.getField("Pt_right_pis_pkt_data2").setData(order.getPt2RightPisPktNm());
+		form.getField("Pt_right_pis_pkt_data2").setData(stringChange(order.getPt2RightPisPktNm()));
 		//Vカット
-		form.getField("Pt_v_cut_data2").setData(order.getPt2VCutNm());
+		form.getField("Pt_v_cut_data2").setData(stringChange(order.getPt2VCutNm()));
 		//裾上げ
-		form.getField("Pt_hem_up_data2").setData(order.getPt2HemUpNm());
+		form.getField("Pt_hem_up_data2").setData(stringChange(order.getPt2HemUpNm()));
 		//ダブル幅
-		form.getField("Pt_dbl_width_data2").setData(order.getPt2DblWidthNm());
+		form.getField("Pt_dbl_width_data2").setData(stringChange(order.getPt2DblWidthNm()));
 		//ステッチ種類
-		form.getField("Pt_stitch_type_data2").setData("");
+		form.getField("Pt_stitch_type_data2").setData(order.getPtAmfStitchNm());
 		//ステッチ箇所変更
-		form.getField("Pt_stitch_plc_data2").setData(order.getPt2StitchPlcType());
+		if("0002001".equals(stringChange(order.getPt2StitchPlcType()))) {
+			form.getField("Pt_stitch_plc_data2").setData("無し");
+		}else if("0002002".equals(stringChange(order.getPt2StitchPlcType()))){
+			form.getField("Pt_stitch_plc_data2").setData("有り");
+		}
 		//ダブルステッチ
-		form.getField("Pt_dblstitch_plc_data2").setData(order.getPt2DblstitchPlcType());
+		if("0002201".equals(stringChange(order.getPt2DblstitchPlcType()))) {
+			form.getField("Pt_dblstitch_plc_data2").setData("無し");
+		}else if("0002202".equals(stringChange(order.getPt2DblstitchPlcType()))){
+			form.getField("Pt_dblstitch_plc_data2").setData("有り");
+		}
 		//AMF色指定
-		form.getField("Pt_amf_color_data2").setData(order.getPt2AmfColorType());
+		if("0002401".equals(stringChange(order.getPt2AmfColorType()))) {
+			form.getField("Pt_amf_color_data2").setData("無し");
+		}else if("0002402".equals(stringChange(order.getPt2AmfColorType()))){
+			form.getField("Pt_amf_color_data2").setData("有り");
+		}
 		//ボタンホール色指定
-		form.getField("Pt_btnhole_color_data2").setData(order.getPt2BtnholeColorType());
+		if("0002701".equals(stringChange(order.getPt2BtnholeColorType()))) {
+			form.getField("Pt_btnhole_color_data2").setData("無し");
+		}else if("0002702".equals(stringChange(order.getPt2BtnholeColorType()))){
+			form.getField("Pt_btnhole_color_data2").setData("有り");
+		}
 		//ボタン付け糸指定
-		form.getField("Pt_btnthread_color_data2").setData(order.getPt2BtnthreadColorType());
+		if("0003001".equals(stringChange(order.getPt2BtnthreadColorType()))) {
+			form.getField("Pt_btnthread_color_data2").setData("無し");
+		}else if("0003002".equals(stringChange(order.getPt2BtnthreadColorType()))){
+			form.getField("Pt_btnthread_color_data2").setData("有り");
+		}
 		//釦素材
-		form.getField("Pt_btn_material_data2").setData(order.getPt2BtnMaterialNm());
+		form.getField("Pt_btn_material_data2").setData(stringChange(order.getPt2BtnMaterialNm()));
 		//サスペンダー釦
-		form.getField("Pt_suspender_btn_data2").setData(order.getPt2SuspenderBtnNm());
+		form.getField("Pt_suspender_btn_data2").setData(stringChange(order.getPt2SuspenderBtnNm()));
 		//エイト（滑り止め）
-		form.getField("Pt_non_slip_data2").setData(order.getPt2NonSlipNm());
+		form.getField("Pt_non_slip_data2").setData(stringChange(order.getPt2NonSlipNm()));
 		//シック（股補強）
-		form.getField("Pt_chic_slip_data2").setData(order.getPt2ChicSlipNm());
+		form.getField("Pt_chic_slip_data2").setData(stringChange(order.getPt2ChicSlipNm()));
 		//形状記憶
-		form.getField("Pt_shape_memory_data2").setData(order.getPt2ShapeMemoryNm());
+		form.getField("Pt_shape_memory_data2").setData(stringChange(order.getPt2ShapeMemoryNm()));
 		//側章
-		form.getField("Pt_side_stripe_data2").setData(order.getPt2SideStripeNm());
+		form.getField("Pt_side_stripe_data2").setData(stringChange(order.getPt2SideStripeNm()));
 		//側章幅
-		form.getField("Pt_side_stripe_width_data2").setData(order.getPt2SideStripeWidthNm());
+		form.getField("Pt_side_stripe_width_data2").setData(stringChange(order.getPt2SideStripeWidthNm()));
 		
 		//GILET
 		//GILETモデル
-		form.getField("Gl_model_data").setData(order.getGlModelNm());
+		form.getField("Gl_model_data").setData(stringChange(order.getGlModelNm()));
 		//胸ポケット
-		form.getField("Gl_breast_pkt_data").setData(order.getGlBreastPktNm());
+		form.getField("Gl_breast_pkt_data").setData(stringChange(order.getGlBreastPktNm()));
 		//腰ポケット
-		form.getField("Gl_waist_pkt_data").setData(order.getGlWaistPktNm());
+		form.getField("Gl_waist_pkt_data").setData(stringChange(order.getGlWaistPktNm()));
 		//腰ポケット形状
-		form.getField("Gl_waist_pkt_shape_data").setData(order.getGlWaistPktShapeNm());
+		form.getField("Gl_waist_pkt_shape_data").setData(stringChange(order.getGlWaistPktShapeNm()));
 		//腰ポケット素材
-		form.getField("Gl_waist_pkt_cloth_data").setData(order.getGlWaistPktClothNm());
+		form.getField("Gl_waist_pkt_cloth_data").setData(stringChange(order.getGlWaistPktClothNm()));
 		//ステッチ種類
-		form.getField("Gl_stitch_type_data").setData("");
+		form.getField("Gl_stitch_type_data").setData(stringChange(order.getGlAmfStitchNm()));
 		//ステッチ箇所変更
-		form.getField("Gl_stitch_plc_data").setData(order.getGlStitchPlcType());
+		if("0000601".equals(stringChange(order.getGlStitchPlcType()))) {
+			form.getField("Gl_stitch_plc_data").setData("無し");
+		}else if("0000602".equals(stringChange(order.getGlStitchPlcType()))){
+			form.getField("Gl_stitch_plc_data").setData("有り");
+		}
 		//ダブルステッチ変更
-		form.getField("Gl_dblstitch_plc_data").setData(order.getGlDblstitchPlcNm());
+		if("0002601".equals(stringChange(order.getGlDblstitchPlcType()))) {
+			form.getField("Gl_dblstitch_plc_data").setData("無し");
+		}else if("0002602".equals(stringChange(order.getGlDblstitchPlcType()))){
+			form.getField("Gl_dblstitch_plc_data").setData("有り");
+		}
 		//AMF色指定
-		form.getField("Gl_amf_color_data").setData(order.getGlAmfColorType());
+		if("0000801".equals(stringChange(order.getGlAmfColorType()))) {
+			form.getField("Gl_amf_color_data").setData("無し");
+		}else if("0000802".equals(stringChange(order.getGlAmfColorType()))){
+			form.getField("Gl_amf_color_data").setData("有り");
+		}
 		//ボタンホール色指定
-		form.getField("Gl_btnhole_color_data").setData(order.getGlBtnholeColorType());
+		if("0001101".equals(stringChange(order.getGlBtnholeColorType()))) {
+			form.getField("Gl_btnhole_color_data").setData("無し");
+		}else if("0001102".equals(stringChange(order.getGlBtnholeColorType()))){
+			form.getField("Gl_btnhole_color_data").setData("有り");
+		}
 		//ボタン付け糸指定
-		form.getField("Gl_btnthread_color_data").setData(order.getGlBtnthreadColorType());
+		if("0001401".equals(stringChange(order.getGlBtnthreadColorType()))) {
+			form.getField("Gl_btnthread_color_data").setData("無し");
+		}else if("0001402".equals(stringChange(order.getGlBtnthreadColorType()))){
+			form.getField("Gl_btnthread_color_data").setData("有り");
+		}
 		//背裏地素材
-		form.getField("Gl_back_cloth_data").setData(order.getGlBackClothNm());
+		form.getField("Gl_back_cloth_data").setData(stringChange(order.getGlBackClothNm()));
 		//内側裏地素材
-		form.getField("Gl_innner_cloth_data").setData(order.getGlInnnerClothNm());
+		form.getField("Gl_innner_cloth_data").setData(stringChange(order.getGlInnnerClothNm()));
 		//釦素材
-		form.getField("Gl_btn_material_data").setData(order.getGlFrtBtnNm());
+		form.getField("Gl_btn_material_data").setData(stringChange(order.getGlFrtBtnNm()));
 		//バックベルト
-		form.getField("Gl_back_belt_data").setData(order.getGlBackBeltNm());
+		form.getField("Gl_back_belt_data").setData(stringChange(order.getGlBackBeltNm()));
 		//ウォッチチェーン
-		form.getField("Gl_watch_chain_data").setData(order.getGlWatchChainNm());			
+		form.getField("Gl_watch_chain_data").setData(stringChange(order.getGlWatchChainNm()));			
 	}
 	
 	private void insertCoatDataCo(CrForm form, Order order) {
@@ -1441,16 +1569,120 @@ public class PdfFileServiceImpl implements PdfFileService{
 	}
 	
 	/**
+	 * 色名を変換する
+	 * @return
+	 */
+	private String convertTheColorName(String colorName) {
+		if("402（黒）".equals(colorName)) {
+			return "bk";
+		}else if("760（ネイビー）".equals(colorName)) {
+			return "nv";
+		}else if("145（水色）".equals(colorName)) {
+			return "lu";
+		}else if("75（ブルー）".equals(colorName)) {
+			return "bl";
+		}else if("9（赤）".equals(colorName)) {
+			return "re";
+		}else if("56（グリーン）".equals(colorName)) {
+			return "gr";
+		}else if("89（ライトブラウン）".equals(colorName)) {
+			return "lb";
+		}else if("94（ブラウン）".equals(colorName)) {
+			return "br";
+		}else if("152（ボルドー）".equals(colorName)) {
+			return "bd";
+		}else if("169（パープル）".equals(colorName)) {
+			return "pp";
+		}else if("343（ベージュ）".equals(colorName)) {
+			return "bg";
+		}else if("701（モカ）".equals(colorName)) {
+			return "mc";
+		}else if("403（白）".equals(colorName)) {
+			return "wt";
+		}else if("110（金茶）".equals(colorName)) {
+			return "lj";
+		}
+		return colorName;
+	}
+	
+	/**
+	 * 名前の省略形を設定します
+	 * @return
+	 */
+	private String convertTheProjectName(String projectName) {
+		if("フラワーホール上前1".equals(projectName)) {
+			return "フ上1";
+		}else if("フラワーホール上前2".equals(projectName)) {
+			return "フ上2";
+		}else if("フラワーホール下前1".equals(projectName)) {
+			return "フ下1";
+		}else if("フラワーホール下前2".equals(projectName)) {
+			return "フ下2";
+		}else if("フロント1".equals(projectName)) {
+			return "フト1";
+		}else if("フロント2".equals(projectName)) {
+			return "フト2";
+		}else if("フロント3".equals(projectName)) {
+			return "フト3";
+		}else if("上前袖口1".equals(projectName)) {
+			return "上袖1";
+		}else if("上前袖口2".equals(projectName)) {
+			return "上袖2";
+		}else if("上前袖口3".equals(projectName)) {
+			return "上袖3";
+		}else if("上前袖口4".equals(projectName)) {
+			return "上袖4";
+		}else if("上前袖口5".equals(projectName)) {
+			return "上袖5";
+		}else if("下前袖口1".equals(projectName)) {
+			return "下袖1";
+		}else if("下前袖口2".equals(projectName)) {
+			return "下袖2";
+		}else if("下前袖口3".equals(projectName)) {
+			return "下袖3";
+		}else if("下前袖口4".equals(projectName)) {
+			return "下袖4";
+		}else if("下前袖口5".equals(projectName)) {
+			return "下袖5";
+		}
+		else if("フロント下前1".equals(projectName)) {
+			return "フト下1";
+		}else if("フロント下前2".equals(projectName)) {
+			return "フト下2";
+		}else if("フロント下前3".equals(projectName)) {
+			return "フト下3";
+		}else if("フロント下前4".equals(projectName)) {
+			return "フト下4";
+		}else if("フロント下前5".equals(projectName)) {
+			return "フト下5";
+		}else if("フロント下前6".equals(projectName)) {
+			return "フト下6";
+		}else if("フロント上前1".equals(projectName)) {
+			return "フト上1";
+		}else if("フロント上前2".equals(projectName)) {
+			return "フト上2";
+		}else if("フロント上前3".equals(projectName)) {
+			return "フト上3";
+		}else if("フロント上前4".equals(projectName)) {
+			return "フト上4";
+		}
+		return projectName;
+	}
+	
+	/**
 	 * JACKET詳細情報,PDFで印刷
 	 * @return
 	 */
 	private void insertJacketdetailedFieldDataCo(CrForm form, Order order) {
+		StringBuffer sbJacketTitle = new StringBuffer();
 		StringBuffer sbJacket = new StringBuffer();
-		sbJacket.append("\r\n");
+		sbJacketTitle.append("JACKET\r\n");
+		sbJacket.append("（フ：フラワーホール\tフト：フロント）\r\n");
 		
 		//内ポケット
 		String strJacketInnerPktNm = stringChange(order.getJkInnerPktNm());
 		if(!("".equals(strJacketInnerPktNm))) {
+			sbJacketTitle.append("\t内ポケット\r\n");
 			String[] dataJacketInnerPktNm = strJacketInnerPktNm.split(",");
 			for(int i = 0; i < dataJacketInnerPktNm.length; i++) {
 				if(i == dataJacketInnerPktNm.length-1) {
@@ -1460,6 +1692,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETの内ポケットは空です");
 		}
@@ -1467,6 +1700,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ステッチ箇所変更
 		String strJacketStitchPlcNm = stringChange(order.getJkStitchPlcNm());
 		if(!("".equals(strJacketStitchPlcNm))) {
+			sbJacketTitle.append("\tステッチ箇所変更\r\n");
 			String[] dataJacketStitchPlcNm = strJacketStitchPlcNm.split(",");
 			for(int i = 0; i < dataJacketStitchPlcNm.length; i++) {
 				if(i == dataJacketStitchPlcNm.length-1) {
@@ -1476,6 +1710,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETのステッチ箇所変更は空です");
 		}
@@ -1483,6 +1718,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ダブルステッチ変更
 		String strJacketDblstitchPlcNm = stringChange(order.getJkDblstitchPlcNm());
 		if(!("".equals(strJacketDblstitchPlcNm))) {
+			sbJacketTitle.append("\tダブルステッチ変更\r\n");
 		String[] dataJacketDblstitchPlcNm = strJacketDblstitchPlcNm.split(",");
 			for(int i = 0; i < dataJacketDblstitchPlcNm.length; i++) {
 				if(i == dataJacketDblstitchPlcNm.length-1) {
@@ -1492,6 +1728,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETのダブルステッチ変更は空です");
 		}
@@ -1503,20 +1740,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataJacketAmfColorNm = strJacketAmfColorNm.split(",");
 			String[] dataJacketAmfColorPlcNm = strJacketAmfColorPlcNm.split(",");
 			if(dataJacketAmfColorNm.length-1 == dataJacketAmfColorPlcNm.length-1) {
+				sbJacketTitle.append("\tAMF色指定\r\n");
 				for(int i = 0; i < dataJacketAmfColorNm.length; i++) {
 					if(i == dataJacketAmfColorNm.length-1) {
-						sbJacket.append(dataJacketAmfColorNm[i]).append("-").
-						append(dataJacketAmfColorPlcNm[i]).append("\r\n");
+						sbJacket.append(dataJacketAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataJacketAmfColorNm[i])).append("\r\n");
 					}else {
-						sbJacket.append(dataJacketAmfColorNm[i]).append("-").
-						append(dataJacketAmfColorPlcNm[i]).append("  ");
+						sbJacket.append(dataJacketAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataJacketAmfColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbJacketTitle.append("\r\n");
 				sbJacket.append("\r\n");
 				logger.info("JACKETAMF色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETのAMF色指定は空です");
 		}
@@ -1528,20 +1768,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataJacketBtnholeColorNm = strJacketBtnholeColorNm.split(",");
 			String[] dataJacketBtnholeColorPlcN = strJacketBtnholeColorPlcN.split(",");
 			if(dataJacketBtnholeColorNm.length-1 == dataJacketBtnholeColorPlcN.length-1) {
+				sbJacketTitle.append("\tボタンホール色指定\r\n");
 				for(int i = 0; i < dataJacketBtnholeColorNm.length; i++) {
 					if(i == dataJacketBtnholeColorNm.length-1) {
-						sbJacket.append(dataJacketBtnholeColorNm[i]).append("-").
-						append(dataJacketBtnholeColorPlcN[i]).append("\r\n");
+						sbJacket.append(convertTheProjectName(dataJacketBtnholeColorPlcN[i])).append("-").
+						append(convertTheColorName(dataJacketBtnholeColorNm[i])).append("\r\n");
 					}else {
-						sbJacket.append(dataJacketBtnholeColorNm[i]).append("-").
-						append(dataJacketBtnholeColorPlcN[i]).append("  ");
+						sbJacket.append(convertTheProjectName(dataJacketBtnholeColorPlcN[i])).append("-").
+						append(convertTheColorName(dataJacketBtnholeColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbJacketTitle.append("\r\n");
 				sbJacket.append("\r\n");
 				logger.info("JACKETボタンホール色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETのAMF色指定は空です");
 		}
@@ -1553,26 +1796,31 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataJacketBtnthreadColorNm = strJacketBtnthreadColorNm.split(",");
 			String[] dataJacketBtnthreadColorPlcN = strJacketBtnthreadColorPlcN.split(",");
 			if(dataJacketBtnthreadColorNm.length-1 == dataJacketBtnthreadColorPlcN.length-1) {
+				sbJacketTitle.append("\tボタン付け糸指定\r\n");
 				for(int i = 0; i < dataJacketBtnthreadColorNm.length; i++) {
 					if(i == dataJacketBtnthreadColorNm.length-1) {
-						sbJacket.append(dataJacketBtnthreadColorNm[i]).append("-").
-						append(dataJacketBtnthreadColorPlcN[i]).append("");
+						sbJacket.append(convertTheProjectName(dataJacketBtnthreadColorPlcN[i])).append("-").
+						append(convertTheColorName(dataJacketBtnthreadColorNm[i])).append("");
 					}else {
-						sbJacket.append(dataJacketBtnthreadColorNm[i]).append("-").
-						append(dataJacketBtnthreadColorPlcN[i]).append("  ");
+						sbJacket.append(convertTheProjectName(dataJacketBtnthreadColorPlcN[i])).append("-").
+						append(convertTheColorName(dataJacketBtnthreadColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbJacketTitle.append("\r\n");
 				sbJacket.append("\r\n");
 				logger.info("JACKETボタン付け糸指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbJacketTitle.append("\r\n");
 			sbJacket.append("\r\n");
 			logger.info("JACKETのボタン付け糸指定は空です");
 		}
 		
+		String detailedFieldJacketTitle = String.valueOf(sbJacketTitle);
 		String detailedFieldJacket = String.valueOf(sbJacket);
 		//JACKET詳細情報
+		form.getField("Jk_detailed_field_title_data").setData(stringChange(detailedFieldJacketTitle));
 		form.getField("Jk_detailed_field_data").setData(stringChange(detailedFieldJacket));
 	}
 	
@@ -1581,12 +1829,15 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @return
 	 */
 	private void insertPantsdetailedFieldDataCo(CrForm form, Order order) {
+		StringBuffer sbPantsTitle = new StringBuffer();
 		StringBuffer sbPants = new StringBuffer();
+		sbPantsTitle.append("PANTS\r\n");
 		sbPants.append("\r\n");
 		
 		//ベルトループ
 		String strPantsBeltloopNm = stringChange(order.getPtBeltloopNm());
 		if(!("".equals(strPantsBeltloopNm))) {
+			sbPantsTitle.append("\tベルトループ\r\n");
 			String[] dataPantsBeltloopNm = strPantsBeltloopNm.split(",");
 			for(int i = 0; i < dataPantsBeltloopNm.length; i++) {
 				if(i == dataPantsBeltloopNm.length-1) {
@@ -1596,6 +1847,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのベルトループは空です");
 		}
@@ -1603,6 +1855,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ステッチ箇所変更
 		String strPantsStitchPlcNm = stringChange(order.getPtStitchPlcNm());
 		if(!("".equals(strPantsStitchPlcNm))) {
+			sbPantsTitle.append("\tステッチ箇所変更\r\n");
 			String[] dataPantsStitchPlcNm = strPantsStitchPlcNm.split(",");
 			for(int i = 0; i < dataPantsStitchPlcNm.length; i++) {
 				if(i == dataPantsStitchPlcNm.length-1) {
@@ -1612,6 +1865,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのステッチ箇所変更は空です");
 		}
@@ -1619,6 +1873,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ダブルステッチ変更 
 		String strPantsDblstitchPlcNm = stringChange(order.getPtDblstitchPlcNm());
 		if(!("".equals(strPantsDblstitchPlcNm))) {
+			sbPantsTitle.append("\tダブルステッチ変更 \r\n");
 		String[] dataPantsDblstitchPlcNm = strPantsDblstitchPlcNm.split(",");
 			for(int i = 0; i < dataPantsDblstitchPlcNm.length; i++) {
 				if(i == dataPantsDblstitchPlcNm.length-1) {
@@ -1628,6 +1883,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのダブルステッチ変更 は空です");
 		}
@@ -1639,20 +1895,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPantsAmfColorNm = strPantsAmfColorNm.split(",");
 			String[] dataPantsAmfColorPlcNm = strPantsAmfColorPlcNm.split(",");
 			if(dataPantsAmfColorNm.length-1 == dataPantsAmfColorPlcNm.length-1) {
+				sbPantsTitle.append("\tAMF色指定\r\n");
 				for(int i = 0; i < dataPantsAmfColorNm.length; i++) {
 					if(i == dataPantsAmfColorNm.length-1) {
-						sbPants.append(dataPantsAmfColorNm[i]).append("-").
-						append(dataPantsAmfColorPlcNm[i]).append("\r\n");
+						sbPants.append(dataPantsAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsAmfColorNm[i])).append("\r\n");
 					}else {
-						sbPants.append(dataPantsAmfColorNm[i]).append("-").
-						append(dataPantsAmfColorPlcNm[i]).append("  ");
+						sbPants.append(dataPantsAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsAmfColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPantsTitle.append("\r\n");
 				sbPants.append("\r\n");
 				logger.info("PANTSAMF色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのAMF色指定は空です");
 		}
@@ -1664,20 +1923,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPantsBtnholeColorNm = strPantsBtnholeColorNm.split(",");
 			String[] dataPantsBtnholeColorPlcNm = strPantsBtnholeColorPlcNm.split(",");
 			if(dataPantsBtnholeColorNm.length-1 == dataPantsBtnholeColorPlcNm.length-1) {
+				sbPantsTitle.append("\tボタンホール色指定\r\n");
 				for(int i = 0; i < dataPantsBtnholeColorNm.length; i++) {
 					if(i == dataPantsBtnholeColorNm.length-1) {
-						sbPants.append(dataPantsBtnholeColorNm[i]).append("-").
-						append(dataPantsBtnholeColorPlcNm[i]).append("\r\n");
+						sbPants.append(dataPantsBtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsBtnholeColorNm[i])).append("\r\n");
 					}else {
-						sbPants.append(dataPantsBtnholeColorNm[i]).append("-").
-						append(dataPantsBtnholeColorPlcNm[i]).append("  ");
+						sbPants.append(dataPantsBtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsBtnholeColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPantsTitle.append("\r\n");
 				sbPants.append("\r\n");
 				logger.info("PANTSボタンホール色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのAMF色指定は空です");
 		}
@@ -1689,26 +1951,31 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPantsBtnthreadColorNm = strPantsBtnthreadColorNm.split(",");
 			String[] dataPantsBtnthreadColorPlcNm = strPantsBtnthreadColorPlcNm.split(",");
 			if(dataPantsBtnthreadColorNm.length-1 == dataPantsBtnthreadColorPlcNm.length-1) {
+				sbPantsTitle.append("\tボタン付け糸指定\r\n");
 				for(int i = 0; i < dataPantsBtnthreadColorNm.length; i++) {
 					if(i == dataPantsBtnthreadColorNm.length-1) {
-						sbPants.append(dataPantsBtnthreadColorNm[i]).append("-").
-						append(dataPantsBtnthreadColorPlcNm[i]).append("");
+						sbPants.append(dataPantsBtnthreadColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsBtnthreadColorNm[i])).append("");
 					}else {
-						sbPants.append(dataPantsBtnthreadColorNm[i]).append("-").
-						append(dataPantsBtnthreadColorPlcNm[i]).append("  ");
+						sbPants.append(dataPantsBtnthreadColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPantsBtnthreadColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPantsTitle.append("\r\n");
 				sbPants.append("\r\n");
 				logger.info("PANTSボタン付け糸指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPantsTitle.append("\r\n");
 			sbPants.append("\r\n");
 			logger.info("PANTSのボタン付け糸指定は空です");
 		}
 		
+		String detailedFieldPantsTitle = String.valueOf(sbPantsTitle);
 		String detailedFieldPants = String.valueOf(sbPants);
 		//PANTS詳細情報
+		form.getField("Pt_detailed_field_title_data").setData(stringChange(detailedFieldPantsTitle));
 		form.getField("Pt_detailed_field_data").setData(stringChange(detailedFieldPants));
 	}
 	
@@ -1717,12 +1984,15 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @return
 	 */
 	private void insertPants2detailedFieldDataCo(CrForm form, Order order) {
+		StringBuffer sbPants2Title = new StringBuffer();
 		StringBuffer sbPants2 = new StringBuffer();
+		sbPants2Title.append("PANTS\r\n");
 		sbPants2.append("\r\n");
 		
 		//ベルトループ
 		String strPants2BeltloopNm = stringChange(order.getPt2BeltloopNm());
 		if(!("".equals(strPants2BeltloopNm))) {
+			sbPants2Title.append("\tベルトループ\r\n");
 			String[] dataPants2BeltloopNm = strPants2BeltloopNm.split(",");
 			for(int i = 0; i < dataPants2BeltloopNm.length; i++) {
 				if(i == dataPants2BeltloopNm.length-1) {
@@ -1732,6 +2002,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のベルトループは空です");
 		}
@@ -1739,6 +2010,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ステッチ箇所変更
 		String strPants2StitchPlcNm = stringChange(order.getPt2StitchPlcNm());
 		if(!("".equals(strPants2StitchPlcNm))) {
+			sbPants2Title.append("\tステッチ箇所変更\r\n");
 			String[] dataPants2StitchPlcNm = strPants2StitchPlcNm.split(",");
 			for(int i = 0; i < dataPants2StitchPlcNm.length; i++) {
 				if(i == dataPants2StitchPlcNm.length-1) {
@@ -1748,6 +2020,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のステッチ箇所変更は空です");
 		}
@@ -1755,6 +2028,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ダブルステッチ変更 
 		String strPants2DblstitchPlcNm = stringChange(order.getPt2DblstitchPlcNm());
 		if(!("".equals(strPants2DblstitchPlcNm))) {
+			sbPants2Title.append("\tダブルステッチ変更 \r\n");
 		String[] dataPants2DblstitchPlcNm = strPants2DblstitchPlcNm.split(",");
 			for(int i = 0; i < dataPants2DblstitchPlcNm.length; i++) {
 				if(i == dataPants2DblstitchPlcNm.length-1) {
@@ -1764,6 +2038,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のダブルステッチ変更 は空です");
 		}
@@ -1775,20 +2050,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPants2AmfColorNm = strPants2AmfColorNm.split(",");
 			String[] dataPants2AmfColorPlcNm = strPants2AmfColorPlcNm.split(",");
 			if(dataPants2AmfColorNm.length-1 == dataPants2AmfColorPlcNm.length-1) {
+				sbPants2Title.append("\tAMF色指定\r\n");
 				for(int i = 0; i < dataPants2AmfColorNm.length; i++) {
 					if(i == dataPants2AmfColorNm.length-1) {
-						sbPants2.append(dataPants2AmfColorNm[i]).append("-").
-						append(dataPants2AmfColorPlcNm[i]).append("\r\n");
+						sbPants2.append(dataPants2AmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2AmfColorNm[i])).append("\r\n");
 					}else {
-						sbPants2.append(dataPants2AmfColorNm[i]).append("-").
-						append(dataPants2AmfColorPlcNm[i]).append("  ");
+						sbPants2.append(dataPants2AmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2AmfColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPants2Title.append("\r\n");
 				sbPants2.append("\r\n");
 				logger.info("PANTS2AMF色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のAMF色指定は空です");
 		}
@@ -1800,20 +2078,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPants2BtnholeColorNm = strPants2BtnholeColorNm.split(",");
 			String[] dataPants2BtnholeColorPlcNm = strPants2BtnholeColorPlcNm.split(",");
 			if(dataPants2BtnholeColorNm.length-1 == dataPants2BtnholeColorPlcNm.length-1) {
+				sbPants2Title.append("\tボタンホール色指定\r\n");
 				for(int i = 0; i < dataPants2BtnholeColorNm.length; i++) {
 					if(i == dataPants2BtnholeColorNm.length-1) {
-						sbPants2.append(dataPants2BtnholeColorNm[i]).append("-").
-						append(dataPants2BtnholeColorPlcNm[i]).append("\r\n");
+						sbPants2.append(dataPants2BtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2BtnholeColorNm[i])).append("\r\n");
 					}else {
-						sbPants2.append(dataPants2BtnholeColorNm[i]).append("-").
-						append(dataPants2BtnholeColorPlcNm[i]).append("  ");
+						sbPants2.append(dataPants2BtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2BtnholeColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPants2Title.append("\r\n");
 				sbPants2.append("\r\n");
 				logger.info("PANTS2ボタンホール色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のAMF色指定は空です");
 		}
@@ -1825,26 +2106,31 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataPants2BtnthreadColorNm = strPants2BtnthreadColorNm.split(",");
 			String[] dataPants2BtnthreadColorPlcNm = strPants2BtnthreadColorPlcNm.split(",");
 			if(dataPants2BtnthreadColorNm.length-1 == dataPants2BtnthreadColorPlcNm.length-1) {
+				sbPants2Title.append("\tボタン付け糸指定\r\n");
 				for(int i = 0; i < dataPants2BtnthreadColorNm.length; i++) {
 					if(i == dataPants2BtnthreadColorNm.length-1) {
-						sbPants2.append(dataPants2BtnthreadColorNm[i]).append("-").
-						append(dataPants2BtnthreadColorPlcNm[i]).append("");
+						sbPants2.append(dataPants2BtnthreadColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2BtnthreadColorNm[i])).append("");
 					}else {
-						sbPants2.append(dataPants2BtnthreadColorNm[i]).append("-").
-						append(dataPants2BtnthreadColorPlcNm[i]).append("  ");
+						sbPants2.append(dataPants2BtnthreadColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataPants2BtnthreadColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbPants2Title.append("\r\n");
 				sbPants2.append("\r\n");
 				logger.info("PANTS2ボタン付け糸指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbPants2Title.append("\r\n");
 			sbPants2.append("\r\n");
 			logger.info("PANTS2のボタン付け糸指定は空です");
 		}
 		
+		String detailedFieldPants2Title = String.valueOf(sbPants2Title);
 		String detailedFieldPants2 = String.valueOf(sbPants2);
 		//PANTS2詳細情報
+		form.getField("Pt2_detailed_field_title_data").setData(stringChange(detailedFieldPants2Title));
 		form.getField("Pt2_detailed_field_data").setData(stringChange(detailedFieldPants2));
 	}
 	
@@ -1853,12 +2139,15 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @return
 	 */
 	private void insertGiletdetailedFieldDataCo(CrForm form, Order order) {
+		StringBuffer sbGiletTitle = new StringBuffer();
 		StringBuffer sbGilet = new StringBuffer();
-		sbGilet.append("\r\n");
+		sbGiletTitle.append("GILET\r\n");
+		sbGilet.append("（フト：フロント）\r\n");
 		
 		//ステッチ箇所変更
 		String strGiletStitchPlcNm = stringChange(order.getGlStitchPlcNm());
 		if(!("".equals(strGiletStitchPlcNm))) {
+			sbGiletTitle.append("\tステッチ箇所変更\r\n");
 			String[] dataGiletStitchPlcNm = strGiletStitchPlcNm.split(",");
 			for(int i = 0; i < dataGiletStitchPlcNm.length; i++) {
 				if(i == dataGiletStitchPlcNm.length-1) {
@@ -1868,22 +2157,35 @@ public class PdfFileServiceImpl implements PdfFileService{
 				}
 			}
 		}else {
+			sbGiletTitle.append("\r\n");
 			sbGilet.append("\r\n");
 			logger.info("GILETのステッチ箇所変更は空です");
 		}
 		
 		//AMF色指定
 		String strGiletAmfColorNm = stringChange(order.getGlAmfColorNm());
-		if(!("".equals(strGiletAmfColorNm))) {
+		String strGiletAmfColorPlcNm = stringChange(order.getGlAmfColorPlcNm());
+		if(!("".equals(strGiletAmfColorNm)) && !("".equals(strGiletAmfColorPlcNm))) {
 			String[] dataGiletAmfColorNm = strGiletAmfColorNm.split(",");
-			for(int i = 0; i < dataGiletAmfColorNm.length; i++) {
-				if(i == dataGiletAmfColorNm.length-1) {
-					sbGilet.append(dataGiletAmfColorNm[i]).append("\r\n");
-				}else {
-					sbGilet.append(dataGiletAmfColorNm[i]).append("  ");
+			String[] dataGiletAmfColorPlcNm = strGiletAmfColorPlcNm.split(",");
+			if(dataGiletAmfColorNm.length-1 == dataGiletAmfColorPlcNm.length-1) {
+				sbGiletTitle.append("\tAMF色指定\r\n");
+				for(int i = 0; i < dataGiletAmfColorNm.length; i++) {
+					if(i == dataGiletAmfColorNm.length-1) {
+						sbGilet.append(dataGiletAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataGiletAmfColorNm[i])).append("\r\n");
+					}else {
+						sbGilet.append(dataGiletAmfColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataGiletAmfColorNm[i])).append("  ");
+					}
 				}
+			}else {
+				sbGiletTitle.append("\r\n");
+				sbGilet.append("\r\n");
+				logger.info("GILETボタンホール色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbGiletTitle.append("\r\n");
 			sbGilet.append("\r\n");
 			logger.info("GILETのAMF色指定は空です");
 		}
@@ -1895,20 +2197,23 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataGiletBtnholeColorNm = strGiletBtnholeColorNm.split(",");
 			String[] dataGiletBtnholeColorPlcNm = strGiletBtnholeColorPlcNm.split(",");
 			if(dataGiletBtnholeColorNm.length-1 == dataGiletBtnholeColorPlcNm.length-1) {
+				sbGiletTitle.append("\tボタンホール色指定\r\n");
 				for(int i = 0; i < dataGiletBtnholeColorNm.length; i++) {
 					if(i == dataGiletBtnholeColorNm.length-1) {
-						sbGilet.append(dataGiletBtnholeColorNm[i]).append("-").
-						append(dataGiletBtnholeColorPlcNm[i]).append("\r\n");
+						sbGilet.append(dataGiletBtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataGiletBtnholeColorNm[i])).append("\r\n");
 					}else {
-						sbGilet.append(dataGiletBtnholeColorNm[i]).append("-").
-						append(dataGiletBtnholeColorPlcNm[i]).append("  ");
+						sbGilet.append(dataGiletBtnholeColorPlcNm[i]).append("-").
+						append(convertTheColorName(dataGiletBtnholeColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbGiletTitle.append("\r\n");
 				sbGilet.append("\r\n");
 				logger.info("GILETボタンホール色指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbGiletTitle.append("\r\n");
 			sbGilet.append("\r\n");
 			logger.info("GILETのボタンホール色指定は空です");
 		}
@@ -1920,26 +2225,31 @@ public class PdfFileServiceImpl implements PdfFileService{
 			String[] dataGiletBtnthreadColorNm = strGiletBtnthreadColorNm.split(",");
 			String[] dataGiletBtnthreadColorPlcNm = strGiletBtnthreadColorPlcNm.split(",");
 			if(dataGiletBtnthreadColorNm.length-1 == dataGiletBtnthreadColorPlcNm.length-1) {
+				sbGiletTitle.append("\tボタン付け糸指定\r\n");
 				for(int i = 0; i < dataGiletBtnthreadColorNm.length; i++) {
 					if(i == dataGiletBtnthreadColorNm.length-1) {
-						sbGilet.append(dataGiletBtnthreadColorNm[i]).append("-").
-						append(dataGiletBtnthreadColorPlcNm[i]).append("\r\n");
+						sbGilet.append(convertTheProjectName(dataGiletBtnthreadColorPlcNm[i])).append("-").
+						append(convertTheColorName(dataGiletBtnthreadColorNm[i])).append("\r\n");
 					}else {
-						sbGilet.append(dataGiletBtnthreadColorNm[i]).append("-").
-						append(dataGiletBtnthreadColorPlcNm[i]).append("  ");
+						sbGilet.append(convertTheProjectName(dataGiletBtnthreadColorPlcNm[i])).append("-").
+						append(convertTheColorName(dataGiletBtnthreadColorNm[i])).append("  ");
 					}
 				}
 			}else {
+				sbGiletTitle.append("\r\n");
 				sbGilet.append("\r\n");
 				logger.info("GILETボタン付け糸指定----場所と色のフィールドの数に一貫性がありません");
 			}
 		}else {
+			sbGiletTitle.append("\r\n");
 			sbGilet.append("\r\n");
 			logger.info("GILETのボタン付け糸指定は空です");
 		}
 		
+		String detailedFieldGiletTitle = String.valueOf(sbGiletTitle);
 		String detailedFieldGilet = String.valueOf(sbGilet);
 		//GILET詳細情報
+		form.getField("Gl_detailed_field_title_data").setData(stringChange(detailedFieldGiletTitle));
 		form.getField("Gl_detailed_field_data").setData(stringChange(detailedFieldGilet));
 	}
 	
@@ -1957,15 +2267,18 @@ public class PdfFileServiceImpl implements PdfFileService{
 		if(memberName == null) {
 			return "";
 		}
-		String firstName = memberName.getFirstName();
-		String lastName = memberName.getLastName();
+		String firstName = stringChange(memberName.getFirstName());
+		String lastName = stringChange(memberName.getLastName());
+		String firstNameKana = stringChange(memberName.getFirstNameKana());
+		String lastNameKana = stringChange(memberName.getLastNameKana());
 		String firstNameOut = "";
 		String lastNameOut = "";
-		if(firstName != null) {
+		if(firstName != "" && lastName != "") {
 			firstNameOut = firstName;
-		}
-		if(lastName != null) {
 			lastNameOut = lastName;
+		}else if(firstNameKana != "" && lastNameKana != "") {
+			firstNameOut = firstNameKana;
+			lastNameOut = lastNameKana;
 		}
 		return lastNameOut + " " + firstNameOut;
 	}

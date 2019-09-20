@@ -15,17 +15,11 @@
  */
 package co.jp.aoyama.macchinetta.siireYoky;
 
-import java.util.Date;
-
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import co.jp.aoyama.macchinetta.converter.HalfWidthSpaceInserter;
 import co.jp.aoyama.macchinetta.converter.HalfWidthZeroInserter;
 import co.jp.aoyama.macchinetta.converter.SimpleDateConverter;
 
@@ -40,15 +34,11 @@ public class SiireYoteiYokyProcessor implements ItemProcessor<SiireYoteiYoky, Si
 	SiireYoteiYokyRepository siireYoteiYokyRepository;
 	
 	@Inject
-	HalfWidthSpaceInserter halfWidthSpaceInserter;
-	
-	@Inject
 	HalfWidthZeroInserter halfWidthZeroInserter;
 	
 	@Inject
 	SimpleDateConverter simpleDateConverter;
 	
-	private static final Logger logger = LoggerFactory.getLogger(SiireYoteiYokyProcessor.class);
     /**
      * Processing some stuff for each SiireYoteiYoky.
      *
@@ -62,12 +52,7 @@ public class SiireYoteiYokyProcessor implements ItemProcessor<SiireYoteiYoky, Si
     	item.setStoreBrandCode(halfWidthZeroInserter.getvalue(item.getOrderId(), 2, 0, 1));
     	
     	//メーカー品番枝番あり
-    	String hostTransmitMakerProduct = item.getHostTransmitMakerProduct();
-    	if (null == hostTransmitMakerProduct || 0 == hostTransmitMakerProduct.length()) {
-    		logger.error("host_transmit_maker_product is null.[Order_Id:{}]"
-                    ,item.getOrderId());
-    	}
-    	item.setHostTransmitMakerProduct(halfWidthSpaceInserter.getvalue(hostTransmitMakerProduct,12,"righ"));
+    	item.setHostTransmitMakerProduct(item.getOrderId());
     	
     	//PO：パターンオーダー、CO：カスタムオーダーの場合
     	if (4 == item.getHostTransmitSize().length()) {

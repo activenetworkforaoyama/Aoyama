@@ -7,6 +7,7 @@ public class Lining implements Serializable {
 	
 	private static final long serialVersionUID = -7972391410178227134L;
 	private String sku;
+	private String styleno;
 	private String mode;
 	private String Vendor;
 	private String Description;
@@ -19,6 +20,12 @@ public class Lining implements Serializable {
 	}
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+	public String getStyleno() {
+		return styleno;
+	}
+	public void setStyleno(String styleno) {
+		this.styleno = styleno;
 	}
 	public String getMode() {
 		return mode;

@@ -6,7 +6,11 @@
 
 .gray{ 
     background-color: #BDBDBD;
-}  
+}
+
+.yellow{
+	background-color: #FF9224;
+} 
 
 .cell-del-type {
 	text-align: center;
@@ -638,6 +642,7 @@ send2factoryStatusMap.set("1","送信済");
 send2factoryStatusMap.set("2","再送信要");
 send2factoryStatusMap.set("3","送信失敗");
 send2factoryStatusMap.set("4","送信失敗");
+send2factoryStatusMap.set("5","送信失敗");
 
 
 var itemMap = new Map();
@@ -1360,7 +1365,11 @@ function searchOrder(){
 		    var pager = new Slick.Controls.Pager(dataView, grid, $("#pager"));
 
 			grid.onCellChange.subscribe(function (e, args) {
-			  dataView.updateItem(args.item.id, args.item);
+			  if(args.length === undefined){
+				  
+			  }else{
+				 dataView.updateItem(args.item.id, args.item);
+			  }
 			});
 			
 		    grid.onSort.subscribe(function (e, args) {
@@ -1379,7 +1388,11 @@ function searchOrder(){
 			          //工場自動連携の場合、赤い色
 			          else if(args.dataContext.send2factory_status == 4 && args.cell != 0 && args.cell != 1){
 			        	  return "red";
-				      }else{
+				      }
+			          else if(args.dataContext.send2factory_status == 5 && args.cell != 0 && args.cell != 1){
+			        	  return "yellow";
+				      }
+			          else{
 			        	  return null;
 				      }
 			      }else{
@@ -1390,7 +1403,11 @@ function searchOrder(){
 			    	　　//工場自動連携の場合、赤い色
 			          else if(args.dataContext.send2factory_status == 4 && args.cell != 0){
 			        	  return "red";
-				      }else{
+				      }
+				      else if(args.dataContext.send2factory_status == 5 && args.cell != 0){
+			        	  return "yellow";
+				      }
+				      else{
 			        	  return null;
 				      }
 				  }
@@ -1456,7 +1473,13 @@ function gotoOrderLink(orderId){
 }
 //流用 Divert
 function gotoOrderDivert(orderId){
-	window.location.href= contextPath + "/orderlist/goToOrderDivert/"+orderId;
+	if(orderPattern == "PO"){
+	   window.location.href= contextPath + "/orderlist/goToOrderDivert/"+orderId;
+	}
+	if(orderPattern == "CO"){
+	   window.location.href= contextPath + "/orderlist/goToOrderCoDivert/"+orderId;
+	}
+	
 }
 
 /* //チェック

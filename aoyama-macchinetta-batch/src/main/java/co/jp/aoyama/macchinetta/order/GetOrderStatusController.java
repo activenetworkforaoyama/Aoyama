@@ -58,8 +58,8 @@ public class GetOrderStatusController {
 	String appSecrets;
 
 	/** 一回送信注文データ件数 */
-	@Value("${api.send.maxcount.GetOrderStatus}")
-	int sendMaxCount;
+//	@Value("${api.send.maxcount.GetOrderStatus}")
+//	int sendMaxCount;
 
 	@Value("${api.prefix}")
 	String prefix;
@@ -67,47 +67,37 @@ public class GetOrderStatusController {
 	/** log */
 	private static final Logger logger = LoggerFactory.getLogger(GetOrderStatusController.class);
 
-//	/**
-//	 * 注文の ステータス確認処理を行う
-//	 * 
-//	 * @param selectFlag 選択フラグ 1：工場自動連携ステータス＝「1：送信済み」
-//	 */
-//	public void updateOrderStatus() {
-//
-//		DtbOrder order = orderService.selectByPrimaryKey("101410000001");
-//
-//		order.setMakerFactoryStatus("F1");
-//		order.setIsCancelled("0");
-//		order.setSend2factoryStatus("1");
-//
-//		String[] testOrderIds = { "077110000043", "077110000044", "077110000040", "077110000041", "077110000042",
-//				"077110000045", "077110000046", "077110000154", "077110000155", "077110000156", "077110000157",
-//				"077110000158", "077110000159", "077110000160", "077110000161", "077110000162", "077110000151",
-//				"077110000152", "077110000153", "077110000163", "077110000164", "077110000165" };
-//
-//		for (String testOrderId : testOrderIds) {
-//			order.setOrderId(testOrderId);
-//			orderService.insert(order);
-//		}
-//
-//		List<String> orderIdList = orderService.selectConfrimOrderId();
-//
-//		List<String> orderIds = new ArrayList<String>();
-//
-//		for (String dtbOrder : orderIdList) {
-//
-//			orderIds.add(dtbOrder);
-//
-//			if (sendMaxCount == orderIds.size()) {
-//				changeDbStatus(orderIds);
-//				orderIds.clear();
-//			}
-//		}
-//
-//		if (0 < orderIds.size()) {
-//			changeDbStatus(orderIds);
-//		}
-//	}
+	/**
+	 * タイムアウト注文の確認
+	 * 
+	 * @param orderIds
+	 */
+	public void doTimeoutOrderConfirm(List<String> orderIds) {
+		logger.info("GetOrderStatus:受注マスタのタイムアウト注文を確認する処理開始");
+		// タイムアウト注文リスト
+		List<OrderStatusOutput> resultList = getMsgJson(orderIds);
+		List<String> successOrderIds = new ArrayList<String>();
+		List<String> sendOrderIds = new ArrayList<String>();
+
+		for (OrderStatusOutput orderStatusOutput : resultList) {
+			String receivedOrderId = orderStatusOutput.getOrderno();
+			receivedOrderId = receivedOrderId.substring(2, 14);
+
+			if (!successOrderIds.contains(receivedOrderId)) {
+				successOrderIds.add(receivedOrderId);
+			}
+		}
+
+		for (String timeoutOrder : orderIds) {
+			if (!successOrderIds.contains(timeoutOrder)) {
+				sendOrderIds.add(timeoutOrder);
+			}
+		}
+
+		orderService.updateSendSuccessOrderIds(successOrderIds, sendOrderIds);
+
+		logger.info("GetOrderStatus:受注マスタのタイムアウト注文を確認する処理終了");
+	}
 
 	/**
 	 * DB ステータス を変更
@@ -118,6 +108,8 @@ public class GetOrderStatusController {
 
 		// ステータスが生産終了としてのリスト
 		List<String> completeStatus = new ArrayList<String>();
+		// 生産中
+		completeStatus.add("1004");
 		// 千葉へ運送中
 		completeStatus.add("1005");
 		// 千葉に到着
@@ -190,39 +182,52 @@ public class GetOrderStatusController {
 
 				// 全部サブ注文の出荷日が設置していたというフラグ
 				boolean isAllSetShukkaDate = true;
+				// 注文が生産中になったというフラグ
+				boolean isInProduction = false;
 				// 全部サブ注文の中で、最新の出荷日
 				String lastShukkaDate = "";
+				// 受信結果のステータス
+				String orderStatus = "";
 
 				for (OrderStatusOutput subOrder : subOrderList) {
 					// 出荷日
 					String shukkaDate = subOrder.getDeliver_date();
 					// 受信結果のステータス
-					String orderStatus = subOrder.getOrder_status();
+					orderStatus = subOrder.getOrder_status();
 
-					if (!completeStatus.contains(orderStatus) || null == shukkaDate || "".equals(shukkaDate)) {
-						// 生産終了ステータスリストの中で含まない　または　出荷日が未設置の場合
-						// 確認中止
+					if ("1004".equals(orderStatus)) {
+						// 全部サブ注文の出荷日が設置していなかったとして
 						isAllSetShukkaDate = false;
+						// 注文が生産中になったとして
+						isInProduction = true;
+						// 確認中止
 						break;
 					} else {
-						// 出荷日が設置したの場合
-						if ("".equals(lastShukkaDate)) {
-							// 最新の出荷日が未設置の場合
-							lastShukkaDate = shukkaDate;
+						if (!completeStatus.contains(orderStatus) || null == shukkaDate || "".equals(shukkaDate)) {
+							// 生産終了ステータスリストの中で含まない または 出荷日が未設置の場合
+							// 全部サブ注文の出荷日が設置していなかったとして
+							isAllSetShukkaDate = false;
 						} else {
-							// 最新の出荷日が設置したの場合
-							lastShukkaDate = getMaxDate(lastShukkaDate, shukkaDate);
+							// 出荷日が設置したの場合
+							if ("".equals(lastShukkaDate)) {
+								// 最新の出荷日が未設置の場合
+								lastShukkaDate = shukkaDate;
+							} else {
+								// 最新の出荷日が設置したの場合
+								lastShukkaDate = getMaxDate(lastShukkaDate, shukkaDate);
+							}
 						}
 					}
 				}
 
-				if (isAllSetShukkaDate) {
-					// 全部サブ注文の出荷日が設置していた場合
+				if (isAllSetShukkaDate || isInProduction) {
+					// 全部サブ注文の出荷日が設置していた場合 または 注文が生産中になった場合
 
 					// メイン注文受信結果を新規する
 					mainOrder = new OrderStatusOutput();
 
 					mainOrder.setOrderno(mainOrderId);
+					mainOrder.setOrder_status(orderStatus);
 					mainOrder.setDeliver_date(lastShukkaDate);
 
 					// DB更新対象リストへ受信結果を追加する
@@ -230,6 +235,8 @@ public class GetOrderStatusController {
 				}
 			}
 		}
+		logger.info("更新対象件数:{}", updateList.size());
+		logger.info("更新対象:{}", JSON.toJSONString(updateList));
 
 		if (0 < updateList.size()) {
 			if (null != updateList.get(0) && null == updateList.get(0).getResult()) {

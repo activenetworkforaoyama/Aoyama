@@ -15,7 +15,7 @@ public enum JacketCoOptionTuxedoNextGenerationPriceEnum {
 	JK_Tuxedo_OPTION_CODE03("00003","getTjGrade","setJkGradeWsWage","setJkGradeWsPrice","getJkGradeWsWage","getJkGradeWsPrice"),//グレード
 	JK_Tuxedo_OPTION_CODE04("00004","getTjBackSpec","setJkInnerClothWsWage","setJkInnerClothWsPrice","getJkInnerClothWsWage","getJkInnerClothWsPrice"),//裏仕様
 	JK_Tuxedo_OPTION_CODE05("00005","getTjFort","setJkDaibaWsWage","setJkDaibaWsPrice","getJkDaibaWsWage","getJkDaibaWsPrice"),//台場
-	JK_Tuxedo_OPTION_CODE06("00006","getTjGlossFablic","","","",""),//拝見地
+	JK_Tuxedo_OPTION_CODE06("00006","getTjGlossFablic","setJkLookClothWsWage","setJkLookClothWsPrice","getJkLookClothWsWage","getJkLookClothWsPrice"),//拝見地
 	JK_Tuxedo_OPTION_CODE07("00007","getTjBackSpec","setJkCollarInnerWsWage","setJkCollarInnerWsPrice","getJkCollarInnerWsWage","getJkCollarInnerWsPrice"),//襟裏（ヒゲ）
 	JK_Tuxedo_OPTION_CODE08("00008","getTjChainHange","setJkCollarHangWsWage","setJkCollarHangWsPrice","getJkCollarHangWsWage","getJkCollarHangWsPrice"),//襟吊
 	JK_Tuxedo_OPTION_CODE09("00009","getTjLapelWidth","setJkLapelWidthWsWage","setJkLapelWidthWsPrice","getJkLapelWidthWsWage","getJkLapelWidthWsPrice"),//ラペル幅

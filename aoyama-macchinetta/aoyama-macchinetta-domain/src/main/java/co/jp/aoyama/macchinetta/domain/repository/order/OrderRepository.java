@@ -57,4 +57,6 @@ public interface OrderRepository {
 
 	List<Model> getFactoriesCo(String orderPattern, String itemCode);
 
+	List<OrderPrice> getOrderPriceNotCate(String coType);
+
 }

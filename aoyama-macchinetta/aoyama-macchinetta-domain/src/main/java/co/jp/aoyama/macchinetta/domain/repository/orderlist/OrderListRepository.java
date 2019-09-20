@@ -33,7 +33,7 @@ public interface OrderListRepository {
 	
 	void updateNextGenerationAndStatus(String orderId,Integer nextGenerationP,String updatedUserId,Date updatedAt,Short orderVersion,String scheduleDataTransmitStatus);
 	
-	void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt);
+	void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt,String orderPattern);
 	
 	List<Order> fuzzyQuery(@Param("condition") OrderCondition condition);
 
@@ -56,4 +56,8 @@ public interface OrderListRepository {
 	Order findOrderPt2OptionByOrderId(String orderId);
 	
 	Order findOrderCtOptionByOrderId(String orderId);
+	
+	Order findOrderGlOptionByOrderId(String orderId);
+	
+	Order findOrderStOptionByOrderId(String orderId);
 }

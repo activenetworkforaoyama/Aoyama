@@ -15,4 +15,6 @@ public interface OptionBranchService {
 	List<OptionBranch> getWashableOption(String type);
 
 	List<OptionBranch> getAllOption(String orderPattern);
+
+	List<OptionBranch> getProduct(String coType);
 }

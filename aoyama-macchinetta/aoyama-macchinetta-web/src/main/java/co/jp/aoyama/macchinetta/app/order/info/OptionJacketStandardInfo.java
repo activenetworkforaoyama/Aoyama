@@ -109,6 +109,8 @@ public class OptionJacketStandardInfo implements Serializable {
 	private Map<String, String> ojInsidePktChangeMap;
 
 	// 内ポケット変更箇所
+	private String ojInsidePktPlace;
+	
 	private String ojInsidePktPlace1;
 	
 	private String ojInsidePktPlace2;
@@ -2064,6 +2066,14 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	public void setOjByColorPlace(String ojByColorPlace) {
 		this.ojByColorPlace = ojByColorPlace;
+	}
+
+	public String getOjInsidePktPlace() {
+		return ojInsidePktPlace;
+	}
+
+	public void setOjInsidePktPlace(String ojInsidePktPlace) {
+		this.ojInsidePktPlace = ojInsidePktPlace;
 	}
 	
 }

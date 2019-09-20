@@ -5,7 +5,6 @@
 
 <mapper
 	namespace="co.jp.aoyama.macchinetta.domain.repository.accounting.AccountingRepository">
-
 	<resultMap id="accountingResultMap" type="Accounting">
 		<id property="cashId" column="cash_id" />
 		<result property="cashStatus" column="cash_status" />
@@ -32,6 +31,7 @@
 			shop.shop_name,
        		cash.cash_id,
        		cash.cash_status,
+       		cash.order_pattern,
        		cash.product_orderd_date,
        		cash.order_amount,
        		cash.cash_except_tax_price,
@@ -40,6 +40,9 @@
        		dtb_cash cash,
        		mtb_shop shop 
 		WHERE
+			<if test="accounting.orderPattern !=null and accounting.orderPattern !=''">
+			cash.order_pattern = #{accounting.orderPattern} and
+			</if>
 			<if test="accounting.custCd!=null and accounting.custCd!=''">
 			cash.cust_cd LIKE '%${accounting.custCd}%' and
 			</if>

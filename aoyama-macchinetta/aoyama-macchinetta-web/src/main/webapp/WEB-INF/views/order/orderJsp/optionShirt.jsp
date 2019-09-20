@@ -1,4 +1,4 @@
- <form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+ <form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
             <div id="op_shirt_div">
             <div class="card-header">
                 <strong class="card-title">SHIRT</strong>
@@ -9,8 +9,8 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">SHIRTモデル</label></div>
                             <div class="col col-md-3">
-                                <form:select id="shirtModel" path="optionShirtStandardInfo.osShirtModel" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osShirtModelMap}"/>
+                                <form:select id="shirtModel" path="coOptionShirtStandardInfo.osShirtModel" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osShirtModelMap}"/>
                                 </form:select>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="shirtModelMsg" style="margin-top:8px"></div> -->
@@ -18,58 +18,72 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">襟型</label></div>
-                            <div class="col col-md-3">
-                            	<form:select id="os_chainModel" path="optionShirtStandardInfo.osChainModel" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osChainModelMap}"/>
+                            <div class="col-12 col-md-3">
+                            	<form:select id="os_chainModel" path="coOptionShirtStandardInfo.osChainModel" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osChainModelMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_chainModel_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">カフス</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="os_cuffs" path="optionShirtStandardInfo.osCuffs" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osCuffsMap}"/>
+                            	<form:select id="os_cuffs" path="coOptionShirtStandardInfo.osCuffs" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osCuffsMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_cuffs_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コンバーチブル</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="os_convertible" path="optionShirtStandardInfo.osConvertible" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osConvertibleMap}"/>
+                            	<form:select id="os_convertible" path="coOptionShirtStandardInfo.osConvertible" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osConvertibleMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_convertible_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスト釦</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="os_adjustBtn" path="optionShirtStandardInfo.osAdjustBtn" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osAdjustBtnMap}"/>
+                            	<form:select id="os_adjustBtn" path="coOptionShirtStandardInfo.osAdjustBtn" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osAdjustBtnMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_adjustBtn_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">クレリック仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_clericSpec_id" path="optionShirtStandardInfo.osClericSpec" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osClericSpecMap}"/>
+                                	<form:radiobuttons id="os_clericSpec_id" path="coOptionShirtStandardInfo.osClericSpec" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osClericSpecMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_clericSpec_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ダブルカフス仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_dblCuff_id" path="optionShirtStandardInfo.osDblCuff" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osDblCuffMap}"/>
+                                	<form:radiobuttons id="os_dblCuff_id" path="coOptionShirtStandardInfo.osDblCuff" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osDblCuffMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_dblCuff_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">カフスボタン追加</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_AddCuff_id" path="optionShirtStandardInfo.osAddCuff" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osAddCuffMap}"/>
+                                	<form:radiobuttons id="os_AddCuff_id" path="coOptionShirtStandardInfo.osAddCuff" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osAddCuffMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_AddCuff_Msg">
                             </div>
                         </div>
                        <!--  <div class="row form-group" id="os_cuffCleric_div">
@@ -87,106 +101,132 @@
                         </div> -->
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
-                            <div class="col col-md-4">
-                            	<form:select id="os_btnMate" path="optionShirtStandardInfo.osBtnMate" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osBtnMateMap}"/>
+                            <div class="col-12 col-md-3">
+                            	<form:select id="os_btnMate" path="coOptionShirtStandardInfo.osBtnMate" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osBtnMateMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_btnMate_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タブ釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_tabBtn_id" path="optionShirtStandardInfo.osTabBtn" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osTabBtnMap}"/>
+                                	<form:radiobuttons id="os_tabBtn_id" path="coOptionShirtStandardInfo.osTabBtn" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osTabBtnMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_tabBtn_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ガントレットボタン位置</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_galetteBtnPos_nomal" path="optionShirtStandardInfo.osGaletteBtnPos" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osGaletteBtnPosMap}"/>
+                                	<form:radiobuttons id="os_galetteBtnPos_nomal_id" path="coOptionShirtStandardInfo.osGaletteBtnPos" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osGaletteBtnPosMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_galetteBtnPos_nomal_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンホールピン</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_pinHolePin_id" path="optionShirtStandardInfo.osPinHolePin" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osPinHolePinMap}"/>
+                                	<form:radiobuttons id="os_pinHolePin_id" path="coOptionShirtStandardInfo.osPinHolePin" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osPinHolePinMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_pinHolePin_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_breastPk_yes" path="optionShirtStandardInfo.osBreastPk" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osBreastPkMap}"/>
+                                	<form:radiobuttons id="os_breastPk_yes_id" path="coOptionShirtStandardInfo.osBreastPk" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osBreastPkMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_breastPk_yes_Msg">
                             </div>
                         </div>
                         <div class="row form-group" id="os_breastPkSizeArea">
                             <div class="col col-md-3"><label class=" form-control-label">胸ポケット大きさ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_breastPkSize_normal" path="optionShirtStandardInfo.osBreastPkSize" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osBreastPkSizeMap}"/>
+                                	<form:radiobuttons id="os_breastPkSize_normal_id" path="coOptionShirtStandardInfo.osBreastPkSize" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osBreastPkSizeMap}"/>
                              	</div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_breastPkSize_normal_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロントデザイン</label></div>
-                            <div class="col col-md-4">
-                            	<form:select id="os_frontDesign" path="optionShirtStandardInfo.osFrontDesign" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osFrontDesignMap}"/>
+                            <div class="col col-md-3">
+                            	<form:select id="os_frontDesign" path="coOptionShirtStandardInfo.osFrontDesign" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osFrontDesignMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_frontDesign_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンタックブザム</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_pinTack_no" path="optionShirtStandardInfo.osPinTack" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osPinTackMap}"/>
+                                	<form:radiobuttons id="os_pinTack_no_id" path="coOptionShirtStandardInfo.osPinTack" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osPinTackMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_pinTack_no_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_stitch_nomal" path="optionShirtStandardInfo.osStitch" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osStitchMap}"/>
+                                	<form:radiobuttons id="os_stitch_nomal_id" path="coOptionShirtStandardInfo.osStitch" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osStitchMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_stitch_nomal_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">カラーキーパー</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_colorKeeper_id" path="optionShirtStandardInfo.osColorKeeper" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osColorKeeperMap}"/>
+                                	<form:radiobuttons id="os_colorKeeper_id" path="coOptionShirtStandardInfo.osColorKeeper" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osColorKeeperMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_colorKeeper_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色変更</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="os_bhColor" path="optionShirtStandardInfo.osBhColor" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osBhColorMap}"/>
+                            	<form:select id="os_bhColor" path="coOptionShirtStandardInfo.osBhColor" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osBhColorMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_bhColor_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸色変更</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="os_byColor" path="optionShirtStandardInfo.osByColor" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionShirtStandardInfo.osByColorMap}"/>
+                            	<form:select id="os_byColor" path="coOptionShirtStandardInfo.osByColor" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osByColorMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right" id="os_byColor_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">カジュアルヘムライン仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_casHemLine_id" path="optionShirtStandardInfo.osCasHemLine" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osCasHemLineMap}"/>
+                                	<form:radiobuttons id="os_casHemLine_id" path="coOptionShirtStandardInfo.osCasHemLine" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osCasHemLineMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="os_casHemLine_Msg">
                             </div>
                             <div class="col col-md-3 casHemLineSizeArea">　</div>
                             <div class="col-12 col-md-9 casHemLineSizeArea" style="display:none;">
@@ -229,22 +269,23 @@
 
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン位置変更</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="os_btnPosChg_id" path="optionShirtStandardInfo.osBtnPosChg" class="form-check-input" items="${orderForm.optionShirtStandardInfo.osBtnPosChgMap}"/>
+                                	<form:radiobuttons id="os_btnPosChg_id" path="coOptionShirtStandardInfo.osBtnPosChg" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.osBtnPosChgMap}"/>
                                 </div>
                             </div>
-                            
-                            <div id="os_btnPosChg_area" style="display:none;">
+                            <div class="col-12 col-md-3" align="right" id="os_btnPosChg_Msg">
+                            </div>
+                            <div id="os_btnPosChg_area" class="col-12 col-md-9" style="display:none;">
                             <div class="col-12 col-md-3 offset-md-3">
                                 <label class=" form-control-label">台襟釦</label>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="os_btnPosChg_collar_m"><i class="fa fa-caret-square-o-down" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="os_btnPosChg_collar" name="optionShirtStandardInfo.osBtnPosChgCollar" value="0" min="-1" max="1" step="0.5">&nbsp;
+                                <input type="range" id="os_btnPosChg_collar" name="coOptionShirtStandardInfo.stNeckbandBtnPosChg" value="0" min="-1" max="1" step="0.5">&nbsp;
                                 <a href="#" id="os_btnPosChg_collar_p"><i class="fa fa-caret-square-o-up" style="font-size:32px"></i></a>
-                                　                                                                           <output id="os_btnPosChg_collar_out">0</output>cm
+                                &nbsp;&nbsp;<output id="os_btnPosChg_collar_out">0</output>cm
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 offset-md-3">
@@ -253,9 +294,9 @@
                             <div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="os_btnPosChg_front1_m"><i class="fa fa-caret-square-o-down" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="os_btnPosChg_front1" name="optionShirtStandardInfo.osBtnPosChgFront1" value="0" min="-3" max="3" step="0.5">&nbsp;
+                                <input type="range" id="os_btnPosChg_front1" name="coOptionShirtStandardInfo.stFrtfirstBtnPosChg" value="0" min="-3" max="3" step="0.5">&nbsp;
                                 <a href="#" id="os_btnPosChg_front1_p"><i class="fa fa-caret-square-o-up" style="font-size:32px"></i></a>
-                                　                                                                           <output id="os_btnPosChg_front1_out">0</output>cm
+                                &nbsp;&nbsp;<output id="os_btnPosChg_front1_out">0</output>cm
                                 </div>
                             </div>
                             <div class="col-12 col-md-3 offset-md-3">
@@ -264,9 +305,9 @@
                             <div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="os_btnPosChg_front2_m"><i class="fa fa-caret-square-o-down" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="os_btnPosChg_front2" name="optionShirtStandardInfo.osBtnPosChgFront2" value="0" min="-3" max="3" step="0.5">&nbsp;
+                                <input type="range" id="os_btnPosChg_front2" name="coOptionShirtStandardInfo.stFrtsecondBtnPosChg" value="0" min="-3" max="3" step="0.5">&nbsp;
                                 <a href="#" id="os_btnPosChg_front2_p"><i class="fa fa-caret-square-o-up" style="font-size:32px"></i></a>
-                                　                                                                           <output id="os_btnPosChg_front2_out">0</output>cm
+                                &nbsp;&nbsp;<output id="os_btnPosChg_front2_out">0</output>cm
                                 </div>
                             </div>
                             </div>
@@ -276,15 +317,20 @@
             </div>
             </div>
             
-            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderForm.jacketItemFlag }"/>
-			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderForm.pantsItemFlag }"/>
-			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderForm.giletItemFlag }"/>
+            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
+			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderCoForm.pantsItemFlag }"/>
+			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
 			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="0"/>
 			<input type="hidden" id="shirtFlag" name="shirtFlag" value="0"/>
-			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
-			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
-            <input type="hidden" id="stCasualHemlineSize" name="optionShirtStandardInfo.stCasualHemlineSize"  value="" />
-<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="0" />
+			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
+			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
+            <input type="hidden" id="stCasualHemlineSize" name="coOptionShirtStandardInfo.stCasualHemlineSize"  value="" />
+            <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
+            <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+            <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+            <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
 </form:form>
 
 <!-- 自作js -->
@@ -295,40 +341,71 @@
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-var shirtItemFlag="${orderForm.shirtItemFlag}";
+var shirtItemFlag="${orderCoForm.shirtItemFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
 /************************************************
  * 読み込み時イベント設定
  ************************************************/
  // 自作jsに記載
 jQuery(function() {
-	var shirtAdFlag="${orderForm.shirtAdFlag}";
+	var shirtAdFlag="${orderCoForm.shirtAdFlag}";
 	if(shirtAdFlag=="1"){
-		jQuery("#shirtAdFlag").val("${orderForm.shirtAdFlag}");
-		}
-	jQuery("#shirtModel").change(function(){
+	}else{
 		jQuery("#shirtAdFlag").val("0");
-	    })   
+	}
+	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
 
-	initAlter();
-
+    shirtInitAlter();
+    shirtProductPrice();
 	initOptionShirt();
-	
-	if (shirtItemFlag == "1") {
+	if (shirtItemFlag == "1" || orderFlag == "orderLink" || orderFlag == "orderDetail" || orderFlag == "orderBack" || orderFlag == "orderCheck") {
 		optionShirtSession();
+	} else {
+		//カジュアルヘムライン仕様サイズの初期化設定
+		jQuery("#stCasualHemlineSize").val("0");
+		jQuery("#os_casHemLineSize100").val("0");
+		jQuery("#os_casHemLineSize10").val("0");
+		jQuery("#os_casHemLineSize1").val("0");
+		jQuery("#os_casHemLineSizeM1").val("0");
 	}
 	
 	setShirtModelDisable();
 	
 	jQuery("#shirtModel").change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var shirtModel = jQuery(this).val();
 		var productFabricNo = jQuery("#productFabricNo").val();
-		var itemCode = "05";
-		var subItemCode = "05"
+		var itemCode = jQuery("#item").val();
+		var subItemCode = jQuery("#item").val();
+		var code = itemCode + subItemCode + shirtModel;
+		$.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForShirtModel",
+			data:{"code":code},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+				var allPriceMap = result.priceMap;
+	         	for (var priceMapKey in allPriceMap) {
+	            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+	            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+	            	}else{
+	              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+	              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+	            	}
+	         	}
+				jQuery("#optionPriceId").val(result.optionPrice);
+				jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+				getAllPrice(itemCode, result.optionPrice);
+			}
+		});
+		
 		//生地チェクフラッグ
 		var fabricCheckValue = jQuery("#fabricFlag").val();
 		//fabricCheckValue[0]:0 or 1 or 2 
@@ -350,6 +427,7 @@ jQuery(function() {
 				setAlert('shirtModelCheck',getMsgByOneArg('msg065','SHIRT'));
 			}
 		}	
+		shirtProductPrice();
 		jQuery("#shirtFlag").val("1");
 	})
 	
@@ -357,6 +435,65 @@ jQuery(function() {
 	setCasHemLineSize();
 	
 	jQuery("#shirtItemFlag").val("1");
+
+	//ラジオボタンの変更処理
+	jQuery('input[id^="os_clericSpec_id"],[id^="os_dblCuff_id"],[id^="os_AddCuff_id"],[id^="os_tabBtn_id"],[id^="os_galetteBtnPos_nomal_id"],[id^="os_pinHolePin_id"],[id^="os_breastPk_yes_id"],[id^="os_breastPkSize_normal_id"],[id^="os_pinTack_no_id"],[id^="os_stitch_nomal_id"],[id^="os_colorKeeper_id"],[id^="os_casHemLine_id"],[id^="os_btnPosChg_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		
+		var shirtModel = jQuery("#shirtModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = jQuery("#item").val();
+		var idValueName = jQuery(this).attr("id");
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		if(isNotEmpty(shirtModel)){
+			var code = itemCode + subItemCode + shirtModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/getOrderPriceForShirtProject",
+				data:{"code":code,"idValueName":interceptedIdValueName},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+
+	//プルダウンの変更処理
+	jQuery('#os_chainModel,#os_cuffs,#os_convertible,#os_adjustBtn,#os_btnMate,#os_frontDesign,#os_bhColor,#os_byColor')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		
+		var shirtModel = jQuery("#shirtModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = jQuery("#item").val();
+		var idValueName = jQuery(this).attr("id");
+
+		if(isNotEmpty(shirtModel)){
+			var code = itemCode + subItemCode + shirtModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/getOrderPriceForShirtProject",
+				data:{"code":code,"idValueName":idValueName},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+		            jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+		            getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+	showPrice();
 });
 
 function setShirtModelDisable(){
@@ -381,7 +518,7 @@ function setCasHemLineSize() {
 function optionShirtSession() {
 	
 	//カジュアルヘムライン仕様
-	var osCasHemLine = "${orderForm.optionShirtStandardInfo.osCasHemLine}" ;
+	var osCasHemLine = "${orderCoForm.coOptionShirtStandardInfo.osCasHemLine}" ;
 	if (osCasHemLine == "0002002") {
 		// カジュアルヘムライン仕様が有りの場合
 		jQuery('.casHemLineSizeArea').show();
@@ -390,14 +527,14 @@ function optionShirtSession() {
 	}
 
 	//襟型
-	var os_chainModel = "${orderForm.optionShirtStandardInfo.osChainModel}";
+	var os_chainModel = "${orderCoForm.coOptionShirtStandardInfo.osChainModel}";
 	//ピンホールピン
 	if (os_chainModel == "0000113" || os_chainModel == "0000114") {
 		// 襟型「ピンホール・ラウンドピンホール」選択時のみ「ピンホールピン」選択可
-		jQuery(':radio[name="optionShirtStandardInfo.osPinHolePin"]').prop('disabled', false);
+		jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', false);
 		
 	} else {
-		jQuery(':radio[name="optionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
+		jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
 		jQuery('#os_pinHolePin_id1').prop('checked', true);
 	}
 
@@ -409,17 +546,17 @@ function optionShirtSession() {
 		// 「襟型」ボタンダウン・ショートボタンダウン・ピンホール・ラウンドピンホール・ウイング選択時、
 		// 「カラーキーパー」は「無し」にて選択不可
 		jQuery('#os_colorKeeper_id2').prop('checked', true);
-		jQuery(':radio[name="optionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
+		jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
 	} else {
-		jQuery(':radio[name="optionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
+		jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 		if (os_colorKeeper_disabled) {
 			// 元々無効化されていた場合、デフォルトの「有り」を選択状態にする
 			jQuery('#os_colorKeeper_id2').prop('checked', true);
 		}
 	}
 
-	var osTabBtn = "${orderForm.optionShirtStandardInfo.osTabBtn}" ;
-	jQuery("input[name='optionShirtStandardInfo.osTabBtn'][value='" + osTabBtn + "']").prop("checked", true);
+	var osTabBtn = "${orderCoForm.coOptionShirtStandardInfo.osTabBtn}" ;
+	jQuery("input[name='coOptionShirtStandardInfo.osTabBtn'][value='" + osTabBtn + "']").prop("checked", true);
 	//タブ釦
 	if (os_chainModel == "0000111" || os_chainModel == "0000112") {
 		// 通常、スナップ
@@ -434,7 +571,7 @@ function optionShirtSession() {
 	}
 
 	// カフス
-	var os_cuffs = "${orderForm.optionShirtStandardInfo.osCuffs}" ;
+	var os_cuffs = "${orderCoForm.coOptionShirtStandardInfo.osCuffs}" ;
 	if (os_cuffs == "0000204" || os_cuffs == "0000205") {
 		// ダブルカフスの場合、コンバーチブルの選択不可
 		jQuery('#os_convertible').prop('disabled', true);
@@ -445,7 +582,7 @@ function optionShirtSession() {
 	//jQuery('#os_convertible').change();
 
 	// コンバーチブル	
-	var os_convertible = "${orderForm.optionShirtStandardInfo.osConvertible}" ;
+	var os_convertible = "${orderCoForm.coOptionShirtStandardInfo.osConvertible}" ;
 	if (os_convertible == '0000302') {
 		// 「コンバーチブル」選択「有り」のときのみ「アジャスト釦」は選択可
 		jQuery('#os_adjustBtn').prop('disabled', false);
@@ -462,13 +599,13 @@ function optionShirtSession() {
 	changeAddCuffSession();
 
 	// 胸ポケット
-	var osBreastPk = "${orderForm.optionShirtStandardInfo.osBreastPk}" ;
+	var osBreastPk = "${orderCoForm.coOptionShirtStandardInfo.osBreastPk}" ;
 	if (osBreastPk == "0001202") {
 		jQuery('#os_breastPkSizeArea').hide();
 	}
 		
 	// ボタン位置変更
-	var osBtnPosChg = "${orderForm.optionShirtStandardInfo.osBtnPosChg}" ;
+	var osBtnPosChg = "${orderCoForm.coOptionShirtStandardInfo.osBtnPosChg}" ;
 	if (osBtnPosChg == "0002102") {
 		// ボタン位置変更の場合
 		jQuery('#os_btnPosChg_area').show();
@@ -476,8 +613,8 @@ function optionShirtSession() {
 		jQuery('#os_btnPosChg_area').hide();
 	}
 	
-	//台襟釦、フロント第1釦、フロント第2釦
-	var stCasualHemlineSize = "${orderForm.optionShirtStandardInfo.stCasualHemlineSize}" ;
+	//カジュアルヘムライン仕様
+	var stCasualHemlineSize = "${orderCoForm.coOptionShirtStandardInfo.stCasualHemlineSize}" ;
 	jQuery("#stCasualHemlineSize").val(stCasualHemlineSize);
 	stCasualHemlineSize = stCasualHemlineSize.split(".");
 	if(isNotEmpty(stCasualHemlineSize[1])){
@@ -508,16 +645,16 @@ function optionShirtSession() {
 		jQuery("#os_casHemLineSize1").val(str1);
 	}
 
-	jQuery("#os_btnPosChg_collar").val("${orderForm.optionShirtStandardInfo.osBtnPosChgCollar}");
-	jQuery("#os_btnPosChg_collar_out").val("${orderForm.optionShirtStandardInfo.osBtnPosChgCollar}");
+	jQuery("#os_btnPosChg_collar").val("${orderCoForm.coOptionShirtStandardInfo.stNeckbandBtnPosChg}");
+	jQuery("#os_btnPosChg_collar_out").val("${orderCoForm.coOptionShirtStandardInfo.stNeckbandBtnPosChg}");
 	setFont("os_btnPosChg_collar");
 	
-	jQuery("#os_btnPosChg_front1").val("${orderForm.optionShirtStandardInfo.osBtnPosChgFront1}");
-	jQuery("#os_btnPosChg_front1_out").val("${orderForm.optionShirtStandardInfo.osBtnPosChgFront1}");
+	jQuery("#os_btnPosChg_front1").val("${orderCoForm.coOptionShirtStandardInfo.stFrtfirstBtnPosChg}");
+	jQuery("#os_btnPosChg_front1_out").val("${orderCoForm.coOptionShirtStandardInfo.stFrtfirstBtnPosChg}");
 	setFont("os_btnPosChg_front1");
 	
-	jQuery("#os_btnPosChg_front2").val("${orderForm.optionShirtStandardInfo.osBtnPosChgFront2}");
-	jQuery("#os_btnPosChg_front2_out").val("${orderForm.optionShirtStandardInfo.osBtnPosChgFront2}");
+	jQuery("#os_btnPosChg_front2").val("${orderCoForm.coOptionShirtStandardInfo.stFrtsecondBtnPosChg}");
+	jQuery("#os_btnPosChg_front2_out").val("${orderCoForm.coOptionShirtStandardInfo.stFrtsecondBtnPosChg}");
 	setFont("os_btnPosChg_front2");	
 	
 }
@@ -526,7 +663,7 @@ function optionShirtSession() {
 function changeAddCuffSession() {
 	
 	//カフスはダブルカフス仕様（折り返しスクエア）、ダブルカフス仕様（ミラノカフス）の場合は、選択不可
-	var os_cuffs = "${orderForm.optionShirtStandardInfo.osCuffs}" ;
+	var os_cuffs = "${orderCoForm.coOptionShirtStandardInfo.osCuffs}" ;
 	if (os_cuffs == "0000204" || os_cuffs == "0000205") {
 		// カフスボタン追加は使用不可
 		jQuery('#os_AddCuff_id1').prop('checked', true);
@@ -534,7 +671,7 @@ function changeAddCuffSession() {
 	}
 
 	//コンバーチブル「有」選択時不可
-	var os_cuffs = "${orderForm.optionShirtStandardInfo.osConvertible}" ;
+	var os_cuffs = "${orderCoForm.coOptionShirtStandardInfo.osConvertible}" ;
 	if (os_convertible == '0000302') {
 		// カフスボタン追加は使用不可
 		jQuery('#os_AddCuff_id1').prop('checked', true);
@@ -548,4 +685,24 @@ function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode)
 	checkResult = checkResult.responseText;
 	return checkResult;
 }
+
+function getAllPrice(subItemCode, optionPrice){
+	jQuery("#stOptionPriceId").val(optionPrice);
+    var stOptionPriceId = optionPrice;
+    var allPrice = 0;
+    allPrice = Number(stOptionPriceId);
+    jQuery("#optionPriceId").val(allPrice);
+    jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
+}
+jQuery("#shirtModel").change(function(){
+	jQuery("#shirtAdFlag").val("0");
+})
+
+function showPrice(){
+	var shirtModel = jQuery("#shirtModel option:selected").val();
+	if(!(shirtModel == "")){
+		jQuery("#shirtModel").change();
+	}
+}
+
 </script>

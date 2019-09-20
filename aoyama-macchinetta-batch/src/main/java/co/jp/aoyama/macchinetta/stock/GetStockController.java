@@ -43,6 +43,8 @@ public class GetStockController {
 
 	@Value("${api.appsecrets}")
 	String appSecrets;
+	/** 注文パターン：カスタムオーダー */
+	public static final String ORDER_PATTERN = "PO";
 
 	/**
 	 * 在庫マスタの更新
@@ -60,8 +62,9 @@ public class GetStockController {
 		String stockUrl = getStockUrl + "?AccessToken=" + token.getD() + "&appsecrets=" + appSecrets;
 		logger.info("受信URL:" + stockUrl);
 
-		logger.info("大楊から受信結果");
+		logger.info("大連大楊Poから受信結果");
 		String result = restTemplate.getForObject(stockUrl, String.class);
+		logger.info("大連大楊Poから受信結果文字列:" + result);
 
 		if (result.indexOf(WebConst.STOCK_ERROR) != -1) {
 			// エラーの場合
@@ -73,7 +76,7 @@ public class GetStockController {
 			List<Stock> stockList = gson.fromJson(result, new TypeToken<List<Stock>>() {
 			}.getType());
 
-			logger.info("大楊から受信結果");
+			logger.info("大連大楊Poから受信結果");
 			if (stockList == null) {
 				logger.info("受信結果異常");
 			} else {
@@ -92,7 +95,7 @@ public class GetStockController {
 					logger.info("　　有効件数:" + updateStockList.size());
 					logger.info("　　有効結果内容:" + JSON.toJSONString(updateStockList));
 					// 受信結果により、在庫マスタを更新する
-					mtbStockService.updateActualStockByFabricNo(updateStockList, fabricNoList);
+					mtbStockService.updateActualStockByFabricNo(updateStockList, fabricNoList, ORDER_PATTERN);
 				}
 			}
 		}

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.terasoluna.gfw.common.message.ResultMessages;
 
 import com.google.gson.Gson;
 
@@ -110,6 +111,9 @@ public class CashController {
 		Short amount = (short) strs.length;
 		for(int i=0;i<strs.length;i++){
 			CashInfo cashinfo = cashInfoService.selectOrderByOrderId(strs[i]);
+			if(!"".equals(cashinfo.getCashId()) && cashinfo.getCashId() != null) {
+				model.addAttribute("error","error");
+			}
 			arr[i] = Long.parseLong(cashinfo.getOrderId());
 			helpCashForm.add(cashinfo);
 		}
@@ -140,6 +144,20 @@ public class CashController {
 			else if(firstName != null && lastName == null) {
 				String custNm = firstName;
 				cash.setCustNm(custNm);
+			}
+			String firstNameKana = MemberName.getFirstNameKana();
+			String lastNameKana = MemberName.getLastNameKana();
+			if(firstNameKana != null && lastNameKana != null) {
+				String custKanaNm = lastNameKana + " " + firstNameKana;
+				cash.setCustKanaNm(custKanaNm);
+			}
+			else if(firstNameKana == null && lastNameKana != null) {
+				String custKanaNm = lastNameKana;
+				cash.setCustKanaNm(custKanaNm);
+			}
+			else if(firstName != null && lastNameKana == null) {
+				String custKanaNm = firstNameKana;
+				cash.setCustKanaNm(custKanaNm);
 			}
 		}
 		//会計No.採番ルール:YYMMDDhhmmssSSS＋"－"＋店（４桁）
@@ -211,6 +229,20 @@ public class CashController {
 			else if(firstName != null && lastName == null) {
 				String custNm = firstName;
 				cash.setCustNm(custNm);
+			}
+			String firstNameKana = MemberName.getFirstNameKana();
+			String lastNameKana = MemberName.getLastNameKana();
+			if(firstNameKana != null && lastNameKana != null) {
+				String custKanaNm = lastNameKana + " " + firstNameKana;
+				cash.setCustKanaNm(custKanaNm);
+			}
+			else if(firstNameKana == null && lastNameKana != null) {
+				String custKanaNm = lastNameKana;
+				cash.setCustKanaNm(custKanaNm);
+			}
+			else if(firstName != null && lastNameKana == null) {
+				String custKanaNm = firstNameKana;
+				cash.setCustKanaNm(custKanaNm);
 			}
 		}
 		

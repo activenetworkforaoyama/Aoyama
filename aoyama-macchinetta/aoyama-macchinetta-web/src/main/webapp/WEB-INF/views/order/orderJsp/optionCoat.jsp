@@ -1,4 +1,4 @@
-<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
             <div id="op_coat_div">
             <div class="card-header">
                 <strong class="card-title">COAT</strong>
@@ -9,9 +9,12 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">COATモデル</label></div>
                             <div class="col col-md-3">
-                                <form:select id="coatModel" path="optionCoatStandardInfo.coatModel" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.coatModelMap}"/>
+                                <form:select id="coatModel" path="coOptionCoatStandardInfo.coatModel" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.coatModelMap}"/>
                                 </form:select>
+                            </div>
+                             <div class="col-12 col-md-6" align="right">
+                            	<output id="coatModel_Msg" ></output>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="coatModelMsg" style="margin-top:8px"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="coatModelCheck" style="margin-top:8px"></div>
@@ -19,12 +22,12 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ラペルデザイン</label></div>
                             <div class="col-12 col-md-3">
-                            	<form:select id="oc_lapelDesign" path="optionCoatStandardInfo.ocLapelDesign" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocLapelDesignMap}"/>
+                            	<form:select id="oc_lapelDesign" path="coOptionCoatStandardInfo.ocLapelDesign" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocLapelDesignMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-6" align="right">
-                            	<output id="oc_lapelDesign_Msg" name="rtPrice"></output>
+                            	<output id="oc_lapelDesign_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -32,7 +35,7 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
                                     <div class="form-check-inline form-check">
-                                    	<form:radiobuttons id="oc_sleeveSpec_id" path="optionCoatStandardInfo.ocSleeveSpec" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocSleeveSpecMap}"/>
+                                    	<form:radiobuttons id="oc_sleeveSpec_id" path="coOptionCoatStandardInfo.ocSleeveSpec" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocSleeveSpecMap}"/>
                                 	</div>
                                 </div>
                             </div>
@@ -43,62 +46,62 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
                             <div class="col-12 col-md-3">
-                            	<form:select id="oc_waistPkt" path="optionCoatStandardInfo.ocWaistPkt" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocWaistPktMap}"/>
+                            	<form:select id="oc_waistPkt" path="coOptionCoatStandardInfo.ocWaistPkt" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocWaistPktMap}"/>
                                 </form:select>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="oc_waistPktMsg">
                             </div> -->
                             <div class="col-12 col-md-6" align="right">
-                            	<output id="oc_waistPkt_Msg" name="rtPrice"></output>
+                            	<output id="oc_waistPkt_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">チェンジポケット</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="oc_changePkt_id" path="optionCoatStandardInfo.ocChangePkt" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocChangePktMap}"/>
+                                	<form:radiobuttons id="oc_changePkt_id" path="coOptionCoatStandardInfo.ocChangePkt" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocChangePktMap}"/>
                                 </div>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="oc_changePkt">
                             </div> -->
                             <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_changePkt_Msg" name="rtPrice"></output>
+                            	<output id="oc_changePkt_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">スランテッドポケット</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="oc_slantedPkt_id" path="optionCoatStandardInfo.ocSlantedPkt" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocSlantedPktMap}"/>
+                                	<form:radiobuttons id="oc_slantedPkt_id" path="coOptionCoatStandardInfo.ocSlantedPkt" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocSlantedPktMap}"/>
                                 </div>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="oc_slantedPktMsg">
                             </div> -->
                             <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_slantedPkt_Msg" name="rtPrice"></output>
+                            	<output id="oc_slantedPkt_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベント</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="oc_ventSpec_id" path="optionCoatStandardInfo.ocVentSpec" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocVentSpecMap}"/>
+                                    <form:radiobuttons id="oc_ventSpec_id" path="coOptionCoatStandardInfo.ocVentSpec" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocVentSpecMap}"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_ventSpec_Msg" name="rtPrice"></output>
+                            	<output id="oc_ventSpec_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label></div>
                             <div class="col-12 col-md-3">
-                            	<form:select id="oc_frontBtnCnt" path="optionCoatStandardInfo.ocFrontBtnCnt" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocFrontBtnCntMap}" class="Front-Btn-Cnt"/>
+                            	<form:select id="oc_frontBtnCnt" path="coOptionCoatStandardInfo.ocFrontBtnCnt" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocFrontBtnCntMap}" class="Front-Btn-Cnt"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-6" align="right">
-                            	<output id="oc_frontBtnCnt_Msg" name="rtPrice"></output>
+                            	<output id="oc_frontBtnCnt_Msg"></output>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="oc_frontBtnCntMsg">
                             </div> -->
@@ -106,34 +109,34 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">袖口</label></div>
                             <div class="col-12 col-md-3">
-                            	<form:select id="oc_cuffSpec" path="optionCoatStandardInfo.ocCuffSpec" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocCuffSpecMap}"/>
+                            	<form:select id="oc_cuffSpec" path="coOptionCoatStandardInfo.ocCuffSpec" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocCuffSpecMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-6" align="right">
-                            	<output id="oc_cuffSpec_Msg" name="rtPrice"></output>
+                            	<output id="oc_cuffSpec_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group" id="oc_sleeveBtnType_div">
                             <div class="col col-md-3"><label class=" form-control-label">袖釦</label></div>
                             <div class="col-12 col-md-3">
-                            	<form:select id="oc_sleeveBtnType" path="optionCoatStandardInfo.ocSleeveBtnType" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocSleeveBtnTypeMap}"/>
+                            	<form:select id="oc_sleeveBtnType" path="coOptionCoatStandardInfo.ocSleeveBtnType" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocSleeveBtnTypeMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-6" align="right">
-                            	<output id="oc_sleeveBtnType_Msg" name="rtPrice"></output>
+                            	<output id="oc_sleeveBtnType_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">バックベルト</label></div>
                             <div class="col col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="oc_backBelt_id" path="optionCoatStandardInfo.ocBackBelt" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocBackBeltMap}"/>
+                                	<form:radiobuttons id="oc_backBelt_id" path="coOptionCoatStandardInfo.ocBackBelt" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocBackBeltMap}"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_backBelt_Msg" name="rtPrice"></output>
+                            	<output id="oc_backBelt_Msg"></output>
                             </div>
                             <!-- <div class="col-12 col-md-9 offset-md-3" id="oc_backBeltMsg">
                             </div> -->
@@ -142,57 +145,57 @@
                             <div class="col col-md-3"><label class=" form-control-label">襟吊</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                	<form:radiobuttons id="oc_chainHange_id" path="optionCoatStandardInfo.ocChainHange" class="form-check-input" items="${orderForm.optionCoatStandardInfo.ocChainHangeMap}"/>
+                                	<form:radiobuttons id="oc_chainHange_id" path="coOptionCoatStandardInfo.ocChainHange" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocChainHangeMap}"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_chainHange_Msg" name="rtPrice"></output>
+                            	<output id="oc_chainHange_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">胴裏素材</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="oc_bodyBackMate" path="optionCoatStandardInfo.ocBodyBackMate" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocBodyBackMateMap}"/>
+                            	<form:select id="oc_bodyBackMate" path="coOptionCoatStandardInfo.ocBodyBackMate" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocBodyBackMateMap}"/>
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionCoatStandardInfo.ocBodyBackMateStkNo" id="oc_bodyBackMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionCoatStandardInfo.ocBodyBackMateStkNo" id="oc_bodyBackMateStkNo" class="form-control-sm form-control">
 
                                 </select>
                             </div>
                             <div class="col-12 col-md-2" align="right">
-                            	<output id="oc_bodyBackMate_Msg" name="rtPrice"></output>
+                            	<output id="oc_bodyBackMate_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">袖裏素材</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="oc_cuffBackMate" path="optionCoatStandardInfo.ocCuffBackMate" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocCuffBackMateMap}"/>
+                            	<form:select id="oc_cuffBackMate" path="coOptionCoatStandardInfo.ocCuffBackMate" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocCuffBackMateMap}"/>
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionCoatStandardInfo.ocCuffBackMateStkNo" id="oc_cuffBackMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionCoatStandardInfo.ocCuffBackMateStkNo" id="oc_cuffBackMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
                             <div class="col-12 col-md-2" align="right">
-                            	<output id="oc_cuffBackMate_Msg" name="rtPrice"></output>
+                            	<output id="oc_cuffBackMate_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="oc_frontBtnMate" path="optionCoatStandardInfo.ocFrontBtnMate" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.optionCoatStandardInfo.ocFrontBtnMateMap}"/>
+                            	<form:select id="oc_frontBtnMate" path="coOptionCoatStandardInfo.ocFrontBtnMate" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coOptionCoatStandardInfo.ocFrontBtnMateMap}"/>
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionCoatStandardInfo.ocFrontBtnMateStkNo" id="oc_frontBtnMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionCoatStandardInfo.ocFrontBtnMateStkNo" id="oc_frontBtnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
                             <div class="col-12 col-md-2" align="right">
-                            	<output id="oc_frontBtnMate_Msg" name="rtPrice"></output>
+                            	<output id="oc_frontBtnMate_Msg"></output>
                             </div>
                         </div>
                     </div>
@@ -200,11 +203,18 @@
             </div></div>
             <input type="hidden" id="coatItemFlag" name="coatItemFlag" value="0"/>
             <input type="hidden" id="coatFlag"  name="coatFlag" value="0" />
-            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderForm.jacketItemFlag }"/>
-			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderForm.giletItemFlag }"/>
-			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderForm.shirtItemFlag }"/>
-			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
-			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
+            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
+			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
+			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderCoForm.shirtItemFlag }"/>
+			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
+			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
+
+             <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+             <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 </form:form>
 
 
@@ -231,50 +241,32 @@ var selectIdList = {
 			"oc_frontBtnMate":"00013",
 			"oc_sleeveSpec":"00014",
 }
-//各項目対応するのサブアイテムコード
-var subList = {
-		"oc_lapelDesign":"06",
-		"oc_sleeveSpec":"06",
-		"oc_waistPkt":"06",
-		"oc_changePkt":"06",
-		"oc_slantedPkt":"06",
-		"oc_ventSpec":"06",
-		"oc_frontBtnCnt":"06",
-		"oc_cuffSpec":"06",
-		"oc_sleeveBtnType":"06",
-		"oc_backBelt":"06",
-		"oc_chainHange":"06",
-		"oc_bodyBackMate":"06",
-		"oc_cuffBackMate":"06",
-		"oc_frontBtnMate":"06"
-};
-//オプション金額を表示するリスト
-var ctPriceList = [
-	{id:"coatModel",type:"2"},
-	{id:"oc_lapelDesign",type:"2"},
-	{id:"oc_sleeveSpec",idVal:"optionCoatStandardInfo.ocSleeveSpecMap",type:"1"},
-	{id:"oc_waistPkt",type:"2"},
-	{id:"oc_changePkt",idVal:"optionCoatStandardInfo.ocChangePkt",type:"1"},
-	{id:"oc_slantedPkt",idVal:"optionCoatStandardInfo.ocSlantedPkt",type:"1"},
-	{id:"oc_ventSpec",idVal:"optionCoatStandardInfo.ocVentSpec",type:"1"},
-	{id:"oc_frontBtnCnt",type:"2"},
-	{id:"oc_cuffSpec",type:"2"},
-	{id:"oc_sleeveBtnType",type:"2"},
-	{id:"oc_backBelt",idVal:"optionCoatStandardInfo.ocBackBelt",type:"1"},
-	{id:"oc_chainHange",idVal:"optionCoatStandardInfo.ocChainHange",type:"1"},
-	{id:"oc_bodyBackMate",type:"2"},
-	{id:"oc_bodyBackMateStkNo",type:"2"},
-	{id:"oc_cuffBackMate",type:"2"},
-	{id:"oc_cuffBackMateStkNo",type:"2"},
-	{id:"oc_frontBtnMate",type:"2"},
-	{id:"oc_frontBtnMateStkNo",type:"2"}
-];
 
 /************************************************
  * 読み込み時イベント設定
  ************************************************/
  // 自作jsに記載
-jQuery(function() {
+jQuery(document).ready(function() {
+	
+	var coatAdFlag="${orderCoForm.coatAdFlag}";
+	var orderFlag = "${orderCoForm.orderFlag}";
+	var sessioncoatModel = "${orderCoForm.coOptionCoatStandardInfo.coatModel}";
+	if(orderFlag == "orderCo"){
+		if(coatAdFlag=="1"){
+		}else{
+			jQuery("#coatAdFlag").val("0");
+		}
+	}
+	jQuery("#coatModel").click(function(){
+		var coatModel = jQuery("#coatModel").val();
+		if(sessioncoatModel != coatModel){
+			if(orderFlag == "orderBack"){
+				 jQuery("#coatAdFlag").val("0");
+			}
+		}
+	});
+
+	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -302,10 +294,27 @@ jQuery(function() {
 	//--------------------------------------------
 	initOptionCoat();
 	mateInit();
-	getPrice();
+	mateStkNoReInit();
 	jQuery("#coatItemFlag").val("1");
+	getPrice();
+	showPrice();
+	doubleOptionModelPrice();
 });
 
+function mateStkNoReInit(){
+	var ctInnerBodyClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocBodyBackMateStkNo}";
+	if(isNotEmpty(ctInnerBodyClothCd)){
+		jQuery("#oc_bodyBackMateStkNo option[value='"+ctInnerBodyClothCd+"']").attr("selected", true);
+	}
+	var ctInnerSleeveClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocCuffBackMateStkNo}";
+	if(isNotEmpty(ctInnerSleeveClothCd)){
+		jQuery("#oc_cuffBackMateStkNo option[value='"+ctInnerSleeveClothCd+"']").attr("selected", true);
+	}
+	var ctBtnMaterialCd = "${orderCoForm.coOptionCoatStandardInfo.ocFrontBtnMateStkNo}";
+	if(isNotEmpty(ctBtnMaterialCd)){
+		jQuery("#oc_frontBtnMateStkNo option[value='"+ctBtnMaterialCd+"']").attr("selected", true);
+	}
+}
 function setCoatModelDisable(){
 	var ctModel = null;
 	ctModel = document.getElementById("coatModel");
@@ -318,7 +327,7 @@ function setCoatModelDisable(){
 function mateInit(){
 	var itemCode;
 	var subItemCode;
-	var category = "0";
+	var category = "9000101";
 	var StkNo;
 	var mateChecked;
 	var orderPattern = "CO";
@@ -370,7 +379,12 @@ function mateInit(){
 		});
 	}
 }
-
+function showPrice(){
+	var coatModel = jQuery("#coatModel option:selected").val();
+	if(!(coatModel == "")){
+		jQuery("#coatModel").change();
+	}
+}
 //--------------------------------------------
 //全部のitem金額制御
 //--------------------------------------------
@@ -389,16 +403,23 @@ function getPrice(){
 		    data:{"code":code},
 		    async:false,
 		    success:function(result){
-		    	var aDiv = document.getElementsByName('rtPrice');
-				for(var i=0;i<aDiv.length;i++){
-					aDiv[i].innerHTML = result.coPrice[i];
+		    		var allPriceMap = result.priceMap;
+		         	for (var priceMapKey in allPriceMap) {
+		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+		            	}else{
+		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+		            	}
+		         	}
+		         	jQuery("#optionPriceId").val(result.optionPrice);
+					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+					getAllPrice(itemCode, result.optionPrice);
+					allOptionPrice();
 				}
-		    	jQuery("#optionPriceId").val(result.optionPrice);
-		    	jQuery("#optionPrice").html(result.optionPrice);
-			}
+			});
 		});
 	    
-	});
 	var coatModel = "";
 	//プルダウンの変更処理
 	//項目：ラペルデザイン、腰ポケット、フロント釦数、袖口、袖釦、胴裏素材、胴裏素材品番、袖裏素材、袖裏素材品番、釦素材、釦素材品番
@@ -426,7 +447,7 @@ function getPrice(){
 				        	price = formatMoney(result.idValuePrice,0,"￥");
 					     }
 			             jQuery("#"+idValueName+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
+			             //jQuery("#optionPrice").html(result.optionPrice);
 			        }else{
 			             var lengthforLastFive = idValueName.length - 5;
 			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
@@ -436,12 +457,16 @@ function getPrice(){
 				        	price = formatMoney(result.idValuePrice,0,"￥");
 					     }
 			             jQuery("#"+idValueTemp+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			        }		    
+			             //jQuery("#optionPrice").html(result.optionPrice);
+			             
+			        }
+			    	getAllPrice(itemCode, result.optionPrice);
+		            allOptionPrice();	    
 			   }
 	        });
 		}
 	});
+	var coatModel = "";
 	//ラジオボタンの変更処理
 	//項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊
 	jQuery('input[id^="oc_sleeveSpec_id"],[id^="oc_changePkt_id"],[id^="oc_slantedPkt_id"],[id^="oc_ventSpec_id"],[id^="oc_backBelt_id"],[id^="oc_chainHange_id"]')
@@ -464,18 +489,132 @@ function getPrice(){
 			    data:{"code":code,"idValue":interceptedIdValueName},
 			    async:false,
 			    success:function(result){
-			    	var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
 			    	if(result.idValuePrice == "0"){
 						price = "無料"
 			         }else{
 			        	price = formatMoney(result.idValuePrice,0,"￥");
 				     }
 			        jQuery("#"+msgIdValueName).html(price);
-			        jQuery("#optionPrice").html(result.optionPrice);	    
+			        jQuery("#optionPrice").html(result.optionPrice);
+			        getAllPrice(itemCode, result.optionPrice);	
+			        allOptionPrice();    
 			   }
 	        });
 		}
 	});
+}
+function getAllPrice(subItemCode, optionPrice){
+	jQuery("#ctOptionPriceId").val(optionPrice);
+    var ctOptionPriceId = optionPrice;
+    var jkOptionPriceId = jQuery("#jkOptionPriceId").val();
+    var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
+    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+    var glOptionPriceId = jQuery("#glOptionPriceId").val();
+    var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+    var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+    var allPrice = 0;
+    if(subItemCode == "01"){
+        if(threePiece == "0009901" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId);
+        }
+        else if(threePiece == "0009902" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(glOptionPriceId);
+        }
+        else if(threePiece == "0009901" && twoPants == "0009902"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId);
+        }else{
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId);
+        }
+    }else{
+    	allPrice = Number(ctOptionPriceId);
+    }
+    jQuery("#optionPriceId").val(allPrice);
+    jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
+}
+function doubleOptionModelPrice(){
+	jQuery("#coatModel_Msg").empty();
+	var productCategory = jQuery('input[name="productCategory"]:checked').val();
+	var productFabricNo = jQuery("#productFabricNo").val();
+	var item = jQuery("#item").val();
+	var subItem = "06";
+	var coatModelVal = jQuery("#coatModel").val();
+	//生地チェクフラッグ
+	if(coatModelVal == "DoubleChester" || coatModelVal == "DoublePolo"){
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0")&&isNotEmpty(productFabricNo)){
+			jQuery.ajax({
+				 type:"get",
+				 url: contextPath + "/orderCo/findStockModelDoublePrice",
+				 data:{"fabricNo":productFabricNo,"orderPattern":orderPattern,"doubleCheck":coatModelVal,"item":item,"subItem":subItem},
+				 async:false,
+				 success:function(result){
+					if(isNotEmpty(result)){
+						if(result.ctDoublePrice == "0"){
+							jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
+							jQuery("#coatModel_Msg").html("無料");
+							allOptionPrice();
+						}else{
+							jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
+							jQuery("#coatModel_Msg").html(formatMoney(result.ctDoublePrice,0,"￥"));
+							allOptionPrice();
+						}
+					}else{
+						jQuery("#ctDoubleModelPrice").val("0");
+						jQuery("#coatModel_Msg").html("無料");
+						allOptionPrice();
+					}
+			     }
+			});
+		}
+	}
+	
+	if(productCategory == "9000101"){
+		jQuery('#coatModel').change(function(){
+			var coatModel = jQuery(this).val();
+			if(coatModel == "DoubleChester" || coatModel == "DoublePolo"){
+				//生地チェクフラッグ
+				var fabricCheckValue = jQuery("#fabricFlag").val();
+				//fabricCheckValue[0]:0 or 1 or 2 
+				//fabricCheckValue[1]:エラーメッセージ 
+				fabricCheckValue = fabricCheckValue.split("*");
+				//生地チェク成功の場合
+				if((fabricCheckValue[0]=="0")&&isNotEmpty(productFabricNo)){
+					jQuery.ajax({
+						 type:"get",
+						 url: contextPath + "/orderCo/findStockModelDoublePrice",
+						 data:{"fabricNo":productFabricNo,"orderPattern":orderPattern,"doubleCheck":coatModel,"item":item,"subItem":subItem},
+						 async:false,
+						 success:function(result){
+							 if(isNotEmpty(result)){
+								 if(result.ctDoublePrice == "0"){
+									 jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
+									 jQuery("#coatModel_Msg").html("無料");
+									 allOptionPrice();
+								 }else{
+									 jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
+									 jQuery("#coatModel_Msg").html(formatMoney(result.ctDoublePrice,0,"￥"));
+									 allOptionPrice();
+								 }
+							 }else{
+								 jQuery("#ctDoubleModelPrice").val("0");
+								 jQuery("#coatModel_Msg").html("無料");
+								 allOptionPrice();
+							 }
+						 }
+					});
+				}
+			}else{
+				jQuery("#ctDoubleModelPrice").val("0");
+				jQuery("#coatModel_Msg").html("無料");
+				allOptionPrice();
+			}
+		})
+	}
 }
 //--------------------------------------------
 //金額フォーマット
@@ -492,12 +631,8 @@ function formatMoney(number, places, symbol, thousand, decimal) {
   return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 }
 
-jQuery("#coatModel").change(function(){
-		jQuery("#coatFlag").val("1");
+jQuery("#coatModel").change(function() {
+	jQuery("#coatFlag").val("1");
+    //jQuery("#coatAdFlag").val("0");
 });
-/************************************************
- * 部品メソッド
- ************************************************/
- // 自作jsに記載
-
 </script>

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 
+import co.jp.aoyama.macchinetta.app.rest.api.model.ReturnReceiveOrderShanghaiFuliangCo;
 import co.jp.aoyama.macchinetta.domain.consts.DomainConst;
 import co.jp.aoyama.macchinetta.domain.dto.CashUpdateCondition;
 import co.jp.aoyama.macchinetta.domain.dto.Message;
@@ -83,11 +84,11 @@ public class DtbOrderServiceImpl implements DtbOrderService {
 
 				condition.setOrderIds(orderIdList);
 				condition.setSend2factoryStatus(DomainConst.SEND2FACTORY_STATUS_1);
-				condition.setMakerFactoryStatus(DomainConst.MAKER_FACTORY_STATUS_F1);
+				// condition.setMakerFactoryStatus(DomainConst.MAKER_FACTORY_STATUS_F1);
 
 				orderRepository.updateByOrderIds(condition, condition.getOrderIds());
 				logger.info("dtb_order(受注)で、以上の送信成功の注文情報を更新しました。");
-				logger.info("更新内容：工場自動連携ステータスを「1:送信済み」に設定して、工場ステータスを「F1:生産開始」に設定する");
+				logger.info("更新内容：工場自動連携ステータスを「1:送信済み」に設定する");
 			}
 		}
 	}
@@ -114,6 +115,59 @@ public class DtbOrderServiceImpl implements DtbOrderService {
 				logger.info("更新内容：工場自動連携ステータスを「3:送信失敗 データタイプエラー]に設定する");
 			}
 		}
+	}
+
+	@Override
+	public void receiveTimeout(List<DtbOrder> dtbOrders) {
+		if (null != dtbOrders && 0 < dtbOrders.size()) {
+			// 注文ステータス変更の注文IDリスト
+			List<String> orderIdList = new ArrayList<String>();
+
+			for (DtbOrder dtbOrder : dtbOrders) {
+				orderIdList.add(dtbOrder.getOrderId());
+			}
+
+			if (0 < orderIdList.size()) {
+				logger.info("送信タイムアウトの注文IDリスト:{}", JSON.toJSONString(orderIdList));
+				OrderUpdateCondition condition = new OrderUpdateCondition();
+
+				condition.setOrderIds(orderIdList);
+				condition.setSend2factoryStatus(DomainConst.SEND2FACTORY_STATUS_5);
+
+				orderRepository.updateByOrderIds(condition, condition.getOrderIds());
+				logger.info("dtb_order(受注)で、以上の送信タイムアウトの注文情報を更新しました。");
+				logger.info("更新内容：工場自動連携ステータスを「5:送信失敗 タイムアウト]に設定する");
+			}
+		}
+	}
+
+	@Override
+	public void updateSendSuccessOrderIds(List<String> successOrderIds, List<String> sendOrderIds) {
+
+		if (0 < successOrderIds.size()) {
+			logger.info("送信成功の注文IDリスト:{}", JSON.toJSONString(successOrderIds));
+			OrderUpdateCondition condition = new OrderUpdateCondition();
+
+			condition.setOrderIds(successOrderIds);
+			condition.setSend2factoryStatus(DomainConst.SEND2FACTORY_STATUS_1);
+
+			orderRepository.updateByOrderIds(condition, condition.getOrderIds());
+			logger.info("dtb_order(受注)で、以上の送信成功の注文情報を更新しました。");
+			logger.info("更新内容：工場自動連携ステータスを「1:送信済み」に設定する");
+		}
+
+		if (0 < sendOrderIds.size()) {
+			logger.info("再送信要の注文IDリスト:{}", JSON.toJSONString(sendOrderIds));
+			OrderUpdateCondition condition = new OrderUpdateCondition();
+
+			condition.setOrderIds(sendOrderIds);
+			condition.setSend2factoryStatus(DomainConst.SEND2FACTORY_STATUS_0);
+
+			orderRepository.updateByOrderIds(condition, condition.getOrderIds());
+			logger.info("dtb_order(受注)で、以上の再送信要の注文情報を更新しました。");
+			logger.info("更新内容：工場自動連携ステータスを「0：送信前」に設定する");
+		}
+
 	}
 
 	@Override
@@ -161,6 +215,16 @@ public class DtbOrderServiceImpl implements DtbOrderService {
 		}
 		logger.info("送信エラーの注文IDリスト:{}", JSON.toJSONString(errorOrderNoList));
 
+		updateErrOrder(dtbOrders, errorOrderNoList);
+	}
+
+	/**
+	 * 送信エラーの注文情報を更新する
+	 * 
+	 * @param dtbOrders        注文情報
+	 * @param errorOrderNoList 送信エラーの注文IDリスト
+	 */
+	private void updateErrOrder(List<DtbOrder> dtbOrders, List<String> errorOrderNoList) {
 		OrderUpdateCondition condition = new OrderUpdateCondition();
 
 		condition.setOrderIds(errorOrderNoList);
@@ -215,13 +279,67 @@ public class DtbOrderServiceImpl implements DtbOrderService {
 	}
 
 	@Override
+	public void receiveErrorShanghaiFuliangCo(List<ReturnReceiveOrderShanghaiFuliangCo> messageList,
+			List<DtbOrder> dtbOrders, Map<String, String> errorCodeMap) {
+
+		// ReceiveOrderの戻るはFailの場合、FailのResultがない、ordernoがあるの場合、すなわち、注文データエラーがあるの場合
+		List<String> errorOrderNoList = new ArrayList<String>();
+
+		// mtb_error_result
+		// Failのorderno及びerror_codeをエラー結果一覧マスタに登録する。
+
+		MtbErrorResult errorResult = null;
+		for (ReturnReceiveOrderShanghaiFuliangCo message : messageList) {
+
+			errorResult = new MtbErrorResult();
+			String errorOrderNo = message.getMainorder();
+			// 枝番
+			String subId = message.getOrderdetailid();
+			if (12 < errorOrderNo.length()) {
+				if (errorOrderNo.substring(0, 2).equals("QS")) {
+					errorOrderNo = errorOrderNo.substring(2);
+				}
+				if (12 < errorOrderNo.length()) {
+					errorOrderNo = errorOrderNo.substring(0, 12);
+				}
+			}
+			String errorCode = message.getResult();
+
+			errorResult.setOrderId(errorOrderNo);
+			errorResult.setOrderSubId(subId);
+			errorResult.setErrorCode(errorCode);
+			errorResult.setRemark(errorCodeMap.get(errorCode));
+			errorResult.setCreatedAt(new Date());
+			errorResult.setUpdatedAt(new Date());
+			logger.info("送信エラー情報作成:{}", JSON.toJSONString(errorResult));
+
+			// insert to DB
+			errorResultRepository.insert(errorResult);
+			logger.info("mtb_error_result(エラー結果一覧マスタ)で、以上の送信エラー情報を登録しました");
+
+			// Failの全部ordernoを重複を除く
+			if (!errorOrderNoList.contains(errorOrderNo)) {
+				errorOrderNoList.add(errorOrderNo);
+			}
+		}
+		logger.info("送信エラーの注文IDリスト:{}", JSON.toJSONString(errorOrderNoList));
+
+		updateErrOrder(dtbOrders, errorOrderNoList);
+	}
+
+	@Override
 	public int updateShippingDateByOrderIds(List<OrderStatusOutput> list) {
 		return orderRepository.updateShippingDateByOrderIds(DomainConst.BATCH_UPDATE_USERID, prefix, list);
 	}
 
 	@Override
-	public List<String> selectConfrimOrderId() {
-		return orderRepository.selectConfrimOrderId();
+	public List<String> selectConfrimOrderId(String makerFactoryStatus) {
+		return orderRepository.selectConfrimOrderId(makerFactoryStatus);
+	}
+
+	@Override
+	public List<String> selectShanghaiFuliangCoConfrimOrderId() {
+		return orderRepository.selectShanghaiFuliangCoConfrimOrderId();
 	}
 
 //	@Override

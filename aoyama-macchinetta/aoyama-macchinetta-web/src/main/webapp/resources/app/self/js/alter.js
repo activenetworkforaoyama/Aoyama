@@ -1,9 +1,6 @@
 /*********************************************
  * 補正タブ用JS
  *********************************************/
-//--------------------------------------------
-// 読み込み時
-//--------------------------------------------
 function initAlter() {
 	jQuery('input[type="range"]').each(function() {
 		var elem = jQuery(this);
@@ -84,67 +81,44 @@ function initAlter() {
 			return false;
 		});
 	});	
-	
+}
 
-	// PANTS2本目（1本目と同じ）
-	jQuery('#btn_ap2_samePants').click(function (){
-		jQuery('#ap2_pantsSizeA').val(jQuery('#ap_pantsSizeA').val());
-		jQuery('#ap2_pantsSizeN').val(jQuery('#ap_pantsSizeN').val());
-		jQuery('#ap2_waist').val(jQuery('#ap_waist').val());
-		jQuery('#ap2_waist_out').val(jQuery('#ap2_waist').val());
-		setFont('ap2_waist');
-		jQuery('#ap2_hip').val(jQuery('#ap_hip').val());
-		jQuery('#ap2_hip_out').val(jQuery('#ap2_hip').val());
-		setFont('ap2_hip');
-		jQuery('#ap2_watari').val(jQuery('#ap_watari').val());
-		jQuery('#ap2_watari_out').val(jQuery('#ap2_watari').val());
-		setFont('ap2_watari');
-		jQuery('#ap2_hemWidth_relative').prop('checked', jQuery('#ap_hemWidth_relative').prop('checked'));
-		jQuery('#ap2_hemWidthRel').val(jQuery('#ap_hemWidthRel').val());
-		jQuery('#ap2_hemWidthRel_out').val(jQuery('#ap2_hemWidthRel').val());
-		setFont('ap2_hemWidthRel');
-		jQuery('#ap2_hemWidth_absolute').prop('checked', jQuery('#ap_hemWidth_absolute').prop('checked'));
-		jQuery('#ap2_hemWidthAbs10').val(jQuery('#ap_hemWidthAbs10').val());
-		jQuery('#ap2_hemWidthAbs1').val(jQuery('#ap_hemWidthAbs1').val());
-		jQuery('#ap2_inseamLeft100').val(jQuery('#ap_inseamLeft100').val());
-		jQuery('#ap2_inseamLeft10').val(jQuery('#ap_inseamLeft10').val());
-		jQuery('#ap2_inseamLeft1').val(jQuery('#ap_inseamLeft1').val());
-		jQuery('#ap2_inseamLeftM1').val(jQuery('#ap_inseamLeftM1').val());
-		jQuery('#ap2_inseamRight100').val(jQuery('#ap_inseamRight100').val());
-		jQuery('#ap2_inseamRight10').val(jQuery('#ap_inseamRight10').val());
-		jQuery('#ap2_inseamRight1').val(jQuery('#ap_inseamRight1').val());
-		jQuery('#ap2_inseamRightM1').val(jQuery('#ap_inseamRightM1').val());
-	});
-
-	// PANTS3本目（1本目と同じ）
-	jQuery('#btn_ap3_samePants').click(function (){
-		jQuery('#ap3_pantsSizeA').val(jQuery('#ap_pantsSizeA').val());
-		jQuery('#ap3_pantsSizeN').val(jQuery('#ap_pantsSizeN').val());
-		jQuery('#ap3_waist').val(jQuery('#ap_waist').val());
-		jQuery('#ap3_waist_out').val(jQuery('#ap3_waist').val());
-		setFont('ap3_waist');
-		jQuery('#ap3_hip').val(jQuery('#ap_hip').val());
-		jQuery('#ap3_hip_out').val(jQuery('#ap3_hip').val());
-		setFont('ap3_hip');
-		jQuery('#ap3_watari').val(jQuery('#ap_watari').val());
-		jQuery('#ap3_watari_out').val(jQuery('#ap2_watari').val());
-		setFont('ap3_watari');
-		jQuery('#ap3_hemWidth_relative').prop('checked', jQuery('#ap_hemWidth_relative').prop('checked'));
-		jQuery('#ap3_hemWidthRel').val(jQuery('#ap_hemWidthRel').val());
-		jQuery('#ap3_hemWidthRel_out').val(jQuery('#ap2_hemWidthRel').val());
-		setFont('ap3_hemWidthRel');
-		jQuery('#ap3_hemWidth_absolute').prop('checked', jQuery('#ap_hemWidth_absolute').prop('checked'));
-		jQuery('#ap3_hemWidthAbs10').val(jQuery('#ap_hemWidthAbs10').val());
-		jQuery('#ap3_hemWidthAbs1').val(jQuery('#ap_hemWidthAbs1').val());
-		jQuery('#ap3_inseamLeft100').val(jQuery('#ap_inseamLeft100').val());
-		jQuery('#ap3_inseamLeft10').val(jQuery('#ap_inseamLeft10').val());
-		jQuery('#ap3_inseamLeft1').val(jQuery('#ap_inseamLeft1').val());
-		jQuery('#ap3_inseamLeftM1').val(jQuery('#ap_inseamLeftM1').val());
-		jQuery('#ap3_inseamRight100').val(jQuery('#ap_inseamRight100').val());
-		jQuery('#ap3_inseamRight10').val(jQuery('#ap_inseamRight10').val());
-		jQuery('#ap3_inseamRight1').val(jQuery('#ap_inseamRight1').val());
-		jQuery('#ap3_inseamRightM1').val(jQuery('#ap_inseamRightM1').val());
-	});
+function shirtInitAlter() {
+	jQuery('input[type="range"]').each(function() {
+		var elem = jQuery(this);
+		var id = elem.prop('id');
+		var step = elem.prop('step') - 0;
+		elem.on('input', function(){
+			jQuery('#'+id+'_out').val(this.value);
+			setFont(id);
+			//規定値超えチェック
+			checkRange(id, elem.val());
+		});
+		jQuery('#'+id+'_p').click(function(){
+			// 無効設定チェック
+			var disabled = elem.attr('disabled');
+			if (disabled != null && disabled != "") return false;
+			
+			elem.val(elem.val()-0+step);
+			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
+			//規定値超えチェック
+			checkRange(id, elem.val());
+			return false;
+		});
+		jQuery('#'+id+'_m').click(function(){
+			// 無効設定チェック
+			var disabled = elem.attr('disabled');
+			if (disabled != null && disabled != "") return false;
+			
+			elem.val(elem.val()-0-step);
+			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
+			//規定値超えチェック
+			checkRange(id, elem.val());
+			return false;
+		});
+	});	
 }
 
 //--------------------------------------------
@@ -252,6 +226,5 @@ function checkRange(id, val) {
 		appendAlertCo(idHip + "_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
 	}
 	
-
 	return (resultRange && resultHip);
 }

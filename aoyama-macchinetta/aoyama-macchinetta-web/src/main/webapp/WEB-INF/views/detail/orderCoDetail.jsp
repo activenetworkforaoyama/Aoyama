@@ -318,22 +318,15 @@
 					<div class="col col-md-4"><label class=" form-control-label">お客様名</label></div>
 					<div class="col-12 col-md-8">
 					<c:if test="${order.custNm != null && order.custKanaNm != null}">
-						<div class="col-12 col-md-8">
 							<label class=" form-control-label-value">${f:h(order.custNm)}(${f:h(order.custKanaNm)})</label>様
-						</div>
 					</c:if>
 					<c:if test="${order.custNm != null && order.custKanaNm == null}">
-						<div class="col-12 col-md-8">
 							<label class=" form-control-label-value">${f:h(order.custNm)}</label>様
-						</div>
 					</c:if>
 					<c:if test="${order.custNm != null && order.custKanaNm == null}">
-						<div class="col-12 col-md-8">
 							<label class=" form-control-label-value">(${f:h(order.custKanaNm)})</label>様
-						</div>
 					</c:if>
 					<c:if test="${order.custNm == null && order.custKanaNm == null}">
-						<div class="col-12 col-md-8"></div>
 					</c:if>
 				</div>
 				</div>
@@ -349,7 +342,7 @@
 			<div class="col-lg-6">
 				<div class="row">
 					<div class="col text-right">
-						<strong>ご請求金額：${orderFm.billingAmountFm}(消費税${orderFm.consumptionTaxAmountFm})</strong>
+						<strong>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</strong>
 					</div>
 				</div>
 				<div class="row">
@@ -397,8 +390,6 @@
 				<div class="col col-md-3"><label class=" form-control-label">フリガナ</label></div>
 				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value">${f:h(order.custKanaNm)}</label></strong></div>
 			</div>
-			<div class="row"><div class="col col-md-3"><label class=" form-control-label">　</label></div></div>
-			<div class="row"><div class="col col-md-3"><label class=" form-control-label">　</label></div></div>
 			</c:if>
 			
 			<c:if test="${authority == '01'}">
@@ -420,11 +411,11 @@
 		<div class="col col-lg-6">
 			<div class="row">
 				<div class="col col-md-3"><label class=" form-control-label">納期短縮</label></div>
-				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value" id="deliverShortning_appear"></label></strong></div>
+				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value">${order.custIsDeliverShortning}</label></strong></div>
 			</div>
 			<div class="row">
 				<div class="col col-md-3"><label class=" form-control-label">早割</label></div>
-				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value" id="earlyDiscount_appear"></label></strong></div>
+				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value">${order.custIsEarlyDiscount}</label></strong></div>
 			</div>
 			<div class="row">
 				<div class="col col-md-3"><label class=" form-control-label">お渡し日</label></div>
@@ -449,10 +440,10 @@
 		<div class="row">
 			<div class="col col-lg-12">
 				<div class="row form-group">
-					<div class="col col-md-2">
-						<label class=" form-control-label">お客様備考</label>
+					<div style="padding-left:15px;width:12.5%">
+					    <label class=" form-control-label">お客様備考</label>
 					</div>
-					<div class="col-12 col-md-10">
+					<div style="padding-right:15px;padding-left:15px;width:87.5%">
 						<textarea readonly name="textarea-input" id="textarea-input" rows="3" class="form-control">${f:h(order.custRemark)}</textarea>
 					</div>
 				</div>
@@ -602,26 +593,16 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">生地ネーム</label></div>
 					<div class="col-12 col-md-6">
-					<c:if test="${order.productFabricNmNecessity == '0'}">
-					<strong><label class=" form-control-label-value">無し</label></strong>
-					</c:if>
-					<c:if test="${order.productFabricNmNecessity == '1'}">
-					<strong><label class=" form-control-label-value">有り</label></strong>
-					</c:if>
+					<strong><label class=" form-control-label-value">${order.productFabricNmNecessity}</label></strong>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">刺繍入れ</label></div>
 					<div class="col-12 col-md-6">
-					<c:if test="${order.productEmbroideryNecessity == '0'}">
-					<strong><label class=" form-control-label-value">無し</label></strong>
-					</c:if>
-					<c:if test="${order.productEmbroideryNecessity == '1'}">
-					<strong><label class=" form-control-label-value">有り</label></strong>
-					</c:if>
+					<strong><label class=" form-control-label-value">${order.productEmbroideryNecessity}</label></strong>
 					</div>
 				</div>
-				<c:if test="${order.productEmbroideryNecessity == '1'}">
+				<c:if test="${order.productEmbroideryNecessity == '有り'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">刺繍ネーム</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryNm}</label></strong></div>
@@ -633,28 +614,28 @@
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">刺繍糸色</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryThreadColor}</label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryThreadColor}</label></strong></div>
 				</div>
 				
 				<c:if test="${order.productItem == '05'}">
-				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">ガゼット刺繡</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryGazette}</label></strong></div>
-				</div>
 				
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">刺繍箇所</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryNmPos}</label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryNmPos}</label></strong></div>
 				</div>
 				
 				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">刺繍サイズ（縦）</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryLength}</label></strong></div>
+					<div class="col col-md-3"><label class=" form-control-label">刺繍サイズ</label></div>
+					<div class="col-12 col-md-6">
+					<strong>
+					<label class=" form-control-label-value">縦　${order.productEmbroideryLength}cm　　横　${order.productEmbroideryWidth}cm</label>
+					</strong>
+					</div>
 				</div>
 				
 				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">刺繍サイズ（横）</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productEmbroideryWidth}</label></strong></div>
+					<div class="col col-md-3"><label class=" form-control-label">ガゼット刺繡</label></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryGazette}</label></strong></div>
 				</div>
 				</c:if>
 				</c:if>
@@ -664,7 +645,7 @@
 					<div class="col col-md-3"><label class=" form-control-label">残布</label></div>
 					<div class="col-12 col-md-6">
 					<strong>
-					<label class=" form-control-label-value" id="product_embroidery_thread_color">${order.productRemainingClothNm}</label>
+					<label class=" form-control-label-value">${order.productRemainingClothNm}</label>
 					</strong>
 					</div>
 				</div>
@@ -739,7 +720,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.jkDaibaNm }</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_daiba_rt_price">${orderFm.jkDaibaRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory == '2'}">
+				<c:if test="${order.productCategory == '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">拝絹地</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.jkLookClothNm}</label></strong></div>
@@ -815,10 +796,6 @@
 					<div class="col col-md-3"><label class=" form-control-label">内ポケット変更</label></div>
 					<div class="col-12 col-md-6">
 					<strong><label class=" form-control-label-value">${order.jkInnerPktType}</label></strong>
-					<c:if test="${order.jkInnerPktType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkInnerPktNm}</label></strong>
-					</c:if>
 					</div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_inner_pkt_rt_price">${orderFm.jkInnerPktRtPriceFm}</label></strong></div>
 				</div>
@@ -832,68 +809,45 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.jkStitchTypeNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_stitch_type_rt_price">${orderFm.jkStitchTypeRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '2'}">
+				<c:if test="${order.productCategory != '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.jkStitchPlcType}</label></strong>
-					<c:if test="${order.jkStitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkStitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_stitch_plc_rt_price">${orderFm.jkStitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="jk_stitch_plc_rt_price">${orderFm.jkStitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.jkDblstitchPlcType}</label></strong>
-					<c:if test="${order.jkDblstitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkDblstitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_dblstitch_plc_rt_price">${orderFm.jkDblstitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="jk_dblstitch_plc_rt_price">${orderFm.jkDblstitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.jkAmfColorType}</label></strong>
-					<c:if test="${order.jkAmfColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkAmfColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.jkAmfColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_amf_color_rt_price">${orderFm.jkAmfColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="jk_amf_color_rt_price">${orderFm.jkAmfColorRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.jkBtnholeColorType}</label></strong>
-					<c:if test="${order.jkBtnholeColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkBtnholeColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.jkBtnholeColorPlcN}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_btnhole_plc_color_rt_price">${orderFm.jkBtnholePlcColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="jk_btnhole_plc_color_rt_price">${orderFm.jkBtnholePlcColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.jkBtnthreadColorType}</label></strong>
-					<c:if test="${order.jkBtnthreadColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.jkBtnthreadColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.jkBtnthreadColorPlcN}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_btnthread_plc_color_rt_price">${orderFm.jkBtnthreadPlcColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="jk_btnthread_plc_color_rt_price">${orderFm.jkBtnthreadPlcColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ベント</label></div>
@@ -903,19 +857,19 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">胴裏素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value" id="jkInnerBodyCloth_appear">${order.jkInnerBodyClothType} ${order.jkInnerBodyClothNm}</label></strong></div>
+					<strong><label class=" form-control-label-value" id="jkInnerBodyCloth_appear">${order.jkInnerBodyClothNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_inner_body_cloth_rt_price">${orderFm.jkInnerBodyClothRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">袖裏素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value" id="jkInnerSleeveCloth_appear">${order.jkInnerSleeveClothType} ${order.jkInnerSleeveClothNm}</label></strong></div>
+					<strong><label class=" form-control-label-value" id="jkInnerSleeveCloth_appear">${order.jkInnerSleeveClothNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_inner_sleeve_cloth_rt_price">${orderFm.jkInnerSleeveClothRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value" id="jkBtnMaterial_appear">${order.jkBtnMaterialType} ${order.jkBtnMaterialNm}</label></strong></div>
+					<strong><label class=" form-control-label-value" id="jkBtnMaterial_appear">${order.jkBtnMaterialNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_btn_material_rt_price">${orderFm.jkBtnMaterialRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1025,7 +979,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktShapeNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_waist_pkt_shape_rt_price">${orderFm.glWaistPktShapeRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory == '2'}">
+				<c:if test="${order.productCategory == '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">腰ポケット素材</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktClothNm}</label></strong></div>
@@ -1037,82 +991,59 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glAmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_amf_stitch_rt_price">${orderFm.glAmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '2'}">
+				<c:if test="${order.productCategory != '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.glStitchPlcType}</label></strong>
-					<c:if test="${order.glStitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.glStitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_stitch_plc_rt_price">${orderFm.glStitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="gl_stitch_plc_rt_price">${orderFm.glStitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.glDblstitchPlcType}</label></strong>
-					<c:if test="${order.glDblstitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.glDblstitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_dblstitch_plc_rt_price">${orderFm.glDblstitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="gl_dblstitch_plc_rt_price">${orderFm.glDblstitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.glAmfColorType}</label></strong>
-					<c:if test="${order.glAmfColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.glAmfColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.glAmfColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_amf_color_rt_price">${orderFm.glAmfColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="gl_amf_color_rt_price">${orderFm.glAmfColorRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.glBtnholeColorType}</label></strong>
-					<c:if test="${order.glBtnholeColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.glBtnholeColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.glBtnholeColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_btnhole_color_rt_price">${orderFm.glBtnholeColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="gl_btnhole_color_rt_price">${orderFm.glBtnholeColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.glBtnthreadColorType}</label></strong>
-					<c:if test="${order.glBtnthreadColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.glBtnthreadColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.glBtnthreadColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_btnthread_color_rt_price">${orderFm.glBtnthreadColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="gl_btnthread_color_rt_price">${orderFm.glBtnthreadColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">背裏地素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value">${order.glBackClothType} ${order.glBackClothNm}</label></strong></div>
+					<strong><label class=" form-control-label-value">${order.glBackClothNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_back_cloth_rt_price">${orderFm.glBackClothRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">内側裏地素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value">${order.glInnnerClothType} ${order.glInnnerClothNm}</label></strong></div>
+					<strong><label class=" form-control-label-value">${order.glInnnerClothNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_innner_cloth_rt_price">${orderFm.glInnnerClothRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
 					<div class="col-12 col-md-6">
-					<strong><label class=" form-control-label-value">${order.glFrtBtnType} ${order.glFrtBtnNm}</label></strong></div>
+					<strong><label class=" form-control-label-value">${order.glFrtBtnNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_frt_btn_rt_price">${orderFm.glFrtBtnRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1230,7 +1161,7 @@
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
-					<div class="col-12 col-md-8"><strong><label class=" form-control-label-value">${order.ptBeltloopType}${order.ptBeltloopNm}</label></strong></div>
+					<div class="col-12 col-md-8"><strong><label class=" form-control-label-value">${order.ptBeltloopType}</label></strong></div>
 					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_beltloop_rt_price">${orderFm.ptBeltloopRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1290,69 +1221,46 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptAmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_amf_stitch_rt_price">${orderFm.ptAmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '2'}">
+				<c:if test="${order.productCategory != '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptStitchPlcType}</label></strong>
-					<c:if test="${order.ptStitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.ptStitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_stitch_plc_rt_price">${orderFm.ptStitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_stitch_plc_rt_price">${orderFm.ptStitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptDblstitchPlcType}</label></strong>
-					<c:if test="${order.ptStitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.ptDblstitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_dblstitch_plc_rt_price">${orderFm.ptDblstitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_dblstitch_plc_rt_price">${orderFm.ptDblstitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptAmfColorType}</label></strong>
-					<c:if test="${order.ptAmfColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.ptAmfColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.ptAmfColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_amf_color_rt_price">${orderFm.ptAmfColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_amf_color_rt_price">${orderFm.ptAmfColorRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptBtnholeColorType}</label></strong>
-					<c:if test="${order.ptBtnholeColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.ptBtnholeColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.ptBtnholeColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_btnhole_color_rt_price">${orderFm.ptBtnholeColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_btnhole_color_rt_price">${orderFm.ptBtnholeColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptBtnthreadColorType}</label></strong>
-					<c:if test="${order.ptBtnthreadColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.ptBtnthreadColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.ptBtnthreadColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_btnthread_color_rt_price">${orderFm.ptBtnthreadColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_btnthread_color_rt_price">${orderFm.ptBtnthreadColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="ptBtnMaterial_appear">${order.ptBtnMaterialType} ${order.ptBtnMaterialNm}</label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="ptBtnMaterial_appear">${order.ptBtnMaterialNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_btn_material_rt_price">${orderFm.ptBtnMaterialRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1375,7 +1283,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptShapeMemoryNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_shape_memory_rt_price">${orderFm.ptShapeMemoryRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory == '2'}">
+				<c:if test="${order.productCategory == '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">側章</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptSideStripeNm}</label></strong></div>
@@ -1419,15 +1327,30 @@
 						<strong><label class=" form-control-label-value">${orderFm.corPtThighwidthCorrectFm}</label></strong>
 					</div>
 					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corPtThighwidthGross}</label>cm</strong></div>
-					<div class="col-12 col-md-3 offset-md-3">
+					<div class="col-12 col-md-2 offset-md-3">
 						<label class=" form-control-label">裾幅</label>
+					</div>					
+				    <c:if test="${order.corPtHemwidthType == '1'}">
+					<div class="col-12 col-md-1">
+						<strong><label for="ap_hemWidth_absolute" class="form-check-label ">修正</label></strong>
 					</div>
 					<div class="col-12 col-md-2">
-						<strong><label class=" form-control-label-value">${orderFm.corPtHemwidthCorrectFm}</label></strong>
+							<strong><label class=" form-control-label-value">${orderFm.corPtHemwidthCorrectFm}</label></strong>
 					</div>
 					<div class="col-12 col-md-4">
-					<strong><label class=" form-control-label-value">${order.corPtHemwidthGross}</label>cm</strong>
+						<strong><label class=" form-control-label-value">${order.corPtHemwidthGross}</label>cm</strong>
 					</div>
+					</c:if>
+					<c:if test="${order.corPtHemwidthType == '2'}">
+					<div class="col-12 col-md-1">
+						<strong><label for="ap_hemWidth_absolute" class="form-check-label ">指定</label></strong>
+					</div>
+					<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value">${order.corPtHemwidthDegignate}</label>cm</strong>
+					</div>
+					<div class="col-12 col-md-4">
+					</div>
+					</c:if>
 					<div class="col-12 col-md-3 offset-md-3">
 						<label class=" form-control-label">股下</label>
 					</div>
@@ -1505,7 +1428,7 @@
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ベルトループ</label></div>
-					<div class="col-12 col-md-8"><strong><label class=" form-control-label-value">${order.pt2BeltloopType} ${order.pt2BeltloopNm}</label></strong></div>
+					<div class="col-12 col-md-8"><strong><label class=" form-control-label-value">${order.pt2BeltloopType}</label></strong></div>
 					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_beltloop_rt_price">${orderFm.pt2BeltloopRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1565,69 +1488,46 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2AmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_amf_stitch_rt_price">${orderFm.pt2AmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '2'}">
+				<c:if test="${order.productCategory != '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2StitchPlcType}</label></strong>
-					<c:if test="${order.pt2StitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.pt2StitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_stitch_plc_rt_price">${orderFm.pt2StitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_stitch_plc_rt_price">${orderFm.pt2StitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2DblstitchPlcType}</label></strong>
-					<c:if test="${order.pt2DblstitchPlcType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.pt2DblstitchPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_dblstitch_plc_rt_price">${orderFm.pt2DblstitchPlcRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_dblstitch_plc_rt_price">${orderFm.pt2DblstitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2AmfColorType}</label></strong>
-					<c:if test="${order.pt2AmfColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.pt2AmfColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.pt2AmfColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_amf_color_rt_price">${orderFm.pt2AmfColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_amf_color_rt_price">${orderFm.pt2AmfColorRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2BtnholeColorType}</label></strong>
-					<c:if test="${order.pt2BtnholeColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.pt2BtnholeColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.pt2BtnholeColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_btnhole_color_rt_price">${orderFm.pt2BtnholeColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_btnhole_color_rt_price">${orderFm.pt2BtnholeColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-					<div class="col-12 col-md-6">
+					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2BtnthreadColorType}</label></strong>
-					<c:if test="${order.pt2BtnthreadColorType == '有り'}">
-					<br>
-					<strong><label class=" form-control-label-value">${order.pt2BtnthreadColorNm}</label></strong><br>
-					<strong><label class=" form-control-label-value">${order.pt2BtnthreadColorPlcNm}</label></strong>
-					</c:if>
 					</div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_btnthread_color_rt_price">${orderFm.pt2BtnthreadColorRtPriceFm}</label></strong></div>
+					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_btnthread_color_rt_price">${orderFm.pt2BtnthreadColorRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="pt2BtnMaterial_appear">${order.pt2BtnMaterialType} ${order.pt2BtnMaterialNm}</label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="pt2BtnMaterial_appear">${order.pt2BtnMaterialNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_btn_material_rt_price">${orderFm.pt2BtnMaterialRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
@@ -1650,7 +1550,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2ShapeMemoryNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_shape_memory_rt_price">${orderFm.pt2ShapeMemoryRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory == '2'}">
+				<c:if test="${order.productCategory == '9000102'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">側章</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2SideStripeNm}</label></strong></div>
@@ -1694,19 +1594,34 @@
 						<strong><label class=" form-control-label-value">${orderFm.corPt2ThighwidthCorrectFm}</label></strong>
 					</div>
 					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corPt2ThighwidthGross}</label>cm</strong></div>
-					<div class="col-12 col-md-3 offset-md-3">
+					<div class="col-12 col-md-2 offset-md-3">
 						<label class=" form-control-label">裾幅</label>
 					</div>
+					<c:if test="${order.corPt2HemwidthType == '1'}">
+					<div class="col-12 col-md-1">
+						<strong><label for="ap_hemWidth_absolute" class="form-check-label ">修正</label></strong>
+					</div>
 					<div class="col-12 col-md-2">
-						<strong><label class=" form-control-label-value">${orderFm.corPt2HemwidthCorrectFm}</label></strong>
+							<strong><label class=" form-control-label-value">${orderFm.corPt2HemwidthCorrectFm}</label></strong>
 					</div>
 					<div class="col-12 col-md-4">
-					<strong><label class=" form-control-label-value">${order.corPt2HemwidthGross}</label>cm</strong>
-                    </div>
+						<strong><label class=" form-control-label-value">${order.corPt2HemwidthGross}</label>cm</strong>
+					</div>
+					</c:if>
+					<c:if test="${order.corPt2HemwidthType == '2'}">
+					<div class="col-12 col-md-1">
+						<strong><label for="ap_hemWidth_absolute" class="form-check-label ">指定</label></strong>
+					</div>
+					<div class="col-12 col-md-2">
+							<strong><label class=" form-control-label-value">${order.corPt2HemwidthDegignate}</label>cm</strong>
+					</div>
+					<div class="col-12 col-md-4">
+					</div>
+					</c:if>
 					<div class="col-12 col-md-3 offset-md-3">
 						<label class=" form-control-label">股下</label>
 					</div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="pants2CorinseamGross"></label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="pants2CorinseamGross"></label>cm</strong></div>
 				</div>
 			</div>
 		</div>
@@ -2010,31 +1925,39 @@
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">カジュアルヘムライン仕様</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stCasualHemlineNm}</label></strong></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stCasualHemlineCd}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="st_casual_hemline_rt_price">${orderFm.stCasualHemlineRtPriceFm}</label></strong></div>
+				
+				    <c:if test="${order.stCasualHemlineCd == '有り'}">
+				    <div class="col col-md-3"><label class=" form-control-label"></label></div>
+					<div class="col-12 col-md-3"><strong><label class=" form-control-label-value">${order.stCasualHemlineSize}</label>cm</strong></div>
+					<div class="col-12 col-md-2"></div>
+					<div class="col-12 col-md-4"></div>
+					</c:if>
+					
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ボタン位置変更</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stBtnposChgNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="st_btnpos_chg_rt_price">${orderFm.stBtnposChgRtPriceFm}</label></strong></div>
+				
+				    <c:if test="${order.stBtnposChgNm == '有り'}">
+				    <div class="col col-md-3"><label class=" form-control-label"></label></div>
+					<div class="col-12 col-md-3"><label class=" form-control-label">台襟釦</label></div>
+					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stNeckbandBtnChgNm} ${order.stNeckbandBtnPosChg}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
+					
+					<div class="col col-md-3"><label class=" form-control-label"></label></div>
+					<div class="col-12 col-md-3"><label class=" form-control-label">フロント第１釦</label></div>
+					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stFrtfirstBtnChgNm} ${order.stFrtfirstBtnPosChg}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
+					
+					<div class="col col-md-3"><label class=" form-control-label"></label></div>
+					<div class="col-12 col-md-3"><label class=" form-control-label">フロント第2釦</label></div>
+					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stFrtsecondBtnChgNm} ${order.stFrtsecondBtnPosChg}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
+					</c:if>
 				</div>
-				<c:if test="${order.stBtnposChgNm == '有り'}">
-				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">台襟釦</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stNeckbandBtnChgNm} ${order.stNeckbandBtnPosChg}</label></strong></div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="st_neckband_btn_chg_rt_price">${orderFm.stNeckbandBtnChgRtPriceFm}</label></strong></div>
-				</div>
-				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">フロント第１釦</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stFrtfirstBtnChgNm} ${order.stFrtfirstBtnPosChg}</label></strong></div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="st_frtfirst_btn_chg_rt_price">${orderFm.stFrtfirstBtnChgRtPriceFm}</label></strong></div>
-				</div>
-				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">フロント第2釦</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.stFrtsecondBtnChgNm} ${order.stFrtsecondBtnPosChg}</label></strong></div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="st_frtsecond_btn_chg_rt_price">${orderFm.stFrtsecondBtnChgRtPriceFm}</label></strong></div>
-				</div>
-				</c:if>
 			</div>
 		</div>
 		<div class="row">　</div>
@@ -2080,14 +2003,14 @@
 					<div class="col-12 col-md-2">
 						<strong><label class=" form-control-label-value">${orderFm.corStBackdartsPackCorrectFm}</label></strong>
 					</div>
-					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corStBackdartsPackGross}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
 					<div class="col-12 col-md-3 offset-md-3">
 						<label class=" form-control-label">背ダーツ出し</label>
 					</div>
 					<div class="col-12 col-md-2">
-						<strong><label class=" form-control-label-value">${orderFm.corStBackdartsUnpackCorrectFm}</label></strong>
+						<strong><label class=" form-control-label-value">${order.corStBackdartsUnpackNm}</label></strong>
 					</div>
-					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corStBackdartsUnpackGross}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
 					<div class="col-12 col-md-3 offset-md-3">
 						<label class=" form-control-label">カフス周り右</label>
 					</div>
@@ -2144,7 +2067,7 @@
 			<div class="col-lg-6">
 				<div class="row">
 					<div class="col text-right">
-						<strong>ご請求金額：${orderFm.billingAmountFm}(消費税${orderFm.consumptionTaxAmountFm})</strong>
+						<strong>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</strong>
 					</div>
 				</div>
 				<div class="row">
@@ -2468,7 +2391,7 @@
 						<div class="col-md-12">
 							<div class="card-body">
 								<div class="row">
-									<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T0' || order.tscStatus == 'T1' || order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5')}">
+									<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
 										<div class="col col-md-2"></div>
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2480,6 +2403,17 @@
 										</div>
 										<div class="col col-md-2"></div>
 									</c:if>
+									<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.send2factoryStatus == '1'}">		
+									<div class="col col-md-4">
+									</div>
+									<div class="col col-md-4">
+										<button type="button" class="btn btn-info btn-block" id="backButton" >
+											一覧へ戻る
+										</button>
+									</div>
+									<div class="col col-md-4">
+									</div>
+								    </c:if>
 									<c:if test="${order.tscStatus == 'T6' && (order.productItem == '01' || order.productItem == '02' || order.productItem == '03' || order.productItem == '04')}">
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2570,8 +2504,7 @@
 	<c:if test="${order.isCancelled != '1'}">
 		<div class="col-md-12">
 			<div class="card" id="nav2_alter_div">
-				<c:if
-					test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2'}">
+				<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card-body">
@@ -2590,6 +2523,25 @@
 							</div>
 						</div>
 					</div>
+				</c:if>
+				<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && order.send2factoryStatus == '1'}">		
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card-body">
+							<div class="row">
+								<div class="col col-md-4">
+								</div>
+								<div class="col col-md-4">
+									<button type="button" class="btn btn-info btn-block" id="backButton" >
+										一覧へ戻る
+									</button>
+								</div>
+								<div class="col col-md-4">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				</c:if>
 				<c:if
 					test="${((order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.makerFactoryStatus == 'F1') || ((order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && order.makerFactoryStatus == 'F0') }">
@@ -2839,7 +2791,7 @@
 		var changeTscStatus = 'T7'; 
 		//バージョン
 		var orderVersion = "${order.version}";
-		window.location.href= contextPath + "/orderDetail/changeStatus/" + orderId + "/" + changeTscStatus + "/" + orderVersion;
+		window.location.href= contextPath + "/orderCoDetail/changeStatusCo/" + orderId + "/" + changeTscStatus + "/" + orderVersion;
 	})
 
 	//生地使用量・出荷日・船積日の保存を行う、保存完了後、「オーダー登録結果」画面へ遷移する
@@ -3348,18 +3300,6 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#status_appear").html(statusList["${order.tscStatus}"]);
 	}
 
-	var deliverShortningList = {
-			0 : "無し",
-			1 : "有り"
-	};
-	jQuery("#deliverShortning_appear").html(deliverShortningList["${order.custIsDeliverShortning}"]);
-
-	var earlyDiscount = {
-			0 : "無し",
-			1 : "有り"
-	};
-	jQuery("#earlyDiscount_appear").html(earlyDiscount["${order.custIsEarlyDiscount}"]);
-
 	var productOrderdDate = "${order.productOrderdDate}";
 	if (productOrderdDate != null) {
 		jQuery("#product_orderd_date").html(dateFormat(productOrderdDate))
@@ -3384,9 +3324,9 @@ jQuery("#saveOrChangeValue").click(function(){
 
 	//商品情報_カテゴリの内容表示
 	var categoryType = {
-		0 : "標準",
-		1 : "ウォッシャブル",
-		2 : "タキシード"
+		9000101 : "標準",
+		9000103 : "ウォッシャブル",
+		9000102 : "タキシード"
 	};
 	jQuery("#product_category").html(categoryType["${order.productCategory}"]);
 

@@ -29,4 +29,12 @@ public interface NextGenerationRepository {
 	NextGenerationPrice selectCoMarginRate(String fabricNo);
 	
 	NextGenerationPrice selectCoFactoryCode(String fabricNo);
+	
+	List<NextGenerationPrice> selectCoOptionNextGenerationPrice(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String factoryCode,String itemCode,String stSubItemCode,String ctSubItemCode);
+	
+	List<NextGenerationPrice> selectCoDetailNextGenerationPrice(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String factoryCode,String itemCode,String stSubItemCode,String ctSubItemCode);
+	
+	List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList(String factoryCode,String item,String subItem,String optionCode);
+	
+	List<NextGenerationPrice> selectCoComplexItemsWageList(String factoryCode,String item,String subItem,String optionCode);
 }

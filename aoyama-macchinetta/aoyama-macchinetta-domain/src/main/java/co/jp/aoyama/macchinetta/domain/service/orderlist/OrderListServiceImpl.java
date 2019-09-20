@@ -150,7 +150,7 @@ public class OrderListServiceImpl implements OrderListService {
 					remainActualStock =actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
 				}
 			}
-			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt,orderPattern);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -188,7 +188,7 @@ public class OrderListServiceImpl implements OrderListService {
 					remainActualStock =actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
 				}
 			}
-			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt,orderPattern);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -219,7 +219,7 @@ public class OrderListServiceImpl implements OrderListService {
 				remainActualStock = actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
 			}
 			
-			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt,orderPattern);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -251,7 +251,7 @@ public class OrderListServiceImpl implements OrderListService {
 				remainActualStock = actualStock.add(fabricUsedMountOld).subtract(fabricUsedMount);
 			}
 			
-			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt);
+			this.updateActualStock(productFabricNo,remainActualStock,updatedUserId,updatedAt,orderPattern);
 		}
 		else {
 			 ResultMessages messages = ResultMessages.error();
@@ -295,9 +295,9 @@ public class OrderListServiceImpl implements OrderListService {
 	}
 	
 	@Override
-	public void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt) {
+	public void updateActualStock(String fabricNo,BigDecimal remainActualStock,String updatedUserId,Date updatedAt,String orderPattern) {
 		
-		orderListRepository.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt);
+		orderListRepository.updateActualStock(fabricNo,remainActualStock,updatedUserId,updatedAt,orderPattern);
 	}
 
 	@Override
@@ -404,6 +404,18 @@ public class OrderListServiceImpl implements OrderListService {
 	@Override
 	public Order findOrderCtOptionByOrderId(String orderId) {
 		Order order = orderListRepository.findOrderCtOptionByOrderId(orderId);
+		return order;
+	}
+	
+	@Override
+	public Order findOrderGlOptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderGlOptionByOrderId(orderId);
+		return order;
+	}
+
+	@Override
+	public Order findOrderStOptionByOrderId(String orderId) {
+		Order order = orderListRepository.findOrderStOptionByOrderId(orderId);
 		return order;
 	}
 

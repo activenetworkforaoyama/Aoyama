@@ -22,4 +22,6 @@ public interface OptionBranchRepository {
 	List<OptionBranch> getWashableOption(@Param("orderPattern") String type);
 
 	List<OptionBranch> getAllOption(@Param("orderPattern") String orderPattern);
+
+	List<OptionBranch> getProduct(@Param("orderPattern") String orderPattern);
 }

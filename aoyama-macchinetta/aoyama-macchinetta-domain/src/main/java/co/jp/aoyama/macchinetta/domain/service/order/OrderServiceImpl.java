@@ -415,4 +415,11 @@ public class OrderServiceImpl  implements OrderService {
 	}
 
 
+	@Override
+	public List<OrderPrice> getOrderPriceNotCate(String coType) {
+		List<OrderPrice> orderList = orderRepository.getOrderPriceNotCate(coType);
+		return orderList;
+	}
+
+
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.liningenum.MtbLiningEnumRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.MtbLiningEnum" >
+    <result column="jk_inner_body_cloth_cd" property="jkInnerBodyClothCd" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="mode" property="mode" jdbcType="VARCHAR" />
+    <result column="vendor" property="vendor" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="composition" property="composition" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="VARCHAR" />
+    <result column="product_factory_cd" property="productFactoryCd" jdbcType="VARCHAR" />
+    <result column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbLiningEnum" >
+    insert into mtb_lining_enum (jk_inner_body_cloth_cd, sku, mode, 
+      vendor, description, composition, 
+      length, product_factory_cd, order_pattern
+      )
+    values (#{jkInnerBodyClothCd,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, #{mode,jdbcType=VARCHAR}, 
+      #{vendor,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{composition,jdbcType=VARCHAR}, 
+      #{length,jdbcType=VARCHAR}, #{productFactoryCd,jdbcType=VARCHAR}, #{orderPattern,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select jk_inner_body_cloth_cd, sku, mode, vendor, description, composition, length, 
+    product_factory_cd, order_pattern
+    from mtb_lining_enum
+  </select>
+  <select id="selectByFactoryPattern" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    select *
+    from mtb_lining_enum
+    where product_factory_cd = #{factory}
+    and   order_pattern = #{pattern}
+  </select>
+</mapper>

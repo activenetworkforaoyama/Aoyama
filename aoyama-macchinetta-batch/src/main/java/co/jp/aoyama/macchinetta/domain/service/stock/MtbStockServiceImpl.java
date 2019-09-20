@@ -27,15 +27,16 @@ public class MtbStockServiceImpl implements MtbStockService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void updateActualStockByFabricNo(List<Stock> daiyoStockList, List<String> localFabricNoList) {
+	public void updateActualStockByFabricNo(List<Stock> factoryStockList, List<String> localFabricNoList,
+			String orderPattern) {
 
 		List<Stock> notExsitInDbStocks = new ArrayList<Stock>();
-		notExsitInDbStocks.addAll(daiyoStockList);
+		notExsitInDbStocks.addAll(factoryStockList);
 
 		List<String> notExsitInDaiyoList = new ArrayList<String>();
 		notExsitInDaiyoList.addAll(localFabricNoList);
 
-		List<String> daiyoFabricNoList = new ArrayList<String>();
+		List<String> factoryFabricNoList = new ArrayList<String>();
 
 		for (int i = (notExsitInDbStocks.size() - 1); 0 <= i; i--) {
 			String fabricNo = notExsitInDbStocks.get(i).getFtcode();
@@ -47,22 +48,22 @@ public class MtbStockServiceImpl implements MtbStockService {
 				}
 			}
 
-			daiyoFabricNoList.add(fabricNo);
+			factoryFabricNoList.add(fabricNo);
 		}
 		logger.info("在庫マスタで存在する生地品番リスト件数:" + localFabricNoList.size());
 		logger.info("在庫マスタで存在する生地品番リスト:" + JSON.toJSONString(localFabricNoList));
-		logger.info("大楊から受信結果の生地品番リスト件数:" + daiyoFabricNoList.size());
-		logger.info("大楊から受信結果の生地品番リスト:" + JSON.toJSONString(daiyoFabricNoList));
+		logger.info("工場から受信結果の生地品番リスト件数:" + factoryFabricNoList.size());
+		logger.info("工場から受信結果の生地品番リスト:" + JSON.toJSONString(factoryFabricNoList));
 
 		if (0 < notExsitInDbStocks.size()) {
-			logger.info("大楊から受信結果で存在、在庫マスタで存在しない件数:" + notExsitInDbStocks.size());
-			logger.info("大楊から受信結果で存在、在庫マスタで存在しない:" + JSON.toJSONString(notExsitInDbStocks));
+			logger.info("工場から受信結果で存在、在庫マスタで存在しない件数:" + notExsitInDbStocks.size());
+			logger.info("工場から受信結果で存在、在庫マスタで存在しない:" + JSON.toJSONString(notExsitInDbStocks));
 		}
 
 		for (int i = (notExsitInDaiyoList.size() - 1); 0 <= i; i--) {
 			String localFabricNo = notExsitInDaiyoList.get(i);
-			for (int j = 0; j < daiyoFabricNoList.size(); j++) {
-				String daiyoFabricNo = daiyoFabricNoList.get(j);
+			for (int j = 0; j < factoryFabricNoList.size(); j++) {
+				String daiyoFabricNo = factoryFabricNoList.get(j);
 				if (daiyoFabricNo.equals(localFabricNo)) {
 					notExsitInDaiyoList.remove(localFabricNo);
 					break;
@@ -71,8 +72,8 @@ public class MtbStockServiceImpl implements MtbStockService {
 		}
 
 		if (0 < notExsitInDaiyoList.size()) {
-			logger.info("在庫マスタで存在、大楊から受信結果で存在しない件数:" + notExsitInDaiyoList.size());
-			logger.info("在庫マスタで存在、大楊から受信結果で存在しない:" + JSON.toJSONString(notExsitInDaiyoList));
+			logger.info("在庫マスタで存在、工場から受信結果で存在しない件数:" + notExsitInDaiyoList.size());
+			logger.info("在庫マスタで存在、工場から受信結果で存在しない:" + JSON.toJSONString(notExsitInDaiyoList));
 		}
 
 //		List<Stock> exsitInDbStocks = new ArrayList<Stock>();
@@ -103,7 +104,7 @@ public class MtbStockServiceImpl implements MtbStockService {
 //		logger.info("これ生地品番は、大楊から受信結果で存在する件数:" + exsitInDaiyoList.size());
 //		logger.info("これ生地品番は、大楊から受信結果で存在する:" + JSON.toJSONString(exsitInDaiyoList));
 
-		mtbStockRepository.updateActualStockByFabricNo(daiyoStockList, DomainConst.BATCH_UPDATE_USERID);
+		mtbStockRepository.updateActualStockByFabricNo(factoryStockList, DomainConst.BATCH_UPDATE_USERID, orderPattern);
 
 //		logger.info("在庫マスタデータ更新件数:" + updateCount);
 	}

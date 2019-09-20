@@ -97,6 +97,7 @@ public class AccountingController {
 		if("01".equals(sessionContent.getAuthority())) {
 			accountingForm.setShopCode(sessionContent.getBelongCode());
 		}
+		accountingForm.setOrderPattern(sessionContent.getCategory());
 		accountingForm = stringToDate(accountingForm);
 		Accounting accounting = beanMapper.map(accountingForm, Accounting.class);
 		List<Accounting> accountingList = accountingService.fuzzyQuery(accounting);

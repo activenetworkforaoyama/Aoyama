@@ -62,6 +62,8 @@ public class Cash implements Serializable {
     private String makerFactoryStatus;
     
     private Short version;
+    
+    private String custKanaNm;
 
 	public String getCashId() {
 		return cashId;
@@ -285,6 +287,14 @@ public class Cash implements Serializable {
 
 	public void setVersion(Short version) {
 		this.version = version;
+	}
+
+	public String getCustKanaNm() {
+		return custKanaNm;
+	}
+
+	public void setCustKanaNm(String custKanaNm) {
+		this.custKanaNm = custKanaNm;
 	}
 
 }

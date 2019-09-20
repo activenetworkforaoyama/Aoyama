@@ -63,13 +63,13 @@ function initOptionPants1Tuxedo() {
 
 		// フロント仕様設定
 		var sFrontSpec = defaultFrontSpec[pantsModel];
-		jQuery('input[name="optionPantsTuxedoInfo.tpFrontSpec"]').val([sFrontSpec]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]').val([sFrontSpec]);
 
 		// パンチェリーナ特殊制御
 		tpPancherinaSpecialController();
 
 		// 選択中のアジャスター仕様
-		var selectedAdjuster = jQuery('input[name="optionPantsTuxedoInfo.tpAdjuster"]:checked').val();
+		var selectedAdjuster = jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]:checked').val();
 
 		// アジャスター仕様の選択肢制御
 		jQuery('input[id^="tp_adjuster_"]').each(function() {
@@ -85,10 +85,10 @@ function initOptionPants1Tuxedo() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
 
 		// 選択中のベルトループ
-		var selectedBeltLoop = jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
+		var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
 
 		// ベルトループの選択肢制御
 		jQuery('input[id^="tp_beltLotp_"]').each(function() {
@@ -104,29 +104,29 @@ function initOptionPants1Tuxedo() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').change();
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').change();
 
 		// ベルトループ変更時処理
 		tpChangedBeltLoop();
 
 		// 選択中の脇ポケット
-		var sidePktElem = jQuery('input[name="optionPantsTuxedoInfo.tpSidePkt"]:checked');
+		var sidePktElem = jQuery('input[name="coOptionPantsTuxedoInfo.tpSidePkt"]:checked');
 		var selectedSidePkt = sidePktElem.val();
 
 		// モデルに基づくデフォルトの脇ポケット
 		var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpSidePkt"]').val([modelSidePkt]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpSidePkt"]').val([modelSidePkt]);
 
 		// 選択中の忍びポケット
-		var sinobiPktElem = jQuery('input[name="optionPantsTuxedoInfo.tpSinobiPkt"]:checked');
+		var sinobiPktElem = jQuery('input[name="coOptionPantsTuxedoInfo.tpSinobiPkt"]:checked');
 		var selectedSinobiPkt = sinobiPktElem.val();
 
 		// モデルに基づくデフォルトの忍びポケット
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpSinobiPkt"]').val([modelSinobiPkt]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpSinobiPkt"]').val([modelSinobiPkt]);
 
 		// モデルに基づくデフォルトのコインポケット
 		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
@@ -135,33 +135,33 @@ function initOptionPants1Tuxedo() {
 		jQuery('#tp_coinPkt').change();
 
 		// 選択中の上前ピスポケット
-		var pisPktUf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]:checked');
+		var pisPktUf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]:checked');
 		var selectedPisPktUf = pisPktUf.val();
 
 		// モデルに基づくデフォルトの上前ピスポケット
 		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]').change();
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').val([modelPisPktUf]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').change();
 
 		// 選択中の下前ピスポケット
-		var pisPktDf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]:checked');
+		var pisPktDf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]:checked');
 		var selectedPisPktDf = pisPktDf.val();
 
 		// モデルに基づくデフォルトの下前ピスポケット
 		var modelPisPktDf = pantsTuxedoModelDefaultList[pantsModel].op_pisPktDf;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]').change();
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').val([modelPisPktDf]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').change();
 
 		// 選択中のVカット
-		var vCut = jQuery('input[name="optionPantsTuxedoInfo.tpVCut"]:checked');
+		var vCut = jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]:checked');
 		var selectedVCut = vCut.val();
 
 		// モデルに基づくデフォルトのVカット
 		var modelVCut = pantsModelDefaultList[pantsModel].op_vCut;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsTuxedoInfo.tpVCut"]').val([modelVCut]);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]').val([modelVCut]);
 
 		// ステッチ箇所変更
 		if (opStitchModifyList[pantsModel]) {
@@ -185,11 +185,11 @@ function initOptionPants1Tuxedo() {
 	});
 
 	// 膝裏
-	jQuery('input[name="optionPantsTuxedoInfo.tpKneeBack"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBack"]').each(function() {
 		jQuery(this).change(function(){
 
 			// 現在の膝裏を取得
-			var selectedKneeBack = jQuery('input[name="optionPantsTuxedoInfo.tpKneeBack"]:checked').val();
+			var selectedKneeBack = jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBack"]:checked').val();
 			var disabledFlg = false;
 
 			if (selectedKneeBack == '0000202') {
@@ -209,7 +209,7 @@ function initOptionPants1Tuxedo() {
 	});
 
 	// フロント仕様
-	jQuery('input[name="optionPantsTuxedoInfo.tpFrontSpec"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]').each(function() {
 		jQuery(this).change(function(){
 			// パンチェリーナ特殊制御
 			tpPancherinaSpecialController();
@@ -218,7 +218,7 @@ function initOptionPants1Tuxedo() {
 	jQuery('#tp_frontSpec_id1').change();
 
 	// ベルトループ
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').each(function() {
 		jQuery(this).change(function(){
 			// ベルトループ変更時処理
 			tpChangedBeltLoop();
@@ -228,7 +228,7 @@ function initOptionPants1Tuxedo() {
 	tpChangedBeltLoop();
 
 	// フラップ付コインポケット
-	jQuery('input[name="optionPantsTuxedoInfo.tpFlapCoinPkt"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpFlapCoinPkt"]').each(function() {
 		jQuery(this).change(function(){
 			// ボタンホール色指定箇所の制御
 			ctrlTpBhColorPlace();
@@ -238,7 +238,7 @@ function initOptionPants1Tuxedo() {
 	});
 
 	// 上前ピスポケット
-	jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').each(function() {
 		jQuery(this).change(function(){
 			// ボタンホール色指定箇所の制御
 			ctrlTpBhColorPlace();
@@ -249,7 +249,7 @@ function initOptionPants1Tuxedo() {
 	jQuery('#tp_pisPktUf_id1').change();
 
 	// 下前ピスポケット
-	jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]').each(function() {
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').each(function() {
 		jQuery(this).change(function(){
 			// ボタンホール色指定箇所の制御
 			ctrlTpBhColorPlace();
@@ -275,10 +275,10 @@ function initOptionPants1Tuxedo() {
 	});
 
 	// AMFステッチ
-//	jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').each(function() {
+//	jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').each(function() {
 //		jQuery(this).change(function(){
 //			// 選択中のAMFステッチ
-//			var stitchValue = jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]:checked').val();
+//			var stitchValue = jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]:checked').val();
 //
 //			if (stitchValue == "有り") {
 //				// 有りの場合、関連する項目を有効化
@@ -398,7 +398,7 @@ function initOptionPants1Tuxedo() {
 	jQuery('input[id^="tp_bhColor_"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var tp_bhColor = jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]:checked').val();
+			var tp_bhColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]:checked').val();
 
 			if (tp_bhColor == '0002701') {
 				// 無しの場合は操作不可
@@ -464,7 +464,7 @@ function initOptionPants1Tuxedo() {
 	jQuery('input[id^="tp_byColor_"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var tp_byColor = jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]:checked').val();
+			var tp_byColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]:checked').val();
 
 			if (tp_byColor == '0003001') {
 				// 無しの場合は操作不可
@@ -572,7 +572,7 @@ function initOptionPants1Tuxedo() {
 		jQuery(this).change(function(){
 
 			// 選択中の側章
-			var sideStripe = jQuery('input[name="optionPantsTuxedoInfo.tpSideStripe"]:checked').val();
+			var sideStripe = jQuery('input[name="coOptionPantsTuxedoInfo.tpSideStripe"]:checked').val();
 			if (sideStripe == '0003902') {
 				// 側章が有りの場合は側章幅を表示する
 				jQuery('#tp_sideStripe_yes_area').show();
@@ -591,14 +591,14 @@ function initOptionPants1Tuxedo() {
 function ctrlTpBhColorPlace() {
 
 	// 選択中のボタンホール色指定
-	var tp_bhColor = jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]:checked').val();
+	var tp_bhColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]:checked').val();
 
 	// 選択中の上前ピスポケット
-	var selectedPisPktUf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]:checked').val();
+	var selectedPisPktUf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
-	var selectedPisPktDf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]:checked').val();
+	var selectedPisPktDf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]:checked').val();
 	// 選択中のフラップ付コインポケット
-	var selectedFlapCoinPkt = jQuery('input[name="optionPantsTuxedoInfo.tpFlapCoinPkt"]:checked').val();
+	var selectedFlapCoinPkt = jQuery('input[name="coOptionPantsTuxedoInfo.tpFlapCoinPkt"]:checked').val();
 
 	// ボタンホール色指定箇所の有効/無効を制御
 	jQuery('#tp_bhColor_div input[type="checkbox"]').each(function(index, elem){
@@ -639,14 +639,14 @@ function ctrlTpBhColorPlace() {
 function ctrlTpByColorPlace() {
 
 	// 選択中のボタン付け糸指定
-	var tp_byColor = jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]:checked').val();
+	var tp_byColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]:checked').val();
 
 	// 選択中の上前ピスポケット
-	var selectedPisPktUf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktUf"]:checked').val();
+	var selectedPisPktUf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
-	var selectedPisPktDf = jQuery('input[name="optionPantsTuxedoInfo.tpPisPktDf"]:checked').val();
+	var selectedPisPktDf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]:checked').val();
 	// 選択中のフラップ付コインポケット
-	var selectedFlapCoinPkt = jQuery('input[name="optionPantsTuxedoInfo.tpFlapCoinPkt"]:checked').val();
+	var selectedFlapCoinPkt = jQuery('input[name="coOptionPantsTuxedoInfo.tpFlapCoinPkt"]:checked').val();
 
 	// ボタンホール色指定箇所の有効/無効を制御
 	jQuery('#tp_byColor_div input[type="checkbox"]').each(function(index, elem){
@@ -689,7 +689,7 @@ function tpPancherinaSpecialController() {
 	var selectedPantsModel = jQuery('#tp_pantsModel').val();
 
 	// 現在選択中のパンチェリーナ
-	var selectedPancherina = jQuery('input[name="optionPantsTuxedoInfo.tpPancherina"]:checked').val();
+	var selectedPancherina = jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]:checked').val();
 
 	// 特定のモデル以外はパンチェリーナ選択不可
 	if (selectedPantsModel != 'TR02'
@@ -710,7 +710,7 @@ function tpPancherinaSpecialController() {
 		jQuery('#tp_pancherina_id2').prop("disabled", false);
 
 		// 現在のフロント仕様を取得
-		var selectedFrontSpec = jQuery('input[name="optionPantsTuxedoInfo.tpFrontSpec"]:checked').val();
+		var selectedFrontSpec = jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]:checked').val();
 
 		// フロント仕様がホック留めの場合はパンチェリーナは無し固定
 		if (selectedFrontSpec == '0000401') {
@@ -721,14 +721,14 @@ function tpPancherinaSpecialController() {
 	}
 
 	// 処理後のパンチェリーナ
-	var changedPancherina = jQuery('input[name="optionPantsTuxedoInfo.tpPancherina"]:checked').val();
+	var changedPancherina = jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]:checked').val();
 }
 
 //ベルトループ変更時処理
 function tpChangedBeltLoop() {
 
 	// 選択中のベルトループ
-	var selectedBeltLoop = jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
+	var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
 	var disabledFlg = false;
 
 	if (selectedBeltLoop == '0000701') {
@@ -757,11 +757,12 @@ function tpChangedBeltLoop() {
 	}	
 
 	// フラシループ設定
-	var frsAreaElem = jQuery('#tp_beltLoopPlace_id7');
+	var frsAreaElem = jQuery('#tp_beltLoopPlace_id17');
 	if (jQuery('#tp_pantsModel').val() == 'NZ01') {
 		// 表示
 		frsAreaElem.show();
 	} else {
+		jQuery("#tp_beltLoopPlace_id7").prop("checked", false);
 		// 非表示
 		frsAreaElem.hide();
 	}
@@ -774,9 +775,9 @@ function tpChangedBeltLoop() {
 function tpPinLoopSpecialController() {
 
 	// 選択中のベルトループ
-	var selectedBeltLoop = jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
+	var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
 	// 選択中のピンループ
-	var selectedPinLoop = jQuery('input[name="optionPantsTuxedoInfo.tpPinLoop"]:checked').val();
+	var selectedPinLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpPinLoop"]:checked').val();
 
 	if (selectedBeltLoop == '0000702') {
 		// ベルトループ無しの場合はピンループ無し固定
@@ -789,20 +790,20 @@ function tpPinLoopSpecialController() {
 	}
 
 	// 処理後のピンループ
-	var changedPinLoop = jQuery('input[name="optionPantsTuxedoInfo.tpPinLoop"]:checked').val();
+	var changedPinLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpPinLoop"]:checked').val();
 }
 
 //ダブルステッチの特殊制御を行う
 //function tpDStichSpecialController() {
 //
 //	// 選択中のAMFステッチ
-//	var selectedStich = jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]:checked').val();
+//	var selectedStich = jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]:checked').val();
 //
 //	// AMFステッチが有りの場合はダブルステッチを有効化する
 //	if (selectedStich == '0001904') {
-//		jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').prop("disabled", false);
+//		jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').prop("disabled", false);
 //	} else {
-//		jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').prop("disabled", true);
+//		jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').prop("disabled", true);
 ////		jQuery('input[id="tp_dStitch_no"]').prop("checked", true);
 //	}
 //}
@@ -822,8 +823,8 @@ jQuery('#tp_coinPkt').change(function() {
 jQuery('#tp_coinPkt').change();
 
 // アジャスター仕様変更時
-jQuery('input[name="optionPantsTuxedoInfo.tpAdjuster"]').change(function(index, elem) {
-	var selected = jQuery('input[name="optionPantsTuxedoInfo.tpAdjuster"]:checked').val();
+jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index, elem) {
+	var selected = jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]:checked').val();
 
 	var oBLoopElemY = jQuery('#tp_beltLoop_id1');
 	var oBLoopElemN = jQuery('#tp_beltLoop_id2');
@@ -850,133 +851,6 @@ jQuery('input[name="optionPantsTuxedoInfo.tpAdjuster"]').change(function(index, 
 
 });
 jQuery('#tp_adjuster_id1').change();
-
-// PANTS2本目（1本目と同じ）
-jQuery('#btn_tp2_samePants').click(function (){
-	jQuery('#tp2_pantsModel').val([jQuery('#tp_pantsModel').val()]);
-	jQuery('#tp2_tack').val([jQuery('#tp_tack').val()]);
-	jQuery('input[name="tp2_kneeBack"]').val([jQuery('input[name="tp_kneeBack"]:checked').val()]);
-	jQuery('input[name="tp2_kneeBack"]').change();
-	jQuery('input[name="tp2_kneeBackMate"]').val([jQuery('input[name="tp_kneeBackMate"]:checked').val()]);
-	jQuery('input[name="tp2_kneeBackMate"]').change();
-	jQuery('input[name="tp2_frontSpec"]').val([jQuery('input[name="tp_frontSpec"]:checked').val()]);
-	jQuery('input[name="tp2_frontSpec"]').change();
-	jQuery('input[name="tp2_pancherina"]').val([jQuery('input[name="tp_pancherina"]:checked').val()]);
-	jQuery('input[name="tp2_pancherina"]').change();
-	jQuery('input[name="tp2_adjuster"]').val([jQuery('input[name="tp_adjuster"]:checked').val()]);
-	jQuery('input[name="tp2_adjuster"]').change();
-	jQuery('input[name="tp2_beltLoop"]').val([jQuery('input[name="tp_beltLoop"]:checked').val()]);
-	jQuery('input[name="tp2_beltLoop"]').change();
-	
-	jQuery('input[name="tp2_beltLoopPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	
-	jQuery('input[name="tp2_pinLoop"]').val([jQuery('input[name="tp_pinLoop"]:checked').val()]);
-	jQuery('input[name="tp2_pinLoop"]').change();
-	jQuery('input[name="tp2_sidePkt"]').val([jQuery('input[name="tp_sidePkt"]:checked').val()]);
-	jQuery('input[name="tp2_sidePkt"]').change();
-	jQuery('input[name="tp2_sinobiPkt"]').val([jQuery('input[name="tp_sinobiPkt"]:checked').val()]);
-	jQuery('input[name="tp2_sinobiPkt"]').change();
-	jQuery('#tp2_coinPkt').val([jQuery('#tp_coinPkt').val()]);
-	jQuery('input[name="tp2_coinPkt"]').change();
-	jQuery('input[name="tp2_flapCoinPkt"]').val([jQuery('input[name="tp_flapCoinPkt"]:checked').val()]);
-	jQuery('input[name="tp2_flapCoinPkt"]').change();
-	jQuery('input[name="tp2_pisPktUf"]').val([jQuery('input[name="tp_pisPktUf"]:checked').val()]);
-	jQuery('input[name="tp2_pisPktUf"]').change();
-	jQuery('input[name="tp2_pisPktDf"]').val([jQuery('input[name="tp_pisPktDf"]:checked').val()]);
-	jQuery('input[name="tp2_pisPktDf"]').change();
-	jQuery('input[name="tp2_vCut"]').val([jQuery('input[name="tp_vCut"]:checked').val()]);
-	jQuery('input[name="tp2_vCut"]').change();
-	jQuery('#tp2_hemUp').val([jQuery('#tp_hemUp').val()]);
-	jQuery('#tp2_hemUp').change();
-	jQuery('#tp2_doubleWide').val([jQuery('#tp_doubleWide').val()]);
-	jQuery('#tp2_doubleWide').change();
-	jQuery('input[name="tp2_stitch"]').val([jQuery('input[name="tp_stitch"]:checked').val()]);
-	jQuery('input[name="tp2_stitch"]').change();
-	jQuery('input[name="tp2_stitchModify"]').val([jQuery('input[name="tp_stitchModify"]:checked').val()]);
-	jQuery('input[name="tp2_stitchModify"]').change();
-	jQuery('input[name="tp2_stitchModifyPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_dStitch"]').val([jQuery('input[name="tp_dStitch"]:checked').val()]);
-	jQuery('input[name="tp2_dStitch"]').change();
-	jQuery('input[name="tp2_dStitchPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-	});
-	jQuery('input[name="tp2_amfColor"]').val([jQuery('input[name="tp_amfColor"]:checked').val()]);
-	jQuery('input[name="tp2_amfColor"]').change();
-	jQuery('#tp2_amfColorPlaceAll').val([jQuery('#tp_amfColorPlaceAll').val()]);
-	jQuery('#tp2_amfColorPlaceAll').change();
-	jQuery('input[name="tp2_amfColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_amfColorSidePkt"]').val([jQuery('input[name="tp_amfColorSidePkt"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorSidePkt"]').change();
-	jQuery('input[name="tp2_amfColorSideSeam"]').val([jQuery('input[name="tp_amfColorSideSeam"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorSideSeam"]').change();
-	jQuery('input[name="tp2_amfColorDarts"]').val([jQuery('input[name="tp_amfColorDarts"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorDarts"]').change();
-	jQuery('input[name="tp2_amfColorPisFlap"]').val([jQuery('input[name="tp_amfColorPisFlap"]:checked').val()]);
-	jQuery('input[name="tp2_amfColorPisFlap"]').change();
-	jQuery('input[name="tp2_bhColor"]').val([jQuery('input[name="tp_bhColor"]:checked').val()]);
-	jQuery('input[name="tp2_bhColor"]').change();
-	jQuery('#tp2_bhColorPlaceAll').val([jQuery('#tp_bhColorPlaceAll').val()]);
-	jQuery('#tp2_bhColorPlaceAll').change();
-	jQuery('input[name="tp2_bhColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_bhColorPlaceFront"]').val([jQuery('input[name="tp_bhColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceFront"]').change();
-	jQuery('input[name="tp2_bhColorPlaceUfbp"]').val([jQuery('input[name="tp_bhColorPlaceUfbp"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceUfbp"]').change();
-	jQuery('input[name="tp2_bhColorPlaceDfbp"]').val([jQuery('input[name="tp_bhColorPlaceDfbp"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceDfbp"]').change();
-	jQuery('input[name="tp2_bhColorPlaceCoin"]').val([jQuery('input[name="tp_bhColorPlaceCoin"]:checked').val()]);
-	jQuery('input[name="tp2_bhColorPlaceCoin"]').change();
-	jQuery('input[name="tp2_byColor"]').val([jQuery('input[name="tp_byColor"]:checked').val()]);
-	jQuery('input[name="tp2_byColor"]').change();
-	jQuery('#tp2_byColorPlaceAll').val([jQuery('#tp_byColorPlaceAll').val()]);
-	jQuery('#tp2_byColorPlaceAll').change();
-	jQuery('input[name="tp2_byColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('tp2_', 'tp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="tp2_byColorPlaceFront"]').val([jQuery('input[name="tp_byColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceFront"]').change();
-	jQuery('input[name="tp2_byColorPlaceUf"]').val([jQuery('input[name="tp_byColorPlaceUf"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceUf"]').change();
-	jQuery('input[name="tp2_byColorPlaceDf"]').val([jQuery('input[name="tp_byColorPlaceDf"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceDf"]').change();
-	jQuery('input[name="tp2_byColorPlaceCoinPkt"]').val([jQuery('input[name="tp_byColorPlaceCoinPkt"]:checked').val()]);
-	jQuery('input[name="tp2_byColorPlaceCoinPkt"]').change();
-	jQuery('#tp2_button').val([jQuery('#tp_button').val()]);
-	jQuery('#tp2_button').change();
-	jQuery('#tp2_btnMateStkNo').val([jQuery('#tp_btnMateStkNo').val()]);
-	jQuery('#tp2_btnMateStkNo').change();
-	jQuery('input[name="tp2_suspenderBtn"]').val([jQuery('input[name="tp_suspenderBtn"]:checked').val()]);
-	jQuery('input[name="tp2_suspenderBtn"]').change();
-	jQuery('input[name="tp2_thick"]').val([jQuery('input[name="tp_thick"]:checked').val()]);
-	jQuery('input[name="tp2_thick"]').change();
-	jQuery('input[name="tp2_eight"]').val([jQuery('input[name="tp_eight"]:checked').val()]);
-	jQuery('input[name="tp2_eight"]').change();
-	jQuery('input[name="tp2_shapeMemory"]').val([jQuery('input[name="tp_shapeMemory"]:checked').val()]);
-	jQuery('input[name="tp2_shapeMemory"]').change();
-	jQuery('input[name="tp2_sideStripe"]').val([jQuery('input[name="tp_sideStripe"]:checked').val()]);
-	jQuery('input[name="tp2_sideStripe"]').change();
-	jQuery('input[name="tp2_sideStripeWidth"]').val([jQuery('input[name="tp_sideStripeWidth"]:checked').val()]);
-	jQuery('input[name="tp2_sideStripeWidth"]').change();
-});
 
 function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
 	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});

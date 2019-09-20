@@ -63,13 +63,13 @@ function initOptionPants1Washable() {
 
 		// フロント仕様設定
 		var sFrontSpec = defaultFrontSpec[pantsModel];
-		jQuery('input[name="optionPantsWashableInfo.wpFrontSpec"]').val([sFrontSpec]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]').val([sFrontSpec]);
 
 		// パンチェリーナ特殊制御
 		wpPancherinaSpecialController();
 
 		// 選択中のアジャスター仕様
-		var selectedAdjuster = jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]:checked').val();
+		var selectedAdjuster = jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').val();
 
 		// アジャスター仕様の選択肢制御
 		jQuery('input[id^="wp_adjuster_"]').each(function() {
@@ -85,10 +85,10 @@ function initOptionPants1Washable() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
 
 		// 選択中のベルトループ
-		var selectedBeltLoop = jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]:checked').val();
+		var selectedBeltLoop = jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').val();
 
 		// ベルトループの選択肢制御
 		jQuery('input[id^="wp_beltLowp_"]').each(function() {
@@ -104,29 +104,29 @@ function initOptionPants1Washable() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').change();
+		jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').change();
 
 		// ベルトループ変更時処理
 		wpChangedBeltLoop();
 
 		// 選択中の脇ポケット
-		var sidePktElem = jQuery('input[name="optionPantsWashableInfo.wpSidePkt"]:checked');
+		var sidePktElem = jQuery('input[name="coOptionPantsWashableInfo.wpSidePkt"]:checked');
 		var selectedSidePkt = sidePktElem.val();
 
 		// モデルに基づくデフォルトの脇ポケット
 		var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpSidePkt"]').val([modelSidePkt]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpSidePkt"]').val([modelSidePkt]);
 
 		// 選択中の忍びポケット
-		var sinobiPktElem = jQuery('input[name="optionPantsWashableInfo.wpSinobiPkt"]:checked');
+		var sinobiPktElem = jQuery('input[name="coOptionPantsWashableInfo.wpSinobiPkt"]:checked');
 		var selectedSinobiPkt = sinobiPktElem.val();
 
 		// モデルに基づくデフォルトの忍びポケット
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpSinobiPkt"]').val([modelSinobiPkt]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpSinobiPkt"]').val([modelSinobiPkt]);
 
 		// モデルに基づくデフォルトのコインポケット
 		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
@@ -135,33 +135,33 @@ function initOptionPants1Washable() {
 		jQuery('#wp_coinPkt').change();
 
 		// 選択中の上前ピスポケット
-		var pisPktUf = jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]:checked');
+		var pisPktUf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]:checked');
 		var selectedPisPktUf = pisPktUf.val();
 
 		// モデルに基づくデフォルトの上前ピスポケット
 		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]').change();
+		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').val([modelPisPktUf]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').change();
 
 		// 選択中の下前ピスポケット
-		var pisPktDf = jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]:checked');
+		var pisPktDf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked');
 		var selectedPisPktDf = pisPktDf.val();
 
 		// モデルに基づくデフォルトの下前ピスポケット
 		var modelPisPktDf = pantsModelDefaultList[pantsModel].op_pisPktDf;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]').change();
+		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').val([modelPisPktDf]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').change();
 
 		// 選択中のVカット
-		var vCut = jQuery('input[name="optionPantsWashableInfo.wpVCut"]:checked');
+		var vCut = jQuery('input[name="coOptionPantsWashableInfo.wpVCut"]:checked');
 		var selectedVCut = vCut.val();
 
 		// モデルに基づくデフォルトのVカット
 		var modelVCut = pantsModelDefaultList[pantsModel].op_vCut;
 		// デフォルトを選択
-		jQuery('input[name="optionPantsWashableInfo.wpVCut"]').val([modelVCut]);
+		jQuery('input[name="coOptionPantsWashableInfo.wpVCut"]').val([modelVCut]);
 
 		// ステッチ箇所変更
 		ctrlWpStitchModify();
@@ -184,11 +184,11 @@ function initOptionPants1Washable() {
 	});
 
 	// 膝裏
-	jQuery('input[name="optionPantsWashableInfo.wpKneeBack"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpKneeBack"]').each(function() {
 		jQuery(this).change(function(){
 
 			// 現在の膝裏を取得
-			var selectedKneeBack = jQuery('input[name="optionPantsWashableInfo.wpKneeBack"]:checked').val();
+			var selectedKneeBack = jQuery('input[name="coOptionPantsWashableInfo.wpKneeBack"]:checked').val();
 			var disabledFlg = false;
 
 			if (selectedKneeBack == '0000202') {
@@ -208,7 +208,7 @@ function initOptionPants1Washable() {
 	});
 
 	// フロント仕様
-	jQuery('input[name="optionPantsWashableInfo.wpFrontSpec"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]').each(function() {
 		jQuery(this).change(function(){
 			// パンチェリーナ特殊制御
 			wpPancherinaSpecialController();
@@ -217,7 +217,7 @@ function initOptionPants1Washable() {
 	jQuery('#wp_frontSpec_id1').change();
 
 	// ベルトループ
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').each(function() {
 		jQuery(this).change(function(){
 			// ベルトループ変更時処理
 			wpChangedBeltLoop();
@@ -226,7 +226,7 @@ function initOptionPants1Washable() {
 	wpChangedBeltLoop();
 
 	// フラップ付コインポケット
-	jQuery('input[name="optionPantsWashableInfo.wpFlapCoinPkt"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]').each(function() {
 		jQuery(this).change(function(){
 			// ボタンホール色指定箇所の制御
 			ctrlWpBhColorPlace();
@@ -236,7 +236,7 @@ function initOptionPants1Washable() {
 	});
 
 	// 上前ピスポケット
-	jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').each(function() {
 		jQuery(this).change(function(){
 			// ステッチ箇所変更(ピスフラップ)の制御
 			ctrlWpStitchModifyPisFlap();
@@ -251,7 +251,7 @@ function initOptionPants1Washable() {
 	jQuery('#wp_pisPktUf_id1').change();
 
 	// 下前ピスポケット
-	jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').each(function() {
 		jQuery(this).change(function(){
 			// ステッチ箇所変更(ピスフラップ)の制御
 			ctrlWpStitchModifyPisFlap();
@@ -281,35 +281,35 @@ function initOptionPants1Washable() {
 	});
 
 	// AMFステッチ
-	jQuery('input[name="optionPantsWashableInfo.wpStitch"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のAMFステッチ
-			var stitchValue = jQuery('input[name="optionPantsWashableInfo.wpStitch"]:checked').val();
+			var stitchValue = jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]:checked').val();
 
 			if (stitchValue != "0001903") {
 				// 有りの場合、関連する項目を有効化
 				// ステッチ箇所変更
-				jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').prop("disabled", false);
+				jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').prop("disabled", false);
 
 				// ダブルステッチ
-				jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').prop("disabled", false);
+				jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", false);
 
 				// AMF色指定
-				jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').prop("disabled", false);
+				jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]').prop("disabled", false);
 			} else {
 				// 無しの場合、関連する項目を無効化・値変更
 				// ステッチ箇所変更
-				jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').prop("disabled", true);
+				jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').prop("disabled", true);
 				jQuery('#wp_stitchModify_id1').prop("checked", true);
 				jQuery('#wp_stitchModify_id1').change();
 
 				// ダブルステッチ
-				jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').prop("disabled", true);
+				jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", true);
 				jQuery('#wp_dStitch_id1').prop("checked", true);
 				jQuery('#wp_dStitch_id1').change();
 
 				// AMF色指定
-				jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').prop("disabled", true);
+				jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]').prop("disabled", true);
 				jQuery('#wp_amfColor_id1').prop("checked", true);
 				jQuery('#wp_amfColor_id1').change();
 			}
@@ -320,20 +320,20 @@ function initOptionPants1Washable() {
 	});
 
 	// ステッチ箇所変更
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
-			var stitchModifyValue = jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]:checked').val();
+			var stitchModifyValue = jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]:checked').val();
 
 			if (stitchModifyValue == "0002001") {
 				// 無しの場合は全て無効化
-				jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace"]').prop("disabled", true);
+				jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace"]').prop("disabled", true);
 				jQuery('#btn_as_wp_stitchModifyPlace').prop("disabled", true);
 				jQuery('#btn_ar_wp_stitchModifyPlace').prop("disabled", true);
 				jQuery('#wp_stitchModify_yes_area').hide();
 			} else {
 				// 有りの場合は全て有効化
-				jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace"]').prop("disabled", false);
+				jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace"]').prop("disabled", false);
 				jQuery('#btn_as_wp_stitchModifyPlace').prop("disabled", false);
 				jQuery('#btn_ar_wp_stitchModifyPlace').prop("disabled", false);
 				jQuery('#wp_stitchModify_yes_area').show();
@@ -364,7 +364,7 @@ function initOptionPants1Washable() {
 	});
 
 	// ダブルステッチ
-	jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').each(function() {
 		jQuery(this).change(function(){
 			ctrlWpDStitch();
 			ctrlWpDStitchPlace();
@@ -372,7 +372,7 @@ function initOptionPants1Washable() {
 	});
 
 	// AMF色指定(有り/無し)
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').each(function() {
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]').each(function() {
 		jQuery(this).change(function(){
 			ctrlWpAmfColor();
 		});
@@ -391,7 +391,7 @@ function initOptionPants1Washable() {
 	});
 
 	// AMF色指定箇所
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace"]').each(function() {
+	jQuery('input[id^="wp_amfColorPlace_"]').each(function() {
 		jQuery(this).change(function(){
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
@@ -407,7 +407,7 @@ function initOptionPants1Washable() {
 	jQuery('input[id^="wp_bhColor_"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var wp_bhColor = jQuery('input[name="optionPantsWashableInfo.wpBhColor"]:checked').val();
+			var wp_bhColor = jQuery('input[name="coOptionPantsWashableInfo.wpBhColor"]:checked').val();
 
 			if (wp_bhColor == '0002701') {
 				// 無しの場合は操作不可
@@ -473,7 +473,7 @@ function initOptionPants1Washable() {
 	jQuery('input[id^="wp_byColor_"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var wp_byColor = jQuery('input[name="optionPantsWashableInfo.wpByColor"]:checked').val();
+			var wp_byColor = jQuery('input[name="coOptionPantsWashableInfo.wpByColor"]:checked').val();
 
 			// 0003001(無し)
 			if (wp_byColor == '0003001') {
@@ -578,14 +578,14 @@ function initOptionPants1Washable() {
 function ctrlWpBhColorPlace() {
 
 	// 選択中のボタンホール色指定
-	var wp_bhColor = jQuery('input[name="optionPantsWashableInfo.wpBhColor"]:checked').val();
+	var wp_bhColor = jQuery('input[name="coOptionPantsWashableInfo.wpBhColor"]:checked').val();
 
 	// 選択中の上前ピスポケット
-	var selectedPisPktUf = jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]:checked').val();
+	var selectedPisPktUf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
-	var selectedPisPktDf = jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]:checked').val();
+	var selectedPisPktDf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked').val();
 	// 選択中のフラップ付コインポケット
-	var selectedFlapCoinPkt = jQuery('input[name="optionPantsWashableInfo.wpFlapCoinPkt"]:checked').val();
+	var selectedFlapCoinPkt = jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]:checked').val();
 
 	// ボタンホール色指定箇所の有効/無効を制御
 	jQuery('#wp_bhColor_div input[type="checkbox"]').each(function(index, elem){
@@ -626,14 +626,14 @@ function ctrlWpBhColorPlace() {
 function ctrlWpByColorPlace() {
 
 	// 選択中のボタン付け糸指定
-	var wp_byColor = jQuery('input[name="optionPantsWashableInfo.wpByColor"]:checked').val();
+	var wp_byColor = jQuery('input[name="coOptionPantsWashableInfo.wpByColor"]:checked').val();
 
 	// 選択中の上前ピスポケット
-	var selectedPisPktUf = jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]:checked').val();
+	var selectedPisPktUf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
-	var selectedPisPktDf = jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]:checked').val();
+	var selectedPisPktDf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked').val();
 	// 選択中のフラップ付コインポケット
-	var selectedFlapCoinPkt = jQuery('input[name="optionPantsWashableInfo.wpFlapCoinPkt"]:checked').val();
+	var selectedFlapCoinPkt = jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]:checked').val();
 
 	// ボタンホール色指定箇所の有効/無効を制御
 	jQuery('#wp_byColor_div input[type="checkbox"]').each(function(index, elem){
@@ -677,7 +677,7 @@ function wpPancherinaSpecialController() {
 	var selectedPantsModel = jQuery('#wp_pantsModel').val();
 
 	// 現在選択中のパンチェリーナ
-	var selectedPancherina = jQuery('input[name="optionPantsWashableInfo.wpPancherina"]:checked').val();
+	var selectedPancherina = jQuery('input[name="coOptionPantsWashableInfo.wpPancherina"]:checked').val();
 
 	// 特定のモデル以外はパンチェリーナ選択不可
 	if (selectedPantsModel != 'TR02'
@@ -698,7 +698,7 @@ function wpPancherinaSpecialController() {
 		jQuery('#wp_pancherina_id2').prop("disabled", false);
 
 		// 現在のフロント仕様を取得
-		var selectedFrontSpec = jQuery('input[name="optionPantsWashableInfo.wpFrontSpec"]:checked').val();
+		var selectedFrontSpec = jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]:checked').val();
 
 		// フロント仕様がホック留めの場合はパンチェリーナは無し固定
 		//0000401(ホック留め) 
@@ -710,14 +710,14 @@ function wpPancherinaSpecialController() {
 	}
 
 	// 処理後のパンチェリーナ
-	var changedPancherina = jQuery('input[name="optionPantsWashableInfo.wpPancherina"]:checked').val();
+	var changedPancherina = jQuery('input[name="coOptionPantsWashableInfo.wpPancherina"]:checked').val();
 }
 
 //ベルトループ変更時処理
 function wpChangedBeltLoop() {
 
 	// 選択中のベルトループ
-	var selectedBeltLoop = jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]:checked').val();
+	var selectedBeltLoop = jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').val();
 	var disabledFlg = false;
 	
 	//0000701(有り)
@@ -743,17 +743,18 @@ function wpChangedBeltLoop() {
 	//0000701(有り)
 	if (selectedBeltLoop == '0000701') {
 		//0000603(サイドアジャスター小)
-		if (jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]:checked').val() == '0000603') {
+		if (jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').val() == '0000603') {
 			jQuery('#wp_pinLoop_id2').prop('checked', 'true');
 		}
 	}
 	
 	// フラシループ設定
-	var frsAreaElem = jQuery('#wp_beltLoopPlace_id7');
+	var frsAreaElem = jQuery('#wp_beltLoopPlace_id17');
 	if (jQuery('#wp_pantsModel').val() == 'NZ01') {
 		// 表示
 		frsAreaElem.show();
 	} else {
+		jQuery("#wp_beltLoopPlace_id7").prop("checked", false);
 		// 非表示
 		frsAreaElem.hide();
 	}
@@ -765,9 +766,9 @@ function wpChangedBeltLoop() {
 function wpPinLoopSpecialController() {
 
 	// 選択中のベルトループ
-	var selectedBeltLoop = jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]:checked').val();
+	var selectedBeltLoop = jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').val();
 	// 選択中のピンループ
-	var selectedPinLoop = jQuery('input[name="optionPantsWashableInfo.wpPinLoop"]:checked').val();
+	var selectedPinLoop = jQuery('input[name="coOptionPantsWashableInfo.wpPinLoop"]:checked').val();
 
 	// 0000702(無し)
 	if (selectedBeltLoop == '0000702') {
@@ -781,21 +782,21 @@ function wpPinLoopSpecialController() {
 	}
 
 	// 処理後のピンループ
-	var changedPinLoop = jQuery('input[name="optionPantsWashableInfo.wpPinLoop"]:checked').val();
+	var changedPinLoop = jQuery('input[name="coOptionPantsWashableInfo.wpPinLoop"]:checked').val();
 }
 
 //ダブルステッチの特殊制御を行う
 function wpDStichSpecialController() {
 
 	// 選択中のAMFステッチ
-	var selectedStich = jQuery('input[name="optionPantsStandardInfo.opStitch"]:checked').val();
+	var selectedStich = jQuery('input[name="coOptionPantsStandardInfo.opStitch"]:checked').val();
 
 	// AMFステッチが有りの場合はダブルステッチを有効化する
 	// 0001904(AMFステッチ)
 	if (selectedStich == '0001904') {
-		jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').prop("disabled", false);
+		jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", false);
 	} else {
-		jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').prop("disabled", true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", true);
 		jQuery('input[id="wp_dStitch_id1"]').prop("checked", true);
 	}
 }
@@ -804,7 +805,7 @@ function wpDStichSpecialController() {
 function ctrlWpStitchModify() {
 
 	// 選択中のステッチ箇所変更
-	var stitchModifyValue = jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]:checked').val();
+	var stitchModifyValue = jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]:checked').val();
 
 	// ステッチ箇所変更の有無で下位階層の表示制御
 	// 0002001(無し)
@@ -862,7 +863,7 @@ function ctrlWpStitchModify() {
 function ctrlWpStitchModifyPisFlap() {
 
 	// 選択中のステッチ箇所変更
-	var stitchModifyValue = jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]:checked').val();
+	var stitchModifyValue = jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]:checked').val();
 
 	// ステッチ箇所変更無しの場合は処理終了
 	// 0002001(無し)
@@ -874,9 +875,9 @@ function ctrlWpStitchModifyPisFlap() {
 	stitchModifyPisFlap = jQuery('#wp_stitchModifyPlace_id4');
 
 	// 選択中の上前ピスポケット
-	var pisPktUf = jQuery('input[name="optionPantsWashableInfo.wpPisPktUf"]:checked').val();
+	var pisPktUf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
-	var pisPktDf = jQuery('input[name="optionPantsWashableInfo.wpPisPktDf"]:checked').val();
+	var pisPktDf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked').val();
 
 	// 上前ピスポケットと下前ピスポケットのどちらかがフラップ/ボタン有の場合は選択可
 	// 0001403(上前ピスポケット	フラップ/ボタン有)
@@ -892,7 +893,7 @@ function ctrlWpStitchModifyPisFlap() {
 //ダブルステッチの有効/無効を制御する
 function ctrlWpDStitch() {
 	// 選択中のステッチ箇所変更
-	var dStitchValue = jQuery('input[name="optionPantsWashableInfo.wpDStitch"]:checked').val();
+	var dStitchValue = jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]:checked').val();
 
 	// 0002202(有り)
 	if (dStitchValue == "0002202") {
@@ -947,7 +948,7 @@ function ctrlWpDStitchPlace() {
 	}
 
 	// 選択中のステッチ箇所変更
-	var dStitchValue = jQuery('input[name="optionPantsWashableInfo.wpDStitch"]:checked').val();
+	var dStitchValue = jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]:checked').val();
 
 	var tmpStitchModifyPlace = null;
 	var tmpStitchModify = null;
@@ -977,7 +978,7 @@ function ctrlWpDStitchPlace() {
 // AMF色指定の有効/無効を制御する
 function ctrlWpAmfColor() {
 	// 選択中のステッチ箇所変更
-	var amfColorValue = jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]:checked').val();
+	var amfColorValue = jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]:checked').val();
 
 	// 0002402(有り)
 	if (amfColorValue == "0002402") {
@@ -1024,8 +1025,8 @@ jQuery('#wp_coinPkt').change(function() {
 jQuery('#wp_coinPkt').change();
 
 // アジャスター仕様変更時
-jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]').change(function(index, elem) {
-	var selected = jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]:checked').val();
+jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').change(function(index, elem) {
+	var selected = jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').val();
 
 	var oBLoopElemY = jQuery('#wp_beltLoop_id1');
 	var oBLoopElemN = jQuery('#wp_beltLoop_id2');
@@ -1052,129 +1053,6 @@ jQuery('input[name="optionPantsWashableInfo.wpAdjuster"]').change(function(index
 
 });
 jQuery('#wp_adjuster_id1').change();
-
-// PANTS2本目（1本目と同じ）
-jQuery('#btn_wp2_samePants').click(function (){
-	jQuery('#wp2_pantsModel').val([jQuery('#wp_pantsModel').val()]);
-	jQuery('#wp2_tack').val([jQuery('#wp_tack').val()]);
-	jQuery('input[name="wp2_kneeBack"]').val([jQuery('input[name="wp_kneeBack"]:checked').val()]);
-	jQuery('input[name="wp2_kneeBack"]').change();
-	jQuery('input[name="wp2_kneeBackMate"]').val([jQuery('input[name="wp_kneeBackMate"]:checked').val()]);
-	jQuery('input[name="wp2_kneeBackMate"]').change();
-	jQuery('input[name="wp2_frontSpec"]').val([jQuery('input[name="wp_frontSpec"]:checked').val()]);
-	jQuery('input[name="wp2_frontSpec"]').change();
-	jQuery('input[name="wp2_pancherina"]').val([jQuery('input[name="wp_pancherina"]:checked').val()]);
-	jQuery('input[name="wp2_pancherina"]').change();
-	jQuery('input[name="wp2_adjuster"]').val([jQuery('input[name="wp_adjuster"]:checked').val()]);
-	jQuery('input[name="wp2_adjuster"]').change();
-	jQuery('input[name="wp2_beltLoop"]').val([jQuery('input[name="wp_beltLoop"]:checked').val()]);
-	jQuery('input[name="wp2_beltLoop"]').change();
-	
-	jQuery('input[name="wp2_beltLoopPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	
-	jQuery('input[name="wp2_pinLoop"]').val([jQuery('input[name="wp_pinLoop"]:checked').val()]);
-	jQuery('input[name="wp2_pinLoop"]').change();
-	jQuery('input[name="wp2_sidePkt"]').val([jQuery('input[name="wp_sidePkt"]:checked').val()]);
-	jQuery('input[name="wp2_sidePkt"]').change();
-	jQuery('input[name="wp2_sinobiPkt"]').val([jQuery('input[name="wp_sinobiPkt"]:checked').val()]);
-	jQuery('input[name="wp2_sinobiPkt"]').change();
-	jQuery('#wp2_coinPkt').val([jQuery('#wp_coinPkt').val()]);
-	jQuery('input[name="wp2_coinPkt"]').change();
-	jQuery('input[name="wp2_flapCoinPkt"]').val([jQuery('input[name="wp_flapCoinPkt"]:checked').val()]);
-	jQuery('input[name="wp2_flapCoinPkt"]').change();
-	jQuery('input[name="wp2_pisPktUf"]').val([jQuery('input[name="wp_pisPktUf"]:checked').val()]);
-	jQuery('input[name="wp2_pisPktUf"]').change();
-	jQuery('input[name="wp2_pisPktDf"]').val([jQuery('input[name="wp_pisPktDf"]:checked').val()]);
-	jQuery('input[name="wp2_pisPktDf"]').change();
-	jQuery('input[name="wp2_vCut"]').val([jQuery('input[name="wp_vCut"]:checked').val()]);
-	jQuery('input[name="wp2_vCut"]').change();
-	jQuery('#wp2_hemUp').val([jQuery('#wp_hemUp').val()]);
-	jQuery('#wp2_hemUp').change();
-	jQuery('#wp2_doubleWide').val([jQuery('#wp_doubleWide').val()]);
-	jQuery('#wp2_doubleWide').change();
-	jQuery('input[name="wp2_stitch"]').val([jQuery('input[name="wp_stitch"]:checked').val()]);
-	jQuery('input[name="wp2_stitch"]').change();
-	jQuery('input[name="wp2_stitchModify"]').val([jQuery('input[name="wp_stitchModify"]:checked').val()]);
-	jQuery('input[name="wp2_stitchModify"]').change();
-	jQuery('input[name="wp2_stitchModifyPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_dStitch"]').val([jQuery('input[name="wp_dStitch"]:checked').val()]);
-	jQuery('input[name="wp2_dStitch"]').change();
-	jQuery('input[name="wp2_dStitchPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-	});
-	jQuery('input[name="wp2_amfColor"]').val([jQuery('input[name="wp_amfColor"]:checked').val()]);
-	jQuery('input[name="wp2_amfColor"]').change();
-	jQuery('#wp2_amfColorPlaceAll').val([jQuery('#wp_amfColorPlaceAll').val()]);
-	jQuery('#wp2_amfColorPlaceAll').change();
-	jQuery('input[name="wp2_amfColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_amfColorSidePkt"]').val([jQuery('input[name="wp_amfColorSidePkt"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorSidePkt"]').change();
-	jQuery('input[name="wp2_amfColorSideSeam"]').val([jQuery('input[name="wp_amfColorSideSeam"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorSideSeam"]').change();
-	jQuery('input[name="wp2_amfColorDarts"]').val([jQuery('input[name="wp_amfColorDarts"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorDarts"]').change();
-	jQuery('input[name="wp2_amfColorPisFlap"]').val([jQuery('input[name="wp_amfColorPisFlap"]:checked').val()]);
-	jQuery('input[name="wp2_amfColorPisFlap"]').change();
-	jQuery('input[name="wp2_bhColor"]').val([jQuery('input[name="wp_bhColor"]:checked').val()]);
-	jQuery('input[name="wp2_bhColor"]').change();
-	jQuery('#wp2_bhColorPlaceAll').val([jQuery('#wp_bhColorPlaceAll').val()]);
-	jQuery('#wp2_bhColorPlaceAll').change();
-	jQuery('input[name="wp2_bhColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_bhColorPlaceFront"]').val([jQuery('input[name="wp_bhColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceFront"]').change();
-	jQuery('input[name="wp2_bhColorPlaceUfbp"]').val([jQuery('input[name="wp_bhColorPlaceUfbp"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceUfbp"]').change();
-	jQuery('input[name="wp2_bhColorPlaceDfbp"]').val([jQuery('input[name="wp_bhColorPlaceDfbp"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceDfbp"]').change();
-	jQuery('input[name="wp2_bhColorPlaceCoin"]').val([jQuery('input[name="wp_bhColorPlaceCoin"]:checked').val()]);
-	jQuery('input[name="wp2_bhColorPlaceCoin"]').change();
-	jQuery('input[name="wp2_byColor"]').val([jQuery('input[name="wp_byColor"]:checked').val()]);
-	jQuery('input[name="wp2_byColor"]').change();
-	jQuery('#wp2_byColorPlaceAll').val([jQuery('#wp_byColorPlaceAll').val()]);
-	jQuery('#wp2_byColorPlaceAll').change();
-	jQuery('input[name="wp2_byColorPlace"').each(function() {
-		var _1stId = jQuery(this).prop('id').replace('wp2_', 'wp_');
-		jQuery(this).prop('checked', jQuery('#' + _1stId).prop('checked'));
-		jQuery(this).change();
-	});
-	jQuery('input[name="wp2_byColorPlaceFront"]').val([jQuery('input[name="wp_byColorPlaceFront"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceFront"]').change();
-	jQuery('input[name="wp2_byColorPlaceUf"]').val([jQuery('input[name="wp_byColorPlaceUf"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceUf"]').change();
-	jQuery('input[name="wp2_byColorPlaceDf"]').val([jQuery('input[name="wp_byColorPlaceDf"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceDf"]').change();
-	jQuery('input[name="wp2_byColorPlaceCoinPkt"]').val([jQuery('input[name="wp_byColorPlaceCoinPkt"]:checked').val()]);
-	jQuery('input[name="wp2_byColorPlaceCoinPkt"]').change();
-	jQuery('#wp2_button').val([jQuery('#wp_button').val()]);
-	jQuery('#wp2_button').change();
-	jQuery('#wp2_btnMateStkNo').val([jQuery('#wp_btnMateStkNo').val()]);
-	jQuery('#wp2_btnMateStkNo').change();
-	jQuery('input[name="wp2_suspenderBtn"]').val([jQuery('input[name="wp_suspenderBtn"]:checked').val()]);
-	jQuery('input[name="wp2_suspenderBtn"]').change();
-	jQuery('input[name="wp2_thick"]').val([jQuery('input[name="wp_thick"]:checked').val()]);
-	jQuery('input[name="wp2_thick"]').change();
-	jQuery('input[name="wp2_eight"]').val([jQuery('input[name="wp_eight"]:checked').val()]);
-	jQuery('input[name="wp2_eight"]').change();
-	jQuery('input[name="wp2_shapeMemory"]').val([jQuery('input[name="wp_shapeMemory"]:checked').val()]);
-	jQuery('input[name="wp2_shapeMemory"]').change();
-});
 
 function modelCheck(modelCode,productFabricNo,orderPattern,itemCode,subItemCode){
 	var checkResult = jQuery.ajax({url:contextPath + "/orderCo/checkModel",data:{"modelCode":modelCode,"productFabricNo":productFabricNo,"orderPattern":orderPattern,"itemCode":itemCode,"subItemCode":subItemCode},async:false});

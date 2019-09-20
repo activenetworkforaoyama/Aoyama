@@ -1,6 +1,6 @@
 <form:form id="idAdjustForm"
 	action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm"
-	method="post" modelAttribute="orderForm" class="form-horizontal">
+	method="post" modelAttribute="orderCoForm" class="form-horizontal">
 
 	<div id="al_shirt_div">
 		<div class="card-header">
@@ -15,10 +15,10 @@
 						</div>
 						<div class="col-12 col-md-3">
 							<form:select id="selectCorStSize"
-								path="adjustShirtStandardInfo.corStSize"
+								path="coAdjustShirtStandardInfo.corStSize"
 								class="form-control-sm form-control hidedown">
 								<form:options
-									items="${orderForm.adjustShirtStandardInfo.corStSizeMap}" />
+									items="${orderCoForm.coAdjustShirtStandardInfo.corStSizeMap}" />
 							</form:select>				
 						</div>
 					</div>
@@ -33,7 +33,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStNeckRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStNeckRange" name="adjustShirtStandardInfo.corStNeckCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStNeckRange" name="coAdjustShirtStandardInfo.corStNeckCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStNeckRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStNeckRange_out">0</output>cm
                                 </div>
@@ -50,7 +50,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStBodylengthRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStBodylengthRange" name="adjustShirtStandardInfo.corStBodylengthCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStBodylengthRange" name="coAdjustShirtStandardInfo.corStBodylengthCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStBodylengthRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStBodylengthRange_out">0</output>cm
                                 </div>
@@ -65,7 +65,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStRightsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStRightsleeveRange" name="adjustShirtStandardInfo.corStRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStRightsleeveRange" name="coAdjustShirtStandardInfo.corStRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStRightsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStRightsleeveRange_out">0</output>cm
                                 </div>
@@ -80,7 +80,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStLeftsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStLeftsleeveRange" name="adjustShirtStandardInfo.corStLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStLeftsleeveRange" name="coAdjustShirtStandardInfo.corStLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStLeftsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStLeftsleeveRange_out">0</output>cm
                                 </div>
@@ -96,7 +96,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStBackdartsPackRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStBackdartsPackRange" name="adjustShirtStandardInfo.corStBackdartsPackCorrect" value="0" min="-5" max="0" step="0.5">&nbsp;
+                                <input type="range" id="corStBackdartsPackRange" name="coAdjustShirtStandardInfo.corStBackdartsPackCorrect" value="0" min="-5" max="0" step="0.5">&nbsp;
                                 <a href="#" id="corStBackdartsPackRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStBackdartsPackRange_out">0</output>cm
                                 </div>
@@ -112,13 +112,14 @@
 						</div>
 						<div class="col-12 col-md-4">						
 							<div class="form-check-inline form-check">
-								<label for="backDartsPut_0" class="form-check-label "> <input
-									type="radio" id="backDartsPut_0" name="adjustShirtStandardInfo.corStBackdartsUnpackCorrect" value="0"
+								<!-- <label for="backDartsPut_0" class="form-check-label "> <input
+									type="radio" id="backDartsPut_0" name="coAdjustShirtStandardInfo.corStBackdartsUnpackCorrect" value="0"
 									class="form-check-input">ダーツ無し
 								</label> <label for="backDartsPut_2" class="form-check-label ">
-									<input type="radio" id="backDartsPut_2" name="adjustShirtStandardInfo.corStBackdartsUnpackCorrect"
+									<input type="radio" id="backDartsPut_2" name="coAdjustShirtStandardInfo.corStBackdartsUnpackCorrect"
 									value="2" class="form-check-input">プラス2cm
-								</label>
+								</label> -->
+								<form:radiobuttons id="oj_shoulderPat_id" path="coAdjustShirtStandardInfo.corStBackdartsUnpackCd" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.corStBackdartsUnpackCorrectMap}"/>
 							</div>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
@@ -127,7 +128,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStRightcuffsSurroundingRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStRightcuffsSurroundingRange" name="adjustShirtStandardInfo.corStRightcuffsSurroundingCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStRightcuffsSurroundingRange" name="coAdjustShirtStandardInfo.corStRightcuffsSurroundingCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStRightcuffsSurroundingRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStRightcuffsSurroundingRange_out">0</output>cm
                                 </div>
@@ -144,7 +145,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corStLeftcuffsSurroundingRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corStLeftcuffsSurroundingRange" name="adjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corStLeftcuffsSurroundingRange" name="coAdjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corStLeftcuffsSurroundingRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corStLeftcuffsSurroundingRange_out">0</output>cm
                                 </div>
@@ -180,51 +181,57 @@
             </div>
 	 <!-- Shirt -->
    <input type="hidden" id="corStNeck_div_Size"
-		name="adjustShirtStandardInfo.corStNeckSize" value="" />
+		name="coAdjustShirtStandardInfo.corStNeckSize" value="" />
 	<input type="hidden" id="corStNeck_div_Gross"
-		name="adjustShirtStandardInfo.corStNeckGross" value="" />
+		name="coAdjustShirtStandardInfo.corStNeckGross" value="" />
 		
 		<input type="hidden" id="corStBodylength_div_Size"
-		name="adjustShirtStandardInfo.corStBodylengthSize" value="" />
+		name="coAdjustShirtStandardInfo.corStBodylengthSize" value="" />
 	<input type="hidden" id="corStBodylength_div_Gross"
-		name="adjustShirtStandardInfo.corStBodylengthGross" value="" />
+		name="coAdjustShirtStandardInfo.corStBodylengthGross" value="" />
 		
 		<input type="hidden" id="corStRightsleeve_div_Size"
-		name="adjustShirtStandardInfo.corStRightsleeveSize" value="" />
+		name="coAdjustShirtStandardInfo.corStRightsleeveSize" value="" />
 	<input type="hidden" id="corStRightsleeve_div_Gross"
-		name="adjustShirtStandardInfo.corStRightsleeveGross" value="" />
+		name="coAdjustShirtStandardInfo.corStRightsleeveGross" value="" />
 		
 		<input type="hidden" id="corStLeftsleeve_div_Size"
-		name="adjustShirtStandardInfo.corStLeftsleeveSize" value="" />
+		name="coAdjustShirtStandardInfo.corStLeftsleeveSize" value="" />
 	<input type="hidden" id="corStLeftsleeve_div_Gross"
-		name="adjustShirtStandardInfo.corStLeftsleeveGross" value="" />
+		name="coAdjustShirtStandardInfo.corStLeftsleeveGross" value="" />
 		
 		<input type="hidden" id="corStBackdartsPack_div_Size"
-		name="adjustShirtStandardInfo.corStBackdartsPackSize" value="" />
+		name="coAdjustShirtStandardInfo.corStBackdartsPackSize" value="" />
 	<input type="hidden" id="corStBackdartsPack_div_Gross"
-		name="adjustShirtStandardInfo.corStBackdartsPackGross" value="" />
+		name="coAdjustShirtStandardInfo.corStBackdartsPackGross" value="" />
 		
 		<input type="hidden" id="corStRightcuffsSurrounding_div_Size"
-		name="adjustShirtStandardInfo.corStRightcuffsSurroundingSize" value="" />
+		name="coAdjustShirtStandardInfo.corStRightcuffsSurroundingSize" value="" />
 	<input type="hidden" id="corStRightcuffsSurrounding_div_Gross"
-		name="adjustShirtStandardInfo.corStRightcuffsSurroundingGross" value="" />
+		name="coAdjustShirtStandardInfo.corStRightcuffsSurroundingGross" value="" />
 		
 		<input type="hidden" id="corStLeftcuffsSurrounding_div_Size"
-		name="adjustShirtStandardInfo.corStLeftcuffsSurroundingSize" value="" />
+		name="coAdjustShirtStandardInfo.corStLeftcuffsSurroundingSize" value="" />
 	<input type="hidden" id="corStLeftcuffsSurrounding_div_Gross"
-		name="adjustShirtStandardInfo.corStLeftcuffsSurroundingGross" value="" />
+		name="coAdjustShirtStandardInfo.corStLeftcuffsSurroundingGross" value="" />
 	<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="1" />
+	<input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+    <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+    <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+    <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+    <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
 </form:form>
 <script
 	src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var orderPattern = "CO";
-var itemCode ="${orderForm.productItem}";
-var shirtAdFlag="${orderForm.shirtAdFlag}";
-var shirtModel = "${orderForm.optionShirtStandardInfo.osShirtModel}";
+var itemCode ="${orderCoForm.productItem}";
+var shirtAdFlag="${orderCoForm.shirtAdFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
+var osCasHemLine = "${orderCoForm.coOptionShirtStandardInfo.osCasHemLine}";
+var shirtModel = "${orderCoForm.coOptionShirtStandardInfo.osShirtModel}";
 var shirtAdjustList = [
 	{type:"01",id:"corStBodylength_div"},
-	//{type:"02",id:"corStBackdartsPack_div"},
 	{type:"03",id:"corStRightsleeve_div"},
 	{type:"04",id:"corStLeftsleeve_div"},
 	{type:"11",id:"corStNeck_div"},
@@ -239,31 +246,35 @@ jQuery(document).ready(function() {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
 	getAdjustByItem();
-   // getFigureAndNumberByItem();
     initAlter();
-    /* if(itemFlag=="1"){
-		 adjustReInit();
-	 }else if(shirtFlag=="0"&&shirtModel==""){
-
-	 }else if(shirtFlag=="1"){
-		 getFigureAndNumberByItem();
-	 }else if(shirtFlag=="0"&&shirtModel!=""){
-		 getFigureAndNumberByItem();
-		 adjustSession();
-	 } */
     if(shirtAdFlag==""){
-    	jQuery("#backDartsPut_0").prop("checked", true);	     
+    	jQuery("#oj_shoulderPat_id1").prop("checked", true);	     
 	}else if(shirtAdFlag=="0"){
-		jQuery("#backDartsPut_0").prop("checked", true);
+		jQuery("#oj_shoulderPat_id1").prop("checked", true);
 		adjustReInit();
 		getFigureAndNumberByItem();
 	}else if(shirtAdFlag=="1"){
 		getFigureAndNumberByItem();
 		adjustSession();
 	}
+
+	if(orderFlag == "orderLink"){
+		getFigureAndNumberByItem();
+		adjustSession();
+	}
+	
     jQuery("#selectCorStSize").change(function(){
 		shirtAdjust();
-	})   
+	})
+	if(osCasHemLine=="0002002"){
+		 jQuery("#corStBodylengthRange").val('0');
+		 jQuery("#corStBodylengthRange_out").val('0');
+		 jQuery("#corStBodylength_div_html").val('000.0cm');
+		 setRangeDisable('corStBodylengthRange',true);
+		 $("#corStBodylengthRange_m").unbind("click");
+		 $("#corStBodylengthRange_p").unbind("click");
+		}
+	jQuery("#shirtAdFlag").val("1");
 });
 
 function getAdjustByItem(){
@@ -466,83 +477,83 @@ function shirtAdjust(){
 		} 
 	 function adjustSession(){
 
-			jQuery("#selectCorStSize").val("${orderForm.adjustShirtStandardInfo.corStSize}");
+			jQuery("#selectCorStSize").val("${orderCoForm.coAdjustShirtStandardInfo.corStSize}");
 
-			jQuery("#corStNeck_div_Size").val("${orderForm.adjustShirtStandardInfo.corStNeckSize}");
-			jQuery("#corStNeck_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStNeckGross}");
-			jQuery("#corStNeck_div_html").html("${orderForm.adjustShirtStandardInfo.corStNeckGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStNeckGross}"==""){
+			jQuery("#corStNeck_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStNeckSize}");
+			jQuery("#corStNeck_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStNeckGross}");
+			jQuery("#corStNeck_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStNeckGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStNeckGross}"==""){
 				jQuery("#corStNeck_div_html").html("000.0cm");
 				}
-			jQuery("#corStNeckRange_out").html("${orderForm.adjustShirtStandardInfo.corStNeckCorrect}");
-			jQuery("#corStNeckRange").val("${orderForm.adjustShirtStandardInfo.corStNeckCorrect}");
+			jQuery("#corStNeckRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStNeckCorrect}");
+			jQuery("#corStNeckRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStNeckCorrect}");
 			setFont("corStNeckRange");
 			
-			jQuery("#corStBodylength_div_Size").val("${orderForm.adjustShirtStandardInfo.corStBodylengthSize}");
-			jQuery("#corStBodylength_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStBodylengthGross}");
-			jQuery("#corStBodylength_div_html").html("${orderForm.adjustShirtStandardInfo.corStBodylengthGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStBodylengthGross}"==""){
+			jQuery("#corStBodylength_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthSize}");
+			jQuery("#corStBodylength_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}");
+			jQuery("#corStBodylength_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}"==""){
 				jQuery("#corStBodylength_div_html").html("000.0cm");
 				}
-			jQuery("#corStBodylength_out").html("${orderForm.adjustShirtStandardInfo.corStBodylengthCorrect}");
-			jQuery("#corStBodylengthRange").val("${orderForm.adjustShirtStandardInfo.corStBodylengthCorrect}");
+			jQuery("#corStBodylengthRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}");
+			jQuery("#corStBodylengthRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}");
 			setFont("corStBodylengthRange");
 
-			jQuery("#corStRightsleeve_div_Size").val("${orderForm.adjustShirtStandardInfo.corStRightsleeveSize}");
-			jQuery("#corStRightsleeve_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStRightsleeveGross}");
-			jQuery("#corStRightsleeve_div_html").html("${orderForm.adjustShirtStandardInfo.corStRightsleeveGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStRightsleeveGross}"==""){
+			jQuery("#corStRightsleeve_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveSize}");
+			jQuery("#corStRightsleeve_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveGross}");
+			jQuery("#corStRightsleeve_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveGross}"==""){
 				jQuery("#corStRightsleeve_div_html").html("000.0cm");
 				}
-			jQuery("#corStRightsleeve_out").html("${orderForm.adjustShirtStandardInfo.corStRightsleeveCorrect}");
-			jQuery("#corStRightsleeveRange").val("${orderForm.adjustShirtStandardInfo.corStRightsleeveCorrect}");
+			jQuery("#corStRightsleeveRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveCorrect}");
+			jQuery("#corStRightsleeveRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveCorrect}");
 			setFont("corStRightsleeveRange");
 
-			jQuery("#corStLeftsleeve_div_Size").val("${orderForm.adjustShirtStandardInfo.corStLeftsleeveSize}");
-			jQuery("#corStLeftsleeve_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStLeftsleeveGross}");
-			jQuery("#corStLeftsleeve_div_html").html("${orderForm.adjustShirtStandardInfo.corStLeftsleeveGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStLeftsleeveGross}"==""){
+			jQuery("#corStLeftsleeve_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveSize}");
+			jQuery("#corStLeftsleeve_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveGross}");
+			jQuery("#corStLeftsleeve_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveGross}"==""){
 				jQuery("#corStLeftsleeve_div_html").html("000.0cm");
 				}
-			jQuery("#corStLeftsleeveRange_out").html("${orderForm.adjustShirtStandardInfo.corStLeftsleeveCorrect}");
-			jQuery("#corStLeftsleeveRange").val("${orderForm.adjustShirtStandardInfo.corStLeftsleeveCorrect}");
+			jQuery("#corStLeftsleeveRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveCorrect}");
+			jQuery("#corStLeftsleeveRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveCorrect}");
 			setFont("corStLeftsleeveRange");
 
-			jQuery("#corStBackdartsPack_div_Size").val("${orderForm.adjustShirtStandardInfo.corStBackdartsPackSize}");
-			jQuery("#corStBackdartsPack_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStBackdartsPackGross}");
-			jQuery("#corStBackdartsPack_div_html").html("${orderForm.adjustShirtStandardInfo.corStBackdartsPackGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStBackdartsPackGross}"==""){
+			jQuery("#corStBackdartsPack_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackSize}");
+			jQuery("#corStBackdartsPack_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}");
+			jQuery("#corStBackdartsPack_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"==""){
 				jQuery("#corStBackdartsPack_div_html").html("000.0cm");
 				}
-			jQuery("#corStBackdartsPackRange_out").html("${orderForm.adjustShirtStandardInfo.corStBackdartsPackCorrect}");
-			jQuery("#corStBackdartsPackRange").val("${orderForm.adjustShirtStandardInfo.corStBackdartsPackCorrect}");
+			jQuery("#corStBackdartsPackRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackCorrect}");
+			jQuery("#corStBackdartsPackRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackCorrect}");
 			setFont("corStBackdartsPackRange");
 
-			jQuery("#corStRightcuffsSurrounding_div_Size").val("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingSize}");
-			jQuery("#corStRightcuffsSurrounding_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingGross}");
-			jQuery("#corStRightcuffsSurrounding_div_html").html("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingGross}"==""){
+			jQuery("#corStRightcuffsSurrounding_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingSize}");
+			jQuery("#corStRightcuffsSurrounding_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingGross}");
+			jQuery("#corStRightcuffsSurrounding_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingGross}"==""){
 				jQuery("#corStRightcuffsSurrounding_div_html").html("000.0cm");
 				}
-			jQuery("#corStRightcuffsSurroundingRange_out").html("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingCorrect}");
-			jQuery("#corStRightcuffsSurroundingRange").val("${orderForm.adjustShirtStandardInfo.corStRightcuffsSurroundingCorrect}");
+			jQuery("#corStRightcuffsSurroundingRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingCorrect}");
+			jQuery("#corStRightcuffsSurroundingRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStRightcuffsSurroundingCorrect}");
 			setFont("corStRightcuffsSurroundingRange");
 
-			jQuery("#corStLeftcuffsSurrounding_div_Size").val("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingSize}");
-			jQuery("#corStLeftcuffsSurrounding_div_Gross").val("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingGross}");
-			jQuery("#corStLeftcuffsSurrounding_div_html").html("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingGross}"+".cm");
-			if("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingGross}"==""){
+			jQuery("#corStLeftcuffsSurrounding_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingSize}");
+			jQuery("#corStLeftcuffsSurrounding_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingGross}");
+			jQuery("#corStLeftcuffsSurrounding_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingGross}"+".cm");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingGross}"==""){
 				jQuery("#corStLeftcuffsSurrounding_div_html").html("000.0cm");
 				}
-			jQuery("#corStLeftcuffsSurroundingRange_out").html("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
-			jQuery("#corStLeftcuffsSurroundingRange").val("${orderForm.adjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
+			jQuery("#corStLeftcuffsSurroundingRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
+			jQuery("#corStLeftcuffsSurroundingRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
 			setFont("corStLeftcuffsSurroundingRange");
-			jQuery("#corStoreCorrectionMemoAgain").val("${orderForm.corStoreCorrectionMemoAgain}");
-			var corStBackdartsUnpackCorrect="${orderForm.adjustShirtStandardInfo.corStBackdartsUnpackCorrect}";
-			if(corStBackdartsUnpackCorrect=="0"){
-			    jQuery("#backDartsPut_0").prop("checked", true);
-			}else if(corStBackdartsUnpackCorrect=="2"){
-				jQuery("#backDartsPut_2").prop("checked", true);
+			jQuery("#corStoreCorrectionMemoAgain").val("${orderCoForm.corStoreCorrectionMemoAgain}");
+			var corStBackdartsUnpackCorrect="${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsUnpackCd}";
+			if(corStBackdartsUnpackCorrect=="0002501"){
+			    jQuery("#oj_shoulderPat_id1").prop("checked", true);
+			}else if(corStBackdartsUnpackCorrect=="0002502"){
+				jQuery("#oj_shoulderPat_id2").prop("checked", true);
 				}
 		} 
 </script>

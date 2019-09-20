@@ -211,7 +211,7 @@ select.hidedown {
                                 <select name="customerMessageInfo.custShippingDestination" id="destination" class="form-control-sm form-control">
                                     <option value="01">店舗</option>
                                     <option value="02">福山本社</option>
-                                    <option value="03">TSC事業本部</option>
+                                    <!-- <option value="03">TSC事業本部</option> -->
                                     <option value="04">お客様</option>
                                     <option value="05">他店舗</option>
                                 </select>
@@ -5782,33 +5782,33 @@ jQuery(document).ready(function(){
 			var idRe = id.replace('Range','_div');	
 			var sizeVal = jQuery("#"+idRe+"_Size").val();
 			var labelVaUplCm = jQuery('#'+idRe+'_html').html();
-			if(typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null){
+			if((typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null)&&sizeVal != ""){
 				var idRejQ = jQuery('#'+idRe);
 				
 				var labelValUp = labelVaUplCm.replace('cm','');
 				
 				var maxVal = (parseFloat(max)+parseFloat(sizeVal)).toFixed(1);
 				
-				var val = (parseFloat(labelValUp)+parseFloat(step)).toFixed(1);
+				var val = (parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
 
-				if(val<=maxVal){
-					jQuery("#"+idRe+"_html").html(val+"cm");
-					jQuery('#'+idRe+'_Gross').val(val);
-				}else{
-					return false;
-				}
+				//if(parseFloat(val)<=parseFloat(maxVal)){
+				jQuery("#"+idRe+"_html").html(val+"cm");
+				jQuery('#'+idRe+'_Gross').val(val);
+				//}else{
+					//return false;
+				//}
 			}
 			setFont(id);
 			return false;
 		});
-		jQuery('#'+id+'_m').click(function(){
+		jQuery('#'+id+'_m').click(function(){ 
 			elem.val(elem.val()-0-step);
 			jQuery('#'+id+'_out').val(elem.val());
 			var min = document.getElementById(id).min;
 			var idRe = id.replace('Range','_div');
 			var sizeVal = jQuery("#"+idRe+"_Size").val();
 			var labelValDoCm = jQuery('#'+idRe+'_html').html();
-			if(typeof(labelValDoCm)!="undefined"&&labelValDoCm!=null){
+			if((typeof(labelValDoCm)!="undefined"&&labelValDoCm!=null)&&sizeVal != ""){
 				
 				var idRejQ = jQuery('#'+idRe);
 
@@ -5816,14 +5816,14 @@ jQuery(document).ready(function(){
 
 				var minVal = (parseFloat(min)+parseFloat(sizeVal)).toFixed(1);
 				
-				var val = (parseFloat(labelValDo)-parseFloat(step)).toFixed(1);
-				if(val>=minVal){
+				var val = (parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
+				//if(parseFloat(val)>=parseFloat(minVal)){
 					
-					jQuery("#"+idRe+"_html").html(val+"cm");
-					jQuery('#'+idRe+'_Gross').val(val);
-				}else{
-					return false;
-				}
+				jQuery("#"+idRe+"_html").html(val+"cm");
+				jQuery('#'+idRe+'_Gross').val(val);
+				//}else{
+					//return false;
+				//}
 			}
 			setFont(id);
 			return false;
@@ -6123,10 +6123,7 @@ function changeViewArea() {
 
     var giletModel = jQuery("#giletModel").val();
 	if(giletModel=="CH14"){
-		//0000104 ：有り　　0000101：無し
-		jQuery(":radio[name='optionGiletStandardInfo.ogBreastPkt']").removeAttr("disabled");
-		jQuery(":radio[name='optionGiletStandardInfo.ogBreastPkt'][value='0000104']").prop("checked", true);
-		jQuery('input[id^="og_breastPkt_"]:checked').change();
+		
 	}else if(giletModel=='SAVILEROW'){
 		//0000104 ：有り　　0000101：無し
 		//og_breastPkt_id2   有り
@@ -8056,7 +8053,6 @@ function fabricCheck(item,productFabricNo){
 		 //生地チェク失敗フラッグ
 		 fabricCheckValue = "1";
 		 jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByTwoArgs('msg012', '生地品番', '英数字'));
-		 return false;
 	}
 	else{
 	    jQuery.ajax({
@@ -8449,6 +8445,15 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corJkBodyReSp = corJkBodyRe.split(".");
+				if(corJkBodyReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+				
 			}
 			//ウエスト修正
 			var corJkWaistRe = jQuery("#corJkWaistRe").val();
@@ -8456,6 +8461,14 @@ function entryCheck(){
 				if(isNumericDecimal(corJkWaistRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkWaistReSp = corJkWaistRe.split(".");
+				if(corJkWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8469,6 +8482,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+				if(corJkRightsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//袖丈左修正
 			var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
@@ -8476,6 +8497,14 @@ function entryCheck(){
 				if(isNumericDecimal(corJkLeftsleeveRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+				if(corJkLeftsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8489,6 +8518,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtWaistReSp = corPtWaistRe.split(".");
+				if(corPtWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//ヒップ修正
 			var corPtHipRe = jQuery("#corPtHipRe").val();
@@ -8496,6 +8533,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtHipRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHipReSp = corPtHipRe.split(".");
+				if(corPtHipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8509,6 +8554,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+				if(corPtThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//裾幅修正
 			var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
@@ -8516,6 +8569,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtHemwidthRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+				if(corPtHemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8529,6 +8590,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+				if(corPtRightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//股下左修正
 			var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
@@ -8536,6 +8605,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtLeftinseamRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+				if(corPtLeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8551,6 +8628,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPt2WaistReSp = corPt2WaistRe.split(".");
+				if(corPt2WaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//ヒップ修正
 			var corPt2HipRe = jQuery("#corPt2HipRe").val();
@@ -8558,6 +8643,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPt2HipRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）ヒップ修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2HipReSp = corPt2HipRe.split(".");
+				if(corPt2HipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ヒップ修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8571,6 +8664,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPt2ThighwidthReSp = corPt2ThighwidthRe.split(".");
+				if(corPt2ThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//裾幅修正
 			var corPt2HemwidthRe = jQuery("#corPt2HemwidthRe").val();
@@ -8578,6 +8679,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPt2HemwidthRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）裾幅修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2HemwidthReSp = corPt2HemwidthRe.split(".");
+				if(corPt2HemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）裾幅修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8591,6 +8700,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPt2RightinseamReSp = corPt2RightinseamRe.split(".");
+				if(corPt2RightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//股下左修正
 			var corPt2LeftinseamRe = jQuery("#corPt2LeftinseamRe").val();
@@ -8598,6 +8715,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPt2LeftinseamRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）股下左修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2LeftinseamReSp = corPt2LeftinseamRe.split(".");
+				if(corPt2LeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）股下左修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8612,6 +8737,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corJkBodyReSp = corJkBodyRe.split(".");
+				if(corJkBodyReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//ウエスト修正
 			var corJkWaistRe = jQuery("#corJkWaistRe").val();
@@ -8619,6 +8752,14 @@ function entryCheck(){
 				if(isNumericDecimal(corJkWaistRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkWaistReSp = corJkWaistRe.split(".");
+				if(corJkWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8632,6 +8773,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+				if(corJkRightsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//袖丈左修正
 			var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
@@ -8639,6 +8788,14 @@ function entryCheck(){
 				if(isNumericDecimal(corJkLeftsleeveRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+				if(corJkLeftsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8652,6 +8809,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtWaistReSp = corPtWaistRe.split(".");
+				if(corPtWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//ヒップ修正
 			var corPtHipRe = jQuery("#corPtHipRe").val();
@@ -8659,6 +8824,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtHipRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHipReSp = corPtHipRe.split(".");
+				if(corPtHipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8672,6 +8845,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+				if(corPtThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//裾幅修正
 			var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
@@ -8679,6 +8860,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtHemwidthRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+				if(corPtHemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8692,6 +8881,14 @@ function entryCheck(){
 				}else{
 					appendAlertDel('errormssage');
 				}
+
+				var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+				if(corPtRightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
 			}
 			//股下左修正
 			var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
@@ -8699,6 +8896,14 @@ function entryCheck(){
 				if(isNumericDecimal(corPtLeftinseamRe)){
 					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
 			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+				if(corPtLeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+					 return false;
 				}else{
 					appendAlertDel('errormssage');
 				}
@@ -8717,6 +8922,14 @@ function entryCheck(){
 			}else{
 				appendAlertDel('errormssage');
 			}
+
+			var corJkBodyReSp = corJkBodyRe.split(".");
+			if(corJkBodyReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
 		}
 		//ウエスト修正
 		var corJkWaistRe = jQuery("#corJkWaistRe").val();
@@ -8724,6 +8937,14 @@ function entryCheck(){
 			if(isNumericDecimal(corJkWaistRe)){
 				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
 		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkWaistReSp = corJkWaistRe.split(".");
+			if(corJkWaistReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+				 return false;
 			}else{
 				appendAlertDel('errormssage');
 			}
@@ -8737,6 +8958,14 @@ function entryCheck(){
 			}else{
 				appendAlertDel('errormssage');
 			}
+
+			var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+			if(corJkRightsleeveReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
 		}
 		//袖丈左修正
 		var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
@@ -8744,6 +8973,14 @@ function entryCheck(){
 			if(isNumericDecimal(corJkLeftsleeveRe)){
 				appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
 		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+			if(corJkLeftsleeveReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+				 return false;
 			}else{
 				appendAlertDel('errormssage');
 			}
@@ -8760,6 +8997,14 @@ function entryCheck(){
 			}else{
 				appendAlertDel('errormssage');
 			}
+
+			var corPtWaistReSp = corPtWaistRe.split(".");
+			if(corPtWaistReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
 		}
 		//ヒップ修正
 		var corPtHipRe = jQuery("#corPtHipRe").val();
@@ -8767,6 +9012,14 @@ function entryCheck(){
 			if(isNumericDecimal(corPtHipRe)){
 				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
 		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtHipReSp = corPtHipRe.split(".");
+			if(corPtHipReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+				 return false;
 			}else{
 				appendAlertDel('errormssage');
 			}
@@ -8780,6 +9033,14 @@ function entryCheck(){
 			}else{
 				appendAlertDel('errormssage');
 			}
+
+			var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+			if(corPtThighwidthReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
 		}
 		//裾幅修正
 		var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
@@ -8787,6 +9048,14 @@ function entryCheck(){
 			if(isNumericDecimal(corPtHemwidthRe)){
 				appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
 		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+			if(corPtHemwidthReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+				 return false;
 			}else{
 				appendAlertDel('errormssage');
 			}
@@ -8800,6 +9069,14 @@ function entryCheck(){
 			}else{
 				appendAlertDel('errormssage');
 			}
+
+			var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+			if(corPtRightinseamReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
 		}
 		//股下左修正
 		var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
@@ -8807,6 +9084,14 @@ function entryCheck(){
 			if(isNumericDecimal(corPtLeftinseamRe)){
 				appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
 		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+			if(corPtLeftinseamReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+				 return false;
 			}else{
 				appendAlertDel('errormssage');
 			}

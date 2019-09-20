@@ -2523,7 +2523,38 @@ public class Order implements Serializable {
     private String corCtStoreCorrectionMemo;
     
     private String corGlStoreCorrectionMemo;
-
+    
+    private String corStBackdartsUnpackCd;
+    
+    private String corStBackdartsUnpackNm;
+    
+    
+    private String productCategoryNm;
+    
+    private String productLcrSewingCd;
+    
+    private String productFabricNmNecessityNm;
+    
+    private String productEmbroideryNecessityNm;
+    
+    private String productEmbroideryFontCd;
+    
+    private String productEmbroideryThreadColorCd;
+    
+    private String productEmbroideryGazetteCd;
+    
+    private String productEmbroideryNmPosCd;
+    
+    private String corJkShoulderpadCd;
+    
+    private String corJkFigureCorrectCd;
+    
+    private Integer custIsDeliverShortningRtPrice;
+    
+    private BigDecimal custIsDeliverShortningWsWage;
+    
+    private Integer custIsDeliverShortningWsPrice;
+    
     public String getOrderId() {
         return orderId;
     }
@@ -15106,6 +15137,126 @@ public class Order implements Serializable {
 
 	public void setWsPriceAdjust(Integer wsPriceAdjust) {
 		this.wsPriceAdjust = wsPriceAdjust;
+	}
+
+	public String getCorStBackdartsUnpackCd() {
+		return corStBackdartsUnpackCd;
+	}
+
+	public void setCorStBackdartsUnpackCd(String corStBackdartsUnpackCd) {
+		this.corStBackdartsUnpackCd = corStBackdartsUnpackCd;
+	}
+
+	public String getCorStBackdartsUnpackNm() {
+		return corStBackdartsUnpackNm;
+	}
+
+	public void setCorStBackdartsUnpackNm(String corStBackdartsUnpackNm) {
+		this.corStBackdartsUnpackNm = corStBackdartsUnpackNm;
+	}
+
+	public String getProductCategoryNm() {
+		return productCategoryNm;
+	}
+
+	public void setProductCategoryNm(String productCategoryNm) {
+		this.productCategoryNm = productCategoryNm;
+	}
+
+	public String getProductLcrSewingCd() {
+		return productLcrSewingCd;
+	}
+
+	public void setProductLcrSewingCd(String productLcrSewingCd) {
+		this.productLcrSewingCd = productLcrSewingCd;
+	}
+
+	public String getProductFabricNmNecessityNm() {
+		return productFabricNmNecessityNm;
+	}
+
+	public void setProductFabricNmNecessityNm(String productFabricNmNecessityNm) {
+		this.productFabricNmNecessityNm = productFabricNmNecessityNm;
+	}
+
+	public String getProductEmbroideryNecessityNm() {
+		return productEmbroideryNecessityNm;
+	}
+
+	public void setProductEmbroideryNecessityNm(String productEmbroideryNecessityNm) {
+		this.productEmbroideryNecessityNm = productEmbroideryNecessityNm;
+	}
+
+	public String getProductEmbroideryFontCd() {
+		return productEmbroideryFontCd;
+	}
+
+	public void setProductEmbroideryFontCd(String productEmbroideryFontCd) {
+		this.productEmbroideryFontCd = productEmbroideryFontCd;
+	}
+
+	public String getProductEmbroideryThreadColorCd() {
+		return productEmbroideryThreadColorCd;
+	}
+
+	public void setProductEmbroideryThreadColorCd(String productEmbroideryThreadColorCd) {
+		this.productEmbroideryThreadColorCd = productEmbroideryThreadColorCd;
+	}
+
+	public String getProductEmbroideryGazetteCd() {
+		return productEmbroideryGazetteCd;
+	}
+
+	public void setProductEmbroideryGazetteCd(String productEmbroideryGazetteCd) {
+		this.productEmbroideryGazetteCd = productEmbroideryGazetteCd;
+	}
+
+	public String getProductEmbroideryNmPosCd() {
+		return productEmbroideryNmPosCd;
+	}
+
+	public void setProductEmbroideryNmPosCd(String productEmbroideryNmPosCd) {
+		this.productEmbroideryNmPosCd = productEmbroideryNmPosCd;
+	}
+
+	public String getCorJkShoulderpadCd() {
+		return corJkShoulderpadCd;
+	}
+
+	public void setCorJkShoulderpadCd(String corJkShoulderpadCd) {
+		this.corJkShoulderpadCd = corJkShoulderpadCd;
+	}
+
+	public String getCorJkFigureCorrectCd() {
+		return corJkFigureCorrectCd;
+	}
+
+	public void setCorJkFigureCorrectCd(String corJkFigureCorrectCd) {
+		this.corJkFigureCorrectCd = corJkFigureCorrectCd;
+	}
+
+	public Integer getCustIsDeliverShortningRtPrice() {
+		return custIsDeliverShortningRtPrice;
+	}
+
+	public void setCustIsDeliverShortningRtPrice(Integer custIsDeliverShortningRtPrice) {
+		this.custIsDeliverShortningRtPrice = custIsDeliverShortningRtPrice;
+	}
+
+	public BigDecimal getCustIsDeliverShortningWsWage() {
+		return custIsDeliverShortningWsWage;
+	}
+
+	public void setCustIsDeliverShortningWsWage(BigDecimal custIsDeliverShortningWsWage) {
+		this.custIsDeliverShortningWsWage = custIsDeliverShortningWsWage;
+	}
+
+	public Integer getCustIsDeliverShortningWsPrice() {
+		return custIsDeliverShortningWsPrice;
+	}
+
+	public void setCustIsDeliverShortningWsPrice(Integer custIsDeliverShortningWsPrice) {
+		this.custIsDeliverShortningWsPrice = custIsDeliverShortningWsPrice;
 	}
  
 }

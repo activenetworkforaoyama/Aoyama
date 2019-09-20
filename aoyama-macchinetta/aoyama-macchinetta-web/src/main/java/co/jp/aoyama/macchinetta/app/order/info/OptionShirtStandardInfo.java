@@ -1,6 +1,7 @@
 package co.jp.aoyama.macchinetta.app.order.info;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Map;
 
 public class OptionShirtStandardInfo implements Serializable {
@@ -126,7 +127,7 @@ public class OptionShirtStandardInfo implements Serializable {
 	private String osBtnPosChgFront2;
 	
 	//カジュアルヘムライン値
-	private String stCasualHemlineSize;
+	private BigDecimal stCasualHemlineSize;
 
 	public String getOsChainModel() {
 		return osChainModel;
@@ -504,11 +505,11 @@ public class OptionShirtStandardInfo implements Serializable {
 		this.osBtnPosChgMap = osBtnPosChgMap;
 	}
 
-	public String getStCasualHemlineSize() {
+	public BigDecimal getStCasualHemlineSize() {
 		return stCasualHemlineSize;
 	}
 
-	public void setStCasualHemlineSize(String stCasualHemlineSize) {
+	public void setStCasualHemlineSize(BigDecimal stCasualHemlineSize) {
 		this.stCasualHemlineSize = stCasualHemlineSize;
 	}
 	

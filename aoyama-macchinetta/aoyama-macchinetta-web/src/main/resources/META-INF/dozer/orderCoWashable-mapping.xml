@@ -3,8 +3,16 @@
 
 <!--JACKET Washable  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionJacketWashableInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketWashableInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
+	<field>
+		<a>wjJacketModel</a> 
+		<b>jkLapelModelCd</b> 
+	</field>
+	<field>
+		<a>wjJacketModel</a> 
+		<b>jkLapelModelNm</b> 
+	</field>
 	<field>
 		<a>wjAmfColor</a> 
 		<b>jkAmfColorType</b> 
@@ -31,7 +39,7 @@
 	</field>
 	<field>
 		<a>wjSleeveBtnType</a> 
-		<b>jkSleeveBtnType</b> 
+		<b>jkSleeveBtnCd</b> 
 	</field>
 	<field>
 		<a>wjSleeveBtnCnt</a> 
@@ -157,7 +165,7 @@
 
 <!--GILET Washable  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionGiletWashableInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>wgGiletModel</a> 
@@ -182,6 +190,26 @@
 	<field>
 		<a>wgStitch</a> 
 		<b>glAmfStitchCd</b> 
+	</field>
+	<field>
+		<a>wgStitchModify</a> 
+		<b>glStitchPlcType</b> 
+	</field>
+	<field>
+		<a>wgDStitchModify</a> 
+		<b>glDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>wgAmfColor</a> 
+		<b>glAmfColorType</b> 
+	</field>
+	<field>
+		<a>wgBhColor</a> 
+		<b>glBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>wgByColor</a> 
+		<b>glBtnthreadColorType</b> 
 	</field>
 	<field>
 		<a>wgBackLiningMate</a> 
@@ -219,7 +247,7 @@
 
 <!--PANTS Washable  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPantsWashableInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsWashableInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>wpPantsModel</a> 
@@ -252,6 +280,10 @@
 	<field>
 		<a>wpAdjuster</a> 
 		<b>ptAdjusterCd</b> 
+	</field>
+	<field>
+		<a>wpBeltLoop</a> 
+		<b>ptBeltloopType</b> 
 	</field>
 	<field>
 		<a>wpPinLoop</a> 
@@ -298,6 +330,26 @@
 		<b>ptAmfStitchCd</b> 
 	</field>
 	<field>
+		<a>wpStitchModify</a> 
+		<b>ptStitchPlcType</b> 
+	</field>
+	<field>
+		<a>wpDStitch</a> 
+		<b>ptDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>wpAmfColor</a> 
+		<b>ptAmfColorType</b> 
+	</field>
+	<field>
+		<a>wpBhColor</a> 
+		<b>ptBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>wpByColor</a> 
+		<b>ptBtnthreadColorType</b> 
+	</field>
+	<field>
 		<a>wpButton</a> 
 		<b>ptBtnMaterialType</b> 
 	</field>
@@ -321,11 +373,19 @@
 		<a>wpShapeMemory</a> 
 		<b>ptShapeMemoryCd</b> 
 	</field>
+	<field>
+		<a>ptBeltLoopRtPrice</a> 
+		<b>ptBeltloopRtPrice</b> 
+	</field>
+	<field>
+		<a>ptPinLoopRtPrice</a> 
+		<b>ptPinloopRtPrice</b> 
+	</field>
 </mapping>
 
 <!--2PANTS Washable  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2WashableInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>wp2PantsModel</a> 
@@ -358,6 +418,10 @@
 	<field>
 		<a>wp2Adjuster</a> 
 		<b>pt2AdjusterCd</b> 
+	</field>
+	<field>
+		<a>wp2BeltLoop</a> 
+		<b>pt2BeltloopType</b> 
 	</field>
 	<field>
 		<a>wp2PinLoop</a> 
@@ -402,6 +466,26 @@
 	<field>
 		<a>wp2Stitch</a> 
 		<b>pt2AmfStitchCd</b> 
+	</field>
+	<field>
+		<a>wp2StitchModify</a> 
+		<b>pt2StitchPlcType</b> 
+	</field>
+	<field>
+		<a>wp2DStitch</a> 
+		<b>pt2DblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>wp2AmfColor</a> 
+		<b>pt2AmfColorType</b> 
+	</field>
+	<field>
+		<a>wp2BhColor</a> 
+		<b>pt2BtnholeColorType</b> 
+	</field>
+	<field>
+		<a>wp2ByColor</a> 
+		<b>pt2BtnthreadColorType</b> 
 	</field>
 	<field>
 		<a>wp2Button</a> 

@@ -19,7 +19,7 @@ public class DomainConst {
 	public static final String SEND2FACTORY_STATUS_3 = "3";
 	// 工場自動連携ステータス 送信失敗 データエラー
 	public static final String SEND2FACTORY_STATUS_4 = "4";
-	// 工場自動連携ステータス 送信失敗 エラーデータと同一会計
+	// 工場自動連携ステータス 送信失敗 送信タイムアウト
 	public static final String SEND2FACTORY_STATUS_5 = "5";
 
 	// 会計ステータス 会計済

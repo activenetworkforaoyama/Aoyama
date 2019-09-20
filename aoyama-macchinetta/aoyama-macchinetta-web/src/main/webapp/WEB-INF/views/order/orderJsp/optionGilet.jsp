@@ -1,4 +1,4 @@
-<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
 <div id="op_gilet_div">
     <div class="card-header">
         <strong class="card-title">GILET</strong>
@@ -11,39 +11,40 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_giletModel"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                        <form:select id="giletModel" path="optionGiletStandardInfo.ogGiletModel" class="form-control-sm form-control">
-                        	<form:options items="${orderForm.optionGiletStandardInfo.ogGiletModelMap}"/>
+                        <form:select id="giletModel" path="coOptionGiletStandardInfo.ogGiletModel" class="form-control-sm form-control">
+                        	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogGiletModelMap}"/>
                         </form:select>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="giletModelMsg"></div>
+                    <div class="col-12 col-md-6" align="right" id="giletModel_Msg">
+                    </div>
                     <div class="col-12 col-md-9 offset-md-3" id="giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_breastPkt_id" path="optionGiletStandardInfo.ogBreastPkt" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogBreastPktMap}"/>
+                            <form:radiobuttons id="og_breastPkt_id" path="coOptionGiletStandardInfo.ogBreastPkt" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogBreastPktMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_breastPkt_Msg">
-                       	<%-- <c:if test="${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice == '0'}">
+                    <div class="col-12 col-md-3" align="right" id="og_breastPkt_Msg">
+                       	<%-- <c:if test="${orderCoForm.coOptionGiletStandardInfo.glBtnthreadColorRtPrice == '0'}">
                      		無料
                      	</c:if>
-                     	<c:if test="${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice != '0'}">
-                     		${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice}
+                     	<c:if test="${orderCoForm.coOptionGiletStandardInfo.glBtnthreadColorRtPrice != '0'}">
+                     		${orderCoForm.coOptionGiletStandardInfo.glBtnthreadColorRtPrice}
                      	</c:if> --%>
-<%-- 						${orderForm.optionGiletStandardInfo.glBreastPktRtPrice } --%>
+<%-- 						${orderCoForm.coOptionGiletStandardInfo.glBreastPktRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
                     <div class="col-12 col-md-6">
                       	<div class="form-check-inline form-check">
-                          	<form:radiobuttons id="og_waistPkt_id" path="optionGiletStandardInfo.ogWaistPkt" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWaistPktMap}"/>
+                          	<form:radiobuttons id="og_waistPkt_id" path="coOptionGiletStandardInfo.ogWaistPkt" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogWaistPktMap}"/>
                   		</div>
 	                </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_waistPkt_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glWaistPktRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_waistPkt_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glWaistPktRtPrice } --%>
                     </div>
                 </div>
                 <div id="og_waistPkt_yes_area">
@@ -51,11 +52,11 @@
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_waistPktSpec_id" path="optionGiletStandardInfo.ogWaistPktSpec" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWaistPktSpecMap}"/>
+                            <form:radiobuttons id="og_waistPktSpec_id" path="coOptionGiletStandardInfo.ogWaistPktSpec" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpecMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_waistPktSpec_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glWaistPktShapeRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_waistPktSpec_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glWaistPktShapeRtPrice } --%>
                     </div>
                 </div>
                 </div>
@@ -65,11 +66,11 @@
                     </div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_stitch_id" path="optionGiletStandardInfo.ogStitch" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogStitchMap}"/>
+                            <form:radiobuttons id="og_stitch_id" path="coOptionGiletStandardInfo.ogStitch" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogStitchMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_stitch_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glAmfStitchRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_stitch_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glAmfStitchRtPrice } --%>
                     </div>
                 </div>
                 <div id="og_stitch_yes_area">
@@ -77,7 +78,7 @@
                     <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_stitchModify_id" path="optionGiletStandardInfo.ogStitchModify" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogStitchModifyMap}"/>
+                            <form:radiobuttons id="og_stitchModify_id" path="coOptionGiletStandardInfo.ogStitchModify" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyMap}"/>
                         </div>
                         <div id="og_stitchModifyPlace" style="display:none">
                         <div class="offset-md-1">
@@ -88,25 +89,25 @@
                         </div>
                         <div class="offset-md-1">
                         <%-- <div class="form-check-inline form-check">
-                            <form:checkboxes id="og_stitchModifyPlace_id" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogStitchModifyPlaceMap}" path="optionGiletStandardInfo.ogStitchModifyPlace"/>
+                            <form:checkboxes id="og_stitchModifyPlace_id" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlaceMap}" path="coOptionGiletStandardInfo.ogStitchModifyPlace"/>
                         </div> --%>
-                        <c:forEach var="ogStitchModifyPlaceMap" items="${orderForm.optionGiletStandardInfo.ogStitchModifyPlaceMap }" varStatus="row">
+                        <c:forEach var="ogStitchModifyPlaceMap" items="${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlaceMap }" varStatus="row">
                       		<div class="form-check-inline form-check">
-                      			<input type="checkbox" id="og_stitchModifyPlace_id${row.count}" name="optionGiletStandardInfo.ogStitchModifyPlace${row.count}" value="${ogStitchModifyPlaceMap.key}" class="form-check-input">${ogStitchModifyPlaceMap.value}
+                      			<input type="checkbox" id="og_stitchModifyPlace_id${row.count}" name="coOptionGiletStandardInfo.ogStitchModifyPlace${row.count}" value="${ogStitchModifyPlaceMap.key}" class="form-check-input">${ogStitchModifyPlaceMap.value}
                       		</div>
                       	</c:forEach>
                         </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_stitchModify_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glStitchPlcRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_stitchModify_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glStitchPlcRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_dStitchModify_id" path="optionGiletStandardInfo.ogDStitchModify" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogDStitchModifyMap}"/>
+                            <form:radiobuttons id="og_dStitchModify_id" path="coOptionGiletStandardInfo.ogDStitchModify" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyMap}"/>
                         </div>
                         <div id="og_dStitchModifyPlace" style="display:none">
                         <div class="offset-md-1">
@@ -117,52 +118,52 @@
                         </div>
                         <div class="offset-md-1">
                         <%-- <div class="form-check-inline form-check">
-                            <form:checkboxes id="og_dStitchModifyPlace_id" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogDStitchModifyPlaceMap}" path="optionGiletStandardInfo.ogDStitchModifyPlace"/>
+                            <form:checkboxes id="og_dStitchModifyPlace_id" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlaceMap}" path="coOptionGiletStandardInfo.ogDStitchModifyPlace"/>
                         </div> --%>
-                        <c:forEach var="ogDStitchModifyPlaceMap" items="${orderForm.optionGiletStandardInfo.ogDStitchModifyPlaceMap }" varStatus="row">
+                        <c:forEach var="ogDStitchModifyPlaceMap" items="${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlaceMap }" varStatus="row">
                       		<div class="form-check-inline form-check">
-                      			<input type="checkbox" id="og_dStitchModifyPlace_id${row.count}" name="optionGiletStandardInfo.ogDStitchModifyPlace${row.count}" value="${ogDStitchModifyPlaceMap.key}" class="form-check-input">${ogDStitchModifyPlaceMap.value}
+                      			<input type="checkbox" id="og_dStitchModifyPlace_id${row.count}" name="coOptionGiletStandardInfo.ogDStitchModifyPlace${row.count}" value="${ogDStitchModifyPlaceMap.key}" class="form-check-input">${ogDStitchModifyPlaceMap.value}
                       		</div>
                       	</c:forEach>
                         </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_dStitchModify_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glDblstitchPlcRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_dStitchModify_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glDblstitchPlcRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_amfColor_id" path="optionGiletStandardInfo.ogAmfColor" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogAmfColorMap}"/>
+                            <form:radiobuttons id="og_amfColor_id" path="coOptionGiletStandardInfo.ogAmfColor" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogAmfColorMap}"/>
                         </div>
                         <div id="og_amfColor_div" style="display:none">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="og_amfColorPlaceAll" path="optionGiletStandardInfo.ogAmfColorPlaceAll" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogAmfColorPlaceAllMap}"/>
+                            <form:select id="og_amfColorPlaceAll" path="coOptionGiletStandardInfo.ogAmfColorPlaceAll" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlaceAllMap}"/>
                         	</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_og_amfColorPlace">全選択</button>
                         	<button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_og_amfColorPlace">全解除</button>
                         </div>
                         </div>
                         
-                        <c:forEach var="ogAmfColorPlaceMap" items="${orderForm.optionGiletStandardInfo.ogAmfColorPlaceMap }" varStatus="row">
+                        <c:forEach var="ogAmfColorPlaceMap" items="${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_amfColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_amfColorPlace_${row.count}" name="optionGiletStandardInfo.ogAmfColorPlace${row.count}" value="${ogAmfColorPlaceMap.key }" class="form-check-input">${ogAmfColorPlaceMap.value }
+                                <input type="checkbox" id="og_amfColorPlace_${row.count}" name="coOptionGiletStandardInfo.ogAmfColorPlace${row.count}" value="${ogAmfColorPlaceMap.key }" class="form-check-input">${ogAmfColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="og_amfColorPlace_${row.count}_div"  style="display:none">
-                        		<c:forEach var="ogAmfColorsMap" items="${orderForm.optionGiletStandardInfo.ogAmfColorPlaceAllMap}">
+                        		<c:forEach var="ogAmfColorsMap" items="${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlaceAllMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="og_amfColor" class="form-check-label ">
-                        			    <input type="radio" id="og_amfColor_${ogAmfColorsMap.key}" name="optionGiletStandardInfo.ogAmfColor${row.count}" value="${ogAmfColorsMap.key}" class="form-check-input">${ogAmfColorsMap.value}
+                        			    <input type="radio" id="og_amfColor_${ogAmfColorsMap.key}" name="coOptionGiletStandardInfo.ogAmfColor${row.count}" value="${ogAmfColorsMap.key}" class="form-check-input">${ogAmfColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -171,8 +172,8 @@
                         
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_amfColor_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glAmfColorRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_amfColor_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glAmfColorRtPrice } --%>
                     </div>
                 </div>
                 </div>
@@ -180,13 +181,13 @@
                     <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_bhColor_id" path="optionGiletStandardInfo.ogBhColor" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogBhColorMap}"/>
+                            <form:radiobuttons id="og_bhColor_id" path="coOptionGiletStandardInfo.ogBhColor" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogBhColorMap}"/>
                         </div>
                         <div id="og_bhColor_div" style="display:none">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                        <form:select id="og_bhColorPlaceAll" path="optionGiletStandardInfo.ogBhColorPlaceAll" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogBhColorPlaceAllMap}"/>
+                        <form:select id="og_bhColorPlaceAll" path="coOptionGiletStandardInfo.ogBhColorPlaceAll" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlaceAllMap}"/>
                         </form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_og_bhColorPlace">全選択</button>
                             &nbsp;
@@ -194,21 +195,21 @@
                         </div>
                         </div>
                         
-                        <c:forEach var="ogBhColorPlaceMap" items="${orderForm.optionGiletStandardInfo.ogBhColorPlaceMap }" varStatus="row">
+                        <c:forEach var="ogBhColorPlaceMap" items="${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_bhColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_bhColorPlace_${row.count}" name="optionGiletStandardInfo.ogBhColorPlace${row.count}" value="${ogBhColorPlaceMap.key }" class="form-check-input">${ogBhColorPlaceMap.value }
+                                <input type="checkbox" id="og_bhColorPlace_${row.count}" name="coOptionGiletStandardInfo.ogBhColorPlace${row.count}" value="${ogBhColorPlaceMap.key }" class="form-check-input">${ogBhColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="og_bhColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="ogBhColorsMap" items="${orderForm.optionGiletStandardInfo.ogBhColorsMap}">
+                        		<c:forEach var="ogBhColorsMap" items="${orderCoForm.coOptionGiletStandardInfo.ogBhColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="og_bhColor" class="form-check-label ">
-                        			    <input type="radio" id="og_bhColor_${ogBhColorsMap.key}" name="optionGiletStandardInfo.ogBhColor${row.count}" value="${ogBhColorsMap.key}" class="form-check-input">${ogBhColorsMap.value}
+                        			    <input type="radio" id="og_bhColor_${ogBhColorsMap.key}" name="coOptionGiletStandardInfo.ogBhColor${row.count}" value="${ogBhColorsMap.key}" class="form-check-input">${ogBhColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -216,42 +217,42 @@
                         </c:forEach>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_bhColor_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glBtnholeColorRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_bhColor_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glBtnholeColorRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_byColor_id" path="optionGiletStandardInfo.ogByColor" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogByColorMap}"/>
+                            <form:radiobuttons id="og_byColor_id" path="coOptionGiletStandardInfo.ogByColor" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogByColorMap}"/>
                         </div>
                         <div id="og_byColor_div" style="display:none">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="og_byColorPlaceAll" path="optionGiletStandardInfo.ogByColorPlaceAll" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogByColorPlaceAllMap}"/>
+                            <form:select id="og_byColorPlaceAll" path="coOptionGiletStandardInfo.ogByColorPlaceAll" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogByColorPlaceAllMap}"/>
                             </form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_og_byColorPlace">全選択</button>
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_og_byColorPlace">全解除</button>
                         </div>
                         </div>
                         
-                        <c:forEach var="ogByColorPlaceMap" items="${orderForm.optionGiletStandardInfo.ogByColorPlaceMap }" varStatus="row">
+                        <c:forEach var="ogByColorPlaceMap" items="${orderCoForm.coOptionGiletStandardInfo.ogByColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_byColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="og_byColorPlace_${row.count}" name="optionGiletStandardInfo.ogByColorPlace${row.count}" value="${ogByColorPlaceMap.key }" class="form-check-input">${ogByColorPlaceMap.value }
+                                <input type="checkbox" id="og_byColorPlace_${row.count}" name="coOptionGiletStandardInfo.ogByColorPlace${row.count}" value="${ogByColorPlaceMap.key }" class="form-check-input">${ogByColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="og_byColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="ogByColorsMap" items="${orderForm.optionGiletStandardInfo.ogByColorsMap}">
+                        		<c:forEach var="ogByColorsMap" items="${orderCoForm.coOptionGiletStandardInfo.ogByColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="og_byColor" class="form-check-label ">
-                        			    <input type="radio" id="og_byColor_${ogByColorsMap.key}" name="optionGiletStandardInfo.ogByColor${row.count}" value="${ogByColorsMap.key}" class="form-check-input">${ogByColorsMap.value}
+                        			    <input type="radio" id="og_byColor_${ogByColorsMap.key}" name="coOptionGiletStandardInfo.ogByColor${row.count}" value="${ogByColorsMap.key}" class="form-check-input">${ogByColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -259,8 +260,8 @@
                         </c:forEach>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_byColor_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glBtnthreadColorRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_byColor_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glBtnthreadColorRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -268,16 +269,16 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_og_backLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col-12 col-md-3">
-                        <form:select id="og_backLiningMate" path="optionGiletStandardInfo.ogBackLiningMate" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogBackLiningMateMap}"/>
+                        <form:select id="og_backLiningMate" path="coOptionGiletStandardInfo.ogBackLiningMate" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogBackLiningMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col-12 col-md-3">
-                        <select name="optionGiletStandardInfo.ogBackLiningMateStkNo" id="og_backLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletStandardInfo.ogBackLiningMateStkNo" id="og_backLiningMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_backLiningMate_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glBackClothRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_backLiningMate_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glBackClothRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -285,16 +286,16 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_og_insideLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col-12 col-md-3">
-                        <form:select id="og_insideLiningMate" path="optionGiletStandardInfo.ogInsideLiningMate" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogInsideLiningMateMap}"/>
+                        <form:select id="og_insideLiningMate" path="coOptionGiletStandardInfo.ogInsideLiningMate" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogInsideLiningMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col-12 col-md-3">
-                        <select name="optionGiletStandardInfo.ogInsideLiningMateStkNo" id="og_insideLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletStandardInfo.ogInsideLiningMateStkNo" id="og_insideLiningMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_insideLiningMate_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glInnnerClothRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_insideLiningMate_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glInnnerClothRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -302,38 +303,38 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_og_frontBtnMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col-12 col-md-3">
-                        <form:select id="og_frontBtnMate" path="optionGiletStandardInfo.ogFrontBtnMate" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogFrontBtnMateMap}"/>
+                        <form:select id="og_frontBtnMate" path="coOptionGiletStandardInfo.ogFrontBtnMate" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col-12 col-md-3">
-                        <select name="optionGiletStandardInfo.ogFrontBtnMateStkNo" id="og_frontBtnMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletStandardInfo.ogFrontBtnMateStkNo" id="og_frontBtnMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_frontBtnMate_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glFrtBtnRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_frontBtnMate_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glFrtBtnRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">バックベルト</label></div>
-                    <div class="col-12 col-md-6">
-                        <form:select id="og_backBelt" path="optionGiletStandardInfo.ogBackBelt" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletStandardInfo.ogBackBeltMap}"/>
+                    <div class="col-12 col-md-3">
+                        <form:select id="og_backBelt" path="coOptionGiletStandardInfo.ogBackBelt" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogBackBeltMap}"/>
                         </form:select>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_backBelt_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glBackBeltRtPrice } --%>
+                    <div class="col-12 col-md-6" align="right" id="og_backBelt_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glBackBeltRtPrice } --%>
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ウォッチチェーン</label></div>
                     <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="og_watchChain_id" path="optionGiletStandardInfo.ogWatchChain" class="form-check-input" items="${orderForm.optionGiletStandardInfo.ogWatchChainMap}"/>
+                            <form:radiobuttons id="og_watchChain_id" path="coOptionGiletStandardInfo.ogWatchChain" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.ogWatchChainMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3" align="right" name="ogPriceMsg" id="og_watchChain_Msg">
-<%--                     	${orderForm.optionGiletStandardInfo.glWatchChainRtPrice } --%>
+                    <div class="col-12 col-md-3" align="right" id="og_watchChain_Msg">
+<%--                     	${orderCoForm.coOptionGiletStandardInfo.glWatchChainRtPrice } --%>
                     </div>
                 </div>
             </div>
@@ -355,74 +356,76 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tg_giletModel"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="tg_giletModel" path="optionGiletTuxedoInfo.tgGiletModel" class="form-control-sm form-control">
-                        	<form:options items="${orderForm.optionGiletTuxedoInfo.tgGiletModelMap}"/>
+                    	<form:select id="tg_giletModel" path="coOptionGiletTuxedoInfo.tgGiletModel" class="form-control-sm form-control">
+                        	<form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgGiletModelMap}"/>
                         </form:select>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_giletModelMsg"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="giletModel_Msg"></div>
                     <div class="col-12 col-md-9 offset-md-3" id="tg_giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
-                    <div class="col col-md-9">
+                    <div class="col col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_breastPkt_id" path="optionGiletTuxedoInfo.tgBreastPkt" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgBreastPktMap}"/>
+                            <form:radiobuttons id="tg_breastPkt_id" path="coOptionGiletTuxedoInfo.tgBreastPkt" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgBreastPktMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_breastPktMsg">
+                    <div class="col-12 col-md-3" align="right" id="tg_breastPkt_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
-                    <div class="col col-md-3">
+                    <div class="col col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_waistPkt_id" path="optionGiletTuxedoInfo.tgWaistPkt" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgWaistPktMap}"/>
+                            <form:radiobuttons id="tg_waistPkt_id" path="coOptionGiletTuxedoInfo.tgWaistPkt" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_waistPktMsg">
+                    <div class="col-12 col-md-3" align="right" id="tg_waistPkt_Msg">
                     </div>
                 </div>
                 <div id="tg_waistPkt_yes_area">
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_waistPktSpec_id" path="optionGiletTuxedoInfo.tgWaistPktSpec" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgWaistPktSpecMap}"/>
+                            <form:radiobuttons id="tg_waistPktSpec_id" path="coOptionGiletTuxedoInfo.tgWaistPktSpec" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpecMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_waistPktSpecMsg">
+                    <div class="col-12 col-md-3" align="right" id="tg_waistPktSpec_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット素材</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_waistPktMate_id" path="optionGiletTuxedoInfo.tgWaistPktMate" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgWaistPktMateMap}"/>
+                            <form:radiobuttons id="tg_waistPktMate_id" path="coOptionGiletTuxedoInfo.tgWaistPktMate" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMateMap}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_waistPktSpecMsg">
+                    <div class="col-12 col-md-3" align="right" id="tg_waistPktMate_Msg">
                     </div>
                 </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_stitch_id" path="optionGiletTuxedoInfo.tgStitch" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgStitchMap}"/>
+                            <form:radiobuttons id="tg_stitch_id" path="coOptionGiletTuxedoInfo.tgStitch" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgStitchMap}"/>
                         </div>
+                    </div>
+                    <div class="col-12 col-md-3" align="right" id="tg_stitch_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_bhColor_id" path="optionGiletTuxedoInfo.tgBhColor" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgBhColorMap}"/>
+                            <form:radiobuttons id="tg_bhColor_id" path="coOptionGiletTuxedoInfo.tgBhColor" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorMap}"/>
                         </div>
                         <div id="tg_bhColor_div">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="tg_bhColorPlaceAll" path="optionGiletTuxedoInfo.tgBhColorPlaceAll" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletTuxedoInfo.tgBhColorPlaceAllMap}"/>
+                            <form:select id="tg_bhColorPlaceAll" path="coOptionGiletTuxedoInfo.tgBhColorPlaceAll" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorPlaceAllMap}"/>
                         	</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tg_bhColorPlace">全選択</button>
                             &nbsp;
@@ -430,21 +433,21 @@
                         </div>
                         </div>
                         
-                        <c:forEach var="tgBhColorPlaceMap" items="${orderForm.optionGiletTuxedoInfo.tgBhColorPlaceMap }" varStatus="row">
+                        <c:forEach var="tgBhColorPlaceMap" items="${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorPlaceMap }" varStatus="row">
                          <div class="offset-md-1">
                              <div class="form-check">
                              <div class="checkbox">
                              <label for="tg_bhColorPlace" class="form-check-label ">
-                                 <input type="checkbox" id="tg_bhColorPlace_${row.count}" name="optionGiletTuxedoInfo.tgBhColorPlace" value="${tgBhColorPlaceMap.key }" class="form-check-input">${tgBhColorPlaceMap.value }
+                                 <input type="checkbox" id="tg_bhColorPlace_${row.count}" name="coOptionGiletTuxedoInfo.tgBhColorPlace${row.count}" value="${tgBhColorPlaceMap.key }" class="form-check-input">${tgBhColorPlaceMap.value }
                              </label>
                              </div>
                              </div>
                          </div>
                          <div class="offset-md-2" id="tg_bhColorPlace_${row.count}_div" style="display:none">
-                         	<c:forEach var="tgBhColorsMap" items="${orderForm.optionGiletTuxedoInfo.tgBhColorsMap}">
+                         	<c:forEach var="tgBhColorsMap" items="${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorsMap}">
                        		  <div class="form-check-inline form-check">
                        		     <label for="tg_bhColor" class="form-check-label ">
-                       			    <input type="radio" id="tg_bhColor_${tgBhColorsMap.key}" name="optionGiletTuxedoInfo.tgBhColor${row.count}" value="${tgBhColorsMap.key}" class="form-check-input">${tgBhColorsMap.value}
+                       			    <input type="radio" id="tg_bhColor_${tgBhColorsMap.key}" name="coOptionGiletTuxedoInfo.tgBhColor${row.count}" value="${tgBhColorsMap.key}" class="form-check-input">${tgBhColorsMap.value}
                        		     </label>
                        		  </div>
                        		</c:forEach>
@@ -452,18 +455,20 @@
                      </c:forEach>
                      </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="tg_bhColor_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                         <div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_byColor_id" path="optionGiletTuxedoInfo.tgByColor" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgByColorMap}"/>
+                            <form:radiobuttons id="tg_byColor_id" path="coOptionGiletTuxedoInfo.tgByColor" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgByColorMap}"/>
                         </div>
                         <div id="tg_byColor_div">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="tg_byColorPlaceAll" path="optionGiletTuxedoInfo.tgByColorPlaceAll" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletTuxedoInfo.tgByColorPlaceAllMap}"/>
+                            <form:select id="tg_byColorPlaceAll" path="coOptionGiletTuxedoInfo.tgByColorPlaceAll" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgByColorPlaceAllMap}"/>
                             </form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tg_byColorPlace">全選択</button>
                             &nbsp;
@@ -471,21 +476,21 @@
                         </div>
                         </div>
                         
-                        <c:forEach var="tgByColorPlaceMap" items="${orderForm.optionGiletTuxedoInfo.tgByColorPlaceMap }" varStatus="row">
+                        <c:forEach var="tgByColorPlaceMap" items="${orderCoForm.coOptionGiletTuxedoInfo.tgByColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="og_byColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="tg_byColorPlace_${row.count}" name="optionGiletTuxedoInfo.tgByColorPlace" value="${tgByColorPlaceMap.key }" class="form-check-input">${tgByColorPlaceMap.value }
+                                <input type="checkbox" id="tg_byColorPlace_${row.count}" name="coOptionGiletTuxedoInfo.tgByColorPlace${row.count}" value="${tgByColorPlaceMap.key }" class="form-check-input">${tgByColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="tg_byColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="tgByColorsMap" items="${orderForm.optionGiletTuxedoInfo.tgByColorsMap}">
+                        		<c:forEach var="tgByColorsMap" items="${orderCoForm.coOptionGiletTuxedoInfo.tgByColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="tg_byColor" class="form-check-label ">
-                        			    <input type="radio" id="tg_byColor_${tgByColorsMap.key}" name="optionGiletTuxedoInfo.tgByColor${row.count}" value="${tgByColorsMap.key}" class="form-check-input">${tgByColorsMap.value}
+                        			    <input type="radio" id="tg_byColor_${tgByColorsMap.key}" name="coOptionGiletTuxedoInfo.tgByColor${row.count}" value="${tgByColorsMap.key}" class="form-check-input">${tgByColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -493,19 +498,23 @@
                         </c:forEach>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="tg_byColor_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">背裏地素材</label>
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tg_backLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="tg_backLiningMate" path="optionGiletTuxedoInfo.tgBackLiningMate" class="form-control-sm form-control">
-                            	<form:options items="${orderForm.optionGiletTuxedoInfo.tgBackLiningMateMap}"/>
+                    	<form:select id="tg_backLiningMate" path="coOptionGiletTuxedoInfo.tgBackLiningMate" class="form-control-sm form-control">
+                            	<form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgBackLiningMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="tg_backLiningMateStkNo" id="tg_backLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletTuxedoInfo.tgBackLiningMateStkNo" id="tg_backLiningMateStkNo" class="form-control-sm form-control">
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2" align="right" id="tg_backLiningMate_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -513,13 +522,15 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tg_insideLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="tg_insideLiningMate" path="optionGiletTuxedoInfo.tgInsideLiningMate" class="form-control-sm form-control">
-                            <form:options items="${orderForm.optionGiletTuxedoInfo.tgInsideLiningMateMap}"/>
+                    	<form:select id="tg_insideLiningMate" path="coOptionGiletTuxedoInfo.tgInsideLiningMate" class="form-control-sm form-control">
+                            <form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgInsideLiningMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="tg_insideLiningMateStkNo" id="tg_insideLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletTuxedoInfo.tgInsideLiningMateStkNo" id="tg_insideLiningMateStkNo" class="form-control-sm form-control">
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2" align="right" id="tg_insideLiningMate_Msg">
                     </div>
                 </div>
                 
@@ -528,31 +539,35 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tg_frontBtnMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="tg_frontBtnMate" path="optionGiletTuxedoInfo.tgFrontBtnMate" class="form-control-sm form-control">
-                            <form:options items="${orderForm.optionGiletTuxedoInfo.tgFrontBtnMateMap}"/>
+                    	<form:select id="tg_frontBtnMate" path="coOptionGiletTuxedoInfo.tgFrontBtnMate" class="form-control-sm form-control">
+                            <form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateMap}"/>
                         </form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="tg_frontBtnMateStkNo" id="tg_frontBtnMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo" id="tg_frontBtnMateStkNo" class="form-control-sm form-control">
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2" align="right" id="tg_frontBtnMate_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">バックベルト</label></div>
                     <div class="col col-md-3">
-                    	<form:select id="tg_backBelt" path="optionGiletTuxedoInfo.tgBackBelt" class="form-control-sm form-control">
-                            <form:options items="${orderForm.optionGiletTuxedoInfo.tgBackBeltMap}"/>
+                    	<form:select id="tg_backBelt" path="coOptionGiletTuxedoInfo.tgBackBelt" class="form-control-sm form-control">
+                            <form:options items="${orderCoForm.coOptionGiletTuxedoInfo.tgBackBeltMap}"/>
                         </form:select>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="tg_backBeltMsg">
+                    <div class="col-12 col-md-6" align="right" id="tg_backBelt_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ウォッチチェーン</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-                            <form:radiobuttons id="tg_watchChain_id" path="optionGiletTuxedoInfo.tgWatchChain" class="form-check-input" items="${orderForm.optionGiletTuxedoInfo.tgWatchChainMap}"/>
+                            <form:radiobuttons id="tg_watchChain_id" path="coOptionGiletTuxedoInfo.tgWatchChain" class="form-check-input" items="${orderCoForm.coOptionGiletTuxedoInfo.tgWatchChainMap}"/>
                         </div>
+                    </div>
+                    <div class="col-12 col-md-3" align="right" id="tg_watchChain_Msg">
                     </div>
                 </div>
             </div>
@@ -573,60 +588,62 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wg_giletModel"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="wg_giletModel" path="optionGiletWashableInfo.wgGiletModel" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgGiletModelMap}"/>
+                    	<form:select id="wg_giletModel" path="coOptionGiletWashableInfo.wgGiletModel" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgGiletModelMap}"/>
 						</form:select>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="wg_giletModelMsg"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="giletModel_Msg"></div>
                     <div class="col-12 col-md-9 offset-md-3" id="wg_giletModelCheck" style="margin-top:8px"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
-                    <div class="col col-md-9">
+                    <div class="col col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_breastPkt_id" path="optionGiletWashableInfo.wgBreastPkt" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgBreastPktMap}"/>
+							<form:radiobuttons id="wg_breastPkt_id" path="coOptionGiletWashableInfo.wgBreastPkt" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgBreastPktMap}"/>
 						</div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="wg_breastPktMsg">
+                    <div class="col-12 col-md-3" align="right" id="wg_breastPkt_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
-                    <div class="col col-md-9">
+                    <div class="col col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_waistPkt_id" path="optionGiletWashableInfo.wgWaistPkt" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgWaistPktMap}"/>
+							<form:radiobuttons id="wg_waistPkt_id" path="coOptionGiletWashableInfo.wgWaistPkt" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgWaistPktMap}"/>
 						</div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="wg_waistPktMsg">
+                    <div class="col-12 col-md-3" align="right" id="wg_waistPkt_Msg">
                     </div>
                 </div>
                 <div id="wg_waistPkt_yes_area">
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_waistPktSpec_id" path="optionGiletWashableInfo.wgWaistPktSpec" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgWaistPktSpecMap}"/>
+							<form:radiobuttons id="wg_waistPktSpec_id" path="coOptionGiletWashableInfo.wgWaistPktSpec" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpecMap}"/>
 						</div>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="wg_waistPktSpecMsg">
+                    <div class="col-12 col-md-3" align="right" id="wg_waistPktSpec_Msg">
                     </div>
                 </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_stitch_id" path="optionGiletWashableInfo.wgStitch" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgStitchMap}"/>
+							<form:radiobuttons id="wg_stitch_id" path="coOptionGiletWashableInfo.wgStitch" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgStitchMap}"/>
 						</div>
+                    </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_stitch_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_stitchModify_id" path="optionGiletWashableInfo.wgStitchModify" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgStitchModifyMap}"/>
+							<form:radiobuttons id="wg_stitchModify_id" path="coOptionGiletWashableInfo.wgStitchModify" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgStitchModifyMap}"/>
 						</div>
-                        <div id="wg_stitchModifyPlace">
+                        <div id="wg_stitchModifyPlace"  style="display:none">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wg_stitchModifyPlace">全選択</button>&nbsp;
@@ -635,24 +652,26 @@
                         </div>
                         <div class="offset-md-1">
                         <%-- <div class="form-check-inline form-check">
-							<form:checkboxes id="wg_stitchModifyPlace_id" path="optionGiletWashableInfo.wgStitchModifyPlace" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgStitchModifyPlaceMap}"/>
+							<form:checkboxes id="wg_stitchModifyPlace_id" path="coOptionGiletWashableInfo.wgStitchModifyPlace" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgStitchModifyPlaceMap}"/>
 						</div> --%>
-						<c:forEach var="wgStitchModifyPlaceMap" items="${orderForm.optionGiletWashableInfo.wgStitchModifyPlaceMap }" varStatus="row">
+						<c:forEach var="wgStitchModifyPlaceMap" items="${orderCoForm.coOptionGiletWashableInfo.wgStitchModifyPlaceMap }" varStatus="row">
                       		<div class="form-check-inline form-check">
-                      			<input type="checkbox" id="wg_stitchModifyPlace_id${row.count}" name="optionGiletWashableInfo.wgStitchModifyPlace${row.count}" value="${wgStitchModifyPlaceMap.key}" class="form-check-input">${wgStitchModifyPlaceMap.value}
+                      			<input type="checkbox" id="wg_stitchModifyPlace_id${row.count}" name="coOptionGiletWashableInfo.wgStitchModifyPlace${row.count}" value="${wgStitchModifyPlaceMap.key}" class="form-check-input">${wgStitchModifyPlaceMap.value}
                       		</div>
                       	</c:forEach>
                         </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_stitchModify_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_dStitchModify_id" path="optionGiletWashableInfo.wgDStitchModify" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgDStitchModifyMap}"/>
+							<form:radiobuttons id="wg_dStitchModify_id" path="coOptionGiletWashableInfo.wgDStitchModify" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgDStitchModifyMap}"/>
 						</div>
-                        <div id="wg_dStitchModifyPlace">
+                        <div id="wg_dStitchModifyPlace"  style="display:none">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wg_dStitchModifyPlace">全選択</button>&nbsp;
@@ -661,49 +680,51 @@
                         </div>
                         <div class="offset-md-1">
                         <%-- <div class="form-check-inline form-check">
-							<form:checkboxes id="wg_dStitchModifyPlace_id" path="optionGiletWashableInfo.wgDStitchModifyPlace" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgDStitchModifyPlaceMap}"/>
+							<form:checkboxes id="wg_dStitchModifyPlace_id" path="coOptionGiletWashableInfo.wgDStitchModifyPlace" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgDStitchModifyPlaceMap}"/>
 						</div> --%>
-						<c:forEach var="wgDStitchModifyPlaceMap" items="${orderForm.optionGiletWashableInfo.wgDStitchModifyPlaceMap }" varStatus="row">
+						<c:forEach var="wgDStitchModifyPlaceMap" items="${orderCoForm.coOptionGiletWashableInfo.wgDStitchModifyPlaceMap }" varStatus="row">
                       		<div class="form-check-inline form-check">
-                      			<input type="checkbox" id="wg_dStitchModifyPlace_id${row.count}" name="optionGiletWashableInfo.wgDStitchModifyPlace${row.count}" value="${wgDStitchModifyPlaceMap.key}" class="form-check-input">${wgDStitchModifyPlaceMap.value}
+                      			<input type="checkbox" id="wg_dStitchModifyPlace_id${row.count}" name="coOptionGiletWashableInfo.wgDStitchModifyPlace${row.count}" value="${wgDStitchModifyPlaceMap.key}" class="form-check-input">${wgDStitchModifyPlaceMap.value}
                       		</div>
                       	</c:forEach>
                         </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_dStitchModify_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_amfColor_id" path="optionGiletWashableInfo.wgAmfColor" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgAmfColorMap}"/>
+							<form:radiobuttons id="wg_amfColor_id" path="coOptionGiletWashableInfo.wgAmfColor" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgAmfColorMap}"/>
 						</div>
                         <div id="wg_amfColor_div" style="display:none;">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                         <form:select id="wg_amfColorPlaceAll_id" path="optionGiletWashableInfo.wgAmfColorPlaceAll" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgAmfColorPlaceAllMap}"/>
+                         <form:select id="wg_amfColorPlaceAll" path="coOptionGiletWashableInfo.wgAmfColorPlaceAll" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgAmfColorPlaceAllMap}"/>
 						</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wg_amfColorPlace">全選択</button>
                             &nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wg_amfColorPlace">全解除</button>
                         </div>
                         </div>
-                        <c:forEach var="wgAmfColorPlaceMap" items="${orderForm.optionGiletWashableInfo.wgAmfColorPlaceMap }" varStatus="row">
+                        <c:forEach var="wgAmfColorPlaceMap" items="${orderCoForm.coOptionGiletWashableInfo.wgAmfColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_amfColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_amfColorPlace_${row.count}" name="optionGiletWashableInfo.wgAmfColorPlace${row.count}" value="${wgAmfColorPlaceMap.key }" class="form-check-input">${wgAmfColorPlaceMap.value }
+                                <input type="checkbox" id="wg_amfColorPlace_${row.count}" name="coOptionGiletWashableInfo.wgAmfColorPlace${row.count}" value="${wgAmfColorPlaceMap.key }" class="form-check-input">${wgAmfColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="wg_amfColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="wgAmfColorsMap" items="${orderForm.optionGiletWashableInfo.wgAmfColorPlaceAllMap}">
+                        		<c:forEach var="wgAmfColorsMap" items="${orderCoForm.coOptionGiletWashableInfo.wgAmfColorPlaceAllMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="wg_amfColor" class="form-check-label ">
-                        			    <input type="radio" id="wg_amfColor_${wgAmfColorsMap.key}" name="optionGiletWashableInfo.wgAmfColor${row.count}" value="${wgAmfColorsMap.key}" class="form-check-input">${wgAmfColorsMap.value}
+                        			    <input type="radio" id="wg_amfColor_${wgAmfColorsMap.key}" name="coOptionGiletWashableInfo.wgAmfColor${row.count}" value="${wgAmfColorsMap.key}" class="form-check-input">${wgAmfColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -711,39 +732,41 @@
                         </c:forEach>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_amfColor_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_bhColor_id" path="optionGiletWashableInfo.wgBhColor" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgBhColorMap}"/>
+							<form:radiobuttons id="wg_bhColor_id" path="coOptionGiletWashableInfo.wgBhColor" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgBhColorMap}"/>
 						</div>
                         <div id="wg_bhColor_div">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="wg_bhColorPlaceAll" path="optionGiletWashableInfo.wgBhColorPlaceAll" class="form-control-sm form-control">
-								<form:options items="${orderForm.optionGiletWashableInfo.wgBhColorPlaceAllMap}"/>
+                            <form:select id="wg_bhColorPlaceAll" path="coOptionGiletWashableInfo.wgBhColorPlaceAll" class="form-control-sm form-control">
+								<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgBhColorPlaceAllMap}"/>
 							</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wg_bhColorPlace">全選択</button>
                             &nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wg_bhColorPlace">全解除</button>
                         </div>
                         </div>
-                        <c:forEach var="wgBhColorPlaceMap" items="${orderForm.optionGiletWashableInfo.wgBhColorPlaceMap }" varStatus="row">
+                        <c:forEach var="wgBhColorPlaceMap" items="${orderCoForm.coOptionGiletWashableInfo.wgBhColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_bhColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_bhColorPlace_${row.count}" name="optionGiletWashableInfo.wgBhColorPlace${row.count}" value="${wgBhColorPlaceMap.key }" class="form-check-input">${wgBhColorPlaceMap.value }
+                                <input type="checkbox" id="wg_bhColorPlace_${row.count}" name="coOptionGiletWashableInfo.wgBhColorPlace${row.count}" value="${wgBhColorPlaceMap.key }" class="form-check-input">${wgBhColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="wg_bhColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="wgBhColorsMap" items="${orderForm.optionGiletWashableInfo.wgBhColorsMap}">
+                        		<c:forEach var="wgBhColorsMap" items="${orderCoForm.coOptionGiletWashableInfo.wgBhColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="wg_bhColor" class="form-check-label ">
-                        			    <input type="radio" id="wg_byColor_${wgBhColorsMap.key}" name="optionGiletWashableInfo.wgBhColor${row.count}" value="${wgBhColorsMap.key}" class="form-check-input">${wgBhColorsMap.value}
+                        			    <input type="radio" id="wg_byColor_${wgBhColorsMap.key}" name="coOptionGiletWashableInfo.wgBhColor${row.count}" value="${wgBhColorsMap.key}" class="form-check-input">${wgBhColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -751,45 +774,49 @@
                         </c:forEach>
                         </div>
                     </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_bhColor_Msg">
+                    </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_byColor_id" path="optionGiletWashableInfo.wgByColor" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgByColorMap}"/>
+							<form:radiobuttons id="wg_byColor_id" path="coOptionGiletWashableInfo.wgByColor" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgByColorMap}"/>
 						</div>
                         <div id="wg_byColor_div">
                         <div class="offset-md-1">
                         <div class="form-check-inline form-check">
-                            <form:select id="wg_byColorPlaceAll" path="optionGiletWashableInfo.wgByColorPlaceAll" class="form-control-sm form-control">
-								<form:options items="${orderForm.optionGiletWashableInfo.wgByColorPlaceAllMap}"/>
+                            <form:select id="wg_byColorPlaceAll" path="coOptionGiletWashableInfo.wgByColorPlaceAll" class="form-control-sm form-control">
+								<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgByColorPlaceAllMap}"/>
 							</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wg_byColorPlace">全選択</button>
                             &nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wg_byColorPlace">全解除</button>
                         </div>
                         </div>
-                        <c:forEach var="wgByColorPlaceMap" items="${orderForm.optionGiletWashableInfo.wgByColorPlaceMap }" varStatus="row">
+                        <c:forEach var="wgByColorPlaceMap" items="${orderCoForm.coOptionGiletWashableInfo.wgByColorPlaceMap }" varStatus="row">
                         	<div class="offset-md-1">
                             <div class="form-check">
                             <div class="checkbox">
                             <label for="wg_byColorPlace" class="form-check-label ">
-                                <input type="checkbox" id="wg_byColorPlace_${row.count}" name="optionGiletWashableInfo.wgByColorPlace${row.count}" value="${wgByColorPlaceMap.key }" class="form-check-input">${wgByColorPlaceMap.value }
+                                <input type="checkbox" id="wg_byColorPlace_${row.count}" name="coOptionGiletWashableInfo.wgByColorPlace${row.count}" value="${wgByColorPlaceMap.key }" class="form-check-input">${wgByColorPlaceMap.value }
                             </label>
                             </div>
                             </div>
                         	</div>
                         	<div class="offset-md-2" id="wg_byColorPlace_${row.count}_div" style="display:none">
-                        		<c:forEach var="wgByColorsMap" items="${orderForm.optionGiletWashableInfo.wgByColorsMap}">
+                        		<c:forEach var="wgByColorsMap" items="${orderCoForm.coOptionGiletWashableInfo.wgByColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="wg_bhColor" class="form-check-label ">
-                        			    <input type="radio" id="wg_byColor_${wgByColorsMap.key}" name="optionGiletWashableInfo.wgByColor${row.count}" value="${wgByColorsMap.key}" class="form-check-input">${wgByColorsMap.value}
+                        			    <input type="radio" id="wg_byColor_${wgByColorsMap.key}" name="coOptionGiletWashableInfo.wgByColor${row.count}" value="${wgByColorsMap.key}" class="form-check-input">${wgByColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
                         	</div>
                         </c:forEach>
                         </div>
+                    </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_byColor_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -797,16 +824,18 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wg_backLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="wg_backLiningMate" path="optionGiletWashableInfo.wgBackLiningMate" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgBackLiningMateMap}"/>
+                    	<form:select id="wg_backLiningMate" path="coOptionGiletWashableInfo.wgBackLiningMate" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgBackLiningMateMap}"/>
 						</form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="wg_backLiningMateStkNo" id="wg_backLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletWashableInfo.wgBackLiningMateStkNo" id="wg_backLiningMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col col-md-2">
+                    <div class="col col-md-1">
                         <button type="button" class="btn btn-outline-info btn-sm" id="btn_wg_backLiningMate">上着と同じ</button>
+                    </div>
+                    <div class="col-12 col-md-1" align="right" id="wg_backLiningMate_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -814,13 +843,15 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wg_insideLiningMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="wg_insideLiningMate" path="optionGiletWashableInfo.wgInsideLiningMate" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgInsideLiningMateMap}"/>
+                    	<form:select id="wg_insideLiningMate" path="coOptionGiletWashableInfo.wgInsideLiningMate" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgInsideLiningMateMap}"/>
 						</form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="wg_insideLiningMateStkNo" id="wg_insideLiningMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletWashableInfo.wgInsideLiningMateStkNo" id="wg_insideLiningMateStkNo" class="form-control-sm form-control">
                         </select>
+                    </div>
+                    <div class="col-12 col-md-2" align="right" id="wg_insideLiningMate_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
@@ -828,51 +859,59 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wg_frontBtnMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="wg_frontBtnMate" path="optionGiletWashableInfo.wgFrontBtnMate" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgFrontBtnMateMap}"/>
+                    	<form:select id="" path="coOptionGiletWashableInfo.wgFrontBtnMate" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateMap}"/>
 						</form:select>
                     </div>
                     <div class="col col-md-4">
-                        <select name="wg_frontBtnMateStkNo" id="wg_frontBtnMateStkNo" class="form-control-sm form-control">
+                        <select name="coOptionGiletWashableInfo.wgFrontBtnMateStkNo" id="wg_frontBtnMateStkNo" class="form-control-sm form-control">
                         </select>
                     </div>
-                    <div class="col col-md-2">
+                    <div class="col col-md-1">
                         <button type="button" class="btn btn-outline-info btn-sm" id="btn_wg_frontBtnMate">上着と同じ</button>
+                    </div>
+                    <div class="col-12 col-md-1" align="right" id="wg_frontBtnMate_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">バックベルト</label></div>
                     <div class="col col-md-3">
-                    	<form:select id="wg_backBelt" path="optionGiletWashableInfo.wgBackBelt" class="form-control-sm form-control">
-							<form:options items="${orderForm.optionGiletWashableInfo.wgBackBeltMap}"/>
+                    	<form:select id="wg_backBelt" path="coOptionGiletWashableInfo.wgBackBelt" class="form-control-sm form-control">
+							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgBackBeltMap}"/>
 						</form:select>
                     </div>
-                    <div class="col-12 col-md-9 offset-md-3" id="wg_backBeltMsg">
+                    <div class="col-12 col-md-6" align="right" id="wg_backBelt_Msg">
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">ウォッチチェーン</label></div>
-                    <div class="col-12 col-md-9">
+                    <div class="col-12 col-md-6">
                     	<div class="form-check-inline form-check">
-							<form:radiobuttons id="wg_watchChain_id" path="optionGiletWashableInfo.wgWatchChain" class="form-check-input" items="${orderForm.optionGiletWashableInfo.wgWatchChainMap}"/>
+							<form:radiobuttons id="wg_watchChain_id" path="coOptionGiletWashableInfo.wgWatchChain" class="form-check-input" items="${orderCoForm.coOptionGiletWashableInfo.wgWatchChainMap}"/>
 						</div>
+                    </div>
+                    <div class="col-12 col-md-3" align="right" id="wg_watchChain_Msg">
                     </div>
                 </div>
             </div>
         </div>
     </div>
     </div>
-    <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderForm.jacketItemFlag }"/>
-	<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderForm.pantsItemFlag }"/>
+    <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
+	<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderCoForm.pantsItemFlag }"/>
 	<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="0"/>
-	<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderForm.shirtItemFlag }"/>
-	<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
-	<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
+	<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderCoForm.shirtItemFlag }"/>
+	<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
+	<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
     
     <input type="hidden" id="giletFlag" name="giletFlag" value="0"/>
     
-    <input type="hidden" id="giletAdFlag"
-		name="giletAdFlag" value="0" />	
+	<input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />	
+	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+	<input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+	<input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+	<input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+	<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 </form:form>
 
 <!-- 自作js -->
@@ -903,13 +942,22 @@ var selectIdList = {
 };
 
 jQuery(function() {
+	var giletAdFlag="${orderCoForm.giletAdFlag}";
+	if(giletAdFlag=="1"){
+		jQuery("#giletAdFlag").val("${orderCoForm.giletAdFlag}");
+		}else{
+			jQuery("#giletAdFlag").val("0");
+			}
+	jQuery("#giletModel").change(function(){
+		jQuery("#giletAdFlag").val("0");
+	})
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-	
-	var productCategory = "${orderForm.productCategory}";
+
+    var productCategory = jQuery('input[name="productCategory"]:checked').val();
 
 	getModelByItem(productCategory);
 
@@ -934,13 +982,13 @@ jQuery(function() {
 	initProduct();
 
 	//--------------------------------------------
-	// オプションタブ（Jacket）
+	// オプションタブ（Gilet）
 	//--------------------------------------------
- 	if(productCategory == "0"){
+ 	if(productCategory == "9000101"){
  		initOptionGiletStandard();
-	}else if(productCategory == "2"){
+	}else if(productCategory == "9000102"){
 		initOptionGiletTuxedo();
-	}else if(productCategory == "1"){
+	}else if(productCategory == "9000103"){
 		initOptionGiletWashable();
 	}
  	
@@ -952,7 +1000,13 @@ jQuery(function() {
 	mateInit();
 
 	getPrice();
-	
+
+	modelWhetherEmpty();
+
+	doubleOptionModelPrice();
+
+	ogSession();
+
 	jQuery("#giletItemFlag").val("1");
 
 })	
@@ -960,11 +1014,11 @@ jQuery(function() {
 function getModelByItem(productCategory){
 	var glModel = null;
 	
-	if(productCategory == "0"){
+	if(productCategory == "9000101"){
 		glModel = document.getElementById("giletModel");
-	}else if(productCategory == "2"){
+	}else if(productCategory == "9000102"){
 		glModel = document.getElementById("tg_giletModel");
-	}else if(productCategory == "1"){
+	}else if(productCategory == "9000103"){
 		glModel = document.getElementById("wg_giletModel");
 	}
 
@@ -995,21 +1049,21 @@ function mateInit(){
 	//SUITの場合　素材品番を設定
 	if(item == "01"){
 		itemCode = item;
-		if(category == "0"){
+		if(category == "9000101"){
 			initSuitStandard(itemCode);
-		}else if(category == "2"){
+		}else if(category == "9000102"){
 			initSuitTuexdo(itemCode);
-		}else if(category == "1"){
+		}else if(category == "9000103"){
 			initSuitWashable(itemCode);
 		}
 	}else if(item=="04"){
 		subItemCode = "04";
 		itemCode = item;
-		if(category=="0"){
+		if(category=="9000101"){
 			initGlStandard(itemCode,subItemCode);
-		}else if(category=="2"){
+		}else if(category=="9000102"){
 			initGlTuexdo(itemCode,subItemCode);
-		}else if(category=="1"){
+		}else if(category=="9000103"){
 			initGlWashable(itemCode,subItemCode);
 		}
 	}
@@ -1137,54 +1191,175 @@ function getAllPrice(subItemCode, optionPrice){
     jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
 }
 
+function modelWhetherEmpty(){
+	var giletModel = jQuery("#giletModel option:selected").val();
+	if(!(giletModel == "")){
+		jQuery("#giletModel").change();
+	}
+}
+
+function doubleOptionModelPrice(){
+	var modelDoublePrice = null;
+	jQuery("#giletModel_Msg").empty();
+	var productCategory = jQuery('input[name="productCategory"]:checked').val();
+
+	if(productCategory == "9000101"){
+		modelDoublePrice = jQuery("#giletModel");
+	}else if(productCategory == "9000102"){
+		modelDoublePrice = jQuery("#tg_giletModel");
+	}else if(productCategory == "9000103"){
+		modelDoublePrice = jQuery("#wg_giletModel");
+	}
+
+	var modelDoublePriceVal = modelDoublePrice.val();
+	
+	var productFabricNo = jQuery("#productFabricNo").val();
+	var item = jQuery("#item").val();
+	var subItem = "04";
+
+	//生地チェクフラッグ
+	var fabricCheckValue = jQuery("#fabricFlag").val();
+	//fabricCheckValue[0]:0 or 1 or 2 
+	//fabricCheckValue[1]:エラーメッセージ 
+	fabricCheckValue = fabricCheckValue.split("*");
+	//生地チェク成功の場合
+	if((fabricCheckValue[0]=="0")&&isNotEmpty(productFabricNo)){
+		jQuery.ajax({
+			 type:"get",
+			 url: contextPath + "/orderCo/findStockModelDoublePrice",
+			 data:{"fabricNo":productFabricNo,"orderPattern":orderPattern,"doubleCheck":modelDoublePriceVal,"item":item,"subItem":subItem},
+			 async:false,
+			 success:function(result){
+				if(isNotEmpty(result)){
+					if(result.glDoublePrice == "0" || result.glDoublePrice == 0){
+						jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+						jQuery("#giletModel_Msg").html("無料");
+						allOptionPrice();
+					}else{
+						jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+						jQuery("#giletModel_Msg").html(formatMoney(result.glDoublePrice,0,"￥"));
+						allOptionPrice();
+					}
+				}else{
+					jQuery("#glDoubleModelPrice").val("0");
+					jQuery("#giletModel_Msg").html("無料");
+					allOptionPrice();
+				}
+		     }
+		});
+	}
+
+	jQuery('#giletModel,#tg_giletModel,#wg_giletModel').change(function(){
+		var modelDoublePrice = jQuery(this).val();
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		fabricCheckValue = fabricCheckValue.split("*");
+		//生地チェク成功の場合
+		if((fabricCheckValue[0]=="0")&&isNotEmpty(productFabricNo)){
+			jQuery.ajax({
+				 type:"get",
+				 url: contextPath + "/orderCo/findStockModelDoublePrice",
+				 data:{"fabricNo":productFabricNo,"orderPattern":orderPattern,"doubleCheck":modelDoublePrice,"item":item,"subItem":subItem},
+				 async:false,
+				 success:function(result){
+					if(isNotEmpty(result)){
+						if(result.glDoublePrice == "0" || result.glDoublePrice == 0){
+							jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+							jQuery("#giletModel_Msg").html("無料");
+							allOptionPrice();
+						}else{
+							jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+							jQuery("#giletModel_Msg").html(formatMoney(result.glDoublePrice,0,"￥"));
+							allOptionPrice();
+						}
+					}else{
+						jQuery("#glDoubleModelPrice").val("0");
+						jQuery("#giletModel_Msg").html("無料");
+						allOptionPrice();
+					}
+			     }
+			});
+		}
+	})
+	
+}
 
 //--------------------------------------------
 //全部のitem金額制御
 //--------------------------------------------
 function getPrice(){
 // 	GILETの料金を表示
-	jQuery("#giletModel").change(function(){
+	jQuery("#giletModel,#tg_giletModel,#wg_giletModel").change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
 		var giletModel = jQuery("#giletModel option:selected").val();
-		var itemCode = "04";
-		var subItemCode = jQuery("#item").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
 
 		var code = itemCode + subItemCode + giletModel;
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardModel";
+		}else if(productCategory == "9000102"){
+			ajaxUrl = "getOrderPriceForGiletTuxedoModel";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableModel";
+		}
 		$.ajax({
 			type:"get",
-			url:contextPath + "/orderCo/getOrderPriceForGiletModel",
+			url:contextPath + "/orderCo/" + ajaxUrl,
 			data:{"code":code},
 			dataType:"json",
 			contentType:"application/json",
 			async:false,
 			success:function(result){
-				var ogPriceMsg = document.getElementsByName("ogPriceMsg");
-				for(var i=0; i<ogPriceMsg.length; i++){
-					ogPriceMsg[i].innerHTML = result.ogPriceMsg[i];
+				var allPriceMap = result.priceMap;
+				for (var priceMapKey in allPriceMap) {
+					if(jQuery("#"+priceMapKey+"_Msg").length>0){
+						jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+					}else{
+						var msgIdValueName = priceMapKey.replace(/_id/g,"_Msg");
+						jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+					}
 				}
+				
+// 				document.getElementById("nav2_GILET").click(); 
 				getAllPrice(subItemCode, result.optionPrice);
 			}
 		});
-		//document.getElementById("nav2_GILET").click();
+		
 	})
 	
 // 	プルダウンの変更処理
-// 	項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番
-	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt")
+// 	項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番,バックベルト
+	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt,#tg_backLiningMate,#tg_backLiningMateStkNo,#tg_insideLiningMate,#tg_insideLiningMateStkNo,#tg_frontBtnMate,#tg_frontBtnMateStkNo,#tg_backBelt,#wg_backLiningMate,#wg_backLiningMateStkNo,#wg_insideLiningMate,#wg_insideLiningMateStkNo,#wg_frontBtnMate,#wg_frontBtnMateStkNo,#wg_backBelt")
 	.change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   
 		var giletModel = jQuery("#giletModel option:selected").val();
-		var itemCode = "04";
-		var subItemCode = jQuery("#item").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
 		
 		if(isNotEmpty(giletModel)){
 			var code = itemCode + subItemCode + giletModel;
 			jQuery.ajax({
 				type:"get",
-				url:contextPath + "/orderCo/getOrderPriceForGiletProject",
+				url:contextPath + "/orderCo/" + ajaxUrl,
 				data:{"code":code,"idValueName":idValueName},
 				dataType:"json",
 				contentType:"application/json",
@@ -1205,15 +1380,25 @@ function getPrice(){
 	});
 	
 // 	ラジオボタンの変更処理
-// 	項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊[id^="og_amfColor_id"],[id^="og_bhColor_id"],[id^="og_byColor_id"]
-	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_stitch_id"],[id^="og_stitchModify_id"],[id^="og_dStitchModify_id"],[id^="og_watchChain_id"]')
+// 	項目：胸ポケット、腰ポケット、腰ポケット形状、ステッチ種類、襟吊
+	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_stitch_id"],[id^="og_watchChain_id"],[id^="tg_breastPkt_id"],[id^="tg_waistPkt_id"],[id^="tg_waistPktSpec_id"],[id^="tg_waistPktMate_id"],[id^="tg_stitch_id"],[id^="tg_watchChain_id"],[id^="wg_breastPkt_id"],[id^="wg_waistPkt_id"],[id^="wg_waistPktSpec_id"],[id^="wg_stitch_id"],[id^="wg_watchChain_id"]')
 	.change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		   
+		
 		var giletModel = jQuery("#giletModel option:selected").val();
-		var itemCode = "04";
-		var subItemCode = jQuery("#item").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
 
 		//IDの後の番号を削除します
 		var findIdPosition = idValueName.indexOf("_id");
@@ -1223,7 +1408,7 @@ function getPrice(){
 			var code = itemCode + subItemCode + giletModel;
 			jQuery.ajax({
 				type:"get",
-				url:contextPath + "/orderCo/getOrderPriceForGiletProject",
+				url:contextPath + "/orderCo/" + ajaxUrl,
 				data:{"code":code,"idValueName":interceptedIdValueName},
 				dataType:"json",
 				contentType:"application/json",
@@ -1234,6 +1419,335 @@ function getPrice(){
 					getAllPrice(subItemCode, result.optionPrice);
 				}
 			});
+		}
+	});
+
+// 	ラジオボタンの変更処理
+// 	項目：腰ポケット、腰ポケット形状の制御
+	jQuery('input[id^="og_waistPkt_id"],[id^="tg_waistPkt_id"],[id^="wg_waistPkt_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var waistPktValue = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
+		if (waistPktValue == "0000202") {
+			for(var i=0; i<jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').length; i++){
+				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').get(i).checked = false;
+			}
+			jQuery('#og_waistPktSpec_Msg').html("無料");
+		}
+		
+		var giletModel = jQuery("#giletModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		 
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+
+// 	ラジオボタンの変更処理
+// 	項目：ステッチ箇所変更,ダブルステッチ
+	jQuery('input[id^="og_stitchModify_id"],[id^="og_stitchModifyPlace_id"],[id^="og_dStitchModify_id"],[id^="og_dStitchModifyPlace_id"],[id^="wg_stitchModify_id"],[id^="wg_stitchModifyPlace_id"],[id^="wg_dStitchModify_id"],[id^="wg_dStitchModifyPlace_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var giletModel = jQuery("#giletModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+// 		alert(thisValueTemp);
+
+		if(thisValueTemp == "0000601"){
+			//ステッチ箇所変更は無しです
+			var i = 1;
+			jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
+				jQuery('#og_stitchModifyPlace_id' + i).removeAttr("checked");
+				i++;
+			});
+			jQuery('#og_stitchModify_Msg').html("無料");
+			jQuery('#og_dStitchModify_id1').prop("checked", true);
+			jQuery('#og_dStitchModify_id2').prop("disabled", true);
+			jQuery('#og_dStitchModify_id2').prop("checked", false);
+			jQuery('#og_amfColor_id1').prop("checked", true);
+			jQuery('#og_amfColor_id2').prop("disabled", true);
+			jQuery('#og_amfColor_id2').prop("checked", false);
+			jQuery('#og_dStitchModify_id1').change();
+			jQuery('#og_amfColor_id1').change();
+		}else if(thisValueTemp == "0000602"){
+			//ステッチ箇所変更は有りです
+			jQuery('#og_dStitchModify_id2').prop("disabled", false);
+			jQuery('#og_amfColor_id2').prop("disabled", false);
+		}
+		if(thisValueTemp == "0002601"){
+			//ダブルステッチは無しです
+			var i = 1;
+			jQuery('input[id^="og_dStitchModifyPlace_id"]').each(function() {
+				jQuery('#og_dStitchModifyPlace_id' + i).removeAttr("checked");
+				i++;
+			});
+			jQuery('#og_dStitchModify_Msg').html("無料");
+		}
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
+
+		//IDの後の番号を削除します
+		var interceptedIdValueName = "";
+		
+		//複数選択ボックスの数,IDにより決定optionCode
+		var ogSomePlace_length = 0;
+		var jspOptionCode = "";
+		if(idValueName.indexOf("og_stitchModifyPlace_id") >= 0){
+			jspOptionCode ="00007";
+			ogSomePlace_length = jQuery('input[id^="og_stitchModifyPlace_id"]').length;
+
+		}else if(idValueName.indexOf("og_dStitchModifyPlace_id") >= 0){
+			jspOptionCode ="00027";
+			ogSomePlace_length = jQuery('input[id^="og_dStitchModifyPlace_id"]').length;
+			
+		}else if(idValueName.indexOf("wg_stitchModifyPlace_id") >= 0){
+			jspOptionCode ="00007";
+			ogSomePlace_length = jQuery('input[id^="wg_stitchModifyPlace_id"]').length;
+			
+		}else if(idValueName.indexOf("wg_dStitchModifyPlace_id") >= 0){
+			jspOptionCode ="00027";
+			ogSomePlace_length = jQuery('input[id^="wg_dStitchModifyPlace_id"]').length;
+
+		}
+
+		//チェックボックスのvalueを保存します
+		var countArr = "";
+		
+		//アイテムのID名をクリックして、"Place_id"フィールドを含めます
+		var findIdPosition = idValueName.indexOf("Place_id");
+		if(findIdPosition != -1){
+			//インターセプトID、最初の数字からPlace_idの前まで
+			var idValueNameTemp = idValueName.substring(0,findIdPosition);
+			interceptedIdValueName = idValueNameTemp + "_id";
+
+			//チェックボックスループ
+			for(var i=1; i<=ogSomePlace_length; i++){
+				//各チェックボックスのIDをループスプライシング
+				//このループの要素を取得します
+				var idValueNameComplete = document.getElementById(idValueNameTemp + "Place_id" + i);
+				if(idValueNameComplete.checked){
+					countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
+				}
+			}
+		}
+
+		if(isNotEmpty(giletModel) && findIdPosition != -1){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"countArr":countArr},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}else{
+// 			var findPositionModify = idValueName.indexOf("Modify_id");
+// 			var ValueIdModify = idValueName.substr(0, findPositionModify);
+// 			var msgIdValueId = ValueIdModify + "Modify_Msg";
+// 			jQuery("#"+msgIdValueId).html("無料1");
+			
+// 		    var glOptionPriceId = jQuery("#glOptionPriceId").val();
+// 			getAllPrice(subItemCode, result.optionPrice);
+		}
+	});
+
+// 	ラジオボタンの変更処理
+// 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定
+	jQuery('input[id^="og_amfColor_"],[id^="og_bhColor_"],[id^="og_byColor_"],[id^="tg_bhColor_"],[id^="tg_byColor_"],[id^="wg_amfColor_"],[id^="wg_bhColor_"],[id^="wg_byColor_"]').change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var giletModel = jQuery("#giletModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+		//alert(idValueName);
+		
+		if(thisValueTemp == "0000801"){
+			//AMF色指定は無しです
+			var i = 1;
+			jQuery('input[id^="og_amfColorPlace_"]').each(function() {
+				var valueNameAll = "coOptionGiletStandardInfo.ogAmfColor" + i;
+				var valueNameOne = document.getElementsByName(valueNameAll);
+				var $valueNameOneJq = $(valueNameOne);
+				for(var j=0; j<valueNameOne.length; j++){
+					jQuery($valueNameOneJq).get(j).checked = false;
+				}
+				i++;
+			});
+			jQuery('#og_amfColor_Msg').html("無料");
+		}
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
+
+		//IDの後の番号を削除します
+		var interceptedIdValueName = "";
+		
+		//複数選択ボックスの数,IDにより決定optionCode
+		var ogSomePlace_length = 0;
+		var jspOptionCodeAndBranchCode = "";
+		if(idValueName.indexOf("og_amfColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00010" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="og_amfColorPlace_"]').length;
+
+		}else if(idValueName.indexOf("og_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00013" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="og_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("og_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00016" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="og_byColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("tg_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00013" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="tg_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("tg_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00016" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="tg_byColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wg_amfColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00010" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="wg_amfColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wg_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00013" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="wg_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wg_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00016" + thisValueTemp;
+			ogSomePlace_length = jQuery('input[id^="wg_byColorPlace_"]').length;
+			
+		}
+		//選択した異なる色のvalueを保存する
+		var countArr = new Array();
+		var colorCount = 0;
+		
+		//アイテムのID名をクリックして、"ID"フィールドを含めます
+		var findIdPosition = idValueName.indexOf("_id");
+		if(findIdPosition == -1){
+			interceptedIdValueName = idValueName.replace(new RegExp(thisValueTemp,"g"),"id");
+			//ラジオの色を変更する
+			//チェックボックスループ
+			for(var i=1; i<=ogSomePlace_length; i++){
+				//各チェックボックスのIDをループスプライシング
+				//選択したチェックボックスの数を取得する
+				var idValueNameAll = "";
+				if(idValueName.indexOf("og_amfColor_") >= 0){
+					idValueNameAll = "coOptionGiletStandardInfo.ogAmfColor" + i;
+				}else if(idValueName.indexOf("og_bhColor_") >= 0){
+					idValueNameAll = "coOptionGiletStandardInfo.ogbhColor" + i;
+				}else if(idValueName.indexOf("og_byColor_") >= 0){
+					idValueNameAll = "coOptionGiletStandardInfo.ogbyColor" + i;
+				}else if(idValueName.indexOf("tg_bhColor_") >= 0){
+					idValueNameAll = "coOptionGiletTuxedoInfo.tgbhColor" + i;
+				}else if(idValueName.indexOf("tg_byColor_") >= 0){
+					idValueNameAll = "coOptionGiletTuxedoInfo.tgbyColor" + i;
+				}else if(idValueName.indexOf("wg_amfColor_") >= 0){
+					idValueNameAll = "coOptionGiletWashableInfo.wgAmfColor" + i;
+				}else if(idValueName.indexOf("wg_bhColor_") >= 0){
+					idValueNameAll = "coOptionGiletWashableInfo.wgbhColor" + i;
+				}else if(idValueName.indexOf("wg_byColor_") >= 0){
+					idValueNameAll = "coOptionGiletWashableInfo.wgbyColor" + i;
+				}
+				var idValueNameJs = document.getElementsByName(idValueNameAll);
+				//colorループ
+				for(var j=0; j<idValueNameJs.length; j++){
+					if(idValueNameJs[j].checked){
+						//選択した色
+						var arrTemp = false;
+						//配列ループ
+						for(var k=0; k<countArr.length; k++){
+							if(countArr[k] == idValueNameJs[j].value){
+								//選択した色は既に配列に存在します
+								arrTemp = true;
+								break;
+							}
+						}
+						if(arrTemp == false){
+							countArr.push(idValueNameJs[j].value);
+							colorCount++;
+						}
+					}
+				}
+			}
+		}
+
+		if(isNotEmpty(giletModel) && findIdPosition == -1){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"jspOptionCodeAndBranchCode":jspOptionCodeAndBranchCode,"colorCount":colorCount},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}else{
+			interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+			var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+			jQuery("#"+msgIdValueName).html("無料");
+			
+// 		    var glOptionPriceId = jQuery("#glOptionPriceId").val();
+// 			getAllPrice(subItemCode, result.optionPrice);
 		}
 	});
 
@@ -1251,6 +1765,68 @@ var negative = number < 0 ? "-" : "",
     i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
     j = (a = i.length) > 3 ? a % 3 : 0;
 return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+}
+
+function ogSession(){
+// 	jQuery('#og_breastPkt_id').val("${orderCoForm.coOptionGiletStandardInfo.ogBreastPkt}");
+	
+	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace3}"]);
+
+	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace3}"]);
+
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColorPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlace1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColorPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlace2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColorPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlace3}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColor1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColor2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogAmfColor3}"]);
+	jQuery('input[id^="og_amfColorPlace_"]').change();
+	
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace3}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace4"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace4}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace5"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace5}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColorPlace6"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace6}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor3}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor4"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor4}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor5"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor5}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor6"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBhColor6}"]);
+	jQuery('input[id^="og_bhColorPlace_"]').change();
+	
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace3}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace4"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace4}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace5"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace5}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace6"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace6}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace7"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace7}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace8"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace8}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace9"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace9}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColorPlace10"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace10}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor1}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor2}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor3}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor4"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor4}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor5"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor5}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor6"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor6}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor7"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor7}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor8"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor8}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor9"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor9}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor10"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor10}"]);
+	jQuery('input[id^="og_byColorPlace_"]').change();
+	
+ 	// 選択中のダブルステッチ変更
+	ctrlOgDStitchPlace();
+ 	// AMF色指定の有効/無効を制御
+	ctrlOgAmfColor();
+
 }
 
 jQuery("#giletModel").change(function(){

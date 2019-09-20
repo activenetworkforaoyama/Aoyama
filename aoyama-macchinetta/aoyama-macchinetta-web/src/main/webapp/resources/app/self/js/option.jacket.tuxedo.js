@@ -5,117 +5,103 @@
 // 読み込み時
 //--------------------------------------------
 function initOptionJacketTuxedo() {
-
+	
+	jQuery('#tj_jacketModel').attr("oldTjJkModel",jQuery('#tj_jacketModel').val());
 	// Jacketモデル
 	jQuery('#tj_jacketModel').change(function(){
 		// 選択されたJacketモデルを取得
 		var jacketModel = jQuery(this).val();
-
-		if (jacketModel == '') {
-			// 未選択時は何もしない
-			return;
+		var jacketOldModel = jQuery('#tj_jacketModel').attr("oldTjJkModel");
+		if(jacketModel != jacketOldModel){
+			jQuery("#jacketFlag").val("0");
+		}else{
+			jQuery("#jacketFlag").val("1");
 		}
-		
-		var productFabricNo = jQuery("#productFabricNo").val();
-		var itemCode = "";
-		var item = jQuery("#item").val();
-		var subItemCode = "02"
-		if(item == "01"){
-			itemCode = "01"
-		}else if(item == "02"){
-			itemCode = "02"
-		}
-		
-		//生地チェクフラッグ
-		var fabricCheckValue = jQuery("#fabricFlag").val();
-		//fabricCheckValue[0]:0 or 1 or 2 
-		//fabricCheckValue[1]:エラーメッセージ 
-		fabricCheckValue = fabricCheckValue.split("*");
-		
-		//生地チェク成功の場合
-		if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
-			//モデルチェク
-			var checkResult = modelCheck(jacketModel,productFabricNo,orderPattern,itemCode,subItemCode);
-			if(checkResult == "true"){
-				//0はモデルチェク成功の場合
-				jQuery("#jkModelFlag").val("0");
-				jQuery("#tj_jacketModelCheck").empty();
-				jQuery("#fabricMsg").empty();
-			}else if(checkResult == "false"){
-				//2はモデルチェク失敗の場合
-				jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
-				setAlert('tj_jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
+		jQuery('#tj_jacketModel').attr("oldTjJkModel",jQuery('#tj_jacketModel').val());
+		var jacketFlag = jQuery("#jacketFlag").val();
+		if(jacketFlag == "0"){
+			if (jacketModel == '') {
+				// 未選択時は何もしない
+				return;
 			}
+			
+			var productFabricNo = jQuery("#productFabricNo").val();
+			var itemCode = jQuery("#item").val();
+			var subItemCode = "02"
+			
+			//生地チェクフラッグ
+			var fabricCheckValue = jQuery("#fabricFlag").val();
+			//fabricCheckValue[0]:0 or 1 or 2 
+			//fabricCheckValue[1]:エラーメッセージ 
+			fabricCheckValue = fabricCheckValue.split("*");
+			
+			//生地チェク成功の場合
+			if((fabricCheckValue[0]=="0"||fabricCheckValue[0]=="2")&&isNotEmpty(productFabricNo)){
+				//モデルチェク
+				var checkResult = modelCheck(jacketModel,productFabricNo,orderPattern,itemCode,subItemCode);
+				if(checkResult == "true"){
+					//0はモデルチェク成功の場合
+					jQuery("#jkModelFlag").val("0");
+					jQuery("#tj_jacketModelCheck").empty();
+					jQuery("#fabricMsg").empty();
+				}else if(checkResult == "false"){
+					//2はモデルチェク失敗の場合
+					jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
+					setAlert('tj_jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
+				}
+			}
+
+			// 選択中のフロント釦数
+			var frontBtnCntElem = jQuery('#tj_frontBtnCnt');
+			var selectedFrontBtnCnt = frontBtnCntElem.val();
+
+			// フロント釦数の選択肢更新
+			frontBtnCntElem.empty();
+			var tmpFrontBtnCnt = null;
+			for (tmpFrontBtnCnt of lapelDesignTuxedoImageMap[jacketModel].activeList) {
+				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+				/*//1つボタン:0000103
+				if (tmpFrontBtnCnt == "0000103") {
+					// 拝み1つボタンを追加する
+					frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt).text("拝み1つボタン"));
+				}*/
+			}
+			
+			// デフォルトを選択
+			frontBtnCntElem.val(lapelDesignTuxedoImageMap[jacketModel].defaultValue);
+
+			// フロント釦数変更時の制御実施
+			jQuery('#tj_frontBtnCnt').change();
+
+			// 袖釦のデフォルト制御
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]').val([sleeveBtnTypeList[jacketModel]]);
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]').change();
+
+			// ベントのデフォルト制御
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjVentSpec"]').val([ventSpecList[jacketModel]]);
+
+			// 袖仕様のデフォルト制御
+			if (jacketModel == 'TR02') {
+				jQuery('#tj_sleeveSpec_id2').prop('disabled', false);
+			} else {
+				jQuery('#tj_sleeveSpec_id1').prop('checked', true);  // 通常にチェック
+				jQuery('#tj_sleeveSpec_id2').prop('disabled', true);
+			}
+			// 別モデルに変更された場合はアラート表示
+			if (tmpTjJacketModel != '' && jacketModel != tmpTjJacketModel) {
+			    setAlert('tj_jacketModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
+			}
+			// 一時保存のモデルを更新
+			tmpTjJacketModel = jacketModel;
 		}
 
-		// 選択中のフロント釦数
-		var frontBtnCntElem = jQuery('#tj_frontBtnCnt');
-		var selectedFrontBtnCnt = frontBtnCntElem.val();
-
-		// フロント釦数の選択肢更新
-		frontBtnCntElem.empty();
-		var tmpFrontBtnCnt = null;
-		for (tmpFrontBtnCnt of lapelDesignTuxedoImageMap[jacketModel].activeList) {
-			frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
-			/*//1つボタン:0000103
-			if (tmpFrontBtnCnt == "0000103") {
-				// 拝み1つボタンを追加する
-				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt).text("拝み1つボタン"));
-			}*/
-		}
-		
-		// デフォルトを選択
-		frontBtnCntElem.val(lapelDesignTuxedoImageMap[jacketModel].defaultValue);
-
-		// フロント釦数変更時の制御実施
-		jQuery('#tj_frontBtnCnt').change();
-
-		// 袖釦のデフォルト制御
-		jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]').val([sleeveBtnTypeList[jacketModel]]);
-		jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]').change();
-
-		// ベントのデフォルト制御
-		jQuery('input[name="optionJacketTuxedoInfo.tjVentSpec"]').val([ventSpecList[jacketModel]]);
-
-		// 袖仕様のデフォルト制御
-		if (jacketModel == 'TR02') {
-			jQuery('#tj_sleeveSpec_id2').prop('disabled', false);
-		} else {
-			jQuery('#tj_sleeveSpec_id1').prop('checked', true);  // 通常にチェック
-			jQuery('#tj_sleeveSpec_id2').prop('disabled', true);
-		}
-		// 別モデルに変更された場合はアラート表示
-		if (tmpTjJacketModel != '' && jacketModel != tmpTjJacketModel) {
-		    setAlert('tj_jacketModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
-		}
-		// 一時保存のモデルを更新
-		tmpTjJacketModel = jacketModel;
-
-		// ステッチ箇所変更の制御
-		//ctrlTjStitchModify();
-		// ダブルステッチ変更箇所の制御
-		//ctrlTjDStitchModify();
-		//ctrlTjDStitchModifyPlace();
-
-		// 補正の制御（標準・タキシード・ウォッシャブルで同じ構文※後勝ち）
-		jQuery('#oj_shoulderPat_no').prop('disabled', false);
-		jQuery('#oj_shoulderPat_thin').prop('disabled', true);
-		jQuery('#oj_shoulderPat_thick').prop('disabled', true);
-		jQuery('#oj_figureAlter_1').prop('disabled', true);
-		jQuery('#oj_figureAlter_2').prop('disabled', true);
-		if (jacketModel == 'TR02') {
-			jQuery('#oj_shoulderPat_thin').prop('disabled', false);
-			jQuery('#oj_shoulderPat_thick').prop('disabled', false);
-			jQuery('#oj_figureAlter_1').prop('disabled', false);
-			jQuery('#oj_figureAlter_2').prop('disabled', false);
-		}
 	});
 
 	// フロント釦数変更時の制御
 	jQuery('#tj_frontBtnCnt').change(function(){
 		// 選択中のJacketモデルを取得
 		var jacketModel = jQuery('#tj_jacketModel').val();
-		if (jacketModel == '') {
+		if (isEmpty(jacketModel)) {
 			// 未選択の場合は何もしない
 			return;
 		}
@@ -124,7 +110,7 @@ function initOptionJacketTuxedo() {
 		var frontBtnCnt = jQuery('#tj_frontBtnCnt').val();
 
 		// 選択中のラペルデザイン
-		var selectedLapelDesign = jQuery('input[name="optionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
+		var selectedLapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
 
 		// ラペルデザインの選択肢制御
 		jQuery('input[id^="tj_lapelDesign_"]').each(function() {
@@ -140,7 +126,7 @@ function initOptionJacketTuxedo() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionJacketTuxedoInfo.tjLapelDesign"]').val([lapelDesignMap[jacketModel].activeList[frontBtnCnt].defaultValue]);
+		jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]').val([lapelDesignMap[jacketModel].activeList[frontBtnCnt].defaultValue]);
 
 		// ラペルデザイン変更時の制御
 		changeTjLapelDesign();
@@ -174,7 +160,7 @@ function initOptionJacketTuxedo() {
 		jQuery(this).change(function(){
 
 			/*// 選択中グレードの値取得
-			var gradeValue = jQuery('input[name="optionJacketTuxedoInfo.tjGrade"]:checked').val();
+			var gradeValue = jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]:checked').val();
 			if (!gradeValue || !fortList[gradeValue]) {
 				// 未選択or想定外は終了
 				return;
@@ -299,7 +285,7 @@ function initOptionJacketTuxedo() {
 			}
 		});
 		// デフォルトを選択
-		jQuery('input[name="optionJacketTuxedoInfo.tjChangePkt"]').val([slantedPktTuexdoList[waistPkt].defaultValue]);
+		jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val([slantedPktTuexdoList[waistPkt].defaultValue]);
 
 		// チェンジポケット変更時の制御
 		changeTjChangePkt();
@@ -400,7 +386,7 @@ function initOptionJacketTuxedo() {
 	// 袖釦
 	jQuery('input[id^="tj_sleeveBtnType"]').each(function() {
 		jQuery(this).change(function(){
-			var sleeveBtnType = jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
+			var sleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
 			var sleeveBtnCnt = jQuery('#tj_sleeveBtnCnt').val() - 0;
 
 			// 袖釦数をデフォルトに変更
@@ -414,7 +400,7 @@ function initOptionJacketTuxedo() {
 	});
 	// 袖釦数
 	jQuery('#tj_sleeveBtnCnt_m').click(function(){
-		var sleeveBtnType = jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
+		var sleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
 		//if (sleeveBtnType == "無し") return false;
 
 		var value = jQuery('#tj_sleeveBtnCnt').val() - 0;
@@ -428,7 +414,7 @@ function initOptionJacketTuxedo() {
 		return false;
 	});
 	jQuery('#tj_sleeveBtnCnt_p').click(function(){
-		var sleeveBtnType = jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
+		var sleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
 		//if (sleeveBtnType == "無し") return false;
 
 		var value = jQuery('#tj_sleeveBtnCnt').val() - 0;
@@ -444,10 +430,10 @@ function initOptionJacketTuxedo() {
 	});
 
 	// 内ポケット変更
-	jQuery('input[name="optionJacketTuxedoInfo.tjInsidePktChange"]').each(function() {
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjInsidePktChange"]').each(function() {
 		jQuery(this).change(function(){
 			/*// 選択中の内ポケット変更
-			var insidePktChange = jQuery('input[name="optionJacketTuxedoInfo.tjInsidePktChange"]:checked').val();
+			var insidePktChange = jQuery('input[name="coOptionJacketTuxedoInfo.tjInsidePktChange"]:checked').val();
 			//有り:0002002
 			if (insidePktChange == "0002002") {
 				// 有りの場合、下位項目を有効化
@@ -477,10 +463,10 @@ function initOptionJacketTuxedo() {
 	//ctrlTjDStitchModifyPlace();
 
 	// ボタンホール色指定(有り/無し)
-	jQuery('input[name="optionJacketTuxedoInfo.tjBhColor"]').each(function() {
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var bhColor = jQuery('input[name="optionJacketTuxedoInfo.tjBhColor"]:checked').val();
+			var bhColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]:checked').val();
 			//無し:0003101
 			if (bhColor == '0003101') {
 				// 無しの場合は操作不可
@@ -541,10 +527,10 @@ function initOptionJacketTuxedo() {
 	ctrlTjBhColorPlace();
 
 	// ボタン付け糸指定(有り/無し)
-	jQuery('input[name="optionJacketTuxedoInfo.tjByColor"]').each(function() {
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var byColor = jQuery('input[name="optionJacketTuxedoInfo.tjByColor"]:checked').val();
+			var byColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]:checked').val();
 			//無し:0003401
 			if (byColor == '0003401') {
 				// 無しの場合は操作不可
@@ -712,18 +698,20 @@ function changeTjLapelDesign() {
 	// ステッチ箇所変更の制御
 	//ctrlTjStitchModify();
 
-	var lapelDesign = jQuery('input[name="optionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
+	var lapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
 
 	// 襟裏（ヒゲ）の制御
 	//shawl:0000203
 	if (lapelDesign == "0000203") {
 		// 「ショール」選択時、「無」のみ
-		jQuery('#tj_backCollar_id2').prop("disabled", true);
+		jQuery('#tj_backCollar_id1').prop("disabled", true);
 			// 「有り」が選択されていた場合、「無し」へ変更
 		jQuery('#tj_backCollar_id2').prop("checked", true);
+		jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]:checked').change();
 	} else {
-		jQuery('#tj_backCollar_id2').prop("disabled", false);
+		jQuery('#tj_backCollar_id1').prop("disabled", false);
 	}
+	
 
 	// ラペル幅の制御
 	//shawl:0000203
@@ -733,10 +721,12 @@ function changeTjLapelDesign() {
 		jQuery('#tj_lapelWidth_id3').prop("disabled", true);
 		// 「通常」以外が選択されている場合、「通常」へ変更
 		jQuery('#tj_lapelWidth_id1').prop("checked", true);
+		jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelWidth"]:checked').change();
 	} else {
 		jQuery('#tj_lapelWidth_id2').prop("disabled", false);
 		jQuery('#tj_lapelWidth_id3').prop("disabled", false);
 	}
+	
 	
 	// フラワーホールの設定
 	//shawl:0000203
@@ -744,9 +734,11 @@ function changeTjLapelDesign() {
 		//無し:0001005
 		jQuery('#tj_flowerHole').val("0001005");
 		jQuery('#tj_flowerHole').prop("disabled", true);
+		jQuery("#tj_flowerHole").change();
 	} else {
 		jQuery('#tj_flowerHole').prop("disabled", false);
 	}
+	
 }
 
 //AMFステッチ変更時
@@ -920,7 +912,7 @@ function changeTjChangePkt() {
 	}
 
 	// 選択中のチェンジポケット
-	var changePkt = jQuery('input[name="optionJacketTuxedoInfo.tjChangePkt"]:checked').val();
+	var changePkt = jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]:checked').val();
 	if (!slantedPktTuexdoList[waistPkt].activeList[changePkt]) {
 		// 想定外の値の場合は何もしない
 		return;
@@ -938,14 +930,14 @@ function changeTjChangePkt() {
 		}
 	});
 	// デフォルトを選択
-	jQuery('input[name="optionJacketTuxedoInfo.tjSlantedPkt"]').val([slantedPktTuexdoList[waistPkt].activeList[changePkt].defaultValue]);
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]').val([slantedPktTuexdoList[waistPkt].activeList[changePkt].defaultValue]);
 }
 
 //ボタンホール色指定箇所の有効/無効を制御する
 function ctrlTjBhColorPlace() {
 
 	// 選択中のボタンホール色指定
-	var bhColor = jQuery('input[name="optionJacketTuxedoInfo.tjBhColor"]:checked').val();
+	var bhColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]:checked').val();
 
 	// 選択中のフラワーホール
 	var flowerHole = jQuery('#tj_flowerHole').val();
@@ -954,7 +946,7 @@ function ctrlTjBhColorPlace() {
 	var frontBtnCnt = jQuery('#tj_frontBtnCnt').val();
 
 	// 選択中の袖釦
-	var sleeveBtnType = jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
+	var sleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
 	var sleeveBtnCnt = jQuery('#tj_sleeveBtnCnt').val() - 0;
 
 	// ボタンホール色指定箇所の有効/無効を制御
@@ -1053,13 +1045,13 @@ function ctrlTjBhColorPlace() {
 function ctrlTjByColorPlace() {
 
 	// 選択中のボタン付け糸指定
-	var byColor = jQuery('input[name="optionJacketTuxedoInfo.tjByColor"]:checked').val();
+	var byColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]:checked').val();
 
 	// 選択中のフロント釦数
 	var frontBtnCnt = jQuery('#tj_frontBtnCnt').val();
 
 	// 選択中の袖釦
-	var sleeveBtnType = jQuery('input[name="optionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
+	var sleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').val();
 	var sleeveBtnCnt = jQuery('#tj_sleeveBtnCnt').val() - 0;
 
 	// ボタンホール色指定箇所の有効/無効を制御

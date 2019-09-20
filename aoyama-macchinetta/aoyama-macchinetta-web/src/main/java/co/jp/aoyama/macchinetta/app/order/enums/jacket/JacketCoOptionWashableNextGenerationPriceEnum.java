@@ -10,7 +10,7 @@ public enum JacketCoOptionWashableNextGenerationPriceEnum {
 	// Value4:orderのmethod
 	// Value5:orderのmethod
 	
-	JK_Washable_OPTION_CODE01("00001","getWjFrontBtnCnt","setJkModelWsWage","setJkModelWsPrice","getJkModelWsWage","getJkModelWsPrice"),//フロント釦数
+	JK_Washable_OPTION_CODE01("00001","getWjFrontBtnCnt","setJkFrtBtnWsWage","setJkFrtBtnWsPrice","getJkFrtBtnWsWage","getJkFrtBtnWsPrice"),//フロント釦数
 	JK_Washable_OPTION_CODE02("00002","getWjLapelDesign","setJkLapelDesignWsWage","setJkLapelDesignWsPrice","getJkLapelDesignWsWage","getJkLapelDesignWsPrice"),//ラペルデザイン
 	JK_Washable_OPTION_CODE03("00003","getWjGrade","setJkGradeWsWage","setJkGradeWsPrice","getJkGradeWsWage","getJkGradeWsPrice"),//グレード
 	JK_Washable_OPTION_CODE04("00004","getWjBackSpec","setJkInnerClothWsWage","setJkInnerClothWsPrice","getJkInnerClothWsWage","getJkInnerClothWsPrice"),//裏仕様

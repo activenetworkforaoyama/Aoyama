@@ -396,17 +396,61 @@ public class OrderListController {
      * @param Model model
      * @return String　遷移Controller
      */
-	@RequestMapping(value = "/gotoOrderCoLink/{orderId}",method =RequestMethod.GET)
+	@RequestMapping(value = "/gotoOrderCoLink/{orderId}",method =RequestMethod.GET) 
 	public String gotoOrderCoLink(@PathVariable(value ="orderId") String orderId,
 	                            Model model) {
 		String authority = sessionContent.getAuthority();
 		String shopCode = sessionContent.getBelongCode();
 		String userId = sessionContent.getUserId();
-		OrderDetailFormat orderFm = new OrderDetailFormat();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		OrderDetailFormat orderFm = new OrderDetailFormat();
+		
 		try {
 		
+			//StringBuffer errorResult;
+			String errorResult = "";
 			Order order= orderListService.findOrderByPk(orderId);
+			String custCd = order.getCustCd();
+			String storeBrandCode = order.getStoreBrandCode();
+			String gyotaiCd = "1";
+			if(storeBrandCode != null && "01".equals(storeBrandCode)) {
+				gyotaiCd = "1";
+			}
+			else if(storeBrandCode != null && ("03".equals(storeBrandCode) || "12".equals(storeBrandCode) || "21".equals(storeBrandCode))) {
+				gyotaiCd = "3";
+			}
+			MemberName MemberName = memberNameService.execute(memberUrl,custCd,gyotaiCd);
+			if(MemberName != null) {
+				String firstName = MemberName.getFirstName();
+				String lastName = MemberName.getLastName();
+				if(firstName != null && lastName != null) {
+					String custNm = lastName + " " + firstName;
+					order.setCustNm(custNm);
+				}
+				else if(firstName == null && lastName != null) {
+					String custNm = lastName;
+					order.setCustNm(custNm);
+				}
+				else if(firstName != null && lastName == null) {
+					String custNm = firstName;
+					order.setCustNm(custNm);
+				}
+				String firstNameKana = MemberName.getFirstNameKana();
+				String lastNameKana = MemberName.getLastNameKana();
+				if(firstNameKana != null && lastNameKana != null) {
+					String custKanaNm = lastNameKana + " " + firstNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+				else if(firstNameKana == null && lastNameKana != null) {
+					String custKanaNm = lastNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+				else if(firstName != null && lastNameKana == null) {
+					String custKanaNm = firstNameKana;
+					order.setCustKanaNm(custKanaNm);
+				}
+			}
+			
 			//名簿納期
 			Date custDeliverDate = order.getCustDeliverDate();
 			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
@@ -442,7 +486,27 @@ public class OrderListController {
 				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
 				order.setProductOrderdDate(productOrderdDateParse);
 			}
+			
 			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			if("02".equals(authority)) {
+				String send2factoryStatus = order.getSend2factoryStatus();
+				if("4".equals(send2factoryStatus)) {
+					List<ErrorResult> errorResultList = errorResultService.selectAllErrorResultByOrderId(order.getOrderId());
+					if(errorResultList.size() == 1) {
+						errorResult = "「" + errorResultList.get(0).getRemark() + "」";
+					}else {
+						for (int i = 0; i < errorResultList.size(); i++) {
+							if(i == errorResultList.size()-1) {
+								errorResult = errorResult.concat("「" + errorResultList.get(i).getRemark()+ "」");
+							}else {
+								errorResult = errorResult.concat("「" + errorResultList.get(i).getRemark()+ "」、");
+							}
+						}
+					}
+				}
+				model.addAttribute("errorResult", errorResult);
+			}
+			
 			/*
 			 * if (measuring == null) { return "redirect:/orderlist/gotoOrderlistError"; }
 			 */
@@ -452,10 +516,9 @@ public class OrderListController {
 			model.addAttribute("orderFm", orderFm);
 			model.addAttribute("measuring", measuring);
 			model.addAttribute("authority", authority);
+			model.addAttribute("userId", userId);
 			String orderFlag = "orderLink";
 			model.addAttribute("orderFlag", orderFlag);
-			model.addAttribute("userId", userId);
-			
 			//本店オーダー 、商品部の場合
 			//店舗の場合
 			if (order.getMakerFactoryStatus() != null &&
@@ -464,25 +527,37 @@ public class OrderListController {
 				if (authority.equals(AUTHORITY_01)) {
 					//本店の生産開始前の場合、登録画面へ遷移
 					if (order.getShopCode().equals(shopCode) && 
-						order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
-						order.getIsCancelled().equals("0")) {
-						return "forward:/orderCo/orderCoUpdate"; 
+							order.getMakerFactoryStatus().equals(MAKER_FACTORY_STATUS_F0) && 
+							(order.getSend2factoryStatus().equals(SEND2FACTORY_STATUS0) || order.getSend2factoryStatus().equals(SEND2FACTORY_STATUS4)) &&
+							order.getIsCancelled().equals("0")) {
+						if(TSC_STATUS_T2.equals(order.getTscStatus()) ||
+								TSC_STATUS_T3.equals(order.getTscStatus()) ||
+								TSC_STATUS_T4.equals(order.getTscStatus()) ||
+								TSC_STATUS_T5.equals(order.getTscStatus())) {
+							
+							return "forward:/orderCoDetail/orderCoDetail"; 
+							
+						}else if(TSC_STATUS_T0.equals(order.getTscStatus()) || TSC_STATUS_T1.equals(order.getTscStatus()) || "".equals(order.getTscStatus()) || order.getTscStatus() == null){
+							
+							return "forward:/orderCo/orderCoUpdate"; 
+						}
+							
 					}
+					
 				}
 				//商品部の場合
 				if (authority.equals(AUTHORITY_02)) {
 					//会計前の場合、登録画面へ遷移
 					if ((order.getTscStatus() == null ||
-						order.getTscStatus().equals("") ||
-						order.getTscStatus().equals(TSC_STATUS_T0) || 
-						order.getTscStatus().equals(TSC_STATUS_T1) || 
-						order.getTscStatus().equals(TSC_STATUS_T2))
-						&& order.getIsCancelled().equals("0")) {
+							order.getTscStatus().equals("") ||
+							order.getTscStatus().equals(TSC_STATUS_T0) || 
+							order.getTscStatus().equals(TSC_STATUS_T1)) &&
+							order.getIsCancelled().equals("0")) {
 						return "forward:/orderCo/orderCoUpdate"; 
 					}
 				}
 				//明細画面へ遷移
-				return "forward:/orderDetail/orderCoDetail";
+				return "forward:/orderCoDetail/orderCoDetail";
 			}else {
 		    	return "redirect:/orderlist/gotoOrderlistError";
 			}
@@ -537,6 +612,37 @@ public class OrderListController {
 		String orderFlag = "orderDivert";
 		model.addAttribute("orderFlag", orderFlag);
 		return "forward:/order/orderPoUpdate";
+	}
+	
+	@RequestMapping(value = "/goToOrderCoDivert/{orderId}",method =RequestMethod.GET)
+	public String goToOrderCoDivert(@PathVariable(value ="orderId") String orderId,
+	                       Model model) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Order order= orderListService.findOrderByPk(orderId);
+		Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+		//名簿納期
+		Date custDeliverDate = order.getCustDeliverDate();
+		if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+			String custDeliverDateFormat = sdf.format(custDeliverDate);
+			Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+			order.setCustDeliverDate(custDeliverDateParse);
+		}
+		//お渡し日
+		Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+		if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+			String custShopDeliveryDateFormat = sdf.format(custShopDeliveryDate);
+			Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+			order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+		}
+		
+		//TSCステータス
+		order.setTscStatus("");
+		
+		model.addAttribute("order", order);
+		model.addAttribute("measuring", measuring);
+		String orderFlag = "orderDivert";
+		model.addAttribute("orderFlag", orderFlag);
+		return "forward:/orderCo/orderCoUpdate";
 	}
 	
     /**

@@ -112,4 +112,15 @@
     display_order, created_user_id, created_at, updated_user_id, updated_at
     from mtb_option_branch where order_pattern = #{orderPattern} order by display_order
   </select>
+  
+  <select id="getProduct" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select DISTINCT order_pattern, sub_item_code, option_code, option_branch_code, 
+    standard_available, tuxedo_available, washable_available, option_branch_name,
+    display_order, created_user_id, created_at, updated_user_id, updated_at
+    from mtb_option_branch where 
+    sub_item_code = '99' and
+    item_code = '99' and
+    order_pattern = #{orderPattern} order by display_order
+  </select>
+  
 </mapper>

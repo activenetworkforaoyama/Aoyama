@@ -18,16 +18,20 @@
     <bean id="receiveOrderReader" class="org.mybatis.spring.batch.MyBatisCursorItemReader" scope="step"
           p:queryId="co.jp.aoyama.macchinetta.domain.repository.order.DtbOrderRepository.selectByCondition"
           p:sqlSessionFactory-ref="jobSqlSessionFactory">
-	    <property name="parameterValues">
-	        <map>
-	            <entry key="selectFlag" value="#{jobParameters['selectFlag']}" value-type="java.lang.String"/>
-	        </map>
-	    </property>
+    </bean>
+    <bean id="timeoutOrderReader" class="org.mybatis.spring.batch.MyBatisCursorItemReader" scope="step"
+          p:queryId="co.jp.aoyama.macchinetta.domain.repository.order.DtbOrderRepository.selectDaliangDayangPoTimeoutOrders"
+          p:sqlSessionFactory-ref="jobSqlSessionFactory">
     </bean>
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 
 	<batch:job id="JobReceiveOrder" job-repository="jobRepository">
-		<batch:step id="JobReceiveOrder.step01">
+        <batch:step id="JobReceiveOrder.step01" next="JobReceiveOrder.step02">
+            <batch:tasklet transaction-manager="jobTransactionManager">
+                <batch:chunk reader="timeoutOrderReader" writer="timeoutOrderWriter" commit-interval="100" />
+            </batch:tasklet>
+        </batch:step>
+		<batch:step id="JobReceiveOrder.step02">
 			<batch:tasklet transaction-manager="jobTransactionManager">
 				<batch:chunk reader="receiveOrderReader" writer="receiveOrderWriter" commit-interval="20" />
 			</batch:tasklet>

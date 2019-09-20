@@ -10,7 +10,7 @@ public enum JacketCoOptionStandardNextGenerationPriceEnum {
 	// Value4:orderのmethod
 	// Value5:orderのmethod
 	
-	JK_Standard_OPTION_CODE01("00001","getOjFrontBtnCnt","setJkModelWsWage","setJkModelWsPrice","getJkModelWsWage","getJkModelWsPrice"),//フロント釦数
+	JK_Standard_OPTION_CODE01("00001","getOjFrontBtnCnt","setJkFrtBtnWsWage","setJkFrtBtnWsPrice","getJkFrtBtnWsWage","getJkFrtBtnWsPrice"),//フロント釦数
 	JK_Standard_OPTION_CODE02("00002","getOjLapelDesign","setJkLapelDesignWsWage","setJkLapelDesignWsPrice","getJkLapelDesignWsWage","getJkLapelDesignWsPrice"),//ラペルデザイン
 	JK_Standard_OPTION_CODE03("00003","getOjGrade","setJkGradeWsWage","setJkGradeWsPrice","getJkGradeWsWage","getJkGradeWsPrice"),//グレード
 	JK_Standard_OPTION_CODE04("00004","getOjGackSpec","setJkInnerClothWsWage","setJkInnerClothWsPrice","getJkInnerClothWsWage","getJkInnerClothWsPrice"),//裏仕様

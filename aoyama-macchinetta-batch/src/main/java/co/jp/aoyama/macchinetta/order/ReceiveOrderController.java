@@ -2,6 +2,7 @@ package co.jp.aoyama.macchinetta.order;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +62,18 @@ public class ReceiveOrderController {
 	@Inject
 	DtbOrderService orderService;
 
+//	@Inject
+//	MtbOrderDetailEnumService mtbOrderDetailEnumService;
+//
+//	@Inject
+//	MtbLiningEnumService mtbLiningEnumService;
+//
+//	@Inject
+//	MtbMeasurementEnumService mtbMeasurementEnumService;
+//
+//	@Inject
+//	MtbOptionEnumService mtbOptionEnumService;
+
 	@Inject
 	RestTemplate restTemplate;
 
@@ -76,26 +89,32 @@ public class ReceiveOrderController {
 	@Value("${api.appsecrets}")
 	String appSecrets;
 
+	@Value("${api.timeout.connect}")
+	int connectTimeout;
+
+	@Value("${api.timeout.read}")
+	int readTimeout;
+
 	/** 一回送信注文データ件数 */
-	@Value("${api.send.maxcount.ReceiveOrder}")
-	int sendMaxCout;
+//	@Value("${api.send.maxcount.ReceiveOrder}")
+//	int sendMaxCout;
 
 	/** log */
 	private static final Logger logger = LoggerFactory.getLogger(ReceiveOrderController.class);
 
-	/** JACKE */
+	/** JACKET */
 	public static final String ITEM_02 = "02";
 	/** PANTS */
 	public static final String ITEM_03 = "03";
 	/** GILET */
 	public static final String ITEM_04 = "04";
-	/** 2P (JACKE + PANTS) */
+	/** 2P (JACKET + PANTS) */
 	public static final String ITEM_21 = "21";
-	/** 2PP (JACKE + PANTS + 2PANTS) */
+	/** 2PP (JACKET + PANTS + 2PANTS) */
 	public static final String ITEM_22 = "22";
-	/** 3P (JACKE + PANTS + GILET) */
+	/** 3P (JACKET + PANTS + GILET) */
 	public static final String ITEM_31 = "31";
-	/** 3P2PP (JACKE + PANTS + GILET + 2PANTS) */
+	/** 3P2PP (JACKET + PANTS + GILET + 2PANTS) */
 	public static final String ITEM_32 = "32";
 
 	/** STYLE_NO */
@@ -119,8 +138,21 @@ public class ReceiveOrderController {
 	/** 注文送信結果：成功 */
 	public static final String RECEIVE_RESULT_SUCCESS = "100";
 
+	/** 工場コード：大連大楊 */
+	public static final String FACTORY_CODE = "F00005";
+	/** 注文パターン：パターンオーダー */
+	public static final String ORDER_PATTERN = "PO";
+
 	/** エラーコードマップ */
 	private Map<String, String> errorCodeMap = null;
+//	/** ジャケット用列挙体 */
+//	List<MtbOptionEnum> optionJacketEnums = null;
+//	/** パンツ用列挙体 */
+//	List<MtbOptionEnum> optionPantsEnums = null;
+//	/** Gilet用列挙体 */
+//	List<MtbOptionEnum> optionGiletEnums = null;
+//	/** パンツ２用列挙体 */
+//	List<MtbOptionEnum> option2PantsEnums = null;
 
 	/**
 	 * DB ステータス を変更
@@ -132,31 +164,33 @@ public class ReceiveOrderController {
 
 		List<Message> messageList = getMsgJson(dtbOrders);
 
-		// ReceiveOrderの戻る値に対して、SuccessとFailがある、下記判断により、受注表の工場自動連携ステータスや工場ステータス設定する。
-		if (messageList.get(0).getResult() != null) {
+		if (null != messageList) {
+			// ReceiveOrderの戻る値に対して、SuccessとFailがある、下記判断により、受注表の工場自動連携ステータスや工場ステータス設定する。
+			if (messageList.get(0).getResult() != null) {
 
-			if (RECEIVE_RESULT_SUCCESS.equals(messageList.get(0).getResult())) {
-				logger.info("送信正常終了の更新処理開始");
-				// 100
-				// ReceiveOrderの戻るはSuccessの場合、SuccessのResultは100の場合、送信成功として、
-				// 受注表で工場自動連携ステータスを「送信済み」に設定して、工場ステータスを「生産開始」に設定する
-				orderService.receiveSuccess(dtbOrders);
-				logger.info("送信正常終了の更新処理終了");
+				if (RECEIVE_RESULT_SUCCESS.equals(messageList.get(0).getResult())) {
+					logger.info("送信正常終了の更新処理開始");
+					// 100
+					// ReceiveOrderの戻るはSuccessの場合、SuccessのResultは100の場合、送信成功として、
+					// 受注表で工場自動連携ステータスを「送信済み」に設定して、工場ステータスを「生産開始」に設定する
+					orderService.receiveSuccess(dtbOrders);
+					logger.info("送信正常終了の更新処理終了");
+				} else {
+					logger.info("送信失敗の更新処理開始");
+					// ReceiveOrderの戻るはFailの場合、FailのResultは100以外、すなわち、転送データタイプエラーがあるの場合、
+					// 受注表で工場自動連携ステータスを「送信失敗データタイプエラー]に設定する。
+					orderService.receiveException(dtbOrders);
+					logger.info("送信失敗の更新処理終了");
+				}
 			} else {
-				logger.info("送信失敗の更新処理開始");
-				// ReceiveOrderの戻るはFailの場合、FailのResultは100以外、すなわち、転送データタイプエラーがあるの場合、
-				// 受注表で工場自動連携ステータスを「送信失敗データタイプエラー]に設定する。
-				orderService.receiveException(dtbOrders);
-				logger.info("送信失敗の更新処理終了");
-			}
-		} else {
-			logger.info("送信結果エラーありの更新処理開始");
-			// ReceiveOrderの戻るはFailの場合、FailのResultがない、ordernoがあるの場合、すなわち、注文データエラーがあるの場合
-			// エラーコードマップを作成する
-			getErrorCodeInfo();
+				logger.info("送信結果エラーありの更新処理開始");
+				// ReceiveOrderの戻るはFailの場合、FailのResultがない、ordernoがあるの場合、すなわち、注文データエラーがあるの場合
+				// エラーコードマップを作成する
+				getErrorCodeInfo();
 
-			orderService.receiveError(messageList, dtbOrders, errorCodeMap);
-			logger.info("送信結果エラーありの更新処理終了");
+				orderService.receiveError(messageList, dtbOrders, errorCodeMap);
+				logger.info("送信結果エラーありの更新処理終了");
+			}
 		}
 		logger.info("ReceiveOrder:大楊へ注文データの送信処理終了");
 	}
@@ -228,8 +262,9 @@ public class ReceiveOrderController {
 		logger.info("送信パラメータ:{}", param);
 
 		try {
-			res = HttpUtil.post(receiveOrderUri.toString(), param, null);
+			res = new HttpUtil(connectTimeout, readTimeout).post(receiveOrderUri.toString(), param, null);
 
+			logger.info("大連大楊PO送信結果文字列:{}", res);
 			res = res.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
 			res = res.replace("<string xmlns=\"http://tempuri.org/\">", "");
 			res = res.replace("</string>", "");
@@ -238,9 +273,16 @@ public class ReceiveOrderController {
 				res = "[" + res + "]";
 			}
 
-			logger.info("送信結果文字列:{}", res);
+			logger.info("大連大楊PO送信結果文字列(無効内容抜き):{}", res);
+		} catch (SocketTimeoutException e) {
+			e.getStackTrace();
+			logger.info("大連大楊PO送信タイムアウト:{}", e.getMessage());
+			orderService.receiveTimeout(dtbOrders);
+			return null;
 		} catch (Exception e) {
 			e.getStackTrace();
+			logger.info("大連大楊PO送信結果異常:{}", e.getMessage());
+			return null;
 		}
 
 		Gson gson = new Gson();
@@ -263,6 +305,15 @@ public class ReceiveOrderController {
 		logger.info("送信文字列作成開始");
 
 		List<Order> orderList = new ArrayList<Order>();
+//		List<MtbOrderDetailEnum> orderDetailEnums = mtbOrderDetailEnumService.selectByFactoryPattern(FACTORY_CODE,
+//				ORDER_PATTERN);
+//		List<MtbLiningEnum> liningEnums = mtbLiningEnumService.selectByFactoryPattern(FACTORY_CODE, ORDER_PATTERN);
+//		List<MtbMeasurementEnum> measurementEnums = mtbMeasurementEnumService.selectByFactoryPattern(FACTORY_CODE,
+//				ORDER_PATTERN);
+//		optionJacketEnums = mtbOptionEnumService.selectByTypeFactoryPattern("jacket", FACTORY_CODE, ORDER_PATTERN);
+//		optionPantsEnums = mtbOptionEnumService.selectByTypeFactoryPattern("pants", FACTORY_CODE, ORDER_PATTERN);
+//		optionGiletEnums = mtbOptionEnumService.selectByTypeFactoryPattern("gilet", FACTORY_CODE, ORDER_PATTERN);
+//		option2PantsEnums = mtbOptionEnumService.selectByTypeFactoryPattern("pants2", FACTORY_CODE, ORDER_PATTERN);
 
 		Object[] args = {};
 		Date nowDate = new Date();
@@ -275,9 +326,9 @@ public class ReceiveOrderController {
 			order.setBrand("QS");
 			order.setMainorder(dtbOrder.getOrderId());
 			logger.info("送信注文ID:{}", dtbOrder.getOrderId());
-			// テスト
+
 			order.setShop(dtbOrder.getShopCode());
-			// order.setShop(dtbOrder.getShopCode());
+
 			if (dtbOrder.getProductOrderdDate() != null) {
 				String productOrderdDate = formatter_ymd.format(dtbOrder.getProductOrderdDate());
 				order.setCdate(productOrderdDate);
@@ -308,6 +359,7 @@ public class ReceiveOrderController {
 
 			OrderDetailEnum[] orderDetailEnums = OrderDetailEnum.values();
 			for (OrderDetailEnum orderDetailEnum : orderDetailEnums) {
+//			for (MtbOrderDetailEnum orderDetailEnum : orderDetailEnums) {
 				OrderDetail orderDetail = new OrderDetail();
 				if (productItem == null) {
 					productItem = "";
@@ -323,6 +375,7 @@ public class ReceiveOrderController {
 					orderDetail.setOrderdetailid(dtbOrder.getOrderId() + orderDetailEnum.getSubNo());
 					orderDetail.setCombination(orderDetailEnum.getCombination());
 					orderDetail.setMode("02");
+//					orderDetail.setStyleno(orderDetailEnum.getStyleNo());
 					orderDetail.setStyleno(orderDetailEnum.getStyleno());
 					orderDetail.setClass_item(orderDetailEnum.getClassType());
 					// Fabric
@@ -344,6 +397,7 @@ public class ReceiveOrderController {
 					LiningEnum[] liningEnums = LiningEnum.values();
 
 					for (LiningEnum liningEnum : liningEnums) {
+//					for (MtbLiningEnum liningEnum : liningEnums) {
 						if (liningEnum.getJkInnerBodyClothCd().equals(dtbOrder.getJkInnerBodyClothCd())
 								&& !orderDetail.getClass_item().equals(CLASS_TYPE_05)) {
 							Lining lining = new Lining();
@@ -399,17 +453,21 @@ public class ReceiveOrderController {
 			List<Measurement> measurements = new ArrayList<Measurement>();
 			MeasurementEnum[] measurementEnums = MeasurementEnum.values();
 			for (MeasurementEnum measurementEnum : measurementEnums) {
+//			for (MtbMeasurementEnum measurementEnum : measurementEnums) {
 				if (productItem.equals(measurementEnum.getItem())
 						|| productItemDisplaycode.equals(measurementEnum.getItem())) {
 					Measurement measurement = new Measurement();
 
 					measurement.setOrderdetailid(dtbOrder.getOrderId() + measurementEnum.getSubNo());
+//					measurement.setStyleno(measurementEnum.getStyleNo());
 					measurement.setStyleno(measurementEnum.getStyleno());
 					measurement.setClassType(measurementEnum.getClassType());
+//					measurement.setItem_code(measurementEnum.getItemCode());
 					measurement.setItem_code(measurementEnum.getItem_code());
 					measurement.setTryon_adjustment("0");
 					try {
 						Class<?> cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.DtbOrder");
+//						Method getGet_gross = getMethod(cls, measurementEnum.getGetGross());
 						Method getGet_gross = getMethod(cls, measurementEnum.getGet_gross());
 						BigDecimal grossValue = (BigDecimal) ReflectionUtils.invoke(getGet_gross, dtbOrder, args);
 						if (grossValue == null) {
@@ -428,10 +486,10 @@ public class ReceiveOrderController {
 
 			// Options
 			List<Option> options = new ArrayList<Option>();
-			// JACKEの場合
+			// JACKETの場合
 			if (productItem.equals(ITEM_02) || productItemDisplaycode.equals(ITEM_02)) {
-				List<Option> jackeOptions = getJackeOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
-				options.addAll(jackeOptions);
+				List<Option> jacketOptions = getJacketOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
+				options.addAll(jacketOptions);
 			}
 			// PANTSの場合
 			if (productItem.equals(ITEM_03) || productItemDisplaycode.equals(ITEM_03)) {
@@ -443,35 +501,35 @@ public class ReceiveOrderController {
 				List<Option> giletOptions = getGiletOptions(STYLE_NO_01, CLASS_TYPE_17, dtbOrder, SUB_NO_EMPTY);
 				options.addAll(giletOptions);
 			}
-			// 2P (JACKE + PANTS)の場合
+			// 2P (JACKET + PANTS)の場合
 			if (productItem.equals(ITEM_21) || productItemDisplaycode.equals(ITEM_21)) {
-				List<Option> jackeOptions = getJackeOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
-				options.addAll(jackeOptions);
+				List<Option> jacketOptions = getJacketOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
+				options.addAll(jacketOptions);
 				List<Option> pantsOptions = getPantsOptions(STYLE_NO_02, CLASS_TYPE_05, dtbOrder, SUB_NO_EMPTY);
 				options.addAll(pantsOptions);
 			}
-			// 2PP (JACKE + PANTS + 2PANTS)の場合
+			// 2PP (JACKET + PANTS + 2PANTS)の場合
 			if (productItem.equals(ITEM_22) || productItemDisplaycode.equals(ITEM_22)) {
-				List<Option> jackeOptions = getJackeOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_01);
-				options.addAll(jackeOptions);
+				List<Option> jacketOptions = getJacketOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_01);
+				options.addAll(jacketOptions);
 				List<Option> pantsOptions = getPantsOptions(STYLE_NO_02, CLASS_TYPE_05, dtbOrder, SUB_NO_01);
 				options.addAll(pantsOptions);
 				List<Option> pants2Options = getPants2Options(STYLE_NO_01, CLASS_TYPE_05, dtbOrder, SUB_NO_02);
 				options.addAll(pants2Options);
 			}
-			// 3P (JACKE + PANTS + GILET)の場合
+			// 3P (JACKET + PANTS + GILET)の場合
 			if (productItem.equals(ITEM_31) || productItemDisplaycode.equals(ITEM_31)) {
-				List<Option> jackeOptions = getJackeOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
-				options.addAll(jackeOptions);
+				List<Option> jacketOptions = getJacketOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_EMPTY);
+				options.addAll(jacketOptions);
 				List<Option> pantsOptions = getPantsOptions(STYLE_NO_02, CLASS_TYPE_05, dtbOrder, SUB_NO_EMPTY);
 				options.addAll(pantsOptions);
 				List<Option> giletOptions = getGiletOptions(STYLE_NO_03, CLASS_TYPE_17, dtbOrder, SUB_NO_EMPTY);
 				options.addAll(giletOptions);
 			}
-			// 3P2PP (JACKE + PANTS + GILET + 2PANTS)の場合
+			// 3P2PP (JACKET + PANTS + GILET + 2PANTS)の場合
 			if (productItem.equals(ITEM_32) || productItemDisplaycode.equals(ITEM_32)) {
-				List<Option> jackeOptions = getJackeOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_01);
-				options.addAll(jackeOptions);
+				List<Option> jacketOptions = getJacketOptions(STYLE_NO_01, CLASS_TYPE_02, dtbOrder, SUB_NO_01);
+				options.addAll(jacketOptions);
 				List<Option> pantsOptions = getPantsOptions(STYLE_NO_02, CLASS_TYPE_05, dtbOrder, SUB_NO_01);
 				options.addAll(pantsOptions);
 				List<Option> giletOptions = getGiletOptions(STYLE_NO_03, CLASS_TYPE_17, dtbOrder, SUB_NO_01);
@@ -493,35 +551,36 @@ public class ReceiveOrderController {
 	}
 
 	/**
-	 * jackeOptionsを取得
+	 * jacketOptionsを取得
 	 * 
 	 * @param String   style_no
 	 * @param String   class_type
 	 * @param DtbOrder dtbOrder
 	 * @param String   subNo
-	 * @return jackeOptions
+	 * @return jacketOptions
 	 */
-	private List<Option> getJackeOptions(String style_no, String class_type, DtbOrder dtbOrder, String subNo) {
+	private List<Option> getJacketOptions(String style_no, String class_type, DtbOrder dtbOrder, String subNo) {
 		Object[] args = {};
-		List<Option> jackeOptions = new ArrayList<Option>();
-		OptionJackeEnum[] optionJackeEnums = OptionJackeEnum.values();
-		for (OptionJackeEnum optionJackeEnum : optionJackeEnums) {
+		List<Option> jacketOptions = new ArrayList<Option>();
+		OptionJackeEnum[] optionJacketEnums = OptionJackeEnum.values();
+		for (OptionJackeEnum optionJacketEnum : optionJacketEnums) {
+//		for (MtbOptionEnum optionJacketEnum : optionJacketEnums) {
 			try {
 				Class<?> cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.DtbOrder");
-				Method getCode = getMethod(cls, optionJackeEnum.getGetCode());
+				Method getCode = getMethod(cls, optionJacketEnum.getGetCode());
 
 				String optionCode = (String) ReflectionUtils.invoke(getCode, dtbOrder, args);
 				if (optionCode == null) {
 					optionCode = "";
 				}
-				if (optionJackeEnum.getCode().equals(optionCode)) {
+				if (optionJacketEnum.getCode().equals(optionCode)) {
 					Option option = new Option();
 					option.setOrderdetailid(dtbOrder.getOrderId() + subNo);
 					option.setStyleno(style_no);
 					option.setClassType(class_type);
-					option.setOption_type(optionJackeEnum.getOptionType());
-					option.setOption_code(optionJackeEnum.getOptionCode());
-					jackeOptions.add(option);
+					option.setOption_type(optionJacketEnum.getOptionType());
+					option.setOption_code(optionJacketEnum.getOptionCode());
+					jacketOptions.add(option);
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -543,7 +602,7 @@ public class ReceiveOrderController {
 			if (("14（花文字）").equals(dtbOrder.getProductEmbroideryFont())) {
 				option_embroidery_font.setOption_code("S01023402");
 			}
-			jackeOptions.add(option_embroidery_font);
+			jacketOptions.add(option_embroidery_font);
 
 			// 刺繍糸色
 			Option option_embroidery_color = new Option();
@@ -557,7 +616,7 @@ public class ReceiveOrderController {
 			if (("401（白）").equals(dtbOrder.getProductEmbroideryThreadColor())) {
 				option_embroidery_color.setOption_code("S01023602");
 			}
-			jackeOptions.add(option_embroidery_color);
+			jacketOptions.add(option_embroidery_color);
 
 			// 刺繍ネーム
 			if (dtbOrder.getProductEmbroideryNm() == null) {
@@ -569,10 +628,10 @@ public class ReceiveOrderController {
 			option_embroidery_nm.setClassType(class_type);
 			option_embroidery_nm.setOption_type("S010237");
 			option_embroidery_nm.setOption_code(dtbOrder.getProductEmbroideryNm());
-			jackeOptions.add(option_embroidery_nm);
+			jacketOptions.add(option_embroidery_nm);
 
 		}
-		return jackeOptions;
+		return jacketOptions;
 	}
 
 	/**
@@ -589,6 +648,7 @@ public class ReceiveOrderController {
 		List<Option> pantsOptions = new ArrayList<Option>();
 		OptionPantsEnum[] optionPantsEnums = OptionPantsEnum.values();
 		for (OptionPantsEnum optionPantsEnum : optionPantsEnums) {
+//		for (MtbOptionEnum optionPantsEnum : optionPantsEnums) {
 			try {
 				Class<?> cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.DtbOrder");
 				Method getCode = getMethod(cls, optionPantsEnum.getGetCode());
@@ -628,6 +688,7 @@ public class ReceiveOrderController {
 		List<Option> giletOptions = new ArrayList<Option>();
 		OptionGiletEnum[] optionGiletEnums = OptionGiletEnum.values();
 		for (OptionGiletEnum optionGiletEnum : optionGiletEnums) {
+//		for (MtbOptionEnum optionGiletEnum : optionGiletEnums) {
 			try {
 				Class<?> cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.DtbOrder");
 				Method getCode = getMethod(cls, optionGiletEnum.getGetCode());
@@ -667,6 +728,7 @@ public class ReceiveOrderController {
 		List<Option> pants2Options = new ArrayList<Option>();
 		Option2PantsEnum[] option2PantsEnums = Option2PantsEnum.values();
 		for (Option2PantsEnum option2PantsEnum : option2PantsEnums) {
+//		for (MtbOptionEnum option2PantsEnum : option2PantsEnums) {
 			try {
 				Class<?> cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.DtbOrder");
 				Method getCode = getMethod(cls, option2PantsEnum.getGetCode());

@@ -190,6 +190,7 @@ public class OrderDetailFormat implements Serializable{
 	private String orderKakuninSign;
 	private String orderKakuninKyakSign;
 	private String factorySijiSign;
+
 	
 	public String getBillingAmountFm() {
 		return billingAmountFm;

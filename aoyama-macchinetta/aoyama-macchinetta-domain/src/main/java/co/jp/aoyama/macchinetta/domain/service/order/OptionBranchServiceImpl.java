@@ -61,4 +61,10 @@ public class OptionBranchServiceImpl implements OptionBranchService{
 		List<OptionBranch> allOptionList = optionBranchRepository.getAllOption(orderPattern);
 		return allOptionList;
 	}
+
+	@Override
+	public List<OptionBranch> getProduct(String coType) {
+		List<OptionBranch> productList = optionBranchRepository.getProduct(coType);
+		return productList;
+	}
 }

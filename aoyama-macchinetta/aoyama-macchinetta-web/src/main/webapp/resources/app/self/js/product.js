@@ -18,15 +18,23 @@ function initProduct() {
 
 	// 刺繍入れ
 	if (oldItem == "01" || oldItem == "02" || oldItem == "06" || oldItem == "05") {
-		jQuery('input[id="embroidered_yes"]').prop("disabled",false);
+		jQuery('input[id="embroidered_id1"]').prop("disabled",false);
 	} else {
-		jQuery('input[id="embroidered_yes"]').prop("disabled",true);
-		jQuery('input[id="embroidered_no"]').prop("checked",true);
+		jQuery('input[id="embroidered_id2"]').prop("disabled",true);
+		jQuery('input[id="embroidered_id1"]').prop("checked",true);
 	}
 	jQuery('input[name="productEmbroideryNecessity"]').change();
 
 	// 刺繍糸色
-	var embroideryColorElem = jQuery('#embroideryColor');
+	if (oldItem == "05") {
+		jQuery("#jkEembroideryColor").hide();
+		jQuery("#stEembroideryColor").show();
+	}else{
+		jQuery("#jkEembroideryColor").show();
+		jQuery("#stEembroideryColor").hide();
+	}
+	
+	/*var embroideryColorElem = jQuery('#embroideryColor');
 	var selectedEmbroideryColor = embroideryColorElem.val();
 	embroideryColorElem.empty();
 	var embroideryColorList = null;
@@ -60,10 +68,8 @@ function initProduct() {
 	if (isExistSelectedEmbroideryColor) {
 		embroideryColorElem.val(selectedEmbroideryColor);
 	} else {
-/*
-		appendAlert('embroideryColorMsg', "デフォルトに変更しました。");
-*/
-	}
+		
+	}*/
 
 	// ガゼット刺繍・ネーム刺繍位置
 	if (oldItem == "05") {
@@ -77,12 +83,12 @@ function initProduct() {
 	if (oldItem == "06" || oldItem == "05") {
 		// コートとシャツは標準のみ
 		var category = jQuery('input[name="productCategory"]:checked').val();
-		if (category != "0") {
-			jQuery('#category_nomal').prop('checked', true);
+		if (category != "9000101") {
+			jQuery('#category_id1').prop('checked', true);
 		}
 		jQuery('input[name="productCategory"]').each(function(index, elem){
 			elem = jQuery(elem);
-			if (elem.val() == "0") {
+			if (elem.val() == "9000101") {
 				elem.prop("disabled", false);
 			} else {
 				elem.prop("disabled", true);
@@ -118,10 +124,11 @@ function initProduct() {
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
+				    jQuery("#resultMessages").hide();
+				    appendAlertDel('errormssage');
 				    defaultGoodsInit();
+				    getAdjustByItem();
 				    jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"oldItem":jQuery('#item').attr("hook")},type: "get",async:false});
-				  	stockCheck();
-				    compositionExpress();
 				  	jQuery("#jacketItemFlag").val("0");
 				  	jQuery("#pantsItemFlag").val("0");
 				  	jQuery("#giletItemFlag").val("0");
@@ -136,7 +143,27 @@ function initProduct() {
 				  	jQuery("#giletAdFlag").val("0");
 				  	jQuery("#coatAdFlag").val("0");
 				  	jQuery("#shirtAdFlag").val("0");
-				    // ３Piece、スペアパンツ
+				  	
+			        jQuery("#jkOptionPriceId").val("0");
+				  	jQuery("#ptOptionPriceId").val("0");
+				  	jQuery("#pt2OptionPriceId").val("0");
+				  	jQuery("#glOptionPriceId").val("0");
+				  	jQuery("#ctOptionPriceId").val("0");
+				  	jQuery("#stOptionPriceId").val("0");
+				  	
+				  	jQuery("#jkDoubleModelPrice").val("0");
+				  	jQuery("#ctDoubleModelPrice").val("0");
+				  	jQuery("#glDoubleModelPrice").val("0");
+				  	
+				  	jQuery('input[name="productEmbroideryNecessity"][value="9000501"]').prop("checked",true);
+				  	
+				  	//jQuery('#embroidered_no').change();
+				  	getProductPrice();
+				  	shirtProductPrice();
+				  	stockCheck();
+				    compositionExpress();
+				  	
+			        // ３Piece、スペアパンツ
 					if (item == "01") {
 						jQuery('#threePiece_div').show();
 						jQuery('#sparePants_div').show();
@@ -147,15 +174,23 @@ function initProduct() {
 
 					// 刺繍入れ
 					if (item == "01" || item == "02" || item == "06" || item == "05") {
-						jQuery('input[id="embroidered_yes"]').prop("disabled",false);
+						jQuery('input[id="embroidered_id1"]').prop("disabled",false);
 					} else {
-						jQuery('input[id="embroidered_yes"]').prop("disabled",true);
-						jQuery('input[id="embroidered_no"]').prop("checked",true);
+						jQuery('input[id="embroidered_id2"]').prop("disabled",true);
+						jQuery('input[id="embroidered_id1"]').prop("checked",true);
 					}
 					jQuery('input[name="productEmbroideryNecessity"]').change();
 
 					// 刺繍糸色
-					var embroideryColorElem = jQuery('#embroideryColor');
+					// 刺繍糸色
+					if (item == "05") {
+						jQuery("#jkEembroideryColor").hide();
+						jQuery("#stEembroideryColor").show();
+					}else{
+						jQuery("#jkEembroideryColor").show();
+						jQuery("#stEembroideryColor").hide();
+					}
+					/*var embroideryColorElem = jQuery('#embroideryColor');
 					var selectedEmbroideryColor = embroideryColorElem.val();
 					embroideryColorElem.empty();
 					var embroideryColorList = null;
@@ -189,10 +224,10 @@ function initProduct() {
 					if (isExistSelectedEmbroideryColor) {
 						embroideryColorElem.val(selectedEmbroideryColor);
 					} else {
-			/*
+			
 						appendAlert('embroideryColorMsg', "デフォルトに変更しました。");
-			*/
-					}
+			
+					}*/
 
 					// ガゼット刺繍・ネーム刺繍位置
 					if (item == "05") {
@@ -206,12 +241,12 @@ function initProduct() {
 					if (item == "06" || item == "05") {
 						// コートとシャツは標準とＳＰのみ
 						var category = jQuery('input[name="productCategory"]:checked').val();
-						if (category != "0") {
-							jQuery('#category_nomal').prop('checked', true);
+						if (category != "9000101") {
+							jQuery('#category_id1').prop('checked', true);
 						}
 						jQuery('input[name="productCategory"]').each(function(index, elem){
 							elem = jQuery(elem);
-							if (elem.val() == "0") {
+							if (elem.val() == "9000101") {
 								elem.prop("disabled", false);
 							} else {
 								elem.prop("disabled", true);
@@ -258,22 +293,45 @@ function initProduct() {
 		jQuery('#stockMsg').show();
 	});*/
 	
-	
+	// 選択中の刺繍入れ
+	var embroidered = jQuery('input[name="productEmbroideryNecessity"]:checked').val();
+	var item = jQuery("#item").val();
+	// 刺繍入れが有りの場合は刺繍関連項目を表示する
+	if (embroidered == '9000502') {
+		if(item == "05"){
+			shirtProductPrice();
+		}
+		jQuery('#embroidered_yes_area').show();
+	} else {
+		if(item == "05"){
+			jQuery("#embroideryNmPosPrice").val("0");
+			jQuery("#gadgetPrice").val("0");
+			allOptionPrice();
+		}
+		jQuery('#embroidered_yes_area').hide();
+	}
 	// 刺繍入れ
 	jQuery('input[name="productEmbroideryNecessity"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中の刺繍入れ
 			var embroidered = jQuery('input[name="productEmbroideryNecessity"]:checked').val();
-
+			var item = jQuery("#item").val();
 			// 刺繍入れが有りの場合は刺繍関連項目を表示する
-			if (embroidered == '1') {
+			if (embroidered == '9000502') {
+				if(item == "05"){
+					shirtProductPrice();
+				}
 				jQuery('#embroidered_yes_area').show();
 			} else {
+				if(item == "05"){
+					jQuery("#embroideryNmPosPrice").val("0");
+					jQuery("#gadgetPrice").val("0");
+					allOptionPrice();
+				}
 				jQuery('#embroidered_yes_area').hide();
 			}
 		});
 	});
-	jQuery('#embroidered_no').change();
 
 	// 納期短縮
 	jQuery('#expediteDelivery').change(function() {
@@ -302,7 +360,7 @@ function changeViewArea() {
 	// 選択中のカテゴリー
 	var category = jQuery('input[name="productCategory"]:checked').val();
 
-	if (category == "2") {
+	if (category == "9000102") {
 		// 標準オプションを非表示
 		normalOptionHide();
 		// ウォッシャブルオプションを非表示
@@ -323,7 +381,7 @@ function changeViewArea() {
 			}
 			jQuery('#tu_pants_div').show();
 			jQuery('#al_pants_div').show();
-			if (sparePants == "0009902" || sparePants == "3パンツ") {
+			if (sparePants == "0009902") {
 				jQuery('#tu2_pants_div').show();
 				jQuery('#al2_pants_div').show();
 			} else {
@@ -397,7 +455,7 @@ function changeViewArea() {
 			jQuery('#tu3_pants_div').hide();
 			jQuery('#al3_pants_div').hide();
 		}
-	} else if (category == "1") {
+	} else if (category == "9000103") {
 		// 標準オプションを非表示
 		normalOptionHide();
 		// タキシードオプションを非表示
@@ -511,7 +569,7 @@ function changeViewArea() {
 			}
 			jQuery('#op_pants_div').show();
 			jQuery('#al_pants_div').show();
-			if (sparePants == "0009902" || sparePants == "3パンツ") {
+			if (sparePants == "0009902") {
 				jQuery('#op2_pants_div').show();
 				jQuery('#al2_pants_div').show();
 			} else {

@@ -1,6 +1,6 @@
 <form:form id="idAdjustForm"
 	action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm"
-	method="post" modelAttribute="orderForm" class="form-horizontal">
+	method="post" modelAttribute="orderCoForm" class="form-horizontal">
 	<div id="al_gilet_div">
 		<div class="card-header">
 			<strong class="card-title">GILET</strong>
@@ -16,19 +16,19 @@
 							体型
 							<div class="form-check-inline form-check">
 								<form:select id="selectGiletFigure"
-									path="adjustGiletStandardInfo.sizeFigure"
+									path="coAdjustGiletStandardInfo.sizeFigure"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustGiletStandardInfo.sizeFigureMap}" />
+										items="${orderCoForm.coAdjustGiletStandardInfo.sizeFigureMap}" />
 								</form:select>								
 							</div>
 							号数
 							<div class="form-check-inline form-check">
 								<form:select id="selectGiletNumber"
-									path="adjustGiletStandardInfo.sizeNumber"
+									path="coAdjustGiletStandardInfo.sizeNumber"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustGiletStandardInfo.sizeNumberMap}" />
+										items="${orderCoForm.coAdjustGiletStandardInfo.sizeNumberMap}" />
 								</form:select>							
 							</div>
 						</div>
@@ -55,13 +55,13 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corGlBodyRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corGlBodyRange" name="adjustGiletStandardInfo.corGlBodyCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corGlBodyRange" name="coAdjustGiletStandardInfo.corGlBodyCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corGlBodyRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corGlBodyRange_out">0</output>cm
                                 </div>
 							
 						</div>
-						<div class="col-12 col-md-2" id="corGlBodylength_div">
+						<div class="col-12 col-md-2" id="corGlBody_div">
 							<output id="corGlBody_div_html">000.0cm</output>
 
 						</div>
@@ -72,7 +72,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corGlBustRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corGlBustRange" name="adjustGiletStandardInfo.corGlBustCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corGlBustRange" name="coAdjustGiletStandardInfo.corGlBustCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corGlBustRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corGlBustRange_out">0</output>cm
                                 </div>
@@ -88,7 +88,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corGlWaistRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corGlWaistRange" name="adjustGiletStandardInfo.corGlWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corGlWaistRange" name="coAdjustGiletStandardInfo.corGlWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corGlWaistRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corGlWaistRange_out">0</output>cm
                                 </div>
@@ -114,7 +114,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="adjustGiletStandardInfo.corGlStoreCorrectionMemo" id="corGlStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <textarea name="coAdjustGiletStandardInfo.corGlStoreCorrectionMemo" id="corGlStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -123,31 +123,39 @@
             </div>
 	 <!-- GILET -->
    <input type="hidden" id="corGlBody_div_Size"
-		name="adjustGiletStandardInfo.corGlBodySize" value="" />
+		name="coAdjustGiletStandardInfo.corGlBodySize" value="" />
     <input type="hidden" id="corGlBody_div_Gross"
-		name="adjustGiletStandardInfo.corGlBodyGross" value="" />
+		name="coAdjustGiletStandardInfo.corGlBodyGross" value="" />
 		
 	<input type="hidden" id="corGlBust_div_Size"
-		name="adjustGiletStandardInfo.corGlBustSize" value="" />
+		name="coAdjustGiletStandardInfo.corGlBustSize" value="" />
 	<input type="hidden" id="corGlBust_div_Gross"
-		name="adjustGiletStandardInfo.corGlBustGross" value="" />
+		name="coAdjustGiletStandardInfo.corGlBustGross" value="" />
 		
 	<input type="hidden" id="corGlWaist_div_Size"
-		name="adjustGiletStandardInfo.corGlWaistSize" value="" />
+		name="coAdjustGiletStandardInfo.corGlWaistSize" value="" />
 	<input type="hidden" id="corGlWaist_div_Gross"
-		name="adjustGiletStandardInfo.corGlWaistGross" value="" />
+		name="coAdjustGiletStandardInfo.corGlWaistGross" value="" />
 		
-	<input type="hidden" id="giletAdFlag"
-		name="giletAdFlag" value="1" />	
+	<input type="hidden" id="giletAdFlag" name="giletAdFlag" value="1" />	
+	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+    <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+    <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+    <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+    <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 		
 </form:form>
 <script
 	src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var orderPattern = "CO";
-var itemCode ="${orderForm.productItem}";
-var giletAdFlag="${orderForm.giletAdFlag}";
-var glModel = "${orderForm.optionGiletStandardInfo.ogGiletModel}";
+var itemCode ="${orderCoForm.productItem}";
+var giletAdFlag="${orderCoForm.giletAdFlag}";
+var productCategory="${orderCoForm.productCategory}";
+var glModel="";
+var ogModel = "${orderCoForm.coOptionGiletStandardInfo.ogGiletModel}";
+var tgModel = "${orderCoForm.coOptionGiletTuxedoInfo.tgGiletModel}";
+var wgModel = "${orderCoForm.coOptionGiletWashableInfo.wgGiletModel}";
 var giletAdjustList = [
 	{type:"01",id:"corGlBody_div"},
 	{type:"14",id:"corGlBust_div"},
@@ -160,17 +168,14 @@ jQuery(document).ready(function() {
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
+    if(productCategory=="9000101"){
+    	glModel = ogModel;
+	}else if(productCategory=="9000102"){
+		glModel = tgModel;
+	}else if(productCategory=="9000103"){
+		glModel = wgModel;
+	}
 		getAdjustByItem();
-		/* if(itemFlag=="1"){
-			 adjustReInit();
-		 }else if(giletFlag=="0"&&glModel==""){
-
-		 }else if(giletFlag=="1"){
-			 getFigureAndNumberByItem();
-		 }else if(giletFlag=="0"&&glModel!=""){
-			 getFigureAndNumberByItem();
-			 adjustSession();
-		 } */
 		if(giletAdFlag==""){
 			
 		}else if(giletAdFlag=="0"){
@@ -180,11 +185,11 @@ jQuery(document).ready(function() {
 			getFigureAndNumberByItem();
 			adjustSession();
 		}
-	    //getFigureAndNumberByItem();
 	    initAlter();
-jQuery("#selectGiletFigure,#selectGiletNumber").change(function(){
+    jQuery("#selectGiletFigure,#selectGiletNumber").change(function(){
 	   giletAdjust();
-    })   
+    })  
+    jQuery("#giletAdFlag").val("1");  
 });
 function getAdjustByItem(){
 	var subItemCode = "";
@@ -324,7 +329,7 @@ function giletAdjust(){
 					if(data[i].adjustClass == "01"){
 						jQuery("#corGlBody_div_html")[0].innerHTML=data[i].typeSize + 'cm';
 	            		jQuery("#corGlBody_div_Size").val(data[i].typeSize);
-	            		jQuery("#corGlBodylength_div_Gross").val(data[i].typeSize);
+	            		jQuery("#corGlBody_div_Gross").val(data[i].typeSize);
 					}else if(data[i].adjustClass == "14"){
 						jQuery("#corGlBust_div_html")[0].innerHTML=data[i].typeSize + 'cm';
 	            		jQuery("#corGlBust_div_Size").val(data[i].typeSize);
@@ -377,40 +382,40 @@ function adjustReInit(){
 } 
 function adjustSession(){
 
-	jQuery("#selectGiletFigure").val("${orderForm.adjustGiletStandardInfo.sizeFigure}");
-	jQuery("#selectGiletNumber").val("${orderForm.adjustGiletStandardInfo.sizeNumber}");
+	jQuery("#selectGiletFigure").val("${orderCoForm.coAdjustGiletStandardInfo.sizeFigure}");
+	jQuery("#selectGiletNumber").val("${orderCoForm.coAdjustGiletStandardInfo.sizeNumber}");
 
-	jQuery("#corGlBody_div_Size").val("${orderForm.adjustGiletStandardInfo.corGlBodySize}");
-	jQuery("#corGlBody_div_Gross").val("${orderForm.adjustGiletStandardInfo.corGlBodyGross}");
-	jQuery("#corGlBody_div_html").html("${orderForm.adjustGiletStandardInfo.corGlBodyGross}"+".cm");
-	if("${orderForm.adjustGiletStandardInfo.corGlBodyGross}"==""){
+	jQuery("#corGlBody_div_Size").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBodySize}");
+	jQuery("#corGlBody_div_Gross").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBodyGross}");
+	jQuery("#corGlBody_div_html").html("${orderCoForm.coAdjustGiletStandardInfo.corGlBodyGross}"+".cm");
+	if("${orderCoForm.coAdjustGiletStandardInfo.corGlBodyGross}"==""){
 		jQuery("#corGlBody_div_html").html("000.0cm");
 		}
-	jQuery("#corGlBodyRange_out").html("${orderForm.adjustGiletStandardInfo.corGlBodyCorrect}");
-	jQuery("#corGlBodyRange").val("${orderForm.adjustGiletStandardInfo.corGlBodyCorrect}");
+	jQuery("#corGlBodyRange_out").html("${orderCoForm.coAdjustGiletStandardInfo.corGlBodyCorrect}");
+	jQuery("#corGlBodyRange").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBodyCorrect}");
 	setFont("corGlBodyRange");
 	
-	jQuery("#corGlBust_div_Size").val("${orderForm.adjustGiletStandardInfo.corGlBustSize}");
-	jQuery("#corGlBust_div_Gross").val("${orderForm.adjustGiletStandardInfo.corGlBustGross}");
-	jQuery("#corGlBust_div_html").html("${orderForm.adjustGiletStandardInfo.corGlBustGross}"+".cm");
-	if("${orderForm.adjustGiletStandardInfo.corGlBustGross}"==""){
+	jQuery("#corGlBust_div_Size").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBustSize}");
+	jQuery("#corGlBust_div_Gross").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBustGross}");
+	jQuery("#corGlBust_div_html").html("${orderCoForm.coAdjustGiletStandardInfo.corGlBustGross}"+".cm");
+	if("${orderCoForm.coAdjustGiletStandardInfo.corGlBustGross}"==""){
 		jQuery("#corGlBust_div_html").html("000.0cm");
 		}
 	
-	jQuery("#corGlBustRange_out").html("${orderForm.adjustGiletStandardInfo.corGlBustCorrect}");
-	jQuery("#corGlBustRange").val("${orderForm.adjustGiletStandardInfo.corGlBustCorrect}");
+	jQuery("#corGlBustRange_out").html("${orderCoForm.coAdjustGiletStandardInfo.corGlBustCorrect}");
+	jQuery("#corGlBustRange").val("${orderCoForm.coAdjustGiletStandardInfo.corGlBustCorrect}");
 	setFont("corGlBustRange");
 
-	jQuery("#corGlWaist_div_Size").val("${orderForm.adjustGiletStandardInfo.corGlWaistSize}");
-	jQuery("#corGlWaist_div_Gross").val("${orderForm.adjustGiletStandardInfo.corGlWaistGross}");
-	jQuery("#corGlWaist_div_html").html("${orderForm.adjustGiletStandardInfo.corGlWaistGross}"+".cm");
-	if("${orderForm.adjustGiletStandardInfo.corGlWaistGross}"==""){
+	jQuery("#corGlWaist_div_Size").val("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistSize}");
+	jQuery("#corGlWaist_div_Gross").val("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistGross}");
+	jQuery("#corGlWaist_div_html").html("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistGross}"+".cm");
+	if("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistGross}"==""){
 		jQuery("#corGlWaist_div_html").html("000.0cm");
 		}
-	jQuery("#corGlWaistRange_out").html("${orderForm.adjustGiletStandardInfo.corGlWaistCorrect}");
-	jQuery("#corGlWaistRange").val("${orderForm.adjustGiletStandardInfo.corGlWaistCorrect}");
+	jQuery("#corGlWaistRange_out").html("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistCorrect}");
+	jQuery("#corGlWaistRange").val("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistCorrect}");
 	setFont("corGlWaistRange");
-	jQuery("#corGlStoreCorrectionMemo").val("${orderForm.adjustGiletStandardInfo.corGlStoreCorrectionMemo}");
+	jQuery("#corGlStoreCorrectionMemo").val("${orderCoForm.coAdjustGiletStandardInfo.corGlStoreCorrectionMemo}");
 	
 }
 		

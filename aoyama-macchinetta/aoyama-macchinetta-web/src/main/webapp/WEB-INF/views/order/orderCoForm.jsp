@@ -1,3 +1,8 @@
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
+<script>
+$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
+</script>
 <spring:eval var="sessionContent" expression="@sessionContent" />
 <style type="text/css">
 span {
@@ -48,16 +53,18 @@ select.hidedown {
                 </div>
             </div>
         </div>
-		<form:form id="idForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+		<form:form id="idForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
         <div class="content mt-3">
             <div class="animated fadeIn">
+            <div id="resultMessages">
             <t:messagesPanel  messagesAttributeName="resultMessages"/>
+            </div>
             <div class="alert alert-error" id="errormssage" style="display:none"></div>
        		<div class="alert alert-success" id="successmssage" style="display:none"></div>
             <div class="row">
             <div class="col-lg-6">
                 <div class="row">
-                    <div class="col col-md-4"><label class=" form-control-label">お客様名</label></div>
+                    <div class="col col-md-4"><label class=" form-control-label">お客様名</label></div> 
                     <div class="col-12 col-md-8" id="custNmDiv">
 
                     </div>
@@ -65,31 +72,31 @@ select.hidedown {
                 <div class="row">
                     <div class="col col-md-4"><label class=" form-control-label">ステータス</label></div>
                     <div class="col-12 col-md-8" id="status">
-                    	<c:if test="${order.tscStatus == '' || orderForm.status == ''}">
+                    	<c:if test="${order.tscStatus == '' || orderCoForm.status == ''}">
                         	
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T0' || orderForm.status == 'T0'}">
+                        <c:if test="${order.tscStatus == 'T0' || orderCoForm.status == 'T0'}">
                         	一時保存
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T1' || orderForm.status == 'T1'}">
+                        <c:if test="${order.tscStatus == 'T1' || orderCoForm.status == 'T1'}">
                         	取り置き
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T2' || orderForm.status == 'T2'}">
+                        <c:if test="${order.tscStatus == 'T2' || orderCoForm.status == 'T2'}">
                         	登録済
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T3' || orderForm.status == 'T3'}">
+                        <c:if test="${order.tscStatus == 'T3' || orderCoForm.status == 'T3'}">
                          	会計済
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T4' || orderForm.status == 'T4'}">
+                        <c:if test="${order.tscStatus == 'T4' || orderCoForm.status == 'T4'}">
                          	商品部承認済
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T5' || orderForm.status == 'T5'}">
+                        <c:if test="${order.tscStatus == 'T5' || orderCoForm.status == 'T5'}">
                          	メーカー承認済
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T6' || orderForm.status == 'T6'}">
+                        <c:if test="${order.tscStatus == 'T6' || orderCoForm.status == 'T6'}">
                          	仕入済
                         </c:if>
-                        <c:if test="${order.tscStatus == 'T7' || orderForm.status == 'T7'}">
+                        <c:if test="${order.tscStatus == 'T7' || orderCoForm.status == 'T7'}">
                          	お渡し済
                         </c:if>
                     </div>
@@ -139,36 +146,39 @@ select.hidedown {
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">注文ID</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="orderId" name="customerMessageInfo.orderId" class="input-sm form-control-sm form-control" value="" readonly> -->
-                                <form:input id="orderId" path="customerMessageInfo.orderId" class="input-sm form-control-sm form-control" readonly = "true"/>
+                                <!-- <input type="text" id="orderId" name="coCustomerMessageInfo.orderId" class="input-sm form-control-sm form-control" value="" readonly> -->
+                                <form:input id="orderId" path="coCustomerMessageInfo.orderId" class="input-sm form-control-sm form-control" readonly = "true"/>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">会員番号</label></div>
-                            <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="custCd" name="customerMessageInfo.custCd" class="input-sm form-control-sm form-control" maxlength="13"> -->
-                                <form:input id="custCd" path="customerMessageInfo.custCd" class="input-sm form-control-sm form-control" maxlength="13"/>
-                            </div>
+                            <div class="col-12 col-md-6" style="padding-right:0;">
+                                <div class="input-group">
+                                	<form:input id="custCd" path="coCustomerMessageInfo.custCd" class="input-sm form-control-sm form-control" maxlength="13"/>
+                                    <span class="input-group-btn"><button type="button" id="custSearchButton" class="btn btn-primary btn-sm">会員検索</button></span>
+                            	</div>
+                        	</div>
+                            <div class="col col-md-3" style="padding-left:0;"><button type="button" id="searchButton" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#infotext_2">非会員検索</button></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">お客様氏名</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="custNm" name="customerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50"> -->
-                                <form:input id="custNm" path="customerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50"/>
+                                <!-- <input type="text" id="custNm" name="coCustomerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50"> -->
+                                <form:input id="custNm" path="coCustomerMessageInfo.custNm" class="input-sm form-control-sm form-control" maxlength="50" readonly="true"/>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フリガナ</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="custKanaNm" name="customerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60"> -->
-                                <form:input id="custKanaNm" path="customerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60"/>
+                                <!-- <input type="text" id="custKanaNm" name="coCustomerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60"> -->
+                                <form:input id="custKanaNm" path="coCustomerMessageInfo.custKanaNm" class="input-sm form-control-sm form-control" maxlength="60" readonly="true"/>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">名簿納期</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" autocomplete="off" id="custDeliverDate" name="customerMessageInfo.custDeliverDate" placeholder="年/月/日" class="input-sm form-control-sm form-control"> -->
-                                <form:input id="custDeliverDate" path="customerMessageInfo.custDeliverDate" class="input-sm form-control-sm form-control" placeholder="年/月/日" autocomplete="off"/>
+                                <!-- <input type="text" autocomplete="off" id="custDeliverDate" name="coCustomerMessageInfo.custDeliverDate" placeholder="年/月/日" class="input-sm form-control-sm form-control"> -->
+                                <form:input id="custDeliverDate" path="coCustomerMessageInfo.custDeliverDate" class="input-sm form-control-sm form-control" placeholder="年/月/日" autocomplete="off"/>
                             </div>
                         </div>
                     </div>
@@ -176,50 +186,55 @@ select.hidedown {
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">納期短縮</label></div>
                             <div class="col-12 col-md-4">
-                                <!-- <select name="customerMessageInfo.custIsDeliverShortning" id="expediteDelivery" class="form-control-sm form-control">
+                                <!-- <select name="coCustomerMessageInfo.custIsDeliverShortning" id="expediteDelivery" class="form-control-sm form-control">
                                     <option value="0">無</option>
                                     <option value="1">有</option>
                                 </select> -->
-                                <form:select path="customerMessageInfo.custIsDeliverShortning" id="expediteDelivery" class="form-control-sm form-control">
+                                <%-- <form:select path="coCustomerMessageInfo.custIsDeliverShortning" id="expediteDelivery" class="form-control-sm form-control">
                                 	<form:option value="0">無</form:option>
                                 	<form:option value="1">有</form:option>
+                                </form:select> --%>
+                                <form:select id="expediteDelivery" path="custIsDeliverShortning" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coProductInfo.custIsDeliverShortningMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-5 text-right">
-                                <span id="expediteDeliveryMsg" style="display:none;">&yen;2,000</span>
+                            <div class="col-12 col-md-5 text-right" id="expediteDelivery_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">早割</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <select name="customerMessageInfo.custIsEarlyDiscount" id="earlyDiscount" class="form-control-sm form-control">
+                                <!-- <select name="coCustomerMessageInfo.custIsEarlyDiscount" id="earlyDiscount" class="form-control-sm form-control">
                                     <option value="0">無</option>
                                     <option value="1">有</option>
                                 </select> -->
-                                <form:select path="customerMessageInfo.custIsEarlyDiscount" id="earlyDiscount" class="form-control-sm form-control">
+                                <%-- <form:select path="coCustomerMessageInfo.custIsEarlyDiscount" id="earlyDiscount" class="form-control-sm form-control">
                                 	<form:option value="0">無</form:option>
                                 	<form:option value="1">有</form:option>
+                                </form:select> --%>
+                                <form:select id="earlyDiscount" path="custIsEarlyDiscount" class="form-control-sm form-control">
+                                    <form:options items="${orderCoForm.coProductInfo.custIsEarlyDiscountMap}"/>
                                 </form:select>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">お渡し日</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="custShopDeliveryDate" name="customerMessageInfo.custShopDeliveryDate" placeholder="年/月/日" class="input-sm form-control-sm form-control" readonly="readonly"> -->
-                                <form:input id="custShopDeliveryDate" path="customerMessageInfo.custShopDeliveryDate" class="input-sm form-control-sm form-control" placeholder="年/月/日" autocomplete="off" />
+                                <!-- <input type="text" id="custShopDeliveryDate" name="coCustomerMessageInfo.custShopDeliveryDate" placeholder="年/月/日" class="input-sm form-control-sm form-control" readonly="readonly"> -->
+                                <form:input id="custShopDeliveryDate" path="coCustomerMessageInfo.custShopDeliveryDate" class="input-sm form-control-sm form-control" placeholder="年/月/日" autocomplete="off" />
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">スタッフ</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <input type="text" id="custStaff" name="customerMessageInfo.custStaff" class="input-sm form-control-sm form-control" maxlength="50"> -->
-                                <form:input id="custStaff" path="customerMessageInfo.custStaff" class="input-sm form-control-sm form-control" maxlength="50"/>
+                                <!-- <input type="text" id="custStaff" name="coCustomerMessageInfo.custStaff" class="input-sm form-control-sm form-control" maxlength="50"> -->
+                                <form:input id="custStaff" path="coCustomerMessageInfo.custStaff" class="input-sm form-control-sm form-control" maxlength="50"/>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">区分</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <select name="customerMessageInfo.custType" id="custType" class="form-control-sm form-control">
+                                <!-- <select name="coCustomerMessageInfo.custType" id="custType" class="form-control-sm form-control">
                                     <option value="01">一般</option>
                                     <option value="02">社着</option>
                                     <option value="03">サンプル</option>
@@ -228,7 +243,7 @@ select.hidedown {
                                     <option value="06">販売会</option>
                                     <option value="07">作り直し</option>
                                 </select> -->
-                                <form:select path="customerMessageInfo.custType" id="custType" class="form-control-sm form-control">
+                                <form:select path="coCustomerMessageInfo.custType" id="custType" class="form-control-sm form-control">
                                 	<form:option value="01">一般</form:option>
                                 	<form:option value="02">社着</form:option>
                                 	<form:option value="03">サンプル</form:option>
@@ -242,34 +257,34 @@ select.hidedown {
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">出荷先</label></div>
                             <div class="col-12 col-md-9">
-                                <!-- <select name="customerMessageInfo.custShippingDestination" id="destination" class="form-control-sm form-control">
+                                <!-- <select name="coCustomerMessageInfo.custShippingDestination" id="destination" class="form-control-sm form-control">
                                     <option value="01">店舗</option>
                                     <option value="02">福山本社</option>
                                     <option value="03">TSC事業本部</option>
                                     <option value="04">お客様</option>
                                     <option value="05">他店舗</option>
                                 </select> -->
-                                <form:select path="customerMessageInfo.custShippingDestination" id="destination" class="form-control-sm form-control">
+                                <form:select path="coCustomerMessageInfo.custShippingDestination" id="destination" class="form-control-sm form-control">
                                 	<form:option value="01">店舗</form:option>
                                 	<form:option value="02">福山本社</form:option>
-                                	<form:option value="03">TSC事業本部</form:option>
+                                	<%-- <form:option value="03">TSC事業本部</form:option> --%>
                                 	<form:option value="04">お客様</form:option>
                                 	<form:option value="05">他店舗</form:option>
                                 </form:select>
                             </div>
                             <c:if test="${order.custShippingDestination == 05}">
                             	<div class="col-12 col-md-9 offset-md-3" id="shopNameDiv">
-                                <!-- <select name="customerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect" >
+                                <!-- <select name="coCustomerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect" >
                                 </select> -->
-                                <form:select path="customerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect">
+                                <form:select path="coCustomerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect">
                                 </form:select>
                             	</div>
                             </c:if>
                             <c:if test="${order.custShippingDestination != 05}">
                             	<div class="col-12 col-md-9 offset-md-3" id="shopNameDiv" style="display:none;">
-                                	<!-- <select name="customerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect" >
+                                	<!-- <select name="coCustomerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect" >
                                 	</select> -->
-                                	<form:select path="customerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect">
+                                	<form:select path="coCustomerMessageInfo.custShippingDestnationOtherstore" id="shopName" data-placeholder="店舗を選択" class="standardSelect">
                                 	</form:select>
                             	</div>
                             </c:if>
@@ -281,8 +296,8 @@ select.hidedown {
                         <div class="row form-group">
                             <div class="col col-md-2"     style="max-width: 12.5%;"><label class=" form-control-label">お客様備考</label></div>
                             <div class="col-12 col-md-12" style="max-width: 87.5%;">
-                                <!-- <textarea name="customerMessageInfo.custRemark" id="custRemark" rows="3" placeholder="" class="form-control" maxlength="500"></textarea> -->
-                                <form:textarea id="custRemark" path="customerMessageInfo.custRemark" rows="3" placeholder="" class="form-control" maxlength="500"/>
+                                <!-- <textarea name="coCustomerMessageInfo.custRemark" id="custRemark" rows="3" placeholder="" class="form-control" maxlength="500"></textarea> -->
+                                <form:textarea id="custRemark" path="coCustomerMessageInfo.custRemark" rows="3" placeholder="" class="form-control" maxlength="500"/>
                             </div>
                         </div>
                     </div>
@@ -480,11 +495,22 @@ select.hidedown {
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col col-lg-12">
+                        <div class="row form-group">
+                            <div class="col col-md-2"     style="max-width: 12.5%;"><label class=" form-control-label">メジャーリング備考</label></div>
+                            <div class="col-12 col-md-12" style="max-width: 77.5%;">
+                                <textarea name="measureringInfo" id="measureringInfo" rows="3" placeholder="" class="form-control"></textarea>
+                            </div>
+                            <button type="button" id="updMeasureButton" class="btn btn-info btn-sm" style="height:38px;">情報登録</button>
+                        </div>
+                    </div>
+                </div>
             </div></div>
             </div>
             </div>
-
             <div class="row">
+            <c:if test="${order.tscStatus == 'T0'||order.tscStatus == 'T1' ||order.tscStatus == 'T2' ||order.tscStatus == 'T3' ||order.tscStatus == 'T4' ||order.tscStatus == 'T5'||order.tscStatus == ''||order.tscStatus == null}">
             <div class="col-lg-8">
                                 <ul class="nav nav-tabs nav-justified">
                                     <li class="nav-item productbox">
@@ -498,6 +524,25 @@ select.hidedown {
                                     </li>
                                 </ul>
             </div>
+            </c:if>
+            <c:if test="${order.tscStatus == 'T7'||order.tscStatus == 'T6' }">
+					<div class="col-lg-8">
+						<ul class="nav nav-tabs nav-justified">
+							<li class="nav-item">
+								<a class="nav-link">商品</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">オプション</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link">補正</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link active" href="#" id="nav2_realter">再補正</a>
+							</li>
+						</ul>
+					</div>
+				</c:if>
             <div class="col-lg-8" style="display:none;" id="option_div">
                                 <ul class="nav nav-tabs nav-justified">
                                     <li class="nav-item jacketbox" id="jacketOption">
@@ -552,7 +597,7 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">ITEM</label></div>
                             <div class="col-12 col-md-3">
                                 <form:select id="item" path="productItem" class="form-control-sm form-control">
-                                    <form:options items="${orderForm.productItemMap}"/>
+                                    <form:options items="${orderCoForm.productItemMap}"/>
                                 </form:select>
                             </div>
                         </div>
@@ -560,7 +605,7 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">３Piece</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="threePiece_id" path="productIs3Piece" class="form-check-input" items="${orderForm.optionGiletStandardInfo.threePieceMap}"/>
+                                    <form:radiobuttons id="threePiece_id" path="productIs3Piece" class="form-check-input" items="${orderCoForm.coOptionGiletStandardInfo.threePieceMap}"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
@@ -571,7 +616,7 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">スペアパンツ</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="sparePants_id" path="productSparePantsClass" class="form-check-input" items="${orderForm.optionPantsStandardInfo.twoPantsMap}"/>
+                                    <form:radiobuttons id="sparePants_id" path="productSparePantsClass" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.twoPantsMap}"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
@@ -582,8 +627,8 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">生地品番</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                <!-- <input type="text" id="productFabricNo" name="productFabricNo" placeholder="" class="form-control-sm form-control" style="width:128px" maxlength="20" onblur="stockCheck()"> -->
                                     <form:input id="productFabricNo" path="productFabricNo" placeholder="" class="form-control-sm form-control" style="width:128px" maxlength="20" onblur="stockCheck()"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
                                     <output id="stockMsg"  style="display:none;"></output>
                                     <output id="fabricMsg"></output>
                                 </div>
@@ -595,7 +640,7 @@ select.hidedown {
                             </div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="category_nomal" class="form-check-label ">
+                                    <%-- <label for="category_nomal" class="form-check-label ">
                                         <!-- <input type="radio" id="category_nomal" name="productCategory" value="0" class="form-check-input" checked>標準 -->
                                         <form:radiobutton id="category_nomal" path="productCategory" value="0" class="form-check-input"/>標準
                                     </label>　
@@ -606,31 +651,36 @@ select.hidedown {
                                     <label for="category_washable" class="form-check-label ">
                                         <!-- <input type="radio" id="category_washable" name="productCategory" value="1" class="form-check-input">ウォッシャブル -->
                                         <form:radiobutton id="category_washable" path="productCategory" value="1" class="form-check-input"/>ウォッシャブル
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="category_id" path="productCategory" class="form-check-input" items="${orderCoForm.coProductInfo.productCategoryMap}"/>
                                 </div>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">LCR縫製</label>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <label for="lcrSewing_no" class="form-check-label ">
+                                    <%-- <label for="lcrSewing_no" class="form-check-label ">
                                         <!-- <input type="radio" id="lcrSewing_no" name="productLcrSewing" value="0000000" class="form-check-input" checked>無し -->
                                         <form:radiobutton id="lcrSewing_no" path="productLcrSewing" value="0000000" class="form-check-input"/>無し
                                     </label>　
                                     <label for="lcrSewing_yes" class="form-check-label ">
                                         <!-- <input type="radio" id="lcrSewing_yes" name="productLcrSewing" value="0000001" class="form-check-input">有り -->
                                         <form:radiobutton id="lcrSewing_yes" path="productLcrSewing" value="0000001" class="form-check-input"/>有り
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="lcrSewing_id" path="productLcrSewing" class="form-check-input" items="${orderCoForm.coProductInfo.productLcrSewingMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right">
+                            	<output id="lcrSewing_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ブランドネーム</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="brandName_ulm" class="form-check-label ">
+                                    <%-- <label for="brandName_ulm" class="form-check-label ">
                                         <!-- <input type="radio" id="brandName_ulm" name="productBrandNm" value="UNIVERSAL LANGUAGE MEASURE'S" class="form-check-input">UNIVERSAL LANGUAGE MEASURE'S -->
                                         <form:radiobutton id="brandName_ulm" path="productBrandNm" value="UNIVERSAL LANGUAGE MEASURE'S" class="form-check-input"/>UNIVERSAL LANGUAGE MEASURE'S
                                     </label>　
@@ -641,7 +691,8 @@ select.hidedown {
                                     <label for="brandName_no" class="form-check-label ">
                                         <!-- <input type="radio" id="brandName_no" name="productBrandNm" value="無し" class="form-check-input">無し -->
                                         <form:radiobutton id="brandName_no" path="productBrandNm" value="無し" class="form-check-input"/>無し
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="brandName_id" path="productBrandNm" class="form-check-input" items="${orderCoForm.coProductInfo.productBrandNmMap}"/>
                                 </div>
                             </div>
                         </div>
@@ -649,14 +700,15 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">生地ネーム</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="clothName_yes" class="form-check-label ">
+                                    <%-- <label for="clothName_yes" class="form-check-label ">
                                         <!-- <input type="radio" id="clothName_yes" name="productFabricNmNecessity" value="1" class="form-check-input" checked>有り -->
                                         <form:radiobutton id="clothName_yes" path="productFabricNmNecessity" value="1" class="form-check-input"/>有り
                                     </label>　
                                     <label for="clothName_no" class="form-check-label ">
                                         <!-- <input type="radio" id="clothName_no" name="productFabricNmNecessity" value="0" class="form-check-input">無し -->
                                         <form:radiobutton id="clothName_no" path="productFabricNmNecessity" value="0" class="form-check-input"/>無し
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="clothName_id" path="productFabricNmNecessity" class="form-check-input" items="${orderCoForm.coProductInfo.productFabricNmNecessityMap}"/>
                                 </div>
                             </div>
                         </div>
@@ -664,14 +716,15 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">刺繍入れ</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="embroidered_no" class="form-check-label ">
+                                    <%-- <label for="embroidered_no" class="form-check-label ">
                                         <!-- <input type="radio" id="embroidered_no" name="productEmbroideryNecessity" value="0" class="form-check-input" checked>無し -->
                                         <form:radiobutton id="embroidered_no" path="productEmbroideryNecessity" value="0" class="form-check-input"/>無し
                                     </label>　
                                     <label for="embroidered_yes" class="form-check-label ">
                                         <!-- <input type="radio" id="embroidered_yes" name="productEmbroideryNecessity" value="1" class="form-check-input">有り -->
                                         <form:radiobutton id="embroidered_yes" path="productEmbroideryNecessity" value="1" class="form-check-input"/>有り
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="embroidered_id" path="productEmbroideryNecessity" class="form-check-input" items="${orderCoForm.coProductInfo.productEmbroideryNecessityMap}"/>
                                 </div>
                             </div>
                         </div>
@@ -687,31 +740,49 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">刺繍書体</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="embroideryFont_14" class="form-check-label ">
+                                    <%-- <label for="embroideryFont_14" class="form-check-label ">
                                         <!-- <input type="radio" id="embroideryFont_14" name="productEmbroideryFont" value="14（花文字）" class="form-check-input">14（花文字） -->
                                         <form:radiobutton id="embroideryFont_14" path="productEmbroideryFont" value="14（花文字）" class="form-check-input"/>14（花文字）
                                     </label>　
                                     <label for="embroideryFont_48" class="form-check-label ">
                                         <!-- <input type="radio" id="embroideryFont_48" name="productEmbroideryFont" value="48（ブロック）" class="form-check-input">48（ブロック） -->
                                         <form:radiobutton id="embroideryFont_48" path="productEmbroideryFont" value="48（ブロック）" class="form-check-input"/>48（ブロック）
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="embroideryFont_id" path="productEmbroideryFont" class="form-check-input" items="${orderCoForm.coProductInfo.productEmbroideryFontMap}"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="row form-group">
+                        
+                        <div class="row form-group" id="jkEembroideryColor">
                             <div class="col col-md-3"><label class=" form-control-label">刺繍糸色</label></div>
                             <div class="col-12 col-md-3">
                                 <!-- <select name="productEmbroideryThreadColor" id="embroideryColor" class="form-control-sm form-control">
                                     <option value="110（金茶）">110（金茶）</option>
                                     <option value="140（白）">140（白）</option>
                                 </select> -->
-                                <form:select id="embroideryColor" path="productEmbroideryThreadColor" class="form-control-sm form-control">
-                                	
+                                <form:select id="embroideryColor" path="jkProductEmbroideryThreadColor" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionJacketStandardInfo.jkProductEmbroideryThreadColorMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="embroideryColorMsg">
                             </div>
                         </div>
+                        
+                        <div class="row form-group" id="stEembroideryColor" style="display:none;">
+                            <div class="col col-md-3"><label class=" form-control-label">刺繍糸色</label></div>
+                            <div class="col-12 col-md-3">
+                                <!-- <select name="productEmbroideryThreadColor" id="embroideryColor" class="form-control-sm form-control">
+                                    <option value="110（金茶）">110（金茶）</option>
+                                    <option value="140（白）">140（白）</option>
+                                </select> -->
+                                <form:select id="embroideryColor" path="stProductEmbroideryThreadColor" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.stProductEmbroideryThreadColorMap}"/>
+                                </form:select>
+                            </div>
+                            <div class="col-12 col-md-9 offset-md-3" id="embroideryColorMsg">
+                            </div>
+                        </div>
+                        
                         <div id="embroidered_shirts_area">
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">刺繍箇所</label></div>
@@ -724,14 +795,20 @@ select.hidedown {
                                     <option value="上前カフス">上前カフス</option>
                                     <option value="下前カフス">下前カフス</option>
                                 </select> -->
-                                <form:select id="productEmbroideryNmPos" path="productEmbroideryNmPos" class="form-control-sm form-control">
-                                	<form:option value="">無し</form:option>
+                                <%-- <form:select id="productEmbroideryNmPos" path="productEmbroideryNmPos" class="form-control-sm form-control">
+                                	<form:option value="無し">無し</form:option>
                                 	<form:option value="上前胸">上前胸</form:option>
                                 	<form:option value="上前腰">上前腰</form:option>
                                 	<form:option value="上前二の腕">上前二の腕</form:option>
                                 	<form:option value="上前カフス">カフス</form:option>
                                 	<form:option value="下前カフス">下前カフス</form:option>
+                                </form:select> --%>
+                                <form:select id="productEmbroideryNmPos" path="productEmbroideryNmPos" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionShirtStandardInfo.productEmbroideryNmPosMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-5" align="right">
+                            	<output id="embroideryNmPos_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -740,7 +817,7 @@ select.hidedown {
                                 <div class="form-check-inline form-check">
                                 縦　
                                 <a href="#" id="embroideryHeightRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="embroideryHeightRange" name="adjustShirtStandardInfo.embroideryHeightCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="embroideryHeightRange" name="productEmbroideryLength" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="embroideryHeightRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="embroideryHeightRange_out">0</output>cm
                                 </div>
@@ -753,7 +830,7 @@ select.hidedown {
                                 <div class="form-check-inline form-check">
                                 横　
                                 <a href="#" id="embroideryWidthRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="embroideryWidthRange" name="adjustShirtStandardInfo.embroideryWidthCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="embroideryWidthRange" name="productEmbroideryWidth" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="embroideryWidthRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="embroideryWidthRange_out">0</output>cm
                                 </div>
@@ -765,17 +842,21 @@ select.hidedown {
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ガゼット刺繍</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <label for="gadget_no" class="form-check-label ">
+                                    <%-- <label for="gadget_no" class="form-check-label ">
                                         <!-- <input type="radio" id="gadget_no" name="productEmbroideryGazette" value="0000000" class="form-check-input" checked>無し -->
                                         <form:radiobutton id="gadget_no" path="productEmbroideryGazette" value="0000000" class="form-check-input"/>無し
                                     </label>　
                                     <label for="gadget_yes" class="form-check-label ">
                                         <!-- <input type="radio" id="gadget_yes" name=productEmbroideryGazette value="0000001" class="form-check-input">有り -->
                                         <form:radiobutton id="gadget_yes" path="productEmbroideryGazette" value="0000001" class="form-check-input"/>有り
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="gadget_id" path="productEmbroideryGazette" class="form-check-input" items="${orderCoForm.coOptionShirtStandardInfo.productEmbroideryGazetteMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right">
+                            	<output id="gadget_Msg"></output>
                             </div>
                         </div>
                         </div>
@@ -784,14 +865,15 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">残布</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <label for="cloth_small" class="form-check-label ">
+                                    <%-- <label for="cloth_small" class="form-check-label ">
                                         <!-- <input type="radio" id="cloth_small" name="productRemainingClothType" value="01" class="form-check-input">小（通常） -->
                                         <form:radiobutton id="cloth_small" path="productRemainingClothType" value="01" class="form-check-input"/>小（通常）
                                     </label>　
                                     <label for="cloth_big" class="form-check-label ">
                                         <!-- <input type="radio" id="cloth_big" name="productRemainingClothType" value="02" class="form-check-input">大（タテ15cm×ヨコ15cm） -->
                                         <form:radiobutton id="cloth_big" path="productRemainingClothType" value="02" class="form-check-input"/>大（タテ15cm×ヨコ15cm）
-                                    </label>
+                                    </label> --%>
+                                    <form:radiobuttons id="cloth_id" path="productRemainingClothType" class="form-check-input" items="${orderCoForm.coProductInfo.productRemainingClothTypeMap}"/>
                                 </div>
                             </div>
                         </div>
@@ -845,8 +927,346 @@ select.hidedown {
             </div>  
            
             </div>
+            <!-- 再補正タブ内容 Start -->
+		    <c:if test="${order.tscStatus == 'T7'||order.tscStatus == 'T6' }">
+		    <div class="col-md-12">
+		    <div class="card" id="nav2_realter_div">
+		    <div id="re_jacket_div">
+			<div class="card-header">
+				<strong class="card-title">JACKET</strong>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<div class="row">
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">着丈修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corJkBodylengthCorrectAgain">
+							<a id="corJkBody_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corJkBody_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corJkBodyRe" name="coAdjustJacketStandardInfo.corJkBodylengthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ウエスト修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corJkWaistCorrectAgain">
+							<a id="corJkWaist_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corJkWaist_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corJkWaistRe" name="coAdjustJacketStandardInfo.corJkWaistCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">袖丈右修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corJkRightsleeveCorrectAgain">
+							<a id="corJkRightsleeve_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corJkRightsleeve_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corJkRightsleeveRe" name="coAdjustJacketStandardInfo.corJkRightsleeveCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">袖丈左修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corJkLeftsleeveCorrectAgain">
+							<a id="corJkLeftsleeve_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corJkLeftsleeve_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corJkLeftsleeveRe" name="coAdjustJacketStandardInfo.corJkLeftsleeveCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		    <div id="re_gilet_div">
+			<div class="card-header">
+				<strong class="card-title">GILET</strong>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<div class="row">
+							<div class="col-12 col-md-3">
+								<label class=" form-control-label">着丈修正</label>
+							</div>
+							<div class="col-12 col-md-9" id="corGlBodylengthCorrectAgain">
+								<a id="corGlBodylength_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corGlBodylength_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corGlBodylengthRe" name="coAdjustGiletStandardInfo.corGlBodylengthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">バスト修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corGlBustCorrectAgain">
+							<a id="corGlBustCorrect_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corGlBustCorrect_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corGlBustCorrectRe" name="coAdjustGiletStandardInfo.corGlBustCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ウエスト修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corGlWaistCorrectAgain">
+							<a id="corGlWaistCorrect_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corGlWaistCorrect_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corGlWaistCorrectRe" name="coAdjustGiletStandardInfo.corGlWaistCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="re_pants_div">
+			<div class="card-header">
+				<strong class="card-title">PANTS</strong>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<div class="row">
+							<div class="col-12 col-md-3">
+								<label class=" form-control-label">ウエスト修正</label>
+							</div>
+							<div class="col-12 col-md-9" id="corPtWaistCorrectAgain">
+								<a id="corPtWaist_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtWaist_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtWaistRe" name="coAdjustPantsStandardInfo.corPtWaistCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ヒップ修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPtHipCorrectAgain">
+							<a id="corPtHip_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtHip_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtHipRe" name="coAdjustPantsStandardInfo.corPtHipCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ワタリ幅修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPtThighwidthCorrectAgain">
+							<a id="corPtThighwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtThighwidth_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtThighwidthRe" name="coAdjustPantsStandardInfo.corPtThighwidthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">裾幅修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPtHemwidthCorrectAgain">
+							<a id="corPtHemwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtHemwidth_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtHemwidthRe" name="coAdjustPantsStandardInfo.corPtHemwidthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">股下右修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPtRightinseamCorrectAgain">
+							<a id="corPtRightinseam_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtRightinseam_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtRightinseamRe" name="coAdjustPantsStandardInfo.corPtRightinseamCorrectAgain" placeholder="0" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">股下左修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPtLeftinseamCorrectAgain">
+							<a id="corPtLeftinseam_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPtLeftinseam_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPtLeftinseamRe" name="coAdjustPantsStandardInfo.corPtLeftinseamCorrectAgain" placeholder="0" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="re2_pants_div">
+			<div class="card-header">
+				<strong class="card-title">PANTS（2本目）　</strong>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col col-lg-12">
+						<div class="row">
+							<div class="col-12 col-md-3">
+								<label class=" form-control-label">ウエスト修正</label>
+							</div>
+							<div class="col-12 col-md-9" id="corPt2WaistCorrectAgain">
+								<a id="corPt2Waist_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Waist_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2WaistRe" name="coAdjustPants2StandardInfo.corPt2WaistCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ヒップ修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPt2HipCorrectAgain">
+							<a id="corPt2Hip_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Hip_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2HipRe" name="coAdjustPants2StandardInfo.corPt2HipCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">ワタリ幅修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPt2ThighwidthCorrectAgain">
+							<a id="corPt2Thighwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Thighwidth_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2ThighwidthRe" name="coAdjustPants2StandardInfo.corPt2ThighwidthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">裾幅修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPt2HemwidthCorrectAgain">
+							<a id="corPt2Hemwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Hemwidth_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2HemwidthRe" name="coAdjustPants2StandardInfo.corPt2HemwidthCorrectAgain" placeholder="" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">股下右修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPt2RightinseamCorrectAgain">
+							<a id="corPt2Rightinseam_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Rightinseam_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2RightinseamRe" name="coAdjustPants2StandardInfo.corPt2RightinseamCorrectAgain" placeholder="0" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+						</div>
+						<div class="col-12 col-md-3">
+							<label class=" form-control-label">股下左修正</label>
+						</div>
+						<div class="col-12 col-md-9" id="corPt2LeftinseamCorrectAgain">
+							<a id="corPt2Leftinseam_range_1_m" class="re_alter_sign minus" style="display:none;">
+								<i class="fa fa-minus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<a id="corPt2Leftinseam_range_1_p" class="re_alter_sign plus">
+								<i class="fa fa-plus-square" style="font-size:32px; float:left;"></i>
+							</a>
+							<div style="float:left;">&nbsp;</div>
+							<input type="text" id="corPt2LeftinseamRe" name="coAdjustPants2StandardInfo.corPt2LeftinseamCorrectAgain" placeholder="0" class="input-sm form-control-sm form-control" style="width:100px; float:left; text-align:right;" maxlength="5" onkeyup='clearNoNum(this)'>
+							<div style="float:left;">&nbsp;cm</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="re_memo_div">
+				<div class="card-header">
+					<strong class="card-title">コメント入力欄</strong>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col col-lg-10">
+						<textarea id="corStoreCorrectionMemo" name="corStoreCorrectionMemoAgain" rows="3" class="form-control" maxlength="500"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</c:if>
+		<!-- 再補正タブ内容 End -->
             </div>
-
+            <c:if test="${(order==''||order==null||order.tscStatus == null)&&(orderCoForm.status==''||orderCoForm.status=='T0'||orderCoForm.status=='T1')}">
             <div class="row">
             <div class="col-md-12">
             <div class="card">
@@ -862,32 +1282,105 @@ select.hidedown {
                 <button id="coConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     </div>
                     <div class="col">
-                <button id="deleteButtom" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> 削除</button>
+                <button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
                     </div>
                 </div>
             </div>
             </div>
             </div>
             </div>
-
+            </c:if>
+            <c:if test="${order.tscStatus == 'T2'||order.tscStatus == 'T3'||order.tscStatus == 'T4'||order.tscStatus == 'T5'||orderCoForm.status == 'T2'||orderCoForm.status == 'T3'||orderCoForm.status == 'T4'||orderCoForm.status == 'T5'}">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="card">
+            <div class="card-body">
+            
+            
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    	<div class="col col-md-3">
+                			<button id="coConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
+                    	</div>
+                    	<div class="col col-md-3">
+                			<button id="cancelButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文取消</button>
+                    	</div>
+                    <div class="col">
+                    </div>
+                </div>
+            
+            </div>
+            </div>
+            </div>
+            </div>
+            </c:if>
+            <c:if test="${order.tscStatus == 'T0'||order.tscStatus == 'T1'||order.tscStatus == ''}">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="card">
+            
+           
+            	<div class="card-body">
+                <div class="row">
+                    <div class="col">
+                <button type="button" id="temporarySave" class="btn btn-info btn-block"><i class="fa fa-save"></i> 一時保存</button>
+                    </div>
+                    <div class="col">
+                <button type="button" id="layUpSave" class="btn btn-warning btn-block"><i class="fa fa-save"></i> 取り置き</button>
+                
+                    </div>
+                    <div class="col">
+                <button id = "coConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
+                    </div>
+                    	<div class="col">
+                			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
+                    	</div>
+                </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </c:if>
+            <c:if test="${order.tscStatus == 'T7'||order.tscStatus == 'T6'}">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body" id="realter_div">
+							<div class="row">
+								<div class="col">
+									<div class="col col-md-4"></div>
+									<div class="col col-md-4">
+										<button id="entryButton" type="button" class="btn btn-primary btn-block" onclick="return entryCheck();">
+											<i class="fa fa-check-circle"></i> 確定
+										</button>
+									</div>
+									<div class="col col-md-4"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</c:if>
             </div>   
             
             <!-- メジャーリング -->   
             
-            <input type="hidden" id="fullLength" name="MeasuringInfo.fullLength"  value="" />
-            <input type="hidden" id="shoulder" name="MeasuringInfo.shoulder"  value=""/>
-            <input type="hidden" id="reachRight" name="MeasuringInfo.reachRight"  value="" />
-            <input type="hidden" id="reachLeft" name="MeasuringInfo.reachLeft"  value="" />
-            <input type="hidden" id="outBust" name="MeasuringInfo.outBust"  value="" />
-            <input type="hidden" id="bust" name="MeasuringInfo.bust"  value="" />
-            <input type="hidden" id="jacketWaist" name="MeasuringInfo.jacketWaist"  value="" />
-            <input type="hidden" id="pantsWaist" name="MeasuringInfo.pantsWaist"  value="" />
-            <input type="hidden" id="hip" name="MeasuringInfo.hip"  value="" />
-            <input type="hidden" id="spanRight" name="MeasuringInfo.spanRight"  value="" />
-            <input type="hidden" id="spanLeft" name="MeasuringInfo.spanLeft"  value="" />
-            <input type="hidden" id="calfRight" name="MeasuringInfo.calfRight"  value="" />
-            <input type="hidden" id="calfLeft" name="MeasuringInfo.calfLeft"  value="" />
-            <input type="hidden" id="neck" name="MeasuringInfo.neck"  value="" />
+            <input type="hidden" id="fullLength" name="CoMeasuringInfo.fullLength"  value="" />
+            <input type="hidden" id="shoulder" name="CoMeasuringInfo.shoulder"  value=""/>
+            <input type="hidden" id="reachRight" name="CoMeasuringInfo.reachRight"  value="" />
+            <input type="hidden" id="reachLeft" name="CoMeasuringInfo.reachLeft"  value="" />
+            <input type="hidden" id="outBust" name="CoMeasuringInfo.outBust"  value="" />
+            <input type="hidden" id="bust" name="CoMeasuringInfo.bust"  value="" />
+            <input type="hidden" id="jacketWaist" name="CoMeasuringInfo.jacketWaist"  value="" />
+            <input type="hidden" id="pantsWaist" name="CoMeasuringInfo.pantsWaist"  value="" />
+            <input type="hidden" id="hip" name="CoMeasuringInfo.hip"  value="" />
+            <input type="hidden" id="spanRight" name="CoMeasuringInfo.spanRight"  value="" />
+            <input type="hidden" id="spanLeft" name="CoMeasuringInfo.spanLeft"  value="" />
+            <input type="hidden" id="calfRight" name="CoMeasuringInfo.calfRight"  value="" />
+            <input type="hidden" id="calfLeft" name="CoMeasuringInfo.calfLeft"  value="" />
+            <input type="hidden" id="neck" name="CoMeasuringInfo.neck"  value="" />
                 
 			<input type="hidden" id="statusInput" name="status"  value="" />
 			
@@ -911,10 +1404,17 @@ select.hidedown {
 			<input type="hidden" id="productPriceId"  name="productPrice"   value="0" />
 			<!-- オプション金額 -->
 			<input type="hidden" id="optionPriceId"  name="optionPrice"   value="0" />
-			<input type="hidden" id="jkOptionPriceId"  name="jkOptionPrice"   value="1000" />
-            <input type="hidden" id="ptOptionPriceId"  name="ptOptionPrice"   value="2000" />
-            <input type="hidden" id="pt2OptionPriceId"  name="pt2OptionPrice"   value="3000" />
-            <input type="hidden" id="glOptionPriceId"  name="glOptionPrice"   value="4000" />
+			<input type="hidden" id="jkOptionPriceId"  name="jkOptionPrice"   value="0" />
+            <input type="hidden" id="ptOptionPriceId"  name="ptOptionPrice"   value="0" />
+            <input type="hidden" id="pt2OptionPriceId"  name="pt2OptionPrice"   value="0" />
+            <input type="hidden" id="glOptionPriceId"  name="glOptionPrice"   value="0" />
+            <input type="hidden" id="ctOptionPriceId"  name="ctOptionPrice"   value="0" />
+            <input type="hidden" id="stOptionPriceId"  name="stOptionPrice"   value="0" />
+            
+            <input type="hidden" id="jkDoubleModelPrice"  name="jkDoubleModelPrice"   value="0" />
+            <input type="hidden" id="glDoubleModelPrice"  name="glDoubleModelPrice"   value="0" />
+            <input type="hidden" id="ctDoubleModelPrice"  name="ctDoubleModelPrice"   value="0" />
+            
 			<!-- 合計金額 -->
 			<input type="hidden" id="totalPriceId"  name="totalPrice"   value="0" />
 			<!-- 内消費税 -->
@@ -924,7 +1424,7 @@ select.hidedown {
 			<!-- 生地柄 -->
 			<input type="hidden" id="fabricPattern"  name="fabricPattern"   value="" />
 			<!-- バージョン -->
-			<input type="hidden" id="version"  name="version"  value="" />
+			<input type="hidden" id="version"  name="version"  value="${orderCoForm.version }" />
 			
 			<!-- 非画面表示 -->
 			<!-- オーダーパターン -->
@@ -940,7 +1440,7 @@ select.hidedown {
 			
 			<input type="hidden" id="saveFlag"  name="saveFlag"   value="" />
 			
-			<input type="hidden" id="fabricFlag"  name="fabricFlag"   value="" />
+			<input type="hidden" id="fabricFlag"  name="fabricFlag"   value="${orderCoForm.fabricFlag}" />
 			
 			<input type="hidden" id="jkModelFlag"  name="jkModelFlag"   value="0" />
 			<input type="hidden" id="glModelFlag"  name="glModelFlag"   value="0" />
@@ -949,8 +1449,15 @@ select.hidedown {
 			<input type="hidden" id="ctModelFlag"  name="pt2ModelFlag"   value="0" />
 			<input type="hidden" id="shModelFlag"  name="pt2ModelFlag"   value="0" />
 			
+			<input type="hidden" id="expediteDeliveryPrice" name="expediteDeliveryPrice" value="0"/>
+			<input type="hidden" id="lcrSewingPrice" name="lcrSewingPrice" value="0"/>
+			<input type="hidden" id="gadgetPrice" name="gadgetPrice" value="0"/>
+			<input type="hidden" id="embroideryNmPosPrice" name="embroideryNmPosPrice" value="0"/>
+			
 			<input type="hidden" id="versionFlag"  name="versionFlag" value="" />
 			
+			<input type="hidden" id="jacketFlag" name="jacketFlag" value="${orderCoForm.jacketFlag}"/>
+			<input type="hidden" id="giletFlag" name="giletFlag" value="${orderCoForm.giletFlag}"/>
 			
 			<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="0"/>
 			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
@@ -977,8 +1484,189 @@ select.hidedown {
 		    <input type="hidden" id="embroideryWidth_div_Size" name="adjustShirtStandardInfo.embroideryWidthSize" value="" />
 	        <input type="hidden" id="embroideryWidth_div_Gross" name="adjustShirtStandardInfo.embroideryWidthGross" value="" />
             
+            <c:if test="${order.tscStatus == 'T7'||order.tscStatus == 'T6'}">
+            <!-- 再補正フラッグ -->
+			<!-- JACKET -->
+			<input type="hidden" id="corJkBodyRe_Flag"  name="coAdjustJacketStandardInfo.corJkBodylengthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corJkWaistRe_Flag"  name="coAdjustJacketStandardInfo.corJkWaistCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corJkRightsleeveRe_Flag"  name="coAdjustJacketStandardInfo.corJkRightsleeveCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corJkLeftsleeveRe_Flag"  name="coAdjustJacketStandardInfo.corJkLeftsleeveCorrectAgainFlag" value="1" />
+			
+			<!-- PANTS -->
+			<input type="hidden" id="corPtWaistRe_Flag"  name="coAdjustPantsStandardInfo.corPtWaistCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPtHipRe_Flag"  name="coAdjustPantsStandardInfo.corPtHipCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPtThighwidthRe_Flag"  name="coAdjustPantsStandardInfo.corPtThighwidthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPtHemwidthRe_Flag"  name="coAdjustPantsStandardInfo.corPtHemwidthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPtRightinseamRe_Flag"  name="coAdjustPantsStandardInfo.corPtRightinseamCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPtLeftinseamRe_Flag"  name="coAdjustPantsStandardInfo.corPtLeftinseamCorrectAgainFlag" value="1" />
+			
+			<!-- GILET -->
+			<input type="hidden" id="corGlBodylengthRe_Flag"  name="coAdjustGiletStandardInfo.corGlBodylengthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corGlBustCorrectRe_Flag"  name="coAdjustGiletStandardInfo.corGlBustCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corGlWaistCorrectRe_Flag"  name="coAdjustGiletStandardInfo.corGlWaistCorrectAgainFlag" value="1" />
+			
+			<!-- 2PANTS -->
+			<input type="hidden" id="corPt2WaistRe_Flag"  name="coAdjustPants2StandardInfo.corPt2WaistCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPt2HipRe_Flag"  name="coAdjustPants2StandardInfo.corPt2HipCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPt2ThighwidthRe_Flag"  name="coAdjustPants2StandardInfo.corPt2ThighwidthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPt2HemwidthRe_Flag"  name="coAdjustPants2StandardInfo.corPt2HemwidthCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPt2RightinseamRe_Flag"  name="coAdjustPants2StandardInfo.corPt2RightinseamCorrectAgainFlag" value="1" />
+			<input type="hidden" id="corPt2LeftinseamRe_Flag"  name="coAdjustPants2StandardInfo.corPt2LeftinseamCorrectAgainFlag" value="1" />
+			</c:if>
+			
             </form:form>
-                                    
+          <div class="modal fade" id="infotext_2" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document" style="max-width:900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mediumModalLabel">非会員検索</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="content mt-3">
+                    <form action="" id="frmSearch" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <input type="hidden" id="chkSearch" value="">
+                        <ul class="nav nav-tabs nav-justified">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" id="nav3_search">検索</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="nav3_regist">登録</a>
+                            </li>
+                        </ul>
+                        <div class="card" id="nav3_search_div">
+                            <div class="card-body">
+                                <!-- 検索条件部分 Start -->
+                                <div class="row">
+                                    <!-- 左側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">電話番号</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchTelNo" name="text-input" placeholder="" class="input-sm form-control-sm form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchSei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 右側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">　</label></div>
+                                            <div class="col-12 col-md-8">　</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="searchMei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 制御ボタン部分 Start -->
+                                <div class="row">
+                                    <div class="col">　</div>
+                                    <div class="col col-md-4">
+                                        <button type="button" id="clearButton" class="btn btn-danger btn-block"><i class="fa fa-trash-o"></i> クリア</button>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <button type="button" id="search2Button" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 検索</button>
+                                    </div>
+                                    <div class="col">　</div>
+                                </div>
+                                <!-- 制御ボタン部分 End -->
+                            </div><!-- card body -->
+                            <div class="card" id="areaResult" style="display:none;">
+                                <div class="card-body" id="areaResult1">
+                                    <div class="row">
+                                        <div class="col">
+                                            <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- card -->
+                        <div class="card" id="nav3_regist_div">
+                            <div class="card-body">
+                                <!-- 登録部分 Start -->
+                                <div class="row">
+                                    <!-- 左側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">電話番号</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updTelNo" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="1">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updSei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan" tabindex="2">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓</label></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updSeiJ" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 右側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">　</label></div>
+                                            <div class="col-12 col-md-8">　</div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updMei" name="text-input" placeholder="" class="input-sm form-control-sm form-control zentohan" tabindex="3">
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名</label></div>
+                                            <div class="col-12 col-md-8">
+                                                <input type="text" id="updMeiJ" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-lg-12">
+                                        <div class="row form-group">
+                                            <div class="col col-md-2"><label class=" form-control-label small">メールアドレス</label></div>
+                                            <div class="col-12 col-md-10">
+                                                <input type="text" id="updEmail" name="text-input" placeholder="" class="input-sm form-control-sm form-control" tabindex="6">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 検索条件部分 End -->
+                                <!-- 制御ボタン部分 Start -->
+                                <div class="row">
+                                    <div class="col">　</div>
+                                    <div class="col-md-6">
+                                        <button type="button" id="registButton" class="btn btn-info btn-block"><i class="fa fa-save"></i> 入力内容で登録</button>
+                                    </div>
+                                    <div class="col">　</div>
+                                </div>
+                                <!-- 制御ボタン部分 End -->
+                            </div><!-- card body -->
+                        </div><!-- card -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+            </div>
+        </div>
+    </div>
+</div>                          
 <!-- 説明テキスト -->
 <div class="modal fade" id="infotext_1" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document">
@@ -1006,7 +1694,6 @@ select.hidedown {
 </div>
 
 
-<script src="${pageContext.request.contextPath}/resources/app/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.validate.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap.min.js"></script>
@@ -1023,8 +1710,53 @@ select.hidedown {
 <script src="${pageContext.request.contextPath}/resources/app/self/js/tabMenu.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
-
 <script>
+function zenkakuToHankaku(mae){
+	  let zen = new Array('ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ヰ','ユ','ヱ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','゛','°','、','。','「','」','ー','・');
+	  let han = new Array('ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ｲ','ﾕ','ｴ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ｦ','ﾝ','ｶﾞ','ｷﾞ','ｸﾞ','ｹﾞ','ｺﾞ','ｻﾞ','ｼﾞ','ｽﾞ','ｾﾞ','ｿﾞ','ﾀﾞ','ﾁﾞ','ﾂﾞ','ﾃﾞ','ﾄﾞ','ﾊﾞ','ﾋﾞ','ﾌﾞ','ﾍﾞ','ﾎﾞ','ﾊﾟ','ﾋﾟ','ﾌﾟ','ﾍﾟ','ﾎﾟ','ｧ','ｨ','ｩ','ｪ','ｫ','ｬ','ｭ','ｮ','ｯ','ﾞ','ﾟ','､','｡','｢','｣','ｰ','･');
+	 
+	  let ato = "";
+	  for (let i=0;i<mae.length;i++){
+	    let maechar = mae.charAt(i);
+	    let zenindex = zen.indexOf(maechar);
+	    if(zenindex >= 0){
+	      maechar = han[zenindex];
+	    }
+	    ato += maechar;
+	  }
+	  return ato;
+	}
+
+	jQuery(function() {
+	    jQuery('.zentohan').on('blur', function() {
+	        var str = jQuery(this).val();
+	        jQuery(this).val(zenkakuToHankaku(str));
+	    });
+	});
+	function isHanKana(str){
+	  var reg = new RegExp(/^[ｦ-ﾟ]*$/);
+	  return reg.test(str);
+	}
+	/**
+	 * 業態コードを取得する
+	 */
+	function getGyotaiCd() {
+		var gyotaiCd = 1;
+			var shopCodePrefix = jQuery("#shopCode").val().substring(0, 1);
+		if (shopCodePrefix == "1") {
+			gyotaiCd = 1;
+		} else if (shopCodePrefix == "3") {
+			gyotaiCd = 3;
+		} else {
+			var custCdPrefix = jQuery("#custCd").val().substring(0, 2);
+			if ((custCdPrefix == "62") || (custCdPrefix == "63")) {
+				gyotaiCd = 3;
+			} else {
+				gyotaiCd = 1;
+			}
+		}
+			return gyotaiCd;
+	}
 var defaultList = {
 		   activeList : [
 				//３Piece
@@ -1061,8 +1793,9 @@ jQuery('#expediteDelivery').change(function(){
 	var productFabricNo = jQuery("#productFabricNo").val();
 	var expediteDelivery = jQuery('#expediteDelivery').val();
 	// 納期短縮と早割の両立はできないため、納期短縮が有の場合は早割を無に変更
-	if (expediteDelivery == "1") {
-		jQuery('#earlyDiscount').val('0');
+	//有:9000902
+	if (expediteDelivery == "9000902") {
+		jQuery('#earlyDiscount').val('9001001');
 		jQuery("#custShopDeliveryDate").attr("disabled",false);
 		dateEarlyCheck(productFabricNo,item);
 	}else{
@@ -1077,14 +1810,16 @@ jQuery('#earlyDiscount').change(function(){
 	var earlyDiscount = jQuery('#earlyDiscount').val();
 	var item = jQuery("#item").val();
 	// 納期短縮と早割の両立はできないため、早割が有の場合は納期短縮を無に変更
-	if (earlyDiscount == "1") {
-		jQuery('#expediteDelivery').val('0');
+	if (earlyDiscount == "9001002") {
+		jQuery('#expediteDelivery').val('9000901');
 		jQuery('#expediteDelivery').change();
 		dateEarlyCheck(productFabricNo,item);
 	}else{
 		dateEarlyCheck(productFabricNo,item);
 	}
 });
+
+
 
 /************************************************
  * 読み込み時イベント設定
@@ -1097,8 +1832,230 @@ jQuery(function() {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
 
+  	//--------------------------------------------
+	// お客様情報
+	//--------------------------------------------
+	initCustomer();
+
+    //お客様名初期表示
+    var gyotaiCd = getGyotaiCd();
+    var membersId = jQuery("#custCd").val();
+    if (membersId != "") {
+        if ("7" == membersId.substring(0, 1)) {
+            var data = {"gyotai": gyotaiCd,"kokNo": membersId,"telNo": "","sei": "","mei": ""};
+            jQuery.ajax({
+                url: location.protocol+ '//' + location.host + "/member/api/v1/nonmemInfo",
+                type: 'post',
+                contentType: 'application/json;charset=UTF-8',
+                async:false,
+                data: JSON.stringify(data),
+                success: function(data){
+                    if(!isEmpty(data)){
+                        for(var i=0; i<data.dataCnt; i++){
+                            var retSei = data.nonMemberDataResponse[i]['sei'];
+                            var retMei = data.nonMemberDataResponse[i]['mei'];
+                            var retSeiJ = data.nonMemberDataResponse[i]['seij'];
+                            var retMeiJ = data.nonMemberDataResponse[i]['meij'];
+                            $('#custNm').val(retSeiJ + ' ' + retMeiJ);
+                            $('#custKanaNm').val(retSei + ' ' + retMei);
+                            var custNm = $('#custNm').val();
+                            var custKanaNm = $('#custKanaNm').val();
+                            if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                            	$('#custNmDiv').text(retSeiJ + ' ' + retMeiJ);
+                            }else if(isEmpty(custNm)|| custNm == ' '){
+                            	$('#custNmDiv').text(retSei + ' ' + retMei);
+                            }else{
+                            	$('#custNmDiv').text(retSeiJ + ' ' + retMeiJ + "(" + retSei + ' ' + retMei + ")");
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            var request = new XMLHttpRequest();
+            var pathName = '/member/api/v1/memInfo?membersId=';
+            var parmName = '&gyotaiCd=';
+            request.open('GET', location.protocol+ '//' + location.host + pathName + membersId + parmName + gyotaiCd, true);
+            request.responseType = 'json';
+            request.onload = function () {
+                var data = this.response;
+                    if (isEmpty(data)){
+                        return false;
+                    }
+                    $('#custNm').val(data.lastName + ' ' + data.firstName);
+                    $('#custKanaNm').val(data.lastNameKana + ' ' + data.firstNameKana);
+                    var custNm = $('#custNm').val();
+                    var custKanaNm = $('#custKanaNm').val();
+                    if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                    	$('#custNmDiv').text(data.lastName + ' ' + data.firstName);
+                    }else if(isEmpty(custNm)|| custNm == ' '){
+                    	$('#custNmDiv').text(data.lastNameKana + ' ' + data.firstNameKana);
+                    }else{
+                    	$('#custNmDiv').text(data.lastName + ' ' + data.firstName + "(" + data.lastNameKana + ' ' + data.firstNameKana + ")");
+                    }
+                    $('#measureringInfo').val(data.clothPre);
+                };
+            request.send();
+        }
+    }
+
+
+	//お客様名を表示
+	jQuery("#custNm,#custKanaNm").on('input', function(){
+		var custNm = jQuery("#custNm").val();
+		var custKanaNm = jQuery("#custKanaNm").val();
+
+		if(isEmpty(custKanaNm)){
+			jQuery("#custNmDiv").html(custNm + " 様");
+		}else{
+			jQuery("#custNmDiv").html(custNm+ "(" + custKanaNm +") 様");
+		}
+
+		if(isEmpty(custKanaNm)&&isEmpty(custNm)){
+			jQuery("#custNmDiv").empty();
+		}
+		
+	})
+	
+	
+	//--------------------------------------------
+	// タブメニュー
+	//--------------------------------------------
+	jQuery('a[id^="nav1_"]').each(function() {
+		jQuery(this).click(function(){
+			if (jQuery(this).hasClass('active')) {
+				return false;
+			}
+			var id = this.id;
+			jQuery('a[id^="nav1_"]').each(function(index, element) {
+				if (element.id == id) {
+					jQuery(element).addClass("active");
+				} else {
+					jQuery(element).removeClass("active");
+					jQuery('#'+element.id+'_div').hide();
+				}
+			});
+			jQuery('#'+id+'_div').fadeIn(200);
+			return false;
+		});
+
+		if (!jQuery(this).hasClass('active')) {
+			jQuery('#'+this.id+'_div').hide();
+		}
+	});
+	jQuery('a[id^="nav2_"]').each(function() {
+		jQuery(this).click(function(){
+			if (jQuery(this).hasClass('acrive')) {
+				return false;
+			}
+			var id = this.id;
+			jQuery('a[id^="nav2_"]').each(function(index, element) {
+				if (element.id == id) {
+					jQuery(element).addClass("active");
+				} else {
+					jQuery(element).removeClass("active");
+					jQuery('#'+element.id+'_div').hide();
+				}
+			});
+			jQuery('#'+id+'_div').fadeIn(200);
+			return false;
+		});
+
+		if (!jQuery(this).hasClass('active')) {
+			jQuery('#'+this.id+'_div').hide();
+		}
+	});
+	jQuery('a[id^="nav3_"]').each(function() {
+		jQuery(this).click(function(){
+			if (jQuery(this).hasClass('acrive')) {
+				return false;
+			}
+			var id = this.id;
+			jQuery('a[id^="nav3_"]').each(function(index, element) {
+				if (element.id == id) {
+					jQuery(element).addClass("active");
+				} else {
+					jQuery(element).removeClass("active");
+					jQuery('#'+element.id+'_div').hide();
+				}
+			});
+			jQuery('#'+id+'_div').fadeIn(200);
+			return false;
+		});
+
+		if (!jQuery(this).hasClass('active')) {
+			jQuery('#'+this.id+'_div').hide();
+		}
+	});
+
+    var status = "${order.tscStatus}";
+   	if(status == 'T7'||status == 'T6'){
+   		jQuery("#option_div").hide();
+   		jQuery("#option_div_adjust").hide();
+   		jQuery("#nav2_product_div").hide();
+
+   		jQuery("#nav1_custom_div input").attr("readOnly","true");
+   		jQuery("#nav1_mejer_div input").attr("readOnly","true");
+   			
+   		jQuery("#nav1_custom_div select").attr("disabled","disabled");
+   		jQuery("#nav1_mejer_div select").attr("disabled","disabled");
+
+   		jQuery("#nav1_custom_div textarea").attr("readOnly","true");
+
+   		jQuery("#custDeliverDate").attr("disabled","disabled");
+   		
+   		jQuery("#shopName").attr("disabled","disabled");
+   		jQuery("#shopName").trigger("chosen:updated");
+
+   	   	//item
+   		var item = "${order.productItem}"
+   		
+   		//スペアパンツ  0009901： 無し、0009902：有り
+   		var twoPants = "${order.productSparePantsClass}";
+
+   		//３Piece  0009901：無し、0009902：有り
+   		var is3piece = "${order.productIs3piece}";
+   		
+   		//SUITの場合
+   		if(item == "01"){
+   			jQuery("#re_jacket_div").show();
+   			jQuery("#re_pants_div").show();
+   			jQuery("#re_gilet_div").hide();
+   			jQuery("#re2_pants_div").hide();
+   			if(twoPants == "0009902"){
+   				jQuery("#re2_pants_div").show();
+   			}else{
+   				jQuery("#re2_pants_div").hide();
+   			}
+   			
+   			if(is3piece == "0009902"){
+   				jQuery("#re_gilet_div").show();
+   			}else{
+   				jQuery("#re_gilet_div").hide();
+   			}
+   			
+   		}else if (item == "02"){
+   			jQuery("#re_jacket_div").show();
+   			jQuery("#re_gilet_div").hide();
+   			jQuery("#re_pants_div").hide();
+   			jQuery("#re2_pants_div").hide();
+   		}else if (item == "03"){
+   			jQuery("#re_jacket_div").hide();
+   			jQuery("#re_gilet_div").hide();
+   			jQuery("#re_pants_div").show();
+   			jQuery("#re2_pants_div").hide();
+   		}else if (item == "04"){
+   			jQuery("#re_jacket_div").hide();
+   			jQuery("#re_gilet_div").show();
+   			jQuery("#re_pants_div").hide();
+   			jQuery("#re2_pants_div").hide();
+   		}
+   	}
+   	
     brandNmSet();
 
+    getProductPrice();
+    shirtProductPrice();
     //--------------------------------------------
 	// 共通
 	//--------------------------------------------
@@ -1118,14 +2075,10 @@ jQuery(function() {
 	//メジャーリングの制御
 	measuringSetting();
 
-	//--------------------------------------------
-	// お客様情報
-	//--------------------------------------------
-	initCustomer();
 
 	compositionExpress();
 	
-	var orderFlag = "${orderForm.orderFlag}";
+	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderLink"){
 		
 		//状態区分をクリア
@@ -1182,17 +2135,276 @@ jQuery(function() {
 		//メジャーリングを設定
 		measuring();
 
+		//ご請求金額
+		var billingAmount = "${order.billingAmount}";
+		if(isNotEmpty(billingAmount)){
+			billingAmount = formatMoney(billingAmount,0,"");
+			jQuery("#askPrice").html(billingAmount)
+		}else{
+			jQuery("#askPrice").html("0");
+		}
 		
+		//消費税
+		var consumptionTaxAmount = "${order.consumptionTaxAmount}";
+		if(isNotEmpty(consumptionTaxAmount)){
+			consumptionTaxAmount = formatMoney(consumptionTaxAmount,0,"");
+			jQuery("#excisePrice").html(consumptionTaxAmount);
+		}else{
+			jQuery("#excisePrice").html("0");
+		}
+		
+		//商品金額
+		var productPrice = "${order.productPrice}";
+		if(isNotEmpty(productPrice)){
+			productPrice = formatMoney(productPrice,0,"");
+			jQuery("#goodsPrice").html(productPrice);
+		}else{
+			jQuery("#goodsPrice").html("0");
+		}
+		
+		//オプション金額
+		var optionPrice = "${order.optionPrice}";
+		if(isNotEmpty(optionPrice)){
+			optionPrice = formatMoney(optionPrice,0,"");
+			jQuery("#optionPrice").html(optionPrice);
+		}else{
+			jQuery("#optionPrice").html("0");
+		}
+		
+		//合計金額
+		var totalPrice = "${order.totalPrice}";
+		if(isNotEmpty(totalPrice)){
+			totalPrice = formatMoney(totalPrice,0,"");
+			jQuery("#allPrice").html(totalPrice);
+		}else{
+			jQuery("#allPrice").html("0");
+		}
+		
+	} else if(orderFlag == "orderDivert"){
+		
+		//組成表示　胴裏地
+		var bodyText = "${order.productComposBodyLiner}";
+		jQuery("#productComposBodyLiner").val(bodyText);
+		if(bodyText.indexOf(" ")!=-1){
+			bodyText = bodyText.split(" ");
+			jQuery("#compos_body_liner_p").html(bodyText[0]).append("<br>").append(bodyText[1]);
+		}else{
+			jQuery("#compos_body_liner_p").html(bodyText);
+		}
+		//組成表示　袖裏地
+		var sleeveText = "${order.productComposSleeveLiner}";
+		jQuery("#compos_sleeve_liner_p").html(sleeveText);
+		jQuery("#productComposSleeveLiner").val(sleeveText);
+		
+		//出荷先_他店舗コード
+		var shopNameCode = "${order.custShippingDestnationOtherstore}";
+		jQuery("#shopName").val(shopNameCode);
+		jQuery("#shopName").trigger("chosen:updated");
+		
+		//メジャーリングを設定
+		measuring();
+	} else if(orderFlag == "orderDetail"){
+
+		//名簿納期
+		var custDeliverDate = "${order.custDeliverDate}";
+		if(isNotEmpty(custDeliverDate)){
+			custDeliverDate = dateFormat(custDeliverDate);
+			jQuery("#custDeliverDate").datepicker("update", custDeliverDate);
+		}
+		//お渡し日
+		var custShopDeliveryDate = "${order.custShopDeliveryDate}";
+		if(isNotEmpty(custShopDeliveryDate)){
+			custShopDeliveryDate = dateFormat(custShopDeliveryDate);
+			jQuery("#custShopDeliveryDate").val(custShopDeliveryDate);
+		}
+		
+		//出荷先_他店舗コード
+		var shopNameCode = "${order.custShippingDestnationOtherstore}";
+		jQuery("#shopName").val(shopNameCode);
+		jQuery("#shopName").trigger("chosen:updated");
+		
+		//お客様備考
+		var custRemark = "${f:js(order.custRemark)}";
+		jQuery("#custRemark").val(custRemark);
+		
+		//メジャーリングを設定
+		measuring();
+
+		//再補正リスト
+		//val:注文各項目の再補正値 、textId:各項目入力框のId、rangeId:各項目再補正の符号ボタンのId
+		var correctAgainList = [
+			//JACKET　
+			//着丈修正、ウエスト修正、袖丈右修正、袖丈左修正
+			{val:"${order.corJkBodylengthCorrectAgain}",textId:"#corJkBodyRe",rangeId:"#corJkBody"},
+			{val:"${order.corJkWaistCorrectAgain}",textId:"#corJkWaistRe",rangeId:"#corJkWaist"},
+			{val:"${order.corJkRightsleeveCorrectAgain}",textId:"#corJkRightsleeveRe",rangeId:"#corJkRightsleeve"},
+			{val:"${order.corJkLeftsleeveCorrectAgain}",textId:"#corJkLeftsleeveRe",rangeId:"#corJkLeftsleeve"},
+
+			//GILET
+			//着丈修正、バスト修正、ウエスト修正
+			{val:"${order.corGlBodylengthCorrectAgain}",textId:"#corGlBodylengthRe",rangeId:"#corGlBodylength"},
+			{val:"${order.corGlBustCorrectAgain}",textId:"#corGlBustCorrectRe",rangeId:"#corGlBustCorrect"},
+			{val:"${order.corGlWaistCorrectAgain}",textId:"#corGlWaistCorrectRe",rangeId:"#corGlWaistCorrect"},
+			
+			//PANTS
+			//ウエスト修正、ヒップ修正、ワタリ修正、裾幅修正、股下右修正、股下左修正
+			{val:"${order.corPtWaistCorrectAgain}",textId:"#corPtWaistRe",rangeId:"#corPtWaist"},
+			{val:"${order.corPtHipCorrectAgain}",textId:"#corPtHipRe",rangeId:"#corPtHip"},
+			{val:"${order.corPtThighwidthCorrectAgain}",textId:"#corPtThighwidthRe",rangeId:"#corPtThighwidth"},
+			{val:"${order.corPtHemwidthCorrectAgain}",textId:"#corPtHemwidthRe",rangeId:"#corPtHemwidth"},
+			{val:"${order.corPtRightinseamCorrectAgain}",textId:"#corPtRightinseamRe",rangeId:"#corPtRightinseam"},
+			{val:"${order.corPtLeftinseamCorrectAgain}",textId:"#corPtLeftinseamRe",rangeId:"#corPtLeftinseam"},
+
+			//2PANTS
+			//ウエスト修正、ヒップ修正、ワタリ修正、裾幅修正、股下右修正、股下左修正
+			{val:"${order.corPt2WaistCorrectAgain}",textId:"#corPt2WaistRe",rangeId:"#corPt2Waist"},
+			{val:"${order.corPt2HipCorrectAgain}",textId:"#corPt2HipRe",rangeId:"#corPt2Hip"},
+			{val:"${order.corPt2ThighwidthCorrectAgain}",textId:"#corPt2ThighwidthRe",rangeId:"#corPt2Thighwidth"},
+			{val:"${order.corPt2HemwidthCorrectAgain}",textId:"#corPt2HemwidthRe",rangeId:"#corPt2Hemwidth"},
+			{val:"${order.corPt2RightinseamCorrectAgain}",textId:"#corPt2RightinseamRe",rangeId:"#corPt2Rightinseam"},
+			{val:"${order.corPt2LeftinseamCorrectAgain}",textId:"#corPt2LeftinseamRe",rangeId:"#corPt2Leftinseam"}
+		];
+		
+		var correct = null;
+		for(correct of correctAgainList){
+			//各再補正値が無しの場合
+			if(isNotEmpty(correct.val)){
+				if(correct.val.indexOf("-")!=-1){
+					jQuery(correct.textId).val(correct.val.replace("-",""));
+					jQuery(correct.rangeId + "_range_1_m").toggle();
+					jQuery(correct.rangeId + "_range_1_p").toggle();
+					jQuery(correct.textId + "_Flag").val("-1");
+				}else{
+					jQuery(correct.textId).val(correct.val);
+					jQuery(correct.textId + "_Flag").val("1");
+				}
+			}else{
+				if(correct.textId == "#corPtRightinseamRe" || correct.textId == "#corPtLeftinseamRe"
+					||correct.textId == "#corPt2RightinseamRe" || correct.textId == "#corPt2LeftinseamRe"){
+					continue;
+				}else{
+					jQuery(correct.textId).val("0");
+				}
+				
+			}
+		}
+
+		//コメント入力欄
+		var corStoreCorrectionMemoAgain = "${f:js(order.corStoreCorrectionMemoAgain)}";
+		jQuery("#corStoreCorrectionMemo").val(corStoreCorrectionMemoAgain);
+
+		// 再補正の符号ボタン切替
+		jQuery('.re_alter_sign').on('click', function() {
+			var thisId = jQuery(this).attr('id');
+			var parentId = jQuery("#"+thisId).parent().attr('id');
+			var childId = jQuery("#"+parentId).find('input').attr('id');
+			
+			var sThisClassText = jQuery(this).attr('class');
+			var iMinus = sThisClassText.indexOf('minus');
+			var oParent = jQuery(this).parent();
+			var oPareButton;
+
+			var childFlag = childId + "_Flag";
+			jQuery(this).hide(); // 自身を非表示にする
+			// 対のオブジェクトを取得する
+			if (iMinus >= 0) { // 押されたのがマイナスの場合
+				jQuery("#"+childFlag).val("1");
+				oPareButton = oParent.find('a.plus');
+			} else { // 押されたのがプラスの場合
+				jQuery("#"+childFlag).val("-1");
+				oPareButton = oParent.find('a.minus');
+			}
+			oPareButton.show(); // 対のボタンを表示する
+
+		});
+
+		//ご請求金額
+		var billingAmount = "${order.billingAmount}";
+		if(isNotEmpty(billingAmount)){
+			billingAmount = formatMoney(billingAmount,0,"");
+			jQuery("#askPrice").html(billingAmount)
+		}else{
+			jQuery("#askPrice").html("0");
+		}
+		
+		//消費税
+		var consumptionTaxAmount = "${order.consumptionTaxAmount}";
+		if(isNotEmpty(consumptionTaxAmount)){
+			consumptionTaxAmount = formatMoney(consumptionTaxAmount,0,"");
+			jQuery("#excisePrice").html(consumptionTaxAmount);
+		}else{
+			jQuery("#excisePrice").html("0");
+		}
+		
+		//商品金額
+		var productPrice = "${order.productPrice}";
+		if(isNotEmpty(productPrice)){
+			productPrice = formatMoney(productPrice,0,"");
+			jQuery("#goodsPrice").html(productPrice);
+		}else{
+			jQuery("#goodsPrice").html("0");
+		}
+		
+		//オプション金額
+		var optionPrice = "${order.optionPrice}";
+		if(isNotEmpty(optionPrice)){
+			optionPrice = formatMoney(optionPrice,0,"");
+			jQuery("#optionPrice").html(optionPrice);
+		}else{
+			jQuery("#optionPrice").html("0");
+		}
+		
+		//合計金額
+		var totalPrice = "${order.totalPrice}";
+		if(isNotEmpty(totalPrice)){
+			totalPrice = formatMoney(totalPrice,0,"");
+			jQuery("#allPrice").html(totalPrice);
+		}else{
+			jQuery("#allPrice").html("0");
+		}
+	}else if(orderFlag == "orderCheck"||orderFlag == "orderBack"){
+		//jQuery("#version").val("${orderCoForm.version}");
+		
+		jQuery("#jkOptionPriceId").val("${orderCoForm.jkOptionPrice}");
+	  	jQuery("#ptOptionPriceId").val("${orderCoForm.ptOptionPrice}");
+	  	jQuery("#pt2OptionPriceId").val("${orderCoForm.pt2OptionPrice}");
+	  	jQuery("#glOptionPriceId").val("${orderCoForm.glOptionPrice}");
+	  	jQuery("#ctOptionPriceId").val("${orderCoForm.ctOptionPrice}");
+	  	jQuery("#stOptionPriceId").val("${orderCoForm.stOptionPrice}");
+	  	
+	  	jQuery("#jkDoubleModelPrice").val("${orderCoForm.jkDoubleModelPrice}");
+	  	jQuery("#ctDoubleModelPrice").val("${orderCoForm.ctDoubleModelPrice}");
+	  	jQuery("#glDoubleModelPrice").val("${orderCoForm.glDoubleModelPrice}");
+		//出荷先_他店舗コード
+		var shopNameCode = "${orderCoForm.coCustomerMessageInfo.custShippingDestnationOtherstore}";
+		jQuery("#shopName").val(shopNameCode);
+		jQuery("#shopName").trigger("chosen:updated");
+
+		jQuery("#fabricFlag").val("${orderCoForm.fabricFlag}");
+
+		var item = jQuery("#item").val();
+
+		var productFabricNo = jQuery("#productFabricNo").val();
+
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		fabricCheckValue = fabricCheckValue.split("*");
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		//生地チェク成功の場合
+		if(fabricCheckValue[0]=="0"&&isNotEmpty(productFabricNo)){
+			//生地によって、商品を表示
+			fabricView(item,productFabricNo);
+		}
+
+		var yieldNum = "${orderCoForm.theoryFabricUsedMount}";
+		jQuery("#theoryFabricUsedMountId").val(yieldNum);
+
+		orderFormMeasuring();
+
 	}
 
 	initAlter();
 
-	defaultGoodsInit();
-	
-	jQuery("#item").change(function(){
-		getAdjustByItem();
-	})
-	
 	jQuery('a[href="#nav2_JACKET"]').click(function(){
 		jQuery(".tabbox").addClass("activebk");
 		jQuery(".giletbox").removeClass("activebk");
@@ -1238,6 +2450,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_SHIRT"]').click(function(){
+		jQuery(".tabbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
@@ -1304,6 +2517,7 @@ jQuery(function() {
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		compositionExpress();
+		shirtProductPrice();
 		jQuery("#nav3_div_choose").hide();
 		jQuery("#option_div_adjust").hide();
 		jQuery("#option_div").hide();
@@ -1383,7 +2597,7 @@ jQuery(function() {
 		jQuery(".ptadjustbox").addClass("activebk");
 		jQuery(".pt2adjustbox").addClass("activebk");
 		jQuery("#nav3_div_choose").show();
-		
+		shirtProductPrice();
 		var item = jQuery("#item").val();
 		var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 		var sparePants = jQuery('input[name="productSparePantsClass"]:checked').val();
@@ -1420,23 +2634,111 @@ jQuery(function() {
 		}
 	})
 	
-	
+	var authority = "${sessionContent.authority}";
+	if(authority == "02"){
+		
+	}else{
+		/* //30s自動保存
+	 	//注文のTSCステータス
+		var orderStatus = "${order.tscStatus}";
+		//戻るの場合、orderFormのTSCステータス
+		var orderFormStatus = "${orderCoForm.status}";
+		//T0 ：一時保存、T1 ：取り置き、""：ステータス無し
+		//「オーダー一覧」画面から来たの場合
+		if(　((orderStatus=="T0"||orderStatus=="T1")&&orderFormStatus=="")||
+			//「内容確認」画面来たの場合	
+			((orderFormStatus=="T0"||orderFormStatus=="T1")&&orderStatus=="")||
+			//新規登録の場合
+			(orderStatus==""&&orderFormStatus=="")){
+				
+			setInterval(function(){
+
+				//バージョンフラッグ
+				//var versionFlag = "";
+				//保存flag
+				jQuery("#saveFlag").val("1");
+				//TSCステータス  一時保存
+				var statusInput = jQuery("#statusInput").val();
+
+				if(statusInput==""||statusInput==null){
+					jQuery("#statusInput").val("T0");
+				}else{
+					jQuery("#statusInput").val(jQuery("#statusInput").val());
+				}
+				
+				var result = temporarySaveCheck();
+					
+				if(!result){
+					jQuery("div.alert-success").hide();
+					return false;
+				}
+				
+				jQuery('select').removeAttr("disabled");
+				jQuery('input').not("#lcrSewing_id2").removeAttr("disabled");
+				jQuery.ajax({
+		              url : contextPath + "/orderCo/orderCoTemporarySave",
+				      type: "post",
+				      async:false,
+				      data: jQuery('#formId').serialize(),
+					  }).then(function(data) {
+						  if(!data.orderMsgFlag){
+							  if(data.orderMsg == 'T2ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }else if(data.orderMsg == 'T3ERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+							  }
+						  }else{
+							  if(data.orderId == "true"){
+								  //ステータス設定
+							   	  jQuery("#status").empty();
+							   	  var statusInput = jQuery("#statusInput").val();
+								  if(statusInput=="T0"){
+								 	  jQuery("#status").html("一時保存");
+								  }else{
+									  jQuery("#status").html("取り置き");
+								  }
+							  }else if(data.orderId.length == 12){
+								  jQuery("#orderId").val(data.orderId);
+							      //ステータス設定
+								  jQuery("#status").empty();
+							   	  var statusInput = jQuery("#statusInput").val();
+								  if(statusInput=="T0"){
+								 	  jQuery("#status").html("一時保存");
+								  }else{
+									  jQuery("#status").html("取り置き");
+								  }
+								  var version = jQuery.ajax({url:contextPath + "/orderCo/getOrderVersion",data:{"orderId":data.orderId},async:false});
+								  version = version.responseText;
+								  jQuery("#version").val(version);
+							  }
+						  }
+					  })
+					  
+				changeViewArea();
+			  },30000)
+		}; */
+	}
 	
 	//一時保存ボタンをクリック
 	jQuery("#temporarySave").click(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var result = temporarySaveCheck();
 		
-		var minDate = jQuery("#custShopDeliveryDate").attr("minDate");
-
-		var custShopDeliveryDate = jQuery("#custShopDeliveryDate").val();
-
-		var minDateCheck = new Date(minDate.replace(/\-/g, "\/"));
-		var custShopDeliveryDateCheck = new Date(custShopDeliveryDate.replace(/\-/g, "\/"));
-	    
-		if(minDateCheck!=""&&custShopDeliveryDateCheck!=""&&custShopDeliveryDateCheck <minDateCheck){  
-			appendAlert('errormssage', getMsg('msg129'));
-		    return false;  
-		}else{
-	    	appendAlertDel('errormssage');
+		if(!result){
+			jQuery("div.alert-success").hide();
+			return false;
 		}
 		
 		//保存flag
@@ -1446,26 +2748,48 @@ jQuery(function() {
 		
 		jQuery.ajax({url : contextPath + "/orderCo/orderCoTemporarySave",
 		    type: "post",
-		    async:false,
+		    //async:false,
 			data: jQuery('#idForm').serialize(),
 		    }).then(function(data){
-			    if(data == "true"){
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("一時保存");
-				   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
-				}else if(data.length == 12){
-					jQuery("#orderId").val(data);
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("一時保存");
-				   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-				   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version);
+		    	if(!data.orderMsgFlag){
+					  if(data.orderMsg == 'T2ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }else if(data.orderMsg == 'T3ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }
+				}else{
+					if(data.orderId == "true"){
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("一時保存");
+					   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = data;
+						jQuery("#versionFlag").val(versionFlag); */
+					}else if(data.orderId.length == 12){
+						jQuery("#orderId").val(data.orderId);
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("一時保存");
+					   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+						jQuery("#versionFlag").val(versionFlag); */
+					}
 				}
 			})
 	})
@@ -1473,40 +2797,536 @@ jQuery(function() {
 	
 	//取り置きボタンをクリック
 	jQuery("#layUpSave").click(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var result = temporarySaveCheck();
 		
-		//バージョンフラッグ
-		//var versionFlag = "";
+		if(!result){
+			jQuery("div.alert-success").hide();
+			return false;
+		}
 		
 		//保存flag
 		jQuery("#saveFlag").val("0");
 		//TSCステータス  取り置き
 		jQuery("#statusInput").val("T1");
 		
-		jQuery.ajax({url : contextPath + "/order/orderPoTemporarySave",
+		jQuery.ajax({url : contextPath + "/orderCo/orderCoTemporarySave",
 		    type: "post",
-		    async:false,
+		    //async:false,
 		    data: jQuery('#idForm').serialize(),
 		    }).then(function(data){
-		    	if(data == "true"){
-			  	    //ステータス設定
-				   	jQuery("#status").empty();
-				   	jQuery("#status").html("取り置き");
-				   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-				  	/* var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version); */
-				}else if(data.length == 12){
-					jQuery("#orderId").val(data);
-			    	//ステータス設定
-					jQuery("#status").empty();
-					jQuery("#status").html("取り置き");
-				   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-				   	/* var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-					version = version.responseText;
-					jQuery("#version").val(version); */
+		    	if(!data.orderMsgFlag){
+					  if(data.orderMsg == 'T2ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }else if(data.orderMsg == 'T3ERROR'){
+						  swal({
+		        				text: getMsg('msg048'),
+		        				icon: "info"
+		        		  }).then(function(val){
+		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+		        		  });
+					  }
+				}else{
+					if(data.orderId == "true"){
+				  	    //ステータス設定
+					   	jQuery("#status").empty();
+					   	jQuery("#status").html("取り置き");
+					   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
+					  	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+			    		jQuery("#versionFlag").val(versionFlag); */
+					}else if(data.orderId.length == 12){
+						jQuery("#orderId").val(data.orderId);
+				    	//ステータス設定
+						jQuery("#status").empty();
+						jQuery("#status").html("取り置き");
+					   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
+					   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+						version = version.responseText;
+						jQuery("#version").val(version);
+						/* versionFlag = "true";
+						jQuery("#versionFlag").val(versionFlag); */
+					}
 				}
 			})
 	})
+	
+	// メジャーリング情報登録ボタンクリック
+	jQuery('#updMeasureButton').on('click', function() {
+		var membersId = jQuery("#custCd").val();
+		if (!membersId) {
+			return;
+		}
+		if ("7" == membersId.substring(0, 1)) {
+			swal({
+				text:"非会員のメジャーリング情報は登録できません。",
+				icon:"warning"
+			});
+			return;
+		}
+
+		var gyotaiCd = getGyotaiCd();
+		var tenCd = jQuery("#shopCode").val();
+// TODO:社員コードを動的に取得する
+		var syainNo = jQuery("#custStaff").val();
+		var fullLength = getPartsSize(jQuery("#fullLengthTe"), jQuery("#fullLengthSe"), "フルレングス");
+		if (fullLength == null) {
+			return;
+		}
+		var shoulder = getPartsSize(jQuery("#shoulderTe"), jQuery("#shoulderSe"), "ショルダー");
+		if (shoulder == null) {
+			return;
+		}
+		var reachRight = getPartsSize(jQuery("#reachRightTe"), jQuery("#reachRightSe"), "リーチ（右）");
+		if (reachRight == null) {
+			return;
+		}
+		var reachLeft = getPartsSize(jQuery("#reachLeftTe"), jQuery("#reachLeftSe"), "リーチ（左）");
+		if (reachLeft == null) {
+			return;
+		}
+		var outBust = getPartsSize(jQuery("#outBustTe"), jQuery("#outBustSe"), "アウトバスト");
+		if (outBust == null) {
+			return;
+		}
+		var bust = getPartsSize(jQuery("#bustTe"), jQuery("#bustSe"), "バスト");
+		if (bust == null) {
+			return;
+		}
+		var jacketWaist = getPartsSize(jQuery("#jacketWaistTe"), jQuery("#jacketWaistSe"), "JKウエスト");
+		if (jacketWaist == null) {
+			return;
+		}
+		var pantsWaist = getPartsSize(jQuery("#pantsWaistTe"), jQuery("#pantsWaistSe"), "PTウエスト");
+		if (pantsWaist == null) {
+			return;
+		}
+		var hip = getPartsSize(jQuery("#hipTe"), jQuery("#hipSe"), "ヒップ");
+		if (hip == null) {
+			return;
+		}
+		var spanRight = getPartsSize(jQuery("#spanRightTe"), jQuery("#spanRightSe"), "ワタリ（右）");
+		if (spanRight == null) {
+			return;
+		}
+		var spanLeft = getPartsSize(jQuery("#spanLeftTe"), jQuery("#spanLeftSe"), "ワタリ（左）");
+		if (spanLeft == null) {
+			return;
+		}
+		var calfRight = getPartsSize(jQuery("#calfRightTe"), jQuery("#calfRightSe"), "ふくらはぎ（右）");
+		if (calfRight == null) {
+			return;
+		}
+		var calfLeft = getPartsSize(jQuery("#calfLeftTe"), jQuery("#calfLeftSe"), "ふくらはぎ（左）");
+		if (calfLeft == null) {
+			return;
+		}
+		var neck = getPartsSize(jQuery("#neckTe"), jQuery("#neckSe"), "ネック");
+		if (neck == null) {
+			return;
+		}
+		var measureringInfo = jQuery("#measureringInfo").val();
+
+		var data = {
+				"gyotaiCd"  : gyotaiCd,
+				"kokNo"     : membersId,
+				"size01"    : fullLength,
+				"size02"    : shoulder,
+				"size03"    : reachRight,
+				"size04"    : reachLeft,
+				"size05"    : outBust,
+				"size06"    : bust,
+				"size07"    : jacketWaist,
+				"size08"    : pantsWaist,
+				"size09"    : hip,
+				"size10"    : spanRight,
+				"size11"    : spanLeft,
+				"size12"    : calfRight,
+				"size13"    : calfLeft,
+				"size14"    : neck,
+				"size15"    : NaN,
+				"size16"    : NaN,
+				"size17"    : NaN,
+				"size18"    : NaN,
+				"size19"    : NaN,
+				"size20"    : NaN,
+				"sizeUpdYmd": "",
+				"biko01"    : measureringInfo,
+				"biko02"    : "",
+				"biko03"    : "",
+				"updTenCd"  : tenCd,
+				"updSyainNo": syainNo,
+				"updYmd"    : "",
+				"updHms"    : ""
+		};
+
+		jQuery.ajax({
+			url: location.protocol+ '//' + location.host + "/member/api/v1/upKarte",
+			type: 'post',
+			contentType: 'application/json;charset=UTF-8',
+			async:false,
+			data: JSON.stringify(data)
+		}).then(
+			// 通信成功時のコールバック
+			function(data){
+				if(isEmpty(data)){
+					swal({
+						text:"メジャーリング情報の登録に失敗しました。",
+						icon:"error"
+					});
+				} else {
+					swal({
+						text:"メジャーリング情報を登録しました。",
+						icon:"info"
+					});
+				}
+			},
+			// 通信失敗時のコールバック
+			function(){
+				swal({
+					text:"メジャーリング情報の登録に失敗しました。",
+					icon:"error"
+				});
+			}
+		);
+	});
+
+	/**
+	 * JSONにNaNを渡すためのreplacer
+	 */
+	var replacer = function(key, value) {
+		if (Number.isNaN(value)) {
+			return {
+				__extendData__: true,
+				type: 'number',
+				value: 'NaN',
+			};
+		}
+		return value;
+	};
+
+	/**
+	 * パーツごとの採寸情報を取得する、
+	 * return
+	 *   NaN     : 整数部、小数部ともに未入力の場合
+	 *   null    : 整数部、小数部のいずれかの入力に不備がある場合
+	 *   上記以外: サイズ情報（整数部 + "." + 小数部）
+	 */
+	function getPartsSize(objTe, objSe, partsText) {
+		var regex = new RegExp(/^[0-9]+$/);
+		if (!objTe.val()) {
+			// 少数部だけ入力されている場合はエラー
+			if (objSe.val()) {
+				swal({
+					text:partsText + "を入力してください。",
+					icon:"warning"
+				}).then(function(val){
+					objTe.focus();
+				});
+				return null;
+			} else {
+				return NaN;
+			}
+		} else {
+			// 整数部が整数でない場合はエラー
+			if (!regex.test(objTe.val())) {
+				swal({
+					text:partsText + "には数値を入力してください。",
+					icon:"warning"
+				}).then(function(val){
+					objTe.focus();
+				});
+				return null;
+			}
+
+			// 小数部が入力されている場合
+			if (objSe.val()) {
+				// 少数部が整数でない場合はエラー
+				if (!regex.test(objSe.val())) {
+					swal({
+						text:partsText + "には数値を入力してください。",
+						icon:"warning"
+					}).then(function(val){
+						objSe.focus();
+					});
+					return null;
+				} else {
+					return parseFloat(objTe.val() + "." + objSe.val());
+				}
+			} else {
+				return parseFloat(objTe.val());
+			}
+		}
+	}
+
+    //会員検索ボタンクリック
+    jQuery('#custSearchButton').on('click', function() {
+            var membersId = jQuery("#custCd").val();
+            var shopCode = jQuery("#shopCode").val();
+            var gyotaiCd = "1";
+            if (!isEmpty(shopCode)) {
+                if (shopCode[0] == '1' || shopCode[0] == '3') {
+                    gyotaiCd = shopCode[0];
+                } else {
+                    if (membersId.length >= 2) {
+                        switch(membersId.substr(0,2)){
+                          case '62':
+                          case '63':
+                            gyotaiCd = '3';
+                            break;
+                          default:
+                            gyotaiCd = '1';
+                        }
+                    }
+                }
+            } else {
+                if (membersId.length >= 2) {
+                    switch(membersId.substr(0,2)){
+                      case '62':
+                      case '63':
+                        gyotaiCd = '3';
+                        break;
+                      default:
+                        gyotaiCd = '1';
+                    }
+                }
+            }
+            if (membersId == "") {
+                    swal({
+                            text:"会員番号を入力してください。",
+                            icon:"error"
+                    }).then(function(val){
+                            jQuery("#custCd").focus();
+                    });
+                    jQuery("#custNm").val('');
+                    jQuery("#custKanaNm").val('');
+                    return false;
+            }
+            jQuery.ajax({
+                url: location.protocol+ '//' + location.host + "/member/api/v1/memInfo",
+                type: 'get',
+                async:false,
+                data:{"membersId":membersId,"gyotaiCd":gyotaiCd},
+                success: function(data){
+                    if(isEmpty(data)){
+                        swal({
+                            text:"会員番号が存在しません。確認して再入力してください。",
+                            icon:"error"
+                        }).then(function(val){
+                            jQuery("#custCd").focus();
+                        });
+                        return false;
+                    } else {
+                    	$('#custNm').val(data.lastName + ' ' + data.firstName);
+                        $('#custKanaNm').val(data.lastNameKana + ' ' + data.firstNameKana);
+                        var custNm = $('#custNm').val();
+                        var custKanaNm = $('#custKanaNm').val();
+                        if(isEmpty(custKanaNm)||custKanaNm == ' '){
+                        	$('#custNmDiv').text(data.lastName + ' ' + data.firstName);
+                        }else if(isEmpty(custNm)|| custNm == ' '){
+                        	$('#custNmDiv').text(data.lastNameKana + ' ' + data.firstNameKana);
+                        }else{
+                        	$('#custNmDiv').text(data.lastName + ' ' + data.firstName + "(" + data.lastNameKana + ' ' + data.firstNameKana + ")");
+                        }
+                        $('#measureringInfo').val(data.clothPre);
+                    }
+                }
+            });
+
+    });
+
+	// 非会員検索ボタンクリック
+	jQuery('#search2Button').on('click', function() {
+                jQuery('#bootstrap-data-table').empty();
+                var membersId = jQuery("#custCd").val();
+                var shopCode = jQuery("#shopCode").val();
+		var phoneNo = jQuery("#searchTelNo").val();
+		var firstNameKana = jQuery("#searchSei").val();
+		var secondNameKana = jQuery("#searchMei").val();
+                var gyotaiCd = "1";
+                if (!isEmpty(shopCode)) {
+                    if (shopCode[0] == '1' || shopCode[0] == '3') {
+                        gyotaiCd = shopCode[0];
+                    } else {
+                        if (membersId.length >= 2) {
+                            switch(membersId.substr(0,2)){
+                              case '62':
+                              case '63':
+                                gyotaiCd = '3';
+                                break;
+                              default:
+                                gyotaiCd = '1';
+                            }
+                        }
+                    }
+                } else {
+                    if (membersId.length >= 2) {
+                        switch(membersId.substr(0,2)){
+                          case '62':
+                          case '63':
+                            gyotaiCd = '3';
+                            break;
+                          default:
+                            gyotaiCd = '1';
+                        }
+                    }
+                }
+		if (phoneNo == "") {
+			swal({
+				text:"電話番号を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchTelNo").focus();
+			});
+			return false;
+		} else if (firstNameKana == "") {
+			swal({
+				text:"姓（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchSei").focus();
+			});
+			return false;
+		} else if (secondNameKana == "") {
+			swal({
+				text:"名（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#searchMei").focus();
+			});
+			return false;
+		}
+		if (!isHanKana(firstNameKana)) {
+            swal({
+                    text:"姓（カナ）は半角カナで入力してください。",
+                    icon:"error"
+            }).then(function(val){
+                    jQuery("#searchSei").focus();
+            });
+            return false;
+		}
+        var data = {"gyotai": gyotaiCd,"kokNo": 0,"telNo": phoneNo,"sei": firstNameKana,"mei": secondNameKana};
+        jQuery.ajax({
+            url: location.protocol+ '//' + location.host + "/member/api/v1/nonmemInfo",
+            type: 'post',
+            contentType: 'application/json;charset=UTF-8',
+            async:false,
+            data: JSON.stringify(data),
+            success: function(data){
+                if(isEmpty(data)){
+                    swal({
+                        text:"会員情報が存在しません。確認して再入力してください。",
+                        icon:"error"
+                    }).then(function(val){
+                        jQuery("#custCd").focus();
+                    });
+                    return false;
+                } else {
+                    $('#bootstrap-data-table').append('<thead><tr><th><label class="small">顧客No</label></th>' +
+                               '<th><label class="small">電話番号</label></th>' +
+                               '<th><label class="small">メールアドレス</label></th>' +
+                               '<th><label class="small">姓名</label></th>' +
+                               '<th><label class="small">姓名（カナ）</label></th>' +
+                               '<th></th></tr></thead>');
+                    for(var i=0; i<data.dataCnt; i++){
+                        var retKokNo = data.nonMemberDataResponse[i]['kokno'];
+                        var retTelno = data.nonMemberDataResponse[i]['telno'];
+                        var retEmail = data.nonMemberDataResponse[i]['email'];
+                        var retSei = data.nonMemberDataResponse[i]['sei'];
+                        var retMei = data.nonMemberDataResponse[i]['mei'];
+                        var retSeiJ = data.nonMemberDataResponse[i]['seij'];
+                        var retMeiJ = data.nonMemberDataResponse[i]['meij'];
+                        $('#bootstrap-data-table').append(
+                               '<tr><td><label id="cust_num_' + i + '">' + retKokNo + '</label></td>' +
+                               '<td><label class="small" id="cust_phone_' + i + '">' + retTelno + '</label></td>' +
+                               '<td><label class="small" id="cust_email_' + i + '">' + retEmail + '</label></td>' +
+                               '<td><label class="small" id="cust_Nam_' + i + '">' + retSeiJ + ' ' + retMeiJ + '</label></td>' +
+                               '<td><label class="small" id="cust_knam_' + i + '">' + retSei + ' ' + retMei + '</label></td><td>' +
+                               '<button type="button" id="selectButton_' + i +
+                               '" class="btn btn-info btn-block selectbtn">選択</button></td></tr>');
+                    }
+                }
+            }
+        });
+
+        // 一覧部を非表示
+        jQuery('#areaResult').show();
+	});
+
+	// 登録ボタンクリック
+	jQuery('#registButton').on('click', function() {
+                var gyotaiCd = getGyotaiCd();
+		var phoneNo = jQuery("#updTelNo").val();
+		var firstNameKana = jQuery("#updSei").val();
+		var secondNameKana = jQuery("#updMei").val();
+		var firstName = jQuery("#updSeiJ").val();
+		var secondName = jQuery("#updMeiJ").val();
+		var Email = jQuery("#updEmail").val();
+		if (phoneNo == "") {
+			swal({
+				text:"電話番号を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updTelNo").focus();
+			});
+			return false;
+		} else if (firstNameKana == "") {
+			swal({
+				text:"姓（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updSei").focus();
+			});
+			return false;
+		} else if (secondNameKana == "") {
+			swal({
+				text:"名（カナ）を入力してください。",
+				icon:"error"
+			}).then(function(val){
+				jQuery("#updMei").focus();
+			});
+			return false;
+		}
+        var data = {"gyotai": gyotaiCd,"kokNo": 0,"telNo": phoneNo,"sei": firstNameKana,"mei": secondNameKana,"seiJ":firstName,"meiJ":secondName,"email":Email};
+        jQuery.ajax({
+            url: location.protocol+ '//' + location.host + "/member/api/v1/updNonMem",
+            type: 'post',
+            contentType: 'application/json;charset=UTF-8',
+            async:false,
+            data: JSON.stringify(data),
+            success: function(data){
+                if(isEmpty(data)){
+                    swal({
+                        text:"非会員登録に失敗しました。",
+                        icon:"error"
+                    }).then(function(val){
+                        jQuery("#custCd").focus();
+                    });
+                    return false;
+                } else {
+                    swal({
+                        text:"非会員情報を登録しました。",
+                        icon:"info"
+                    });
+                    jQuery('#areaResult').hide();
+                    jQuery('#custCd').val(data.kokNo);
+                    jQuery('#custKanaNm').val(firstNameKana + ' ' + secondNameKana);
+                    jQuery('#custNmDiv').text(firstNameKana + ' ' + secondNameKana);
+                    jQuery('#custNm').val(firstName + ' ' + secondName);
+                    jQuery('#infotext_2').modal('hide');
+                }
+            }
+        });
+	});
 	
 	// ３Piece
 	jQuery('input[name="productIs3Piece"]').each(function() {
@@ -1517,7 +3337,8 @@ jQuery(function() {
 				jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"oldItem":"04"},type: "get",async:false});
 				jQuery("#giletItemFlag").val("0");
 			}else if(threePiece == "0009901"){
-				
+				jQuery("#glOptionPriceId").val("0");
+				jQuery("#glDoubleModelPrice").val("0");
 			}
 			compositionExpress();
 			stockCheck();
@@ -1534,7 +3355,7 @@ jQuery(function() {
 				jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"oldItem":"07"},type: "get",async:false});
 				jQuery("#pants2ItemFlag").val("0");
 			}else if(sparePants == "0009901"){
-
+				jQuery("#pt2OptionPriceId").val("0");
 			}
 			stockCheck();
 			changeViewArea()
@@ -1559,6 +3380,17 @@ jQuery(function() {
 				})
 				.then((isConfirm) => {
 				  if (isConfirm) {
+					  jQuery("#jacketFlag").val("0");
+					  jQuery("#jkOptionPriceId").val("0");
+					  jQuery("#ptOptionPriceId").val("0");
+					  jQuery("#pt2OptionPriceId").val("0");
+					  jQuery("#glOptionPriceId").val("0");
+					  jQuery("#ctOptionPriceId").val("0");
+					  jQuery("#stOptionPriceId").val("0");
+				      jQuery("#jkDoubleModelPrice").val("0");
+				      jQuery("#ctDoubleModelPrice").val("0");
+				      jQuery("#glDoubleModelPrice").val("0");
+					  
 					  if(oldCategory != category){
 						  jQuery('input[name="productCategory"]').attr("hookCate",category);
 					  }
@@ -1572,11 +3404,11 @@ jQuery(function() {
 					      if(twoPants == "0009902") {
 						        jQuery("#pants2ItemFlag").val("0");
 					      }
-					  }else if("02".equals(oldItem)) {
+					  }else if(item == "02") {
 						  jQuery("#jacketItemFlag").val("0");
-					  }else if("03".equals(oldItem)) {
+					  }else if(item == "03") {
 						  jQuery("#pantsItemFlag").val("0");
-					  }else if("04".equals(oldItem)) {
+					  }else if(item == "04") {
 						  jQuery("#giletItemFlag").val("0");
 					  }
 					  jQuery("#fabricMsg").empty();
@@ -1592,28 +3424,47 @@ jQuery(function() {
 		});
 	});
 
-	jQuery('#deleteButtom').on('click', function() {
-			var orderId = jQuery('#orderId').val();
-			if(isEmpty(orderId)){
-				appendAlert('errormssage', getMsg('msg124'));
-		        return false;
-			}else{
-				// 確認ダイアログ表示
-				swal({
-					text:getMsg('msg110'),
-					icon:"info",
-					buttons: ["キャンセル", true],
-				}).then((willDelete) => {
-					if (willDelete) {
-						// OK押下時は注文一覧へ
-						/* var version = jQuery("#version").val();
-						window.location.href= contextPath + "/orderCo/physicalDelete?orderId=" + orderId + "&version=" + version; */
-					} else {
-						// Cancel押下時は何もしない
-					}
-				});
+	//注文削除ボタンクリック
+	jQuery('#deleteButton').on('click', function() {
+		var orderId = jQuery('#orderId').val();
+		if(isEmpty(orderId)){
+			appendAlert('errormssage', getMsg('msg124'));
+		    return false;
+		}else{
+			// 確認ダイアログ表示
+			swal({
+				text:getMsg('msg110'),
+				icon:"info",
+				buttons: ["キャンセル", true],
+			}).then((willDelete) => {
+				if (willDelete) {
+					// OK押下時は注文一覧へ
+					var version = jQuery("#version").val();
+					window.location.href= contextPath + "/orderCo/physicalDelete?orderId=" + orderId + "&version=" + version;
+				} else {
+					// Cancel押下時は何もしない
+				}
+			});
+		}
+	});
+
+	// 注文取消ボタンクリック
+	jQuery('#cancelButton').on('click', function() {
+		// 確認ダイアログ表示
+		swal({
+			text:getMsg('msg111'),
+			icon:"info",
+			buttons: ["キャンセル", true],
+		}).then((willDelete) => {
+			if (willDelete) {
+				// OK押下時は注文一覧へ
+				var orderId = jQuery('#orderId').val();
+				var version = jQuery("#version").val();
+				window.location.href= contextPath + "/orderCo/logicalDelete?orderId=" + orderId + "&version=" + version;
+			} else {
+				// Cancel押下時は何もしない
 			}
-			
+		});
 	});
 
 });
@@ -1824,22 +3675,23 @@ jQuery('#coConfirm').click(function(){
 		  text: getMsg('msg122'),
 		  icon: "info",
 		  buttons: ["キャンセル", true],
-		})
-		.then((isConfirm) => {
-		  if (isConfirm) {
-			 jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
+		}).then((isConfirm) => {
+		    if (isConfirm) {
+			 imageCheck();
+			 /* jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 			 jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
 			 jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 			 jQuery('select').removeAttr("disabled");
 			 jQuery('input').removeAttr("disabled");
-			 document.getElementById('idForm').submit();
-						 
-		  }
+			 document.getElementById('idForm').submit(); */
+		  	}
 		});
 
 	return false;
 })
-
+jQuery("#item").change(function(){
+	 getAdjustByItem();	
+})
 function getAdjustByItem(){
 	var subItemCode = "";
 	var itemCode = jQuery("#item").val();
@@ -1847,17 +3699,19 @@ function getAdjustByItem(){
 		jQuery.ajax({
 	        url: contextPath + "/orderCo/getAdjustByItem",
 	        type: 'get',
-	        async:false,
+	        //async:false,
 	        data:{"orderPattern":orderPattern,"itemCode":itemCode},
 	        success: function(data){
 	           jQuery.each(data, function (index, e) {
 	        	   if(e.subItemCode == "05"){
 	        		   if(e.adjusteClass == "15"){
 							document.getElementById("embroideryHeightRange").max = e.adjusteMax;
+							jQuery("#embroideryHeightRange_out").val(e.adjusteMin);	
 							document.getElementById("embroideryHeightRange").min = e.adjusteMin;
 						}
 		        	   if(e.adjusteClass == "16"){
 							document.getElementById("embroideryWidthRange").max = e.adjusteMax;
+							jQuery("#embroideryWidthRange_out").val(e.adjusteMin);
 							document.getElementById("embroideryWidthRange").min = e.adjusteMin;
 						}						 
 			       }
@@ -1951,7 +3805,9 @@ function stockCheck(){
 		jQuery("#fabricFlag").val("0");
 		jQuery("#custShopDeliveryDate").val("");
 		jQuery("#stockMsg").empty();
-		jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+		jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
+		jQuery("#jkDoubleModelPrice").val("0");
+	  	jQuery("#ctDoubleModelPrice").val("0");
 		optionRetailPrice("");
 		allPrice();
 
@@ -1960,7 +3816,7 @@ function stockCheck(){
 		jQuery('input').removeAttr("disabled");
 		jQuery.ajax({url : contextPath + "/orderCo/stockDecrease",
 		    type: "post",
-		    async:false,
+		    //async:false,
 		    data: jQuery('#idForm').serialize(),
 		 }).then(function(result){
 			 if(result == "true"){
@@ -2039,7 +3895,6 @@ function stockCheck(){
 		}
 	}
 	initProduct();
-	initCustomer();
 	brandNmSet();
 }
 
@@ -2063,19 +3918,21 @@ function fabricView(item,productFabricNo){
 				 var lcrSewing = result.lcrSewingAvailable;
 				 //LCR縫製否の場合
 				 if(lcrSewing == "0"){
-					jQuery("#lcrSewing_yes").prop("disabled",true);
-					jQuery("#lcrSewing_no").prop("checked","checked");
+					jQuery("#lcrSewing_id2").prop("disabled",true);
+					jQuery("#lcrSewing_id1").prop("checked","checked");
+					jQuery("input[name='productLcrSewing']:checked").change();
 				 }
-				 //生地ネーム有りの場合
+				 //LCR縫製有りの場合
 				 else if(lcrSewing == "1"){
-					 jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
-					 jQuery("#lcrSewing_no").prop("checked","checked");
+					 jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
+					 jQuery("#lcrSewing_id1").prop("checked","checked");
+					 jQuery("input[name='productLcrSewing']:checked").change();
 				 }
 				  
 				 //商品金額と合計金額を計算する　7
 				 allGoodsPrice(result);
 
-				 optionRetailPrice(result)
+				 optionRetailPrice(result);
 				  
 				 // 生地品番の値から対象の素材色をセット
 				 jQuery("#factoryCode").val(result.factoryCode);
@@ -2130,7 +3987,7 @@ function allPrice(){
   var myDate = new Date();
   var excisePrice;
   var askPrice;
-  var taxRate = "${orderForm.taxRate}"
+  var taxRate = "${orderCoForm.taxRate}"
 	if(count.length>3){
 		count = count.replace(/,/g,'');
 	}
@@ -2168,7 +4025,6 @@ function optionRetailPrice(result){
 	   jQuery("#threePiece_Msg").empty();
 	   jQuery("#sparePants_Msg").empty();
 	   jQuery("#jacketModel_Msg").empty();
-	   allOptionPrice();
 	}else{
 		  var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 		  //3Pieceが有りの場合
@@ -2181,13 +4037,11 @@ function optionRetailPrice(result){
 			 var formulaPrice = retailPrice*additionalSingleGiletRate;
 			 var format = formatMoney(Number(formulaPrice),0,"￥");
 			 jQuery("#threePiece_Msg").html(format);
-			 allOptionPrice();
 			 
 		  }
 		  //3Pieceが無しの場合
 		  else if(threePiece == "0009901"){
 			 jQuery("#threePiece_Msg").html("無料");
-			 allOptionPrice();
 		  }
 		  
 		  jQuery('input[name="productIs3Piece"]').unbind("click").click(function(){
@@ -2202,13 +4056,11 @@ function optionRetailPrice(result){
 				 var formulaPrice = retailPrice*additionalSingleGiletRate;
 				 var format = formatMoney(Number(formulaPrice),0,"￥");
 				 jQuery("#threePiece_Msg").html(format);
-				 allOptionPrice();
 				 
 			  }
 			  //3Pieceが無しの場合
 			  else if(threePiece == "0009901"){
 				 jQuery("#threePiece_Msg").html("無料");
-				 allOptionPrice();
 	 	      }
 		  })
 		
@@ -2223,12 +4075,10 @@ function optionRetailPrice(result){
 			 var formulaPrice = retailPrice*additionalPantsRate;
 			 var format = formatMoney(Number(formulaPrice),0,"￥");
 			 jQuery("#sparePants_Msg").html(format);
-			 allOptionPrice();
 		  }
 		  //2Pantsが無しの場合
 		  else if(twoPants == "0009901"){
 			 jQuery("#sparePants_Msg").html("無料");
-			 allOptionPrice();
  	      }
  	      
 		  jQuery('input[name="productSparePantsClass"]').unbind("click").click(function(){
@@ -2243,100 +4093,27 @@ function optionRetailPrice(result){
 				 var formulaPrice = retailPrice*additionalPantsRate;
 				 var format = formatMoney(Number(formulaPrice),0,"￥");
 				 jQuery("#sparePants_Msg").html(format);
-				 allOptionPrice();
 			  }
 			  //2Pantsが無しの場合
 			  else if(twoPants == "0009901"){
 				 jQuery("#sparePants_Msg").html("無料");
-				 allOptionPrice();
 	 	      }
 		  })
 
-		// フロント釦数
-		var frontBtnCnt = jQuery('#oj_frontBtnCnt').val();
-		//ダブル６つボタン:0000105
-		//ラペルデザイン  ノッチ:lapelDesign_id1 、ピークド:lapelDesign_id2
-		if (frontBtnCnt == "0000105"||frontBtnCnt == "0000106") {
-				var item = jQuery("#item").val();
-				if(item == "01"){
-					//ダブルJACKET増額率
-					var additionalDoubleJacketRate = result.additionalDoubleJacketRate;
-					if(additionalDoubleJacketRate=="0"||additionalDoubleJacketRate==0){
-						jQuery("#jacketModel_Msg").html("無料");
-						allOptionPrice();
-					}else{
-						var format = formatMoney(Number(additionalDoubleJacketRate),0,"￥");
-						jQuery("#jacketModel_Msg").html(format);
-						allOptionPrice();
-					}
-				}else if(item == "02"){
-					//(上代*ダブルJACKET単品率/100+「ダブルJacketの単品購買追加金額」) -　(上代*シングルJACKET単品率/100+「シングルJacketの単品購買追加金額」)
-					//上代
-					var retailPrice = Number(result.retailPrice);
-					//ダブルJACKET単品率/100
-					var doubleJacketOnlyRate = Number(result.doubleJacketOnlyRate)/100;
-					//ダブルJacketの単品購買追加金額
-					var jkDoubleOnlyPlusAlphaPrice = Number(result.jkDoubleOnlyPlusAlphaPrice);
-					//シングルJACKET単品率/100
-					var singleJacketOnlyRate = Number(result.singleJacketOnlyRate)/100;
-					//シングルJacketの単品購買追加金額
-					var jkSingleOnlyPlusAlphaPrice = Number(result.jkSingleOnlyPlusAlphaPrice);
-						
-					var formulaPrice = ((retailPrice*doubleJacketOnlyRate)+jkDoubleOnlyPlusAlphaPrice) - 
-					((retailPrice*singleJacketOnlyRate)+jkSingleOnlyPlusAlphaPrice);
-
-					var format = formatMoney(Number(formulaPrice),0,"￥");
-					jQuery("#jacketModel_Msg").html(format);
-					allOptionPrice();
-				}
-		} else {
-			jQuery("#jacketModel_Msg").empty();
-			allOptionPrice();
-		}
-			
-		jQuery('#oj_frontBtnCnt').change(function(){
-			var frontBtnCnt = jQuery(this).val();
-			//ダブル６つボタン:0000105
-			//ラペルデザイン  ノッチ:lapelDesign_id1 、ピークド:lapelDesign_id2
-			if (frontBtnCnt == "0000105"||frontBtnCnt == "0000106") {
-					var item = jQuery("#item").val();
-					if(item == "01"){
-						//ダブルJACKET増額率
-						var additionalDoubleJacketRate = result.additionalDoubleJacketRate;
-						if(additionalDoubleJacketRate=="0"||additionalDoubleJacketRate==0){
-							jQuery("#jacketModel_Msg").html("無料");
-							allOptionPrice();
-						}else{
-							var format = formatMoney(Number(additionalDoubleJacketRate),0,"￥");
-							jQuery("#jacketModel_Msg").html(format);
-							allOptionPrice();
-						}
-					}else if(item == "02"){
-						//(上代*ダブルJACKET単品率/100+「ダブルJacketの単品購買追加金額」) -　(上代*シングルJACKET単品率/100+「シングルJacketの単品購買追加金額」)
-						//上代
-						var retailPrice = Number(result.retailPrice);
-						//ダブルJACKET単品率/100
-						var doubleJacketOnlyRate = Number(result.doubleJacketOnlyRate)/100;
-						//ダブルJacketの単品購買追加金額
-						var jkDoubleOnlyPlusAlphaPrice = Number(result.jkDoubleOnlyPlusAlphaPrice);
-						//シングルJACKET単品率/100
-						var singleJacketOnlyRate = Number(result.singleJacketOnlyRate)/100;
-						//シングルJacketの単品購買追加金額
-						var jkSingleOnlyPlusAlphaPrice = Number(result.jkSingleOnlyPlusAlphaPrice);
-						
-						var formulaPrice = ((retailPrice*doubleJacketOnlyRate)+jkDoubleOnlyPlusAlphaPrice) - 
-						((retailPrice*singleJacketOnlyRate)+jkSingleOnlyPlusAlphaPrice);
-
-						var format = formatMoney(Number(formulaPrice),0,"￥");
-						jQuery("#jacketModel_Msg").html(format);
-						allOptionPrice();
-					}
-			} else {
-				jQuery("#jacketModel_Msg").empty();
-				allOptionPrice();
-			}
-		});
+		  var item = jQuery("#item").val();
+		  if(item == "01"){
+			  jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
+			  jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+		  }else if(item == "02"){
+			  jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
+		  }else if(item == "04"){
+			  jQuery("#glDoubleModelPrice").val(result.glDoublePrice);
+		  }else if(item == "06"){
+			  jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
+		  }
 	}
+
+	 allOptionPrice();
 }
 //--------------------------------------------
 //オプション金額
@@ -2344,74 +4121,47 @@ function optionRetailPrice(result){
 function allOptionPrice(){
 	var priceHtmlMsgList = ["sparePants_Msg","threePiece_Msg"];
 
-  var op_hemUp = jQuery("#op_hemUp option:selected").val();
-  var op2_hemUp = jQuery("#op2_hemUp option:selected").val();
-  
 	var msgPrice = null;
 	var count = 0;
 	var msg;
 	for(msgPrice of priceHtmlMsgList){
-		//シングル:0001701  モーニングカット:0001704
-		if(msgPrice=="op_doubleWide_Msg"){
-			if(op_hemUp=="0001701"||op_hemUp=="0001704"){
-				continue;
-			}else{
-				msg = jQuery("#"+msgPrice).html();
-				if(msg =='無料'){
-					msg = '0';
-				}else if(msg ==''||msg == null){
-					msg = '0';
-				}
-				
-				if(msg.indexOf("￥")!=-1){
-					msg = msg.substr(1,msg.length-1);
-					if(msg.length>3){
-						msg = msg.replace(/,/g,'');
-					}
-					
-				}
-				count += Number(msg);
-			}
-		}else if(msgPrice=="op2_doubleWide_Msg"){
-			if(op2_hemUp=="0001701"||op2_hemUp=="0001704"){
-				continue;
-			}else{
-				msg = jQuery("#"+msgPrice).html();
-				if(msg =='無料'){
-					msg = '0';
-				}else if(msg ==''||msg == null){
-					msg = '0';
-				}
-				
-				if(msg.indexOf("￥")!=-1){
-					msg = msg.substr(1,msg.length-1);
-					if(msg.length>3){
-						msg = msg.replace(/,/g,'');
-					}
-					
-				}
-				count += Number(msg);
-			}
-		}else{
-			msg = jQuery("#"+msgPrice).html();
-			if(msg =='無料'){
-				msg = '0';
-			}else if(msg ==''||msg == null){
-				msg = '0';
-			}
-			
-			if(msg.indexOf("￥")!=-1){
-				msg = msg.substr(1,msg.length-1);
-				if(msg.length>3){
-					msg = msg.replace(/,/g,'');
-				}
-				
-			}
-			count += Number(msg);
+		msg = jQuery("#"+msgPrice).html();
+		if(msg =='無料'){
+			msg = '0';
+		}else if(msg ==''||msg == null){
+			msg = '0';
 		}
 		
-		
+		if(msg.indexOf("￥")!=-1){
+			msg = msg.substr(1,msg.length-1);
+			if(msg.length>3){
+				msg = msg.replace(/,/g,'');
+			}
+		}else{
+			if(msg.length>3){
+				msg = msg.replace(/,/g,'');
+			}
+		}
+		count += Number(msg);
 	}
+	var jkOptionPriceId = jQuery("#jkOptionPriceId").val();
+	var glOptionPriceId = jQuery("#glOptionPriceId").val();
+	var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
+	var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+	var ctOptionPriceId = jQuery("#ctOptionPriceId").val();
+	var stOptionPriceId = jQuery("#stOptionPriceId").val();
+	var jkDoubleModelPrice = jQuery("#jkDoubleModelPrice").val();
+	var ctDoubleModelPrice = jQuery("#ctDoubleModelPrice").val();
+	var glDoubleModelPrice = jQuery("#glDoubleModelPrice").val();
+	var expediteDeliveryPrice = jQuery("#expediteDeliveryPrice").val();
+	var lcrSewingPrice = jQuery("#lcrSewingPrice").val();
+	var embroideryNmPosPrice = jQuery("#embroideryNmPosPrice").val();
+	var gadgetPrice = jQuery("#gadgetPrice").val();
+
+	count = Number(count) + Number(jkOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId) + Number(ptOptionPriceId) + 
+	Number(jkDoubleModelPrice) + Number(ctDoubleModelPrice) + Number(ctOptionPriceId) + Number(stOptionPriceId) + 
+	Number(glDoubleModelPrice) + Number(expediteDeliveryPrice) + Number(lcrSewingPrice) + Number(embroideryNmPosPrice) + Number(gadgetPrice);
+	
 	count = count.toString();
 	jQuery("#optionPriceId").val(count);
 	count = formatMoney(count,0,"");
@@ -2523,18 +4273,19 @@ function fabricCheck(item,productFabricNo){
 		 jQuery("#ptModelFlag").val("0");
 		 jQuery("#glModelFlag").val("0");
 		 jQuery("#pt2ModelFlag").val("0");
+		 jQuery("#jkDoubleModelPrice").val("0");
+		 jQuery("#ctDoubleModelPrice").val("0");
 		 /* jQuery("#jacketModelMsg").empty();
 		 jQuery("#pantsModelMsg").empty();
 		 jQuery("#2pantsModelMsg").empty();
 		 jQuery("#giletModelMsg").empty(); */
 		 jQuery("#fabricMsg").empty();
 
-		 jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+		 jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 		 allOptionPrice();
 		 //生地チェク失敗フラッグ
 		 fabricCheckValue = "1";
 		 jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByTwoArgs('msg012', '生地品番', '英数字'));
-		 return false;
 	}
 	else{
 	    jQuery.ajax({
@@ -2562,7 +4313,9 @@ function fabricCheck(item,productFabricNo){
 					 jQuery("#sparePants_Msg").empty();
 					 jQuery("#jacketModel_Msg").empty();
 					 jQuery("#fabricMsg").empty();
-					 jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+					 jQuery("#jkDoubleModelPrice").val("0");
+					 jQuery("#ctDoubleModelPrice").val("0");
+					 jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 					 allOptionPrice();
 	 				 setAlert('stockMsg', getMsg('msg049'));
 	 				 //生地チェク失敗フラッグ
@@ -2716,7 +4469,7 @@ function fabricCheck(item,productFabricNo){
 	     			
 		     		//入力した生地は選択したITEMを作るできるのチェク
 		     		//canMake(アイテム,アイテム区分)　4
-	     			if(!canMake(item,result.itemClass)){
+	     			if(!canMake(item,result.itemClass,result.coatAvailable)){
 	     				//生地メッセージをクリア	
 	     				jQuery("#notice").empty();
 	     			    jQuery("#fabric_brand_nm_p").empty();
@@ -2734,7 +4487,9 @@ function fabricCheck(item,productFabricNo){
 						jQuery("#sparePants_Msg").empty();
 						jQuery("#jacketModel_Msg").empty();
 						jQuery("#fabricMsg").empty();
-						jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+						jQuery("#jkDoubleModelPrice").val("0");
+					  	jQuery("#ctDoubleModelPrice").val("0");
+						jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 						allOptionPrice();
 	     				setAlert('stockMsg', getMsg('msg049'));
 	     				//生地チェク失敗フラッグ
@@ -2763,7 +4518,9 @@ function fabricCheck(item,productFabricNo){
 						jQuery("#threePiece_Msg").empty();
 						jQuery("#sparePants_Msg").empty();
 						jQuery("#jacketModel_Msg").empty();
-						jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+						jQuery("#jkDoubleModelPrice").val("0");
+					  	jQuery("#ctDoubleModelPrice").val("0");
+						jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 						allOptionPrice();
 						//生地チェク失敗フラッグ
 						fabricCheckValue = "1";
@@ -2790,7 +4547,9 @@ function fabricCheck(item,productFabricNo){
 						jQuery("#threePiece_Msg").empty();
 						jQuery("#sparePants_Msg").empty();
 						jQuery("#jacketModel_Msg").empty();
-						jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+						jQuery("#jkDoubleModelPrice").val("0");
+					  	jQuery("#ctDoubleModelPrice").val("0");
+						jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 						fabricCheckValue = "1";
 						allOptionPrice();
 	     				return false;
@@ -2829,7 +4588,9 @@ function fabricCheck(item,productFabricNo){
 						  jQuery("#threePiece_Msg").empty();
 						  jQuery("#sparePants_Msg").empty();
 						  jQuery("#jacketModel_Msg").empty();
-						  jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
+						  jQuery("#jkDoubleModelPrice").val("0");
+						  	jQuery("#ctDoubleModelPrice").val("0");
+						  jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
 						  allOptionPrice();
 						  //生地チェク失敗フラッグ
 						  fabricCheckValue = "1";
@@ -2841,12 +4602,14 @@ function fabricCheck(item,productFabricNo){
 	     			  var lcrSewing = result.lcrSewingAvailable;
 	     			  
 					  if(lcrSewing == "0"){
-						 jQuery("#lcrSewing_yes").prop("disabled",true);
-						 jQuery("#lcrSewing_no").prop("checked","checked");
+						 jQuery("#lcrSewing_id2").prop("disabled",true);
+						 jQuery("#lcrSewing_id1").prop("checked","checked");
+						 jQuery("input[name='productLcrSewing']:checked").change();
 					  }
 					  else if(lcrSewing == "1"){
-						  jQuery("#lcrSewing_yes").removeAttr("disabled","disabled");
-						  jQuery("#lcrSewing_no").prop("checked","checked");
+						  jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
+						  jQuery("#lcrSewing_id1").prop("checked","checked");
+						  jQuery("input[name='productLcrSewing']:checked").change();
 					  }
 					  
 	     			  //商品金額と合計金額を計算する　7
@@ -2880,13 +4643,33 @@ function fabricCheck(item,productFabricNo){
 }
 
 //入力した生地は選択したITEMを作るできることをチェックする
-function canMake(item,itemClass){
+function canMake(item,itemClass,coatAvailable){
 	// 01:　ｽｰﾂ、ｼﾞｬｹｯﾄ、ﾊﾟﾝﾂ、ｼﾞﾚ、ｺｰﾄﾞ可 、02：ｼﾞｬｹｯﾄ、ｼﾞﾚ、ｺｰﾄﾞ可、05： ｼｬﾂ可、06：ｺｰﾄ可
 	var itemClassList = {"01":"01,02,03,04,06","02":"02,04,06","05":"05","06":"06"}
 	var itemNum = itemClassList[itemClass];
 	itemNum = itemNum.split(",");
 	if(jQuery.inArray(item, itemNum)!=-1){
-		return true;
+		if(itemClass == "01"&&item == "06"){
+			if(coatAvailable == "1"){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(itemClass == "02"&&item == "06"){
+			if(coatAvailable == "1"){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(itemClass == "06"&&item == "06"){
+			if(coatAvailable == "1"){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return true;
+		}
 	}else{
 		return false;
 	}
@@ -2905,7 +4688,7 @@ function isShopDeliveryEmpty(result,item){
 	if(item == "06"){
 		storeDelv = result.storeDelvCoat;
 	}else{
-		if(earlyDiscount == "1"){
+		if(earlyDiscount == "9001002"){
 			storeDelv = result.storeDelvEarly;
 		}else{
 			storeDelv = result.storeDelvNormal;
@@ -2919,7 +4702,7 @@ function isShopDeliveryEmpty(result,item){
 			if(result.length==0){
 				checkResult = false;
 			}else{
-				if(expediteDelivery == "1"){
+				if(expediteDelivery == "9000902"){
 					var nowDate = new Date();
             		var minDate = new Date(nowDate.getTime() + 24*60*60*1000);
             		var resultDate = dateFormat(result);
@@ -2941,7 +4724,7 @@ function isShopDeliveryEmpty(result,item){
 //要尺を取得
 function getYieldNum(item){
 	var yieldNum = 0;
-	var yieldList = ${orderForm.yield};
+	var yieldList = ${orderCoForm.yield};
 	var yieldIndex = null;
 
 	 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
@@ -3105,15 +4888,15 @@ function getYieldNum(item){
 
 function categoryCheck(washableAvailable,tuxedoAvailable,category){
 	var checkResult = true;
-	if(category == "0"){
+	if(category == "9000101"){
 		
-	}else if(category == "2"){
+	}else if(category == "9000102"){
 		if(tuxedoAvailable == "0"){
 			setAlert("stockMsg", getMsgByOneArg('msg127','タキシード'));
 			jQuery("#fabricFlag").val("1"+"*"+getMsgByOneArg('msg127','タキシード'));
 			checkResult = false;
 		}
-	}else if(category == "1"){
+	}else if(category == "9000103"){
 		if(washableAvailable == "0"){
 			setAlert("stockMsg", getMsgByOneArg('msg127','ウォッシャブル'));
 			jQuery("#fabricFlag").val("1"+"*"+getMsgByOneArg('msg127','ウォッシャブル'));
@@ -3174,16 +4957,1986 @@ function compositionExpress(){
 function brandNmSet(){
 	var storeBrandCode = jQuery("#storeBrandCode").val();
 	if(storeBrandCode == "01"){
-		jQuery("#brandName_ulm").prop("disabled",true);
-		jQuery("#brandName_hilton").prop("disabled",false);
-		jQuery("#brandName_hilton").prop("checked",true);
-		jQuery("#brandName_no").prop("disabled",false);
+		jQuery("#brandName_id1").prop("disabled",true);
+		jQuery("#brandName_id2").prop("disabled",false);
+		jQuery("#brandName_id2").prop("checked",true);
+		jQuery("#brandName_id3").prop("disabled",false);
 	}else{
-		jQuery("#brandName_ulm").prop("disabled",false);
-		jQuery("#brandName_no").prop("disabled",false);
-		jQuery("#brandName_ulm").prop("checked",true);
-		jQuery("#brandName_hilton").prop("disabled",true);
+		jQuery("#brandName_id1").prop("disabled",false);
+		jQuery("#brandName_id3").prop("disabled",false);
+		jQuery("#brandName_id1").prop("checked",true);
+		jQuery("#brandName_id2").prop("disabled",true);
+	}
+}
+//--------------------------------------------
+//再補正チェック
+//--------------------------------------------
+function entryCheck(){
+	// エラーメッセージのDIVを表示しない
+	jQuery("div.alert-error").hide();
+	jQuery("div.alert-success").hide();
+
+	var item = "${order.productItem}";
+
+	//スペアパンツ  0009901： 無し、0009902：有り
+	var twoPants = "${order.productSparePantsClass}";
+
+	//３Piece  0009901： 無し、0009902：有り
+	var is3Piece = "${order.productIs3piece}";
+	
+	//SUITの場合
+	if(item == "01"){
+		if(twoPants == "0009902"){
+			//JACKET
+			//着丈修正
+			var corJkBodyRe = jQuery("#corJkBodyRe").val();
+			if(isNotEmpty(corJkBodyRe)){
+				if(isNumericDecimal(corJkBodyRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '着丈修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkBodyReSp = corJkBodyRe.split(".");
+				if(corJkBodyReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ウエスト修正
+			var corJkWaistRe = jQuery("#corJkWaistRe").val();
+			if(isNotEmpty(corJkWaistRe)){
+				if(isNumericDecimal(corJkWaistRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkWaistReSp = corJkWaistRe.split(".");
+				if(corJkWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//袖丈右修正
+			var corJkRightsleeveRe = jQuery("#corJkRightsleeveRe").val();
+			if(isNotEmpty(corJkRightsleeveRe)){
+				if(isNumericDecimal(corJkRightsleeveRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈右修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+				if(corJkRightsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//袖丈左修正
+			var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
+			if(isNotEmpty(corJkLeftsleeveRe)){
+				if(isNumericDecimal(corJkLeftsleeveRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+				if(corJkLeftsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//PANTS
+			//ウエスト修正
+			var corPtWaistRe = jQuery("#corPtWaistRe").val();
+			if(isNotEmpty(corPtWaistRe)){
+				if(isNumericDecimal(corPtWaistRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtWaistReSp = corPtWaistRe.split(".");
+				if(corPtWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ヒップ修正
+			var corPtHipRe = jQuery("#corPtHipRe").val();
+			if(isNotEmpty(corPtHipRe)){
+				if(isNumericDecimal(corPtHipRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHipReSp = corPtHipRe.split(".");
+				if(corPtHipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ワタリ修正
+			var corPtThighwidthRe = jQuery("#corPtThighwidthRe").val();
+			if(isNotEmpty(corPtThighwidthRe)){
+				if(isNumericDecimal(corPtThighwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ワタリ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+				if(corPtThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//裾幅修正
+			var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
+			if(isNotEmpty(corPtHemwidthRe)){
+				if(isNumericDecimal(corPtHemwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+				if(corPtHemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下右修正
+			var corPtRightinseamRe = jQuery("#corPtRightinseamRe").val();
+			if(isNotEmpty(corPtRightinseamRe)){
+				if(isNumericDecimal(corPtRightinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下右修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+				if(corPtRightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下左修正
+			var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
+			if(isNotEmpty(corPtLeftinseamRe)){
+				if(isNumericDecimal(corPtLeftinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+				if(corPtLeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+
+			//2PANTS
+			//ウエスト修正
+			var corPt2WaistRe = jQuery("#corPt2WaistRe").val();
+			if(isNotEmpty(corPt2WaistRe)){
+				if(isNumericDecimal(corPt2WaistRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2WaistReSp = corPt2WaistRe.split(".");
+				if(corPt2WaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ヒップ修正
+			var corPt2HipRe = jQuery("#corPt2HipRe").val();
+			if(isNotEmpty(corPt2HipRe)){
+				if(isNumericDecimal(corPt2HipRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）ヒップ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2HipReSp = corPt2HipRe.split(".");
+				if(corPt2HipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ヒップ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ワタリ修正
+			var corPt2ThighwidthRe = jQuery("#corPt2ThighwidthRe").val();
+			if(isNotEmpty(corPt2ThighwidthRe)){
+				if(isNumericDecimal(corPt2ThighwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）ワタリ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2ThighwidthReSp = corPt2ThighwidthRe.split(".");
+				if(corPt2ThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//裾幅修正
+			var corPt2HemwidthRe = jQuery("#corPt2HemwidthRe").val();
+			if(isNotEmpty(corPt2HemwidthRe)){
+				if(isNumericDecimal(corPt2HemwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）裾幅修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2HemwidthReSp = corPt2HemwidthRe.split(".");
+				if(corPt2HemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）裾幅修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下右修正
+			var corPt2RightinseamRe = jQuery("#corPt2RightinseamRe").val();
+			if(isNotEmpty(corPt2RightinseamRe)){
+				if(isNumericDecimal(corPt2RightinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）股下右修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2RightinseamReSp = corPt2RightinseamRe.split(".");
+				if(corPt2RightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下左修正
+			var corPt2LeftinseamRe = jQuery("#corPt2LeftinseamRe").val();
+			if(isNotEmpty(corPt2LeftinseamRe)){
+				if(isNumericDecimal(corPt2LeftinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'PANTS（2本目）股下左修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPt2LeftinseamReSp = corPt2LeftinseamRe.split(".");
+				if(corPt2LeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','PANTS（2本目）股下左修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+		}else{
+			//着丈修正
+			var corJkBodyRe = jQuery("#corJkBodyRe").val();
+			if(isNotEmpty(corJkBodyRe)){
+				if(isNumericDecimal(corJkBodyRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '着丈修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkBodyReSp = corJkBodyRe.split(".");
+				if(corJkBodyReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ウエスト修正
+			var corJkWaistRe = jQuery("#corJkWaistRe").val();
+			if(isNotEmpty(corJkWaistRe)){
+				if(isNumericDecimal(corJkWaistRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkWaistReSp = corJkWaistRe.split(".");
+				if(corJkWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//袖丈右修正
+			var corJkRightsleeveRe = jQuery("#corJkRightsleeveRe").val();
+			if(isNotEmpty(corJkRightsleeveRe)){
+				if(isNumericDecimal(corJkRightsleeveRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈右修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+				if(corJkRightsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//袖丈左修正
+			var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
+			if(isNotEmpty(corJkLeftsleeveRe)){
+				if(isNumericDecimal(corJkLeftsleeveRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+				if(corJkLeftsleeveReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ウエスト修正
+			var corPtWaistRe = jQuery("#corPtWaistRe").val();
+			if(isNotEmpty(corPtWaistRe)){
+				if(isNumericDecimal(corPtWaistRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtWaistReSp = corPtWaistRe.split(".");
+				if(corPtWaistReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ヒップ修正
+			var corPtHipRe = jQuery("#corPtHipRe").val();
+			if(isNotEmpty(corPtHipRe)){
+				if(isNumericDecimal(corPtHipRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHipReSp = corPtHipRe.split(".");
+				if(corPtHipReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ワタリ修正
+			var corPtThighwidthRe = jQuery("#corPtThighwidthRe").val();
+			if(isNotEmpty(corPtThighwidthRe)){
+				if(isNumericDecimal(corPtThighwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ワタリ修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+				if(corPtThighwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//裾幅修正
+			var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
+			if(isNotEmpty(corPtHemwidthRe)){
+				if(isNumericDecimal(corPtHemwidthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+				if(corPtHemwidthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下右修正
+			var corPtRightinseamRe = jQuery("#corPtRightinseamRe").val();
+			if(isNotEmpty(corPtRightinseamRe)){
+				if(isNumericDecimal(corPtRightinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下右修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+				if(corPtRightinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//股下左修正
+			var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
+			if(isNotEmpty(corPtLeftinseamRe)){
+				if(isNumericDecimal(corPtLeftinseamRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+				if(corPtLeftinseamReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			
+		}
+
+		if(is3Piece == "0009902"){
+			//着丈修正
+			var corGlBodylengthRe = jQuery("#corGlBodylengthRe").val();
+			if(isNotEmpty(corGlBodylengthRe)){
+				if(isNumericDecimal(corGlBodylengthRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', '着丈修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corGlBodylengthReSp = corGlBodylengthRe.split(".");
+				if(corGlBodylengthReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//バスト修正
+			var corGlBustCorrectRe = jQuery("#corGlBustCorrectRe").val();
+			if(isNotEmpty(corGlBustCorrectRe)){
+				if(isNumericDecimal(corGlBustCorrectRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'バスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corGlBustCorrectReSp = corGlBustCorrectRe.split(".");
+				if(corGlBustCorrectReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','バスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+			//ウエスト修正
+			var corGlWaistCorrectRe = jQuery("#corGlWaistCorrectRe").val();
+			if(isNotEmpty(corGlWaistCorrectRe)){
+				if(isNumericDecimal(corGlWaistCorrectRe)){
+					appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+			        return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+
+				var corGlWaistCorrectReSp = corGlWaistCorrectRe.split(".");
+				if(corGlWaistCorrectReSp[0].length>3){
+					appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+					 return false;
+				}else{
+					appendAlertDel('errormssage');
+				}
+			}
+		}
+	}
+	//JACKETの場合
+	else if (item == "02"){
+		//着丈修正
+		var corJkBodyRe = jQuery("#corJkBodyRe").val();
+		if(isNotEmpty(corJkBodyRe)){
+			if(isNumericDecimal(corJkBodyRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '着丈修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkBodyReSp = corJkBodyRe.split(".");
+			if(corJkBodyReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//ウエスト修正
+		var corJkWaistRe = jQuery("#corJkWaistRe").val();
+		if(isNotEmpty(corJkWaistRe)){
+			if(isNumericDecimal(corJkWaistRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkWaistReSp = corJkWaistRe.split(".");
+			if(corJkWaistReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//袖丈右修正
+		var corJkRightsleeveRe = jQuery("#corJkRightsleeveRe").val();
+		if(isNotEmpty(corJkRightsleeveRe)){
+			if(isNumericDecimal(corJkRightsleeveRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈右修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkRightsleeveReSp = corJkRightsleeveRe.split(".");
+			if(corJkRightsleeveReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','袖丈右修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//袖丈左修正
+		var corJkLeftsleeveRe = jQuery("#corJkLeftsleeveRe").val();
+		if(isNotEmpty(corJkLeftsleeveRe)){
+			if(isNumericDecimal(corJkLeftsleeveRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '袖丈左修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corJkLeftsleeveReSp = corJkLeftsleeveRe.split(".");
+			if(corJkLeftsleeveReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','袖丈左修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+	}
+	//PANTSの場合
+	else if (item == "03"){
+		//ウエスト修正
+		var corPtWaistRe = jQuery("#corPtWaistRe").val();
+		if(isNotEmpty(corPtWaistRe)){
+			if(isNumericDecimal(corPtWaistRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtWaistReSp = corPtWaistRe.split(".");
+			if(corPtWaistReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//ヒップ修正
+		var corPtHipRe = jQuery("#corPtHipRe").val();
+		if(isNotEmpty(corPtHipRe)){
+			if(isNumericDecimal(corPtHipRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ヒップ修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtHipReSp = corPtHipRe.split(".");
+			if(corPtHipReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ヒップ修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//ワタリ修正
+		var corPtThighwidthRe = jQuery("#corPtThighwidthRe").val();
+		if(isNotEmpty(corPtThighwidthRe)){
+			if(isNumericDecimal(corPtThighwidthRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ワタリ修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtThighwidthReSp = corPtThighwidthRe.split(".");
+			if(corPtThighwidthReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ワタリ修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//裾幅修正
+		var corPtHemwidthRe = jQuery("#corPtHemwidthRe").val();
+		if(isNotEmpty(corPtHemwidthRe)){
+			if(isNumericDecimal(corPtHemwidthRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '裾幅修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtHemwidthReSp = corPtHemwidthRe.split(".");
+			if(corPtHemwidthReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','裾幅修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//股下右修正
+		var corPtRightinseamRe = jQuery("#corPtRightinseamRe").val();
+		if(isNotEmpty(corPtRightinseamRe)){
+			if(isNumericDecimal(corPtRightinseamRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下右修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtRightinseamReSp = corPtRightinseamRe.split(".");
+			if(corPtRightinseamReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','股下右修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//股下左修正
+		var corPtLeftinseamRe = jQuery("#corPtLeftinseamRe").val();
+		if(isNotEmpty(corPtLeftinseamRe)){
+			if(isNumericDecimal(corPtLeftinseamRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '股下左修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corPtLeftinseamReSp = corPtLeftinseamRe.split(".");
+			if(corPtLeftinseamReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','股下左修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+	}//GILETの場合
+	else if (item == "04"){
+		//着丈修正
+		var corGlBodylengthRe = jQuery("#corGlBodylengthRe").val();
+		if(isNotEmpty(corGlBodylengthRe)){
+			if(isNumericDecimal(corGlBodylengthRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', '着丈修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corGlBodylengthReSp = corGlBodylengthRe.split(".");
+			if(corGlBodylengthReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','着丈修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//バスト修正
+		var corGlBustCorrectRe = jQuery("#corGlBustCorrectRe").val();
+		if(isNotEmpty(corGlBustCorrectRe)){
+			if(isNumericDecimal(corGlBustCorrectRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'バスト修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corGlBustCorrectReSp = corGlBustCorrectRe.split(".");
+			if(corGlBustCorrectReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','バスト修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+		//ウエスト修正
+		var corGlWaistCorrectRe = jQuery("#corGlWaistCorrectRe").val();
+		if(isNotEmpty(corGlWaistCorrectRe)){
+			if(isNumericDecimal(corGlWaistCorrectRe)){
+				appendAlert('errormssage', getMsgByTwoArgs('msg012', 'ウエスト修正','半角数字'));
+		        return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+
+			var corGlWaistCorrectReSp = corGlWaistCorrectRe.split(".");
+			if(corGlWaistCorrectReSp[0].length>3){
+				appendAlert('errormssage', getMsgByOneArg('msg132','ウエスト修正'));
+				 return false;
+			}else{
+				appendAlertDel('errormssage');
+			}
+		}
+	}
+
+	var corStoreCorrectionMemo = jQuery('#corStoreCorrectionMemo').val();
+	if(charactersCheck(corStoreCorrectionMemo)) {
+	  	appendAlert('errormssage', getMsg('msg120'));
+	    return false;
+	}else{
+  		appendAlertDel('errormssage');
+	}
+		
+	document.forms.idForm.action= contextPath + "/orderCo/orderCoEntry";
+	document.forms.idForm.submit();
+}
+
+jQuery('#areaResult').on('click', '.selectbtn', function() {
+    var id =  $(this).attr("id");
+    var result = id.split('_');
+    var idx = result[1];
+    var custNum = jQuery('#cust_num_' + idx).text();
+    var phoneNo = jQuery('#cust_phone_' + idx).text();
+    var nameKana = jQuery('#cust_knam_' + idx).text();
+    var custName = jQuery('#cust_Nam_' + idx).text();
+
+    jQuery('#areaResult').hide();
+    jQuery('#custCd').val(custNum);
+    jQuery('#custKanaNm').val(nameKana);
+    jQuery('#custNmDiv').text(nameKana);
+    jQuery('#custNm').val(custName);
+    jQuery('#infotext_2').modal('hide');
+    jQuery('#bootstrap-data-table').empty();
+});
+
+	// クリアボタンクリック
+jQuery('#clearButton').on('click', function() {
+
+	// form内のテキストボックスを初期化
+	jQuery("#frmSearch").find("input[type='text'], input[type='date']")
+		.each(function(i, elem) {
+			// 表示のみ項目はクリアしない
+			if (elem.readOnly == false) {
+				elem.value = "";
+			}
+		});
+	// form内のチェックボックスボックスを初期化
+	jQuery("#frmSearch").find("input[type='checkbox']")
+		.each(function(i, elem) {
+			elem.checked = false;
+		});
+	// form内のコンボボックスを初期化
+	jQuery("#frmSearch").find("select")
+		.each(function(i, elem) {
+			elem.selectedIndex = 0;
+		});
+});
+//--------------------------------------------
+//内容確認チェック
+//--------------------------------------------
+function imageCheck(){
+	jQuery("div.alert-error").hide();
+	jQuery("div.alert-success").hide();
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	//オプションチェク
+	var item = jQuery("#item option:selected").val()
+
+	var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+
+	var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+
+	//お客様情報
+	//会員番号
+	var custCd = jQuery("#custCd").val();
+	
+	if(isEmpty(custCd)) {
+        appendAlert('errormssage', getMsgByOneArg('msg001', '会員番号'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	
+	if(isNumeric(custCd)) {
+        appendAlert('errormssage', getMsgByTwoArgs('msg012','会員番号','数字'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+
+	if(custCd.length != 13){
+		appendAlert('errormssage', getMsgByTwoArgs('msg011', '会員番号','13'));
+		return false;
+	}else{
+    	appendAlertDel('errormssage');
+	}
+
+	//お客様備考
+	var custRemark = jQuery("#custRemark").val();
+	if(charactersCheck(custRemark)) {
+		appendAlert('errormssage', getMsg('msg120'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	
+	//名簿納期
+	var custDeliverDate = jQuery("#custDeliverDate").val()
+	//var format = custDeliverDate.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+	
+    //if(format==null){
+    if(isEmpty(custDeliverDate)){
+       appendAlert('errormssage', getMsgByOneArg('msg001', '名簿納期'));
+       //appendAlert('errormssage', getMsgByTwoArgs('msg012', '名簿納期','正し日付'));
+       return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	
+	//お渡し日
+	var custShopDeliveryDate = jQuery("#custShopDeliveryDate").val();
+
+	//var format = custShopDeliveryDate.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+	
+    //if(format==null){
+    if(isEmpty(custShopDeliveryDate)){
+       appendAlert('errormssage', getMsg('msg123'));
+       return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+
+    var DeliverDate = new Date(custDeliverDate.replace(/\-/g, "\/"));
+	var ShopDeliveryDate = new Date(custShopDeliveryDate.replace(/\-/g, "\/"));
+    
+	if(custDeliverDate!=""&&custShopDeliveryDate!=""&&custDeliverDate <custShopDeliveryDate){  
+		appendAlert('errormssage', getMsg('msg055'));
+	    return false;  
+	}else{
+    	appendAlertDel('errormssage');
+	}
+	
+	//納期短縮
+	var expediteDelivery = jQuery("#expediteDelivery").val();
+	if(expediteDelivery == "9000902"){
+		var minDate = jQuery("#custShopDeliveryDate").attr("minDate");
+
+		if ((typeof(minDate) == "undefined")||minDate == "" || minDate == null) {
+			
+		}else{
+			var custShopDeliveryDate = jQuery("#custShopDeliveryDate").val();
+
+			var minDateCheck = new Date(minDate.replace(/\-/g, "\/"));
+			var custShopDeliveryDateCheck = new Date(custShopDeliveryDate.replace(/\-/g, "\/"));
+		    
+			if(minDateCheck!=""&&custShopDeliveryDateCheck!=""&&custShopDeliveryDateCheck <minDateCheck){  
+				appendAlert('errormssage', getMsg('msg129'));
+			    return false;  
+			}else{
+		    	appendAlertDel('errormssage');
+			}
+		}
+	}
+	
+    //スタッフ
+    var custStaff = jQuery("#custStaff").val();
+
+    if(isEmpty(custStaff)) {
+        appendAlert('errormssage', getMsgByOneArg('msg001', 'スタッフ'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+    
+    
+    if(custStaff.length>50){
+		appendAlert('errormssage', getMsgByTwoArgs('msg011', 'スタッフ','50'));
+		return false;
+	}else{
+    	appendAlertDel('errormssage');
+	}
+
+    if(charactersCheck(custStaff)) {
+    	appendAlert('errormssage', getMsg('msg120'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+
+	//出荷先
+	var destination = jQuery("#destination").val();
+	//他店舗の場合
+	if(destination=="05"){
+		var shopName = jQuery("#shopName").val();
+		if(isEmpty(shopName)){
+			appendAlert('errormssage', getMsgByOneArg('msg001', '出荷先他店舗'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+    
+	//メジャーリング
+	
+    var fullLengthTe = jQuery("#fullLengthTe").val();
+    
+    if(fullLengthTe!=""){
+    	if(isNumeric(fullLengthTe)) {
+            appendAlert('errormssage', getMsgByTwoArgs('msg012','フルレングス','半角数字'));
+            return false;
+        }else{
+	    	appendAlertDel('errormssage');
+		}
+    }
+    
+
+	var shoulderTe = jQuery("#shoulderTe").val();
+
+	if(shoulderTe!=""){
+		if(isNumeric(shoulderTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ショルダー','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var reachRightTe = jQuery("#reachRightTe").val();
+
+	if(reachRightTe!=""){
+		if(isNumeric(reachRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','リーチ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var reachLeftTe = jQuery("#reachLeftTe").val();
+
+	if(reachLeftTe!=""){
+		if(isNumeric(reachLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','リーチ（左）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var outBustTe = jQuery("#outBustTe").val();
+	if(outBustTe!=""){
+		if(isNumeric(outBustTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','アウトバスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var bustTe = jQuery("#bustTe").val();
+	
+	if(bustTe!=""){
+		if(isNumeric(bustTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','バスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var jacketWaistTe = jQuery("#jacketWaistTe").val();
+
+	if(jacketWaistTe!=""){
+		if(isNumeric(jacketWaistTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','JKウエスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var pantsWaistTe = jQuery("#pantsWaistTe").val();
+
+	if(pantsWaistTe!=""){
+		if(isNumeric(pantsWaistTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','PTウエスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var hipTe = jQuery("#hipTe").val();
+
+	if(hipTe!=""){
+		if(isNumeric(hipTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ヒップ','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var spanRightTe = jQuery("#spanRightTe").val();
+
+	if(spanRightTe!=""){
+		if(isNumeric(spanRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ワタリ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var spanLeftTe = jQuery("#spanLeftTe").val();
+
+	if(spanLeftTe!=""){
+		if(isNumeric(spanLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ワタリ（左）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+    
+	var calfRightTe = jQuery("#calfRightTe").val();
+
+	if(calfRightTe!=""){
+		if(isNumeric(calfRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ふくらはぎ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var calfLeftTe = jQuery("#calfLeftTe").val();
+
+	if(calfLeftTe!=""){
+		if(isNumeric(calfLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ふくらはぎ（左）','半角数字'));
+	        return false;
+	    }	else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var neckTe = jQuery("#neckTe").val();
+	
+	if(neckTe!=""){
+		if(isNumeric(neckTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ネック','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	//商品
+	//生地品番
+	var productFabricNo = jQuery("#productFabricNo").val();
+	if(isEmpty(productFabricNo)){
+		appendAlert('errormssage', getMsgByOneArg('msg001', '生地品番'));
+        return false;
+	}else{
+    	appendAlertDel('errormssage');
+	}
+
+	//刺繍ネーム
+	var productEmbroideryNecessity = jQuery('input[name=productEmbroideryNecessity]:checked').val();
+	if (productEmbroideryNecessity == '9000502') {
+		var embroideryName = jQuery("#embroideryName").val();
+		if(embroideryName.length>50){
+			appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','40'));
+			return false;
+		}else{
+	    	appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(embroideryName)){
+			appendAlert('errormssage', getMsgByOneArg('msg001', '刺繍ネーム'));
+			return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(charactersCheck(embroideryName)) {
+			appendAlert('errormssage', getMsg('msg120'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+		
+	}
+
+	var item = jQuery("#item").val();
+
+	if(item != "05"){
+		//残布
+		var productEmbroideryNecessity = jQuery('input[name="productRemainingClothType"]:checked').val();
+		if(isEmpty(productEmbroideryNecessity)){
+			appendAlert('errormssage', getMsgByOneArg('msg001','残布'));
+	        return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+	}
+
+	//生地チェクフラッグ
+	var fabricCheckValue = jQuery("#fabricFlag").val();
+	
+	fabricCheckValue = fabricCheckValue.split("*");
+	//fabricCheckValue[0]:0 or 1 or 2 
+	//fabricCheckValue[1]:エラーメッセージ 
+	//生地チェク成功の場合
+	if(fabricCheckValue[0]=="0"){
+		
+	//生地チェクの場合	
+	}else if(fabricCheckValue[0]=="1"){
+	    appendAlert('errormssage',fabricCheckValue[1]);
+		return false;
+	}
+
+	var jkModelFlag = jQuery("#jkModelFlag").val();
+	 jkModelFlag = jkModelFlag.split("*");
+	 //jkModelFlag[0]:0 or 1 
+	 //jkModelFlag[1]:エラーメッセージ 
+	 //生地チェク成功の場合
+	 if(jkModelFlag[0]=="0"){
+			
+	 //生地チェクの場合	
+	 }else if(jkModelFlag[0]=="1"){
+	     appendAlert('errormssage',jkModelFlag[1]);
+	     return false;
+	 }
+
+
+	 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+	
+
+	 if(item == "01"){
+		if(threePiece == "0009901"){
+			jQuery("#glModelFlag").val("0");
+		}
+	 }
+	 var glModelFlag = jQuery("#glModelFlag").val();
+	 glModelFlag = glModelFlag.split("*");
+	 //glModelFlag[0]:0 or 1 
+	 //glModelFlag[1]:エラーメッセージ 
+	 //生地チェク成功の場合
+	 if(glModelFlag[0]=="0"){
+			
+	 //生地チェクの場合	
+	 }else if(glModelFlag[0]=="1"){
+	     appendAlert('errormssage',glModelFlag[1]);
+	     return false;
+	 }
+	 
+
+	 var ptModelFlag = jQuery("#ptModelFlag").val();
+	 ptModelFlag = ptModelFlag.split("*");
+	 //ptModelFlag[0]:0 or 1 
+	 //ptModelFlag[1]:エラーメッセージ 
+	 //生地チェク成功の場合
+	 if(ptModelFlag[0]=="0"){
+			
+	 //生地チェクの場合	
+	 }else if(ptModelFlag[0]=="1"){
+	     appendAlert('errormssage',ptModelFlag[1]);
+	     return false;
+	 }
+
+
+	 var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+	 if(item == "01"){
+		if(twoPants == "0009901"){
+			jQuery("#pt2ModelFlag").val("0");
+		}
+	 }
+	 var pt2ModelFlag = jQuery("#pt2ModelFlag").val();
+	 pt2ModelFlag = pt2ModelFlag.split("*");
+	 //pt2ModelFlag[0]:0 or 1 
+	 //pt2ModelFlag[1]:エラーメッセージ 
+	 //生地チェク成功の場合
+	 if(pt2ModelFlag[0]=="0"){
+			
+	 //生地チェクの場合	
+	 }else if(pt2ModelFlag[0]=="1"){
+	     appendAlert('errormssage',pt2ModelFlag[1]);
+	     return false;
+	 }
+   
+   
+   var statusInput = "${order.tscStatus}"
+   if(isEmpty(statusInput)){
+          
+   }else{
+   	jQuery("#statusInput").val(statusInput);
+   }
+  	
+	jQuery('select').removeAttr("disabled");
+	jQuery('input').removeAttr("disabled");
+	document.getElementById('idForm').submit();
+	return true;
+  
+}
+
+//一時保存チェク
+function temporarySaveCheck(){
+	// エラーメッセージのDIVを表示しない
+	jQuery("div.alert-error").hide();
+	jQuery("div.alert-success").hide();
+
+	//会員番号
+	var custCd = jQuery("#custCd").val();
+	if(isNotEmpty(custCd)){
+		if(isNumeric(custCd)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','会員番号','数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+
+		if(custCd.length != 13){
+			appendAlert('errormssage', getMsgByTwoArgs('msg011', '会員番号','13'));
+			return false;
+		}else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+
+	//名簿納期
+	var custDeliverDate = jQuery("#custDeliverDate").val()
+	if(isNotEmpty(custDeliverDate)){
+		var format = custDeliverDate.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+		
+	    if(format==null){
+	       appendAlert('errormssage', getMsgByTwoArgs('msg012', '名簿納期','正し日付'));
+	       return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	//納期短縮
+	var expediteDelivery = jQuery("#expediteDelivery").val();
+	if(expediteDelivery == "9000902"){
+		var minDate = jQuery("#custShopDeliveryDate").attr("minDate");
+
+		if ((typeof(minDate) == "undefined")||minDate == "" || minDate == null) {
+			
+		}else{
+			var custShopDeliveryDate = jQuery("#custShopDeliveryDate").val();
+
+			var minDateCheck = new Date(minDate.replace(/\-/g, "\/"));
+			var custShopDeliveryDateCheck = new Date(custShopDeliveryDate.replace(/\-/g, "\/"));
+		    
+			if(minDateCheck!=""&&custShopDeliveryDateCheck!=""&&custShopDeliveryDateCheck <minDateCheck){  
+				appendAlert('errormssage', getMsg('msg129'));
+			    return false;  
+			}else{
+		    	appendAlertDel('errormssage');
+			}
+		}
+	}
+
+	//お客様備考
+	var custRemark = jQuery("#custRemark").val();
+	if(charactersCheck(custRemark)) {
+		appendAlert('errormssage', getMsg('msg120'));
+        return false;
+    }else{
+    	appendAlertDel('errormssage');
+	}
+	
+	//お渡し日
+	var custShopDeliveryDate = jQuery("#custShopDeliveryDate").val();
+	if(isNotEmpty(custShopDeliveryDate)){
+		var format = custShopDeliveryDate.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+		
+	    if(format==null){
+	       appendAlert('errormssage', getMsgByTwoArgs('msg012', 'お渡し日','正し日付'));
+	       return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var custDeliverDate = new Date(custDeliverDate.replace(/\-/g, "\/"));
+	var custShopDeliveryDate = new Date(custShopDeliveryDate.replace(/\-/g, "\/"));
+    
+	if(custDeliverDate!=""&&custShopDeliveryDate!=""&&custDeliverDate <custShopDeliveryDate){  
+		appendAlert('errormssage', getMsg('msg055'));
+	    return false;  
+	}else{
+    	appendAlertDel('errormssage');
+	}
+
+	//スタッフ
+    var custStaff = jQuery("#custStaff").val();
+    if(isNotEmpty(custStaff)){
+    	if(custStaff.length>50){
+    		appendAlert('errormssage', getMsgByTwoArgs('msg011', 'スタッフ','50'));
+    		return false;
+    	}else{
+	    	appendAlertDel('errormssage');
+		}
+
+        if(charactersCheck(custStaff)) {
+        	appendAlert('errormssage', getMsg('msg120'));
+            return false;
+        }else{
+	    	appendAlertDel('errormssage');
+		}
+    }
+
+    //メジャーリングチェク
+	var fullLengthTe = jQuery("#fullLengthTe").val();
+    
+    if(fullLengthTe!=""){
+    	if(isNumeric(fullLengthTe)) {
+            appendAlert('errormssage', getMsgByTwoArgs('msg012','フルレングス','半角数字'));
+            return false;
+        }else{
+	    	appendAlertDel('errormssage');
+		}
+    }
+    
+
+	var shoulderTe = jQuery("#shoulderTe").val();
+
+	if(shoulderTe!=""){
+		if(isNumeric(shoulderTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ショルダー','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var reachRightTe = jQuery("#reachRightTe").val();
+
+	if(reachRightTe!=""){
+		if(isNumeric(reachRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','リーチ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var reachLeftTe = jQuery("#reachLeftTe").val();
+
+	if(reachLeftTe!=""){
+		if(isNumeric(reachLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','リーチ（左）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var outBustTe = jQuery("#outBustTe").val();
+	if(outBustTe!=""){
+		if(isNumeric(outBustTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','アウトバスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var bustTe = jQuery("#bustTe").val();
+	
+	if(bustTe!=""){
+		if(isNumeric(bustTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','バスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var jacketWaistTe = jQuery("#jacketWaistTe").val();
+
+	if(jacketWaistTe!=""){
+		if(isNumeric(jacketWaistTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','JKウエスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var pantsWaistTe = jQuery("#pantsWaistTe").val();
+
+	if(pantsWaistTe!=""){
+		if(isNumeric(pantsWaistTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','PTウエスト','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var hipTe = jQuery("#hipTe").val();
+
+	if(hipTe!=""){
+		if(isNumeric(hipTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ヒップ','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+	
+
+	var spanRightTe = jQuery("#spanRightTe").val();
+
+	if(spanRightTe!=""){
+		if(isNumeric(spanRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ワタリ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var spanLeftTe = jQuery("#spanLeftTe").val();
+
+	if(spanLeftTe!=""){
+		if(isNumeric(spanLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ワタリ（左）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+    
+	var calfRightTe = jQuery("#calfRightTe").val();
+
+	if(calfRightTe!=""){
+		if(isNumeric(calfRightTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ふくらはぎ（右）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	var calfLeftTe = jQuery("#calfLeftTe").val();
+
+	if(calfLeftTe!=""){
+		if(isNumeric(calfLeftTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ふくらはぎ（左）','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}	
+	}
+
+	var neckTe = jQuery("#neckTe").val();
+	
+	if(neckTe!=""){
+		if(isNumeric(neckTe)) {
+	        appendAlert('errormssage', getMsgByTwoArgs('msg012','ネック','半角数字'));
+	        return false;
+	    }else{
+	    	appendAlertDel('errormssage');
+		}
+	}
+
+	//商品
+	//刺繍ネーム
+	var productEmbroideryNecessity = jQuery('input[name=productEmbroideryNecessity]:checked').val();
+	if(isNotEmpty(productEmbroideryNecessity)){
+		if (productEmbroideryNecessity == '9000502') {
+			var embroideryName = jQuery("#embroideryName").val();
+			if(embroideryName.length>50){
+				appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','40'));
+				return false;
+			}else{
+		    	appendAlertDel('errormssage');
+			}
+
+			if(charactersCheck(embroideryName)) {
+				appendAlert('errormssage', getMsg('msg120'));
+		        return false;
+		    }else{
+		    	appendAlertDel('errormssage');
+			}
+		}
+	}
+
+	
+	//
+	var productFabricNo = jQuery("#productFabricNo").val();
+
+	if(isNotEmpty(productFabricNo)){
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		fabricCheckValue = fabricCheckValue.split("*");
+		if(isEmpty(productFabricNo)){
+			fabricCheckValue == "0";
+		}
+		//fabricCheckValue[0]:0 or 1 or 2 
+		//fabricCheckValue[1]:エラーメッセージ 
+		//生地チェク成功の場合
+		if(fabricCheckValue[0]=="0"){
+			appendAlertDel('errormssage');
+		//生地チェクの場合	
+		}else if(fabricCheckValue[0]=="1"){
+		    appendAlert('errormssage',fabricCheckValue[1]);
+			return false;
+		}
+
+		 var jkModelFlag = jQuery("#jkModelFlag").val();
+		 jkModelFlag = jkModelFlag.split("*");
+		 //jkModelFlag[0]:0 or 1 
+		 //jkModelFlag[1]:エラーメッセージ 
+		 //生地チェク成功の場合
+		 if(jkModelFlag[0]=="0"){
+				
+		 //生地チェクの場合	
+		 }else if(jkModelFlag[0]=="1"){
+		     appendAlert('errormssage',jkModelFlag[1]);
+		     return false;
+		 }
+
+		 var item = jQuery("#item").val();
+
+		 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+		
+
+		 if(item == "01"){
+			if(threePiece == "0009901"){
+				jQuery("#glModelFlag").val("0");
+			}
+		 }
+		 var glModelFlag = jQuery("#glModelFlag").val();
+		 glModelFlag = glModelFlag.split("*");
+		 //glModelFlag[0]:0 or 1 
+		 //glModelFlag[1]:エラーメッセージ 
+		 //生地チェク成功の場合
+		 if(glModelFlag[0]=="0"){
+				
+		 //生地チェクの場合	
+		 }else if(glModelFlag[0]=="1"){
+		     appendAlert('errormssage',glModelFlag[1]);
+		     return false;
+		 }
+		 
+
+		 var ptModelFlag = jQuery("#ptModelFlag").val();
+		 ptModelFlag = ptModelFlag.split("*");
+		 //ptModelFlag[0]:0 or 1 
+		 //ptModelFlag[1]:エラーメッセージ 
+		 //生地チェク成功の場合
+		 if(ptModelFlag[0]=="0"){
+				
+		 //生地チェクの場合	
+		 }else if(ptModelFlag[0]=="1"){
+		     appendAlert('errormssage',ptModelFlag[1]);
+		     return false;
+		 }
+
+
+		 var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+		 if(item == "01"){
+			if(twoPants == "0009901"){
+				jQuery("#pt2ModelFlag").val("0");
+			}
+		 }
+		 var pt2ModelFlag = jQuery("#pt2ModelFlag").val();
+		 pt2ModelFlag = pt2ModelFlag.split("*");
+		 //pt2ModelFlag[0]:0 or 1 
+		 //pt2ModelFlag[1]:エラーメッセージ 
+		 //生地チェク成功の場合
+		 if(pt2ModelFlag[0]=="0"){
+				
+		 //生地チェクの場合	
+		 }else if(pt2ModelFlag[0]=="1"){
+		     appendAlert('errormssage',pt2ModelFlag[1]);
+		     return false;
+		 }
+	}
+	
+	return true;
+	
+}
+
+function dateEarlyCheck(productFabricNo,item){
+	if(isNotEmpty(productFabricNo)){
+		//生地チェクフラッグ
+		var fabricCheckValue = jQuery("#fabricFlag").val();
+		fabricCheckValue = fabricCheckValue.split("*");
+		//生地チェク成功の場合
+		if(fabricCheckValue[0]=="0"){
+			jQuery.ajax({
+				 type:"get",
+				 url: contextPath + "/order/findStock",
+				 data:{"fabricNo":productFabricNo,"orderPattern":"CO"},
+				 async:false,
+				 success:function(result){
+					 if(!isShopDeliveryEmpty(result,item)){
+		         			setAlert('stockMsg', getMsgByOneArg('msg072',productFabricNo));
+		         			//生地メッセージをクリア
+		         			jQuery("#notice").empty();
+		     			    jQuery("#fabric_brand_nm_p").empty();
+		     			    jQuery("#service_nm_p").empty();
+		     				jQuery("#compos_frt_fabric_p").empty();
+		     				jQuery("#goodsPrice").html('0');
+		       				jQuery("productPriceId").val("");
+		       				jQuery("#theoryFabricUsedMountId").val("");
+		       				jQuery("#fabricColor").val("");
+							jQuery("#fabricPattern").val("");
+							jQuery("#factoryCode").val("");
+							jQuery("#custShopDeliveryDate").val("");
+							jQuery("#makerCode").val("");
+							jQuery("#fabricMsg").empty();
+							jQuery("#threePiece_Msg").empty();
+							jQuery("#sparePants_Msg").empty();
+							jQuery("#jacketModel_Msg").empty();
+							jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
+							allOptionPrice();
+							//生地チェク失敗フラッグ
+							fabricCheckValue = "1";
+		     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg072',productFabricNo));
+		     			 }	 
+				 }
+			})
+		}
 	}
 }
 
+
+function getProductPrice(){
+	var productCode = "";
+	var productModel = "ALL";
+	var productItemCode = "99";
+	var productSubItemCode = "99";
+	jQuery("#expediteDelivery").change(function(){
+		var expediteDelivery = jQuery(this).val();
+		var valueName = jQuery(this).attr("id");
+		productCode = productItemCode + productSubItemCode + productModel;
+		jQuery.ajax({
+			type:"get",
+			async:false,
+		    url:contextPath + "/orderCo/productPrice",
+		    data:{"productCode":productCode,"valueCode":expediteDelivery,"valueName":valueName},
+		    success:function(result){
+			    if(result == "0" || result == 0){
+			    	jQuery("#expediteDeliveryPrice").val(result);
+			    	jQuery("#expediteDelivery_Msg").html("無料");
+				}else{
+				    jQuery("#expediteDeliveryPrice").val(result);
+				    jQuery("#expediteDelivery_Msg").html(formatMoney(result,0,"￥"));
+				}
+		    }
+        });
+		allOptionPrice();
+	});
+
+	var lcrSewing = jQuery('input[name=productLcrSewing]:checked').val();
+	var valueName = jQuery('input[name=productLcrSewing]:checked').attr("id");
+	if(valueName.indexOf("_id")!=-1){
+		valueName = valueName.substr(0, valueName.length - 1);
+		valueName = valueName.replace("_id","");
+	}
+	productCode = productItemCode + productSubItemCode + productModel;
+	jQuery.ajax({
+		type:"get",
+		async:false,
+	    url:contextPath + "/orderCo/productPrice",
+	    data:{"productCode":productCode,"valueCode":lcrSewing,"valueName":valueName},
+	    success:function(result){
+		    if(result == "0" || result == 0){
+		    	jQuery("#lcrSewingPrice").val(result);
+		    	jQuery("#lcrSewing_Msg").html("無料");
+			}else{
+			    jQuery("#lcrSewingPrice").val(result);
+			    jQuery("#lcrSewing_Msg").html(formatMoney(result,0,"￥"));
+			}
+	    }
+    });
+	allOptionPrice();
+	jQuery('input[id^="lcrSewing_"]').change(function(){
+		var lcrSewing = jQuery(this).val();
+		var valueName = jQuery(this).attr("id");
+		if(valueName.indexOf("_id")!=-1){
+			valueName = valueName.substr(0, valueName.length - 1);
+			valueName = valueName.replace("_id","");
+		}
+		productCode = productItemCode + productSubItemCode + productModel;
+		jQuery.ajax({
+			type:"get",
+			async:false,
+		    url:contextPath + "/orderCo/productPrice",
+		    data:{"productCode":productCode,"valueCode":lcrSewing,"valueName":valueName},
+		    success:function(result){
+			    if(result == "0" || result == 0){
+			    	jQuery("#lcrSewingPrice").val(result);
+			    	jQuery("#lcrSewing_Msg").html("無料");
+				}else{
+				    jQuery("#lcrSewingPrice").val(result);
+				    jQuery("#lcrSewing_Msg").html(formatMoney(result,0,"￥"));
+				}
+			    allOptionPrice();
+		    }
+        });
+	});
+	
+}
+
+function shirtProductPrice(){
+	var item = jQuery("#item").val();
+	var embroidered = jQuery('input[name="productEmbroideryNecessity"]:checked').val();
+	if(item == "05"&&embroidered == "9000502"){
+		
+		var productEmbroideryNmPos = jQuery("#productEmbroideryNmPos").val();
+		var valueName = jQuery("#productEmbroideryNmPos").attr("id");
+		jQuery.ajax({
+			type:"get",
+			async:false,
+		    url:contextPath + "/orderCo/productPrice",
+		    data:{"valueCode":productEmbroideryNmPos,"valueName":valueName},
+		    success:function(result){
+		    	if(result == "0" || result == 0){
+			    	jQuery("#embroideryNmPosPrice").val(result);
+			    	jQuery("#embroideryNmPos_Msg").html("無料");
+				}else{
+				    jQuery("#embroideryNmPosPrice").val(result);
+				    jQuery("#embroideryNmPos_Msg").html(formatMoney(result,0,"￥"));
+				}
+			    allOptionPrice();
+		    }
+        });
+        
+		jQuery("#productEmbroideryNmPos").change(function(){
+			var productEmbroideryNmPos = jQuery(this).val();
+			var valueName = jQuery(this).attr("id");
+			jQuery.ajax({
+				type:"get",
+				async:false,
+			    url:contextPath + "/orderCo/productPrice",
+			    data:{"valueCode":productEmbroideryNmPos,"valueName":valueName},
+			    success:function(result){
+			    	if(result == "0" || result == 0){
+				    	jQuery("#embroideryNmPosPrice").val(result);
+				    	jQuery("#embroideryNmPos_Msg").html("無料");
+					}else{
+					    jQuery("#embroideryNmPosPrice").val(result);
+					    jQuery("#embroideryNmPos_Msg").html(formatMoney(result,0,"￥"));
+					}
+				    allOptionPrice();
+			    }
+	        });
+		});
+
+		var gadget = jQuery('input[name=productEmbroideryGazette]:checked').val();
+		var valueName = jQuery('input[name=productEmbroideryGazette]:checked').attr("id");
+		if(valueName.indexOf("_id")!=-1){
+			valueName = valueName.substr(0, valueName.length - 1);
+			valueName = valueName.replace("_id","");
+		}
+		jQuery.ajax({
+			type:"get",
+			async:false,
+		    url:contextPath + "/orderCo/productPrice",
+		    data:{"valueCode":gadget,"valueName":valueName},
+		    success:function(result){
+		    	if(result == "0" || result == 0){
+			    	jQuery("#gadgetPrice").val(result);
+			    	jQuery("#gadget_Msg").html("無料");
+				}else{
+				    jQuery("#gadgetPrice").val(result);
+				    jQuery("#gadget_Msg").html(formatMoney(result,0,"￥"));
+				}
+		    }
+	    });
+		allOptionPrice();
+	
+		jQuery('input[id^="gadget_"]').change(function(){
+			var gadget = jQuery(this).val();
+			var valueName = jQuery(this).attr("id");
+			if(valueName.indexOf("_id")!=-1){
+				valueName = valueName.substr(0, valueName.length - 1);
+				valueName = valueName.replace("_id","");
+			}
+			jQuery.ajax({
+				type:"get",
+				async:false,
+			    url:contextPath + "/orderCo/productPrice",
+			    data:{"valueCode":gadget,"valueName":valueName},
+			    success:function(result){
+				    if(result == "0" || result == 0){
+				    	jQuery("#gadgetPrice").val(result);
+				    	jQuery("#gadget_Msg").html("無料");
+					}else{
+					    jQuery("#gadgetPrice").val(result);
+					    jQuery("#gadget_Msg").html(formatMoney(result,0,"￥"));
+					}
+				    allOptionPrice();
+			    }
+	        });
+		});
+		
+		
+	}else{
+		jQuery("#embroideryNmPosPrice").val("0");
+		jQuery("#embroideryNmPos_Msg").empty();
+		jQuery("#gadgetPrice").val("0");
+		jQuery("#gadget_Msg").empty();
+		allOptionPrice();
+	}
+}
+//メジャーリングの初期化
+//--------------------------------------------
+function orderFormMeasuring(){
+	
+	var measuringList = [
+		{type:"fullLength",size:"${orderCoForm.coMeasuringInfo.fullLength}"},
+		{type:"shoulder",size:"${orderCoForm.coMeasuringInfo.shoulder}"},
+		{type:"reachRight",size:"${orderCoForm.coMeasuringInfo.reachRight}"},
+		{type:"reachLeft",size:"${orderCoForm.coMeasuringInfo.reachLeft}"},
+		{type:"outBust",size:"${orderCoForm.coMeasuringInfo.outBust}"},
+		{type:"bust",size:"${orderCoForm.coMeasuringInfo.bust}"},
+		{type:"jacketWaist",size:"${orderCoForm.coMeasuringInfo.jacketWaist}"},
+		{type:"pantsWaist",size:"${orderCoForm.coMeasuringInfo.pantsWaist}"},
+		{type:"hip",size:"${orderCoForm.coMeasuringInfo.hip}"},
+		{type:"spanRight",size:"${orderCoForm.coMeasuringInfo.spanRight}"},
+		{type:"spanLeft",size:"${orderCoForm.coMeasuringInfo.spanLeft}"},
+		{type:"calfRight",size:"${orderCoForm.coMeasuringInfo.calfRight}"},
+		{type:"calfLeft",size:"${orderCoForm.coMeasuringInfo.calfLeft}"},
+		{type:"neck",size:"${orderCoForm.coMeasuringInfo.neck}"}
+		];
+	
+	var i = null;
+	for(i of measuringList){
+		var measuring = i.size;
+		measuring = measuring.split(".");
+		if(measuring[0]=="0"&&measuring[1]=="0"){
+
+		}else{
+			jQuery("#"+i.type+"Te").val(measuring[0]);
+			jQuery("#"+i.type+"Se").val(measuring[1]);
+			jQuery("#"+i.type).val(i.size)
+		}
+		
+	}
+	
+
+}
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

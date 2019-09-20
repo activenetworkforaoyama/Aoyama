@@ -99,6 +99,14 @@ public class DtbOrder implements Serializable {
 
     private String productBrandNm;
 
+    private String productLcrSewing;
+
+    private Integer productLcrSewingRtPrice;
+
+    private BigDecimal productLcrSewingWsWage;
+
+    private Integer productLcrSewingWsPrice;
+
     private String productFabricNmNecessity;
 
     private String productEmbroideryNecessity;
@@ -1871,6 +1879,8 @@ public class DtbOrder implements Serializable {
 
     private Integer ctCollarHangWsPrice;
 
+    private String ctInnerBodyClothType;
+
     private String ctInnerBodyClothCd;
 
     private String ctInnerBodyClothNm;
@@ -1881,6 +1891,8 @@ public class DtbOrder implements Serializable {
 
     private Integer ctInnerBodyClothWsPrice;
 
+    private String ctInnerSleeveClothType;
+
     private String ctInnerSleeveClothCd;
 
     private String ctInnerSleeveClothNm;
@@ -1890,6 +1902,8 @@ public class DtbOrder implements Serializable {
     private BigDecimal ctInnerSleeveClothWsWage;
 
     private Integer ctInnerSleeveClothWsPrice;
+
+    private String ctBtnMaterialType;
 
     private String ctBtnMaterialCd;
 
@@ -2201,6 +2215,8 @@ public class DtbOrder implements Serializable {
 
     private String corJkFigureCorrect;
 
+    private String corJkStoreCorrectionMemo;
+
     private String corPtDrop;
 
     private String corPtSize;
@@ -2244,6 +2260,8 @@ public class DtbOrder implements Serializable {
     private BigDecimal corPtLeftinseamCorrect;
 
     private BigDecimal corPtLeftinseamGross;
+
+    private String corPtStoreCorrectionMemo;
 
     private String corPt2Drop;
 
@@ -2289,6 +2307,8 @@ public class DtbOrder implements Serializable {
 
     private BigDecimal corPt2LeftinseamGross;
 
+    private String corPt2StoreCorrectionMemo;
+
     private String corGlDrop;
 
     private String corGlSize;
@@ -2310,6 +2330,8 @@ public class DtbOrder implements Serializable {
     private BigDecimal corGlWaistCorrect;
 
     private BigDecimal corGlWaistGross;
+
+    private String corGlStoreCorrectionMemo;
 
     private String corCtSize;
 
@@ -2348,6 +2370,8 @@ public class DtbOrder implements Serializable {
     private BigDecimal corCtPktposCorrect;
 
     private BigDecimal corCtPktposGross;
+
+    private String corCtStoreCorrectionMemo;
 
     private String corStSize;
 
@@ -2492,6 +2516,10 @@ public class DtbOrder implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
+
+    private Integer fabricPrice;
+
+    private Integer wsPriceAdjust;
 
     private static final long serialVersionUID = 1L;
 
@@ -2869,6 +2897,38 @@ public class DtbOrder implements Serializable {
 
     public void setProductBrandNm(String productBrandNm) {
         this.productBrandNm = productBrandNm == null ? "" : productBrandNm.trim();
+    }
+
+    public String getProductLcrSewing() {
+        return productLcrSewing;
+    }
+
+    public void setProductLcrSewing(String productLcrSewing) {
+        this.productLcrSewing = productLcrSewing == null ? "" : productLcrSewing.trim();
+    }
+
+    public Integer getProductLcrSewingRtPrice() {
+        return productLcrSewingRtPrice;
+    }
+
+    public void setProductLcrSewingRtPrice(Integer productLcrSewingRtPrice) {
+        this.productLcrSewingRtPrice = productLcrSewingRtPrice;
+    }
+
+    public BigDecimal getProductLcrSewingWsWage() {
+        return productLcrSewingWsWage;
+    }
+
+    public void setProductLcrSewingWsWage(BigDecimal productLcrSewingWsWage) {
+        this.productLcrSewingWsWage = productLcrSewingWsWage;
+    }
+
+    public Integer getProductLcrSewingWsPrice() {
+        return productLcrSewingWsPrice;
+    }
+
+    public void setProductLcrSewingWsPrice(Integer productLcrSewingWsPrice) {
+        this.productLcrSewingWsPrice = productLcrSewingWsPrice;
     }
 
     public String getProductFabricNmNecessity() {
@@ -9959,6 +10019,14 @@ public class DtbOrder implements Serializable {
         this.ctCollarHangWsPrice = ctCollarHangWsPrice;
     }
 
+    public String getCtInnerBodyClothType() {
+        return ctInnerBodyClothType;
+    }
+
+    public void setCtInnerBodyClothType(String ctInnerBodyClothType) {
+        this.ctInnerBodyClothType = ctInnerBodyClothType == null ? "" : ctInnerBodyClothType.trim();
+    }
+
     public String getCtInnerBodyClothCd() {
         return ctInnerBodyClothCd;
     }
@@ -9999,6 +10067,14 @@ public class DtbOrder implements Serializable {
         this.ctInnerBodyClothWsPrice = ctInnerBodyClothWsPrice;
     }
 
+    public String getCtInnerSleeveClothType() {
+        return ctInnerSleeveClothType;
+    }
+
+    public void setCtInnerSleeveClothType(String ctInnerSleeveClothType) {
+        this.ctInnerSleeveClothType = ctInnerSleeveClothType == null ? "" : ctInnerSleeveClothType.trim();
+    }
+
     public String getCtInnerSleeveClothCd() {
         return ctInnerSleeveClothCd;
     }
@@ -10037,6 +10113,14 @@ public class DtbOrder implements Serializable {
 
     public void setCtInnerSleeveClothWsPrice(Integer ctInnerSleeveClothWsPrice) {
         this.ctInnerSleeveClothWsPrice = ctInnerSleeveClothWsPrice;
+    }
+
+    public String getCtBtnMaterialType() {
+        return ctBtnMaterialType;
+    }
+
+    public void setCtBtnMaterialType(String ctBtnMaterialType) {
+        this.ctBtnMaterialType = ctBtnMaterialType == null ? "" : ctBtnMaterialType.trim();
     }
 
     public String getCtBtnMaterialCd() {
@@ -11279,6 +11363,14 @@ public class DtbOrder implements Serializable {
         this.corJkFigureCorrect = corJkFigureCorrect == null ? "" : corJkFigureCorrect.trim();
     }
 
+    public String getCorJkStoreCorrectionMemo() {
+        return corJkStoreCorrectionMemo;
+    }
+
+    public void setCorJkStoreCorrectionMemo(String corJkStoreCorrectionMemo) {
+        this.corJkStoreCorrectionMemo = corJkStoreCorrectionMemo == null ? "" : corJkStoreCorrectionMemo.trim();
+    }
+
     public String getCorPtDrop() {
         return corPtDrop;
     }
@@ -11453,6 +11545,14 @@ public class DtbOrder implements Serializable {
 
     public void setCorPtLeftinseamGross(BigDecimal corPtLeftinseamGross) {
         this.corPtLeftinseamGross = corPtLeftinseamGross;
+    }
+
+    public String getCorPtStoreCorrectionMemo() {
+        return corPtStoreCorrectionMemo;
+    }
+
+    public void setCorPtStoreCorrectionMemo(String corPtStoreCorrectionMemo) {
+        this.corPtStoreCorrectionMemo = corPtStoreCorrectionMemo == null ? "" : corPtStoreCorrectionMemo.trim();
     }
 
     public String getCorPt2Drop() {
@@ -11631,6 +11731,14 @@ public class DtbOrder implements Serializable {
         this.corPt2LeftinseamGross = corPt2LeftinseamGross;
     }
 
+    public String getCorPt2StoreCorrectionMemo() {
+        return corPt2StoreCorrectionMemo;
+    }
+
+    public void setCorPt2StoreCorrectionMemo(String corPt2StoreCorrectionMemo) {
+        this.corPt2StoreCorrectionMemo = corPt2StoreCorrectionMemo == null ? "" : corPt2StoreCorrectionMemo.trim();
+    }
+
     public String getCorGlDrop() {
         return corGlDrop;
     }
@@ -11717,6 +11825,14 @@ public class DtbOrder implements Serializable {
 
     public void setCorGlWaistGross(BigDecimal corGlWaistGross) {
         this.corGlWaistGross = corGlWaistGross;
+    }
+
+    public String getCorGlStoreCorrectionMemo() {
+        return corGlStoreCorrectionMemo;
+    }
+
+    public void setCorGlStoreCorrectionMemo(String corGlStoreCorrectionMemo) {
+        this.corGlStoreCorrectionMemo = corGlStoreCorrectionMemo == null ? "" : corGlStoreCorrectionMemo.trim();
     }
 
     public String getCorCtSize() {
@@ -11869,6 +11985,14 @@ public class DtbOrder implements Serializable {
 
     public void setCorCtPktposGross(BigDecimal corCtPktposGross) {
         this.corCtPktposGross = corCtPktposGross;
+    }
+
+    public String getCorCtStoreCorrectionMemo() {
+        return corCtStoreCorrectionMemo;
+    }
+
+    public void setCorCtStoreCorrectionMemo(String corCtStoreCorrectionMemo) {
+        this.corCtStoreCorrectionMemo = corCtStoreCorrectionMemo == null ? "" : corCtStoreCorrectionMemo.trim();
     }
 
     public String getCorStSize() {
@@ -12445,5 +12569,21 @@ public class DtbOrder implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getFabricPrice() {
+        return fabricPrice;
+    }
+
+    public void setFabricPrice(Integer fabricPrice) {
+        this.fabricPrice = fabricPrice;
+    }
+
+    public Integer getWsPriceAdjust() {
+        return wsPriceAdjust;
+    }
+
+    public void setWsPriceAdjust(Integer wsPriceAdjust) {
+        this.wsPriceAdjust = wsPriceAdjust;
     }
 }

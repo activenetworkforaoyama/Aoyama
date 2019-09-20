@@ -36,10 +36,26 @@
 								<div class="col col-md-4">
 									<label class=" form-control-label">お客様氏名</label>
 								</div>
+								<c:if test="${cashForm.custNm != null && cashForm.custKanaNm != null}">
 								<div class="col-12 col-md-8">
-									<strong><output>${cashForm.custNm}</output></strong>
-									<!-- <input type="hidden" name="custNm" value="${cashForm.custNm}"/>  -->
+									<strong><output>${f:h(cashForm.custNm)}(${f:h(cashForm.custKanaNm)})</output></strong> 
 								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm != null && cashForm.custKanaNm == null}">
+								<div class="col-12 col-md-8">
+									<strong><output>${f:h(cashForm.custNm)}</output></strong> 
+								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm == null && cashForm.custKanaNm != null}">
+								<div class="col-12 col-md-8">
+									<strong><output>${f:h(cashForm.custKanaNm)}</output></strong> 
+								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm == null && cashForm.custKanaNm == null}">
+								<div class="col-12 col-md-8">
+									<strong><output></output></strong> 
+								</div>
+								</c:if>
 							</div>
 							<div class="row">
 								<div class="col col-md-4">

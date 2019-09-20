@@ -50,25 +50,25 @@ function initOptionGiletTuxedo() {
 
 		// GILETモデルに基づき、各項目をデフォルトへ変更
 		// 胸ポケット
-		var beforeBreastPkt = jQuery('input[name="optionGiletTuxedoInfo.tgBreastPkt"]:checked').val();
-		jQuery('input[name="optionGiletTuxedoInfo.tgBreastPkt"]').val([giletModelDefaultList[giletModel]["og_breastPkt"]]);
+		var beforeBreastPkt = jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]:checked').val();
+		jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]').val([giletModelDefaultList[giletModel]["og_breastPkt"]]);
 
 		// 腰ポケット
-		var beforeWaistPkt = jQuery('input[name="optionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
-		jQuery('input[name="optionGiletTuxedoInfo.tgWaistPkt"]').val([giletModelDefaultList[giletModel]["og_waistPkt"]]);
+		var beforeWaistPkt = jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
+		jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]').val([giletModelDefaultList[giletModel]["og_waistPkt"]]);
 
 		// 腰ポケット形状
-		var beforeWaistPktSpec = jQuery('input[name="optionGiletTuxedoInfo.tgWaistPktSpec"]:checked').val();
-		jQuery('input[name="optionGiletTuxedoInfo.tgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+		var beforeWaistPktSpec = jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').val();
+		jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
 
 		/* TODO 一応コメントアウトで残しておく
 		// ステッチ箇所変更
 		if (ogStitchModifyList[giletModel]) {
 			// 定義がある場合、モデルに基づくチェック状態にする
-			jQuery('input[name="optionGiletTuxedoInfo.tgStitchModifyPlace"]').val(ogStitchModifyList[giletModel]);
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgStitchModifyPlace"]').val(ogStitchModifyList[giletModel]);
 		} else {
 			// 想定外のGiletモデルの場合はすべて変更不可＆チェックなし
-			jQuery('input[name="optionGiletTuxedoInfo.tgStitchModifyPlace"]').each(function() {
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgStitchModifyPlace"]').each(function() {
 				jQuery(this).prop("disabled", true);
 				jQuery(this).prop("checked", false);
 			});
@@ -95,10 +95,10 @@ function initOptionGiletTuxedo() {
 	});
 
 	// 腰ポケット
-	jQuery('input[name="optionGiletTuxedoInfo.tgWaistPkt"]').each(function() {
+	jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中の腰ポケット
-			var waistPkt = jQuery('input[name="optionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
+			var waistPkt = jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
 			if (waistPkt == "0000201") {
 				// 腰ポケットが有りの場合は腰ポケット形状と腰ポケット素材を表示する
 				jQuery('#tg_waistPkt_yes_area').show();
@@ -221,10 +221,10 @@ function initOptionGiletTuxedo() {
 	});
 */
 	// ボタンホール色指定(有り/無し)
-	jQuery('input[name="optionGiletTuxedoInfo.tgBhColor"]').each(function() {
+	jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var bhColor = jQuery('input[name="optionGiletTuxedoInfo.tgBhColor"]:checked').val();
+			var bhColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]:checked').val();
 
 			if (bhColor == '0001101') {
 				// 無しの場合は操作不可
@@ -285,10 +285,10 @@ function initOptionGiletTuxedo() {
 	ctrlTgBhColorPlace();
 
 	// ボタン付け糸指定(有り/無し)
-	jQuery('input[name="optionGiletTuxedoInfo.tgByColor"]').each(function() {
+	jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var byColor = jQuery('input[name="optionGiletTuxedoInfo.tgByColor"]:checked').val();
+			var byColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]:checked').val();
 
 			if (byColor == '0001401') {
 				// 無しの場合は操作不可
@@ -492,7 +492,7 @@ function initOptionGiletTuxedo() {
 function ctrlTgBhColorPlace() {
 
 	// 選択中のボタンホール色指定
-	var bhColor = jQuery('input[name="optionGiletTuxedoInfo.tgBhColor"]:checked').val();
+	var bhColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]:checked').val();
 
 	// 選択中のGILETモデル
 	var giletModel = jQuery('#tg_giletModel').val();
@@ -529,7 +529,7 @@ function ctrlTgBhColorPlace() {
 function ctrlTgByColorPlace() {
 
 	// 選択中のボタン付け糸指定
-	var byColor = jQuery('input[name="optionGiletTuxedoInfo.tgByColor"]:checked').val();
+	var byColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]:checked').val();
 
 	// 選択中のGILETモデル
 	var giletModel = jQuery('#tg_giletModel').val();

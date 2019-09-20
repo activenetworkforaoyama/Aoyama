@@ -62,7 +62,7 @@
         FROM
             mtb_stock  
 		WHERE
-			fabric_no = #{fabricNo}
+			order_pattern = #{orderPattern} and fabric_no = #{fabricNo}
 	</select>
 	
 	<select id="fuzzyQuery" parameterType="string" resultMap="stockResultMap">

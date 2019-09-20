@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.measurementenum.MtbMeasurementEnumRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.MtbMeasurementEnum" >
+    <result column="item" property="item" jdbcType="VARCHAR" />
+    <result column="style_no" property="styleNo" jdbcType="VARCHAR" />
+    <result column="sub_no" property="subNo" jdbcType="VARCHAR" />
+    <result column="class_type" property="classType" jdbcType="VARCHAR" />
+    <result column="item_code" property="itemCode" jdbcType="VARCHAR" />
+    <result column="get_gross" property="getGross" jdbcType="VARCHAR" />
+    <result column="product_factory_cd" property="productFactoryCd" jdbcType="VARCHAR" />
+    <result column="order_pattern" property="orderPattern" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbMeasurementEnum" >
+    insert into mtb_measurement_enum (item, style_no, sub_no, 
+      class_type, item_code, get_gross, 
+      product_factory_cd, order_pattern)
+    values (#{item,jdbcType=VARCHAR}, #{styleNo,jdbcType=VARCHAR}, #{subNo,jdbcType=VARCHAR}, 
+      #{classType,jdbcType=VARCHAR}, #{itemCode,jdbcType=VARCHAR}, #{getGross,jdbcType=VARCHAR}, 
+      #{productFactoryCd,jdbcType=VARCHAR}, #{orderPattern,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select item, style_no, sub_no, class_type, item_code, get_gross, product_factory_cd, 
+    order_pattern
+    from mtb_measurement_enum
+  </select>
+  <select id="selectByFactoryPattern" parameterType="java.lang.String" resultMap="BaseResultMap" >
+   select *
+     from mtb_measurement_enum
+    where product_factory_cd = #{factory}
+      and order_pattern = #{pattern}
+ order by product_factory_cd, order_pattern, item, style_no, sub_no, class_type, item_code
+  </select>
+</mapper>

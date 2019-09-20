@@ -14,7 +14,7 @@ public interface DtbOrderRepository {
 //	DtbOrder selectByPrimaryKey(String orderId);
 
 	/**
-	 * 送信要注文データを取得する
+	 * 大連大楊へ送信要PO注文データを取得する
 	 * 
 	 * @param selectFlag 選択フラグ 0：工場自動連携ステータス＝「0：送信前」； 2：工場自動連携ステータス IN (「2：送信失敗
 	 *                   エラーなし」、 「3：送信失敗 データタイプエラー」、 「4：送信失敗 データエラー」)
@@ -23,7 +23,7 @@ public interface DtbOrderRepository {
 	List<DtbOrder> selectByCondition(@Param("selectFlag") String selectFlag);
 
 	/**
-	 * 注文IDリストにより、注文データを更新する
+	 * 大連大楊のPO注文IDリストにより、注文データを更新する
 	 * 
 	 * @param condition 更新オブジェクト
 	 * @param list      注文IDリスト
@@ -32,7 +32,7 @@ public interface DtbOrderRepository {
 	int updateByOrderIds(@Param("condition") OrderUpdateCondition condition, @Param("list") List<String> list);
 
 	/**
-	 * 受信結果リストにより、注文出荷日を更新する
+	 * 大連大楊の受信結果リストにより、PO注文出荷日を更新する
 	 * 
 	 * @param updatedUserId 更新ユーザID
 	 * @param prefix        大楊プレフィックス
@@ -42,9 +42,38 @@ public interface DtbOrderRepository {
 			@Param("list") List<OrderStatusOutput> list);
 
 	/**
-	 * ステータス確認要の注文IDを取得する
+	 * 大連大楊のステータス確認要のPO注文IDを取得する
+	 * 
+	 * @param makerFactoryStatus 工場ステータス F0 ：生産開始前 F1 ：生産開始
+	 * @return ステータス確認要の注文IDリスト
+	 */
+	List<String> selectConfrimOrderId(@Param("makerFactoryStatus") String makerFactoryStatus);
+
+	/**
+	 * 大連大楊へ送信タイムアウトPO注文データを取得する
+	 * 
+	 * @return 送信要注文データリスト
+	 */
+	List<DtbOrder> selectDaliangDayangPoTimeoutOrders();
+
+	/**
+	 * 上海服良へ送信タイムアウトCO注文データを取得する
+	 * 
+	 * @return 送信要注文データリスト
+	 */
+	List<DtbOrder> selectShanghaiFuliangCoTimeoutOrders();
+
+	/**
+	 * 上海服良へ送信要CO注文データを取得する
+	 * 
+	 * @return 送信要注文データリスト
+	 */
+	List<DtbOrder> selectShanghaiFuliangCoOrders();
+
+	/**
+	 * 上海服良のステータス確認要のCO注文IDを取得する
 	 * 
 	 * @return ステータス確認要の注文IDリスト
 	 */
-	List<String> selectConfrimOrderId();
+	List<String> selectShanghaiFuliangCoConfrimOrderId();
 }

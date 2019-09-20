@@ -54,6 +54,7 @@
             updated_user_id=#{batchUpdateUserid}
             </set>
             where fabric_no =#{item.ftcode}
+            and   order_pattern = #{order_pattern}
     </foreach>
   </update>
   <select id="selectfabricNoList" resultType="java.lang.String">
@@ -63,5 +64,15 @@
   where f.factory_code = 'F00005'
     AND f.order_pattern = 'PO'
     AND f.fabric_no = s.fabric_no
+    AND f.order_pattern = s.order_pattern
+  </select>
+  <select id="selectShanghaiFuliangCoFabricNoList" resultType="java.lang.String">
+  
+  select s.fabric_no 
+  from mtb_fabric f , mtb_stock s
+  where f.factory_code = 'F00002'
+    AND f.order_pattern = 'CO'
+    AND f.fabric_no = s.fabric_no
+    AND f.order_pattern = s.order_pattern
   </select>
 </mapper>

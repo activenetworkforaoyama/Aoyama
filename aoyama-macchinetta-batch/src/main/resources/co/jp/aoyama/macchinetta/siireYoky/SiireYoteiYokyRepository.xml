@@ -7,7 +7,6 @@
         <resultMap id="SiireYoteiYokyResultMap" type="co.jp.aoyama.macchinetta.siireYoky.SiireYoteiYoky">
         <id property="orderPattern" column="order_pattern" />
 		<result property="orderId" column="order_id" />
-		<result property="hostTransmitMakerProduct" column="host_transmit_maker_product" />
 		<result property="hostTransmitItemCd" column="host_transmit_item_cd" />
 		<result property="hostTransmitMakerCd" column="host_transmit_maker_cd" />
 		<result property="hostTransmitNenkiCd" column="host_transmit_nenki_cd" />
@@ -25,7 +24,6 @@
         select
 			order_pattern,
 			order_id,
-			host_transmit_maker_product,
 			host_transmit_item_cd,
 			host_transmit_maker_cd,
 			host_transmit_nenki_cd,

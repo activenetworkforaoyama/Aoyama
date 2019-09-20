@@ -203,4 +203,48 @@ public class NextGenerationServiceImpl implements NextGenerationService{
 		return mfaFactoryCode;
 	}
 
+	@Override
+	public List<NextGenerationPrice> selectCoOptionNextGenerationPrice(String jkSubItemCode, String ptSubItemCode,
+			String gtSubItemCode, String pt2SubItemCode, String factoryCode, String itemCode, String stSubItemCode,
+			String ctSubItemCode) {
+		List<NextGenerationPrice> selectCoOptionNextGenerationPrice = nextGenerationRepository.selectCoOptionNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode, factoryCode, itemCode, stSubItemCode, ctSubItemCode);
+		if(selectCoOptionNextGenerationPrice.isEmpty()) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return selectCoOptionNextGenerationPrice;
+	}
+
+	@Override
+	public List<NextGenerationPrice> selectCoDetailNextGenerationPrice(String jkSubItemCode, String ptSubItemCode,
+			String gtSubItemCode, String pt2SubItemCode, String factoryCode, String itemCode, String stSubItemCode,
+			String ctSubItemCode) {
+		List<NextGenerationPrice> selectCoDetailNextGenerationPrice = nextGenerationRepository.selectCoDetailNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode, factoryCode, itemCode, stSubItemCode, ctSubItemCode);
+		if(selectCoDetailNextGenerationPrice.isEmpty()) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E024");
+			logger.error(resultMessages.toString());
+			
+			throw new ResourceNotFoundException(resultMessages);
+		}
+		return selectCoDetailNextGenerationPrice;
+	}
+
+	@Override
+	public List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList(String factoryCode, String item, String subItem,
+			String optionCode) {
+		List<NextGenerationPrice> selectCoComplexItemsList = nextGenerationRepository.selectCoComplexItemsAccessoryPriceList(factoryCode, item, subItem, optionCode);
+		return selectCoComplexItemsList;
+	}
+
+	@Override
+	public List<NextGenerationPrice> selectCoComplexItemsWageList(String factoryCode, String item, String subItem,
+			String optionCode) {
+		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationRepository.selectCoComplexItemsWageList(factoryCode, item, subItem, optionCode);
+		return selectCoComplexItemsWageList;
+	}
+
 }

@@ -1,4 +1,4 @@
-<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
 <div id="op2_pants_div">
             <div class="card-header">
                 <strong class="card-title">PANTS（2本目）</strong>　　<button type="button" class="btn btn-outline-info btn-sm" id="btn_op2_samePants">1本目と同じ</button>
@@ -11,8 +11,8 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op2_pantsModel" path="optionPants2StandardInfo.op2PantsModel" class="form-control-sm form-control">
-                               <form:options items="${orderForm.optionPants2StandardInfo.op2PantsModelMap}"/>
+                                <form:select id="op2_pantsModel" path="coOptionPants2StandardInfo.op2PantsModel" class="form-control-sm form-control">
+                               <form:options items="${orderCoForm.coOptionPants2StandardInfo.op2PantsModelMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="op2_pantsModelMsg"></div>
@@ -20,65 +20,71 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
                             <div class="col col-md-3">
-                                <form:select id="op2_tack" path="optionPants2StandardInfo.op2Tack" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPants2StandardInfo.op2TackMap}"/>
+                                <form:select id="op2_tack" path="coOptionPants2StandardInfo.op2Tack" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2TackMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_tackMsg"></div>
+                            <div class="col-12 col-md-6" align="right" id="op2_tack_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                     <form:radiobuttons id="op2_kneeBack_id" path="optionPants2StandardInfo.op2KneeBack" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2KneeBackMap}"/>
+                                     <form:radiobuttons id="op2_kneeBack_id" path="coOptionPants2StandardInfo.op2KneeBack" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="op2_kneeBack_Msg">
                             </div>
                         </div>
                         <div class="row form-group" id="op2_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_kneeBackMate_id" path="optionPants2StandardInfo.op2KneeBackMate" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2KneeBackMateMap}"/>
+                                    <form:radiobuttons id="op2_kneeBackMate_id" path="coOptionPants2StandardInfo.op2KneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMateMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="op2_kneeBackMate_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_frontSpec_id" path="optionPants2StandardInfo.op2FrontSpec" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2FrontSpecMap}"/>
+                                    <form:radiobuttons id="op2_frontSpec_id" path="coOptionPants2StandardInfo.op2FrontSpec" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2FrontSpecMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right" id="op2_frontSpec_Msg">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_pancherina_id" path="optionPants2StandardInfo.op2Pancherina" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2PancherinaMap}"/>
+                                    <form:radiobuttons id="op2_pancherina_id" path="coOptionPants2StandardInfo.op2Pancherina" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2PancherinaMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="op2_pancherina_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_adjuster_id" path="optionPants2StandardInfo.op2Adjuster" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2AdjusterMap}"/>
+                                    <form:radiobuttons id="op2_adjuster_id" path="coOptionPants2StandardInfo.op2Adjuster" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2AdjusterMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_adjusterMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_adjuster_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_beltLoop_id" path="optionPants2StandardInfo.op2BeltLoop" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2BeltLoopMap}"/>
+                                    <form:radiobuttons id="op2_beltLoop_id" path="coOptionPants2StandardInfo.op2BeltLoop" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopMap}"/>
                                 </div>
                                 <div class="offset-md-1" id="op2_beltLoopPlace">
                                     <div>
@@ -88,128 +94,131 @@
                                         </div>
                                     </div>
                                     <%-- <div class="form-check-inline form-check">
-                                        <form:checkboxes id="op2_beltLoopPlace_id" items="${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap }" path="optionPants2StandardInfo.op2BeltLoopPlace" class="form-check-input"/>
+                                        <form:checkboxes id="op2_beltLoopPlace_id" items="${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlaceMap }" path="coOptionPants2StandardInfo.op2BeltLoopPlace" class="form-check-input"/>
                                     </div> --%>
-                                     <c:forEach var="op2BeltLoopPlaceMap" items="${orderForm.optionPants2StandardInfo.op2BeltLoopPlaceMap }" varStatus="row">
+                                     <c:forEach var="op2BeltLoopPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlaceMap }" varStatus="row">
                                 		<div class="form-check-inline form-check" id="op2_beltLoopPlace_id1${row.count}">
-                                			<input type="checkbox" id="op2_beltLoopPlace_id${row.count}" name="optionPants2StandardInfo.op2BeltLoopPlace${row.count}" value="${op2BeltLoopPlaceMap.key}" class="form-check-input">${op2BeltLoopPlaceMap.value}
+                                			<input type="checkbox" id="op2_beltLoopPlace_id${row.count}" name="coOptionPants2StandardInfo.op2BeltLoopPlace${row.count}" value="${op2BeltLoopPlaceMap.key}" class="form-check-input">${op2BeltLoopPlaceMap.value}
                                 		</div>
                                 	</c:forEach>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_beltLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_beltLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_pinLoop_id" path="optionPants2StandardInfo.op2PinLoop" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2PinLoopMap}"/>
+                                    <form:radiobuttons id="op2_pinLoop_id" path="coOptionPants2StandardInfo.op2PinLoop" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2PinLoopMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_pinLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_pinLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_sidePkt_id" path="optionPants2StandardInfo.op2SidePkt" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2SidePktMap}"/>
+                                    <form:radiobuttons id="op2_sidePkt_id" path="coOptionPants2StandardInfo.op2SidePkt" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2SidePktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_sidePktMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_sidePkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_sinobiPkt_id" path="optionPants2StandardInfo.op2SinobiPkt" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2SinobiPktMap}"/>
+                                    <form:radiobuttons id="op2_sinobiPkt_id" path="coOptionPants2StandardInfo.op2SinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2SinobiPktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_sinobiPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_sinobiPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op2_coinPkt" class="form-control-sm form-control" path="optionPants2StandardInfo.op2CoinPkt">
-                                	<form:options items="${orderForm.optionPants2StandardInfo.op2CoinPktMap}"/>
+                                <form:select id="op2_coinPkt" class="form-control-sm form-control" path="coOptionPants2StandardInfo.op2CoinPkt">
+                                	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2CoinPktMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_coinPktMsg"></div>
+                            <div class="col-12 col-md-6"  align="right" id="op2_coinPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                   	<form:radiobuttons id="op2_flapCoinPkt_id" path="optionPants2StandardInfo.op2FlapCoinPkt" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2FlapCoinPktMap }"/>　
+                                   	<form:radiobuttons id="op2_flapCoinPkt_id" path="coOptionPants2StandardInfo.op2FlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2FlapCoinPktMap }"/>　
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_flapCoinPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_flapCoinPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_pisPktUf_id" path="optionPants2StandardInfo.op2PisPktUf" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2PisPktUfMap }"/>
+                                    <form:radiobuttons id="op2_pisPktUf_id" path="coOptionPants2StandardInfo.op2PisPktUf" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2PisPktUfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_pisPktUfMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_pisPktUf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_pisPktDf_id" path="optionPants2StandardInfo.op2PisPktDf" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2PisPktDfMap }"/>
+                                    <form:radiobuttons id="op2_pisPktDf_id" path="coOptionPants2StandardInfo.op2PisPktDf" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2PisPktDfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_pisPktDfMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_pisPktDf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_vCut_id" path="optionPants2StandardInfo.op2VCut" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2VCutMap }"/>
+                                    <form:radiobuttons id="op2_vCut_id" path="coOptionPants2StandardInfo.op2VCut" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2VCutMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op2_vCutMsg"></div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_vCut_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op2_hemUp" path="optionPants2StandardInfo.op2HemUp" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPants2StandardInfo.op2HemUpMap }"/>
+                                <form:select id="op2_hemUp" path="coOptionPants2StandardInfo.op2HemUp" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2HemUpMap }"/>
                                 </form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right"  id="op2_hemUp_Msg"></div>
                         </div>
                         <div class="row form-group"  id="op2_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                                <form:select id="op2_doubleWide" path="optionPants2StandardInfo.op2DoubleWide" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opDoubleWideMap }"/>
+                                <form:select id="op2_doubleWide" path="coOptionPants2StandardInfo.op2DoubleWide" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opDoubleWideMap }"/>
                                 </form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right"  id="op2_doubleWide_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_stitch"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_stitch_id" path="optionPants2StandardInfo.op2Stitch" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2StitchMap }"/>
+                                    <form:radiobuttons id="op2_stitch_id" path="coOptionPants2StandardInfo.op2Stitch" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2StitchMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_stitch_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                  <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_stitchModify_id" path="optionPants2StandardInfo.op2StitchModify" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2StitchModifyMap }"/>
+                                    <form:radiobuttons id="op2_stitchModify_id" path="coOptionPants2StandardInfo.op2StitchModify" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyMap }"/>
                                 </div>
                                 <div id="op2_stitchModifyPlace">
                                 <div class="offset-md-1">
@@ -220,22 +229,23 @@
                                 </div>
                                 <div class="offset-md-1">
                                <%--  <div class="form-check-inline form-check">
-                                    <form:checkboxes id="op2_stitchModifyPlace_id" items="${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap }" path="optionPants2StandardInfo.op2StitchModifyPlace" class="form-check-input"/>
+                                    <form:checkboxes id="op2_stitchModifyPlace_id" items="${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlaceMap }" path="coOptionPants2StandardInfo.op2StitchModifyPlace" class="form-check-input"/>
                                 </div> --%>
-                                <c:forEach var="op2StitchModifyPlaceMap" items="${orderForm.optionPants2StandardInfo.op2StitchModifyPlaceMap }" varStatus="row">
+                                <c:forEach var="op2StitchModifyPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="op2_stitchModifyPlace_id${row.count}" name="optionPants2StandardInfo.op2StitchModifyPlace${row.count}" value="${op2StitchModifyPlaceMap.key}" class="form-check-input">${op2StitchModifyPlaceMap.value}
+                                		<input type="checkbox" id="op2_stitchModifyPlace_id${row.count}" name="coOptionPants2StandardInfo.op2StitchModifyPlace${row.count}" value="${op2StitchModifyPlaceMap.key}" class="form-check-input">${op2StitchModifyPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_stitchModify_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_dStitch_id" path="optionPants2StandardInfo.op2DStitch" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2DStitchMap }"/>
+                                    <form:radiobuttons id="op2_dStitch_id" path="coOptionPants2StandardInfo.op2DStitch" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2DStitchMap }"/>
                                 </div>
                                 <div id="op2_dStitch_yes_area">
                                 <div class="offset-md-1">
@@ -246,49 +256,50 @@
                                 </div>
                                 <div class="offset-md-1" id="op2_dStitchPlace">
                                 <%-- <div class="form-check-inline form-check">
-                                    <form:checkboxes id="op2_dStitchPlace_id" items="${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap }" path="optionPants2StandardInfo.op2DStitchPlace" class="form-check-input"/>
+                                    <form:checkboxes id="op2_dStitchPlace_id" items="${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlaceMap }" path="coOptionPants2StandardInfo.op2DStitchPlace" class="form-check-input"/>
                                 </div> --%>
-                                <c:forEach var="op2DStitchPlaceMap" items="${orderForm.optionPants2StandardInfo.op2DStitchPlaceMap }" varStatus="row">
+                                <c:forEach var="op2DStitchPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="op2_dStitchPlace_id${row.count}" name="optionPants2StandardInfo.op2DStitchPlace${row.count}" value="${op2DStitchPlaceMap.key}" class="form-check-input">${op2DStitchPlaceMap.value}                               		
+                                		<input type="checkbox" id="op2_dStitchPlace_id${row.count}" name="coOptionPants2StandardInfo.op2DStitchPlace${row.count}" value="${op2DStitchPlaceMap.key}" class="form-check-input">${op2DStitchPlaceMap.value}                               		
                                 	</div>
                                 </c:forEach>
                                 </div>                             
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_dStitch_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_amfColor_id" path="optionPants2StandardInfo.op2AmfColor" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2AmfColorMap }"/>
+                                    <form:radiobuttons id="op2_amfColor_id" path="coOptionPants2StandardInfo.op2AmfColor" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2AmfColorMap }"/>
                                 </div>
                                 <div id="op2_amfColor_div" style="display:none;">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op2_amfColorPlaceAll" path="optionPants2StandardInfo.op2AmfColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2StandardInfo.op2AmfColorPlaceAllMap}"/>
+                                    <form:select id="op2_amfColorPlaceAll" path="coOptionPants2StandardInfo.op2AmfColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op2_amfColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_op2_amfColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="op2AmfColorPlaceMap" items="${orderForm.optionPants2StandardInfo.op2AmfColorPlaceMap }" varStatus="row">
+                                <c:forEach var="op2AmfColorPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op2_amfColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op2_amfColorPlace_${row.count}" name="optionPants2StandardInfo.op2AmfColorPlace${row.count}" value="${op2AmfColorPlaceMap.key }" class="form-check-input">${op2AmfColorPlaceMap.value }
+                                        <input type="checkbox" id="op2_amfColorPlace_${row.count}" name="coOptionPants2StandardInfo.op2AmfColorPlace${row.count}" value="${op2AmfColorPlaceMap.key }" class="form-check-input">${op2AmfColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="op2_amfColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="op2AmfColorsMap" items="${orderForm.optionPants2StandardInfo.op2AmfColorsMap}">
+                                		<c:forEach var="op2AmfColorsMap" items="${orderCoForm.coOptionPants2StandardInfo.op2AmfColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op2_amfColor" class="form-check-label ">
-                                			    <input type="radio" id="op2_amfColor_${op2AmfColorsMap.key}" name="optionPants2StandardInfo.op2AmfColor${row.count}" value="${op2AmfColorsMap.key}" class="form-check-input">${op2AmfColorsMap.value}
+                                			    <input type="radio" id="op2_amfColor_${op2AmfColorsMap.key}" name="coOptionPants2StandardInfo.op2AmfColor${row.count}" value="${op2AmfColorsMap.key}" class="form-check-input">${op2AmfColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -296,39 +307,40 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_amfColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_bhColor_id" path="optionPants2StandardInfo.op2BhColor" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2BhColorMap }"/>
+                                    <form:radiobuttons id="op2_bhColor_id" path="coOptionPants2StandardInfo.op2BhColor" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2BhColorMap }"/>
                                 </div>
                                 <div id="op2_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op2_bhColorPlaceAll" path="optionPants2StandardInfo.op2BhColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2StandardInfo.op2BhColorPlaceAllMap}"/>
+                                    <form:select id="op2_bhColorPlaceAll" path="coOptionPants2StandardInfo.op2BhColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op2_bhColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_op2_bhColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="op2BhColorPlaceMap" items="${orderForm.optionPants2StandardInfo.op2BhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="op2BhColorPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op2_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op2_bhColorPlace_${row.count}" name="optionPants2StandardInfo.op2BhColorPlace${row.count}" value="${op2BhColorPlaceMap.key }" class="form-check-input">${op2BhColorPlaceMap.value }                                      
+                                        <input type="checkbox" id="op2_bhColorPlace_${row.count}" name="coOptionPants2StandardInfo.op2BhColorPlace${row.count}" value="${op2BhColorPlaceMap.key }" class="form-check-input">${op2BhColorPlaceMap.value }                                      
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="op2_bhColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="op2BhColorsMap" items="${orderForm.optionPants2StandardInfo.op2BhColorsMap}">
+                                		<c:forEach var="op2BhColorsMap" items="${orderCoForm.coOptionPants2StandardInfo.op2BhColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op2_bhColor" class="form-check-label ">
-                                			    <input type="radio" id="op2_bhColor_${op2BhColorsMap.key}" name="optionPants2StandardInfo.op2BhColor${row.count}" value="${op2BhColorsMap.key}" class="form-check-input">${op2BhColorsMap.value}                               			                                    			  
+                                			    <input type="radio" id="op2_bhColor_${op2BhColorsMap.key}" name="coOptionPants2StandardInfo.op2BhColor${row.count}" value="${op2BhColorsMap.key}" class="form-check-input">${op2BhColorsMap.value}                               			                                    			  
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -336,39 +348,40 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_bhColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_byColor_id" path="optionPants2StandardInfo.op2ByColor" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2ByColorMap }"/>
+                                    <form:radiobuttons id="op2_byColor_id" path="coOptionPants2StandardInfo.op2ByColor" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2ByColorMap }"/>
                                 </div>
                                 <div id="op2_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op2_byColorPlaceAll" path="optionPants2StandardInfo.op2ByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2StandardInfo.op2ByColorPlaceAllMap}"/>
+                                    <form:select id="op2_byColorPlaceAll" path="coOptionPants2StandardInfo.op2ByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op2_byColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_op2_byColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="op2ByColorPlaceMap" items="${orderForm.optionPants2StandardInfo.op2ByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="op2ByColorPlaceMap" items="${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op2_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op2_byColorPlace_${row.count}" name="optionPants2StandardInfo.op2ByColorPlace${row.count}" value="${op2ByColorPlaceMap.key }" class="form-check-input">${op2ByColorPlaceMap.value }
+                                        <input type="checkbox" id="op2_byColorPlace_${row.count}" name="coOptionPants2StandardInfo.op2ByColorPlace${row.count}" value="${op2ByColorPlaceMap.key }" class="form-check-input">${op2ByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>                   	
                                 	<div class="offset-md-2" id="op2_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="op2ByColorsMap" items="${orderForm.optionPants2StandardInfo.op2ByColorPlaceAllMap}">
+                                		<c:forEach var="op2ByColorsMap" items="${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op2_byColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="op2_byColor_${op2ByColorsMap.key}" name="optionPants2StandardInfo.op2ByColor${row.count}" value="${op2ByColorsMap.key}" class="form-check-input">${op2ByColorsMap.value}                                			  
+                                			    <input type="radio" id="op2_byColor_${op2ByColorsMap.key}" name="coOptionPants2StandardInfo.op2ByColor${row.count}" value="${op2ByColorsMap.key}" class="form-check-input">${op2ByColorsMap.value}                                			  
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -376,54 +389,60 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_byColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op2_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col col-md-3">
-                                <form:select id="op2_btnMate" class="form-control-sm form-control" path="optionPants2StandardInfo.op2Button">
-                                	<form:options items="${orderForm.optionPants2StandardInfo.op2ButtonMap }"/>
+                            <div class="col-12 col-md-3">
+                                <form:select id="op2_btnMate" class="form-control-sm form-control" path="coOptionPants2StandardInfo.op2Button">
+                                	<form:options items="${orderCoForm.coOptionPants2StandardInfo.op2ButtonMap }"/>
                                 </form:select>
                             </div>
-                            <div class="col col-md-4">
+                            <div class="col-12 col-md-3">
                                <!--  <select name="op2_btnMateStkNo" id="op2_btnMateStkNo" class="form-control-sm form-control">
                                 </select> -->
-                                <select name="optionPants2StandardInfo.op2BtnMateStkNo" id="op2_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionPants2StandardInfo.op2BtnMateStkNo" id="op2_btnMateStkNo" class="form-control-sm form-control">
                                 </select>                          
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_btnMate_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_suspenderBtn_id" path="optionPants2StandardInfo.op2SuspenderBtn" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2SuspenderBtnMap }"/>
+                                    <form:radiobuttons id="op2_suspenderBtn_id" path="coOptionPants2StandardInfo.op2SuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2SuspenderBtnMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_suspenderBtn_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                  <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_thick_id" path="optionPants2StandardInfo.op2Thick" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2ThickMap }"/>
+                                    <form:radiobuttons id="op2_thick_id" path="coOptionPants2StandardInfo.op2Thick" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2ThickMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_thick_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_eight_id" path="optionPants2StandardInfo.op2Eight" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2EightMap }"/>
+                                    <form:radiobuttons id="op2_eight_id" path="coOptionPants2StandardInfo.op2Eight" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2EightMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_eight_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op2_shapeMemory_id" path="optionPants2StandardInfo.op2ShapeMemory" class="form-check-input" items="${orderForm.optionPants2StandardInfo.op2ShapeMemoryMap }"/>
+                                    <form:radiobuttons id="op2_shapeMemory_id" path="coOptionPants2StandardInfo.op2ShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPants2StandardInfo.op2ShapeMemoryMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right"  id="op2_shapeMemory_Msg"></div>
                         </div>
                     </div>
                 </div>
@@ -443,74 +462,76 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp2_pantsModel" path="optionPants2TuxedoInfo.tp2PantsModel" class="form-control-sm form-control">
-                                <form:options items="${orderForm.optionPants2TuxedoInfo.tp2PantsModelMap}"/>
+                            	<form:select id="tp2_pantsModel" path="coOptionPants2TuxedoInfo.tp2PantsModel" class="form-control-sm form-control">
+                                <form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2PantsModelMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_pantsModelMsg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
-                            <div class="col col-md-3">
-                            	<form:select id="tp2_tack" path="optionPants2TuxedoInfo.tp2Tack" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2TackMap}"/>
+                            <div class="col-12 col-md-3">
+                            	<form:select id="tp2_tack" path="coOptionPants2TuxedoInfo.tp2Tack" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2TackMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_tackMsg"></div>
+                            <div class="col-12 col-md-6" align="right" id="tp2_tack_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                     <form:radiobuttons id="tp2_kneeBack_id" path="optionPants2TuxedoInfo.tp2KneeBack" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2KneeBackMap}"/>
+                                     <form:radiobuttons id="tp2_kneeBack_id" path="coOptionPants2TuxedoInfo.tp2KneeBack" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMap}"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_kneeBack_Msg"></div>
                         </div>
                         <div class="row form-group" id="tp2_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_kneeBackMate_id" path="optionPants2TuxedoInfo.tp2KneeBackMate" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2KneeBackMateMap}"/>
+                                    <form:radiobuttons id="tp2_kneeBackMate_id" path="coOptionPants2TuxedoInfo.tp2KneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMateMap}"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_kneeBackMate_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_frontSpec_id" path="optionPants2TuxedoInfo.tp2FrontSpec" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2FrontSpecMap}"/>
+                                    <form:radiobuttons id="tp2_frontSpec_id" path="coOptionPants2TuxedoInfo.tp2FrontSpec" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2FrontSpecMap}"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_frontSpec_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_pancherina_id" path="optionPants2TuxedoInfo.tp2Pancherina" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2PancherinaMap}"/>
+                                    <form:radiobuttons id="tp2_pancherina_id" path="coOptionPants2TuxedoInfo.tp2Pancherina" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2PancherinaMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_pancherina_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_adjuster_id" path="optionPants2TuxedoInfo.tp2Adjuster" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2AdjusterMap}"/>
+                                    <form:radiobuttons id="tp2_adjuster_id" path="coOptionPants2TuxedoInfo.tp2Adjuster" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2AdjusterMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_adjusterMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_adjuster_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_beltLoop_id" path="optionPants2TuxedoInfo.tp2BeltLoop" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2BeltLoopMap}"/>
+                                    <form:radiobuttons id="tp2_beltLoop_id" path="coOptionPants2TuxedoInfo.tp2BeltLoop" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopMap}"/>
                                 </div>
                                 <div class="offset-md-1" id="tp2_beltLoopPlace">
                                     <div>
@@ -520,153 +541,156 @@
                                         </div>
                                     </div>
                                     <%-- <div class="form-check-inline form-check">
-                                    	<form:checkboxes id="tp2_beltLoopPlace_id" items="${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlaceMap }" path="optionPants2TuxedoInfo.tp2BeltLoopPlace" class="form-check-input"/>
+                                    	<form:checkboxes id="tp2_beltLoopPlace_id" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlaceMap }" path="coOptionPants2TuxedoInfo.tp2BeltLoopPlace" class="form-check-input"/>
                                     </div> --%>
-                                    <c:forEach var="tp2BeltLoopPlaceMap" items="${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlaceMap }" varStatus="row">
-                                	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="tp2_beltLoopPlace_id${row.count}" name="optionPants2TuxedoInfo.tp2BeltLoopPlace${row.count}" value="${tp2BeltLoopPlaceMap.key}" class="form-check-input">${tp2BeltLoopPlaceMap.value}
+                                    <c:forEach var="tp2BeltLoopPlaceMap" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check" id="tp2_beltLoopPlace_id1${row.count}">
+                                		<input type="checkbox" id="tp2_beltLoopPlace_id${row.count}" name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace${row.count}" value="${tp2BeltLoopPlaceMap.key}" class="form-check-input">${tp2BeltLoopPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_beltLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_beltLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_pinLoop_id" path="optionPants2TuxedoInfo.tp2PinLoop" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2PinLoopMap}"/>
+                                    <form:radiobuttons id="tp2_pinLoop_id" path="coOptionPants2TuxedoInfo.tp2PinLoop" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2PinLoopMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_pinLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_pinLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_sidePkt_id" path="optionPants2TuxedoInfo.tp2SidePkt" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2SidePktMap}"/>
+                                    <form:radiobuttons id="tp2_sidePkt_id" path="coOptionPants2TuxedoInfo.tp2SidePkt" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2SidePktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_sidePktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_sidePkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_sinobiPkt_id" path="optionPants2TuxedoInfo.tp2SinobiPkt" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2SinobiPktMap}"/>
+                                    <form:radiobuttons id="tp2_sinobiPkt_id" path="coOptionPants2TuxedoInfo.tp2SinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2SinobiPktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_sinobiPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_sinobiPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp2_coinPkt_id" class="form-control-sm form-control" path="optionPants2TuxedoInfo.tp2CoinPkt">
-                                	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2CoinPktMap}"/>
+                            	<form:select id="tp2_coinPkt_id" class="form-control-sm form-control" path="coOptionPants2TuxedoInfo.tp2CoinPkt">
+                                	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2CoinPktMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_coinPktMsg"></div>
+                            <div class="col-12 col-md-6" align="right" id="tp2_coinPkt_id_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                            		<div class="form-check-inline form-check">
-                                   	<form:radiobuttons id="tp2_flapCoinPkt_id" path="optionPants2TuxedoInfo.tp2FlapCoinPkt" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2FlapCoinPktMap }"/>　
+                                   	<form:radiobuttons id="tp2_flapCoinPkt_id" path="coOptionPants2TuxedoInfo.tp2FlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2FlapCoinPktMap }"/>　
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_flapCoinPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_flapCoinPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-7">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_pisPktUf_id" path="optionPants2TuxedoInfo.tp2PisPktUf" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2PisPktUfMap }"/>
+                                    <form:radiobuttons id="tp2_pisPktUf_id" path="coOptionPants2TuxedoInfo.tp2PisPktUf" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktUfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_pisPktUfMsg"></div>
+                            <div class="col-12 col-md-2" align="right" id="tp2_pisPktUf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-7">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_pisPktDf_id" path="optionPants2TuxedoInfo.tp2PisPktDf" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2PisPktDfMap }"/>
+                                    <form:radiobuttons id="tp2_pisPktDf_id" path="coOptionPants2TuxedoInfo.tp2PisPktDf" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktDfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_pisPktDfMsg"></div>
+                            <div class="col-12 col-md-2" align="right" id="tp2_pisPktDf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_vCut_id" path="optionPants2TuxedoInfo.tp2VCut" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2VCutMap }"/>
+                                    <form:radiobuttons id="tp2_vCut_id" path="coOptionPants2TuxedoInfo.tp2VCut" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2VCutMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp2_vCutMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_vCut_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp2_hemUp" path="optionPants2TuxedoInfo.tp2HemUp" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2HemUpMap }"/>
+                            	<form:select id="tp2_hemUp" path="coOptionPants2TuxedoInfo.tp2HemUp" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2HemUpMap }"/>
                                 </form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right" id="tp2_hemUp_Msg"></div>
                         </div>
                         <div class="row form-group"  id="tp2_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="tp2_doubleWide" path="optionPants2TuxedoInfo.tp2DoubleWide" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2DoubleWideMap }"/>
+                            	<form:select id="tp2_doubleWide" path="coOptionPants2TuxedoInfo.tp2DoubleWide" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2DoubleWideMap }"/>
                                 </form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right" id="tp2_doubleWide_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_stitch_id" path="optionPants2TuxedoInfo.tp2Stitch" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2StitchMap }"/>
+                                    <form:radiobuttons id="tp2_stitch_id" path="coOptionPants2TuxedoInfo.tp2Stitch" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2StitchMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_stitch_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_bhColor_id" path="optionPants2TuxedoInfo.tp2BhColor" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2BhColorMap }"/>
+                                    <form:radiobuttons id="tp2_bhColor_id" path="coOptionPants2TuxedoInfo.tp2BhColor" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorMap }"/>
                                 </div>
                                 <div id="tp2_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="tp2_bhColorPlaceAll" path="optionPants2TuxedoInfo.tp2BhColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2BhColorPlaceAllMap}"/>
+                                    <form:select id="tp2_bhColorPlaceAll" path="coOptionPants2TuxedoInfo.tp2BhColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tp2_bhColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_tp2_bhColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="tp2BhColorPlaceMap" items="${orderForm.optionPants2TuxedoInfo.tp2BhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="tp2BhColorPlaceMap" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="tp2_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="tp2_bhColorPlace_${row.count}" name="optionPants2TuxedoInfo.tp2BhColorPlace${row.count}" value="${tp2BhColorPlaceMap.key }" class="form-check-input">${tp2BhColorPlaceMap.value }
+                                        <input type="checkbox" id="tp2_bhColorPlace_${row.count}" name="coOptionPants2TuxedoInfo.tp2BhColorPlace${row.count}" value="${tp2BhColorPlaceMap.key }" class="form-check-input">${tp2BhColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>                        
                                 	<div class="offset-md-2" id="tp2_bhColorPlace_${row.count}_div"  style="display:none">
-                                		<c:forEach var="tp2BhColorMap" items="${orderForm.optionPants2TuxedoInfo.tp2BhColorPlaceAllMap}">
+                                		<c:forEach var="tp2BhColorMap" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="tp2_bhColor" class="form-check-label ">
-                                			    <input type="radio" id="tp2_bhColor_${tp2BhColorMap.key}" name="optionPants2TuxedoInfo.tp2BhColor${row.count}" value="${tp2BhColorMap.key}" class="form-check-input">${tp2BhColorMap.value}
+                                			    <input type="radio" id="tp2_bhColor_${tp2BhColorMap.key}" name="coOptionPants2TuxedoInfo.tp2BhColor${row.count}" value="${tp2BhColorMap.key}" class="form-check-input">${tp2BhColorMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -674,39 +698,40 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_bhColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                	<form:radiobuttons id="tp2_byColor_id" path="optionPants2TuxedoInfo.tp2ByColor" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2ByColorMap }"/>
+                                	<form:radiobuttons id="tp2_byColor_id" path="coOptionPants2TuxedoInfo.tp2ByColor" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorMap }"/>
                                 </div>
                                 <div id="tp2_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="tp2_byColorPlaceAll" path="optionPants2TuxedoInfo.tp2ByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2ByColorPlaceAllMap}"/>
+                                    <form:select id="tp2_byColorPlaceAll" path="coOptionPants2TuxedoInfo.tp2ByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tp2_byColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_tp2_byColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="tp2ByColorPlaceMap" items="${orderForm.optionPants2TuxedoInfo.tp2ByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="tp2ByColorPlaceMap" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="tp2_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="tp2_byColorPlace_${row.count}" name="optionPants2TuxedoInfo.tp2ByColorPlace${row.count}" value="${tp2ByColorPlaceMap.key }" class="form-check-input">${tp2ByColorPlaceMap.value }
+                                        <input type="checkbox" id="tp2_byColorPlace_${row.count}" name="coOptionPants2TuxedoInfo.tp2ByColorPlace${row.count}" value="${tp2ByColorPlaceMap.key }" class="form-check-input">${tp2ByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="tp2_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="tp2ByColorMap" items="${orderForm.optionPants2TuxedoInfo.tp2ByColorPlaceAllMap}">
+                                		<c:forEach var="tp2ByColorMap" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="tp2_byColor" class="form-check-label ">
-                                			    <input type="radio" id="tp2_byColor_${tp2ByColorMap.key}" name="optionPants2TuxedoInfo.tp2ByColor${row.count}" value="${tp2ByColorMap.key}" class="form-check-input">${tp2ByColorMap.value}
+                                			    <input type="radio" id="tp2_byColor_${tp2ByColorMap.key}" name="coOptionPants2TuxedoInfo.tp2ByColor${row.count}" value="${tp2ByColorMap.key}" class="form-check-input">${tp2ByColorMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -714,55 +739,61 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_byColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp2_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col col-md-3">
-                            	<form:select id="tp2_btnMate" class="form-control-sm form-control" path="optionPants2TuxedoInfo.tp2Button">
-                                	<form:options items="${orderForm.optionPants2TuxedoInfo.tp2ButtonMap }"/>
+                            <div class="col-12 col-md-3">
+                            	<form:select id="tp2_btnMate" class="form-control-sm form-control" path="coOptionPants2TuxedoInfo.tp2Button">
+                                	<form:options items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ButtonMap }"/>
                                 </form:select>
                             </div>
-                            <div class="col col-md-4">
-                                <select name="optionPants2TuxedoInfo.tp2BtnMateStkNo" id="tp2_btnMateStkNo" class="form-control-sm form-control">
+                            <div class="col-12 col-md-3">
+                                <select name="coOptionPants2TuxedoInfo.tp2BtnMateStkNo" id="tp2_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
-                            <div class="col col-md-2">
+                            <div class="col-12 col-md-2">
                                 <button type="button" class="btn btn-outline-info btn-sm" id="tp2_sameJacketBtn">JKと同じ</button>
                             </div>
+                            <div class="col-12 col-md-1" align="right" id="tp2_btnMate_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_suspenderBtn_id" path="optionPants2TuxedoInfo.tp2SuspenderBtn" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2SuspenderBtnMap }"/>
+                                    <form:radiobuttons id="tp2_suspenderBtn_id" path="coOptionPants2TuxedoInfo.tp2SuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2SuspenderBtnMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_suspenderBtn_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_thick_id" path="optionPants2TuxedoInfo.tp2Thick" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2ThickMap }"/>
+                                    <form:radiobuttons id="tp2_thick_id" path="coOptionPants2TuxedoInfo.tp2Thick" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ThickMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_thick_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_eight_id" path="optionPants2TuxedoInfo.tp2Eight" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2EightMap }"/>
+                                    <form:radiobuttons id="tp2_eight_id" path="coOptionPants2TuxedoInfo.tp2Eight" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2EightMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_eight_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_shapeMemory_id" path="optionPants2TuxedoInfo.tp2ShapeMemory" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2ShapeMemoryMap }"/>
+                                    <form:radiobuttons id="tp2_shapeMemory_id" path="coOptionPants2TuxedoInfo.tp2ShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2ShapeMemoryMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_shapeMemory_Msg"></div>
                         </div>
 <!--
                         <div class="row form-group">
@@ -781,20 +812,22 @@
 -->
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">側章</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_sideStripe_id" path="optionPants2TuxedoInfo.tp2SideStripe" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2SideStripeMap }"/>
+                                    <form:radiobuttons id="tp2_sideStripe_id" path="coOptionPants2TuxedoInfo.tp2SideStripe" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2SideStripeMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_sideStripe_Msg"></div>
                         </div>
                         <div id="tp2_sideStripe_yes_area">
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">側章幅</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp2_sideStripeWidth_id" path="optionPants2TuxedoInfo.tp2SideStripeWidth" class="form-check-input" items="${orderForm.optionPants2TuxedoInfo.tp2SideStripeWidthMap }"/>
+                                    <form:radiobuttons id="tp2_sideStripeWidth_id" path="coOptionPants2TuxedoInfo.tp2SideStripeWidth" class="form-check-input" items="${orderCoForm.coOptionPants2TuxedoInfo.tp2SideStripeWidthMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="tp2_sideStripeWidth_Msg"></div>
                         </div>
                         </div>
                     </div>
@@ -815,74 +848,76 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_pantsModel" path="optionPants2WashableInfo.wp2PantsModel" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2PantsModelMap}"/>
+                            	<form:select id="wp2_pantsModel" path="coOptionPants2WashableInfo.wp2PantsModel" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2PantsModelMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_pantsModelMsg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_tack_id" path="optionPants2WashableInfo.wp2Tack" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2TackMap}"/>
+                            	<form:select id="wp2_tack_id" path="coOptionPants2WashableInfo.wp2Tack" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2TackMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_tackMsg"></div>
+                            <div class="col-12 col-md-6" align="right" id="wp2_tack_id_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_kneeBack_id" path="optionPants2WashableInfo.wp2KneeBack" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2KneeBackMap}"/>
+									<form:radiobuttons id="wp2_kneeBack_id" path="coOptionPants2WashableInfo.wp2KneeBack" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_kneeBack_Msg"></div>
                         </div>
                         <div class="row form-group" id="wp2_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_kneeBackMate_id" path="optionPants2WashableInfo.wp2KneeBackMate" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2KneeBackMateMap}"/>
+									<form:radiobuttons id="wp2_kneeBackMate_id" path="coOptionPants2WashableInfo.wp2KneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMateMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_kneeBackMate_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_frontSpec_id" path="optionPants2WashableInfo.wp2FrontSpec" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2FrontSpecMap}"/>
+									<form:radiobuttons id="wp2_frontSpec_id" path="coOptionPants2WashableInfo.wp2FrontSpec" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2FrontSpecMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_frontSpec_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_pancherina_id" path="optionPants2WashableInfo.wp2Pancherina" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2PancherinaMap}"/>
+									<form:radiobuttons id="wp2_pancherina_id" path="coOptionPants2WashableInfo.wp2Pancherina" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2PancherinaMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_pancherina_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_adjuster_id" path="optionPants2WashableInfo.wp2Adjuster" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2AdjusterMap}"/>
+									<form:radiobuttons id="wp2_adjuster_id" path="coOptionPants2WashableInfo.wp2Adjuster" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2AdjusterMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_adjusterMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_adjuster_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_beltLoop_id" path="optionPants2WashableInfo.wp2BeltLoop" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2BeltLoopMap}"/>
+									<form:radiobuttons id="wp2_beltLoop_id" path="coOptionPants2WashableInfo.wp2BeltLoop" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopMap}"/>
 								</div>
                                 <div class="offset-md-1" id="wp2_beltLoopPlace">
                                     <div>
@@ -892,127 +927,130 @@
                                         </div>
                                     </div>
                                     <%-- <div class="form-check-inline form-check">
-										<form:checkboxes id="wp2_beltLoopPlace_id" path="optionPants2WashableInfo.wp2BeltLoopPlace" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2BeltLoopPlaceMap}"/>
+										<form:checkboxes id="wp2_beltLoopPlace_id" path="coOptionPants2WashableInfo.wp2BeltLoopPlace" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlaceMap}"/>
 									</div> --%>
-									 <c:forEach var="wp2BeltLoopPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2BeltLoopPlaceMap }" varStatus="row">
-                                	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="wp2_beltLoopPlace_id${row.count}" name="optionPants2WashableInfo.wp2BeltLoopPlace${row.count}" value="${wp2BeltLoopPlaceMap.key}" class="form-check-input">${wp2BeltLoopPlaceMap.value}
+									 <c:forEach var="wp2BeltLoopPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check" id="wp2_beltLoopPlace_id1${row.count}">
+                                		<input type="checkbox" id="wp2_beltLoopPlace_id${row.count}" name="coOptionPants2WashableInfo.wp2BeltLoopPlace${row.count}" value="${wp2BeltLoopPlaceMap.key}" class="form-check-input">${wp2BeltLoopPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_beltLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_beltLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_pinLoop_id" path="optionPants2WashableInfo.wp2PinLoop" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2PinLoopMap}"/>
+									<form:radiobuttons id="wp2_pinLoop_id" path="coOptionPants2WashableInfo.wp2PinLoop" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2PinLoopMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_pinLoopMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_pinLoop_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_sidePkt_id" path="optionPants2WashableInfo.wp2SidePkt" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2SidePktMap}"/>
+									<form:radiobuttons id="wp2_sidePkt_id" path="coOptionPants2WashableInfo.wp2SidePkt" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2SidePktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_sidePktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_sidePkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_sinobiPkt_id" path="optionPants2WashableInfo.wp2SinobiPkt" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2SinobiPktMap}"/>
+									<form:radiobuttons id="wp2_sinobiPkt_id" path="coOptionPants2WashableInfo.wp2SinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2SinobiPktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_sinobiPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_sinobiPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_coinPkt_id" path="optionPants2WashableInfo.wp2CoinPkt" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2CoinPktMap}"/>
+                            	<form:select id="wp2_coinPkt_id" path="coOptionPants2WashableInfo.wp2CoinPkt" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2CoinPktMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_coinPktMsg"></div>
+                            <div class="col-12 col-md-6" align="right" id="wp2_coinPkt_id_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_flapCoinPkt_id" path="optionPants2WashableInfo.wp2FlapCoinPkt" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2FlapCoinPktMap}"/>
+									<form:radiobuttons id="wp2_flapCoinPkt_id" path="coOptionPants2WashableInfo.wp2FlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2FlapCoinPktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_flapCoinPktMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_flapCoinPkt_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_pisPktUf_id" path="optionPants2WashableInfo.wp2PisPktUf" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2PisPktUfMap}"/>
+									<form:radiobuttons id="wp2_pisPktUf_id" path="coOptionPants2WashableInfo.wp2PisPktUf" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2PisPktUfMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_pisPktUfMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_pisPktUf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_pisPktDf_id" path="optionPants2WashableInfo.wp2PisPktDf" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2PisPktDfMap}"/>
+									<form:radiobuttons id="wp2_pisPktDf_id" path="coOptionPants2WashableInfo.wp2PisPktDf" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2PisPktDfMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_pisPktDfMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_pisPktDf_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_vCut_id" path="optionPants2WashableInfo.wp2VCut" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2VCutMap}"/>
+									<form:radiobuttons id="wp2_vCut_id" path="coOptionPants2WashableInfo.wp2VCut" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2VCutMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp2_vCutMsg"></div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_vCut_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_hemUp_id" path="optionPants2WashableInfo.wp2HemUp" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2HemUpMap}"/>
+                            	<form:select id="wp2_hemUp" path="coOptionPants2WashableInfo.wp2HemUp" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2HemUpMap}"/>
 								</form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right" id="wp2_hemUp_Msg"></div>
                         </div>
                         <div class="row form-group"  id="wp2_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_doubleWide_id" path="optionPants2WashableInfo.wp2DoubleWide" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2DoubleWideMap}"/>
+                            	<form:select id="wp2_doubleWide" path="coOptionPants2WashableInfo.wp2DoubleWide" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2DoubleWideMap}"/>
 								</form:select>
                             </div>
+                            <div class="col-12 col-md-6" align="right" id="wp2_doubleWide_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_stitch_id" path="optionPants2WashableInfo.wp2Stitch" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2StitchMap}"/>
+									<form:radiobuttons id="wp2_stitch_id" path="coOptionPants2WashableInfo.wp2Stitch" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2StitchMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_stitch_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_stitchModify_id" path="optionPants2WashableInfo.wp2StitchModify" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2StitchModifyMap}"/>
+									<form:radiobuttons id="wp2_stitchModify_id" path="coOptionPants2WashableInfo.wp2StitchModify" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyMap}"/>
 								</div>
                                 <div id="wp2_stitchModify_yes_area">
                                 <div class="offset-md-1">
@@ -1023,22 +1061,23 @@
                                 </div>
                                 <div class="offset-md-1" id="wp2_stitchModifyPlace">
                                 <%-- <div class="form-check-inline form-check">
-									<form:checkboxes id="wp2_stitchModifyPlace_id" path="optionPants2WashableInfo.wp2StitchModifyPlace" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2StitchModifyPlaceMap}"/>
+									<form:checkboxes id="wp2_stitchModifyPlace_id" path="coOptionPants2WashableInfo.wp2StitchModifyPlace" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlaceMap}"/>
 								</div> --%>
-								 <c:forEach var="wp2StitchModifyPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2StitchModifyPlaceMap }" varStatus="row">
+								 <c:forEach var="wp2StitchModifyPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlaceMap }" varStatus="row">
                                 		<div class="form-check-inline form-check">
-                                			<input type="checkbox" id="wp2_stitchModifyPlace_id${row.count}" name="optionPants2WashableInfo.wp2StitchModifyPlace${row.count}" value="${wp2StitchModifyPlaceMap.key}" class="form-check-input">${wp2StitchModifyPlaceMap.value}
+                                			<input type="checkbox" id="wp2_stitchModifyPlace_id${row.count}" name="coOptionPants2WashableInfo.wp2StitchModifyPlace${row.count}" value="${wp2StitchModifyPlaceMap.key}" class="form-check-input">${wp2StitchModifyPlaceMap.value}
                                 		</div>
                                 	</c:forEach>
                                 </div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_stitchModify_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_dStitch_id" path="optionPants2WashableInfo.wp2DStitch" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2DStitchMap}"/>
+									<form:radiobuttons id="wp2_dStitch_id" path="coOptionPants2WashableInfo.wp2DStitch" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2DStitchMap}"/>
 								</div>
                                 <div id="wp2_dStitchModify_yes_area">
                                 <div class="offset-md-1">
@@ -1049,50 +1088,51 @@
                                 </div>
                                 <div class="offset-md-1" id="wp2_dStitchModifyPlace">
                                 <%-- <div class="form-check-inline form-check">
-									<form:checkboxes id="wp2_dStitchPlace_id" path="optionPants2WashableInfo.wp2DStitchPlace" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2DStitchPlaceMap}"/>
+									<form:checkboxes id="wp2_dStitchPlace_id" path="coOptionPants2WashableInfo.wp2DStitchPlace" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlaceMap}"/>
 								</div> --%>
-								<c:forEach var="wp2DStitchPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2DStitchPlaceMap }" varStatus="row">
+								<c:forEach var="wp2DStitchPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="wp2_dStitchModifyPlace_id${row.count}" name="optionPantsStandardInfo.wp2DStitchPlace${row.count}" value="${wp2DStitchPlaceMap.key}" class="form-check-input">${wp2DStitchPlaceMap.value}
+                                		<input type="checkbox" id="wp2_dStitchModifyPlace_id${row.count}" name="coOptionPants2WashableInfo.wp2DStitchPlace${row.count}" value="${wp2DStitchPlaceMap.key}" class="form-check-input">${wp2DStitchPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                                 </div>
                                 </div>
+                                <div class="col-12 col-md-3" align="right" id="wp2_dStitch_Msg"></div>
                             </div>
                         
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_amfColor_id" path="optionPants2WashableInfo.wp2AmfColor" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2AmfColorMap}"/>
+									<form:radiobuttons id="wp2_amfColor_id" path="coOptionPants2WashableInfo.wp2AmfColor" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorMap}"/>
 								</div>
                                 <div id="wp2_amfColor_div" style="display:none;">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="wp2_amfColorPlaceAll" path="optionPants2WashableInfo.wp2AmfColorPlaceAll" class="form-control-sm form-control">
-										<form:options items="${orderForm.optionPants2WashableInfo.wp2AmfColorPlaceAllMap}"/>
+                                    <form:select id="wp2_amfColorPlaceAll" path="coOptionPants2WashableInfo.wp2AmfColorPlaceAll" class="form-control-sm form-control">
+										<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlaceAllMap}"/>
 									</form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp2_amfColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp2_amfColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wp2AmfColorPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2AmfColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wp2AmfColorPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp2_amfColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp2_amfColorPlace_${row.count}" name="optionPants2WashableInfo.wp2AmfColorPlace${row.count}" value="${wp2AmfColorPlaceMap.key }" class="form-check-input">${wp2AmfColorPlaceMap.value }
+                                        <input type="checkbox" id="wp2_amfColorPlace_${row.count}" name="coOptionPants2WashableInfo.wp2AmfColorPlace${row.count}" value="${wp2AmfColorPlaceMap.key }" class="form-check-input">${wp2AmfColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>    	
                                  <div class="offset-md-2" id="wp2_amfColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="wp2AmfColorsMap" items="${orderForm.optionPants2WashableInfo.wp2AmfColorPlaceAllMap}">
+                                		<c:forEach var="wp2AmfColorsMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp2_amfColor" class="form-check-label ">
-                                			    <input type="radio" id="wp2_amfColor_${wp2AmfColorsMap.key}" name="optionPants2WashableInfo.wp2AmfColor${row.count}" value="${wp2AmfColorsMap.key}" class="form-check-input">${wp2AmfColorsMap.value}                    
+                                			    <input type="radio" id="wp2_amfColor_${wp2AmfColorsMap.key}" name="coOptionPants2WashableInfo.wp2AmfColor${row.count}" value="${wp2AmfColorsMap.key}" class="form-check-input">${wp2AmfColorsMap.value}                    
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1101,39 +1141,40 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_amfColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_bhColor_id" path="optionPants2WashableInfo.wp2BhColor" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2BhColorMap}"/>
+									<form:radiobuttons id="wp2_bhColor_id" path="coOptionPants2WashableInfo.wp2BhColor" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2BhColorMap}"/>
 								</div>
                                 <div id="wp2_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="wp2_bhColorPlaceAll" path="optionPants2WashableInfo.wp2BhColorPlaceAll" class="form-control-sm form-control">
-										<form:options items="${orderForm.optionPants2WashableInfo.wp2BhColorPlaceAllMap}"/>
+                                    <form:select id="wp2_bhColorPlaceAll" path="coOptionPants2WashableInfo.wp2BhColorPlaceAll" class="form-control-sm form-control">
+										<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlaceAllMap}"/>
 									</form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp2_bhColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp2_bhColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wp2BhColorPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2BhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wp2BhColorPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp2_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp2_bhColorPlace_${row.count}" name="optionPants2WashableInfo.wp2BhColorPlace${row.count}" value="${wp2BhColorPlaceMap.key }" class="form-check-input">${wp2BhColorPlaceMap.value }
+                                        <input type="checkbox" id="wp2_bhColorPlace_${row.count}" name="coOptionPants2WashableInfo.wp2BhColorPlace${row.count}" value="${wp2BhColorPlaceMap.key }" class="form-check-input">${wp2BhColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>                       
                                 	<div class="offset-md-2" id="wp2_bhColorPlace_${row.count}_div" style="display:none">                       
-                                		<c:forEach var="wp2BhColorMap" items="${orderForm.optionPants2WashableInfo.wp2BhColorPlaceAllMap}">
+                                		<c:forEach var="wp2BhColorMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp2_bhColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="wp2_bhColor_${wp2BhColorMap.key}" name="optionPants2WashableInfo.wp2BhColor${row.count}" value="${wp2BhColorMap.key}" class="form-check-input">${wp2BhColorMap.value}                                  			                      			   
+                                			    <input type="radio" id="wp2_bhColor_${wp2BhColorMap.key}" name="coOptionPants2WashableInfo.wp2BhColor${row.count}" value="${wp2BhColorMap.key}" class="form-check-input">${wp2BhColorMap.value}                                  			                      			   
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1141,39 +1182,40 @@
                                 </c:forEach>                
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_bhColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="wp2_byColor_id" path="optionPants2WashableInfo.wp2ByColor" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2ByColorMap }"/>
+                                    <form:radiobuttons id="wp2_byColor_id" path="coOptionPants2WashableInfo.wp2ByColor" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2ByColorMap }"/>
                                 </div>
                                 <div id="wp2_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="wp2_byColorPlaceAll" path="optionPants2WashableInfo.wp2ByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPants2WashableInfo.wp2ByColorPlaceAllMap}"/>
+                                    <form:select id="wp2_byColorPlaceAll" path="coOptionPants2WashableInfo.wp2ByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp2_byColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp2_byColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wp2ByColorPlaceMap" items="${orderForm.optionPants2WashableInfo.wp2ByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wp2ByColorPlaceMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp2_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp2_byColorPlace_${row.count}" name="optionPants2WashableInfo.wp2ByColorPlace${row.count}" value="${wp2ByColorPlaceMap.key }" class="form-check-input">${wp2ByColorPlaceMap.value }
+                                        <input type="checkbox" id="wp2_byColorPlace_${row.count}" name="coOptionPants2WashableInfo.wp2ByColorPlace${row.count}" value="${wp2ByColorPlaceMap.key }" class="form-check-input">${wp2ByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>                  
                                 	<div class="offset-md-2" id="wp2_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="wp2ByColorsMap" items="${orderForm.optionPants2WashableInfo.wp2ByColorPlaceAllMap}">
+                                		<c:forEach var="wp2ByColorsMap" items="${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlaceAllMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp2_byColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="wp2_byColor_${wp2ByColorsMap.key}" name="optionPants2WashableInfo.wp2ByColor${row.count}" value="${wp2ByColorsMap.key}" class="form-check-input">${wp2ByColorsMap.value}
+                                			    <input type="radio" id="wp2_byColor_${wp2ByColorsMap.key}" name="coOptionPants2WashableInfo.wp2ByColor${row.count}" value="${wp2ByColorsMap.key}" class="form-check-input">${wp2ByColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1181,56 +1223,62 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_byColor_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp2_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp2_btnMate" path="optionPants2WashableInfo.wp2Button" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPants2WashableInfo.wp2ButtonMap}"/>
+                            	<form:select id="wp2_btnMate" path="coOptionPants2WashableInfo.wp2Button" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPants2WashableInfo.wp2ButtonMap}"/>
 								</form:select>
                             </div>
-                            <div class="col col-md-4">                     
-                                <select  name="optionPants2WashableInfo.wp2BtnMateStkNo" id="wp2_btnMateStkNo" class="form-control-sm form-control">
+                            <div class="col col-md-3">                     
+                                <select  name="coOptionPants2WashableInfo.wp2BtnMateStkNo" id="wp2_btnMateStkNo" class="form-control-sm form-control">
                                 </select> 
                                  
                             </div>
                             <div class="col col-md-2">
                                 <button type="button" class="btn btn-outline-info btn-sm" id="wp2_sameJacketBtn">JKと同じ</button>
                             </div>
+                            <div class="col-12 col-md-1" align="right" id="wp2_btnMate_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_suspenderBtn_id" path="optionPants2WashableInfo.wp2SuspenderBtn" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2SuspenderBtnMap}"/>
+									<form:radiobuttons id="wp2_suspenderBtn_id" path="coOptionPants2WashableInfo.wp2SuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2SuspenderBtnMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_suspenderBtn_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_thick_id" path="optionPants2WashableInfo.wp2Thick" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2ThickMap}"/>
+									<form:radiobuttons id="wp2_thick_id" path="coOptionPants2WashableInfo.wp2Thick" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2ThickMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_thick_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_eight_id" path="optionPants2WashableInfo.wp2Eight" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2EightMap}"/>
+									<form:radiobuttons id="wp2_eight_id" path="coOptionPants2WashableInfo.wp2Eight" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2EightMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_eight_Msg"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_shapeMemory_id" path="optionPants2WashableInfo.wp2ShapeMemory" class="form-check-input" items="${orderForm.optionPants2WashableInfo.wp2ShapeMemoryMap}"/>
+									<form:radiobuttons id="wp2_shapeMemory_id" path="coOptionPants2WashableInfo.wp2ShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2ShapeMemoryMap}"/>
 								</div>
                             </div>
+                            <div class="col-12 col-md-3" align="right" id="wp2_shapeMemory_Msg"></div>
                         </div>
 <!--
                         <div class="row form-group">
@@ -1250,14 +1298,19 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" id="pants2Flag" name="pants2Flag" value="0"/>
+          <input type="hidden" id="pants2Flag" name="pants2Flag" value="0"/>
             <input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="0"/>
-            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderForm.jacketItemFlag }"/>
-			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderForm.giletItemFlag }"/>
-			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderForm.shirtItemFlag }"/>
-			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
-			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderForm.pantsItemFlag }"/>
-            <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="0" />
+            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
+			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
+			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderCoForm.shirtItemFlag }"/>
+			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
+			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderCoForm.pantsItemFlag }"/>
+            <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+            <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+            <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />	
 </form:form>
 <!-- 標準 PANTS PANTSモデル-->
 <div class="modal fade" id="infotext_op_pantsModel" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -3457,21 +3510,18 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
 jQuery(function() {
 
-	var pants2AdFlag="${orderForm.pants2AdFlag}";
+	var pants2AdFlag="${orderCoForm.pants2AdFlag}";
 	if(pants2AdFlag=="1"){
-		jQuery("#pants2AdFlag").val("${orderForm.pants2AdFlag}");
-		}
-	jQuery("#op2_pantsModel,#tp2_pantsModel,wp2_pantsModel").change(function(){
+	}else{
 		jQuery("#pants2AdFlag").val("0");
-	    }) 
-	
+	}
 	//getModelByItem();
     var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-var productCategory = "${orderForm.productCategory}";
+var productCategory = "${orderCoForm.productCategory}";
 	
 	mateInit();
 
@@ -3513,11 +3563,11 @@ var productCategory = "${orderForm.productCategory}";
 
 function setPantsModelDisable(productCategory){
 	var ptModel = null;
-	if(productCategory == "0"){
+	if(productCategory == "9000101"){
 		ptModel = document.getElementById("op2_pantsModel");
-	}else if(productCategory == "2"){
+	}else if(productCategory == "9000102"){
 		ptModel = document.getElementById("tp2_pantsModel");
-	}else if(productCategory == "1"){
+	}else if(productCategory == "9000103"){
 		ptModel = document.getElementById("wp2_pantsModel");
 	}
 	var allJkOption = ptModel.options;
@@ -3544,14 +3594,102 @@ if(wpPantsModel == '' || wpPantsModel == null){
 
 jQuery("#op2_pantsModel").change(function(){
 	jQuery("#pants2Flag").val('1');
+
+	var pants2Model = jQuery(this).val();
+	var productFabricNo = jQuery("#productFabricNo").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+
+	var code = itemCode + subItemCode + pants2Model;
+	$.ajax({
+		type:"get",
+		url:contextPath + "/orderCo/getOrderPriceForPants2Model",
+		data:{"code":code},
+		dataType:"json",
+		contentType:"application/json",
+		async:false,
+		success:function(result){
+			var allPriceMap = result.priceMap;
+         	for (var priceMapKey in allPriceMap) {
+            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+            	}else{
+              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+            	}
+         	}
+			jQuery("#optionPriceId").val(result.optionPrice);
+			jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+			getAllPrice(itemCode, result.optionPrice);
+		}
+	});
 })
 
 jQuery("#tp2_pantsModel").change(function(){
 	jQuery("#pants2Flag").val('1');
+
+	var pants2tModel = jQuery(this).val();
+	var productFabricNo = jQuery("#productFabricNo").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+
+	var code = itemCode + subItemCode + pants2tModel;
+	$.ajax({
+		type:"get",
+		url:contextPath + "/orderCo/getOrderPriceForPants2tModel",
+		data:{"code":code},
+		dataType:"json",
+		contentType:"application/json",
+		async:false,
+		success:function(result){
+			var allPriceMap = result.priceMap;
+         	for (var priceMapKey in allPriceMap) {
+            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+            	}else{
+              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+            	}
+         	}
+			jQuery("#optionPriceId").val(result.optionPrice);
+			jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+			getAllPrice(itemCode, result.optionPrice);
+		}
+	});
+	
 })
 
 jQuery("#wp2_pantsModel").change(function(){
 	jQuery("#pants2Flag").val('1');
+
+	var pants2tModel = jQuery(this).val();
+	var productFabricNo = jQuery("#productFabricNo").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+
+	var code = itemCode + subItemCode + pants2tModel;
+	$.ajax({
+		type:"get",
+		url:contextPath + "/orderCo/getOrderPriceForPants2wModel",
+		data:{"code":code},
+		dataType:"json",
+		contentType:"application/json",
+		async:false,
+		success:function(result){
+			var allPriceMap = result.priceMap;
+         	for (var priceMapKey in allPriceMap) {
+            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+            	}else{
+              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+            	}
+         	}
+			jQuery("#optionPriceId").val(result.optionPrice);
+			jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+			getAllPrice(itemCode, result.optionPrice);
+		}
+	});
 })
 
 var selectStandardIdList = {
@@ -3563,6 +3701,186 @@ var selectTuxedoIdList = {
 var selectWashableIdList = {
 		"wp2_btnMate":"00033"
 }
+//標準
+//プルダウンの変更処理
+jQuery('#op2_tack,#op2_coinPkt,#op2_hemUp,#op2_doubleWide,#op2_btnMate')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = jQuery("#op2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2Project",
+			data:{"code":code,"idValueName":idValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+	            jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+	            getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});	
+
+//標準
+//ラジオボタンの変更処理
+jQuery('input[id^="op2_kneeBack_id"],[id^="op2_kneeBackMate_id"],[id^="op2_frontSpec_id"],[id^="op2_pancherina_id"],[id^="op2_adjuster_id"],[id^="op2_beltLoop_id"],[id^="op2_pinLoop_id"],[id^="op2_sidePkt_id"],[id^="op2_sinobiPkt_id"],[id^="op2_coinPkt"],[id^="op2_flapCoinPkt_id"],[id^="op2_pisPktUf_id"],[id^="op2_pisPktDf_id"],[id^="op2_vCut_id"],[id^="op2_stitch_id"],[id^="op2_stitchModify_id"],[id^="op2_dStitch_id"],[id^="op2_amfColor_id"],[id^="op2_bhColor_id"],[id^="op2_byColor_id"],[id^="op2_suspenderBtn_id"],[id^="op2_thick_id"],[id^="op2_eight_id"],[id^="op2_shapeMemory_id"]')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = jQuery("#op2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	//IDの後の番号を削除します
+	var findIdPosition = idValueName.indexOf("_id");
+	var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2Project",
+			data:{"code":code,"idValueName":interceptedIdValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+				var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+				jQuery("#"+msgIdValueName).html(result.idValuePrice);
+				getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});
+
+//タキシード
+//プルダウンの変更処理
+jQuery('#tp2_tack,#tp2_coinPkt_id,#tp2_hemUp,#tp2_doubleWide,#tp2_btnMate')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = "01" //jQuery("#tp2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2tProject",
+			data:{"code":code,"idValueName":idValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+	            jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+	            getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});	
+
+//タキシード
+//ラジオボタンの変更処理
+jQuery('input[id^="tp2_kneeBack_id"],[id^="tp2_kneeBackMate_id"],[id^="tp2_frontSpec_id"],[id^="tp2_pancherina_id"],[id^="tp2_adjuster_id"],[id^="tp2_beltLoop_id"],[id^="tp2_pinLoop_id"],[id^="tp2_sidePkt_id"],[id^="tp2_sinobiPkt_id"],[id^="tp2_flapCoinPkt_id"],[id^="tp2_pisPktUf_id"],[id^="tp2_pisPktDf_id"],[id^="tp2_vCut_id"],[id^="tp2_stitch_id"],[id^="tp2_bhColor_id"],[id^="tp2_byColor_id"],[id^="tp2_suspenderBtn_id"],[id^="tp2_thick_id"],[id^="tp2_eight_id"],[id^="tp2_shapeMemory_id"],[id^="tp2_sideStripe_id"],[id^="tp2_sideStripeWidth_id"]')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = "01" //jQuery("#tp2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	//IDの後の番号を削除します
+	var findIdPosition = idValueName.indexOf("_id");
+	var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2tProject",
+			data:{"code":code,"idValueName":interceptedIdValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+				var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+				jQuery("#"+msgIdValueName).html(result.idValuePrice);
+				getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});
+
+
+//ウォッシャブル
+//プルダウンの変更処理
+jQuery('#wp2_tack_id,#wp2_coinPkt_id,#wp2_hemUp,#wp2_doubleWide,#wp2_btnMate')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = jQuery("#wp2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2wProject",
+			data:{"code":code,"idValueName":idValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+	            jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+	            getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});	
+
+//ウォッシャブル
+//ラジオボタンの変更処理
+jQuery('input[id^="wp2_kneeBack_id"],[id^="wp2_kneeBackMate_id"],[id^="wp2_frontSpec_id"],[id^="wp2_pancherina_id"],[id^="wp2_adjuster_id"],[id^="wp2_beltLoop_id"],[id^="wp2_pinLoop_id"],[id^="wp2_sidePkt_id"],[id^="wp2_sinobiPkt_id"],[id^="wp2_flapCoinPkt_id"],[id^="wp2_pisPktUf_id"],[id^="wp2_pisPktDf_id"],[id^="wp2_vCut_id"],[id^="wp2_stitch_id"],[id^="wp2_stitchModify_id"],[id^="wp2_dStitch_id"],[id^="wp2_amfColor_id"],[id^="wp2_bhColor_id"],[id^="wp2_byColor_id"],[id^="wp2_btnMate"],[id^="wp2_suspenderBtn_id"],[id^="wp2_thick_id"],[id^="wp2_eight_id"],[id^="wp2_shapeMemory_id"]')
+.change(function(){
+	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	
+	var shirtModel = jQuery("#wp2_pantsModel option:selected").val();
+	var itemCode = jQuery("#item").val();
+	var subItemCode = "07"
+	var idValueName = jQuery(this).attr("id");
+
+	//IDの後の番号を削除します
+	var findIdPosition = idValueName.indexOf("_id");
+	var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+	if(isNotEmpty(shirtModel)){
+		var code = itemCode + subItemCode + shirtModel;
+		jQuery.ajax({
+			type:"get",
+			url:contextPath + "/orderCo/getOrderPriceForPants2wProject",
+			data:{"code":code,"idValueName":interceptedIdValueName},
+			dataType:"json",
+			contentType:"application/json",
+			async:false,
+			success:function(result){
+				var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+				jQuery("#"+msgIdValueName).html(result.idValuePrice);
+				getAllPrice(subItemCode, result.optionPrice);
+			}
+		});
+	}
+});
 
 //--------------------------------------------
 //素材品番の初期化
@@ -3603,25 +3921,25 @@ function mateInit(){
 		subItemCode = "07";
 		itemCode = item;
 		
-		if(category=="0"){
+		if(category=="9000101"){
 			initPtStandard(itemCode,subItemCode,category);
 		}
-		else if(category=="2"){
+		else if(category=="9000102"){
 			initPtTuxedo(itemCode,subItemCode,category);
 		}
-		else if(category=="1"){
+		else if(category=="9000103"){
 			initPtWashable(itemCode,subItemCode,category);
 		}
 		
 		jQuery('input[name="productCategory"]').change(function(){
 			category = jQuery('input[name="productCategory"]:checked').val();
-			if(category == "0"){
+			if(category == "9000101"){
 				initPtStandard(itemCode,subItemCode,category);
 			}
-			else if(category == "2"){
+			else if(category == "9000102"){
 				initPtTuxedo(itemCode,subItemCode,category);
 			}
-			else if(category == "1"){
+			else if(category == "9000103"){
 				initPtWashable(itemCode,subItemCode,category);
 			}
 		});
@@ -3649,8 +3967,9 @@ function mateInit(){
 			StkNo = "#"+ptStandardMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
 		} */
-		mateSelect(itemCode,subItemCode,"#op2_btnMate option:checked","00033","#op2_btnMateStkNo",category,orderPattern);
-		
+		mateChecked = jQuery("#op2_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#op2_btnMateStkNo",category,orderPattern);
+		jQuery('#op2_btnMateStkNo').change();
 		jQuery("#op2_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectStandardIdList[idValue];
@@ -3667,7 +3986,9 @@ function mateInit(){
 			StkNo = "#"+ptTuxedoMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
 		} */
-		mateSelect(itemCode,subItemCode,"#tp2_btnMate option:checked","00033","#tp2_btnMateStkNo",category,orderPattern);
+		mateChecked = jQuery("#tp2_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#tp2_btnMateStkNo",category,orderPattern);
+		jQuery('#tp2_btnMateStkNo').change();
 		jQuery("#tp2_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectTuxedoIdList[idValue];
@@ -3684,7 +4005,8 @@ function mateInit(){
 			StkNo = "#"+ptWashableMateList[i]+"StkNo";
 			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
 		} */
-		mateSelect(itemCode,subItemCode,"#wp2_btnMate option:checked","00033","#wp2_btnMateStkNo",category,orderPattern);
+		mateChecked = jQuery("#wp2_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#wp2_btnMateStkNo",category,orderPattern);
 		jQuery("#wp2_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectWashableIdList[idValue];
@@ -3698,11 +4020,11 @@ function mateInit(){
 	function mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,type,orderPattern){
 		var StkNoSelect = jQuery(StkNo);
 		var url;
-		if (type == 0){
+		if (type == 9000101){
 			url = "/orderCo/standardMateSelect";
-		}else if(type == 2){
+		}else if(type == 9000102){
 			url = "/orderCo/tuxdoMateSelect";
-		}else if(type == 1){
+		}else if(type == 9000103){
 			url = "/orderCo/washabiMateSelect";
 		}
 		jQuery.ajax({
@@ -3726,246 +4048,234 @@ function mateInit(){
 	}
 }
 
-/* function getModelByItem(){
-	
-	var itemCode = jQuery("#item").val();
-	if(itemCode == "01"){
-
-		var pt2Model = document.getElementById("op2_pantsModel");
-		pt2Model.options.length=0;
-		pt2Model.add(new Option("モデル選択",""));
-		
-		jQuery.ajax({
-	        url: contextPath + "/orderCo/getModel",
-	        type: 'get',
-	        async:false,
-	        data:{"orderPattern":orderPattern,"itemCode":itemCode},
-	        success: function(data){
-	           jQuery.each(data, function (index, e) {
-	               if(e.subItemCode == "07"){
-	            	   pt2Model.add(new Option(e.modelName,e.modelCode));
-	               }
-	           });
-	        }
-	    });
-
-
-		var allPt2Option = pt2Model.options;
-		allPt2Option[0].disabled = true;
-	    
-	}
-} */
 //PANTS2本目（1本目と同じ）
 jQuery('#btn_op2_samePants').click(function (){
 	//PANTSモデル
-	jQuery('#op2_pantsModel').val("${orderForm.optionPantsStandardInfo.opPantsModel}");
+	jQuery('#op2_pantsModel').val("${orderCoForm.coOptionPantsStandardInfo.opPantsModel}");
 	//タック
-	jQuery('#op2_tack').val("${orderForm.optionPantsStandardInfo.opTack}");	
+	jQuery('#op2_tack').val("${orderCoForm.coOptionPantsStandardInfo.opTack}");	
+	jQuery('#op2_tack').change();
 	//膝裏
-	jQuery('input[name="optionPants2StandardInfo.op2KneeBack"]').val(["${orderForm.optionPantsStandardInfo.opKneeBack}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2KneeBack"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBack"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBack}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBack"]').change();
 	//膝裏素材
-	jQuery('input[name="optionPants2StandardInfo.op2KneeBackMate"]').val(["${orderForm.optionPantsStandardInfo.opKneeBackMate}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2KneeBackMate"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBackMate"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBackMate}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBackMate"]').change();
 	//フロント仕様
-	jQuery('input[name="optionPants2StandardInfo.op2FrontSpec"]').val(["${orderForm.optionPantsStandardInfo.opFrontSpec}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2FrontSpec"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').val(["${orderCoForm.coOptionPantsStandardInfo.opFrontSpec}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').change();
 	//パンチェリーナ
-	jQuery('input[name="optionPants2StandardInfo.op2Pancherina"]').val(["${orderForm.optionPantsStandardInfo.opPancherina}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2Pancherina"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2Pancherina"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPancherina}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2Pancherina"]').change();
 	//アジャスター仕様
-	jQuery('input[name="optionPants2StandardInfo.op2Adjuster"]').val(["${orderForm.optionPantsStandardInfo.opAdjuster}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2Adjuster"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAdjuster}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').change();
 	//ベルトループ
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoop"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoop}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoop"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoop}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').change();
 
 	//ピンループ
-	jQuery('input[name="optionPants2StandardInfo.op2PinLoop"]').val(["${orderForm.optionPantsStandardInfo.opPinLoop}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2PinLoop"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2PinLoop"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPinLoop}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2PinLoop"]').change();
 	//脇ポケット
-	jQuery('input[name="optionPants2StandardInfo.op2SidePkt"]').val(["${orderForm.optionPantsStandardInfo.opSidePkt}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2SidePkt"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').val(["${orderCoForm.coOptionPantsStandardInfo.opSidePkt}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').change();
 	//忍びポケット
-	jQuery('input[name="optionPants2StandardInfo.op2SinobiPkt"]').val(["${orderForm.optionPantsStandardInfo.opSinobiPkt}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2SinobiPkt"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').val(["${orderCoForm.coOptionPantsStandardInfo.opSinobiPkt}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').change();
 	//コインポケット
-	jQuery("#op2_coinPkt").val("${orderForm.optionPantsStandardInfo.opCoinPkt}");
+	jQuery("#op2_coinPkt").val("${orderCoForm.coOptionPantsStandardInfo.opCoinPkt}");
 	jQuery("#op2_coinPkt").change();
 	//フラップ付コインポケット
-	jQuery('input[name="optionPants2StandardInfo.op2FlapCoinPkt"]').val("${orderForm.optionPantsStandardInfo.opFlapCoinPkt}");
-	jQuery('input[name="optionPants2StandardInfo.op2FlapCoinPkt"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2FlapCoinPkt"]').val("${orderCoForm.coOptionPantsStandardInfo.opFlapCoinPkt}");
+	jQuery('input[name="coOptionPants2StandardInfo.op2FlapCoinPkt"]').change();
 	//上前ピスポケット 
-	jQuery('input[name="optionPants2StandardInfo.op2PisPktUf"]').val(["${orderForm.optionPantsStandardInfo.opPisPktUf}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2PisPktUf"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPisPktUf}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').change();
 	//下前ピスポケット
-	jQuery('input[name="optionPants2StandardInfo.op2PisPktDf"]').val(["${orderForm.optionPantsStandardInfo.opPisPktDf}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2PisPktDf"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPisPktDf}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').change();
 	//Vカット
-	jQuery('input[name="optionPants2StandardInfo.op2VCut"]').val(["${orderForm.optionPantsStandardInfo.opVCut}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2VCut"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').val(["${orderCoForm.coOptionPantsStandardInfo.opVCut}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').change();
 	//裾上げ
-	jQuery('#op2_hemUp').val("${orderForm.optionPantsStandardInfo.opHemUp}");
+	jQuery('#op2_hemUp').val("${orderCoForm.coOptionPantsStandardInfo.opHemUp}");
 	jQuery('#op2_hemUp').change();
+
+	jQuery('#op2_doubleWide').val("${orderCoForm.coOptionPantsStandardInfo.opDoubleWide}");
+	jQuery('#op2_doubleWide').change();
 	//ステッチ種類
-	jQuery('input[name="optionPants2StandardInfo.op2Stitch"]').val(["${orderForm.optionPantsStandardInfo.opStitch}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2Stitch"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitch}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').change();
 	//ステッチ箇所変更
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModify"]').val(["${orderForm.optionPantsStandardInfo.opStitchModify}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModify"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModify}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').change();
 
 	//ダブルステッチ
-	jQuery('input[name="optionPants2StandardInfo.op2DStitch"]').val(["${orderForm.optionPantsStandardInfo.opDStitch}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitch"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitch}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace4"]').change();	
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').change();	
 
 	//AMF色指定
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').change();
 
-	jQuery("#op2_amfColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opAmfColorPlaceAll}");
+	jQuery("#op2_amfColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlaceAll}");
 	jQuery("#op2_amfColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').change();
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor"]').val(["${orderForm.optionPantsStandardInfo.opBhColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').change();
 
-	jQuery("#op2_bhColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opBhColorPlaceAll}");
+	jQuery("#op2_bhColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opBhColorPlaceAll}");
 	jQuery("#op2_bhColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor1"]').val(["${orderForm.optionPantsStandardInfo.opBhColor1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor2"]').val(["${orderForm.optionPantsStandardInfo.opBhColor2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor3"]').val(["${orderForm.optionPantsStandardInfo.opBhColor3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor4"]').val(["${orderForm.optionPantsStandardInfo.opBhColor4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2StandardInfo.op2ByColor"]').val(["${orderForm.optionPantsStandardInfo.opByColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').change();
 	
-	jQuery("#op2_byColorPlaceAll").val("${orderForm.optionPants2StandardInfo.op2ByColorPlaceAll}");
+	jQuery("#op2_byColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opByColorPlaceAll}");
 	jQuery("#op2_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').change();
+	
 
 	//釦素材
-	jQuery('#op2_btnMate').val("${orderForm.optionPantsStandardInfo.opButton}");
+	jQuery('#op2_btnMate').val("${orderCoForm.coOptionPantsStandardInfo.opButton}");
 	jQuery('#op2_btnMate').change();
 
-	jQuery('#op2_btnMateStkNo').val("${orderForm.optionPantsStandardInfo.opBtnMateStkNo}");
+	jQuery('#op2_btnMateStkNo').val("${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo}");
 	jQuery('#op2_btnMateStkNo').change();
 
 	//サスペンダー釦
-	jQuery('input[name="optionPants2StandardInfo.op2SuspenderBtn"]').val(["${orderForm.optionPantsStandardInfo.opSuspenderBtn}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2SuspenderBtn"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2SuspenderBtn"]').val(["${orderCoForm.coOptionPantsStandardInfo.opSuspenderBtn}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2SuspenderBtn"]').change();
 
 	//シック大（股補強）
-	jQuery('input[name="optionPants2StandardInfo.op2Thick"]').val(["${orderForm.optionPantsStandardInfo.opThick}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2Thick"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2Thick"]').val(["${orderCoForm.coOptionPantsStandardInfo.opThick}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2Thick"]').change();
 
 	//エイト（滑り止め）
-	jQuery('input[name="optionPants2StandardInfo.op2Eight"]').val(["${orderForm.optionPantsStandardInfo.opEight}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2Eight"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2Eight"]').val(["${orderCoForm.coOptionPantsStandardInfo.opEight}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2Eight"]').change();
 
 	//形状記憶
-	jQuery('input[name="optionPants2StandardInfo.op2ShapeMemory"]').val(["${orderForm.optionPantsStandardInfo.opShapeMemory}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ShapeMemory"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ShapeMemory"]').val(["${orderCoForm.coOptionPantsStandardInfo.opShapeMemory}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ShapeMemory"]').change();
 });
 
 
@@ -3973,786 +4283,833 @@ jQuery('#btn_op2_samePants').click(function (){
 jQuery('#btn_tp2_samePants').click(function (){
 
 	//PANTSモデル
-	jQuery('#tp2_pantsModel').val("${orderForm.optionPantsTuxedoInfo.tpPantsModel}");
+	jQuery('#tp2_pantsModel').val("${orderCoForm.coOptionPantsTuxedoInfo.tpPantsModel}");
 	//タック
-	jQuery('#tp2_tack').val("${orderForm.optionPantsTuxedoInfo.tpTack}");
+	jQuery('#tp2_tack').val("${orderCoForm.coOptionPantsTuxedoInfo.tpTack}");
+	jQuery('#tp2_tack').change();
 	//膝裏
-	jQuery('input[name="optionPants2TuxedoInfo.tp2KneeBack"]').val(["${orderForm.optionPantsTuxedoInfo.tpKneeBack}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2KneeBack"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBack}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]').change();
 	//膝裏素材
-	jQuery('input[name="optionPants2TuxedoInfo.tp2KneeBackMate"]').val(["${orderForm.optionPantsTuxedoInfo.tpKneeBackMate}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2KneeBackMate"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMate}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]').change();
 	//フロント仕様
-	jQuery('input[name="optionPants2TuxedoInfo.tp2FrontSpec"]').val(["${orderForm.optionPantsTuxedoInfo.tpFrontSpec}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2FrontSpec"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpFrontSpec}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]').change();
 	//パンチェリーナ
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderForm.optionPantsTuxedoInfo.tpPancherina}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Pancherina"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPancherina}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').change();
 	//アジャスター仕様
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderForm.optionPantsTuxedoInfo.tpPancherina}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Pancherina"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPancherina}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').change();
    //ベルトループ 
-   jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoop}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoop"]').change();
+   jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoop}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').change();
 
 	//ピンループ
-   jQuery('input[name="optionPants2TuxedoInfo.tp2PinLoop"]').val(["${orderForm.optionPantsTuxedoInfo.tpPinLoop}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2PinLoop"]').change();
+   jQuery('input[name="coOptionPants2TuxedoInfo.tp2PinLoop"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPinLoop}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PinLoop"]').change();
 	//脇ポケット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SidePkt"]').val(["${orderForm.optionPantsTuxedoInfo.tpSidePkt}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SidePkt"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SidePkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSidePkt}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SidePkt"]').change();
 	//忍びポケット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SinobiPkt"]').val(["${orderForm.optionPantsTuxedoInfo.tpSinobiPkt}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SinobiPkt"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSinobiPkt}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]').change();
 	//コインポケット
-	jQuery("#tp_coinPkt").val("${orderForm.optionPantsTuxedoInfo.tpCoinPkt}");
+	jQuery("#tp_coinPkt").val("${orderCoForm.coOptionPantsTuxedoInfo.tpCoinPkt}");
 	jQuery("#tp_coinPkt").change();
 	//フラップ付コインポケット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2FlapCoinPkt"]').val(["${orderForm.optionPantsTuxedoInfo.tpFlapCoinPkt}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2FlapCoinPkt"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpFlapCoinPkt}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]').change();
 	//上前ピスポケット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2PisPktUf"]').val(["${orderForm.optionPantsTuxedoInfo.tpPisPktUf}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2PisPktUf"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktUf"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktUf}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktUf"]').change();
 	//下前ピスポケット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2PisPktDf"]').val(["${orderForm.optionPantsTuxedoInfo.tpPisPktDf}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2PisPktDf"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktDf"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktDf}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktDf"]').change();
 	//Vカット
-	jQuery('input[name="optionPants2TuxedoInfo.tp2VCut"]').val(["${orderForm.optionPantsTuxedoInfo.tpVCut}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2VCut"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2VCut"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpVCut}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2VCut"]').change();
 	//裾上げ
-	jQuery("#tp2_hemUp").val("${orderForm.optionPantsTuxedoInfo.tpHemUp}");
+	jQuery("#tp2_hemUp").val("${orderCoForm.coOptionPantsTuxedoInfo.tpHemUp}");
 	jQuery("#tp2_hemUp").change();
+
+	jQuery("#tp2_doubleWide").val("${orderCoForm.coOptionPantsTuxedoInfo.tpDoubleWide}");
+	jQuery("#tp2_doubleWide").change();
 	//ステッチ種類
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Stitch"]').val(["${orderForm.optionPantsTuxedoInfo.tpStitch}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Stitch"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpStitch}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').change();
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace5}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace5"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor3"]').change();
-
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor"]').change();
-	jQuery("#tp2_byColorPlaceAll").val("${orderForm.optionPantsTuxedoInfo.tpByColorPlaceAll}");
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').change();
+	jQuery("#tp2_byColorPlaceAll").val("${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlaceAll}");
 	jQuery("#tp2_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').change();
 	
 	//釦素材
-	jQuery("#tp2_btnMate").val("${orderForm.optionPantsTuxedoInfo.tpButton}");
+	jQuery("#tp2_btnMate").val("${orderCoForm.coOptionPantsTuxedoInfo.tpButton}");
 	jQuery("#tp2_btnMate").change();
 
-	jQuery("#tp2_btnMateStkNo").val("${orderForm.optionPantsStandardInfo.opBtnMateStkNo}");
+	jQuery("#tp2_btnMateStkNo").val("${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo}");
 	jQuery("#tp2_btnMateStkNo").change();
 	//サスペンダー釦
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SuspenderBtn"]').val(["${orderForm.optionPantsTuxedoInfo.tpSuspenderBtn}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SuspenderBtn"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SuspenderBtn"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSuspenderBtn}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SuspenderBtn"]').change();
 	//シック大（股補強）
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Thick"]').val(["${orderForm.optionPantsTuxedoInfo.tpThick}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Thick"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Thick"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpThick}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Thick"]').change();
 	//エイト（滑り止め）
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Eight"]').val(["${orderForm.optionPantsTuxedoInfo.tpEight}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Eight"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Eight"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpEight}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Eight"]').change();
 	//形状記憶
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ShapeMemory"]').val(["${orderForm.optionPantsTuxedoInfo.tpShapeMemory}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ShapeMemory"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ShapeMemory"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpShapeMemory}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ShapeMemory"]').change();
 	//側章
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SideStripe"]').val(["${orderForm.optionPantsTuxedoInfo.tpSideStripe}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SideStripe"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripe"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripe}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripe"]').change();
 	//側章幅
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SideStripeWidth"]').val(["${orderForm.optionPantsTuxedoInfo.tpSideStripeWidth}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2SideStripeWidth"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripeWidth"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripeWidth}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripeWidth"]').change();
 
 });
 
 //PANTS2本目（1本目と同じ）
 jQuery('#btn_wp2_samePants').click(function (){
 	//PANTSモデル 
-	jQuery('#wp2_pantsModel').val("${orderForm.optionPantsWashableInfo.wpPantsModel}");
+	jQuery('#wp2_pantsModel').val("${orderCoForm.coOptionPantsWashableInfo.wpPantsModel}");
 	//タック
-	jQuery('#wp2_tack_id').val("${orderForm.optionPantsWashableInfo.wpTack}");
+	jQuery('#wp2_tack_id').val("${orderCoForm.coOptionPantsWashableInfo.wpTack}");
+	jQuery('#wp2_tack_id').change();
 	//膝裏
-	jQuery('input[name="optionPants2WashableInfo.wp2KneeBack"]').val(["${orderForm.optionPantsWashableInfo.wpKneeBack}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2KneeBack"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBack}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]').change();
 	//膝裏素材
-	jQuery('input[name="optionPants2WashableInfo.wp2KneeBackMate"]').val(["${orderForm.optionPantsWashableInfo.wpKneeBackMate}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2KneeBackMate"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMate}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]').change();
 	//フロント仕様
-	jQuery('input[name="optionPants2WashableInfo.wp2FrontSpec"]').val(["${orderForm.optionPantsWashableInfo.wpFrontSpec}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2FrontSpec"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpFrontSpec}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').change();
 	//パンチェリーナ
-	jQuery('input[name="optionPants2WashableInfo.wp2Pancherina"]').val(["${orderForm.optionPantsWashableInfo.wpPancherina}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Pancherina"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Pancherina"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPancherina}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Pancherina"]').change();
 	//アジャスター仕様
-	jQuery('input[name="optionPants2WashableInfo.wp2Adjuster"]').val(["${orderForm.optionPantsWashableInfo.wpAdjuster}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Adjuster"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAdjuster}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]').change();
 	//ベルトループ
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoop"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoop}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoop"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoop}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').change();
 
 	//ピンループ
-	jQuery('input[name="optionPants2WashableInfo.wp2PinLoop"]').val(["${orderForm.optionPantsWashableInfo.wpPinLoop}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2PinLoop"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPinLoop}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]').change();
 	//脇ポケット
-	jQuery('input[name="optionPants2WashableInfo.wp2SidePkt"]').val(["${orderForm.optionPantsWashableInfo.wpSidePkt}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2SidePkt"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SidePkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSidePkt}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SidePkt"]').change();
 	//忍びポケット
-	jQuery('input[name="optionPants2WashableInfo.wp2SinobiPkt"]').val(["${orderForm.optionPantsWashableInfo.wpSinobiPkt}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2SinobiPkt"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSinobiPkt}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]').change();
 	//コインポケット 
-	jQuery("#wp2_coinPkt_id").val("${orderForm.optionPantsWashableInfo.wpCoinPkt}");
+	jQuery("#wp2_coinPkt_id").val("${orderCoForm.coOptionPantsWashableInfo.wpCoinPkt}");
 	jQuery("#wp2_coinPkt_id").change();
 	//フラップ付コインポケット
-	jQuery('input[name="optionPants2WashableInfo.wp2FlapCoinPkt"]').val(["${orderForm.optionPantsWashableInfo.wpFlapCoinPkt}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2FlapCoinPkt"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpFlapCoinPkt}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]').change();
 	//上前ピスポケット
-	jQuery('input[name="optionPants2WashableInfo.wp2PisPktUf"]').val(["${orderForm.optionPantsWashableInfo.wpPisPktUf}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2PisPktUf"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPisPktUf}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]').change();
 	//下前ピスポケット
-	jQuery('input[name="optionPants2WashableInfo.wp2PisPktDf"]').val(["${orderForm.optionPantsWashableInfo.wpPisPktDf}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2PisPktDf"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktDf"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPisPktDf}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktDf"]').change();
 	//Vカット
-	jQuery('input[name="optionPants2WashableInfo.wp2VCut"]').val(["${orderForm.optionPantsWashableInfo.wpVCut}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2VCut"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2VCut"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpVCut}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2VCut"]').change();
 	//裾上げ
-	jQuery("#wp2_hemUp_id").val("${orderForm.optionPantsWashableInfo.wpHemUp}");
-	jQuery("#wp2_hemUp_id").change();
+	jQuery("#wp2_hemUp").val("${orderCoForm.coOptionPantsWashableInfo.wpHemUp}");
+	jQuery("#wp2_hemUp").change();
+
+	jQuery("#wp2_doubleWide").val("${orderCoForm.coOptionPantsWashableInfo.wpDoubleWide}");
+	jQuery("#wp2_doubleWide").change();
 	//ステッチ種類
-	jQuery('input[name="optionPants2WashableInfo.wp2Stitch"]').val(["${orderForm.optionPantsWashableInfo.wpStitch}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Stitch"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitch}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').change();
 	//ステッチ箇所変更
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModify"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModify}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModify"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModify}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').change();
 	
 	//ダブルステッチ
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitch"]').val(["${orderForm.optionPantsWashableInfo.wpDStitch}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitch"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitch}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').change();
 
 	//AMF色指定
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').change();
 
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor"]').val(["${orderForm.optionPantsWashableInfo.wpByColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
 	
 	//釦素材
-	jQuery("#wp2_button_id").val("${orderForm.optionPantsWashableInfo.wpButton}");
-	jQuery("#wp2_button_id").change();
+	jQuery("#wp2_btnMate").val("${orderCoForm.coOptionPantsWashableInfo.wpButton}");
+	jQuery("#wp2_btnMate").change();
 
-	jQuery("#wp2_btnMateStkNo").val("${orderForm.optionPantsWashableInfo.wpBtnMateStkNo}");
+	jQuery("#wp2_btnMateStkNo").val("${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo}");
 	jQuery("#wp2_btnMateStkNo").change();
 	//サスペンダー釦
-	jQuery('input[name="optionPants2WashableInfo.wp2SuspenderBtn"]').val(["${orderForm.optionPantsWashableInfo.wpSuspenderBtn}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2SuspenderBtn"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SuspenderBtn"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSuspenderBtn}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SuspenderBtn"]').change();
 	//シック大（股補強）
-	jQuery('input[name="optionPants2WashableInfo.wp2Thick"]').val(["${orderForm.optionPantsWashableInfo.wpThick}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Thick"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Thick"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpThick}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Thick"]').change();
 	//エイト（滑り止め）
-	jQuery('input[name="optionPants2WashableInfo.wp2Thick"]').val(["${orderForm.optionPantsWashableInfo.wpThick}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Thick"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Thick"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpThick}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Thick"]').change();
 	//形状記憶
-	jQuery('input[name="optionPants2WashableInfo.wp2Eight"]').val(["${orderForm.optionPantsWashableInfo.wpEight}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Eight"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Eight"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpEight}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Eight"]').change();
 });
 function  op2Session(){
 
 	//コインポケット
-	jQuery("#op2_coinPkt").val("${orderForm.optionPants2StandardInfo.op2CoinPkt}");
+	jQuery("#op2_coinPkt").val("${orderCoForm.coOptionPants2StandardInfo.op2CoinPkt}");
 	jQuery("#op2_coinPkt").change();
 
 	//裾上げ
-	jQuery('#op2_hemUp').val("${orderForm.optionPants2StandardInfo.op2HemUp}");
+	jQuery('#op2_hemUp').val("${orderCoForm.coOptionPants2StandardInfo.op2HemUp}");
 	jQuery('#op2_hemUp').change();
 	
+	
 	//ベルトループ
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoop"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoop}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoop"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoop}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderForm.optionPants2StandardInfo.op2BeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').change();
 
 	//ステッチ箇所変更
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModify"]').val(["${orderForm.optionPants2StandardInfo.op2StitchModify}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModify"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModify}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2StitchModifyPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2StitchModifyPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2StitchModifyPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2StitchModifyPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2StitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').change();
 
 	//ダブルステッチ
-	jQuery('input[name="optionPants2StandardInfo.op2DStitch"]').val(["${orderForm.optionPants2StandardInfo.op2DStitch}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitch"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitch}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2DStitchPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2DStitchPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2DStitchPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2DStitchPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2DStitchPlace4"]').change();	
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').change();	
 
 	//AMF色指定
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').change();
 
-	jQuery("#op2_amfColorPlaceAll").val("${orderForm.optionPants2StandardInfo.op2AmfColorPlaceAll}");
+	jQuery("#op2_amfColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlaceAll}");
 	jQuery("#op2_amfColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor1"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColor1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor2"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColor2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor3"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColor3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor4"]').val(["${orderForm.optionPants2StandardInfo.op2AmfColor4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2AmfColor4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').change();
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor"]').val(["${orderForm.optionPants2StandardInfo.op2BhColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').change();
 
-	jQuery("#op2_bhColorPlaceAll").val("${orderForm.optionPants2StandardInfo.op2BhColorPlaceAll}");
+	jQuery("#op2_bhColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlaceAll}");
 	jQuery("#op2_bhColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2BhColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2BhColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2BhColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2BhColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor1"]').val(["${orderForm.optionPants2StandardInfo.op2BhColor1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor2"]').val(["${orderForm.optionPants2StandardInfo.op2BhColor2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor3"]').val(["${orderForm.optionPants2StandardInfo.op2BhColor3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor4"]').val(["${orderForm.optionPants2StandardInfo.op2BhColor4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2StandardInfo.op2ByColor"]').val(["${orderForm.optionPants2StandardInfo.op2ByColor}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColor"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').change();
 	
-	jQuery("#op2_byColorPlaceAll").val("${orderForm.optionPants2StandardInfo.op2ByColorPlaceAll}");
+	jQuery("#op2_byColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceAll}");
 	jQuery("#op2_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderForm.optionPants2StandardInfo.op2ByColorPlace1}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderForm.optionPants2StandardInfo.op2ByColorPlace2}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderForm.optionPants2StandardInfo.op2ByColorPlace3}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderForm.optionPants2StandardInfo.op2ByColorPlace4}"]);
-	jQuery('input[name="optionPants2StandardInfo.op2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').change();
 
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor1}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor2}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor3}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').change();
+
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor4}"]);
+	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').change();
+	
 	//釦素材
-	jQuery('#op2_btnMate').val("${orderForm.optionPants2StandardInfo.op2Button}");
-	jQuery('#op2_btnMate').change();
-
-	jQuery('#op2_btnMateStkNo').val("${orderForm.optionPants2StandardInfo.op2BtnMateStkNo}");
-	jQuery('#op2_btnMateStkNo').change();
+    if(isNotEmpty("${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo}")){
+    	jQuery('#op2_btnMateStkNo').val("${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo}");
+    	jQuery('#op2_btnMateStkNo').change();
+       }
+	
 }
 
 function  tp2Session(){
 
 	//コインポケット
-	jQuery("#tp2_coinPkt").val("${orderForm.optionPants2TuxedoInfo.tp2CoinPkt}");
+	jQuery("#tp2_coinPkt").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2CoinPkt}");
 	jQuery("#tp2_coinPkt").change();
 
 	//裾上げ
-	jQuery("#tp2_hemUp").val("${orderForm.optionPants2TuxedoInfo.tp2HemUp}");
+	jQuery("#tp2_hemUp").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2HemUp}");
 	jQuery("#tp2_hemUp").change();
 
    //ベルトループ 
-   jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoop}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoop"]').change();
+   jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoop}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').change();
 
 	//ステッチ種類
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Stitch"]').val(["${orderForm.optionPants2TuxedoInfo.tp2Stitch}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2Stitch"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Stitch}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').change();
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColor}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColorPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColorPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColorPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColorPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace5"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColorPlace5}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColorPlace5"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColor1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColor2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColor3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor3"]').change();
-
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderForm.optionPants2TuxedoInfo.tp2BhColor4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColor}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor"]').change();
-	jQuery("#tp2_byColorPlaceAll").val("${orderForm.optionPants2TuxedoInfo.tp2ByColorPlaceAll}");
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').change();
+	jQuery("#tp2_byColorPlaceAll").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlaceAll}");
 	jQuery("#tp2_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColorPlace1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColorPlace2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColorPlace3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColorPlace4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColor1}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor1"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor1}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColor2}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor2"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor2}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColor3}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor3"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor3}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').change();
 
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderForm.optionPants2TuxedoInfo.tp2ByColor4}"]);
-	jQuery('input[name="optionPants2TuxedoInfo.tp2ByColor4"]').change();
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor4}"]);
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').change();
+
+	if(isNotEmpty("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}")){
+		jQuery("#tp2_btnMateStkNo").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}");
+		jQuery("#tp2_btnMateStkNo").change();
+		}
 	
 }
 function  wp2Session(){
 
 	//ベルトループ
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoop"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoop}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoop"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoop}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace5}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace6}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderForm.optionPants2WashableInfo.wp2BeltLoopPlace7}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').change();
 
 	//ステッチ種類
-	jQuery('input[name="optionPants2WashableInfo.wp2Stitch"]').val(["${orderForm.optionPants2WashableInfo.wp2Stitch}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2Stitch"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Stitch}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').change();
 	//ステッチ箇所変更
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModify"]').val(["${orderForm.optionPants2WashableInfo.wp2StitchModify}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModify"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModify}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2StitchModifyPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2StitchModifyPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2StitchModifyPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2StitchModifyPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2StitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').change();
 	
 	//ダブルステッチ
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitch"]').val(["${orderForm.optionPants2WashableInfo.wp2DStitch}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitch"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitch}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2DStitchPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2DStitchPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2DStitchPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2DStitchPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2DStitchPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').change();
 
 	//AMF色指定
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor2"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColor2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor3"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColor3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor4"]').val(["${orderForm.optionPants2WashableInfo.wp2AmfColor4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2AmfColor4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').change();
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor2"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColor2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor3"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColor3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor4"]').val(["${orderForm.optionPants2WashableInfo.wp2BhColor4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2BhColor4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColor}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColorPlace1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace1"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColorPlace2}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace2}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColorPlace3}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace3"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace3}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColorPlace4}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace4}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
+
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
+
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').change();
+
+	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
 	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
 
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
-
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
-
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').val(["${orderForm.optionPants2WashableInfo.wp2ByColor1}"]);
-	jQuery('input[name="optionPants2WashableInfo.wp2ByColor1"]').change();
+	if(isNotEmpty("${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo}")){
+		jQuery("#wp2_btnMateStkNo").val("${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo}");
+		jQuery("#wp2_btnMateStkNo").change();
+	}
 }
- 
+
+function getAllPrice(subItemCode, optionPrice){
+	jQuery("#pt2OptionPriceId").val(optionPrice);
+    var jkOptionPriceId = optionPrice;
+    var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
+    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+    var glOptionPriceId = jQuery("#glOptionPriceId").val();
+    var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+    var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+    var allPrice = 0;
+    if(subItemCode == "01"){
+        if(threePiece == "0009901" && twoPants == "0009902"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId);
+        }else{
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId);
+        }
+    }
+    jQuery("#optionPriceId").val(allPrice);
+    jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
+}
+jQuery("#op2_pantsModel,#tp2_pantsModel,wp2_pantsModel").change(function(){
+	jQuery("#pants2AdFlag").val("0");
+}) 
 </script>

@@ -50,16 +50,16 @@ function initOptionGiletStandard() {
 
 		// GILETモデルに基づき、各項目をデフォルトへ変更
 		// 胸ポケット
-		var beforeBreastPkt = jQuery('input[name="optionGiletStandardInfo.ogBreastPkt"]:checked').val();
-		jQuery('input[name="optionGiletStandardInfo.ogBreastPkt"]').val([giletModelDefaultList[giletModel]["og_breastPkt"]]);
+		var beforeBreastPkt = jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]:checked').val();
+		jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]').val([giletModelDefaultList[giletModel]["og_breastPkt"]]);
 
 		// 腰ポケット
-		var beforeWaistPkt = jQuery('input[name="optionGiletStandardInfo.ogWaistPkt"]:checked').val();
-		jQuery('input[name="optionGiletStandardInfo.ogWaistPkt"]').val([giletModelDefaultList[giletModel]["og_waistPkt"]]);
+		var beforeWaistPkt = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
+		jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]').val([giletModelDefaultList[giletModel]["og_waistPkt"]]);
 
 		// 腰ポケット形状
-		var beforeWaistPktSpec = jQuery('input[name="optionGiletStandardInfo.ogWaistPktSpec"]:checked').val();
-		jQuery('input[name="optionGiletStandardInfo.ogWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+		var beforeWaistPktSpec = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').val();
+		jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
 
 		// ステッチ箇所変更
 		if (ogStitchModifyList[giletModel]) {
@@ -98,10 +98,10 @@ function initOptionGiletStandard() {
 	});
 
 	// 腰ポケット
-	jQuery('input[name="optionGiletStandardInfo.ogWaistPkt"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中の腰ポケット
-			var waistPkt = jQuery('input[name="optionGiletStandardInfo.ogWaistPkt"]:checked').val();
+			var waistPkt = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
 			if (waistPkt == "0000201") {
 				// 腰ポケットが有りの場合は腰ポケット形状を表示する
 				jQuery('#og_waistPkt_yes_area').show();
@@ -113,36 +113,36 @@ function initOptionGiletStandard() {
 	});
 
 	// AMFステッチ
-	jQuery('input[name="optionGiletStandardInfo.ogStitch"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogStitch"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のAMFステッチ
-			var stitchValue = jQuery('input[name="optionGiletStandardInfo.ogStitch"]:checked').val();
+			var stitchValue = jQuery('input[name="coOptionGiletStandardInfo.ogStitch"]:checked').val();
 
 			if (stitchValue == "0000504" || stitchValue == "0000505") {
 				// 有りの場合、関連する項目を有効化
 				// ステッチ箇所変更
-				jQuery('input[name="optionGiletStandardInfo.ogStitchModify"]').prop("disabled", false);
+				jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]').prop("disabled", false);
 				// ダブルステッチ
-				jQuery('input[name="optionGiletStandardInfo.ogDStitchModify"]').prop("disabled", false);
+				jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]').prop("disabled", false);
 				// AMF色指定
-				jQuery('input[name="optionGiletStandardInfo.ogAmfColor"]').prop("disabled", false);
+				jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]').prop("disabled", false);
 
 				// 関連項目を表示
 				jQuery('#og_stitch_yes_area').show();
 			} else {
 				// 無しの場合、関連する項目を無効化・値変更
 				// ステッチ箇所変更
-				jQuery('input[name="optionGiletStandardInfo.ogStitchModify"]').prop("disabled", true);
+				jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]').prop("disabled", true);
 				jQuery('#og_stitchModify_id1').prop("checked", true);
 				jQuery('#og_stitchModify_id1').change();
 
 				// ダブルステッチ
-				jQuery('input[name="optionGiletStandardInfo.ogDStitchModify"]').prop("disabled", true);
+				jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]').prop("disabled", true);
 				jQuery('#og_dStitchModify_id1').prop("checked", true);
 				jQuery('#og_dStitchModify_id1').change();
 
 				// AMF色指定
-				jQuery('input[name="optionGiletStandardInfo.ogAmfColor"]').prop("disabled", true);
+				jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]').prop("disabled", true);
 				jQuery('#og_amfColor_id1').prop("checked", true);
 				jQuery('#og_amfColor_id1').change();
 
@@ -154,10 +154,10 @@ function initOptionGiletStandard() {
 	jQuery('#og_stitch_id2').change();
 
 	// ステッチ箇所変更
-	jQuery('input[name="optionGiletStandardInfo.ogStitchModify"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
-			var stitchModifyValue = jQuery('input[name="optionGiletStandardInfo.ogStitchModify"]:checked').val();
+			var stitchModifyValue = jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]:checked').val();
 
 			if (stitchModifyValue == "0000601") {
 				// 無しの場合は全て無効化
@@ -187,10 +187,10 @@ function initOptionGiletStandard() {
 	});
 
 	// ダブルステッチ
-	jQuery('input[name="optionGiletStandardInfo.ogDStitchModify"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
-			var stitchModifyValue = jQuery('input[name="optionGiletStandardInfo.ogDStitchModify"]:checked').val();
+			var stitchModifyValue = jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]:checked').val();
 
 			if (stitchModifyValue == "0002601") {
 				// 無しの場合は全て無効化
@@ -244,10 +244,10 @@ function initOptionGiletStandard() {
 	});
 
 	// ボタンホール色指定(有り/無し)
-	jQuery('input[name="optionGiletStandardInfo.ogBhColor"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var bhColor = jQuery('input[name="optionGiletStandardInfo.ogBhColor"]:checked').val();
+			var bhColor = jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]:checked').val();
 
 			if (bhColor == '0001101') {
 				// 無しの場合は操作不可
@@ -308,10 +308,10 @@ function initOptionGiletStandard() {
 	ctrlOgBhColorPlace();
 
 	// ボタン付け糸指定(有り/無し)
-	jQuery('input[name="optionGiletStandardInfo.ogByColor"]').each(function() {
+	jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のボタンホール色指定を取得
-			var byColor = jQuery('input[name="optionGiletStandardInfo.ogByColor"]:checked').val();
+			var byColor = jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]:checked').val();
 
 			if (byColor == '0001401') {
 				// 無しの場合は操作不可
@@ -354,6 +354,8 @@ function initOptionGiletStandard() {
 			if (elem.val() == allColor) elem.prop('checked', true);
 		});
 	});
+	// ボタン付け糸指定箇所の有効/無効を制御
+	ctrlOgByColorPlace();
 
 	// ボタン付け糸指定箇所
 	jQuery('input[id^="og_byColorPlace_"]').each(function() {
@@ -367,8 +369,6 @@ function initOptionGiletStandard() {
 			}
 		});
 	});
-	// ボタン付け糸指定箇所の制御
-	ctrlOgByColorPlace();
 	
 	// 背裏地素材
 	jQuery('#og_backLiningMate').change(function (){
@@ -517,7 +517,7 @@ function initOptionGiletStandard() {
 function ctrlOgBhColorPlace() {
 
 	// 選択中のボタンホール色指定
-	var bhColor = jQuery('input[name="optionGiletStandardInfo.ogBhColor"]:checked').val();
+	var bhColor = jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]:checked').val();
 
 	// 選択中のGILETモデル
 	var giletModel = jQuery('#giletModel').val();
@@ -556,7 +556,7 @@ function ctrlOgBhColorPlace() {
 function ctrlOgByColorPlace() {
 
 	// 選択中のボタン付け糸指定
-	var byColor = jQuery('input[name="optionGiletStandardInfo.ogByColor"]:checked').val();
+	var byColor = jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]:checked').val();
 
 	// 選択中のGILETモデル
 	var giletModel = jQuery('#giletModel').val();
@@ -617,7 +617,7 @@ function ctrlOgDStitchPlace() {
 // AMF色指定の有効/無効を制御する
 function ctrlOgAmfColor() {
 	// 選択中のステッチ箇所変更
-	var amfColorValue = jQuery('input[name="optionGiletStandardInfo.ogAmfColor"]:checked').val();
+	var amfColorValue = jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]:checked').val();
 
 	if (amfColorValue == "0000802") {
 		jQuery('#og_amfColor_div').show();

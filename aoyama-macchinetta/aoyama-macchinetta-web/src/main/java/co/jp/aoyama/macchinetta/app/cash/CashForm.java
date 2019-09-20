@@ -76,6 +76,8 @@ public class CashForm implements Serializable {
     private String backFlag;
     
     private String version;
+    
+    private String custKanaNm;
 
 	public String getOrderId() {
 		return orderId;
@@ -315,6 +317,14 @@ public class CashForm implements Serializable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getCustKanaNm() {
+		return custKanaNm;
+	}
+
+	public void setCustKanaNm(String custKanaNm) {
+		this.custKanaNm = custKanaNm;
 	}
 
 }

@@ -2,7 +2,7 @@
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd">
 <!--お客様情報  -->
 <mapping date-format="yyyy/MM/dd">
-<class-a>co.jp.aoyama.macchinetta.app.order.info.CustomerMessageInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoCustomerMessageInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>orderId</a> 
@@ -15,14 +15,6 @@
 	<field>
 		<a>custDeliverDate</a> 
 		<b>custDeliverDate</b> 
-	</field>
-	<field>
-		<a>custIsDeliverShortning</a> 
-		<b>custIsDeliverShortning</b> 
-	</field>
-	<field>
-		<a>custIsEarlyDiscount</a> 
-		<b>custIsEarlyDiscount</b> 
 	</field>
 	<field>
 		<a>custShopDeliveryDate</a> 
@@ -52,11 +44,19 @@
 
 <!--商品情報  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.OrderForm</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.OrderCoForm</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>productItem</a> 
 		<b>productItem</b> 
+	</field>
+	<field>
+		<a>custIsDeliverShortning</a> 
+		<b>custIsDeliverShortning</b> 
+	</field>
+	<field>
+		<a>custIsEarlyDiscount</a> 
+		<b>custIsEarlyDiscount</b> 
 	</field>
 	<field>
 		<a>productIs3Piece</a> 
@@ -76,11 +76,11 @@
 	</field>
 	<field>
 		<a>productLcrSewing</a> 
-		<b>productLcrSewing</b> 
+		<b>productLcrSewingCd</b> 
 	</field>
 	<field>
 		<a>productBrandNm</a> 
-		<b>productBrandNm</b> 
+		<b>productBrandType</b> 
 	</field>
 	<field>
 		<a>productFabricNmNecessity</a> 
@@ -96,11 +96,7 @@
 	</field>
 	<field>
 		<a>productEmbroideryFont</a> 
-		<b>productEmbroideryFont</b> 
-	</field>
-	<field>
-		<a>productEmbroideryThreadColor</a> 
-		<b>productEmbroideryThreadColor</b> 
+		<b>productEmbroideryFontCd</b> 
 	</field>
 	<field>
 		<a>productRemainingClothType</a> 
@@ -150,12 +146,40 @@
 		<a>consumptionTaxAmount</a> 
 		<b>consumptionTaxAmount</b> 
 	</field>
+	<field>
+		<a>productEmbroideryGazette</a> 
+		<b>productEmbroideryGazetteCd</b> 
+	</field>
+	<field>
+		<a>expediteDeliveryPrice</a> 
+		<b>custIsDeliverShortningRtPrice</b> 
+	</field>
+	<field>
+		<a>lcrSewingPrice</a> 
+		<b>productLcrSewingRtPrice</b> 
+	</field>
+	<field>
+		<a>embroideryNmPosPrice</a> 
+		<b>productEmbroideryNmPosRtPrice</b> 
+	</field>
+	<field>
+		<a>gadgetPrice</a> 
+		<b>productEmbroideryGazetteRtPrice</b> 
+	</field>
 </mapping>
 
 <!--JACKET Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
+	<field>
+		<a>ojJacketModel</a> 
+		<b>jkLapelModelCd</b> 
+	</field>
+	<field>
+		<a>ojJacketModel</a> 
+		<b>jkLapelModelNm</b> 
+	</field>
 	<field>
 		<a>ojInsidePktChange</a> 
 		<b>jkInnerPktType</b> 
@@ -182,7 +206,7 @@
 	</field>
 	<field>
 		<a>ojSleeveBtnType</a> 
-		<b>jkSleeveBtnType</b> 
+		<b>jkSleeveBtnCd</b> 
 	</field>
 	<field>
 		<a>ojSleeveBtnCnt</a> 
@@ -308,7 +332,7 @@
 
 <!--GILET Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>ogGiletModel</a> 
@@ -333,6 +357,26 @@
 	<field>
 		<a>ogStitch</a> 
 		<b>glAmfStitchCd</b> 
+	</field>
+	<field>
+		<a>ogStitchModify</a> 
+		<b>glStitchPlcType</b> 
+	</field>
+	<field>
+		<a>ogDStitchModify</a> 
+		<b>glDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>ogAmfColor</a> 
+		<b>glAmfColorType</b> 
+	</field>
+	<field>
+		<a>ogBhColor</a> 
+		<b>glBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>ogByColor</a> 
+		<b>glBtnthreadColorType</b> 
 	</field>
 	<field>
 		<a>ogBackLiningMate</a> 
@@ -370,7 +414,7 @@
 
 <!--PANTS Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>opPantsModel</a> 
@@ -403,6 +447,10 @@
 	<field>
 		<a>opAdjuster</a> 
 		<b>ptAdjusterCd</b> 
+	</field>
+	<field>
+		<a>opBeltLoop</a> 
+		<b>ptBeltloopType</b> 
 	</field>
 	<field>
 		<a>opPinLoop</a> 
@@ -449,6 +497,26 @@
 		<b>ptAmfStitchCd</b> 
 	</field>
 	<field>
+		<a>opStitchModify</a> 
+		<b>ptStitchPlcType</b> 
+	</field>
+	<field>
+		<a>opDStitch</a> 
+		<b>ptDblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>opAmfColor</a> 
+		<b>ptAmfColorType</b> 
+	</field>
+	<field>
+		<a>opBhColor</a> 
+		<b>ptBtnholeColorType</b> 
+	</field>
+	<field>
+		<a>opByColor</a> 
+		<b>ptBtnthreadColorType</b> 
+	</field>
+	<field>
 		<a>opButton</a> 
 		<b>ptBtnMaterialType</b> 
 	</field>
@@ -472,11 +540,19 @@
 		<a>opShapeMemory</a> 
 		<b>ptShapeMemoryCd</b> 
 	</field>
+	<field>
+		<a>ptBeltLoopRtPrice</a> 
+		<b>ptBeltloopRtPrice</b> 
+	</field>
+	<field>
+		<a>ptPinLoopRtPrice</a> 
+		<b>ptPinloopRtPrice</b> 
+	</field>
 </mapping>
 
 <!--2PANTS Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2StandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>op2PantsModel</a> 
@@ -509,6 +585,10 @@
 	<field>
 		<a>op2Adjuster</a> 
 		<b>pt2AdjusterCd</b> 
+	</field>
+	<field>
+		<a>op2BeltLoop</a> 
+		<b>pt2BeltloopType</b> 
 	</field>
 	<field>
 		<a>op2PinLoop</a> 
@@ -555,6 +635,26 @@
 		<b>pt2AmfStitchCd</b> 
 	</field>
 	<field>
+		<a>op2StitchModify</a> 
+		<b>pt2StitchPlcType</b> 
+	</field>
+	<field>
+		<a>op2DStitch</a> 
+		<b>pt2DblstitchPlcType</b> 
+	</field>
+	<field>
+		<a>op2AmfColor</a> 
+		<b>pt2AmfColorType</b> 
+	</field>
+	<field>
+		<a>op2BhColor</a> 
+		<b>pt2BtnholeColorType</b> 
+	</field>
+	<field>
+		<a>op2ByColor</a> 
+		<b>pt2BtnthreadColorType</b> 
+	</field>
+	<field>
 		<a>op2Button</a> 
 		<b>pt2BtnMaterialType</b> 
 	</field>
@@ -582,7 +682,7 @@
 
 <!--COAT Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>coatModel</a> 
@@ -595,6 +695,10 @@
 	<field>
 		<a>ocLapelDesign</a> 
 		<b>ctLapelDesignCd</b> 
+	</field>
+	<field>
+		<a>ocSleeveSpec</a> 
+		<b>ctSleeveTypeCd</b> 
 	</field>
 	<field>
 		<a>ocWaistPkt</a> 
@@ -660,7 +764,7 @@
 
 <!--SHIRT Standard  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.OptionShirtStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>osShirtModel</a> 
@@ -676,7 +780,7 @@
 	</field>
 	<field>
 		<a>osCuffs</a> 
-		<b>stCollarTypeCd</b> 
+		<b>stCuffsCd</b> 
 	</field>
 	<field>
 		<a>osConvertible</a> 
@@ -770,7 +874,7 @@
 
 <!--JACKET補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustJacketStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustJacketStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>sizeFigure</a> 
@@ -830,17 +934,17 @@
 	</field>
 	<field>
 		<a>corJkShoulderPad</a> 
-		<b>corJkShoulderpad</b> 
+		<b>corJkShoulderpadCd</b> 
 	</field>
 	<field>
 		<a>corJkFigureCorrect</a> 
-		<b>corJkFigureCorrect</b> 
+		<b>corJkFigureCorrectCd</b> 
 	</field>
 </mapping>
 
 <!--GILET補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustGiletStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustGiletStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>sizeFigure</a> 
@@ -890,7 +994,7 @@
 
 <!--PANTS補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustPantsStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustPantsStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>sizeFigure</a> 
@@ -952,10 +1056,10 @@
 		<a>corPtHemwidthGross</a> 
 		<b>corPtHemwidthGross</b> 
 	</field>
-	<!-- <field>
-		<a></a> 
+	<field>
+		<a>corPtHemwidthDegignate</a> 
 		<b>corPtHemwidthDegignate</b> 
-	</field> -->
+	</field>
 	<field>
 		<a>corPtRightinseamSize</a> 
 		<b>corPtRightinseamSize</b> 
@@ -984,7 +1088,7 @@
 
 <!--PANTS2補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustPants2StandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustPants2StandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>sizeFigure</a> 
@@ -1046,10 +1150,10 @@
 		<a>corPt2HemwidthGross</a> 
 		<b>corPt2HemwidthGross</b> 
 	</field>
-	<!-- <field>
-		<a></a> 
+	<field>
+		<a>corPt2HemwidthDegignate</a> 
 		<b>corPt2HemwidthDegignate</b> 
-	</field> -->
+	</field>
 	<field>
 		<a>corPt2RightinseamSize</a> 
 		<b>corPt2RightinseamSize</b> 
@@ -1078,7 +1182,7 @@
 
 <!--SHIRTS補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustShirtStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustShirtStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>corStSize</a> 
@@ -1144,11 +1248,11 @@
 		<a>corStBackdartsPackGross</a> 
 		<b>corStBackdartsPackGross</b> 
 	</field>
-	<!-- <field>
-		<a></a> 
-		<b></b> 
-	</field>
 	<field>
+		<a>corStBackdartsUnpackCd</a> 
+		<b>corStBackdartsUnpackCd</b> 
+	</field>
+	<!-- <field>
 		<a></a> 
 		<b></b> 
 	</field>
@@ -1184,7 +1288,7 @@
 
 <!--COAT補正  -->
 <mapping>	
-<class-a>co.jp.aoyama.macchinetta.app.order.info.AdjustCoatStandardInfo</class-a> 
+<class-a>co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo</class-a> 
 <class-b>co.jp.aoyama.macchinetta.domain.model.Order</class-b> 
 	<field>
 		<a>corCtSize</a> 

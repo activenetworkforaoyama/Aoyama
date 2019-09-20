@@ -193,23 +193,23 @@ public class OrderDetailController {
 		return "detail/orderPoDetail";
 	}
 	
-    /**
-   	* 全部注文を条件検索.
-     * @param form 画面Form
-     * @return 注文情報リスト
-     */
-	@RequestMapping(value = "/orderCoDetail")
-	public String orderCoDetail(Model model,Map<String, Object> map) {
-		// 店舗を取得
-		List<Shop> shopList = shopService.findAllShop();
-		
-		Map<String, String> mapShop = new HashMap<String,String>();
-		for (Shop shop : shopList) {
-			mapShop.put(shop.getShopCode(), shop.getShopName());
-		}
-		map.put("mapShop", mapShop);
-		return "detail/orderCoDetail";
-	}
+//    /**
+//   	* 全部注文を条件検索.
+//     * @param form 画面Form
+//     * @return 注文情報リスト
+//     */
+//	@RequestMapping(value = "/orderCoDetail")
+//	public String orderCoDetail(Model model,Map<String, Object> map) {
+//		// 店舗を取得
+//		List<Shop> shopList = shopService.findAllShop();
+//		
+//		Map<String, String> mapShop = new HashMap<String,String>();
+//		for (Shop shop : shopList) {
+//			mapShop.put(shop.getShopCode(), shop.getShopName());
+//		}
+//		map.put("mapShop", mapShop);
+//		return "detail/orderCoDetail";
+//	}
 	
 	
 	/**

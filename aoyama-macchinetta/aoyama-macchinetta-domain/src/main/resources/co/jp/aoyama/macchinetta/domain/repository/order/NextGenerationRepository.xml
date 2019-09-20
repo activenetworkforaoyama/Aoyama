@@ -359,4 +359,142 @@
 	  		and mfa.order_pattern = 'CO'
   </select>
   
+  <select id="selectCoOptionNextGenerationPrice" resultMap="NextGenerationResultMap">
+	select mob.item_code || mob.sub_item_code || mob.option_code || mob.option_branch_code as keyCode,		
+       mob.sub_item_code as mobSubItemCode,		
+       mob.option_code as mobOptionCode,		
+       mob.option_branch_code as mobOptionBranchCode,		
+       moap.sub_item_code as moapSubItemCode,		
+       moap.option_code as moapOptionCode,		
+       moap.option_branch_code as moapOptionBranchCode,	
+       COALESCE(moap.price, 0) as moapPrice,	
+       COALESCE(moap.double_price, 0) as moapDoublePrice,		
+       mow.sub_item_code as mowSubItemCode,		
+       mow.option_code as mowOptionCode,		
+       mow.option_branch_code as mowOptionBranchCode,		
+       COALESCE(mow.wage, 0) as mowWage		
+	from  mtb_option_branch as mob		
+      left join mtb_option_wage as mow on mob.sub_item_code =  mow.sub_item_code 
+      									  and mob.option_code =  mow.option_code 
+      									  and mob.option_branch_code = mow.option_branch_code	
+      									  and mob.item_code = mow.item_code
+      									  and mow.factory_code = #{arg4}
+      left join mtb_option_accessory_price as moap on mob.sub_item_code =  moap.sub_item_code 
+      									   and mob.option_code =  moap.option_code 
+      									   and mob.option_branch_code = moap.option_branch_code	
+      									   and mob.item_code = moap.item_code
+      									   and moap.factory_code = #{arg4}	
+	where mob.order_pattern = 'CO' and mob.item_code = #{arg5}
+	<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4!=null and param4!='' and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3})	
+	</if>
+	<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4==null and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg0},#{arg1},#{arg2})	
+	</if>
+	<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4!=null and param4!='' and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg0},#{arg1},#{arg3})	
+	</if>
+	<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4==null and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg0},#{arg1})	
+	</if>
+	<if test="param1!=null and param1!='' and param2==null and param3==null and param4==null and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg0})	
+	</if>
+	<if test="param1==null and param2!=null and param2!=''and param3==null and param4==null and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg1})	
+	</if>
+	<if test="param1==null and param2==null and param3!=null and param3!=''and param4==null and param7 == null and param8==null">	
+      and mob.sub_item_code in (#{arg2})	
+	</if>
+	<if test="param1==null and param2==null and param3==null and param4==null and param7 != null and param7 != '' and param8==null">	
+      and mob.sub_item_code in (#{arg6})	
+	</if>
+	<if test="param1==null and param2==null and param3==null and param4==null and param7 == null and param8 != '' and param8==null">	
+      and mob.sub_item_code in (#{arg7})	
+	</if>
+  </select>
+  
+  <select id="selectCoDetailNextGenerationPrice" resultMap="NextGenerationResultMap">
+  	select mobd.item_code || mobd.sub_item_code || mobd.option_code || mobd.option_branch_code || moadp.option_branch_detail_code as keyDetailCode,
+       mobd.sub_item_code as mobdSubItemCode,
+       mobd.option_code as mobdOptionCode,
+       mobd.option_branch_code as mobdOptionBranchCode, 
+       moap.option_code as moapOptionCodeT,
+       moap.option_branch_code as moapOptionBranchCodeT, 
+       COALESCE(moap.price, 0) as moapPriceT,
+       COALESCE(moap.double_price, 0) as moapDoublePriceT,
+       mow.option_code as mowOptionCodeT,
+       mow.option_branch_code as mowOptionBranchCodeT,
+       COALESCE(mow.wage, 0) as mowWageT,
+       moadp.option_branch_detail_code as moadpOptionBranchDetailCode,
+       COALESCE(moadp.price, 0) as moadpPrice,
+       COALESCE(moadp.double_price, 0) as moadpDoublePrice
+	from  mtb_option_branch_detail as mobd
+      left join mtb_option_wage as mow on mobd.sub_item_code =  mow.sub_item_code 
+      								  and mobd.option_code =  mow.option_code 
+      								  and mobd.option_branch_code = mow.option_branch_code
+      								  and mobd.item_code = mow.item_code
+      								  and mow.factory_code = #{arg4}
+      left join mtb_option_accessory_price as moap on mobd.sub_item_code =  moap.sub_item_code 
+      									          and mobd.option_code =  moap.option_code 
+      									          and mobd.option_branch_code = moap.option_branch_code 
+      									          and mobd.item_code = moap.item_code
+      									          and moap.factory_code = #{arg4}
+      left join mtb_option_accessory_detail_price as moadp on mobd.sub_item_code =  moadp.sub_item_code 
+      													  and mobd.option_code =  moadp.option_code 
+      													  and mobd.option_branch_code = moadp.option_branch_code 
+      													  and mobd.option_branch_detail_code = moadp.option_branch_detail_code 
+      													  and mobd.item_code = moadp.item_code
+      													  and moadp.factory_code = #{arg4}
+	where mobd.order_pattern = 'CO' and mobd.item_code = #{arg5}
+		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4!=null and param4!='' and param7 == null and param8==null">	
+       		and mobd.sub_item_code in (#{arg0},#{arg1},#{arg2},#{arg3})	
+	   </if>
+	   <if test="param1!=null and param1!='' and param2!=null and param2!=''and param3!=null and param3!=''and param4==null and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg0},#{arg1},#{arg2})	
+		</if>
+		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4!=null and param4!='' and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg0},#{arg1},#{arg3})	
+		</if>
+		<if test="param1!=null and param1!='' and param2!=null and param2!=''and param3==null and param4==null and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg0},#{arg1})	
+		</if>
+		<if test="param1!=null and param1!='' and param2==null and param3==null and param4==null and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg0})	
+		</if>
+		<if test="param1==null and param2!=null and param2!=''and param3==null and param4==null and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg1})	
+		</if>
+		<if test="param1==null and param2==null and param3!=null and param3!=''and param4==null and param7 == null and param8==null">	
+      		and mobd.sub_item_code in (#{arg2})	
+		</if>
+		<if test="param1==null and param2==null and param3!=null and param4==null and param7 != null and param7!='' and param8==null">	
+      		and mobd.sub_item_code in (#{arg6})	
+		</if>
+		<if test="param1==null and param2==null and param3!=null and param4==null and param7 == null and param8!='' and param8!=null">	
+      		and mobd.sub_item_code in (#{arg7})	
+		</if>
+  </select>
+  
+  <select id="selectCoComplexItemsAccessoryPriceList" resultMap="NextGenerationResultMap">
+  	select COALESCE(price, 0) as moapPrice,
+  		   COALESCE(double_price, 0) as moapDoublePrice,
+  		   option_branch_code as moapOptionBranchCode
+  	from mtb_option_accessory_price
+  	where factory_code = #{arg0}
+  	  and item_code = #{arg1}
+  	  and sub_item_code = #{arg2}
+  	  and option_code = #{arg3}
+  </select>
+  
+  <select id="selectCoComplexItemsWageList" resultMap="NextGenerationResultMap">
+  	select COALESCE(wage, 0) as mowWage,
+  		   option_branch_code as mowOptionBranchCode
+  	from mtb_option_wage
+  	where factory_code = #{arg0}
+  	  and item_code = #{arg1}
+  	  and sub_item_code = #{arg2}
+  	  and option_code = #{arg3}
+  </select>
+  
  </mapper>

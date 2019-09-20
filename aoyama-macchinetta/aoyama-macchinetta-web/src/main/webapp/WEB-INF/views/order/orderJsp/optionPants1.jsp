@@ -1,4 +1,4 @@
-<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
+<form:form id="idInfoForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
 <div id="op_pants_div">
             <div class="card-header">
                 <strong class="card-title">PANTS</strong>
@@ -11,9 +11,12 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op_pantsModel" path="optionPantsStandardInfo.opPantsModel" class="form-control-sm form-control">
-                                		<form:options items="${orderForm.optionPantsStandardInfo.opPantsModelMap}"/>
+                                <form:select id="op_pantsModel" path="coOptionPantsStandardInfo.opPantsModel" class="form-control-sm form-control">
+                                		<form:options items="${orderCoForm.coOptionPantsStandardInfo.opPantsModelMap}"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" align="right">
+                            	<output id="op_pantsModel_Msg" ></output>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelMsg"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelCheck" style="margin-top:8px"></div>
@@ -21,65 +24,77 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
                             <div class="col col-md-3">
-                                <form:select id="op_tack" path="optionPantsStandardInfo.opTack" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opTackMap}"/>
+                                <form:select id="op_tack" path="coOptionPantsStandardInfo.opTack" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opTackMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_tackMsg"></div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_tackMsg"></div> -->
+                            <div class="col-12 col-md-6" id="op_tack_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                     <form:radiobuttons id="op_kneeBack_id" path="optionPantsStandardInfo.opKneeBack" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opKneeBackMap}"/>
+                                     <form:radiobuttons id="op_kneeBack_id" path="coOptionPantsStandardInfo.opKneeBack" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opKneeBackMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="op_kneeBack_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group" id="op_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_kneeBackMate_id" path="optionPantsStandardInfo.opKneeBackMate" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opKneeBackMateMap}"/>
+                                    <form:radiobuttons id="op_kneeBackMate_id" path="coOptionPantsStandardInfo.opKneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opKneeBackMateMap}"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="op_kneeBackMate_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_frontSpec_id" path="optionPantsStandardInfo.opFrontSpec" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opFrontSpecMap}"/>
+                                    <form:radiobuttons id="op_frontSpec_id" path="coOptionPantsStandardInfo.opFrontSpec" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opFrontSpecMap}"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="op_frontSpec_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_pancherina_id" path="optionPantsStandardInfo.opPancherina" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opPancherinaMap}"/>
+                                    <form:radiobuttons id="op_pancherina_id" path="coOptionPantsStandardInfo.opPancherina" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opPancherinaMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" id="op_pancherina_Msg" align="right">
+                            </div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="op_pancherinaMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_adjuster_id" path="optionPantsStandardInfo.opAdjuster" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opAdjusterMap}"/>
+                                    <form:radiobuttons id="op_adjuster_id" path="coOptionPantsStandardInfo.opAdjuster" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opAdjusterMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_adjusterMsg"></div>
+                             <div class="col-12 col-md-3" id="op_adjuster_Msg" align="right">
+                            </div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="op_adjusterMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_beltLoop_id" path="optionPantsStandardInfo.opBeltLoop" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opBeltLoopMap}"/>
+                                    <form:radiobuttons id="op_beltLoop_id" path="coOptionPantsStandardInfo.opBeltLoop" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opBeltLoopMap}"/>
                                 </div>
                                 <div class="offset-md-1" id="op_beltLoopPlace">
                                     <div>
@@ -89,129 +104,152 @@
                                         </div>
                                     </div>
                                     <%-- <div class="form-check-inline form-check">
-                                        <form:checkboxes id="op_beltLoopPlace_id" items="${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap }" path="optionPantsStandardInfo.opBeltLoopPlace" class="form-check-input"/>
+                                        <form:checkboxes id="op_beltLoopPlace_id" items="${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlaceMap }" path="coOptionPantsStandardInfo.opBeltLoopPlace" class="form-check-input"/>
                                     </div> --%>
-                                    <c:forEach var="opBeltLoopPlaceMap" items="${orderForm.optionPantsStandardInfo.opBeltLoopPlaceMap }" varStatus="row">
+                                    <c:forEach var="opBeltLoopPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlaceMap }" varStatus="row">
                                 		<div class="form-check-inline form-check" id="op_beltLoopPlace_id1${row.count}">
-                                			<input type="checkbox" id="op_beltLoopPlace_id${row.count}" name="optionPantsStandardInfo.opBeltLoopPlace${row.count}" value="${opBeltLoopPlaceMap.key}" class="form-check-input">${opBeltLoopPlaceMap.value}
+                                			<input type="checkbox" id="op_beltLoopPlace_id${row.count}" name="coOptionPantsStandardInfo.opBeltLoopPlace${row.count}" value="${opBeltLoopPlaceMap.key}" class="form-check-input">${opBeltLoopPlaceMap.value}
                                 		</div>
                                 	</c:forEach>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_beltLoopMsg"></div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_beltLoopMsg"></div> -->
+                            <div class="col-12 col-md-3" id="op_beltLoop_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_pinLoop_id" path="optionPantsStandardInfo.opPinLoop" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opPinLoopMap}"/>
+                                    <form:radiobuttons id="op_pinLoop_id" path="coOptionPantsStandardInfo.opPinLoop" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opPinLoopMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pinLoopMsg"></div>
+                             <div class="col-12 col-md-3" id="op_pinLoop_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_pinLoopMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_sidePkt_id" path="optionPantsStandardInfo.opSidePkt" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opSidePktMap}"/>
+                                    <form:radiobuttons id="op_sidePkt_id" path="coOptionPantsStandardInfo.opSidePkt" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opSidePktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_sidePktMsg"></div>
-                        </div>
+                             <div class="col-12 col-md-3" id="op_sidePkt_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_sidePktMsg"></div>-->
+                        </div> 
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_sinobiPkt_id" path="optionPantsStandardInfo.opSinobiPkt" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opSinobiPktMap}"/>
+                                    <form:radiobuttons id="op_sinobiPkt_id" path="coOptionPantsStandardInfo.opSinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opSinobiPktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_sinobiPktMsg"></div>
+                             <div class="col-12 col-md-3" id="op_sinobiPkt_Msg" align="right">
+                            </div>                      
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op_coinPkt" class="form-control-sm form-control" path="optionPantsStandardInfo.opCoinPkt">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opCoinPktMap}"/>
+                                <form:select id="op_coinPkt" class="form-control-sm form-control" path="coOptionPantsStandardInfo.opCoinPkt">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opCoinPktMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_coinPktMsg"></div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_coinPktMsg"></div> -->
+                              <div class="col-12 col-md-6" id="op_coinPkt_Msg" align="right">
+                            </div> 
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                   	<form:radiobuttons id="op_flapCoinPkt_id" path="optionPantsStandardInfo.opFlapCoinPkt" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opFlapCoinPktMap }"/>　
+                                   	<form:radiobuttons id="op_flapCoinPkt_id" path="coOptionPantsStandardInfo.opFlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opFlapCoinPktMap }"/>　
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_flapCoinPktMsg"></div>
+                             <div class="col-12 col-md-3" id="op_flapCoinPkt_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_flapCoinPktMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_pisPktUf_id" path="optionPantsStandardInfo.opPisPktUf" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opPisPktUfMap }"/>
+                                    <form:radiobuttons id="op_pisPktUf_id" path="coOptionPantsStandardInfo.opPisPktUf" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opPisPktUfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pisPktUfMsg"></div>
+                             <div class="col-12 col-md-3" id="op_pisPktUf_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_pisPktUfMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_pisPktDf_id" path="optionPantsStandardInfo.opPisPktDf" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opPisPktDfMap }"/>
+                                    <form:radiobuttons id="op_pisPktDf_id" path="coOptionPantsStandardInfo.opPisPktDf" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opPisPktDfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pisPktDfMsg"></div>
+                             <div class="col-12 col-md-3" id="op_pisPktDf_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_pisPktDfMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_vCut_id" path="optionPantsStandardInfo.opVCut" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opVCutMap }"/>
+                                    <form:radiobuttons id="op_vCut_id" path="coOptionPantsStandardInfo.opVCut" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opVCutMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_vCutMsg"></div>
+                            <div class="col-12 col-md-3" id="op_vCut_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="op_vCutMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op_hemUp" path="optionPantsStandardInfo.opHemUp" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opHemUpMap }"/>
+                                <form:select id="op_hemUp" path="coOptionPantsStandardInfo.opHemUp" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opHemUpMap }"/>
                                 </form:select>
+                            </div>
+                             <div class="col-12 col-md-6" id="op_hemUp_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group"  id="op_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                                <form:select id="op_doubleWide" path="optionPantsStandardInfo.opDoubleWide" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opDoubleWideMap }"/>
+                                <form:select id="op_doubleWide" path="coOptionPantsStandardInfo.opDoubleWide" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opDoubleWideMap }"/>
                                 </form:select>
+                            </div>
+                              <div class="col-12 col-md-6" id="op_doubleWide_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_stitch"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_stitch_id" path="optionPantsStandardInfo.opStitch" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opStitchMap }"/>
+                                    <form:radiobuttons id="op_stitch_id" path="coOptionPantsStandardInfo.opStitch" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opStitchMap }"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="op_stitch_Msg" align="right">
                             </div>
                         </div>
                         <div id="op_stitch_yes_area">
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_stitchModify_id" path="optionPantsStandardInfo.opStitchModify" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opStitchModifyMap }"/>
+                                    <form:radiobuttons id="op_stitchModify_id" path="coOptionPantsStandardInfo.opStitchModify" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opStitchModifyMap }"/>
                                 </div>
                                 <div id="op_stitchModify_yes_area">
                                 <div class="offset-md-1">
@@ -222,22 +260,24 @@
                                 </div>
                                 <div class="offset-md-1" id="op_stitchModifyPlace">
                                 <%-- <div class="form-check-inline form-check">
-                                    <form:checkboxes id="op_stitchModifyPlace_id" items="${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap }" path="optionPantsStandardInfo.opStitchModifyPlace" class="form-check-input"/>
+                                    <form:checkboxes id="op_stitchModifyPlace_id" items="${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlaceMap }" path="coOptionPantsStandardInfo.opStitchModifyPlace" class="form-check-input"/>
                                 </div> --%>
-                                <c:forEach var="opStitchModifyPlaceMap" items="${orderForm.optionPantsStandardInfo.opStitchModifyPlaceMap }" varStatus="row">
+                                <c:forEach var="opStitchModifyPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="op_stitchModifyPlace_id${row.count}" name="optionPantsStandardInfo.opStitchModifyPlace${row.count}" value="${opStitchModifyPlaceMap.key}" class="form-check-input">${opStitchModifyPlaceMap.value}
+                                		<input type="checkbox" id="op_stitchModifyPlace_id${row.count}" name="coOptionPantsStandardInfo.opStitchModifyPlace${row.count}" value="${opStitchModifyPlaceMap.key}" class="form-check-input">${opStitchModifyPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" id="op_stitchModify_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_dStitch_id" path="optionPantsStandardInfo.opDStitch" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opDStitchMap }"/>
+                                    <form:radiobuttons id="op_dStitch_id" path="coOptionPantsStandardInfo.opDStitch" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opDStitchMap }"/>
                                 </div>
                                 <div id="op_dStitch_yes_area">
                                 <div class="offset-md-1">
@@ -248,47 +288,49 @@
                                 </div>
                                 <div class="offset-md-1" id="op_dStitchPlace">
                                 <%-- <div class="form-check-inline form-check">
-                                    <form:checkboxes id="op_dStitchPlace_id" items="${orderForm.optionPantsStandardInfo.opDStitchPlaceMap }" path="optionPantsStandardInfo.opDStitchPlace" class="form-check-input"/>
+                                    <form:checkboxes id="op_dStitchPlace_id" items="${orderCoForm.coOptionPantsStandardInfo.opDStitchPlaceMap }" path="coOptionPantsStandardInfo.opDStitchPlace" class="form-check-input"/>
                                 </div> --%>
-                                <c:forEach var="opDStitchPlaceMap" items="${orderForm.optionPantsStandardInfo.opDStitchPlaceMap }" varStatus="row">
+                                <c:forEach var="opDStitchPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opDStitchPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="op_dStitchPlace_id${row.count}" name="optionPantsStandardInfo.opDStitchPlace${row.count}" value="${opDStitchPlaceMap.key}" class="form-check-input">${opDStitchPlaceMap.value}
+                                		<input type="checkbox" id="op_dStitchPlace_id${row.count}" name="coOptionPantsStandardInfo.opDStitchPlace${row.count}" value="${opDStitchPlaceMap.key}" class="form-check-input">${opDStitchPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                                 </div>
                             </div>
+                             <div class="col-12 col-md-3" id="op_dStitch_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_amfColor_id" path="optionPantsStandardInfo.opAmfColor" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opAmfColorMap }"/>
+                                    <form:radiobuttons id="op_amfColor_id" path="coOptionPantsStandardInfo.opAmfColor" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opAmfColorMap }"/>
                                 </div>
                                 <div id="op_amfColor_div" style="display:none;">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op_amfColorPlaceAll" path="optionPantsStandardInfo.opAmfColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsStandardInfo.opAmfColorPlaceAllMap}"/>
+                                    <form:select id="op_amfColorPlaceAll" path="coOptionPantsStandardInfo.opAmfColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op_amfColorPlace">全選択</button>
                                 </div>
                                 </div>
-                                <c:forEach var="opAmfColorPlaceMap" items="${orderForm.optionPantsStandardInfo.opAmfColorPlaceMap }" varStatus="row">
+                                <c:forEach var="opAmfColorPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op_amfColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op_amfColorPlace_${row.count}" name="optionPantsStandardInfo.opAmfColorPlace${row.count}" value="${opAmfColorPlaceMap.key }" class="form-check-input">${opAmfColorPlaceMap.value }
+                                        <input type="checkbox" id="op_amfColorPlace_${row.count}" name="coOptionPantsStandardInfo.opAmfColorPlace${row.count}" value="${opAmfColorPlaceMap.key }" class="form-check-input">${opAmfColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="op_amfColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="opAmfColorsMap" items="${orderForm.optionPantsStandardInfo.opAmfColorsMap}">
+                                		<c:forEach var="opAmfColorsMap" items="${orderCoForm.coOptionPantsStandardInfo.opAmfColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op_amfColor" class="form-check-label ">
-                                			    <input type="radio" id="op_amfColor_${opAmfColorsMap.key}" name="optionPantsStandardInfo.opAmfColor${row.count}" value="${opAmfColorsMap.key}" class="form-check-input">${opAmfColorsMap.value}
+                                			    <input type="radio" id="op_amfColor_${opAmfColorsMap.key}" name="coOptionPantsStandardInfo.opAmfColor${row.count}" value="${opAmfColorsMap.key}" class="form-check-input">${opAmfColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -296,38 +338,41 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                         <div class="col-12 col-md-3" id="op_amfColor_Msg" align="right">
+                            </div>
                         </div>
+                          
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_bhColor_id" path="optionPantsStandardInfo.opBhColor" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opBhColorMap }"/>
+                                    <form:radiobuttons id="op_bhColor_id" path="coOptionPantsStandardInfo.opBhColor" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opBhColorMap }"/>
                                 </div>
                                 <div id="op_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op_bhColorPlaceAll" path="optionPantsStandardInfo.opBhColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsStandardInfo.opBhColorPlaceAllMap}"/>
+                                    <form:select id="op_bhColorPlaceAll" path="coOptionPantsStandardInfo.opBhColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opBhColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op_bhColorPlace">全選択</button>
                                 </div>
                                 </div>
-                                <c:forEach var="opBhColorPlaceMap" items="${orderForm.optionPantsStandardInfo.opBhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="opBhColorPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opBhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op_bhColorPlace_${row.count}" name="optionPantsStandardInfo.opBhColorPlace${row.count}" value="${opBhColorPlaceMap.key }" class="form-check-input">${opBhColorPlaceMap.value }
+                                        <input type="checkbox" id="op_bhColorPlace_${row.count}" name="coOptionPantsStandardInfo.opBhColorPlace${row.count}" value="${opBhColorPlaceMap.key }" class="form-check-input">${opBhColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="op_bhColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="opBhColorsMap" items="${orderForm.optionPantsStandardInfo.opBhColorsMap}">
+                                		<c:forEach var="opBhColorsMap" items="${orderCoForm.coOptionPantsStandardInfo.opBhColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op_bhColor" class="form-check-label ">
-                                			    <input type="radio" id="op_bhColor_${opBhColorsMap.key}" name="optionPantsStandardInfo.opBhColor${row.count}" value="${opBhColorsMap.key}" class="form-check-input">${opBhColorsMap.value}
+                                			    <input type="radio" id="op_bhColor_${opBhColorsMap.key}" name="coOptionPantsStandardInfo.opBhColor${row.count}" value="${opBhColorsMap.key}" class="form-check-input">${opBhColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -335,37 +380,39 @@
                                 </c:forEach>
                                 </div> 
                             </div>
+                             <div class="col-12 col-md-3" id="op_bhColor_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_byColor_id" path="optionPantsStandardInfo.opByColor" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opByColorMap }"/>
+                                    <form:radiobuttons id="op_byColor_id" path="coOptionPantsStandardInfo.opByColor" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opByColorMap }"/>
                                 </div>
                                 <div id="op_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="op_byColorPlaceAll" path="optionPantsStandardInfo.opByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsStandardInfo.opByColorPlaceAllMap}"/>
+                                    <form:select id="op_byColorPlaceAll" path="coOptionPantsStandardInfo.opByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_op_byColorPlace">全選択</button>
                                 </div>
                                 </div>
-                                <c:forEach var="opByColorPlaceMap" items="${orderForm.optionPantsStandardInfo.opByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="opByColorPlaceMap" items="${orderCoForm.coOptionPantsStandardInfo.opByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="op_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="op_byColorPlace_${row.count}" name="optionPantsStandardInfo.opByColorPlace${row.count}" value="${opByColorPlaceMap.key }" class="form-check-input">${opByColorPlaceMap.value }
+                                        <input type="checkbox" id="op_byColorPlace_${row.count}" name="coOptionPantsStandardInfo.opByColorPlace${row.count}" value="${opByColorPlaceMap.key }" class="form-check-input">${opByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="op_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="opByColorsMap" items="${orderForm.optionPantsStandardInfo.opByColorsMap}">
+                                		<c:forEach var="opByColorsMap" items="${orderCoForm.coOptionPantsStandardInfo.opByColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="op_byColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="op_byColor_${opByColorsMap.key}" name="optionPantsStandardInfo.opByColor${row.count}" value="${opByColorsMap.key}" class="form-check-input">${opByColorsMap.value}
+                                			    <input type="radio" id="op_byColor_${opByColorsMap.key}" name="coOptionPantsStandardInfo.opByColor${row.count}" value="${opByColorsMap.key}" class="form-check-input">${opByColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -373,34 +420,40 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                             <div class="col-12 col-md-3" id="op_byColor_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_op_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                                <form:select id="op_btnMate" class="form-control-sm form-control" path="optionPantsStandardInfo.opButton">
-                                	<form:options items="${orderForm.optionPantsStandardInfo.opButtonMap }"/>
+                                <form:select id="op_btnMate" class="form-control-sm form-control" path="coOptionPantsStandardInfo.opButton">
+                                	<form:options items="${orderCoForm.coOptionPantsStandardInfo.opButtonMap }"/>
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionPantsStandardInfo.opBtnMateStkNo" id="op_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionPantsStandardInfo.opBtnMateStkNo" id="op_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
+                            </div>
+                            <div class="col-12 col-md-2" id="op_btnMate_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_suspenderBtn_id" path="optionPantsStandardInfo.opSuspenderBtn" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opSuspenderBtnMap }"/>
+                                    <form:radiobuttons id="op_suspenderBtn_id" path="coOptionPantsStandardInfo.opSuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opSuspenderBtnMap }"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="op_suspenderBtn_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_thick_id" path="optionPantsStandardInfo.opThick" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opThickMap }"/>
+                                    <form:radiobuttons id="op_thick_id" path="coOptionPantsStandardInfo.opThick" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opThickMap }"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
@@ -409,18 +462,22 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_eight_id" path="optionPantsStandardInfo.opEight" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opEightMap }"/>
+                                    <form:radiobuttons id="op_eight_id" path="coOptionPantsStandardInfo.opEight" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opEightMap }"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="op_eight_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_shapeMemory_id" path="optionPantsStandardInfo.opShapeMemory" class="form-check-input" items="${orderForm.optionPantsStandardInfo.opShapeMemoryMap }"/>
+                                    <form:radiobuttons id="op_shapeMemory_id" path="coOptionPantsStandardInfo.opShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opShapeMemoryMap }"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="op_shapeMemory_Msg" align="right">
                             </div>
                         </div>
 
@@ -442,8 +499,8 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_pantsModel" path="optionPantsTuxedoInfo.tpPantsModel" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpPantsModelMap}"/>
+                            	<form:select id="tp_pantsModel" path="coOptionPantsTuxedoInfo.tpPantsModel" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpPantsModelMap}"/>
                                 </form:select>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelMsg"></div>
@@ -452,65 +509,74 @@
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_tack" path="optionPantsTuxedoInfo.tpTack" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpTackMap}"/>
+                            	<form:select id="tp_tack" path="coOptionPantsTuxedoInfo.tpTack" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpTackMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_tackMsg"></div>
+                            <div class="col-12 col-md-6" id="tp_tack_Msg" align="right">
+                            </div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="tp_tackMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                     <form:radiobuttons id="tp_kneeBack_id" path="optionPantsTuxedoInfo.tpKneeBack" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpKneeBackMap}"/>
+                                     <form:radiobuttons id="tp_kneeBack_id" path="coOptionPantsTuxedoInfo.tpKneeBack" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="tp_kneeBack_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group" id="tp_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_kneeBackMate_id" path="optionPantsTuxedoInfo.tpKneeBackMate" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpKneeBackMateMap}"/>
+                                    <form:radiobuttons id="tp_kneeBackMate_id" path="coOptionPantsTuxedoInfo.tpKneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMateMap}"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="tp_kneeBackMate_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_frontSpec_id" path="optionPantsTuxedoInfo.tpFrontSpec" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpFrontSpecMap}"/>
+                                    <form:radiobuttons id="tp_frontSpec_id" path="coOptionPantsTuxedoInfo.tpFrontSpec" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpFrontSpecMap}"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="tp_frontSpec_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_pancherina_id" path="optionPantsTuxedoInfo.tpPancherina" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpPancherinaMap}"/>
+                                    <form:radiobuttons id="tp_pancherina_id" path="coOptionPantsTuxedoInfo.tpPancherina" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpPancherinaMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_pancherina_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_adjuster_id" path="optionPantsTuxedoInfo.tpAdjuster" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpAdjusterMap}"/>
+                                    <form:radiobuttons id="tp_adjuster_id" path="coOptionPantsTuxedoInfo.tpAdjuster" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpAdjusterMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_adjusterMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_adjuster_Msg" align="right"></div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="tp_adjusterMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_beltLoop_id" path="optionPantsTuxedoInfo.tpBeltLoop" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopMap}"/>                    
+                                    <form:radiobuttons id="tp_beltLoop_id" path="coOptionPantsTuxedoInfo.tpBeltLoop" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopMap}"/>                    
                                 </div>
                                 <div class="offset-md-1" id="tp_beltLoopPlace">
                                     <div>
@@ -520,153 +586,163 @@
                                         </div>
                                     </div>
                                    <%--  <div class="form-check-inline form-check">
-                                    	<form:checkboxes id="tp_beltLoopPlace_id" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlaceMap }" path="optionPantsTuxedoInfo.tpBeltLoopPlace" class="form-check-input"/>
+                                    	<form:checkboxes id="tp_beltLoopPlace_id" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlaceMap }" path="coOptionPantsTuxedoInfo.tpBeltLoopPlace" class="form-check-input"/>
                                     </div> --%>
-                                    <c:forEach var="tpBeltLoopPlaceMap" items="${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlaceMap }" varStatus="row">
-                                	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="tp_beltLoopPlace_id${row.count}" name="optionPantsTuxedoInfo.tpBeltLoopPlace${row.count}" value="${tpBeltLoopPlaceMap.key}" class="form-check-input">${tpBeltLoopPlaceMap.value}
+                                    <c:forEach var="tpBeltLoopPlaceMap" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check" id="tp_beltLoopPlace_id1${row.count}">
+                                		<input type="checkbox" id="tp_beltLoopPlace_id${row.count}" name="coOptionPantsTuxedoInfo.tpBeltLoopPlace${row.count}" value="${tpBeltLoopPlaceMap.key}" class="form-check-input">${tpBeltLoopPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_beltLoopMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_beltLoop_Msg" align="right"></div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="tp_beltLoopMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_pinLoop_id" path="optionPantsTuxedoInfo.tpPinLoop" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpPinLoopMap}"/>
+                                    <form:radiobuttons id="tp_pinLoop_id" path="coOptionPantsTuxedoInfo.tpPinLoop" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpPinLoopMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pinLoopMsg"></div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="tp_pinLoopMsg"></div> -->
+                            <div class="col-12 col-md-3" id="tp_pinLoop_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_sidePkt_id" path="optionPantsTuxedoInfo.tpSidePkt" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpSidePktMap}"/>
+                                    <form:radiobuttons id="tp_sidePkt_id" path="coOptionPantsTuxedoInfo.tpSidePkt" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpSidePktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_sidePktMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_sidePkt_Msg" align="right"></div>
+                           <!--  <div class="col-12 col-md-9 offset-md-3" id="tp_sidePktMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_sinobiPkt_id" path="optionPantsTuxedoInfo.tpSinobiPkt" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpSinobiPktMap}"/>
+                                    <form:radiobuttons id="tp_sinobiPkt_id" path="coOptionPantsTuxedoInfo.tpSinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpSinobiPktMap}"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_sinobiPktMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_sinobiPkt_Msg" align="right"></div>
+                            <!-- <div class="col-12 col-md-9 offset-md-3" id="tp_sinobiPktMsg"></div> -->
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_coinPkt" class="form-control-sm form-control" path="optionPantsTuxedoInfo.tpCoinPkt">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpCoinPktMap}"/>
+                            	<form:select id="tp_coinPkt" class="form-control-sm form-control" path="coOptionPantsTuxedoInfo.tpCoinPkt">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpCoinPktMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_coinPktMsg"></div>
+                            <div class="col-12 col-md-6" id="tp_coinPkt_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                   	<form:radiobuttons id="tp_flapCoinPkt_id" path="optionPantsTuxedoInfo.tpFlapCoinPkt" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpFlapCoinPktMap }"/>　
+                                   	<form:radiobuttons id="tp_flapCoinPkt_id" path="coOptionPantsTuxedoInfo.tpFlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpFlapCoinPktMap }"/>　
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_flapCoinPktMsg"></div>
+                           <div class="col-12 col-md-3" id="tp_flapCoinPkt_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-7">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_pisPktUf_id" path="optionPantsTuxedoInfo.tpPisPktUf" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpPisPktUfMap }"/>
+                                    <form:radiobuttons id="tp_pisPktUf_id" path="coOptionPantsTuxedoInfo.tpPisPktUf" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktUfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pisPktUfMsg"></div>
+                            <div class="col-12 col-md-2" id="tp_flapCoinPkt_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-7">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_pisPktDf_id" path="optionPantsTuxedoInfo.tpPisPktDf" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpPisPktDfMap }"/>
+                                    <form:radiobuttons id="tp_pisPktDf_id" path="coOptionPantsTuxedoInfo.tpPisPktDf" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktDfMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pisPktDfMsg"></div>
+                            <div class="col-12 col-md-2" id="tp_pisPktDf_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_vCut_id" path="optionPantsTuxedoInfo.tpVCut" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpVCutMap }"/>
+                                    <form:radiobuttons id="tp_vCut_id" path="coOptionPantsTuxedoInfo.tpVCut" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpVCutMap }"/>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_vCutMsg"></div>
+                            <div class="col-12 col-md-3" id="tp_vCut_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_hemUp" path="optionPantsTuxedoInfo.tpHemUp" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpHemUpMap }"/>
+                            	<form:select id="tp_hemUp" path="coOptionPantsTuxedoInfo.tpHemUp" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpHemUpMap }"/>
                                 </form:select>
+                            </div>
+                            <div class="col-12 col-md-6" id="tp_hemUp_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group"  id="tp_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_doubleWide" path="optionPantsTuxedoInfo.tpDoubleWide" class="form-control-sm form-control">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpDoubleWideMap }"/>
+                            	<form:select id="tp_doubleWide" path="coOptionPantsTuxedoInfo.tpDoubleWide" class="form-control-sm form-control">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpDoubleWideMap }"/>
                                 </form:select>
+                            </div>
+                              <div class="col-12 col-md-6" id="tp_doubleWide_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_stitch_id" path="optionPantsTuxedoInfo.tpStitch" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpStitchMap }"/>
+                                    <form:radiobuttons id="tp_stitch_id" path="coOptionPantsTuxedoInfo.tpStitch" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpStitchMap }"/>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" id="tp_stitch_Msg" align="right"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_bhColor_id" path="optionPantsTuxedoInfo.tpBhColor" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpBhColorMap }"/>
+                                    <form:radiobuttons id="tp_bhColor_id" path="coOptionPantsTuxedoInfo.tpBhColor" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorMap }"/>
                                 </div>
                                 <div id="tp_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                	<form:select id="tp_bhColorPlaceAll" path="optionPantsTuxedoInfo.tpBhColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsTuxedoInfo.tpBhColorPlaceAllMap}"/>
+                                	<form:select id="tp_bhColorPlaceAll" path="coOptionPantsTuxedoInfo.tpBhColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tp_bhColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_tp_bhColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="tpBhColorPlaceMap" items="${orderForm.optionPantsTuxedoInfo.tpBhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="tpBhColorPlaceMap" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="tp_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="tp_bhColorPlace_${row.count}" name="optionPantsTuxedoInfo.tpBhColorPlace" value="${tpBhColorPlaceMap.key }" class="form-check-input">${tpBhColorPlaceMap.value }
+                                        <input type="checkbox" id="tp_bhColorPlace_${row.count}" name="coOptionPantsTuxedoInfo.tpBhColorPlace${row.count}" value="${tpBhColorPlaceMap.key }" class="form-check-input">${tpBhColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="tp_bhColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="tpBhColorsMap" items="${orderForm.optionPantsTuxedoInfo.tpBhColorsMap}">
+                                		<c:forEach var="tpBhColorsMap" items="${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="tp_bhColor" class="form-check-label ">
-                                			    <input type="radio" id="tp_bhColor_${tpBhColorsMap.key}" name="optionPantsTuxedoInfo.tpBhColor${row.count}" value="${tpBhColorsMap.key}" class="form-check-input">${tpBhColorsMap.value}
+                                			    <input type="radio" id="tp_bhColor_${tpBhColorsMap.key}" name="coOptionPantsTuxedoInfo.tpBhColor${row.count}" value="${tpBhColorsMap.key}" class="form-check-input">${tpBhColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -674,47 +750,51 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                             <div class="col-12 col-md-3" id="tp_bhColor_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
                                     <label for="tp_byColor_no" class="form-check-label ">
-                                        <form:radiobuttons id="tp_byColor_id" path="optionPantsTuxedoInfo.tpByColor" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpByColorMap }"/>
+                                        <form:radiobuttons id="tp_byColor_id" path="coOptionPantsTuxedoInfo.tpByColor" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpByColorMap }"/>
                                 	</label>　
                                 </div>
                                 <div id="tp_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                	<form:select id="tp_byColorPlaceAll" path="optionPantsTuxedoInfo.tpByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsTuxedoInfo.tpByColorPlaceAllMap}"/>
+                                	<form:select id="tp_byColorPlaceAll" path="coOptionPantsTuxedoInfo.tpByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_tp_byColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_tp_byColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="tpByColorPlaceMap" items="${orderForm.optionPantsTuxedoInfo.tpByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="tpByColorPlaceMap" items="${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="tp_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="tp_byColorPlace_${row.count}" name="optionPantsTuxedoInfo.tpByColorPlace" value="${tpByColorPlaceMap.key }" class="form-check-input">${tpByColorPlaceMap.value }
+                                        <input type="checkbox" id="tp_byColorPlace_${row.count}" name="coOptionPantsTuxedoInfo.tpByColorPlace${row.count}" value="${tpByColorPlaceMap.key }" class="form-check-input">${tpByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="tp_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="tpByColorsMap" items="${orderForm.optionPantsTuxedoInfo.tpByColorsMap}">
+                                		<c:forEach var="tpByColorsMap" items="${orderCoForm.coOptionPantsTuxedoInfo.tpByColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="tp_byColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="tp_byColor_${tpByColorsMap.key}" name="optionPantsTuxedoInfo.tpByColor${row.count}" value="${tpByColorsMap.key}" class="form-check-input">${tpByColorsMap.value}
+                                			    <input type="radio" id="tp_byColor_${tpByColorsMap.key}" name="coOptionPantsTuxedoInfo.tpByColor${row.count}" value="${tpByColorsMap.key}" class="form-check-input">${tpByColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
                                 	</div>
                                 </c:forEach>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="tp_byColor_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -722,66 +802,78 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_tp_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="tp_btnMate" class="form-control-sm form-control" path="optionPantsTuxedoInfo.tpButton">
-                                	<form:options items="${orderForm.optionPantsTuxedoInfo.tpButtonMap }"/>
+                            	<form:select id="tp_btnMate" class="form-control-sm form-control" path="coOptionPantsTuxedoInfo.tpButton">
+                                	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpButtonMap }"/>
                                 </form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionPantsTuxedoInfo.tpBtnMateStkNo" id="tp_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionPantsTuxedoInfo.tpBtnMateStkNo" id="tp_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
+                            </div>
+                             <div class="col-12 col-md-2" id="tp_btnMate_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_suspenderBtn_id" path="optionPantsTuxedoInfo.tpSuspenderBtn" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpSuspenderBtnMap }"/>
+                                    <form:radiobuttons id="tp_suspenderBtn_id" path="coOptionPantsTuxedoInfo.tpSuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpSuspenderBtnMap }"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="tp_suspenderBtn_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                              	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_thick_id" path="optionPantsTuxedoInfo.tpThick" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpThickMap }"/>
+                                    <form:radiobuttons id="tp_thick_id" path="coOptionPantsTuxedoInfo.tpThick" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpThickMap }"/>
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" align="right">
-                            	<%-- <output id="tp_thick_Msg"></output> --%>
+                            	<output id="tp_thick_Msg"></output>
                             </div>
                         </div> 
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_eight_id" path="optionPantsTuxedoInfo.tpEight" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpEightMap }"/>
+                                    <form:radiobuttons id="tp_eight_id" path="coOptionPantsTuxedoInfo.tpEight" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpEightMap }"/>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-3" id="tp_eight_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_shapeMemory_id" path="optionPantsTuxedoInfo.tpShapeMemory" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpShapeMemoryMap }"/>
+                                    <form:radiobuttons id="tp_shapeMemory_id" path="coOptionPantsTuxedoInfo.tpShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpShapeMemoryMap }"/>
                                 </div>
+                            </div>
+                             <div class="col-12 col-md-3" id="tp_shapeMemory_Msg" align="right">
                             </div>
                         </div> 
                         
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">側章</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_sideStripe_id" path="optionPantsTuxedoInfo.tpSideStripe" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpSideStripeMap }"/>
+                                    <form:radiobuttons id="tp_sideStripe_id" path="coOptionPantsTuxedoInfo.tpSideStripe" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripeMap }"/>
                                 </div>
+                            </div>
+                              <div class="col-12 col-md-3" id="tp_sideStripe_Msg" align="right">
                             </div>
                         </div>
                         <div id="tp_sideStripe_yes_area">
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">側章幅</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_sideStripeWidth_id" path="optionPantsTuxedoInfo.tpSideStripeWidth" class="form-check-input" items="${orderForm.optionPantsTuxedoInfo.tpSideStripeWidthMap }"/>
+                                    <form:radiobuttons id="tp_sideStripeWidth_id" path="coOptionPantsTuxedoInfo.tpSideStripeWidth" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripeWidthMap }"/>
                                 </div>
+                            </div>
+                              <div class="col-12 col-md-3" id="tp_sideStripeWidth_Msg" align="right">
                             </div>
                         </div>
                         </div> 
@@ -803,75 +895,87 @@
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_pantsModel"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_pantsModel" path="optionPantsWashableInfo.wpPantsModel" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpPantsModelMap}"/>
+                            	<form:select id="wp_pantsModel" path="coOptionPantsWashableInfo.wpPantsModel" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpPantsModelMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelMsg"></div>
+                             <div class="col-12 col-md-6" align="right">
+                            	<output id="wp_pantsModel_Msg" ></output>
+                            </div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelMsg"   style="margin-top:8px"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelCheck" style="margin-top:8px"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_tack" path="optionPantsWashableInfo.wpTack" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpTackMap}"/>
+                            	<form:select id="wp_tack" path="coOptionPantsWashableInfo.wpTack" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpTackMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_tackMsg"></div>
+                           <div class="col-12 col-md-6" id="wp_tack_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_kneeBack"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_kneeBack_id" path="optionPantsWashableInfo.wpKneeBack" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpKneeBackMap}"/>
+									<form:radiobuttons id="wp_kneeBack_id" path="coOptionPantsWashableInfo.wpKneeBack" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMap}"/>
 								</div>
+                            </div>
+                             <div class="col-12 col-md-3" id="wp_kneeBack_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group" id="wp_kneeBackMate_div">
                             <div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_kneeBackMate_id" path="optionPantsWashableInfo.wpKneeBackMate" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpKneeBackMateMap}"/>
+									<form:radiobuttons id="wp_kneeBackMate_id" path="coOptionPantsWashableInfo.wpKneeBackMate" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMateMap}"/>
 								</div>
+                            </div>
+                            <div class="col-12 col-md-3" id="wp_kneeBackMate_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント仕様</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_frontSpec"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_frontSpec_id" path="optionPantsWashableInfo.wpFrontSpec" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpFrontSpecMap}"/>
+									<form:radiobuttons id="wp_frontSpec_id" path="coOptionPantsWashableInfo.wpFrontSpec" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpFrontSpecMap}"/>
 								</div>
+                            </div>
+                            <div class="col-12 col-md-3" id="wp_frontSpec_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">パンチェリーナ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_pancherina_id" path="optionPantsWashableInfo.wpPancherina" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpPancherinaMap}"/>
+									<form:radiobuttons id="wp_pancherina_id" path="coOptionPantsWashableInfo.wpPancherina" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpPancherinaMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pancherinaMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_pancherina_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">アジャスター仕様</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_adjuster_id" path="optionPantsWashableInfo.wpAdjuster" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpAdjusterMap}"/>
+									<form:radiobuttons id="wp_adjuster_id" path="coOptionPantsWashableInfo.wpAdjuster" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpAdjusterMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_adjusterMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_adjuster_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ベルトループ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_beltLoop"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_beltLoop_id" path="optionPantsWashableInfo.wpBeltLoop" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpBeltLoopMap}"/>
+									<form:radiobuttons id="wp_beltLoop_id" path="coOptionPantsWashableInfo.wpBeltLoop" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopMap}"/>
 								</div>
                                 <div class="offset-md-1" id="wp_beltLoopPlace">
                                     <div>
@@ -881,128 +985,143 @@
                                         </div>
                                     </div>
                                    <%--  <div class="form-check-inline form-check">
-										<form:checkboxes id="wp_beltLoopPlace_id" path="optionPantsWashableInfo.wpBeltLoopPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpBeltLoopPlaceMap}"/>
+										<form:checkboxes id="wp_beltLoopPlace_id" path="coOptionPantsWashableInfo.wpBeltLoopPlace" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlaceMap}"/>
 									</div> --%>
-									 <c:forEach var="wpBeltLoopPlaceMap" items="${orderForm.optionPantsWashableInfo.wpBeltLoopPlaceMap }" varStatus="row">
-                                	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="wp_beltLoopPlace_id${row.count}" name="optionPantsWashableInfo.wpBeltLoopPlace${row.count}" value="${wpBeltLoopPlaceMap.key}" class="form-check-input">${wpBeltLoopPlaceMap.value}
+									 <c:forEach var="wpBeltLoopPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlaceMap }" varStatus="row">
+                                	<div class="form-check-inline form-check" id="wp_beltLoopPlace_id1${row.count}">
+                                		<input type="checkbox" id="wp_beltLoopPlace_id${row.count}" name="coOptionPantsWashableInfo.wpBeltLoopPlace${row.count}" value="${wpBeltLoopPlaceMap.key}" class="form-check-input">${wpBeltLoopPlaceMap.value}
                                 	</div>
                                 </c:forEach>
 									
                                 </div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_beltLoopMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_beltLoop_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ピンループ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_pinLoop_id" path="optionPantsWashableInfo.wpPinLoop" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpPinLoopMap}"/>
+									<form:radiobuttons id="wp_pinLoop_id" path="coOptionPantsWashableInfo.wpPinLoop" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpPinLoopMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pinLoopMsg"></div>
+                           <div class="col-12 col-md-3" id="wp_pinLoop_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">脇ポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_sidePkt_id" path="optionPantsWashableInfo.wpSidePkt" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpSidePktMap}"/>
+									<form:radiobuttons id="wp_sidePkt_id" path="coOptionPantsWashableInfo.wpSidePkt" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpSidePktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_sidePktMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_sidePkt_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">忍びポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_sinobiPkt_id" path="optionPantsWashableInfo.wpSinobiPkt" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpSinobiPktMap}"/>
+									<form:radiobuttons id="wp_sinobiPkt_id" path="coOptionPantsWashableInfo.wpSinobiPkt" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpSinobiPktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_sinobiPktMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_sinobiPkt_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">コインポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_coinPkt"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_coinPkt" path="optionPantsWashableInfo.wpCoinPkt" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpCoinPktMap}"/>
+                            	<form:select id="wp_coinPkt" path="coOptionPantsWashableInfo.wpCoinPkt" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpCoinPktMap}"/>
 								</form:select>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_coinPktMsg"></div>
+                           <div class="col-12 col-md-6" id="wp_coinPkt_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フラップ付コインポケット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_flapCoinPkt_id" path="optionPantsWashableInfo.wpFlapCoinPkt" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpFlapCoinPktMap}"/>
+									<form:radiobuttons id="wp_flapCoinPkt_id" path="coOptionPantsWashableInfo.wpFlapCoinPkt" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpFlapCoinPktMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_flapCoinPktMsg"></div>
+                             <div class="col-12 col-md-3" id="wp_flapCoinPkt_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">上前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_pisPktUf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_pisPktUf_id" path="optionPantsWashableInfo.wpPisPktUf" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpPisPktUfMap}"/>
+									<form:radiobuttons id="wp_pisPktUf_id" path="coOptionPantsWashableInfo.wpPisPktUf" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpPisPktUfMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pisPktUfMsg"></div>
+                            <div class="col-12 col-md-3" id="wp_pisPktUf_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">下前ピスポケット</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_pisPktDf"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_pisPktDf_id" path="optionPantsWashableInfo.wpPisPktDf" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpPisPktDfMap}"/>
+									<form:radiobuttons id="wp_pisPktDf_id" path="coOptionPantsWashableInfo.wpPisPktDf" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpPisPktDfMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pisPktDfMsg"></div>
+                           <div class="col-12 col-md-3" id="wp_pisPktDf_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">Vカット</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_vCut_id" path="optionPantsWashableInfo.wpVCut" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpVCutMap}"/>
+									<form:radiobuttons id="wp_vCut_id" path="coOptionPantsWashableInfo.wpVCut" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpVCutMap}"/>
 								</div>
                             </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_vCutMsg"></div>
+                             <div class="col-12 col-md-3" id="wp_vCut_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">裾上げ</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_hemUp"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_hemUp" path="optionPantsWashableInfo.wpHemUp" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpHemUpMap}"/>
+                            	<form:select id="wp_hemUp" path="coOptionPantsWashableInfo.wpHemUp" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpHemUpMap}"/>
 								</form:select>
+                            </div>
+                            <div class="col-12 col-md-6" id="wp_hemUp_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group"  id="wp_doubleWide_div" style="display:none;">
                             <div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_doubleWide" path="optionPantsWashableInfo.wpDoubleWide" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpDoubleWideMap}"/>
+                            	<form:select id="wp_doubleWide" path="coOptionPantsWashableInfo.wpDoubleWide" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpDoubleWideMap}"/>
 								</form:select>
+                            </div>
+                            <div class="col-12 col-md-6" id="wp_doubleWide_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label>
                             </div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_stitch_id" path="optionPantsWashableInfo.wpStitch" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpStitchMap}"/>
+									<form:radiobuttons id="wp_stitch_id" path="coOptionPantsWashableInfo.wpStitch" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpStitchMap}"/>
 								</div>
+                            </div>
+                            <div class="col-12 col-md-3" id="wp_stitch_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_stitchModify_id" path="optionPantsWashableInfo.wpStitchModify" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpStitchModifyMap}"/>
+									<form:radiobuttons id="wp_stitchModify_id" path="coOptionPantsWashableInfo.wpStitchModify" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyMap}"/>
 								</div>
                                 <div id="wp_stitchModify_yes_area">
                                 <div class="offset-md-1">
@@ -1013,22 +1132,23 @@
                                 </div>
                                 <div class="offset-md-1" id="wp_stitchModifyPlace">
                                 <%-- <div class="form-check-inline form-check">
-									<form:checkboxes id="wp_stitchModifyPlace_id" path="optionPantsWashableInfo.wpStitchModifyPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpStitchModifyPlaceMap}"/>
+									<form:checkboxes id="wp_stitchModifyPlace_id" path="coOptionPantsWashableInfo.wpStitchModifyPlace" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlaceMap}"/>
 								</div> --%>
-								<c:forEach var="wpStitchModifyPlaceMap" items="${orderForm.optionPantsWashableInfo.wpStitchModifyPlaceMap }" varStatus="row">
+								<c:forEach var="wpStitchModifyPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="wp_stitchModifyPlace_id${row.count}" name="optionPantsWashableInfo.wpStitchModifyPlace${row.count}" value="${wpStitchModifyPlaceMap.key}" class="form-check-input">${wpStitchModifyPlaceMap.value}
+                                		<input type="checkbox" id="wp_stitchModifyPlace_id${row.count}" name="coOptionPantsWashableInfo.wpStitchModifyPlace${row.count}" value="${wpStitchModifyPlaceMap.key}" class="form-check-input">${wpStitchModifyPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
-                                </div>
+                                </div></div>
+                                 <div class="col-12 col-md-3" id="wp_stitchModify_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_dStitch_id" path="optionPantsWashableInfo.wpDStitch" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpDStitchMap}"/>
+									<form:radiobuttons id="wp_dStitch_id" path="coOptionPantsWashableInfo.wpDStitch" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpDStitchMap}"/>
 								</div>
                                 <div id="wp_dStitch_yes_area">
                                 <div class="offset-md-1">
@@ -1039,49 +1159,51 @@
                                 </div>
                                 <div class="offset-md-1" id="wp_dStitchPlace">
                                 <%-- <div class="form-check-inline form-check">
-									<form:checkboxes id="wp_dStitchPlace_id" path="optionPantsWashableInfo.wpDStitchPlace" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpDStitchPlaceMap}"/>
+									<form:checkboxes id="wp_dStitchPlace_id" path="coOptionPantsWashableInfo.wpDStitchPlace" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlaceMap}"/>
 								</div> --%>
-								<c:forEach var="wpDStitchPlaceMap" items="${orderForm.optionPantsWashableInfo.wpDStitchPlaceMap }" varStatus="row">
+								<c:forEach var="wpDStitchPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlaceMap }" varStatus="row">
                                 	<div class="form-check-inline form-check">
-                                		<input type="checkbox" id="wp_dStitchPlace_id${row.count}" name="optionPantsWashableInfo.wpDStitchPlace${row.count}" value="${wpDStitchPlaceMap.key}" class="form-check-input">${wpDStitchPlaceMap.value}
+                                		<input type="checkbox" id="wp_dStitchPlace_id${row.count}" name="coOptionPantsWashableInfo.wpDStitchPlace${row.count}" value="${wpDStitchPlaceMap.key}" class="form-check-input">${wpDStitchPlaceMap.value}
                                 	</div>
                                 </c:forEach>
                                 </div>
                                 </div>
                             </div>
+                            <div class="col-12 col-md-3" id="wp_dStitch_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_amfColor_id" path="optionPantsWashableInfo.wpAmfColor" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpAmfColorMap}"/>
+									<form:radiobuttons id="wp_amfColor_id" path="coOptionPantsWashableInfo.wpAmfColor" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpAmfColorMap}"/>
 								</div>
                                 <div id="wp_amfColor_div" style="display:none;">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-	                                <form:select id="wp_amfColorPlaceAll" path="optionPantsWashableInfo.wpAmfColorPlaceAll" class="form-control-sm form-control">
-										<form:options items="${orderForm.optionPantsWashableInfo.wpAmfColorPlaceAllMap}"/>
+	                                <form:select id="wp_amfColorPlaceAll" path="coOptionPantsWashableInfo.wpAmfColorPlaceAll" class="form-control-sm form-control">
+										<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlaceAllMap}"/>
 									</form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp_amfColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp_amfColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wpAmfColorPlaceMap" items="${orderForm.optionPantsWashableInfo.wpAmfColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wpAmfColorPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp_amfColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp_amfColorPlace_${row.count}" name="optionPantsWashableInfo.wpAmfColorPlace" value="${wpAmfColorPlaceMap.key }" class="form-check-input">${wpAmfColorPlaceMap.value }
+                                        <input type="checkbox" id="wp_amfColorPlace_${row.count}" name="coOptionPantsWashableInfo.wpAmfColorPlace${row.count}" value="${wpAmfColorPlaceMap.key }" class="form-check-input">${wpAmfColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="wp_amfColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="wpAmfColorsMap" items="${orderForm.optionPantsWashableInfo.wpAmfColorsMap}">
+                                		<c:forEach var="wpAmfColorsMap" items="${orderCoForm.coOptionPantsWashableInfo.wpAmfColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp_amfColor" class="form-check-label ">
-                                			    <input type="radio" id="wp_amfColor_${wpAmfColorsMap.key}" name="optionPantsWashableInfo.wpAmfColor${row.count}" value="${wpAmfColorsMap.key}" class="form-check-input">${wpAmfColorsMap.value}
+                                			    <input type="radio" id="wp_amfColor_${wpAmfColorsMap.key}" name="coOptionPantsWashableInfo.wpAmfColor${row.count}" value="${wpAmfColorsMap.key}" class="form-check-input">${wpAmfColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1089,39 +1211,41 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                             <div class="col-12 col-md-3" id="wp_amfColor_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_bhColor_id" path="optionPantsWashableInfo.wpBhColor" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpBhColorMap}"/>
+									<form:radiobuttons id="wp_bhColor_id" path="coOptionPantsWashableInfo.wpBhColor" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpBhColorMap}"/>
 								</div>
                                 <div id="wp_bhColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                    <form:select id="wp_bhColorPlaceAll" path="optionPantsWashableInfo.wpBhColorPlaceAll" class="form-control-sm form-control">
-										<form:options items="${orderForm.optionPantsWashableInfo.wpBhColorPlaceAllMap}"/>
+                                    <form:select id="wp_bhColorPlaceAll" path="coOptionPantsWashableInfo.wpBhColorPlaceAll" class="form-control-sm form-control">
+										<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlaceAllMap}"/>
 									</form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp_bhColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp_bhColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wpBhColorPlaceMap" items="${orderForm.optionPantsWashableInfo.wpBhColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wpBhColorPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp_bhColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp_bhColorPlace_${row.count}" name="optionPantsWashableInfo.wpBhColorPlace" value="${wpBhColorPlaceMap.key }" class="form-check-input">${wpBhColorPlaceMap.value }
+                                        <input type="checkbox" id="wp_bhColorPlace_${row.count}" name="coOptionPantsWashableInfo.wpBhColorPlace${row.count}" value="${wpBhColorPlaceMap.key }" class="form-check-input">${wpBhColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="wp_bhColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="wpBhColorsMap" items="${orderForm.optionPantsWashableInfo.wpBhColorsMap}">
+                                		<c:forEach var="wpBhColorsMap" items="${orderCoForm.coOptionPantsWashableInfo.wpBhColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp_bhColor" class="form-check-label ">
-                                			    <input type="radio" id="wp_bhColor_${wpBhColorsMap.key}" name="optionPantsWashableInfo.wpBhColor${row.count}" value="${wpBhColorsMap.key}" class="form-check-input">${wpBhColorsMap.value}
+                                			    <input type="radio" id="wp_bhColor_${wpBhColorsMap.key}" name="coOptionPantsWashableInfo.wpBhColor${row.count}" value="${wpBhColorsMap.key}" class="form-check-input">${wpBhColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1129,41 +1253,43 @@
                                 </c:forEach>
                                 </div>
                             </div>
+                             <div class="col-12 col-md-3" id="wp_bhColor_Msg" align="right">
+                            </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ボタン付け糸指定</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
                                     <label for="wp_byColor_no" class="form-check-label ">
-                                        <form:radiobuttons id="wp_byColor_id" path="optionPantsWashableInfo.wpByColor" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpByColorMap }"/>
+                                        <form:radiobuttons id="wp_byColor_id" path="coOptionPantsWashableInfo.wpByColor" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpByColorMap }"/>
                                 	</label>　
                                 </div>
                                 <div id="wp_byColor_div">
                                 <div class="offset-md-1">
                                 <div class="form-check-inline form-check">
-                                	<form:select id="wp_byColorPlaceAll" path="optionPantsWashableInfo.wpByColorPlaceAll" class="form-control-sm form-control">
-                                    	<form:options items="${orderForm.optionPantsWashableInfo.wpByColorPlaceAllMap}"/>
+                                	<form:select id="wp_byColorPlaceAll" path="coOptionPantsWashableInfo.wpByColorPlaceAll" class="form-control-sm form-control">
+                                    	<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpByColorPlaceAllMap}"/>
                                     </form:select>&nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_wp_byColorPlace">全選択</button>
                                     &nbsp;
                                     <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_wp_byColorPlace">全解除</button>
                                 </div>
                                 </div>
-                                <c:forEach var="wpByColorPlaceMap" items="${orderForm.optionPantsWashableInfo.wpByColorPlaceMap }" varStatus="row">
+                                <c:forEach var="wpByColorPlaceMap" items="${orderCoForm.coOptionPantsWashableInfo.wpByColorPlaceMap }" varStatus="row">
                                 	<div class="offset-md-1">
                                     <div class="form-check">
                                     <div class="checkbox">
                                     <label for="wp_byColorPlace" class="form-check-label ">
-                                        <input type="checkbox" id="wp_byColorPlace_${row.count}" name="optionPantsWashableInfo.wpByColorPlace" value="${wpByColorPlaceMap.key }" class="form-check-input">${wpByColorPlaceMap.value }
+                                        <input type="checkbox" id="wp_byColorPlace_${row.count}" name="coOptionPantsWashableInfo.wpByColorPlace${row.count}" value="${wpByColorPlaceMap.key }" class="form-check-input">${wpByColorPlaceMap.value }
                                     </label>
                                     </div>
                                     </div>
                                 	</div>
                                 	<div class="offset-md-2" id="wp_byColorPlace_${row.count}_div" style="display:none">
-                                		<c:forEach var="wpByColorsMap" items="${orderForm.optionPantsWashableInfo.wpByColorsMap}">
+                                		<c:forEach var="wpByColorsMap" items="${orderCoForm.coOptionPantsWashableInfo.wpByColorsMap}">
                                 		  <div class="form-check-inline form-check">
                                 		     <label for="wp_byColorPlace" class="form-check-label ">
-                                			    <input type="radio" id="wp_byColor_${wpByColorsMap.key}" name="optionPantsWashableInfo.wpByColor${row.count}" value="${wpByColorsMap.key}" class="form-check-input">${wpByColorsMap.value}
+                                			    <input type="radio" id="wp_byColor_${wpByColorsMap.key}" name="coOptionPantsWashableInfo.wpByColor${row.count}" value="${wpByColorsMap.key}" class="form-check-input">${wpByColorsMap.value}
                                 		     </label>
                                 		  </div>
                                 		</c:forEach>
@@ -1171,54 +1297,66 @@
                                 </c:forEach>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-12 col-md-3" id="wp_byColor_Msg" align="right">
+                            </div>
+                        </div>          
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">釦素材</label>
                             <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wp_button"><i class="fa fa-question-circle text-danger"></i></button>
                             </div>
                             <div class="col col-md-3">
-                            	<form:select id="wp_btnMate" path="optionPantsWashableInfo.wpButton" class="form-control-sm form-control">
-									<form:options items="${orderForm.optionPantsWashableInfo.wpButtonMap}"/>
+                            	<form:select id="wp_btnMate" path="coOptionPantsWashableInfo.wpButton" class="form-control-sm form-control">
+									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap}"/>
 								</form:select>
                             </div>
                             <div class="col col-md-4">
-                                <select name="optionPantsWashableInfo.wpBtnMateStkNo" id="wp_btnMateStkNo" class="form-control-sm form-control">
+                                <select name="coOptionPantsWashableInfo.wpBtnMateStkNo" id="wp_btnMateStkNo" class="form-control-sm form-control">
                                 </select>
                             </div>
-                            <div class="col col-md-2">
+                           <!--  <div class="col col-md-2">
                                 <button type="button" class="btn btn-outline-info btn-sm" id="wp_sameJacketBtn">JKと同じ</button>
-                            </div>
+                            </div> -->
+                            <div class="col-12 col-md-2" id="wp_btnMate_Msg" align="right">
+                            </div> 
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">サスペンダー釦</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_suspenderBtn_id" path="optionPantsWashableInfo.wpSuspenderBtn" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpSuspenderBtnMap}"/>
+									<form:radiobuttons id="wp_suspenderBtn_id" path="coOptionPantsWashableInfo.wpSuspenderBtn" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpSuspenderBtnMap}"/>
 								</div>
+                            </div>
+                            <div class="col-12 col-md-3" id="wp_suspenderBtn_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_eight_id" path="optionPantsWashableInfo.wpEight" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpEightMap}"/>
+									<form:radiobuttons id="wp_eight_id" path="coOptionPantsWashableInfo.wpEight" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpEightMap}"/>
 								</div>
+                            </div>
+                            <div class="col-12 col-md-3" id="wp_eight_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_thick_id" path="optionPantsWashableInfo.wpThick" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpThickMap}"/>
+									<form:radiobuttons id="wp_thick_id" path="coOptionPantsWashableInfo.wpThick" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpThickMap}"/>
 								</div>
+                            </div>
+                             <div class="col-12 col-md-3" id="wp_thick_Msg" align="right">
                             </div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
-                            <div class="col-12 col-md-9">
+                            <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp_shapeMemory_id" path="optionPantsWashableInfo.wpShapeMemory" class="form-check-input" items="${orderForm.optionPantsWashableInfo.wpShapeMemoryMap}"/>
+									<form:radiobuttons id="wp_shapeMemory_id" path="coOptionPantsWashableInfo.wpShapeMemory" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpShapeMemoryMap}"/>
 								</div>
+                            </div>
+                             <div class="col-12 col-md-3" id="wp_shapeMemory_Msg" align="right">
                             </div>
                         </div>
                         
@@ -1229,12 +1367,17 @@
             
             <input type="hidden" id="pantsFlag" name="pantsFlag" value="0"/>
             <input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
-            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderForm.jacketItemFlag }"/>
-			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderForm.giletItemFlag }"/>
-			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderForm.shirtItemFlag }"/>
-			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderForm.coatItemFlag }"/>
-			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderForm.pants2ItemFlag }"/>
-            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="0" />
+            <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
+			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
+			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="${orderCoForm.shirtItemFlag }"/>
+			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
+			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
+            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />     
+            <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+            <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+            <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+            <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+            <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 </form:form>
 <!-- 標準 PANTS PANTSモデル-->
 <div class="modal fade" id="infotext_op_pantsModel" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -3429,76 +3572,62 @@
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.standard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.tuxedo.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.washable.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
 
 jQuery(function() {
-	var pantsAdFlag="${orderForm.pantsAdFlag}";
-	if(pantsAdFlag=="1"){
-		jQuery("#pantsAdFlag").val("${orderForm.pantsAdFlag}");
-		}
-	jQuery("#op_pantsModel,#tp_pantsModel,wp_pantsModel").change(function(){
+	var pantsAdFlag="${orderCoForm.pantsAdFlag}";
+	if(pantsAdFlag=="1"){		
+	}else{
 		jQuery("#pantsAdFlag").val("0");
-	    })   
-
+	}
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-
-	var productCategory = "${orderForm.productCategory}";
-	
+	var productCategory="${orderCoForm.productCategory}";
 	mateInit();
-
 	setPantsModelDisable(productCategory);
-	
-	//--------------------------------------------
-	// 共通
-	//--------------------------------------------
 	initCommon();
-
-	//--------------------------------------------
-	// タブメニュー
-	//--------------------------------------------
 	initTabMenu();
-
-	//--------------------------------------------
-	// お客様情報
-	//--------------------------------------------
 	initCustomer();
-
-	//--------------------------------------------
-	// 商品タブ
-	//--------------------------------------------
 	initProduct();
-
-	//--------------------------------------------
-	// オプションタブ（Jacket）
-	//--------------------------------------------
-		initOptionPants1Standard();
-
-		initOptionPants1Tuxedo();
-
-		initOptionPants1Washable();
-	
-	//--------------------------------------------
-	// 補正タブ
-	//--------------------------------------------
-	initAlter();
-	
+		if(productCategory=="9000101"){
+			initOptionPants1Standard();
+			if("${orderCoForm.pantsItemFlag }"=="1"){
+				opSession();
+				}
+			 getPrice();
+			 showPrice();
+		}else if(productCategory=="9000102"){
+			initOptionPants1Tuxedo();
+			if("${orderCoForm.pantsItemFlag }"=="1"){
+				tpSession();
+				}
+			
+			 getTuPrice();
+			 showPrice();
+		}else if(productCategory=="9000103"){
+			initOptionPants1Washable();
+			if("${orderCoForm.pantsItemFlag }"=="1"){
+				wpSession();
+				}
+			 getWaPrice();
+			 showPrice();
+		}	 
 	jQuery("#pantsItemFlag").val("1");
+	
 })	
 
 function setPantsModelDisable(productCategory){
 	var ptModel = null;
-	if(productCategory == "0"){
+	if(productCategory == "9000101"){
 		ptModel = document.getElementById("op_pantsModel");
-	}else if(productCategory == "2"){
+	}else if(productCategory == "9000102"){
 		ptModel = document.getElementById("tp_pantsModel");
-	}else if(productCategory == "1"){
+	}else if(productCategory == "9000103"){
 		ptModel = document.getElementById("wp_pantsModel");
 	}
 	var allJkOption = ptModel.options;
@@ -3568,13 +3697,13 @@ function mateInit(){
 	if(item == "01"){
 		itemCode = item;
 		//SUITの場合　素材品番を設定
-		if(category == "0"){
+		if(category == "9000101"){
 			initSuitStandard(itemCode,category);
 		}
-		else if(category == "2"){
+		else if(category == "9000102"){
 			initSuitTuxedo(itemCode,category);
 		}
-		else if(category == "1"){
+		else if(category == "9000103"){
 			initSuitWashable(itemCode,category);
 		}
 		
@@ -3582,25 +3711,25 @@ function mateInit(){
 		subItemCode = "03";
 		itemCode = item;
 		
-		if(category=="0"){
+		if(category=="9000101"){
 			initPtStandard(itemCode,subItemCode,category);
 		}
-		else if(category=="2"){
+		else if(category=="9000102"){
 			initPtTuxedo(itemCode,subItemCode,category);
 		}
-		else if(category=="1"){
+		else if(category=="9000103"){
 			initPtWashable(itemCode,subItemCode,category);
 		}
 		
 		jQuery('input[name="productCategory"]').change(function(){
 			category = jQuery('input[name="productCategory"]:checked').val();
-			if(category == "0"){
+			if(category == "9000101"){
 				initPtStandard(itemCode,subItemCode,category);
 			}
-			else if(category == "2"){
+			else if(category == "9000102"){
 				initPtTuxedo(itemCode,subItemCode,category);
 			}
-			else if(category == "1"){
+			else if(category == "9000103"){
 				initPtWashable(itemCode,subItemCode,category);
 			}
 		});
@@ -3622,13 +3751,8 @@ function mateInit(){
 	}
 			
 	function initPtStandard(itemCode,subItemCode,category){
-		/* for(var i in ptStandardMateList){
-			optionCode = selectStandardIdList[ptStandardMateList[i]];
-			mateChecked = jQuery("#"+ptStandardMateList[i]+" option:checked").val();
-			StkNo = "#"+ptStandardMateList[i]+"StkNo";
-			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		} */
-		mateSelect(itemCode,subItemCode,"#op_btnMate option:checked","00033","#op_btnMateStkNo",category,orderPattern);
+		mateChecked = jQuery("#op_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#op_btnMateStkNo",category,orderPattern);
 		jQuery("#op_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectStandardIdList[idValue];
@@ -3639,13 +3763,8 @@ function mateInit(){
 	}
 
 	function initPtTuxedo(itemCode,subItemCode,category){
-		/* for(var i in ptTuxedoMateList){
-			optionCode = selectTuxedoIdList[ptTuxedoMateList[i]];
-			mateChecked = jQuery("#"+ptTuxedoMateList[i]+" option:checked").val();
-			StkNo = "#"+ptTuxedoMateList[i]+"StkNo";
-			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		} */
-		mateSelect(itemCode,subItemCode,"#tp_btnMate option:checked","00033","#tp_btnMateStkNo",category,orderPattern);
+		mateChecked = jQuery("#tp_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#tp_btnMateStkNo",category,orderPattern);
 		jQuery("#tp_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectTuxedoIdList[idValue];
@@ -3656,13 +3775,8 @@ function mateInit(){
 	}
 
 	function initPtWashable(itemCode,subItemCode,category){
-		/* for(var i in ptWashableMateList){
-			optionCode = selectWashableIdList[ptWashableMateList[i]];
-			mateChecked = jQuery("#"+ptWashableMateList[i]+" option:checked").val();
-			StkNo = "#"+ptWashableMateList[i]+"StkNo";
-			mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,category,orderPattern);
-		} */
-		mateSelect(itemCode,subItemCode,"#wp_btnMate option:checked","00033","#wp_btnMateStkNo",category,orderPattern);
+		mateChecked = jQuery("#wp_btnMate option:checked").val();
+		mateSelect(itemCode,subItemCode,mateChecked,"00033","#wp_btnMateStkNo",category,orderPattern);
 		jQuery("#wp_btnMate").change(function(){
 			var idValue = jQuery(this).prop("id");
 			optionCode = selectWashableIdList[idValue];
@@ -3676,11 +3790,11 @@ function mateInit(){
 	function mateSelect(itemCode,subItemCode,mateChecked,optionCode,StkNo,type,orderPattern){
 		var StkNoSelect = jQuery(StkNo);
 		var url;
-		if (type == 0){
+		if (type == '9000101'){
 			url = "/orderCo/standardMateSelect";
-		}else if(type == 2){
+		}else if(type == '9000102'){
 			url = "/orderCo/tuxdoMateSelect";
-		}else if(type == 1){
+		}else if(type == '9000103'){
 			url = "/orderCo/washabiMateSelect";
 		}
 		jQuery.ajax({
@@ -3703,410 +3817,839 @@ function mateInit(){
 		});
 	}
 }
+
+
+
+
+function showPrice(){
+	var opPantsModel = jQuery("#op_pantsModel option:selected").val();
+	if(isNotEmpty(opPantsModel)){
+		jQuery("#op_pantsModel").change();
+	}
+}
+//--------------------------------------------
+//全部のitem金額制御
+//--------------------------------------------
+function getPrice(){
+	//opPantsModelの料金を表示
+	var opPantsModel = "";
+	jQuery("#op_pantsModel,#op_tack").change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		opPantsModel = jQuery("#op_pantsModel option:selected").val();
+	    var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var code = itemCode + subItemCode + opPantsModel;
+	    jQuery.ajax({
+	    	type:"get",
+		    url:contextPath + "/orderCo/getOrderPriceForPantsModel",
+		    data:{"code":code},
+		    async:false,
+		    success:function(result){
+		    		var allPriceMap = result.priceMap;
+		         	for (var priceMapKey in allPriceMap) {
+		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+		            	}else{
+		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+		            	}
+		         	}
+					jQuery("#optionPriceId").val(result.optionPrice);
+					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+					getAllPrice(itemCode, result.optionPrice);
+					allOptionPrice();
+				}
+			});
+		});
+	    
+	var opPantsModel = "";
+	//プルダウンの変更処理
+	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
+	jQuery("#op_tack,#op_coinPkt,#op_hemUp,#op_btnMate,#op_btnMateStkNo")
+	   .change(function(){
+	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	   opPantsModel = jQuery("#op_pantsModel option:selected").val();
+	   var itemCode = jQuery("#item").val();
+	   var subItemCode = "03"
+	   var idValueName = jQuery(this).attr("id");
+	   var price;
+	   if(isNotEmpty(opPantsModel)){
+		   var code = itemCode + subItemCode + opPantsModel;
+		   jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSProject",
+			    data:{"code":code,"idValue":idValueName},
+			    dataType:"json",
+			    async:false,
+			    success:function(result){
+			    	if(jQuery("#"+idValueName+"_Msg").length>0){
+			    		if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueName+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			        }else{
+			             var lengthforLastFive = idValueName.length - 5;
+			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
+			             if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueTemp+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			             getAllPrice(itemCode, result.optionPrice);
+			             allOptionPrice();
+			        }		    
+			   }
+	        });
+		}
+	});
+	//ラジオボタンの変更処理
+	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類、ステッチ箇所変更、ダブルステッチ、AMF色指定、ボタンホール色指定、ボタン付け糸指定.サスペンダー釦.シック大（股補強）,エイト（滑り止め）,形状記憶
+	jQuery('input[id^="op_kneeBack_id"],[id^="op_kneeBackMate_id"],[id^="op_frontSpec_id"],[id^="chainHange_id"],[id^="op_pancherina_id"],[id^="op_adjuster_id"],[id^="op_beltLoop_id"],[id^="op_pinLoop_id"],[id^="op_sidePkt_id"],[id^="op_sinobiPkt_id"],[id^="op_flapCoinPkt_id"],[id^="op_pisPktUf_id"],[id^="op_pisPktDf_id"],[id^="op_vCut_id"],[id^="op_stitch_id"],[id^="op_stitchModify_id"],[id^="op_amfColor_id"],[id^="op_bhColor_id"],[id^="op_byColor_id"],[id^="op_suspenderBtn_id"],[id^="op_thick_id"],[id^="op_eight_id"],[id^="op_shapeMemory_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		opPantsModel = jQuery("#op_pantsModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var idValueName = jQuery(this).attr("id");
+	    var price;
+	  	//IDの後の番号を削除します
+	    var findIdPosition = idValueName.indexOf("_id");
+	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		    
+		if(isNotEmpty(opPantsModel)){
+			var code = itemCode + subItemCode + opPantsModel;
+			jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSProject",
+			    data:{"code":code,"idValue":interceptedIdValueName},
+			    async:false,
+			    success:function(result){
+			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+			    	if(result.idValuePrice == "0"){
+						price = "無料"
+			         }else{
+			        	price = formatMoney(result.idValuePrice,0,"￥");
+				     }
+			        jQuery("#"+msgIdValueName).html(price);
+			        jQuery("#optionPrice").html(result.optionPrice);
+			        getAllPrice(itemCode, result.optionPrice);
+			        allOptionPrice();
+			   }
+	        });
+		}
+	});
+}
+//--------------------------------------------
+//金額フォーマット
+//--------------------------------------------
+function formatMoney(number, places, symbol, thousand, decimal) {
+  number = number || 0;
+  places = !isNaN(places = Math.abs(places)) ? places : 2;
+  symbol = symbol !== undefined ? symbol : "$";
+  thousand = thousand || ",";
+  decimal = decimal || ".";
+  var negative = number < 0 ? "-" : "",
+      i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+      j = (a = i.length) > 3 ? a % 3 : 0;
+  return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+}
+
+function getAllPrice(subItemCode, optionPrice){
+	jQuery("#jkOptionPriceId").val(optionPrice);
+    var jkOptionPriceId = optionPrice;
+    var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
+    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
+    var glOptionPriceId = jQuery("#glOptionPriceId").val();
+    var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
+    var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
+    var allPrice = 0;
+    if(subItemCode == "01"){
+        if(threePiece == "0009901" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId);
+        }
+        else if(threePiece == "0009902" && twoPants == "0009901"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(glOptionPriceId);
+        }
+        else if(threePiece == "0009901" && twoPants == "0009902"){
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId);
+        }else{
+        	allPrice = Number(jkOptionPriceId) + Number(ptOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId);
+        }
+    }else{
+    	allPrice = Number(jkOptionPriceId);
+    }
+    jQuery("#optionPriceId").val(allPrice);
+    jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
+}
+
+function getTuPrice(){
+	//opPantsModelの料金を表示
+	var opPantsModel = "";
+	jQuery("#tp_pantsModel,#tp_tack").change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		opPantsModel = jQuery("#tp_pantsModel option:selected").val();
+	    var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var code = itemCode + subItemCode + opPantsModel;
+	    jQuery.ajax({
+	    	type:"get",
+		    url:contextPath + "/orderCo/getOrderPriceForPantsTuModel",
+		    data:{"code":code},
+		    async:false,
+		    success:function(result){
+		    		var allPriceMap = result.priceMap;
+		         	for (var priceMapKey in allPriceMap) {
+		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+		            	}else{
+		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+		            	}
+		         	}
+					jQuery("#optionPriceId").val(result.optionPrice);
+					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+					getAllPrice(itemCode, result.optionPrice);
+					allOptionPrice();
+				}
+			});
+		});
+	    
+	var tpPantsModel = "";
+	//プルダウンの変更処理
+	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
+	jQuery("#tp_tack,#tp_coinPkt,#tp_hemUp,#tp_btnMate,#tp_btnMateStkNo")
+	   .change(function(){
+	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	   tpPantsModel = jQuery("#tp_pantsModel option:selected").val();
+	   var itemCode = jQuery("#item").val();
+	   var subItemCode = "03"
+	   var idValueName = jQuery(this).attr("id");
+	   var price;
+	   if(isNotEmpty(tpPantsModel)){
+		   var code = itemCode + subItemCode + tpPantsModel;
+		   jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSTuProject",
+			    data:{"code":code,"idValue":idValueName},
+			    dataType:"json",
+			    async:false,
+			    success:function(result){
+			    	if(jQuery("#"+idValueName+"_Msg").length>0){
+			    		if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueName+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			        }else{
+			             var lengthforLastFive = idValueName.length - 5;
+			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
+			             if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueTemp+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			             getAllPrice(itemCode, result.optionPrice);
+			             allOptionPrice();
+			        }		    
+			   }
+	        });
+		}
+	});
+	//ラジオボタンの変更処理
+	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、コインポケット，フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類，ボタンホール色指定、ボタン付け糸指定.サスペンダー釦.シック大（股補強）,エイト（滑り止め）,形状記憶，側章，側章幅
+	jQuery('input[id^="tp_kneeBack_id"],[id^="tp_kneeBackMate_id"],[id^="tp_frontSpec_id"],[id^="tp_pancherina_id"],[id^="tp_adjuster_id"],[id^="tp_beltLoop_id"],[id^="tp_pinLoop_id"],[id^="tp_sidePkt_id"],[id^="tp_sinobiPkt_id"],[id^="tp_flapCoinPkt_id"],[id^="tp_pisPktUf_id"],[id^="tp_pisPktDf_id"],[id^="tp_vCut_id"],[id^="tp_stitch_id"],[id^="tp_bhColor_id"],[id^="tp_byColor_id"],[id^="tp_suspenderBtn_id"],[id^="tp_thick_id"],[id^="tp_eight_id"],[id^="tp_shapeMemory_id"],[id^="tp_sideStripe_id"],[id^="tp_sideStripeWidth_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		opPantsModel = jQuery("#tp_pantsModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var idValueName = jQuery(this).attr("id");
+	    var price;
+	  	//IDの後の番号を削除します
+	    var findIdPosition = idValueName.indexOf("_id");
+	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		    
+		if(isNotEmpty(opPantsModel)){
+			var code = itemCode + subItemCode + opPantsModel;
+			jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSTuProject",
+			    data:{"code":code,"idValue":interceptedIdValueName},
+			    async:false,
+			    success:function(result){
+			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+			    	if(result.idValuePrice == "0"){
+						price = "無料"
+			         }else{
+			        	price = formatMoney(result.idValuePrice,0,"￥");
+				     }
+			        jQuery("#"+msgIdValueName).html(price);
+			        jQuery("#optionPrice").html(result.optionPrice);
+			        getAllPrice(itemCode, result.optionPrice);
+			        allOptionPrice();
+			   }
+	        });
+		}
+	});
+}
+
+
+
+
+function getWaPrice(){
+	//opPantsModelの料金を表示
+	var wpPantsModel = "";
+	jQuery("#wp_pantsModel,#wp_tack").change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		opPantsModel = jQuery("#wp_pantsModel option:selected").val();
+	    var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var code = itemCode + subItemCode + wpPantsModel;
+	    jQuery.ajax({
+	    	type:"get",
+		    url:contextPath + "/orderCo/getOrderPriceForPantsWPModel",
+		    data:{"code":code},
+		    async:false,
+		    success:function(result){
+		    		var allPriceMap = result.priceMap;
+		         	for (var priceMapKey in allPriceMap) {
+		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
+		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
+		            	}else{
+		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
+		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
+		            	}
+		         	}
+					jQuery("#optionPriceId").val(result.optionPrice);
+					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
+					getAllPrice(itemCode, result.optionPrice);
+					allOptionPrice();
+				}
+			});
+		});
+	    
+	var wpPantsModel = "";
+	//プルダウンの変更処理
+	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
+	jQuery("#wp_tack,#wp_coinPkt,#wp_hemUp,#wp_btnMate,#wp_btnMateStkNo")
+	   .change(function(){
+	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	   tpPantsModel = jQuery("#wp_pantsModel option:selected").val();
+	   var itemCode = jQuery("#item").val();
+	   var subItemCode = "03"
+	   var idValueName = jQuery(this).attr("id");
+	   var price;
+	   if(isNotEmpty(tpPantsModel)){
+		   var code = itemCode + subItemCode + tpPantsModel;
+		   jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSWPProject",
+			    data:{"code":code,"idValue":idValueName},
+			    dataType:"json",
+			    async:false,
+			    success:function(result){
+			    	if(jQuery("#"+idValueName+"_Msg").length>0){
+			    		if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueName+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			        }else{
+			             var lengthforLastFive = idValueName.length - 5;
+			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
+			             if(result.idValuePrice == "0"){
+							price = "無料"
+				         }else{
+				        	price = formatMoney(result.idValuePrice,0,"￥");
+					     }
+			             jQuery("#"+idValueTemp+"_Msg").html(price);
+			             jQuery("#optionPrice").html(result.optionPrice);
+			             getAllPrice(itemCode, result.optionPrice);
+			             allOptionPrice();
+			        }		    
+			   }
+	        });
+		}
+	});
+	//ラジオボタンの変更処理
+	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、コインポケット，フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類，ステッチ箇所変更,ダブルステッチ,AMF色指定,ボタンホール色指定、ボタン付け糸指定..,サスペンダー釦.エイト（滑り止め）,シック大（股補強）,形状記憶
+	jQuery('input[id^="wp_kneeBack_id"],[id^="wp_kneeBackMate_id"],[id^="wp_frontSpec_id"],[id^="wp_pancherina_id"],[id^="wp_adjuster_id"],[id^="wp_beltLoop_id"],[id^="wp_pinLoop_id"],[id^="wp_sidePkt_id"],[id^="wp_sinobiPkt_id"],[id^="wp_flapCoinPkt_id"],[id^="wp_pisPktUf_id"],[id^="wp_pisPktDf_id"],[id^="wp_vCut_id"],[id^="wp_stitch_id"],[id^="wp_stitchModify_id"],[id^="wp_dStitch_id"],[id^="wp_amfColor_id"],[id^="wp_bhColor_id"],[id^="wp_byColor_id"],[id^="wp_suspenderBtn_id"],[id^="wp_eight_id"],[id^="wp_thick_id"],[id^="wp_shapeMemory_id"]')
+	.change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		wpPantsModel = jQuery("#wp_pantsModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+	    var subItemCode = "03";
+	    var idValueName = jQuery(this).attr("id");
+	    var price;
+	  	//IDの後の番号を削除します
+	    var findIdPosition = idValueName.indexOf("_id");
+	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		    
+		if(isNotEmpty(opPantsModel)){
+			var code = itemCode + subItemCode + wpPantsModel;
+			jQuery.ajax({
+				type:"get",
+			    url:contextPath + "/orderCo/getOrderPriceForPantsSWPProject",
+			    data:{"code":code,"idValue":interceptedIdValueName},
+			    async:false,
+			    success:function(result){
+			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+			    	if(result.idValuePrice == "0"){
+						price = "無料"
+			         }else{
+			        	price = formatMoney(result.idValuePrice,0,"￥");
+				     }
+			        jQuery("#"+msgIdValueName).html(price);
+			        jQuery("#optionPrice").html(result.optionPrice);
+			        getAllPrice(itemCode, result.optionPrice);
+			        allOptionPrice();
+			   }
+	        });
+		}
+	});
+}
+
+
+
+
 function  opSession(){
 
 	//コインポケット
-	jQuery("#op_coinPkt").val("${orderForm.optionPantsStandardInfo.opCoinPkt}");
+	jQuery("#op_coinPkt").val("${orderCoForm.coOptionPantsStandardInfo.opCoinPkt}");
 	jQuery("#op_coinPkt").change();
 
 	//裾上げ
-	jQuery('#op_hemUp').val("${orderForm.optionPantsStandardInfo.opHemUp}");
+	jQuery('#op_hemUp').val("${orderCoForm.coOptionPantsStandardInfo.opHemUp}");
 	jQuery('#op_hemUp').change();
 	
 	//ベルトループ
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoop"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoop}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoop"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoop}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace5"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace5}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace6"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace6}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace7"]').val(["${orderForm.optionPantsStandardInfo.opBeltLoopPlace7}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoopPlace7"]').change();
 
 	//ステッチ箇所変更
-	jQuery('input[name="optionPantsStandardInfo.opStitchModify"]').val(["${orderForm.optionPantsStandardInfo.opStitchModify}"]);
-	jQuery('input[name="optionPantsStandardInfo.opStitchModify"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModify}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace1"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace2"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace3"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace4"]').val(["${orderForm.optionPantsStandardInfo.opStitchModifyPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opStitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opStitchModifyPlace4"]').change();
 
 	//ダブルステッチ
-	jQuery('input[name="optionPantsStandardInfo.op2DStitch"]').val(["${orderForm.optionPantsStandardInfo.opDStitch}"]);
-	jQuery('input[name="optionPantsStandardInfo.op2DStitch"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitch}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.op2DStitch"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.op2DStitchPlace1"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.op2DStitchPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.op2DStitchPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.op2DStitchPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace2"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace3"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace4"]').val(["${orderForm.optionPantsStandardInfo.opDStitchPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opDStitchPlace4"]').change();	
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitchPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opDStitchPlace4"]').change();	
 
 	//AMF色指定
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]').change();
 
-	jQuery("#op_amfColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opAmfColorPlaceAll}");
+	jQuery("#op_amfColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlaceAll}");
 	jQuery("#op_amfColorPlaceAll").change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColorPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColorPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor1"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor2"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor3"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor4"]').val(["${orderForm.optionPantsStandardInfo.opAmfColor4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opAmfColor4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opAmfColor4"]').change();
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPantsStandardInfo.opBhColor"]').val(["${orderForm.optionPantsStandardInfo.opBhColor}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColor"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor"]').change();
 
-	jQuery("#op_bhColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opBhColorPlaceAll}");
+	jQuery("#op_bhColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opBhColorPlaceAll}");
 	jQuery("#op_bhColorPlaceAll").change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opBhColorPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColor1"]').val(["${orderForm.optionPantsStandardInfo.opBhColor1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColor1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColor2"]').val(["${orderForm.optionPantsStandardInfo.opBhColor2}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColor2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColor3"]').val(["${orderForm.optionPantsStandardInfo.opBhColor3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColor3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opBhColor4"]').val(["${orderForm.optionPantsStandardInfo.opBhColor4}"]);
-	jQuery('input[name="optionPantsStandardInfo.opBhColor4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opBhColor4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opBhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPantsStandardInfo.opByColor"]').val(["${orderForm.optionPantsStandardInfo.opByColor}"]);
-	jQuery('input[name="optionPantsStandardInfo.opByColor"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor"]').change();
 	
-	jQuery("#op_byColorPlaceAll").val("${orderForm.optionPantsStandardInfo.opByColorPlaceAll}");
+	jQuery("#op_byColorPlaceAll").val("${orderCoForm.coOptionPantsStandardInfo.opByColorPlaceAll}");
 	jQuery("#op_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPantsStandardInfo.opByColorPlace1"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace1}"]);
-	jQuery('input[name="optionPantsStandardInfo.opByColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace2"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace2}"]);
-	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.opByColorPlace3"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace3}"]);
-	jQuery('input[name="optionPantsStandardInfo.opByColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace4"]').val(["${orderForm.optionPantsStandardInfo.opByColorPlace4}"]);
-	jQuery('input[name="optionPantsStandardInfo.op2ByColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColorPlace4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColorPlace4"]').change();
+
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor1"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor1}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor1"]').change();
+
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor2"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor2}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor2"]').change();
+
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor3"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor3}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor3"]').change();
+
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor4"]').val(["${orderCoForm.coOptionPantsStandardInfo.opByColor4}"]);
+	jQuery('input[name="coOptionPantsStandardInfo.opByColor4"]').change();
 
 	//釦素材
-	jQuery('#op_btnMate').val("${orderForm.optionPantsStandardInfo.opButton}");
-	jQuery('#op_btnMate').change();
-
-	jQuery('#op_btnMateStkNo').val("${orderForm.optionPantsStandardInfo.opBtnMateStkNo}");
-	jQuery('#op_btnMateStkNo').change();
+	//jQuery('#op_btnMate').val("${orderCoForm.coOptionPantsStandardInfo.opButton}");
+	//jQuery('#op_btnMate').change();
+   if(isNotEmpty("${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo}")){
+	  jQuery('#op_btnMateStkNo').val("${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo}");
+	   jQuery('#op_btnMateStkNo').change();
+   }
+	
 }
 
-function  tp2Session(){
+function  tpSession(){
 
 	//コインポケット
-	jQuery("#tp_coinPkt").val("${orderForm.optionPantsTuxedoInfo.tpCoinPkt}");
+	jQuery("#tp_coinPkt").val("${orderCoForm.coOptionPantsTuxedoInfo.tpCoinPkt}");
 	jQuery("#tp_coinPkt").change();
 
 	//裾上げ
-	jQuery("#tp_hemUp").val("${orderForm.optionPantsTuxedoInfo.tpHemUp}");
+	jQuery("#tp_hemUp").val("${orderCoForm.coOptionPantsTuxedoInfo.tpHemUp}");
 	jQuery("#tp_hemUp").change();
 
    //ベルトループ 
-    jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoop}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoop"]').change();
+    jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoop}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace1}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace2}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace3}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace4}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace5}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace6"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace6}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace7"]').val(["${orderForm.optionPantsTuxedoInfo.tpBeltLoopPlace7}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoopPlace7"]').change();
 
 	//ステッチ種類
-	jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').val(["${orderForm.optionPantsTuxedoInfo.tpStitch}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpStitch"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpStitch}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').change();
 	//ボタンホール色指定
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace1}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace1}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace2}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace2}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace3}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace3}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace4}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace5"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColorPlace5}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColorPlace5"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor1}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor1"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor1}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor1"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor2}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor2"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor2}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor2"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor3}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor3"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor3}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor3"]').change();
-
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpBhColor4}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpBhColor4"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor4}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor"]').change();
-	jQuery("#tp_byColorPlaceAll").val("${orderForm.optionPantsTuxedoInfo.tpByColorPlaceAll}");
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]').change();
+	jQuery("#tp_byColorPlaceAll").val("${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlaceAll}");
 	jQuery("#tp_byColorPlaceAll").change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace1}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace1}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace2}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace2}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace3}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace3}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColorPlace4}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace4}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor1"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor1}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor1"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor1"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor1}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor1"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor2"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor2}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor2"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor2"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor2}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor2"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor3"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor3}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor3"]').change();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor3"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor3}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor3"]').change();
 
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor4"]').val(["${orderForm.optionPantsTuxedoInfo.tpByColor4}"]);
-	jQuery('input[name="optionPantsTuxedoInfo.tpByColor4"]').change();
-	
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor4"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpByColor4}"]);
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor4"]').change();
+	if(isNotEmpty("${orderCoForm.coOptionPantsTuxedoInfo.tpBtnMateStkNo}")){
+		jQuery("#tp_btnMateStkNo").val("${orderCoForm.coOptionPantsTuxedoInfo.tpBtnMateStkNo}");
+		jQuery("#tp_btnMateStkNo").change();
+		}
 }
-function  wp2Session(){
+function  wpSession(){
 
 	//ベルトループ
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoop}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoop"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoop}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace4"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace5"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace5}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace5"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace5"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace5}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace5"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace6"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace6}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace6"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace6"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace6}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace6"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace7"]').val(["${orderForm.optionPantsWashableInfo.wpBeltLoopPlace7}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBeltLoopPlace7"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace7"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoopPlace7}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoopPlace7"]').change();
 
 	//ステッチ種類
-	jQuery('input[name="optionPantsWashableInfo.wpStitch"]').val(["${orderForm.optionPantsWashableInfo.wpStitch}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitch"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitch}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]').change();
 	//ステッチ箇所変更
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModify}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModify"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModify}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpStitchModifyPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpStitchModifyPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModifyPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModifyPlace4"]').change();
 	
 	//ダブルステッチ
-	jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').val(["${orderForm.optionPantsWashableInfo.wpDStitch}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpDStitch"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitch}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpDStitchPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpDStitchPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpDStitchPlace4"]').change();
 
 	//AMF色指定
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColorPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColorPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor1"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor2"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor3"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor4"]').val(["${orderForm.optionPantsWashableInfo.wpAmfColor4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpAmfColor4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAmfColor4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor4"]').change();
 
 	//ボタンホール色指定
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColorPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor1"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor2"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor3"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor4"]').val(["${orderForm.optionPantsWashableInfo.wpBhColor4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpBhColor4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBhColor4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpBhColor4"]').change();
 
 	//ボタン付け糸指定
-	jQuery('input[name="optionPantsWashableInfo.wpByColor"]').val(["${orderForm.optionPantsWashableInfo.wpByColor}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColor"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace1"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace2"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace2}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace2"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace2}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace2"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace3"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace3}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace3"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace3"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace3}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace3"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace4"]').val(["${orderForm.optionPantsWashableInfo.wpByColorPlace4}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColorPlace4"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace4"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace4}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColorPlace4"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').change();
 
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').val(["${orderForm.optionPantsWashableInfo.wpByColor1}"]);
-	jQuery('input[name="optionPantsWashableInfo.wpByColor1"]').change();
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpByColor1}"]);
+	jQuery('input[name="coOptionPantsWashableInfo.wpByColor1"]').change();
+
+	if(isNotEmpty("${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo}")){
+		jQuery("#wp_btnMateStkNo").val("${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo}");
+		jQuery("#wp_btnMateStkNo").change();
+	}
+	
 }
-
+jQuery("#op_pantsModel,#tp_pantsModel,wp_pantsModel").change(function(){
+	jQuery("#pantsAdFlag").val("0");
+})   
 </script>

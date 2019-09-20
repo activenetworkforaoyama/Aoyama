@@ -6,6 +6,7 @@ public class Fabric implements Serializable {
 
 	private static final long serialVersionUID = -2092667051562969921L;
 	private String sku;
+	private String styleno;
 	private String mode;
 	private String Vendor;
 	private String Description;
@@ -18,6 +19,12 @@ public class Fabric implements Serializable {
 	}
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+	public String getStyleno() {
+		return styleno;
+	}
+	public void setStyleno(String styleno) {
+		this.styleno = styleno;
 	}
 	public String getMode() {
 		return mode;

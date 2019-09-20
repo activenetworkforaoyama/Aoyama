@@ -1,6 +1,6 @@
 <form:form id="idAdjustForm"
 	action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm"
-	method="post" modelAttribute="orderForm" class="form-horizontal">
+	method="post" modelAttribute="orderCoForm" class="form-horizontal">
 	<div id="al_pants_div">
 		<div class="card-header">
 			<strong class="card-title">PANTS</strong>
@@ -16,19 +16,19 @@
 							体型
 							<div class="form-check-inline form-check">
 								<form:select id="selectPantsFigure"
-									path="adjustPantsStandardInfo.sizeFigure"
+									path="coAdjustPantsStandardInfo.sizeFigure"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustPantsStandardInfo.sizeFigureMap}" />
+										items="${orderCoForm.coAdjustPantsStandardInfo.sizeFigureMap}" />
 								</form:select>								
 							</div>
 							号数
 							<div class="form-check-inline form-check">
 								<form:select id="selectPantsNumber"
-									path="adjustPantsStandardInfo.sizeNumber"
+									path="coAdjustPantsStandardInfo.sizeNumber"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustPantsStandardInfo.sizeNumberMap}" />
+										items="${orderCoForm.coAdjustPantsStandardInfo.sizeNumberMap}" />
 								</form:select>								
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corPtWaistRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corPtWaistRange" name="adjustPantsStandardInfo.corPtWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corPtWaistRange" name="coAdjustPantsStandardInfo.corPtWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corPtWaistRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corPtWaistRange_out">0</output>cm
                                 </div>
@@ -58,7 +58,7 @@
                                 <div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corPtHipRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corPtHipRange" name="adjustPantsStandardInfo.corPtHipCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corPtHipRange" name="coAdjustPantsStandardInfo.corPtHipCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corPtHipRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corPtHipRange_out">0</output>cm
                                 </div>
@@ -73,7 +73,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corPtThighRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corPtThighRange" name="adjustPantsStandardInfo.corPtThighCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corPtThighRange" name="coAdjustPantsStandardInfo.corPtThighCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corPtThighRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corPtThighRange_out">0</output>cm
                                 </div>
@@ -88,14 +88,14 @@
 						</div>
 						<div class="col-12 col-md-1">
 							<label for="ap_hemWidth_relative" class="form-check-label ">
-								<input type="radio" id="pt_hemWidth_relative" name="adjustPantsStandardInfo.corPtHemwidthType"
+								<input type="radio" id="pt_hemWidth_relative" name="coAdjustPantsStandardInfo.corPtHemwidthType"
 								value="1" class="form-check-input" checked>修正
 							</label>
 						</div>
 						<div class="col-12 col-md-4" id="corPtHemwidthRangeId">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corPtHemwidthRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corPtHemwidthRange" name="adjustPantsStandardInfo.corPtHemwidthCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corPtHemwidthRange" name="coAdjustPantsStandardInfo.corPtHemwidthCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corPtHemwidthRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corPtHemwidthRange_out">0</output>cm
                                 </div>
@@ -107,14 +107,14 @@
 						<div class="col-12 col-md-9 offset-md-3" id="ap_hemWidthRel_alert"></div>
 						<div class="col-12 col-md-1 offset-md-5">
 							<label for="ap_hemWidth_absolute" class="form-check-label ">
-								<input type="radio" id="pt_hemWidth_absolute" name="adjustPantsStandardInfo.corPtHemwidthType"
+								<input type="radio" id="pt_hemWidth_absolute" name="coAdjustPantsStandardInfo.corPtHemwidthType"
 								value="2" class="form-check-input">指定
 							</label>
 						</div>
 					<div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
                                 <select name="ap_hemWidthAbs10" id="ap_hemWidthAbs10" class="form-control-sm form-control hidedown" style="width:32px">
-                                    <option value="0">1</option>
+                                    <option value="1">1</option>
                                     <option value="2">2</option>
                                 </select>
                                 <select name="ap_hemWidthAbs1" id="ap_hemWidthAbs1" class="form-control-sm form-control hidedown" style="width:32px">
@@ -227,7 +227,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="adjustPantsStandardInfo.corPtStoreCorrectionMemo" id="corPtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <textarea name="coAdjustPantsStandardInfo.corPtStoreCorrectionMemo" id="corPtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -236,49 +236,58 @@
             </div>
 	<!-- PANTS1 -->
 	<input type="hidden" id="corPtWaist_div_Size"
-		name="adjustPantsStandardInfo.corPtWaistSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtWaistSize" value="" />
 	<input type="hidden" id="corPtWaist_div_Gross"
-		name="adjustPantsStandardInfo.corPtWaistGross" value="" />
+		name="coAdjustPantsStandardInfo.corPtWaistGross" value="" />
     <!-- ヒップ修正            -->
     <input type="hidden" id="corPtHip_div_Size"
-		name="adjustPantsStandardInfo.corPtHipSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtHipSize" value="" />
 	<input type="hidden" id="corPtHip_div_Gross"
-		name="adjustPantsStandardInfo.corPtHipGross" value="" />
+		name="coAdjustPantsStandardInfo.corPtHipGross" value="" />
 
 	<input type="hidden" id="corPtThigh_div_Size"
-		name="adjustPantsStandardInfo.corPtThighSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtThighSize" value="" />
 	<input type="hidden" id="corPtThigh_div_Gross"
-		name="adjustPantsStandardInfo.corPtThighGross" value="" />
+		name="coAdjustPantsStandardInfo.corPtThighGross" value="" />
 
 	<input type="hidden" id="corPtHemwidth_div_Size"
-		name="adjustPantsStandardInfo.corPtHemwidthSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtHemwidthSize" value="" />
 	<input type="hidden" id="corPtHemwidth_div_Gross"
-		name="adjustPantsStandardInfo.corPtHemwidthGross" value="" />
+		name="coAdjustPantsStandardInfo.corPtHemwidthGross" value="" />
+		
+	<input type="hidden" id="corPtHemwidthDegignate"
+		name="coAdjustPantsStandardInfo.corPtHemwidthDegignate" value="" />
 
 	<input type="hidden" id="corPtRightinseam_div_Size"
-		name="adjustPantsStandardInfo.corPtRightinseamSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtRightinseamSize" value="" />
 	<input type="hidden" id="corPtRightinseamGross"
-		name="adjustPantsStandardInfo.corPtRightinseamGross" value="" />
+		name="coAdjustPantsStandardInfo.corPtRightinseamGross" value="" />
 
 
 	<input type="hidden" id="corPtLeftinseam_div_Size"
-		name="adjustPantsStandardInfo.corPtLeftinseamSize" value="" />
+		name="coAdjustPantsStandardInfo.corPtLeftinseamSize" value="" />
 	<input type="hidden" id="corPtLeftinseamGross"
-		name="adjustPantsStandardInfo.corPtLeftinseamGross" value="" />
-	<input type="hidden" id="pantsAdFlag"
-		name="pantsAdFlag" value="1" />
+		name="coAdjustPantsStandardInfo.corPtLeftinseamGross" value="" />
+	       <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="1" />
+		   <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+           <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+           <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+           <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+           <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 </form:form>
 <script
 	src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-var itemCode ="${orderForm.productItem}";
-var pantsAdFlag="${orderForm.pantsAdFlag}";
-var ptModel = "${orderForm.optionPantsStandardInfo.opPantsModel}";
+var itemCode ="${orderCoForm.productItem}";
+var pantsAdFlag="${orderCoForm.pantsAdFlag}";
+var productCategory="${orderCoForm.productCategory}";
+var ptModel="";
+var opModel = "${orderCoForm.coOptionPantsStandardInfo.opPantsModel}";
+var tpModel = "${orderCoForm.coOptionPantsTuxedoInfo.tpPantsModel}";
+var wpModel = "${orderCoForm.coOptionPantsWashableInfo.wpPantsModel}";
 var ptAdjustList = [
-	//{type:"09",id:"corPtRightinseam_div"},
-	//{type:"10",id:"corPtLeftinseam_div"},
 	{type:"05",id:"corPtHip_div"},
 	{type:"06",id:"corPtWaist_div"},
 	{type:"08",id:"corPtHemwidth_div"}
@@ -295,18 +304,15 @@ jQuery(document).ready(function() {
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
+    if(productCategory=="9000101"){
+    	ptModel = opModel;
+	}else if(productCategory=="9000102"){
+		ptModel = tpModel;
+	}else if(productCategory=="9000103"){
+		ptModel = wpModel;
+	}
      getAdjustByItem();
 	 initAlter();
-	 /* if(itemFlag=="1"){
-		 adjustReInit();
-	 }else if(pantsFlag=="0"&&ptModel==""){
-
-	 }else if(pantsFlag=="1"){
-		 getFigureAndNumberByItem();
-	 }else if(pantsFlag=="0"&&ptModel!=""){
-		 getFigureAndNumberByItem();
-		 adjustSession();
-	 } */
 	    if(pantsAdFlag==""){
 	    	adjustReInit();
 		}else if(pantsAdFlag=="0"){
@@ -319,19 +325,19 @@ jQuery(document).ready(function() {
 jQuery("#selectPantsFigure,#selectPantsNumber").change(function(){
 	ptAdjust();		
 }) 
-
+jQuery("#pantsAdFlag").val("1");
     //PANTS裾幅 指定
     jQuery("#pt_hemWidth_absolute").click(function(){
     	
     	jQuery("#corPtHemwidthRangeId").hide();
-    	jQuery("#corPtHemwidth_div_Gross").val("0cm");
+    	jQuery("#corPtHemwidth_div_Gross").val("0");
     	jQuery("#corPtHemwidthRange_out").val("0");
     	jQuery("#corPtHemwidthRange").val("0");
     	setFont("corPtHemwidthRange");
-    	
+    	jQuery("#corPtHemwidthDegignate").val("10.0");
     });
     jQuery("#pt_hemWidth_relative").click(function(){
-    	jQuery("#corPtHemwidth_div_Gross").val("0cm");
+    	jQuery("#corPtHemwidth_div_Gross").val("0");
     	jQuery("#corPtHemwidthRange_out").val("0");
     	jQuery("#corPtHemwidthRange").val("0");
 	    jQuery("#corPtHemwidthRangeId").show();
@@ -341,8 +347,8 @@ jQuery("#selectPantsFigure,#selectPantsNumber").change(function(){
     		var ap_hemWidthAbs10 = jQuery("#ap_hemWidthAbs10").val();
     		var ap_hemWidthAbs1 = jQuery("#ap_hemWidthAbs1").val();
     		var ap_hemWidthAbsM1 = jQuery("#ap_hemWidthAbsM1").val();
-    		var corPtHemwidthGross = ap_hemWidthAbs10+ap_hemWidthAbs1+"."+ap_hemWidthAbsM1;
-    		jQuery("#corPtHemwidth_div_Gross").val(corPtHemwidthGross);
+    		var corPtHemwidthDegignate = ap_hemWidthAbs10+ap_hemWidthAbs1+"."+ap_hemWidthAbsM1;
+    		jQuery("#corPtHemwidthDegignate").val(corPtHemwidthDegignate);
     	})
        
         
@@ -513,7 +519,7 @@ function ptAdjust(){
 	var subItemCode = "03";
 	pantsFigure = jQuery("#selectPantsFigure").val();
 	pantsNumber = jQuery("#selectPantsNumber").val();
-	var opTack = "${orderForm.optionPantsStandardInfo.opTack}";
+	var opTack = "${orderCoForm.coOptionPantsStandardInfo.opTack}";
 	
 
 	//ノータック:0000101  1アウトタック:0000102  2アウトタック:0000104
@@ -542,26 +548,26 @@ function ptAdjust(){
 	            		jQuery("#corPtHemwidth_div_Size").val(data[i].typeSize);
 	            		jQuery("#corPtHemwidth_div_Gross").val(data[i].typeSize);
 					}else if(data[i].adjustClass == "07"){
-						if(opTack=="0000102"){
+						if(opTack=="0000101"){
+							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize + 'cm';
+		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize);
+		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize);
+						}else if(opTack=="0000102"){
 							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize1Outtack + 'cm';
 		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize1Outtack);
 		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize1Outtack);
+						}else if(opTack=="0000103"){
+							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize1Intack + 'cm';
+		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize1Intack);
+		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize1Intack);
 						}else if(opTack=="0000104"){
 							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize2Outtack + 'cm';
 		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize2Outtack);
 		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize2Outtack);
-						}else if(opTack=="0000103"){
-							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize2Outtack + 'cm';
-		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize2Outtack);
-		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize2Outtack);
-						}else if(opTack=="0000101"){
-							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize2Outtack + 'cm';
-		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize2Outtack);
-		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize2Outtack);
 						}else if(opTack=="0000105"){
-							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize2Outtack + 'cm';
-		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize2Outtack);
-		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize2Outtack);
+							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize2Intack + 'cm';
+		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize2Intack);
+		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize2Intack);
 						}else{
 							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize + 'cm';
 		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize);
@@ -640,52 +646,52 @@ function adjustReInit(){
 	jQuery("#ap_inseamLeft1").val("0");
 
 	
-	jQuery("#corPtHemwidthGross").val("");
-	jQuery("#ap_hemWidthAbs10").val("0");
+	jQuery("#corPtHemwidthDegignate").val("");
+	jQuery("#ap_hemWidthAbs10").val("1");
 	jQuery("#ap_hemWidthAbs1").val("0");
 	jQuery("#ap_hemWidthAbsM1").val("0");
 
 } 
 
 function adjustSession(){
-	jQuery("#selectPantsFigure").val("${orderForm.adjustPantsStandardInfo.sizeFigure}");
-	jQuery("#selectPantsNumber").val("${orderForm.adjustPantsStandardInfo.sizeNumber}");
+	jQuery("#selectPantsFigure").val("${orderCoForm.coAdjustPantsStandardInfo.sizeFigure}");
+	jQuery("#selectPantsNumber").val("${orderCoForm.coAdjustPantsStandardInfo.sizeNumber}");
 	
 	//PT　型サイズ値、補正値とグロス値を設定
-	jQuery("#corPtWaist_div_Size").val("${orderForm.adjustPantsStandardInfo.corPtWaistSize}");
-	jQuery("#corPtWaist_div_Gross").val("${orderForm.adjustPantsStandardInfo.corPtWaistGross}");
-	jQuery("#corPtWaist_div_html").html("${orderForm.adjustPantsStandardInfo.corPtWaistGross}"+".cm");
-	if("${orderForm.adjustPantsStandardInfo.corPtWaistGross}"==""){
+	jQuery("#corPtWaist_div_Size").val("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistSize}");
+	jQuery("#corPtWaist_div_Gross").val("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistGross}");
+	jQuery("#corPtWaist_div_html").html("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistGross}"+".cm");
+	if("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistGross}"==""){
 		jQuery("#corPtWaist_div_html").html("000.0cm");
 		}
-	jQuery("#corPtWaistRange_out").html("${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}");
-	jQuery("#corPtWaistRange").val("${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}");
+	jQuery("#corPtWaistRange_out").html("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistCorrect}");
+	jQuery("#corPtWaistRange").val("${orderCoForm.coAdjustPantsStandardInfo.corPtWaistCorrect}");
 	setFont("corPtWaistRange");
 
-	jQuery("#corPtHip_div_Size").val("${orderForm.adjustPantsStandardInfo.corPtHipSize}");
-	jQuery("#corPtHip_div_Gross").val("${orderForm.adjustPantsStandardInfo.corPtHipGross}");
-	jQuery("#corPtHip_div_html").html("${orderForm.adjustPantsStandardInfo.corPtHipGross}"+".cm");
-	if("${orderForm.adjustPantsStandardInfo.corPtHipGross}"==""){
+	jQuery("#corPtHip_div_Size").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHipSize}");
+	jQuery("#corPtHip_div_Gross").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHipGross}");
+	jQuery("#corPtHip_div_html").html("${orderCoForm.coAdjustPantsStandardInfo.corPtHipGross}"+".cm");
+	if("${orderCoForm.coAdjustPantsStandardInfo.corPtHipGross}"==""){
 		jQuery("#corPtHip_div_html").html("000.0cm");
 		}
-	jQuery("#corPtHipRange_out").html("${orderForm.adjustPantsStandardInfo.corPtHipCorrect}");
-	jQuery("#corPtHipRange").val("${orderForm.adjustPantsStandardInfo.corPtHipCorrect}");
+	jQuery("#corPtHipRange_out").html("${orderCoForm.coAdjustPantsStandardInfo.corPtHipCorrect}");
+	jQuery("#corPtHipRange").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHipCorrect}");
 	setFont("corPtHipRange");
 	
-	jQuery("#corPtThigh_div_Size").val("${orderForm.adjustPantsStandardInfo.corPtThighSize}");
-	jQuery("#corPtThigh_div_Gross").val("${orderForm.adjustPantsStandardInfo.corPtThighGross}");
-	jQuery("#corPtThigh_div_html").html("${orderForm.adjustPantsStandardInfo.corPtThighGross}"+".cm");
-	if("${orderForm.adjustPantsStandardInfo.corPtThighGross}"==""){
+	jQuery("#corPtThigh_div_Size").val("${orderCoForm.coAdjustPantsStandardInfo.corPtThighSize}");
+	jQuery("#corPtThigh_div_Gross").val("${orderCoForm.coAdjustPantsStandardInfo.corPtThighGross}");
+	jQuery("#corPtThigh_div_html").html("${orderCoForm.coAdjustPantsStandardInfo.corPtThighGross}"+".cm");
+	if("${orderCoForm.coAdjustPantsStandardInfo.corPtThighGross}"==""){
 		jQuery("#corPtThigh_div_html").html("000.0cm");
 		}
-	jQuery("#corPtThighRange_out").html("${orderForm.adjustPantsStandardInfo.corPtThighCorrect}");
-	jQuery("#corPtThighRange").val("${orderForm.adjustPantsStandardInfo.corPtThighCorrect}");
+	jQuery("#corPtThighRange_out").html("${orderCoForm.coAdjustPantsStandardInfo.corPtThighCorrect}");
+	jQuery("#corPtThighRange").val("${orderCoForm.coAdjustPantsStandardInfo.corPtThighCorrect}");
 	setFont("corPtThighRange");
 
-	var corPtRightinseamSize = "${orderForm.adjustPantsStandardInfo.corPtRightinseamSize}";
+	var corPtRightinseamSize = "${orderCoForm.coAdjustPantsStandardInfo.corPtRightinseamSize}";
 	jQuery("#corPtRightinseam_div_Size").val(corPtRightinseamSize);	
 	
-	var corPtRightinseamGross = "${orderForm.adjustPantsStandardInfo.corPtRightinseamGross}";
+	var corPtRightinseamGross = "${orderCoForm.coAdjustPantsStandardInfo.corPtRightinseamGross}";
 	jQuery("#corPtRightinseamGross").val(corPtRightinseamGross);	
 	corPtRightinseamGross = corPtRightinseamGross.split(".");
 	if(isNotEmpty(corPtRightinseamGross[1])){
@@ -715,9 +721,9 @@ function adjustSession(){
 		jQuery("#ap_inseamRight1").val(right1);
 	}
 
-	var corPtLeftinseamSize = "${orderForm.adjustPantsStandardInfo.corPtLeftinseamSize}";
+	var corPtLeftinseamSize = "${orderCoForm.coAdjustPantsStandardInfo.corPtLeftinseamSize}";
 	jQuery("#corPtLeftinseam_div_Size").val(corPtLeftinseamSize);
-	var corPtLeftinseamGross = "${orderForm.adjustPantsStandardInfo.corPtLeftinseamGross}";
+	var corPtLeftinseamGross = "${orderCoForm.coAdjustPantsStandardInfo.corPtLeftinseamGross}";
 	jQuery("#corPtLeftinseamGross").val(corPtLeftinseamGross);
 	corPtLeftinseamGross = corPtLeftinseamGross.split(".");
 	if(isNotEmpty(corPtLeftinseamGross[1])){
@@ -747,43 +753,40 @@ function adjustSession(){
 		jQuery("#ap_inseamLeft1").val(left1);
 	}
 
-	var corPtHemwidthTypeValue="${orderForm.adjustPantsStandardInfo.corPtHemwidthType}";
+	var corPtHemwidthTypeValue="${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthType}";
 	if(corPtHemwidthTypeValue=="1"){
 		jQuery("#pt_hemWidth_relative").prop("checked", true);
-		jQuery("#corPtHemwidth_div_Size").val("${orderForm.adjustPantsStandardInfo.corPtHemwidthSize}");
-		jQuery("#corPtHemwidth_div_Gross").val("${orderForm.adjustPantsStandardInfo.corPtHemwidthGross}");
-		jQuery("#corPtHemwidth_div_html").html("${orderForm.adjustPantsStandardInfo.corPtHemwidthGross}"+".cm");
-		if("${orderForm.adjustPantsStandardInfo.corPtHemwidthGross}"==""){
+		jQuery("#corPtHemwidth_div_Size").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthSize}");
+		jQuery("#corPtHemwidth_div_Gross").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthGross}");
+		jQuery("#corPtHemwidth_div_html").html("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthGross}"+".cm");
+		if("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthGross}"==""){
 			jQuery("#corPtHemwidth_div_html").html("000.0cm");
 			}
-		jQuery("#corPtHemwidthRange_out").html("${orderForm.adjustPantsStandardInfo.corPtHemwidthCorrect}");
-		jQuery("#corPtHemwidthRange").val("${orderForm.adjustPantsStandardInfo.corPtHemwidthCorrect}");
+		jQuery("#corPtHemwidthRange_out").html("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthCorrect}");
+		jQuery("#corPtHemwidthRange").val("${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthCorrect}");
 		setFont("corPtHemwidthRange");
 	 }else if(corPtHemwidthTypeValue=="2"){
 		 jQuery("#pt_hemWidth_absolute").prop("checked", true);
-		 var corPtHemwidthSize = "${orderForm.adjustPantsStandardInfo.corPtHemwidthSize}";
-			jQuery("#corPtHemwidth_div_Size").val(corPtHemwidthSize);
-			var corPtHemwidthGross = "${orderForm.adjustPantsStandardInfo.corPtHemwidthGross}";
-			jQuery("#corPtHemwidth_div_Gross").val(corPtHemwidthGross);
-			corPtHemwidthGross = corPtHemwidthGross.split(".");
-			if(isNotEmpty(corPtHemwidthGross[1])){
-				jQuery("#ap_hemWidthAbsM1").val(corPtHemwidthGross[1]);
+			var corPtHemwidthDegignate = "${orderCoForm.coAdjustPantsStandardInfo.corPtHemwidthDegignate}";
+			jQuery("#corPtHemwidthDegignate").val(corPtHemwidthDegignate);
+			corPtHemwidthDegignate = corPtHemwidthDegignate.split(".");
+			if(isNotEmpty(corPtHemwidthDegignate[1])){
+				jQuery("#ap_hemWidthAbsM1").val(corPtHemwidthDegignate[1]);
 			}
-			var str = corPtHemwidthGross[0];
+			var str = corPtHemwidthDegignate[0];
 			if(str.length == 2){
 				str = str.split("");
 				var left1 = str[1];
 				var left10 = str[0];
-				jQuery("#ap_hemWidthAbs10").val(left10);
-				jQuery("#ap_hemWidthAbs1").val(left1);
-			}else if(str.length == 1){
-				str = str.split("");
-				var left1 = str[0];
-				jQuery("#ap_hemWidthAbs10").val(left10);
+				if(left10=="1"){
+					jQuery("#ap_hemWidthAbs10").val("1");
+				}else if(left10=="2"){
+					jQuery("#ap_hemWidthAbs10").val("2");
+				}
 				jQuery("#ap_hemWidthAbs1").val(left1);
 			}
     }
-	jQuery("#corPtStoreCorrectionMemo").val("${orderForm.adjustPantsStandardInfo.corPtStoreCorrectionMemo}");
+	jQuery("#corPtStoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
 	
 } 
 

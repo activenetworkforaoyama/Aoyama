@@ -47,7 +47,7 @@ public class AESEncrypt {
 		return null;
 	}
 
-	private static String encrypt2(String inputValue, String appsecret, String accessToken) {
+	public static String encrypt2(String inputValue, String appsecret, String accessToken) {
 		try {
 			byte[] inputValueBytes = inputValue.getBytes("UTF-8");
 			byte[] appsecretBytes = appsecret.getBytes("UTF-8");

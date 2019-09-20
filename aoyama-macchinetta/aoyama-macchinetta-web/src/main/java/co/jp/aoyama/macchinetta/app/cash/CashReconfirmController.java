@@ -275,7 +275,7 @@ public class CashReconfirmController {
 				//受注テーブルの値引き後金額
 				cashInfo.setCashDiscountPrice(0);
 				//受注テーブルの会計ID
-				cashInfo.setCashId("");
+				cashInfo.setCashId(null);
 				//受注テーブルの会計後商品金額（税抜き）
 				cashInfo.setCashProductPrice(0);
 				//受注テーブルの会計後商品金額（税込み）

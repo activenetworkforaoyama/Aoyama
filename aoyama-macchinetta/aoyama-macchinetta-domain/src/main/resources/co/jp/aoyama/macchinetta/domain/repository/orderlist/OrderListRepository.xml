@@ -6,7 +6,6 @@
 <mapper namespace="co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository">
 
 
-
   <resultMap id="OrderResultMap" type="Order">
 	<id column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="order_pattern" jdbcType="VARCHAR" property="orderPattern" />
@@ -1268,6 +1267,24 @@
     <result column="ct_btn_material_type" jdbcType="VARCHAR" property="ctBtnMaterialType" />
     <result column="fabric_price" jdbcType="INTEGER" property="fabricPrice" />
     <result column="ws_price_adjust" jdbcType="INTEGER" property="wsPriceAdjust" />
+    
+    <result column="product_category_nm" jdbcType="VARCHAR" property="productCategoryNm" />
+    <result column="product_lcr_sewing_cd" jdbcType="VARCHAR" property="productLcrSewingCd" />
+    <result column="product_fabric_nm_necessity_nm" jdbcType="VARCHAR" property="productFabricNmNecessityNm" />
+    <result column="product_embroidery_necessity_nm" jdbcType="VARCHAR" property="productEmbroideryNecessityNm" />
+    <result column="product_embroidery_font_cd" jdbcType="VARCHAR" property="productEmbroideryFontCd" />
+    <result column="product_embroidery_thread_color_cd" jdbcType="VARCHAR" property="productEmbroideryThreadColorCd" />
+    <result column="product_embroidery_gazette_cd" jdbcType="VARCHAR" property="productEmbroideryGazetteCd" />
+    <result column="product_embroidery_nm_pos_cd" jdbcType="VARCHAR" property="productEmbroideryNmPosCd" />
+    <result column="cor_jk_shoulderpad_cd" jdbcType="VARCHAR" property="corJkShoulderpadCd" />
+    <result column="cor_jk_figure_correct_cd" jdbcType="VARCHAR" property="corJkFigureCorrectCd" />
+    
+    <result column="cor_st_backdarts_unpack_cd" jdbcType="VARCHAR" property="corStBackdartsUnpackCd" />
+    <result column="cor_st_backdarts_unpack_nm" jdbcType="VARCHAR" property="corStBackdartsUnpackNm" />
+    
+    <result column="cust_is_deliver_shortning_rt_price" jdbcType="INTEGER" property="custIsDeliverShortningRtPrice" />
+    <result column="cust_is_deliver_shortning_ws_wage" jdbcType="NUMERIC" property="custIsDeliverShortningWsWage" />
+    <result column="cust_is_deliver_shortning_ws_price" jdbcType="INTEGER" property="custIsDeliverShortningWsPrice" />
   </resultMap>
     
     <sql id="SelectColumn">
@@ -1275,6 +1292,10 @@
 		    order_id, dtb_order.order_pattern, store_brand_code, shop_code, billing_amount, product_price, 
 		    option_price, total_price, consumption_tax_amount, sales_amount, ws_price, cash_id, 
 		    cash_discount_price, cash_product_price, cash_contail_tax_product_price, store_nm, 
+		    product_category_nm,product_lcr_sewing_cd,product_fabric_nm_necessity_nm,product_embroidery_necessity_nm,
+		    product_embroidery_font_cd,product_embroidery_thread_color_cd,product_embroidery_gazette_cd,
+		    product_embroidery_nm_pos_cd,cor_jk_shoulderpad_cd,cor_jk_figure_correct_cd,
+		    cust_is_deliver_shortning_rt_price,cust_is_deliver_shortning_ws_wage,cust_is_deliver_shortning_ws_price,
 		    store_staff_nm, printout_cust_roma_nm, printout_store_staff_roma_nm, cust_cd, cust_nm, 
 		    cust_kana_nm, cust_deliver_date, cust_is_deliver_shortning, cust_is_early_discount, 
 		    cust_shop_delivery_date, cust_staff, cust_type, cust_shipping_destination, cust_shipping_destnation_otherstore, 
@@ -1576,7 +1597,7 @@
 		    send2factory_status, is_cancelled, theoretical_stock_check,schedule_data_transmit_status,shipping_transmit_status, dtb_order.version,
 		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at,product_lcr_sewing,product_lcr_sewing_rt_price,
 		    product_lcr_sewing_ws_wage,product_lcr_sewing_ws_price,ct_inner_body_cloth_type,ct_inner_sleeve_cloth_type,ct_btn_material_type,fabric_price,
-		    ws_price_adjust
+		    ws_price_adjust,cor_st_backdarts_unpack_cd,cor_st_backdarts_unpack_nm
     </sql>
 
     <select id="findOrderByPk" parameterType="string" resultMap="OrderResultMap">
@@ -1627,7 +1648,7 @@
         </if>
         <include refid="OrderCondition" />
         ORDER BY
-            dtb_order.updated_at desc
+            dtb_order.updated_at desc,dtb_order.order_id desc
     </select>
     
     <sql id="OrderCondition">
@@ -2012,7 +2033,7 @@
 				updated_at = #{arg3}
 			</set>
 			WHERE
-				fabric_no = #{arg0}
+				fabric_no = #{arg0} and order_pattern =  #{arg4}
 	</update>
 	<select id="fuzzyQuery" resultMap="OrderResultMap">
       SELECT 
@@ -2048,7 +2069,7 @@
         </if>
         <include refid="OrderCondition" />
         ORDER BY
-            dtb_order.updated_at desc
+            dtb_order.updated_at desc,dtb_order.order_id desc
     </select>    
     <select id="findOrderJkByPk" parameterType="string" resultMap="OrderResultMap">   
         SELECT
@@ -2202,6 +2223,8 @@
     <select id="findOrderStByPk" parameterType="string" resultMap="OrderResultMap">
     
         SELECT
+          st_model_cd,
+          st_casual_hemline_cd,
           cor_st_size,
           cor_st_neck_size,
           cor_st_neck_correct,
@@ -2606,6 +2629,250 @@
 			ct_btn_material_cd,
 			ct_btn_material_nm,
 			ct_btn_material_rt_price
+		FROM
+			dtb_order 
+		WHERE
+			order_id = #{ orderId}
+</select>
+
+<select id="findOrderGlOptionByOrderId" parameterType="string" resultMap="OrderResultMap">
+		SELECT
+			gl_model_cd, 
+			gl_model_nm, 
+		    gl_model_rt_price, 
+		    gl_model_ws_wage, 
+		    gl_model_ws_price, 
+		    gl_breast_pkt_cd, 
+		    gl_breast_pkt_nm, 
+		    gl_breast_pkt_rt_price, 
+		    gl_breast_pkt_ws_wage, 
+		    gl_breast_pkt_ws_price, 
+		    gl_waist_pkt_cd, 
+		    gl_waist_pkt_nm, 
+		    gl_waist_pkt_rt_price, 
+		    gl_waist_pkt_ws_wage, 
+		    gl_waist_pkt_ws_price, 
+		    gl_waist_pkt_shape_cd, 
+		    gl_waist_pkt_shape_nm, 
+		    gl_waist_pkt_shape_rt_price, 
+		    gl_waist_pkt_shape_ws_wage, 
+		    gl_waist_pkt_shape_ws_price, 
+		    gl_waist_pkt_cloth_cd, 
+		    gl_waist_pkt_cloth_nm, 
+		    gl_waist_pkt_cloth_rt_price, 
+		    gl_waist_pkt_cloth_ws_wage, 
+		    gl_waist_pkt_cloth_ws_price, 
+		    gl_amf_stitch_cd, 
+		    gl_amf_stitch_nm, 
+		    gl_amf_stitch_rt_price, 
+		    gl_amf_stitch_ws_wage, 
+		    gl_amf_stitch_ws_price, 
+		    gl_stitch_plc_type, 
+		    gl_stitch_plc_cd, 
+		    gl_stitch_plc_nm, 
+		    gl_stitch_plc_rt_price, 
+		    gl_stitch_plc_ws_wage, 
+		    gl_stitch_plc_ws_price, 
+		    gl_dblstitch_plc_type, 
+		    gl_dblstitch_plc_cd, 
+		    gl_dblstitch_plc_nm, 
+		    gl_dblstitch_plc_rt_price, 
+		    gl_dblstitch_plc_ws_wage, 
+		    gl_dblstitch_plc_ws_price, 
+		    gl_amf_color_type, 
+		    gl_amf_color_plc_cd, 
+		    gl_amf_color_plc_nm, 
+		    gl_amf_color_cd, 
+		    gl_amf_color_nm, 
+		    gl_amf_color_rt_price, 
+		    gl_amf_color_ws_wage, 
+		    gl_amf_color_ws_price, 
+		    gl_btnhole_color_type, 
+		    gl_btnhole_color_plc_cd, 
+		    gl_btnhole_color_plc_nm, 
+		    gl_btnhole_color_cd, 
+		    gl_btnhole_color_nm, 
+		    gl_btnhole_color_rt_price, 
+		    gl_btnhole_color_ws_wage, 
+		    gl_btnhole_color_ws_price, 
+		    gl_btnthread_color_type, 
+		    gl_btnthread_color_plc_cd, 
+		    gl_btnthread_color_plc_nm, 
+		    gl_btnthread_color_cd, 
+		    gl_btnthread_color_nm, 
+		    gl_btnthread_color_rt_price, 
+		    gl_btnthread_color_ws_wage, 
+		    gl_btnthread_color_ws_price, 
+		    gl_back_cloth_type, 
+		    gl_back_cloth_cd, 
+		    gl_back_cloth_nm, 
+		    gl_back_cloth_rt_price, 
+		    gl_back_cloth_ws_wage, 
+		    gl_back_cloth_ws_price, 
+		    gl_innner_cloth_type, 
+		    gl_innner_cloth_cd, 
+		    gl_innner_cloth_nm, 
+		    gl_innner_cloth_rt_price, 
+		    gl_innner_cloth_ws_wage, 
+		    gl_innner_cloth_ws_price, 
+		    gl_frt_btn_type, 
+		    gl_frt_btn_cd, 
+		    gl_frt_btn_nm, 
+		    gl_frt_btn_rt_price, 
+		    gl_frt_btn_ws_wage, 
+		    gl_frt_btn_ws_price, 
+		    gl_back_belt_cd, 
+		    gl_back_belt_nm, 
+		    gl_back_belt_rt_price, 
+		    gl_back_belt_ws_wage, 
+		    gl_back_belt_ws_price, 
+		    gl_watch_chain_cd, 
+		    gl_watch_chain_nm, 
+		    gl_watch_chain_rt_price, 
+		    gl_watch_chain_ws_wage, 
+		    gl_watch_chain_ws_price
+		FROM
+			dtb_order 
+		WHERE
+			order_id = #{ orderId}
+</select>
+
+<select id="findOrderStOptionByOrderId" parameterType="string" resultMap="OrderResultMap">
+		SELECT
+			st_model_cd,
+			st_model_nm,
+			st_model_rt_price,
+			st_model_ws_wage,
+			st_model_ws_price,
+			st_casual_hemline_cd,
+			st_casual_hemline_size,
+			st_casual_hemline_nm,
+			st_casual_hemline_rt_price,
+			st_casual_hemline_ws_wage,
+			st_casual_hemline_ws_price,
+			st_collar_type_cd,
+			st_collar_type_nm,
+			st_collar_type_rt_price,
+			st_collar_type_ws_wage,
+			st_collar_type_ws_price,
+			st_cuffs_cd,
+			st_cuffs_nm,
+			st_cuffs_rt_price,
+			st_cuffs_ws_wage,
+			st_cuffs_ws_price,
+			st_convertible_cd,
+			st_convertible_nm,
+			st_convertible_rt_price,
+			st_convertible_ws_wage,
+			st_convertible_ws_price,
+			st_adjuster_btn_cd,
+			st_adjuster_btn_nm,
+			st_adjuster_btn_rt_price,
+			st_adjuster_btn_ws_wage,
+			st_adjuster_btn_ws_price,
+			st_dbl_cuffs_cd,
+			st_dbl_cuffs_nm,
+			st_dbl_cuffs_rt_price,
+			st_dbl_cuffs_ws_wage,
+			st_dbl_cuffs_ws_price,
+			st_cleric_cd,
+			st_cleric_nm,
+			st_cleric_rt_price,
+			st_cleric_ws_wage,
+			st_cleric_ws_price,
+			st_cuffs_btn_cd,
+			st_cuffs_btn_nm,
+			st_cuffs_btn_rt_price,
+			st_cuffs_btn_ws_wage,
+			st_cuffs_btn_ws_price,
+			st_sleeve_clericcd,
+			st_sleeve_clericnm,
+			st_sleeve_clericrt_price,
+			st_sleeve_clericws_wage,
+			st_sleeve_clericws_price,
+			st_btn_material_cd,
+			st_btn_material_nm,
+			st_btn_material_rt_price,
+			st_btn_material_ws_wage,
+			st_btn_material_ws_price,
+			st_dbl_btn_cd,
+			st_dbl_btn_nm,
+			st_dbl_btn_rt_price,
+			st_dbl_btn_ws_wage,
+			st_dbl_btn_ws_price,
+			st_gauntlet_btn_pos_cd,
+			st_gauntlet_btn_pos_nm,
+			st_gauntlet_btn_pos_rt_price,
+			st_gauntlet_btn_pos_ws_wage,
+			st_gauntlet_btn_pos_ws_price,
+			st_pinhole_pin_cd,
+			st_pinhole_pin_nm,
+			st_pinhole_pin_rt_price,
+			st_pinhole_pin_ws_wage,
+			st_pinhole_pin_ws_price,
+			st_breast_pkt_cd,
+			st_breast_pkt_nm,
+			st_breast_pkt_rt_price,
+			st_breast_pkt_ws_wage,
+			st_breast_pkt_ws_price,
+			st_breast_size_cd,
+			st_breast_size_nm,
+			st_breast_size_rt_price,
+			st_breast_size_ws_wage,
+			st_breast_size_ws_price,
+			st_frt_design_cd,
+			st_frt_design_nm,
+			st_frt_design_rt_price,
+			st_frt_design_ws_wage,
+			st_frt_design_ws_price,
+			st_pintuck_bosom_cd,
+			st_pintuck_bosom_nm,
+			st_pintuck_bosom_rt_price,
+			st_pintuck_bosom_ws_wage,
+			st_pintuck_bosom_ws_price,
+			st_stitch_cd,
+			st_stitch_nm,
+			st_stitch_rt_price,
+			st_stitch_ws_wage,
+			st_stitch_ws_price,
+			st_colar_keeper_cd,
+			st_colar_keeper_nm,
+			st_colar_keeper_rt_price,
+			st_colar_keeper_ws_wage,
+			st_colar_keeper_ws_price,
+			st_btnthread_color_cd,
+			st_btnthread_color_nm,
+			st_btnthread_color_rt_price,
+			st_btnthread_color_ws_wage,
+			st_btnthread_color_ws_price,
+			st_btnhole_color_cd,
+			st_btnhole_color_nm,
+			st_btnhole_color_rt_price,
+			st_btnhole_color_ws_wage,
+			st_btnhole_color_ws_price,
+			st_btnpos_chg_cd,
+			st_btnpos_chg_nm,
+			st_btnpos_chg_rt_price,
+			st_btnpos_chg_ws_wage,
+			st_btnpos_chg_ws_price,
+			st_neckband_btn_chg_cd,
+			st_neckband_btn_chg_nm,
+			st_neckband_btn_chg_rt_price,
+			st_neckband_btn_chg_ws_wage,
+			st_neckband_btn_chg_ws_price,
+			st_neckband_btn_pos_chg,
+			st_frtfirst_btn_chg_cd,
+			st_frtfirst_btn_chg_nm,
+			st_frtfirst_btn_chg_rt_price,
+			st_frtfirst_btn_chg_ws_wage,
+			st_frtfirst_btn_chg_ws_price,
+			st_frtfirst_btn_pos_chg,
+			st_frtsecond_btn_chg_cd,
+			st_frtsecond_btn_chg_nm,
+			st_frtsecond_btn_chg_rt_price,
+			st_frtsecond_btn_chg_ws_wage,
+			st_frtsecond_btn_chg_ws_price,
+			st_frtsecond_btn_pos_chg
 		FROM
 			dtb_order 
 		WHERE

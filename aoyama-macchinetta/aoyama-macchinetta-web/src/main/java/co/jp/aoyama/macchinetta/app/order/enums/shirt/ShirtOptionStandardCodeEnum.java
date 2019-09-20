@@ -26,7 +26,11 @@ public enum ShirtOptionStandardCodeEnum {
 	SHIRT_STANDARD_OPTION_CODE18("00018","setOsByColorMap"),
 	SHIRT_STANDARD_OPTION_CODE19("00019","setOsBhColorMap"),
 	SHIRT_STANDARD_OPTION_CODE20("00020","setOsCasHemLineMap"),
-	SHIRT_STANDARD_OPTION_CODE21("00021","setOsBtnPosChgMap");
+	SHIRT_STANDARD_OPTION_CODE21("00021","setOsBtnPosChgMap"),
+	SHIRT_STANDARD_OPTION_CODE22("00022","setProductEmbroideryNmPosMap"),
+	SHIRT_STANDARD_OPTION_CODE23("00023","setProductEmbroideryGazetteMap"),
+	SHIRT_STANDARD_OPTION_CODE24("00024","setStProductEmbroideryThreadColorMap"),
+	SHIRT_STANDARD_OPTION_CODE25("00025","setCorStBackdartsUnpackCorrectMap");
 	
 	
 	private final String key;

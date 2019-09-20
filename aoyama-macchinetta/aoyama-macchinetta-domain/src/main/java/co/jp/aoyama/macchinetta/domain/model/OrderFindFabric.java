@@ -112,6 +112,12 @@ public class OrderFindFabric implements Serializable {
 	//LCR縫製可否
 	private String lcrSewingAvailable;
 	
+	//フル毛芯仕様可否
+	private String fullHairclothAvailable;
+	
+	//シャツ仕様可否
+	private String shirtSleeveAvailable;
+	
 	// 年季
 	private String season;
 
@@ -129,6 +135,15 @@ public class OrderFindFabric implements Serializable {
 
 	// タキシード可否
 	private String tuxedoAvailable;
+	
+	//コート可否
+	private String coatAvailable;
+	
+	private String jkDoublePrice;
+	
+	private String ctDoublePrice;
+	
+	private String glDoublePrice;
 	
 	//理論在庫 - 予約生地量
 	private String stockResult;
@@ -558,4 +573,52 @@ public class OrderFindFabric implements Serializable {
 		this.productPrice = productPrice;
 	}
 
+	public String getJkDoublePrice() {
+		return jkDoublePrice;
+	}
+
+	public void setJkDoublePrice(String jkDoublePrice) {
+		this.jkDoublePrice = jkDoublePrice;
+	}
+
+	public String getCoatAvailable() {
+		return coatAvailable;
+	}
+
+	public void setCoatAvailable(String coatAvailable) {
+		this.coatAvailable = coatAvailable;
+	}
+
+	public String getCtDoublePrice() {
+		return ctDoublePrice;
+	}
+
+	public void setCtDoublePrice(String ctDoublePrice) {
+		this.ctDoublePrice = ctDoublePrice;
+	}
+
+	public String getFullHairclothAvailable() {
+		return fullHairclothAvailable;
+	}
+
+	public void setFullHairclothAvailable(String fullHairclothAvailable) {
+		this.fullHairclothAvailable = fullHairclothAvailable;
+	}
+
+	public String getShirtSleeveAvailable() {
+		return shirtSleeveAvailable;
+	}
+
+	public void setShirtSleeveAvailable(String shirtSleeveAvailable) {
+		this.shirtSleeveAvailable = shirtSleeveAvailable;
+	}
+
+	public String getGlDoublePrice() {
+		return glDoublePrice;
+	}
+
+	public void setGlDoublePrice(String glDoublePrice) {
+		this.glDoublePrice = glDoublePrice;
+	}
+	
 }

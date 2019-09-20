@@ -98,10 +98,26 @@ table.dataTable tbody td {
 								<div class="col col-md-4">
 									<label class=" form-control-label">お客様氏名</label>
 								</div>
+								<c:if test="${cashForm.custNm != null && cashForm.custKanaNm != null}">
 								<div class="col-12 col-md-8">
-									<strong><output>${cashForm.custNm}</output></strong> 
-									<!-- <input type="hidden" name="custNm" value="${cashForm.custNm}" /> -->
+									<strong><output>${f:h(cashForm.custNm)}(${f:h(cashForm.custKanaNm)})</output></strong> 
 								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm != null && cashForm.custKanaNm == null}">
+								<div class="col-12 col-md-8">
+									<strong><output>${f:h(cashForm.custNm)}</output></strong> 
+								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm == null && cashForm.custKanaNm != null}">
+								<div class="col-12 col-md-8">
+									<strong><output>${f:h(cashForm.custKanaNm)}</output></strong> 
+								</div>
+								</c:if>
+								<c:if test="${cashForm.custNm == null && cashForm.custKanaNm == null}">
+								<div class="col-12 col-md-8">
+									<strong><output></output></strong> 
+								</div>
+								</c:if>
 							</div>
 							<div class="row">
 								<div class="col col-md-4">
@@ -333,6 +349,23 @@ table.dataTable tbody td {
 			                </c:choose> --%>
 						</div>
 						</c:when>
+						<c:when test="${cashForm.tscStatus == 'T3'}">
+						<div class="row">
+							<div class="col col-md-2"></div>
+							<div class="col col-md-4">
+								<button id="backButton" type="button" class="btn btn-success btn-block"><i class="fa fa-arrow-left"></i> 戻る</button>
+							</div>
+							<div class="col col-md-4">
+								<button id="submit" type="submit" class="btn btn-primary btn-block" onclick="return imageCheck();"><i class="fa fa-check-circle"></i> 内容確認</button>
+							</div>
+							<div class="col col-md-2"></div>
+							<%-- <c:choose>
+			                	<c:when test="${cashForm != null && cashForm.cashStatus == '03'}">
+			                		<div class="col col-md-4"><button id="deleteButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 会計取消</button></div>
+			                	</c:when>
+			                </c:choose> --%>
+						</div>
+						</c:when>
 			                <c:when test="${cashForm != null && cashForm.cashStatus == '01' || cashForm.cashStatus == '02' || cashForm.cashStatus == '03'}">
 						<div class="row">
 							<div class="col col-md-4">
@@ -377,6 +410,15 @@ var taxRate = "${taxRateStr}";
 var flag = localStorage.getItem("key");
 if(flag == 'cashLink'){
 	localStorage.clear();
+}
+var error = "${error}";
+if(error == "error"){
+	swal({
+		text: getMsg('msg134'),
+		icon: "info"
+	}).then(function(val){
+		window.location.href= contextPath + "/orderlist/gotoOrderlist";
+	});
 }
 
 $(document).ready(function() {

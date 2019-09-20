@@ -33,17 +33,17 @@
 					<div class="col col-md-4">
 						<label class=" form-control-label">お客様名</label>
 					</div>
-					<c:if test="${orderForm.customerMessageInfo.custNm != '' && orderForm.customerMessageInfo.custKanaNm != '' }">
+					<c:if test="${orderForm.customerMessageInfo.custNm != ''&& orderForm.customerMessageInfo.custNm != null && orderForm.customerMessageInfo.custKanaNm != '' && orderForm.customerMessageInfo.custKanaNm != null }">
 					<div class="col-12 col-md-8">
 						<label class=" form-control-label-value">${f:h(orderForm.customerMessageInfo.custNm)}(${f:h(orderForm.customerMessageInfo.custKanaNm)})</label>様
 					</div>
 					</c:if>
-					<c:if test="${orderForm.customerMessageInfo.custNm == '' && orderForm.customerMessageInfo.custKanaNm != ''}">
+					<c:if test="${orderForm.customerMessageInfo.custKanaNm != null && orderForm.customerMessageInfo.custKanaNm != '' && (orderForm.customerMessageInfo.custNm == '' || orderForm.customerMessageInfo.custNm == null)}">
 					<div class="col-12 col-md-8">
-						<label class=" form-control-label-value">(${f:h(orderForm.customerMessageInfo.custKanaNm)})</label>様
+						<label class=" form-control-label-value">${f:h(orderForm.customerMessageInfo.custKanaNm)}</label>様
 					</div>
 					</c:if>
-					<c:if test="${orderForm.customerMessageInfo.custNm != '' && orderForm.customerMessageInfo.custKanaNm == ''}">
+					<c:if test="${orderForm.customerMessageInfo.custNm != '' && orderForm.customerMessageInfo.custNm != null && (orderForm.customerMessageInfo.custKanaNm == '' || orderForm.customerMessageInfo.custKanaNm == null)}">
 					<div class="col-12 col-md-8">
 						<label class=" form-control-label-value">${f:h(orderForm.customerMessageInfo.custNm)}</label>様
 					</div>

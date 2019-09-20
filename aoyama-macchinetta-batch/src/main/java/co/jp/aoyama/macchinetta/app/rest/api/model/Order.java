@@ -15,6 +15,8 @@ public class Order  implements Serializable {
 	private String import_time;
 	private String remark;
 	private String customer;
+	private int Weight;
+	private String Gender;
 	private String receiver;
 	private String country;
 	private String province;
@@ -25,6 +27,9 @@ public class Order  implements Serializable {
 	private String back;
 	private String sideLeft;
 	private String sideRight;
+	private String AdvanceDelivery;
+	private String DelayDelivery;
+	private String ClothingTypes;
 	
 	private List<OrderDetail> OrderDetails;
 	private List<Measurement> Measurements;
@@ -77,6 +82,18 @@ public class Order  implements Serializable {
 	}
 	public void setCustomer(String customer) {
 		this.customer = customer;
+	}
+	public int getWeight() {
+		return Weight;
+	}
+	public void setWeight(int weight) {
+		Weight = weight;
+	}
+	public String getGender() {
+		return Gender;
+	}
+	public void setGender(String gender) {
+		Gender = gender;
 	}
 	public String getReceiver() {
 		return receiver;
@@ -137,6 +154,24 @@ public class Order  implements Serializable {
 	}
 	public void setSideRight(String sideRight) {
 		this.sideRight = sideRight;
+	}	
+	public String getAdvanceDelivery() {
+		return AdvanceDelivery;
+	}
+	public void setAdvanceDelivery(String advanceDelivery) {
+		AdvanceDelivery = advanceDelivery;
+	}
+	public String getDelayDelivery() {
+		return DelayDelivery;
+	}
+	public void setDelayDelivery(String delayDelivery) {
+		DelayDelivery = delayDelivery;
+	}
+	public String getClothingTypes() {
+		return ClothingTypes;
+	}
+	public void setClothingTypes(String clothingTypes) {
+		ClothingTypes = clothingTypes;
 	}
 	public List<OrderDetail> getOrderDetails() {
 		return OrderDetails;

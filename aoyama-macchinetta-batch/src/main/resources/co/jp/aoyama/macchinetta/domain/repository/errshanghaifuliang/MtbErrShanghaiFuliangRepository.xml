@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="co.jp.aoyama.macchinetta.domain.repository.errshanghaifuliang.MtbErrShanghaiFuliangRepository" >
+  <resultMap id="BaseResultMap" type="co.jp.aoyama.macchinetta.domain.model.MtbErrShanghaiFuliang" >
+    <result column="err_code" property="errCode" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="co.jp.aoyama.macchinetta.domain.model.MtbErrShanghaiFuliang" >
+    insert into mtb_err_shanghai_fuliang (err_code, remark)
+    values (#{errCode,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select err_code, remark
+    from mtb_err_shanghai_fuliang
+  </select>
+</mapper>

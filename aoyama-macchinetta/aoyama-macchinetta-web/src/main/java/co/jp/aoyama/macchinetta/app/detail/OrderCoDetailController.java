@@ -66,8 +66,8 @@ public class OrderCoDetailController {
 //	@Inject
 //	Mapper beanMapper;
 //	
-//	@Inject
-//	ShopService shopService;
+	@Inject
+	ShopService shopService;
 			
 	/**
 	 * 要尺の取得
@@ -167,41 +167,23 @@ public class OrderCoDetailController {
 		return mfaFactoryCode;
 	}
 
-//    /**
-//   	* 全部注文を条件検索.
-//     * @param form 画面Form
-//     * @return 注文情報リスト
-//     */
-//	@RequestMapping(value = "/orderPoDetail")
-//	public String orderPoDetail(Model model,Map<String, Object> map) {
-//		// 店舗を取得
-//		List<Shop> shopList = shopService.findAllShop();
-//		
-//		Map<String, String> mapShop = new HashMap<String,String>();
-//		for (Shop shop : shopList) {
-//			mapShop.put(shop.getShopCode(), shop.getShopName());
-//		}
-//		map.put("mapShop", mapShop);
-//		return "detail/orderPoDetail";
-//	}
-	
-//    /**
-//   	* 全部注文を条件検索.
-//     * @param form 画面Form
-//     * @return 注文情報リスト
-//     */
-//	@RequestMapping(value = "/orderCoDetail")
-//	public String orderCoDetail(Model model,Map<String, Object> map) {
-//		// 店舗を取得
-//		List<Shop> shopList = shopService.findAllShop();
-//		
-//		Map<String, String> mapShop = new HashMap<String,String>();
-//		for (Shop shop : shopList) {
-//			mapShop.put(shop.getShopCode(), shop.getShopName());
-//		}
-//		map.put("mapShop", mapShop);
-//		return "detail/orderCoDetail";
-//	}
+    /**
+   	* 全部注文を条件検索.
+     * @param form 画面Form
+     * @return 注文情報リスト
+     */
+	@RequestMapping(value = "/orderCoDetail")
+	public String orderCoDetail(Model model,Map<String, Object> map) {
+		// 店舗を取得
+		List<Shop> shopList = shopService.findAllShop();
+		
+		Map<String, String> mapShop = new HashMap<String,String>();
+		for (Shop shop : shopList) {
+			mapShop.put(shop.getShopCode(), shop.getShopName());
+		}
+		map.put("mapShop", mapShop);
+		return "detail/orderCoDetail";
+	}
 	
 	
 	/**
@@ -307,7 +289,7 @@ public class OrderCoDetailController {
 		}
 		model.addAttribute("order", order);
 		model.addAttribute("measuring", measuring);
-		return "forward:/order/orderCoUpdate"; 
+		return "forward:/orderCo/orderCoUpdate"; 
 	}
 	
 	/**
@@ -715,5 +697,76 @@ public class OrderCoDetailController {
 		}
 		
 	return false;
+	}
+	
+	/**
+	 * TSCステータスを「お渡し済」に変更する、保存完了後、「オーダー登録結果」画面へ遷移する
+	 * @param orderId
+	 * @param changeTscStatus
+	 * @return
+	 */
+	@RequestMapping(value = "/changeStatusCo/{orderId}/{changeTscStatus}/{orderVersion}")
+	public String changeStatusCo(@PathVariable(value ="orderId") String orderId,
+							   @PathVariable(value ="changeTscStatus") String changeTscStatus,
+							   @PathVariable(value = "orderVersion") String orderVersion,Model model) {
+		
+		//最終更新者
+		String updatedUserId = sessionContent.getUserId();
+		//最終更新日時
+		Date updatedAt = new Date();
+		Short orderVersionS = Short.parseShort(orderVersion);
+		try {
+			orderListService.updateTscStatus(orderId,changeTscStatus,updatedUserId,updatedAt,orderVersionS);
+			String isUpdate = "1";
+			model.addAttribute("isUpdate",isUpdate);
+			return "order/orderPoLoginResultForm";
+		} catch (ResourceNotFoundException e) {
+			String authority = sessionContent.getAuthority();
+			Order order= orderListService.findOrderByPk(orderId);
+			SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+			//名簿納期
+			Date custDeliverDate = order.getCustDeliverDate();
+			if(custDeliverDate!=null && !"".equals(custDeliverDate.toString())) {
+				String custDeliverDateFormat = sdformat.format(custDeliverDate);
+				Date custDeliverDateParse = java.sql.Date.valueOf(custDeliverDateFormat);
+				order.setCustDeliverDate(custDeliverDateParse);
+			}
+			//お渡し日
+			Date custShopDeliveryDate = order.getCustShopDeliveryDate();
+			if(custShopDeliveryDate != null && !"".equals(custShopDeliveryDate.toString())) {
+				String custShopDeliveryDateFormat = sdformat.format(custShopDeliveryDate);
+				Date custShopDeliveryDateParse = java.sql.Date.valueOf(custShopDeliveryDateFormat);
+				order.setCustShopDeliveryDate(custShopDeliveryDateParse);
+			}
+			//出荷日
+			Date shippingDateOrder = order.getShippingDate();
+			if(shippingDateOrder != null && !"".equals(shippingDateOrder.toString())) {
+				String shippingDateFormat = sdformat.format(shippingDateOrder);
+				Date shippingDateParse = java.sql.Date.valueOf(shippingDateFormat);
+				order.setShippingDate(shippingDateParse);
+			}
+			//積載日
+			Date loadingDateOrder = order.getLoadingDate();
+			if(loadingDateOrder != null && !"".equals(loadingDateOrder.toString())) {
+				String loadingDateFormat = sdformat.format(loadingDateOrder);
+				Date loadingDateParse = java.sql.Date.valueOf(loadingDateFormat);
+				order.setLoadingDate(loadingDateParse);
+			}
+			//注文承り日
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null && !"".equals(productOrderdDate.toString())) {
+				String productOrderdDateFormat = sdformat.format(productOrderdDate);
+				Date productOrderdDateParse = java.sql.Date.valueOf(productOrderdDateFormat);
+				order.setProductOrderdDate(productOrderdDateParse);
+			}
+			Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+			model.addAttribute("resultMessages", e.getResultMessages());
+			model.addAttribute("order",order);
+			model.addAttribute("measuring", measuring);
+			model.addAttribute("userId", updatedUserId);
+			model.addAttribute("authority", authority);
+			return "detail/orderCoDetail";
+		}
+		
 	}
 }

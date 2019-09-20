@@ -121,31 +121,31 @@ public class PdfFileController {
 			String fileNameDefault = "";
 			if("1".equals(sign)) {
 				//注文内容確認書（SUIT）
-				fileNameDefault = "注文内容確認書（SUIT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書（"+orderId+"）.pdf";
 			}else if("2".equals(sign)) {
 				//注文内容確認書_お客様向け（SUIT）
-				fileNameDefault = "注文内容確認書_お客様向け（SUIT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書_お客様向け（"+orderId+"）.pdf";
 			}else if("3".equals(sign)) {
 				//工場指示書（SUIT）
-				fileNameDefault = "工場指示書（SUIT）（"+orderId+"）.pdf";
+				fileNameDefault = "工場指示書（"+orderId+"）.pdf";
 			}else if("4".equals(sign)) {
 				//注文内容確認書（COAT）
-				fileNameDefault = "注文内容確認書（COAT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書（"+orderId+"）.pdf";
 			}else if("5".equals(sign)) {
 				//注文内容確認書_お客様向け（COAT）
-				fileNameDefault = "注文内容確認書_お客様向け（COAT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書_お客様向け（"+orderId+"）.pdf";
 			}else if("6".equals(sign)) {
 				//工場指示書（COAT）
-				fileNameDefault = "工場指示書（COAT）（"+orderId+"）.pdf";
+				fileNameDefault = "工場指示書（"+orderId+"）.pdf";
 			}else if("7".equals(sign)) {
 				//注文内容確認書（SHIRT）
-				fileNameDefault = "注文内容確認書（SHIRT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書（"+orderId+"）.pdf";
 			}else if("8".equals(sign)) {
 				//注文内容確認書_お客様向け（SHIRT）
-				fileNameDefault = "注文内容確認書_お客様向け（SHIRT）（"+orderId+"）.pdf";
+				fileNameDefault = "注文内容確認書_お客様向け（"+orderId+"）.pdf";
 			}else if("9".equals(sign)) {
 				//工場指示書（SHIRT）
-				fileNameDefault = "工場指示書（SHIRT）（"+orderId+"）.pdf";
+				fileNameDefault = "工場指示書（"+orderId+"）.pdf";
 			}else{
 				 logger.info("このスタイルはありません");
 			}

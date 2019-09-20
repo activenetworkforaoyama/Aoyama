@@ -1,6 +1,6 @@
 <form:form id="idAdjustForm"
 	action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm"
-	method="post" modelAttribute="orderForm" class="form-horizontal">
+	method="post" modelAttribute="orderCoForm" class="form-horizontal">
 	<div id="al_coat_div">
 		<div class="card-header">
 			<strong class="card-title">COAT</strong>
@@ -14,10 +14,10 @@
 						</div>
 						<div class="col-12 col-md-3">
 							<form:select id="selectCorCtSize"
-								path="adjustCoatStandardInfo.corCtSize"
+								path="coAdjustCoatStandardInfo.corCtSize"
 								class="form-control-sm form-control hidedown">
 								<form:options
-									items="${orderForm.adjustCoatStandardInfo.corCtSizeMap}" />
+									items="${orderCoForm.coAdjustCoatStandardInfo.corCtSizeMap}" />
 							</form:select>							
 						</div>
 					</div>
@@ -31,7 +31,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtBodylengthRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtBodylengthRange" name="adjustCoatStandardInfo.corCtBodylengthCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtBodylengthRange" name="coAdjustCoatStandardInfo.corCtBodylengthCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtBodylengthRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtBodylengthRange_out">0</output>cm
                                 </div>
@@ -47,7 +47,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtWaistRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtWaistRange" name="adjustCoatStandardInfo.corCtWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtWaistRange" name="coAdjustCoatStandardInfo.corCtWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtWaistRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtWaistRange_out">0</output>cm
                                 </div>
@@ -62,7 +62,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtRightsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtRightsleeveRange" name="adjustCoatStandardInfo.corCtRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtRightsleeveRange" name="coAdjustCoatStandardInfo.corCtRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtRightsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtRightsleeveRange_out">0</output>cm
                                 </div>
@@ -77,7 +77,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtLeftsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtLeftsleeveRange" name="adjustCoatStandardInfo.corCtLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtLeftsleeveRange" name="coAdjustCoatStandardInfo.corCtLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtLeftsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtLeftsleeveRange_out">0</output>cm
                                 </div>
@@ -96,7 +96,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtVenthightRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtVenthightRange" name="adjustCoatStandardInfo.corCtVenthightCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtVenthightRange" name="coAdjustCoatStandardInfo.corCtVenthightCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtVenthightRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtVenthightRange_out">0</output>cm
                                 </div>
@@ -117,7 +117,7 @@
 							<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corCtPktposRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corCtPktposRange" name="adjustCoatStandardInfo.corCtPktposCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corCtPktposRange" name="coAdjustCoatStandardInfo.corCtPktposCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corCtPktposRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corCtPktposRange_out">0</output>cm
                                 </div>
@@ -143,7 +143,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="adjustCoatStandardInfo.corCtStoreCorrectionMemo" id="corCtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <textarea name="coAdjustCoatStandardInfo.corCtStoreCorrectionMemo" id="corCtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -152,44 +152,49 @@
             </div>
 		<!-- COAT -->
    <input type="hidden" id="corCtBodylength_div_Size"
-		name="adjustCoatStandardInfo.corCtBodylengthSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtBodylengthSize" value="" />
 	<input type="hidden" id="corCtBodylength_div_Gross"
-		name="adjustCoatStandardInfo.corCtBodylengthGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtBodylengthGross" value="" />
 		
 	<input type="hidden" id="corCtWaist_div_Size"
-		name="adjustCoatStandardInfo.corCtWaistSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtWaistSize" value="" />
 	<input type="hidden" id="corCtWaist_div_Gross"
-		name="adjustCoatStandardInfo.corCtWaistGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtWaistGross" value="" />
 		
 	<input type="hidden" id="corCtRightsleeve_div_Size"
-		name="adjustCoatStandardInfo.corCtRightsleeveSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtRightsleeveSize" value="" />
 	<input type="hidden" id="corCtRightsleeve_div_Gross"
-		name="adjustCoatStandardInfo.corCtRightsleeveGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtRightsleeveGross" value="" />
 			
 	<input type="hidden" id="corCtLeftsleeve_div_Size"
-		name="adjustCoatStandardInfo.corCtLeftsleeveSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtLeftsleeveSize" value="" />
 	<input type="hidden" id="corCtLeftsleeve_div_Gross"
-		name="adjustCoatStandardInfo.corCtLeftsleeveGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtLeftsleeveGross" value="" />
 		
 	<input type="hidden" id="corCtVenthight_div_Size"
-		name="adjustCoatStandardInfo.corCtVenthightSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtVenthightSize" value="" />
 	<input type="hidden" id="corCtVenthight_div_Gross"
-		name="adjustCoatStandardInfo.corCtVenthightGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtVenthightGross" value="" />
 		
 	<input type="hidden" id="corCtPktpos_div_Size"
-		name="adjustCoatStandardInfo.corCtPktposSize" value="" />
+		name="coAdjustCoatStandardInfo.corCtPktposSize" value="" />
 	<input type="hidden" id="corCtPktpos_div_Gross"
-		name="adjustCoatStandardInfo.corCtPktposGross" value="" />
+		name="coAdjustCoatStandardInfo.corCtPktposGross" value="" />
 	
 	<input type="hidden" id="coatAdFlag" name="coatAdFlag" value="1" />
+	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+    <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+    <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+    <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+    <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
 </form:form>
 <script
 	src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
 var orderPattern = "CO";
-var itemCode ="${orderForm.productItem}";
-var coatAdFlag="${orderForm.coatAdFlag}";
-var coatModel = "${orderForm.optionCoatStandardInfo.coatModel}";
+var itemCode ="${orderCoForm.productItem}";
+var coatAdFlag="${orderCoForm.coatAdFlag}";
+var coatModel = "${orderCoForm.coOptionCoatStandardInfo.coatModel}";
 var coatAdjustList = [
 	{type:"01",id:"corCtBodylength_div"},
 	{type:"02",id:"corCtWaist_div"},
@@ -205,30 +210,37 @@ jQuery(document).ready(function() {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
 	getAdjustByItem();
-    //getFigureAndNumberByItem();
     initAlter();
-    /* if(itemFlag=="1"){
-		 adjustReInit();
-	 }else if(coatFlag=="0"&&coatModel==""){
-
-	 }else if(coatFlag=="1"){
-		 getFigureAndNumberByItem();
-	 }else if(coatFlag=="0"&&coatModel!=""){
-		 getFigureAndNumberByItem();
-		 adjustSession();
-	 } */
-    if(coatAdFlag==""){
-		
-	}else if(coatAdFlag=="0"){
-		adjustReInit();
-		getFigureAndNumberByItem();
-	}else if(coatAdFlag=="1"){
-		getFigureAndNumberByItem();
-		adjustSession();
-	}
+    var orderFlag = "${orderCoForm.orderFlag}";
+    if(orderFlag == "orderCo"){
+    	if(coatAdFlag==""){
+        	
+    	}else if(coatAdFlag=="0"){
+    		adjustReInit();
+    		getFigureAndNumberByItem();
+    	}else if(coatAdFlag=="1"){
+    		getFigureAndNumberByItem();
+    		adjustSession();
+    	}
+    }
+    if(orderFlag == "orderBack"){
+		if(coatAdFlag=="0"){
+			adjustReInit();
+    		getFigureAndNumberByItem();
+    	}else if(coatAdFlag=="1"){
+    		getFigureAndNumberByItem();
+    		adjustSession();
+    	}else if(coatAdFlag==""){
+    		getFigureAndNumberByItem();
+    		adjustSession();
+    	}
+    }
+    
+    
 jQuery("#selectCorCtSize").change(function(){
     	coatAdjust();
-   })   
+   })  
+   jQuery("#coatAdFlag").val("1"); 
 });
 function getAdjustByItem(){
 	var subItemCode = "";
@@ -417,69 +429,69 @@ function adjustReInit(){
 } 
 function adjustSession(){
 
-	jQuery("#selectCorCtSize").val("${orderForm.adjustCoatStandardInfo.corCtSize}");
+	jQuery("#selectCorCtSize").val("${orderCoForm.coAdjustCoatStandardInfo.corCtSize}");
 
 	
-	jQuery("#corCtBodylength_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtBodylengthSize}");
-	jQuery("#corCtBodylength_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtBodylengthGross}");
-	jQuery("#corCtBodylength_div_html").html("${orderForm.adjustCoatStandardInfo.corCtBodylengthGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtBodylengthGross}"==""){
+	jQuery("#corCtBodylength_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthSize}");
+	jQuery("#corCtBodylength_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthGross}");
+	jQuery("#corCtBodylength_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthGross}"==""){
 		jQuery("#corCtBodylength_div_html").html("000.0cm");
 		}
-	jQuery("#corCtBodylengthRange_out").html("${orderForm.adjustCoatStandardInfo.corCtBodylengthCorrect}");
-	jQuery("#corCtBodylengthRange").val("${orderForm.adjustCoatStandardInfo.corCtBodylengthCorrect}");
+	jQuery("#corCtBodylengthRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthCorrect}");
+	jQuery("#corCtBodylengthRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtBodylengthCorrect}");
 	setFont("corCtBodylengthRange");
 
-	jQuery("#corCtWaist_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtWaistSize}");
-	jQuery("#corCtWaist_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtWaistGross}");
-	jQuery("#corCtWaist_div_html").html("${orderForm.adjustCoatStandardInfo.corCtWaistGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtWaistGross}"==""){
+	jQuery("#corCtWaist_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistSize}");
+	jQuery("#corCtWaist_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistGross}");
+	jQuery("#corCtWaist_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistGross}"==""){
 		jQuery("#corCtWaist_div_html").html("000.0cm");
 		}
-	jQuery("#corStNeckRange_out").html("${orderForm.adjustCoatStandardInfo.corCtWaistCorrect}");
-	jQuery("#corCtWaistRange").val("${orderForm.adjustCoatStandardInfo.corCtWaistCorrect}");
+	jQuery("#corStNeckRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistCorrect}");
+	jQuery("#corCtWaistRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistCorrect}");
 	setFont("corCtWaistRange");
 
-	jQuery("#corCtRightsleeve_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtRightsleeveSize}");
-	jQuery("#corCtRightsleeve_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtRightsleeveGross}");
-	jQuery("#corCtRightsleeve_div_html").html("${orderForm.adjustCoatStandardInfo.corCtRightsleeveGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtRightsleeveGross}"==""){
+	jQuery("#corCtRightsleeve_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveSize}");
+	jQuery("#corCtRightsleeve_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveGross}");
+	jQuery("#corCtRightsleeve_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveGross}"==""){
 		jQuery("#corCtRightsleeve_div_html").html("000.0cm");
 		}
-	jQuery("#corCtRightsleeveRange_out").html("${orderForm.adjustCoatStandardInfo.corCtRightsleeveCorrect}");
-	jQuery("#corCtRightsleeveRange").val("${orderForm.adjustCoatStandardInfo.corCtRightsleeveCorrect}");
+	jQuery("#corCtRightsleeveRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveCorrect}");
+	jQuery("#corCtRightsleeveRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtRightsleeveCorrect}");
 	setFont("corCtRightsleeveRange");
 
-	jQuery("#corCtLeftsleeve_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveSize}");
-	jQuery("#corCtLeftsleeve_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveGross}");
-	jQuery("#corCtLeftsleeve_div_html").html("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveGross}"==""){
+	jQuery("#corCtLeftsleeve_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveSize}");
+	jQuery("#corCtLeftsleeve_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveGross}");
+	jQuery("#corCtLeftsleeve_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveGross}"==""){
 		jQuery("#corCtLeftsleeve_div_html").html("000.0cm");
 		}
-	jQuery("#corCtLeftsleeveRange_out").html("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveCorrect}");
-	jQuery("#corCtLeftsleeveRange").val("${orderForm.adjustCoatStandardInfo.corCtLeftsleeveCorrect}");
+	jQuery("#corCtLeftsleeveRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveCorrect}");
+	jQuery("#corCtLeftsleeveRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveCorrect}");
 	setFont("corCtLeftsleeveRange");
 
-	jQuery("#corCtVenthight_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtVenthightSize}");
-	jQuery("#corCtVenthight_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtVenthightGross}");
-	jQuery("#corCtVenthight_div_html").html("${orderForm.adjustCoatStandardInfo.corCtVenthightGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtVenthightGross}"==""){
+	jQuery("#corCtVenthight_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightSize}");
+	jQuery("#corCtVenthight_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}");
+	jQuery("#corCtVenthight_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"==""){
 		jQuery("#corCtVenthight_div_html").html("000.0cm");
 		}
-	jQuery("#corCtVenthightRange_out").html("${orderForm.adjustCoatStandardInfo.corCtVenthightCorrect}");
-	jQuery("#corCtVenthightRange").val("${orderForm.adjustCoatStandardInfo.corCtVenthightCorrect}");
+	jQuery("#corCtVenthightRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightCorrect}");
+	jQuery("#corCtVenthightRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightCorrect}");
 	setFont("corCtVenthightRange");
 
-	jQuery("#corCtPktpos_div_Size").val("${orderForm.adjustCoatStandardInfo.corCtPktposSize}");
-	jQuery("#corCtPktpos_div_Gross").val("${orderForm.adjustCoatStandardInfo.corCtPktposGross}");
-	jQuery("#corCtPktpos_div_html").html("${orderForm.adjustCoatStandardInfo.corCtPktposGross}"+".cm");
-	if("${orderForm.adjustCoatStandardInfo.corCtPktposGross}"==""){
+	jQuery("#corCtPktpos_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposSize}");
+	jQuery("#corCtPktpos_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}");
+	jQuery("#corCtPktpos_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"+".cm");
+	if("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"==""){
 		jQuery("#corCtPktpos_div_html").html("000.0cm");
 		}
-	jQuery("#corCtPktposRange_out").html("${orderForm.adjustCoatStandardInfo.corCtPktposCorrect}");
-	jQuery("#corCtPktposRange").val("${orderForm.adjustCoatStandardInfo.corCtPktposCorrect}");
+	jQuery("#corCtPktposRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}");
+	jQuery("#corCtPktposRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}");
 	setFont("corCtPktposRange");
-	jQuery("#corCtStoreCorrectionMemo").val("${orderForm.adjustCoatStandardInfo.corCtStoreCorrectionMemo}");
+	jQuery("#corCtStoreCorrectionMemo").val("${orderCoForm.coAdjustCoatStandardInfo.corCtStoreCorrectionMemo}");
 	
 	
 } 

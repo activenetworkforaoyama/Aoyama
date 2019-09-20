@@ -45,7 +45,10 @@ public enum JacketOptionStandardCodeEnum {
 	JK_Standard_OPTION_CODE38("00038","setOjBodyBackMateMap"),
 	JK_Standard_OPTION_CODE40("00040","setOjCuffBackMateMap"),
 	JK_Standard_OPTION_CODE42("00042","setOjBtnMateMap"),
-	JK_Standard_OPTION_CODE44("00044","setOjShapeMemoryMap");
+	JK_Standard_OPTION_CODE44("00044","setOjShapeMemoryMap"),
+	JK_Standard_OPTION_CODE45("00045","setCorJkShoulderPadMap"),
+	JK_Standard_OPTION_CODE46("00046","setCorJkFigureCorrectMap"),
+	JK_Standard_OPTION_CODE47("00047","setJkProductEmbroideryThreadColorMap");
 	
 	private final String key;
 	private final String value;

@@ -11,9 +11,9 @@ public enum CoatCoOptionDetailStandardNextGenerationPriceEnum {
 	// Value5:orderのmethod
 	// Value6:orderのmethod
 	
-	COAT_STANDARD_OPTION_CODE11("00011","getOcBodyBackMate","getOcBodyBackMateStkNo","setGlBackClothWsWage","setGlBackClothWsPrice","getGlBackClothWsWage","getGlBackClothWsPrice"),//胴裏地素材
-	COAT_STANDARD_OPTION_CODE12("00012","getOcCuffBackMate","getOcCuffBackMateStkNo","setGlInnnerClothWsWage","setGlInnnerClothWsPrice","getGlInnnerClothWsWage","getGlInnnerClothWsPrice"),//袖裏地素材
-	COAT_STANDARD_OPTION_CODE13("00013","getOcFrontBtnMate","getOcFrontBtnMateStkNo","setGlFrtBtnWsWage","setGlFrtBtnWsPrice","getGlFrtBtnWsWage","getGlFrtBtnWsPrice");//釦素材
+	COAT_STANDARD_OPTION_CODE11("00011","getOcBodyBackMate","getOcBodyBackMateStkNo","setCtInnerBodyClothWsWage","setCtInnerBodyClothWsPrice","getCtInnerBodyClothWsWage","getCtInnerBodyClothWsPrice"),//胴裏地素材
+	COAT_STANDARD_OPTION_CODE12("00012","getOcCuffBackMate","getOcCuffBackMateStkNo","setCtInnerSleeveClothWsWage","setCtInnerSleeveClothWsPrice","getCtInnerSleeveClothWsWage","getCtInnerSleeveClothWsPrice"),//袖裏地素材
+	COAT_STANDARD_OPTION_CODE13("00013","getOcFrontBtnMate","getOcFrontBtnMateStkNo","setCtBtnMaterialWsWage","setCtBtnMaterialWsPrice","getCtBtnMaterialWsWage","getCtBtnMaterialWsPrice");//釦素材
 	
 	
 	private final String key;

@@ -1,6 +1,6 @@
 <form:form id="idAdjustForm"
 	action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm"
-	method="post" modelAttribute="orderForm" class="form-horizontal">
+	method="post" modelAttribute="orderCoForm" class="form-horizontal">
 
 	<div id="al_jacket_div">
 		<div class="card-header">
@@ -17,19 +17,19 @@
 							体型
 							<div class="form-check-inline form-check">
 								<form:select id="selectJacketFigure"
-									path="adjustJacketStandardInfo.sizeFigure"
+									path="coAdjustJacketStandardInfo.sizeFigure"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustJacketStandardInfo.sizeFigureMap}" />
+										items="${orderCoForm.coAdjustJacketStandardInfo.sizeFigureMap}" />
 								</form:select>							
 							</div>
 							号数
 							<div class="form-check-inline form-check">
 								<form:select id="selectJacketNumber"
-									path="adjustJacketStandardInfo.sizeNumber"
+									path="coAdjustJacketStandardInfo.sizeNumber"
 									class="form-control-sm form-control hidedown">
 									<form:options
-										items="${orderForm.adjustJacketStandardInfo.sizeNumberMap}" />
+										items="${orderCoForm.coAdjustJacketStandardInfo.sizeNumberMap}" />
 								</form:select>								
 							</div>
 						</div>
@@ -44,7 +44,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corJkBodyRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corJkBodyRange" name="adjustJacketStandardInfo.corJkBodyCorrect" value="0" min="" max="" step="0.5" alert-min="-1" alert-max="1">&nbsp;
+                                <input type="range" id="corJkBodyRange" name="coAdjustJacketStandardInfo.corJkBodyCorrect" value="0" min="" max="" step="0.5" alert-min="-1" alert-max="1">&nbsp;
                                 <a href="#" id="corJkBodyRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corJkBodyRange_out" name="">0</output>cm
                                 </div>
@@ -59,7 +59,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corJkWaistRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corJkWaistRange" name="adjustJacketStandardInfo.corJkWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corJkWaistRange" name="coAdjustJacketStandardInfo.corJkWaistCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corJkWaistRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corJkWaistRange_out">0</output>cm
 							</div>
@@ -77,7 +77,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corJkRightsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corJkRightsleeveRange" name="adjustJacketStandardInfo.corJkRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corJkRightsleeveRange" name="coAdjustJacketStandardInfo.corJkRightsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corJkRightsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corJkRightsleeveRange_out">0</output>cm
                                 </div>
@@ -94,7 +94,7 @@
 						<div class="col-12 col-md-4">
                                 <div class="form-check-inline form-check">
                                 <a href="#" id="corJkLeftsleeveRange_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                <input type="range" id="corJkLeftsleeveRange" name="adjustJacketStandardInfo.corJkLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
+                                <input type="range" id="corJkLeftsleeveRange" name="coAdjustJacketStandardInfo.corJkLeftsleeveCorrect" value="0" min="" max="" step="0.5">&nbsp;
                                 <a href="#" id="corJkLeftsleeveRange_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 　<output id="corJkLeftsleeveRange_out">0</output>cm
                                 </div>
@@ -108,15 +108,16 @@
 						</div>
 						 <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <label for="oj_shoulderPat_no" class="form-check-label ">
-                                        <input type="radio" id="oj_shoulderPat_no" name="adjustJacketStandardInfo.corJkShoulderPad" value="無し" class="form-check-input">無し
+                                    <!-- <label for="oj_shoulderPat_no" class="form-check-label ">
+                                        <input type="radio" id="oj_shoulderPat_no" name="coAdjustJacketStandardInfo.corJkShoulderPad" value="無し" class="form-check-input">無し
                                     </label>　
                                     <label for="oj_shoulderPat_thin" class="form-check-label ">
-                                        <input type="radio" id="oj_shoulderPat_thin" name="adjustJacketStandardInfo.corJkShoulderPad" value="薄" class="form-check-input">薄
+                                        <input type="radio" id="oj_shoulderPat_thin" name="coAdjustJacketStandardInfo.corJkShoulderPad" value="薄" class="form-check-input">薄
                                     </label>　
                                     <label for="oj_shoulderPat_thick" class="form-check-label ">
-                                        <input type="radio" id="oj_shoulderPat_thick" name="adjustJacketStandardInfo.corJkShoulderPad" value="厚" class="form-check-input">厚
-                                    </label>
+                                        <input type="radio" id="oj_shoulderPat_thick" name="coAdjustJacketStandardInfo.corJkShoulderPad" value="厚" class="form-check-input">厚
+                                    </label> -->
+                                    <form:radiobuttons id="oj_shoulderPat_id" path="coAdjustJacketStandardInfo.corJkShoulderPad" class="form-check-input" items="${orderCoForm.coOptionJacketStandardInfo.corJkShoulderPadMap}"/>
                                 </div>
                             </div>
 						<div class="col-12 col-md-3 offset-md-3">
@@ -124,15 +125,16 @@
 						</div>
 						 <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <label for="oj_figureAlter_no" class="form-check-label ">
-                                        <input type="radio" id="oj_figureAlter_no" name="adjustJacketStandardInfo.corJkFigureCorrect" value="無し" class="form-check-input">無し
+                                    <!-- <label for="oj_figureAlter_no" class="form-check-label ">
+                                        <input type="radio" id="oj_figureAlter_no" name="coAdjustJacketStandardInfo.corJkFigureCorrect" value="無し" class="form-check-input">無し
                                     </label>　
                                     <label for="oj_figureAlter_1" class="form-check-label ">
-                                        <input type="radio" id="oj_figureAlter_1" name="adjustJacketStandardInfo.corJkFigureCorrect" value="なで肩" class="form-check-input">なで肩
+                                        <input type="radio" id="oj_figureAlter_1" name="coAdjustJacketStandardInfo.corJkFigureCorrect" value="なで肩" class="form-check-input">なで肩
                                     </label>　
                                     <label for="oj_figureAlter_2" class="form-check-label ">
-                                        <input type="radio" id="oj_figureAlter_2" name="adjustJacketStandardInfo.corJkFigureCorrect" value="いかり肩" class="form-check-input">いかり肩
-                                    </label>
+                                        <input type="radio" id="oj_figureAlter_2" name="coAdjustJacketStandardInfo.corJkFigureCorrect" value="いかり肩" class="form-check-input">いかり肩
+                                    </label> -->
+                                    <form:radiobuttons id="oj_figureAlter_id" path="coAdjustJacketStandardInfo.corJkFigureCorrect" class="form-check-input" items="${orderCoForm.coOptionJacketStandardInfo.corJkFigureCorrectMap}"/>
                                 </div>
                             </div>
 					</div>
@@ -152,7 +154,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="adjustJacketStandardInfo.corJkStoreCorrectionMemo" id="corJkStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <textarea name="coAdjustJacketStandardInfo.corJkStoreCorrectionMemo" id="corJkStoreCorrectionMemo"  rows="3" placeholder="再補正コメント" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -161,24 +163,29 @@
             </div>
 	<!-- JACKET -->
 	<input type="hidden" id="corJkBody_div_Size"
-		name="adjustJacketStandardInfo.corJkBodySize" value="" />
+		name="coAdjustJacketStandardInfo.corJkBodySize" value="" />
 	<input type="hidden" id="corJkBody_div_Gross"
-		name="adjustJacketStandardInfo.corJkBodyGross" value="" />
+		name="coAdjustJacketStandardInfo.corJkBodyGross" value="" />
 	<input type="hidden" id="corJkWaist_div_Size"
-		name="adjustJacketStandardInfo.corJkWaistSize" value="" />
+		name="coAdjustJacketStandardInfo.corJkWaistSize" value="" />
 	<input type="hidden" id="corJkWaist_div_Gross"
-		name="adjustJacketStandardInfo.corJkWaistGross" value="" />
+		name="coAdjustJacketStandardInfo.corJkWaistGross" value="" />
 	<input type="hidden" id="corJkRightsleeve_div_Size"
-		name="adjustJacketStandardInfo.corJkRightsleeveSize" value="" />
+		name="coAdjustJacketStandardInfo.corJkRightsleeveSize" value="" />
 	<input type="hidden" id="corJkRightsleeve_div_Gross"
-		name="adjustJacketStandardInfo.corJkRightsleeveGross" value="" />
+		name="coAdjustJacketStandardInfo.corJkRightsleeveGross" value="" />
 	<input type="hidden" id="corJkLeftsleeve_div_Size"
-		name="adjustJacketStandardInfo.corJkLeftsleeveSize" value="" />
+		name="coAdjustJacketStandardInfo.corJkLeftsleeveSize" value="" />
 	<input type="hidden" id="corJkLeftsleeve_div_Gross"
-		name="adjustJacketStandardInfo.corJkLeftsleeveGross" value="" />
+		name="coAdjustJacketStandardInfo.corJkLeftsleeveGross" value="" />
 		
 		
 	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="1" />
+	<input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
+    <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+    <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+    <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
+    <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />	
 </form:form>
 
 <script
@@ -186,9 +193,13 @@
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-var itemCode ="${orderForm.productItem}";
-var jacketAdFlag="${orderForm.jacketAdFlag}";
-var jacketModel = "${orderForm.optionJacketStandardInfo.ojJacketModel}";
+var jkModel ="";
+var itemCode ="${orderCoForm.productItem}";
+var productCategory="${orderCoForm.productCategory}";
+var jacketAdFlag="${orderCoForm.jacketAdFlag}";
+var jacketModel = "${orderCoForm.coOptionJacketStandardInfo.ojJacketModel}";
+var tjJacketModel = "${orderCoForm.coOptionJacketTuxedoInfo.tjJacketModel}";
+var wjJacketModel = "${orderCoForm.coOptionJacketWashableInfo.wjJacketModel}";
 //01:着丈修正、02：ウエスト修正、03：袖丈右修正、04：袖丈左修正
 var jkAdjustList = [
 	{type:"01",id:"corJkBody_div"},
@@ -202,36 +213,50 @@ jQuery(document).ready(function() {
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
+    if(productCategory=="9000101"){
+		 jkModel = jacketModel;
+	}else if(productCategory=="9000102"){
+		 jkModel = tjJacketModel;
+	}else if(productCategory=="9000103"){
+		 jkModel = wjJacketModel;
+	}
+    //alert(jkModel);
+	if(jkModel!="TR02"){
+		//alert(jkModel);
+		jQuery('#oj_figureAlter_id3').prop("disabled", true);
+		jQuery('#oj_figureAlter_id2').prop("disabled", true);
+		jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+		 jQuery("#oj_shoulderPat_id1").prop("checked", true);
+	     jQuery("#oj_figureAlter_id1").prop("checked", true);
+		}
 	     getAdjustByItem();
 		 initAlter();
-		/*  if(itemFlag=="1"){
-			 adjustReInit();
-		 }else if(jacketFlag=="0"&&jacketModel==""){
-
-		 }else if(jacketFlag=="1"){
-			 getFigureAndNumberByItem();
-		 }else if(jacketFlag=="0"&&jacketModel!=""){
-			 getFigureAndNumberByItem();
-			 adjustSession();
-		 } */
 		   if(jacketAdFlag==""){	
 			   getAdjustByItem();		   
-			     jQuery("#oj_shoulderPat_no").prop("checked", true);
-			     jQuery("#oj_figureAlter_no").prop("checked", true);
+			     jQuery("#oj_shoulderPat_id1").prop("checked", true);
+			     jQuery("#oj_figureAlter_id1").prop("checked", true);
 			}else if(jacketAdFlag=="0"){
 				getAdjustByItem();
 				//adjustReInit();				
 				getFigureAndNumberByItem();
-				jQuery("#oj_shoulderPat_no").prop("checked", true);
-			    jQuery("#oj_figureAlter_no").prop("checked", true);
+				jQuery("#oj_shoulderPat_id1").prop("checked", true);
+			    jQuery("#oj_figureAlter_id1").prop("checked", true);
 			}else if(jacketAdFlag=="1"){
 				getFigureAndNumberByItem();
 				adjustSession();
 			}
     jQuery("#selectJacketFigure,#selectJacketNumber").change(function(){
-		jkAdjust();	
-		 jQuery("oj_shoulderPat_no").val();
+		if(productCategory=="9000101"){
+			 jkModel = jacketModel;
+		}else if(productCategory=="9000102"){
+			 jkModel = tjJacketModel;
+		}else if(productCategory=="9000103"){
+			 jkModel = wjJacketModel;
+		}	
+		jkAdjust();
 	}) 
+	jQuery("#jacketAdFlag").val("1");
 	});
 
 function getAdjustByItem(){
@@ -298,7 +323,7 @@ function getAdjustByItem(){
 
 }
 function jkAdjust(){
-	if(jacketModel==""||jacketModel==null){
+	if(jkModel==""||jkModel==null){
 
 	}else{
 		jQuery("#corJkBodyRange").val(0);
@@ -328,7 +353,7 @@ if(isNotEmpty(jacketFigure)&&isNotEmpty(jacketNumber)){
         url: contextPath + "/orderCo/getCoTypeSizeOptimization",
         type: 'get',
         async:false,
-        data:{"orderPattern":orderPattern,"subItemCode":subItemCode,"modelCode":jacketModel,"figure":jacketFigure,"number":jacketNumber},
+        data:{"orderPattern":orderPattern,"subItemCode":subItemCode,"modelCode":jkModel,"figure":jacketFigure,"number":jacketNumber},
         success: function(data){
         	for(var i=0; i<data.length; i++){
         		if(data[i].adjustClass == "01"){
@@ -360,10 +385,15 @@ if(isNotEmpty(jacketFigure)&&isNotEmpty(jacketNumber)){
 		}
 	} 
 }
-	
+/* jQuery("#corJkStoreCorrectionMemo").change(function(){
+alert(jQuery("#corJkStoreCorrectionMemo").val());
+var tt=jQuery("#corJkStoreCorrectionMemo").val();
+tt=tt.replaceAll(" ","&nbsp;").replaceAll("\r","<br/>");
+jQuery("#corJkStoreCorrectionMemo").val(tt)
+alert(jQuery("#corJkStoreCorrectionMemo").val());
+}); */
 function getFigureAndNumberByItem(){
 	var subItemCode = "";
-	var jkModel = jacketModel;
 	if(itemCode == "01"){
 		if(isNotEmpty(jkModel)){
 			subItemCode = "02";
@@ -455,66 +485,67 @@ function getSizeNumber(itemCode,subItemCode,modelCode,number){
 	setFont("corJkLeftsleeveRange");	
 } 
  function adjustSession(){
-		jQuery("#selectJacketFigure").val("${orderForm.adjustJacketStandardInfo.sizeFigure}");
-		jQuery("#selectJacketNumber").val("${orderForm.adjustJacketStandardInfo.sizeNumber}");
+		jQuery("#selectJacketFigure").val("${orderCoForm.coAdjustJacketStandardInfo.sizeFigure}");
+		jQuery("#selectJacketNumber").val("${orderCoForm.coAdjustJacketStandardInfo.sizeNumber}");
 
-		jQuery("#corJkBody_div_Size").val("${orderForm.adjustJacketStandardInfo.corJkBodySize}");
-		jQuery("#corJkBody_div_Gross").val("${orderForm.adjustJacketStandardInfo.corJkBodyGross}");
-		jQuery("#corJkBody_div_html").html("${orderForm.adjustJacketStandardInfo.corJkBodyGross}"+".cm");
-		if("${orderForm.adjustJacketStandardInfo.corJkBodyGross}"==""){
+		jQuery("#corJkBody_div_Size").val("${orderCoForm.coAdjustJacketStandardInfo.corJkBodySize}");
+		jQuery("#corJkBody_div_Gross").val("${orderCoForm.coAdjustJacketStandardInfo.corJkBodyGross}");
+		jQuery("#corJkBody_div_html").html("${orderCoForm.coAdjustJacketStandardInfo.corJkBodyGross}"+".cm");
+		if("${orderCoForm.coAdjustJacketStandardInfo.corJkBodyGross}"==""){
 			jQuery("#corJkBody_div_html").html("000.0cm");
 			}
-		jQuery("#corJkBodyRange_out").html("${orderForm.adjustJacketStandardInfo.corJkBodyCorrect}");
-		jQuery("#corJkBodyRange").val("${orderForm.adjustJacketStandardInfo.corJkBodyCorrect}");
+		jQuery("#corJkBodyRange_out").html("${orderCoForm.coAdjustJacketStandardInfo.corJkBodyCorrect}");
+		jQuery("#corJkBodyRange").val("${orderCoForm.coAdjustJacketStandardInfo.corJkBodyCorrect}");
 		setFont("corJkBodyRange");
 		
-		jQuery("#corJkWaist_div_Size").val("${orderForm.adjustJacketStandardInfo.corJkWaistSize}");
-		jQuery("#corJkWaist_div_Gross").val("${orderForm.adjustJacketStandardInfo.corJkWaistGross}");
-		jQuery("#corJkWaist_div_html").html("${orderForm.adjustJacketStandardInfo.corJkWaistGross}"+".cm");
-		if("${orderForm.adjustJacketStandardInfo.corJkWaistGross}"==""){
+		jQuery("#corJkWaist_div_Size").val("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistSize}");
+		jQuery("#corJkWaist_div_Gross").val("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistGross}");
+		jQuery("#corJkWaist_div_html").html("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistGross}"+".cm");
+		if("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistGross}"==""){
 			jQuery("#corJkWaist_div_html").html("000.0cm");
 			}
-		jQuery("#corJkWaistRange_out").html("${orderForm.adjustJacketStandardInfo.corJkWaistCorrect}");
-		jQuery("#corJkWaistRange").val("${orderForm.adjustJacketStandardInfo.corJkWaistCorrect}");
+		jQuery("#corJkWaistRange_out").html("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistCorrect}");
+		jQuery("#corJkWaistRange").val("${orderCoForm.coAdjustJacketStandardInfo.corJkWaistCorrect}");
 		setFont("corJkWaistRange");
 
-		jQuery("#corJkRightsleeve_div_Size").val("${orderForm.adjustJacketStandardInfo.corJkRightsleeveSize}");
-		jQuery("#corJkRightsleeve_div_Gross").val("${orderForm.adjustJacketStandardInfo.corJkRightsleeveGross}");
-		jQuery("#corJkRightsleeve_div_html").html("${orderForm.adjustJacketStandardInfo.corJkRightsleeveGross}"+".cm");
-		if("${orderForm.adjustJacketStandardInfo.corJkRightsleeveGross}"==""){
+		jQuery("#corJkRightsleeve_div_Size").val("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveSize}");
+		jQuery("#corJkRightsleeve_div_Gross").val("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveGross}");
+		jQuery("#corJkRightsleeve_div_html").html("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveGross}"+".cm");
+		if("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveGross}"==""){
 			jQuery("#corJkRightsleeve_div_html").html("000.0cm");
 			}
-		jQuery("#corJkRightsleeveRange_out").html("${orderForm.adjustJacketStandardInfo.corJkRightsleeveCorrect}");
-		jQuery("#corJkRightsleeveRange").val("${orderForm.adjustJacketStandardInfo.corJkRightsleeveCorrect}");
+		jQuery("#corJkRightsleeveRange_out").html("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveCorrect}");
+		jQuery("#corJkRightsleeveRange").val("${orderCoForm.coAdjustJacketStandardInfo.corJkRightsleeveCorrect}");
 		setFont("corJkRightsleeveRange");
 
-		jQuery("#corJkLeftsleeve_div_Size").val("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveSize}");
-		jQuery("#corJkLeftsleeve_div_Gross").val("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveGross}");
-		jQuery("#corJkLeftsleeve_div_html").html("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveGross}"+".cm");
-		if("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveGross}"==""){
+		jQuery("#corJkLeftsleeve_div_Size").val("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveSize}");
+		jQuery("#corJkLeftsleeve_div_Gross").val("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveGross}");
+		jQuery("#corJkLeftsleeve_div_html").html("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveGross}"+".cm");
+		if("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveGross}"==""){
 			jQuery("#corJkLeftsleeve_div_html").html("000.0cm");
 			}
-		jQuery("#corJkLeftsleeveRange_out").html("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveCorrect}");
-		jQuery("#corJkLeftsleeveRange").val("${orderForm.adjustJacketStandardInfo.corJkLeftsleeveCorrect}");
+		jQuery("#corJkLeftsleeveRange_out").html("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveCorrect}");
+		jQuery("#corJkLeftsleeveRange").val("${orderCoForm.coAdjustJacketStandardInfo.corJkLeftsleeveCorrect}");
 		setFont("corJkLeftsleeveRange");
 		
-		var corJkShoulderPadValue="${orderForm.adjustJacketStandardInfo.corJkShoulderPad}";
-		var corJkFigureCorrectValue="${orderForm.adjustJacketStandardInfo.corJkFigureCorrect}"; 
-		if(corJkShoulderPadValue=="無し"){
-			jQuery("#oj_shoulderPat_no").prop("checked", true);
-		}else if(corJkShoulderPadValue=="薄"){
-			jQuery("#oj_shoulderPat_thin").prop("checked", true);
-		}else if(corJkShoulderPadValue=="厚"){
-			jQuery("#oj_shoulderPat_thick").prop("checked", true);
+		var corJkShoulderPadValue="${orderCoForm.coAdjustJacketStandardInfo.corJkShoulderPad}";
+		var corJkFigureCorrectValue="${orderCoForm.coAdjustJacketStandardInfo.corJkFigureCorrect}"; 
+		if(corJkShoulderPadValue=="0004501"){
+			jQuery("#oj_shoulderPat_id1").prop("checked", true);
+		}else if(corJkShoulderPadValue=="0004502"){
+			jQuery("#oj_shoulderPat_id2").prop("checked", true);
+		}else if(corJkShoulderPadValue=="0004503"){
+			jQuery("#oj_shoulderPat_id3").prop("checked", true);
 		}
-		if(corJkFigureCorrectValue=="無し"){
-			jQuery("#oj_figureAlter_no").prop("checked", true);
-		}else if(corJkFigureCorrectValue=="なで肩"){
-			jQuery("#oj_figureAlter_1").prop("checked", true);
-		}else if(corJkFigureCorrectValue=="いかり肩"){
-			jQuery("#oj_figureAlter_2").prop("checked", true);
+		if(corJkFigureCorrectValue=="0004601"){
+			jQuery("#oj_figureAlter_id1").prop("checked", true);
+		}else if(corJkFigureCorrectValue=="0004602"){
+			jQuery("#oj_figureAlter_id2").prop("checked", true);
+		}else if(corJkFigureCorrectValue=="0004603"){
+			jQuery("#oj_figureAlter_id3").prop("checked", true);
 		}
-		jQuery("#corJkStoreCorrectionMemo").val("${orderForm.adjustJacketStandardInfo.corJkStoreCorrectionMemo}");
+		//var tt="${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}".replaceAll(" ","&nbsp;").replaceAll("\r","<br/>");
+		jQuery("#corJkStoreCorrectionMemo").val("${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}");
 	
 	}
 

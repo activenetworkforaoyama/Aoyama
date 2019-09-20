@@ -8,9 +8,10 @@ public interface MtbStockService {
 	/**
 	 * 実在庫更新処理
 	 * 
-	 * @param stockList    大楊から取得する在庫情報リスト
+	 * @param stockList    工場から取得する在庫情報リスト
 	 * @param fabricNoList 生地マスタ（mtb_fabric）から取得する更新要「生地品番」リスト
+	 * @param orderPattern オーダーパターン
 	 */
-	void updateActualStockByFabricNo(List<Stock> stockList, List<String> fabricNoList);
+	void updateActualStockByFabricNo(List<Stock> stockList, List<String> fabricNoList, String orderPattern);
 
 }
