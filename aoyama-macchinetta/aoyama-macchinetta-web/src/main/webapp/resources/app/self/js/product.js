@@ -33,7 +33,7 @@ function initProduct() {
 		jQuery("#jkEembroideryColor").show();
 		jQuery("#stEembroideryColor").hide();
 	}
-	
+	getAdjustByItem();
 	/*var embroideryColorElem = jQuery('#embroideryColor');
 	var selectedEmbroideryColor = embroideryColorElem.val();
 	embroideryColorElem.empty();
@@ -162,7 +162,7 @@ function initProduct() {
 				  	shirtProductPrice();
 				  	stockCheck();
 				    compositionExpress();
-				  	
+				    getAdjustByItem();
 			        // ３Piece、スペアパンツ
 					if (item == "01") {
 						jQuery('#threePiece_div').show();
@@ -742,4 +742,33 @@ function washableOptionHide() {
 	jQuery('#wa_pants_div').hide();
 	jQuery('#wa2_pants_div').hide();
 	jQuery('#wa3_pants_div').hide();
+}
+
+function getAdjustByItem(){
+	var subItemCode = "";
+	var itemCode = jQuery("#item").val();
+	if(itemCode == "05"){
+		jQuery.ajax({
+	        url: contextPath + "/orderCo/getAdjustByItem",
+	        type: 'get',
+	        //async:false,
+	        data:{"orderPattern":orderPattern,"itemCode":itemCode},
+	        success: function(data){
+	           jQuery.each(data, function (index, e) {
+	        	   if(e.subItemCode == "05"){
+	        		   if(e.adjusteClass == "15"){
+							document.getElementById("embroideryHeightRange").max = e.adjusteMax;
+							jQuery("#embroideryHeightRange_out").val(e.adjusteMin);	
+							document.getElementById("embroideryHeightRange").min = e.adjusteMin;
+						}
+		        	   if(e.adjusteClass == "16"){
+							document.getElementById("embroideryWidthRange").max = e.adjusteMax;
+							jQuery("#embroideryWidthRange_out").val(e.adjusteMin);
+							document.getElementById("embroideryWidthRange").min = e.adjusteMin;
+						}						 
+			       }
+	           });
+	        }
+	    });
+	}
 }

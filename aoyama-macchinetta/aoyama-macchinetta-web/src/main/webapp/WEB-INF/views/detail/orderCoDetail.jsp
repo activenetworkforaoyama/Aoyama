@@ -342,22 +342,22 @@
 			<div class="col-lg-6">
 				<div class="row">
 					<div class="col text-right">
-						<strong>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</strong>
+						<strong><label>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</label></strong>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						商品金額：${orderFm.productPriceFm}
+						<label>商品金額：${orderFm.productPriceFm}</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						オプション金額：${orderFm.optionPriceFm}
+						<label>オプション金額：${orderFm.optionPriceFm}</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						合計金額：${orderFm.totalPriceFm}
+						<label>合計金額：${orderFm.totalPriceFm}</label>
 					</div>
 				</div>
 			</div>
@@ -411,7 +411,8 @@
 		<div class="col col-lg-6">
 			<div class="row">
 				<div class="col col-md-3"><label class=" form-control-label">納期短縮</label></div>
-				<div class="col-12 col-md-9"><strong><label class=" form-control-label-value">${order.custIsDeliverShortning}</label></strong></div>
+				<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.custIsDeliverShortning}</label></strong></div>
+				<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="cust_is_deliver_shortning_rt_price">${orderFm.custIsDeliverShortningRtPriceFm}</label></strong></div>
 			</div>
 			<div class="row">
 				<div class="col col-md-3"><label class=" form-control-label">早割</label></div>
@@ -583,6 +584,7 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">LCR縫製</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productLcrSewing}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="product_lcr_sewing_rt_price">${orderFm.productLcrSewingRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ブランドネーム</label></div>
@@ -622,6 +624,7 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">刺繍箇所</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryNmPos}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="product_embroidery_nm_pos_rt_price">${orderFm.productEmbroideryNmPosRtPriceFm}</label></strong></div>
 				</div>
 				
 				<div class="row">
@@ -636,6 +639,7 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ガゼット刺繡</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productEmbroideryGazette}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="product_embroidery_gazette_rt_price">${orderFm.productEmbroideryGazetteRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				</c:if>
@@ -983,7 +987,7 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">腰ポケット素材</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktClothNm}</label></strong></div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_waist_pkt_shape_rt_price">${orderFm.glWaistPktShapeRtPrice}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_waist_pkt_cloth_rt_price">${orderFm.glWaistPktClothRtPriceFm}</label></strong></div>
 				</div>
 				</c:if>
 				<div class="row">
@@ -2067,22 +2071,22 @@
 			<div class="col-lg-6">
 				<div class="row">
 					<div class="col text-right">
-						<strong>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</strong>
+						<strong><label>ご請求金額：${orderFm.billingAmountFm}（消費税${orderFm.consumptionTaxAmountFm}）</label></strong>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						商品金額：${orderFm.productPriceFm}
+						<label>商品金額：${orderFm.productPriceFm}</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						オプション金額：${orderFm.optionPriceFm}
+						<label>オプション金額：${orderFm.optionPriceFm}</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col text-right">
-						合計金額：${orderFm.totalPriceFm}
+						<label>合計金額：${orderFm.totalPriceFm}</label>
 					</div>
 				</div>
 			</div>
@@ -3374,6 +3378,10 @@ jQuery("#saveOrChangeValue").click(function(){
 			|| "${authority}" == "05") {
 		jQuery("#product_is_3Piece_rt_price").hide();
 		jQuery("#product_spare_pants_rt_price").hide();
+		jQuery("#product_embroidery_gazette_rt_price").hide();
+		jQuery("#product_embroidery_nm_pos_rt_price").hide();
+		jQuery("#product_lcr_sewing_rt_price").hide();
+		jQuery("#cust_is_deliver_shortning_rt_price").hide();
 		jQuery("#jk_frt_btn_rt_price").hide();
 		jQuery("#jk_lapel_design_rt_price").hide();
 		jQuery("#jk_grade_rt_price").hide();
@@ -3409,6 +3417,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#gl_breast_pkt_rt_price").hide();
 		jQuery("#gl_waist_pkt_rt_price").hide();
 		jQuery("#gl_waist_pkt_shape_rt_price").hide();
+		jQuery("#gl_waist_pkt_cloth_rt_price").hide();
 		jQuery("#gl_amf_stitch_rt_price").hide();
 		jQuery("#gl_stitch_plc_rt_price").hide();
 		jQuery("#gl_dblstitch_plc_rt_price").hide();

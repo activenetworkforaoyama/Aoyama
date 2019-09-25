@@ -238,7 +238,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="coAdjustPants2StandardInfo.corPt2StoreCorrectionMemo" id="corPt2StoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="coAdjustPants2StandardInfo.corPt2StoreCorrectionMemo" id="corPt2StoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -280,6 +280,7 @@
 var orderPattern = "CO";
 var itemCode ="${orderCoForm.productItem}";
 var pants2AdFlag="${orderCoForm.pants2AdFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
 var pt2Model="";
 var op2Model = "${orderCoForm.coOptionPants2StandardInfo.op2PantsModel}";
 var productCategory="${orderCoForm.productCategory}";
@@ -308,8 +309,9 @@ jQuery(document).ready(function() {
 	}
 
 	getAdjustByItem();
+if(orderFlag == "orderCo"){
 	if(pants2AdFlag==""){
-		
+			
 	}else if(pants2AdFlag=="0"){
 		adjustReInit();
 		getFigureAndNumberByItem();
@@ -317,7 +319,20 @@ jQuery(document).ready(function() {
 		getFigureAndNumberByItem();
 		adjustSession();
 	}
-    
+}
+
+if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
+	 if(pants2AdFlag=="0"){
+		adjustReInit();
+		getFigureAndNumberByItem();
+	}else if(pants2AdFlag=="1"){
+		getFigureAndNumberByItem();
+		adjustSession();
+	}else if(pants2AdFlag==""){
+		 getFigureAndNumberByItem();
+		 adjustSession();
+	}
+}
     initAlter();
 jQuery("#selectPants2Figure,#selectPants2Number").change(function(){
     pt2Adjust();
@@ -331,7 +346,7 @@ jQuery("#pants2AdFlag").val("1");
     	jQuery("#corPt2HemwidthRange_out").val("0");
     	jQuery("#corPt2HemwidthRange").val("0");
     	setFont("corPt2HemwidthRange");
-    	jQuery("#corPtHemwidthDegignate").val("10.0");
+    	jQuery("#corPt2HemwidthDegignate").val("10.0");
     });
     jQuery("#pt2_hemWidth_relative").click(function(){
     	jQuery("#corPt2Hemwidth_div_Gross").val("0");
@@ -587,9 +602,9 @@ function adjustReInit(){
 	jQuery("#ap2_inseamLeft1").val("0");
 
 	jQuery("#corPt2HemwidthDegignate").val("");
-	jQuery("#ap_hemWidthAbs10").val("0");
-	jQuery("#ap_hemWidthAbs1").val("0");
-	jQuery("#ap_hemWidthAbsM1").val("0");
+	jQuery("#ap2_hemWidthAbs10").val("1");
+	jQuery("#ap2_hemWidthAbs1").val("0");
+	jQuery("#ap2_hemWidthAbsM1").val("0");
 } 
 function adjustSession(){
 
@@ -900,7 +915,7 @@ jQuery('#btn_ap2_samePants').click(function (){
 				jQuery("#ap2_hemWidthAbs1").val(left1);
 			}
     }
-	jQuery("#corPt2StoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
+// 	jQuery("#corPt2StoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
 
 
 

@@ -8,6 +8,10 @@ public class OrderDetailFormat implements Serializable{
 
 	private String productIs3pieceRtPriceFm;
 	private String productSparePantsRtPriceFm;
+	private String productEmbroideryGazetteRtPriceFm;
+	private String productEmbroideryNmPosRtPriceFm;
+	private String productLcrSewingRtPriceFm;
+	private String custIsDeliverShortningRtPriceFm;
 	private String jkFrtBtnRtPriceFm;
 	private String jkLapelDesignRtPriceFm;
 	private String jkGradeRtPriceFm;
@@ -42,6 +46,7 @@ public class OrderDetailFormat implements Serializable{
 	private String glBreastPktRtPriceFm;
 	private String glWaistPktRtPriceFm;
 	private String glWaistPktShapeRtPriceFm;
+	private String glWaistPktClothRtPriceFm;
 	private String glAmfStitchRtPriceFm;
 	private String glStitchPlcRtPriceFm;
 	private String glDblstitchPlcRtPriceFm;
@@ -192,6 +197,37 @@ public class OrderDetailFormat implements Serializable{
 	private String factorySijiSign;
 
 	
+	public String getGlWaistPktClothRtPriceFm() {
+		return glWaistPktClothRtPriceFm;
+	}
+	public void setGlWaistPktClothRtPriceFm(String glWaistPktClothRtPriceFm) {
+		this.glWaistPktClothRtPriceFm = glWaistPktClothRtPriceFm;
+	}
+	
+	public String getProductEmbroideryGazetteRtPriceFm() {
+		return productEmbroideryGazetteRtPriceFm;
+	}
+	public void setProductEmbroideryGazetteRtPriceFm(String productEmbroideryGazetteRtPriceFm) {
+		this.productEmbroideryGazetteRtPriceFm = productEmbroideryGazetteRtPriceFm;
+	}
+	public String getProductEmbroideryNmPosRtPriceFm() {
+		return productEmbroideryNmPosRtPriceFm;
+	}
+	public void setProductEmbroideryNmPosRtPriceFm(String productEmbroideryNmPosRtPriceFm) {
+		this.productEmbroideryNmPosRtPriceFm = productEmbroideryNmPosRtPriceFm;
+	}
+	public String getProductLcrSewingRtPriceFm() {
+		return productLcrSewingRtPriceFm;
+	}
+	public void setProductLcrSewingRtPriceFm(String productLcrSewingRtPriceFm) {
+		this.productLcrSewingRtPriceFm = productLcrSewingRtPriceFm;
+	}
+	public String getCustIsDeliverShortningRtPriceFm() {
+		return custIsDeliverShortningRtPriceFm;
+	}
+	public void setCustIsDeliverShortningRtPriceFm(String custIsDeliverShortningRtPriceFm) {
+		this.custIsDeliverShortningRtPriceFm = custIsDeliverShortningRtPriceFm;
+	}
 	public String getBillingAmountFm() {
 		return billingAmountFm;
 	}

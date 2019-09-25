@@ -57,4 +57,6 @@ public interface OrderListService {
 	
 	Order findOrderStOptionByOrderId(String orderId);
 
+	Order findOrderProductByPk(String orderId);
+
 }

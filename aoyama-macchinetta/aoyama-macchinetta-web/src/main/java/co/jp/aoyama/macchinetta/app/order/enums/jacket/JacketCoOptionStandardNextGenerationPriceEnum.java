@@ -28,7 +28,7 @@ public enum JacketCoOptionStandardNextGenerationPriceEnum {
 	JK_Standard_OPTION_CODE17("00017","getOjManica","setJkManicaWsWage","setJkManicaWsPrice","getJkManicaWsWage","getJkManicaWsPrice"),//マニカ
 	JK_Standard_OPTION_CODE18("00018","getOjSleeveBtnType","setJkSleeveBtnWsWage","setJkSleeveBtnWsPrice","getJkSleeveBtnWsWage","getJkSleeveBtnWsPrice"),//袖釦
 	JK_Standard_OPTION_CODE19("00019","getOjCuffSpec","setJkCuffWsWage","setJkCuffWsPrice","getJkCuffWsWage","getJkCuffWsPrice"),//袖口
-	JK_Standard_OPTION_CODE20("00020","getOjInsidePktPlace","setJkInnerPktWsWage","setJkInnerPktWsPrice","getJkInnerPktWsWage","getJkInnerPktWsPrice"),//内ポケット変更
+	JK_Standard_OPTION_CODE20("00020","getOjInsidePktChange","setJkInnerPktWsWage","setJkInnerPktWsPrice","getJkInnerPktWsWage","getJkInnerPktWsPrice"),//内ポケット変更
 	JK_Standard_OPTION_CODE22("00022","getOjBreastInnerPkt","setJkRightInnerPktTypeWsWage","setJkRightInnerPktTypeWsPrice","getJkRightInnerPktTypeWsWage","getJkRightInnerPktTypeWsPrice"),//下前胸内ポケット仕様
 	JK_Standard_OPTION_CODE23("00023","getOjStitch","setJkStitchTypeWsWage","setJkStitchTypeWsPrice","getJkStitchTypeWsWage","getJkStitchTypeWsPrice"),//ステッチ種類
 	JK_Standard_OPTION_CODE24("00024","getOjStitchModify","setJkStitchPlcWsWage","setJkStitchPlcWsPrice","getJkStitchPlcWsWage","getJkStitchPlcWsPrice"),//ステッチ箇所変更

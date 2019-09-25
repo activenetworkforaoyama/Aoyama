@@ -305,38 +305,38 @@ public class OrderDetailCoHelper {
 			order.setPt2BtnthreadColorType(nasi);
 		}
 		
-		//COAT
-		//COATモデル
-		Map<String,String> coatMap = new HashMap<String,String>();
-		coatMap.put("SingleChester","シングルチェスター（ノッチド）");
-		coatMap.put("DoubleChester","ダブルチェスター");
-		coatMap.put("DoublePolo","ダブルポロ");
-		coatMap.put("SoutienCollar","ステンカラー");
-		
-		String coatModel = order.getCtModelCd();
-		for (String key : coatMap.keySet()) {
-			if (key.equals(coatModel)) {
-				order.setCtModelNm(coatMap.get(key));
-			}
-		}
-				
+//		//COAT
+//		//COATモデル
+//		Map<String,String> coatMap = new HashMap<String,String>();
+//		coatMap.put("SingleChester","シングルチェスター（ノッチド）");
+//		coatMap.put("DoubleChester","ダブルチェスター");
+//		coatMap.put("DoublePolo","ダブルポロ");
+//		coatMap.put("SoutienCollar","ステンカラー");
+//		
+//		String coatModel = order.getCtModelCd();
+//		for (String key : coatMap.keySet()) {
+//			if (key.equals(coatModel)) {
+//				order.setCtModelNm(coatMap.get(key));
+//			}
+//		}
+//				
 		//SHIRT
-		//SHIRTモデル
-		Map<String,String> shirtMap = new HashMap<String,String>();
-		shirtMap.put("BS27-darts","スリム（BS27）darts");
-		shirtMap.put("BS27-pleats","スリム（BS27）pleats");
-		shirtMap.put("BS27-box","スリム（BS27）box");
-		shirtMap.put("BS35-darts","スタンダード（BS35）darts");
-		shirtMap.put("BS35-pleats","スタンダード（BS35）pleats");
-		shirtMap.put("BS35-box","スタンダード（BS35）box");
-		shirtMap.put("BS23-darts","スーパースリム（BS23）darts");
-		
-		String shirtModel = order.getStModelCd();
-		for (String key : shirtMap.keySet()) {
-			if (key.equals(shirtModel)) {
-				order.setStModelNm(shirtMap.get(key));
-			}
-		}
+//		//SHIRTモデル
+//		Map<String,String> shirtMap = new HashMap<String,String>();
+//		shirtMap.put("BS27-darts","スリム（BS27）darts");
+//		shirtMap.put("BS27-pleats","スリム（BS27）pleats");
+//		shirtMap.put("BS27-box","スリム（BS27）box");
+//		shirtMap.put("BS35-darts","スタンダード（BS35）darts");
+//		shirtMap.put("BS35-pleats","スタンダード（BS35）pleats");
+//		shirtMap.put("BS35-box","スタンダード（BS35）box");
+//		shirtMap.put("BS23-darts","スーパースリム（BS23）darts");
+//		
+//		String shirtModel = order.getStModelCd();
+//		for (String key : shirtMap.keySet()) {
+//			if (key.equals(shirtModel)) {
+//				order.setStModelNm(shirtMap.get(key));
+//			}
+//		}
 		
 		//カジュアルヘムライン仕様
 		String stCasualHemlineCd = order.getStCasualHemlineCd();
@@ -349,6 +349,10 @@ public class OrderDetailCoHelper {
 		//上代価格の変換
 		orderFm.setProductIs3pieceRtPriceFm(getRtValue(order.getProductIs3pieceRtPrice()));
 		orderFm.setProductSparePantsRtPriceFm(getRtValue(order.getProductSparePantsRtPrice()));
+		orderFm.setProductEmbroideryGazetteRtPriceFm(getRtValue(order.getProductEmbroideryGazetteRtPrice()));
+		orderFm.setProductEmbroideryNmPosRtPriceFm(getRtValue(order.getProductEmbroideryNmPosRtPrice()));
+		orderFm.setProductLcrSewingRtPriceFm(getRtValue(order.getProductLcrSewingRtPrice()));
+		orderFm.setCustIsDeliverShortningRtPriceFm(getRtValue(order.getCustIsDeliverShortningRtPrice()));
 		orderFm.setJkFrtBtnRtPriceFm(getRtValue(order.getJkFrtBtnRtPrice()));
 		orderFm.setJkLapelDesignRtPriceFm(getRtValue(order.getJkLapelDesignRtPrice()));
 		orderFm.setJkGradeRtPriceFm(getRtValue(order.getJkGradeRtPrice()));
@@ -384,7 +388,7 @@ public class OrderDetailCoHelper {
 		orderFm.setGlBreastPktRtPriceFm(getRtValue(order.getGlBreastPktRtPrice()));
 		orderFm.setGlWaistPktRtPriceFm(getRtValue(order.getGlWaistPktRtPrice()));
 		orderFm.setGlWaistPktShapeRtPriceFm(getRtValue(order.getGlWaistPktShapeRtPrice()));
-		orderFm.setGlWaistPktShapeRtPriceFm(getRtValue(order.getGlWaistPktShapeRtPrice()));
+		orderFm.setGlWaistPktClothRtPriceFm(getRtValue(order.getGlWaistPktClothRtPrice()));
 		orderFm.setGlAmfStitchRtPriceFm(getRtValue(order.getGlAmfStitchRtPrice()));
 		orderFm.setGlStitchPlcRtPriceFm(getRtValue(order.getGlStitchPlcRtPrice()));
 		orderFm.setGlDblstitchPlcRtPriceFm(getRtValue(order.getGlDblstitchPlcRtPrice()));

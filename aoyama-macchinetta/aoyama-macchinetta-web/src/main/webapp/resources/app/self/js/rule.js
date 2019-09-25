@@ -224,7 +224,7 @@ var backSpeckList = {
 
 var fortImageList = {
 		'0000302':{
-			activeList:[{val:"0000401",text:"総裏"},{val:"0000402",text:"背抜き"},{val:"0000403",text:"半裏"},{val:"0000404",text:"シャツ仕様"}],
+			activeList:[{val:"0000401",text:"総裏"},{val:"0000402",text:"背抜き"},{val:"0000403",text:"半裏"}],
 			defaultValue:'0000401'
 		},
 		'0000301':{

@@ -43,10 +43,12 @@ function initOptionJacketWashable() {
 					//0はモデルチェク成功の場合
 					jQuery("#jkModelFlag").val("0");
 					jQuery("#wj_jacketModelCheck").empty();
+					jQuery("#wj_jacketModelCheck").hide();
 					jQuery("#fabricMsg").empty();
 				}else if(checkResult == "false"){
 					//2はモデルチェク失敗の場合
 					jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
+					jQuery("#wj_jacketModelCheck").show();
 					setAlert('wj_jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
 				}
 			}

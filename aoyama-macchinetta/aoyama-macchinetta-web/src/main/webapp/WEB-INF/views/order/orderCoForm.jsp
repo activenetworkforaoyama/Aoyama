@@ -1276,7 +1276,7 @@ select.hidedown {
                 <button id="temporarySave" type="button" class="btn btn-info btn-block"><i class="fa fa-save"></i> 一時保存</button>
                     </div>
                     <div class="col">
-                <button id="layUpSave" type="button" class="btn btn-warning btn-block"><i class="fa fa-hand-paper"></i> 取り置き</button>
+                <button id="layUpSave" type="button" class="btn btn-warning btn-block"><i class="fa fa-save"></i> 取り置き</button>
                     </div>
                     <div class="col">
                 <button id="coConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
@@ -1458,7 +1458,8 @@ select.hidedown {
 			
 			<input type="hidden" id="jacketFlag" name="jacketFlag" value="${orderCoForm.jacketFlag}"/>
 			<input type="hidden" id="giletFlag" name="giletFlag" value="${orderCoForm.giletFlag}"/>
-			
+			<input type="hidden" id="pantsFlag" name="pantsFlag" value="${orderCoForm.pantsFlag}"/>
+			<input type="hidden" id="pants2Flag" name="pants2Flag" value="${orderCoForm.pants2Flag}"/>
 			<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="0"/>
 			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
 			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="0"/>
@@ -2396,6 +2397,13 @@ jQuery(function() {
 			fabricView(item,productFabricNo);
 		}
 
+		if(item == "05"){
+			jQuery("#embroideryHeightRange").val("${orderCoForm.productEmbroideryLength}");
+			setFont("embroideryHeightRange");
+			jQuery("#embroideryWidthRange").val("${orderCoForm.productEmbroideryWidth}");
+			setFont("embroideryWidthRange");
+		}
+
 		var yieldNum = "${orderCoForm.theoryFabricUsedMount}";
 		jQuery("#theoryFabricUsedMountId").val(yieldNum);
 
@@ -2578,12 +2586,14 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_SHIRT_Ad"]').click(function(){
+		jQuery(".alertbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		jQuery("#nav3_Div").load(contextPath + "/orderCo/shirtJsp");
 	})
 
 	jQuery('a[href="#nav2_COAT_Ad"]').click(function(){
+		jQuery(".alertbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		jQuery("#nav3_Div").load(contextPath + "/orderCo/coatJsp");
@@ -2745,10 +2755,11 @@ jQuery(function() {
 		jQuery("#saveFlag").val("0");
 		//TSCステータス  一時保存
 		jQuery("#statusInput").val("T0");
-		
+		jQuery('select').removeAttr("disabled");
+		jQuery('input').not("#lcrSewing_id2").removeAttr("disabled");
 		jQuery.ajax({url : contextPath + "/orderCo/orderCoTemporarySave",
 		    type: "post",
-		    //async:false,
+		    async:false,
 			data: jQuery('#idForm').serialize(),
 		    }).then(function(data){
 		    	if(!data.orderMsgFlag){
@@ -2791,6 +2802,205 @@ jQuery(function() {
 						jQuery("#versionFlag").val(versionFlag); */
 					}
 				}
+		    	var item = jQuery("#item").val();
+		    	if(item == "06"){
+		    		// 選択中のCOATモデル
+	    			var coatModel = jQuery('#coatModel').val();
+	    			// ラペルデザインの制御
+	    			if (coatModel == "SingleChester") {
+	    				jQuery('#oc_lapelDesign').prop('disabled', false);
+	    			} else {
+	    				jQuery('#oc_lapelDesign').val("0000101");
+	    				jQuery('#oc_lapelDesign').prop('disabled', true);
+	    			}
+	    			
+	    			// 袖仕様の制御
+	    			if (coatModel == "SoutienCollar") {
+	    				// チェンジポケット　選択可
+	    				jQuery(':radio[name="coOptionCoatStandardInfo.ocSleeveSpec"]').each(function (index, elem) {
+	    					jQuery(elem).prop('disabled', false);
+	    				});
+	    			} else {
+	    				// チェンジポケット　選択不可
+	    				jQuery(':radio[name="coOptionCoatStandardInfo.ocSleeveSpec"]').each(function (index, elem) {
+	    					jQuery(elem).prop('disabled', true);
+	    				});
+	    				jQuery('#oc_sleeveSpec_id1').prop('checked', true);;
+	    			}
+	    			// 腰ポケットの制御
+	    			var oc_waistPkt_options = ["フラップ通常", "箱（斜め）", "パッチ", "パッチ＆フラップ"];
+	    			var oc_waistPkt_options_code = ["0000201", "0000202", "0000203", "0000204"];
+	    			var oc_waistPkt_stenOptions = ["箱（斜め）"];
+	    			var oc_waistPkt_stenOptions_code = ["0000202"];
+	    			var oc_waistPktElem = jQuery('#oc_waistPkt');
+	    			var before_oc_waistPkt = oc_waistPktElem.val();
+	    			oc_waistPktElem.empty();
+	    			if (coatModel == "SoutienCollar") {
+	    				for (var index = 0; index < oc_waistPkt_stenOptions.length; index++) {
+	    					oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_stenOptions_code[index]).text(oc_waistPkt_stenOptions[index]));
+	    				}
+	    			} else {
+	    				for (var index = 0; index < oc_waistPkt_options.length; index++) {
+	    					oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_options_code[index]).text(oc_waistPkt_options[index]));
+	    				}
+	    				oc_waistPktElem.val(before_oc_waistPkt);
+	    			}
+	    			jQuery('#oc_waistPkt').change();
+
+	    			// 袖口の制御
+	    			var oc_cuffSpec_options = ["本切羽", "仮切羽", "ターンナップカフス"];
+	    			var oc_cuffSpec_options_code = ["0000701", "0000702", "0000703"];
+	    			var oc_cuffSpec_stenOptions = ["ベルト"];
+	    			var oc_cuffSpec_stenOptions_code = ["0000704"];
+	    			var oc_cuffSpecElem = jQuery('#oc_cuffSpec');
+	    			var before_oc_cuffSpec = oc_cuffSpecElem.val();
+	    			
+	    			oc_cuffSpecElem.empty();
+	    			if (coatModel == "SoutienCollar") {
+	    				for (var index = 0; index < oc_cuffSpec_stenOptions.length; index++) {
+	    					oc_cuffSpecElem.append(jQuery('<option />').val(oc_cuffSpec_stenOptions_code[index]).text(oc_cuffSpec_stenOptions[index]));
+	    				}
+	    			} else {
+	    				var existBefore = false;
+	    				for (var index = 0; index < oc_cuffSpec_options.length; index++) {
+	    					oc_cuffSpecElem.append(jQuery('<option />').val(oc_cuffSpec_options_code[index]).text(oc_cuffSpec_options[index]));
+	    					if (oc_cuffSpec_options_code[index] == before_oc_cuffSpec) {
+	    						existBefore = true;
+	    					}
+	    				}
+	    				if (existBefore) {
+	    					oc_cuffSpecElem.val(before_oc_cuffSpec);
+	    				} else {
+	    					oc_cuffSpecElem.val(oc_cuffSpec_options_code[0]);
+	    				}
+	    				if (coatModel == "DoublePolo") {
+	    					oc_cuffSpecElem.val("0000703");
+	    				} else {
+	    					oc_cuffSpecElem.val("0000701");
+	    				}
+	    			}
+	    			jQuery('#oc_cuffSpec').change();
+
+	    			// バックベルトの制御
+	    			if (coatModel == "") {
+	    				jQuery('#oc_backBelt_id2').prop('disabled', true);
+	    				jQuery('#oc_backBelt_id3').prop('disabled', true);
+	    				jQuery('#oc_backBelt_id1').prop('checked', true);
+	    			} else if (coatModel == "SingleChester" || coatModel == "DoubleChester" || coatModel == "DoublePolo") {
+	    				jQuery('#oc_backBelt_id2').prop('disabled', false);
+	    				jQuery('#oc_backBelt_id3').prop('disabled', true);
+	    				if (jQuery('#oc_backBelt_id3').prop('checked')) {
+	    					jQuery('#oc_backBelt_id1').prop('checked', true);
+	    				}
+	    			} else {
+	    				jQuery('#oc_backBelt_id2').prop('disabled', true);
+	    				jQuery('#oc_backBelt_id3').prop('disabled', false);
+	    				if (jQuery('#oc_backBelt_id2').prop('checked')) {
+	    					jQuery('#oc_backBelt_id1').prop('checked', true);
+	    				}
+	    			}
+	    			
+	    			// フロント釦数
+	    			// 「シングルチェスター」選択時のみ、選択可、ほかの場合には「通常」
+	    			var oSelectFBC = jQuery('#oc_frontBtnCnt');
+	    			var oOptionsFBC = oSelectFBC.find('.Front-Btn-Cnt');
+	    			if (coatModel == "SingleChester") {
+	    				//oSelectFBC.attr('readonly', false);
+	    				//oOptionsFBC.prop('disabled', false);
+	    				oSelectFBC.prop('disabled', false);
+	    			} else {
+	    				oSelectFBC.val('0000601');
+	    				//oSelectFBC.attr('readonly', true);
+	    				//oOptionsFBC.prop('disabled', true);
+	    				oSelectFBC.prop('disabled', true);
+	    			}
+		    		
+
+		    		// 腰ポケット
+		    		jQuery('#oc_waistPkt').change(function(){
+		    			var oc_waistPkt = jQuery('#oc_waistPkt').val();
+		    			if (oc_waistPkt == "0000201") {
+		    				// チェンジポケット　選択可
+		    				jQuery(':radio[name="coOptionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+		    					jQuery(elem).prop('disabled', false);
+		    				});
+		    				// スランテッドポケット　選択可
+		    				jQuery(':radio[name="coOptionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+		    					jQuery(elem).prop('disabled', false);
+		    				});
+		    			} else {
+		    				// チェンジポケット　選択不可
+		    				jQuery(':radio[name="coOptionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
+		    					jQuery('#oc_changePkt_id1').prop('checked', true).change();
+		    					jQuery(elem).prop('disabled', true);
+		    				});
+		    				jQuery('#oc_changePkt_id1').prop('checked', true).change();
+		    				// スランテッドポケット　選択不可
+		    				jQuery(':radio[name="coOptionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
+		    					jQuery('#oc_slantedPkt_id1').prop('checked', true).change();
+		    					jQuery(elem).prop('disabled', true);
+		    				});
+		    				jQuery('#oc_slantedPkt_id1').prop('checked', true).change();
+		    			}
+		    		});
+
+		    		// 袖口
+		    		jQuery('#oc_cuffSpec').change(function(){
+
+		    			var oc_cuffSpec = jQuery('#oc_cuffSpec').val();
+		    			var oc_sleeveBtnTypeElem = jQuery('#oc_sleeveBtnType');
+		    			var before_oc_sleeveBtnType = oc_sleeveBtnTypeElem.val();
+		    			var oc_sleeveBtnType_k_options = ["重ね4", "並び4"];
+		    			var oc_sleeveBtnType_k_options_code = ["0000801", "0000802"];
+		    			var oc_sleeveBtnType_b_options = ["2"];
+		    			var oc_sleeveBtnType_b_options_code = ["0000804"];
+		    			var oc_sleeveBtnType_t_options = ["無し"];
+		    			var oc_sleeveBtnType_t_options_code = ["0000803"];
+		    			var oc_sleeveBtnTypeSet = null;
+		    			var oc_sleeveBtnTypeSet_code = null;
+		    			var before_oc_sleeveBtnType = oc_sleeveBtnTypeElem.val();
+		    			var existBeforeSl = false;
+
+		    			// option候補値を選択
+		    			if (oc_cuffSpec == "0000701" || oc_cuffSpec == "0000702") {
+		    				oc_sleeveBtnTypeSet = oc_sleeveBtnType_k_options;
+		    				oc_sleeveBtnTypeSet_code = oc_sleeveBtnType_k_options_code;
+		    			} else if (oc_cuffSpec == "0000704") {
+		    				oc_sleeveBtnTypeSet = oc_sleeveBtnType_b_options;
+		    				oc_sleeveBtnTypeSet_code = oc_sleeveBtnType_b_options_code;
+		    			} else {
+		    				oc_sleeveBtnTypeSet = oc_sleeveBtnType_t_options;
+		    				oc_sleeveBtnTypeSet_code = oc_sleeveBtnType_t_options_code;
+		    			}
+
+		    			// optionを作成
+		    			oc_sleeveBtnTypeElem.empty();
+		    			for (var index = 0; index < oc_sleeveBtnTypeSet.length; index++) {
+		    				oc_sleeveBtnTypeElem.append(jQuery('<option />')
+		    					.val(oc_sleeveBtnTypeSet_code[index])
+		    					.text(oc_sleeveBtnTypeSet[index]));
+		    				if (oc_sleeveBtnTypeSet_code[index] == before_oc_sleeveBtnType) {
+		    					existBeforeSl = true;
+		    				}
+		    			}
+		    			if (existBeforeSl) {
+		    				oc_sleeveBtnTypeElem.val(before_oc_sleeveBtnType);
+		    			} else {
+		    				oc_sleeveBtnTypeElem.val(oc_sleeveBtnTypeSet_code[0]);
+		    			}
+		    			jQuery('#oc_sleeveBtnType_div').show();
+
+		    	/*
+		    			if (oc_cuffSpec == "本切羽" || oc_cuffSpec == "仮切羽") {
+		    				// 本切羽か仮切羽の場合のみ、袖釦を表示
+		    				jQuery('#oc_sleeveBtnType_div').show();
+		    			} else {
+		    				jQuery('#oc_sleeveBtnType_div').hide();
+		    				jQuery('#oc_sleeveBtnType').val("重ね4");
+		    			}
+		    	*/
+		    		});
+			    }
 			})
 	})
 
@@ -2811,10 +3021,11 @@ jQuery(function() {
 		jQuery("#saveFlag").val("0");
 		//TSCステータス  取り置き
 		jQuery("#statusInput").val("T1");
-		
+		jQuery('select').removeAttr("disabled");
+		jQuery('input').not("#lcrSewing_id2").removeAttr("disabled");
 		jQuery.ajax({url : contextPath + "/orderCo/orderCoTemporarySave",
 		    type: "post",
-		    //async:false,
+		    async:false,
 		    data: jQuery('#idForm').serialize(),
 		    }).then(function(data){
 		    	if(!data.orderMsgFlag){
@@ -3689,38 +3900,6 @@ jQuery('#coConfirm').click(function(){
 
 	return false;
 })
-jQuery("#item").change(function(){
-	 getAdjustByItem();	
-})
-function getAdjustByItem(){
-	var subItemCode = "";
-	var itemCode = jQuery("#item").val();
-	if(itemCode == "05"){
-		jQuery.ajax({
-	        url: contextPath + "/orderCo/getAdjustByItem",
-	        type: 'get',
-	        //async:false,
-	        data:{"orderPattern":orderPattern,"itemCode":itemCode},
-	        success: function(data){
-	           jQuery.each(data, function (index, e) {
-	        	   if(e.subItemCode == "05"){
-	        		   if(e.adjusteClass == "15"){
-							document.getElementById("embroideryHeightRange").max = e.adjusteMax;
-							jQuery("#embroideryHeightRange_out").val(e.adjusteMin);	
-							document.getElementById("embroideryHeightRange").min = e.adjusteMin;
-						}
-		        	   if(e.adjusteClass == "16"){
-							document.getElementById("embroideryWidthRange").max = e.adjusteMax;
-							jQuery("#embroideryWidthRange_out").val(e.adjusteMin);
-							document.getElementById("embroideryWidthRange").min = e.adjusteMin;
-						}						 
-			       }
-	           });
-	        }
-	    });
-	}
-}
-
 //--------------------------------------------
 //メジャーリングの初期化
 //--------------------------------------------
@@ -4500,7 +4679,7 @@ function fabricCheck(item,productFabricNo){
 					 //生地店着日チェク
 					 //isShopDeliveryEmpty(店着納期区分（通常）,生地品番)　5
 	     			 if(!isShopDeliveryEmpty(result,item)){
-	         			setAlert('stockMsg', getMsgByOneArg('msg072',productFabricNo));
+		     			var earlyDiscount = jQuery("#earlyDiscount").val();
 	         			//生地メッセージをクリア
 	         			jQuery("#notice").empty();
 	     			    jQuery("#fabric_brand_nm_p").empty();
@@ -4524,7 +4703,13 @@ function fabricCheck(item,productFabricNo){
 						allOptionPrice();
 						//生地チェク失敗フラッグ
 						fabricCheckValue = "1";
-	     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg072',productFabricNo));
+						if(earlyDiscount == "9001002"){
+		     				setAlert('stockMsg', getMsgByOneArg('msg127','早割'));
+		     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg127','早割'));
+			     		}else{
+			     			setAlert('stockMsg', getMsgByOneArg('msg072',productFabricNo));
+			     			jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg072',productFabricNo));
+				     	}
 	     				return false;
 	     			 }
 
@@ -4880,6 +5065,18 @@ function getYieldNum(item){
 					yieldNum = yieldNum + yieldIndex.nomalFabricAmount;
 				}
 		 }
+    }else if(item == '05'){
+    	for(yieldIndex of yieldList){
+			if(yieldIndex.subItemCode=='05'){
+				yieldNum = yieldNum + yieldIndex.nomalFabricAmount;
+			}
+	 	}
+    }else if(item == '06'){
+    	for(yieldIndex of yieldList){
+			if(yieldIndex.subItemCode=='06'){
+				yieldNum = yieldNum + yieldIndex.nomalFabricAmount;
+			}
+	 	}
     }
 	yieldNum = yieldNum/1000;
 	jQuery("#theoryFabricUsedMountId").val(yieldNum);
@@ -6676,7 +6873,7 @@ function dateEarlyCheck(productFabricNo,item){
 				 async:false,
 				 success:function(result){
 					 if(!isShopDeliveryEmpty(result,item)){
-		         			setAlert('stockMsg', getMsgByOneArg('msg072',productFabricNo));
+		         			setAlert('stockMsg', getMsgByOneArg('msg127','早割'));
 		         			//生地メッセージをクリア
 		         			jQuery("#notice").empty();
 		     			    jQuery("#fabric_brand_nm_p").empty();
@@ -6698,7 +6895,7 @@ function dateEarlyCheck(productFabricNo,item){
 							allOptionPrice();
 							//生地チェク失敗フラッグ
 							fabricCheckValue = "1";
-		     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg072',productFabricNo));
+		     				jQuery("#fabricFlag").val(fabricCheckValue+"*"+getMsgByOneArg('msg127','早割'));
 		     			 }	 
 				 }
 			})

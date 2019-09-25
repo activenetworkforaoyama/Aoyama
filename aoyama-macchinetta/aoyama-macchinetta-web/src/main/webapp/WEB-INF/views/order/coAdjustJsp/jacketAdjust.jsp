@@ -154,7 +154,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="coAdjustJacketStandardInfo.corJkStoreCorrectionMemo" id="corJkStoreCorrectionMemo"  rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="coAdjustJacketStandardInfo.corJkStoreCorrectionMemo" id="corJkStoreCorrectionMemo"  rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -193,8 +193,8 @@
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-var jkModel ="";
 var itemCode ="${orderCoForm.productItem}";
+var orderFlag = "${orderCoForm.orderFlag}";
 var productCategory="${orderCoForm.productCategory}";
 var jacketAdFlag="${orderCoForm.jacketAdFlag}";
 var jacketModel = "${orderCoForm.coOptionJacketStandardInfo.ojJacketModel}";
@@ -220,9 +220,9 @@ jQuery(document).ready(function() {
 	}else if(productCategory=="9000103"){
 		 jkModel = wjJacketModel;
 	}
-    //alert(jkModel);
+
 	if(jkModel!="TR02"){
-		//alert(jkModel);
+		
 		jQuery('#oj_figureAlter_id3').prop("disabled", true);
 		jQuery('#oj_figureAlter_id2').prop("disabled", true);
 		jQuery('#oj_shoulderPat_id3').prop("disabled", true);
@@ -232,13 +232,13 @@ jQuery(document).ready(function() {
 		}
 	     getAdjustByItem();
 		 initAlter();
+		 if(orderFlag == "orderCo"){
 		   if(jacketAdFlag==""){	
-			   getAdjustByItem();		   
+			     getAdjustByItem();		   
 			     jQuery("#oj_shoulderPat_id1").prop("checked", true);
 			     jQuery("#oj_figureAlter_id1").prop("checked", true);
 			}else if(jacketAdFlag=="0"){
-				getAdjustByItem();
-				//adjustReInit();				
+				getAdjustByItem();				
 				getFigureAndNumberByItem();
 				jQuery("#oj_shoulderPat_id1").prop("checked", true);
 			    jQuery("#oj_figureAlter_id1").prop("checked", true);
@@ -246,14 +246,20 @@ jQuery(document).ready(function() {
 				getFigureAndNumberByItem();
 				adjustSession();
 			}
-    jQuery("#selectJacketFigure,#selectJacketNumber").change(function(){
-		if(productCategory=="9000101"){
-			 jkModel = jacketModel;
-		}else if(productCategory=="9000102"){
-			 jkModel = tjJacketModel;
-		}else if(productCategory=="9000103"){
-			 jkModel = wjJacketModel;
-		}	
+		 }
+		 if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
+		     if(jacketAdFlag=="0"){
+				adjustReInit();
+				getFigureAndNumberByItem();
+		    }else if(jacketAdFlag=="1"){
+				getFigureAndNumberByItem();
+				adjustSession();
+			}else if(jacketAdFlag==""){
+				 getFigureAndNumberByItem();
+				 adjustSession();
+			}
+		 }		
+    jQuery("#selectJacketFigure,#selectJacketNumber").change(function(){	
 		jkAdjust();
 	}) 
 	jQuery("#jacketAdFlag").val("1");
@@ -385,15 +391,10 @@ if(isNotEmpty(jacketFigure)&&isNotEmpty(jacketNumber)){
 		}
 	} 
 }
-/* jQuery("#corJkStoreCorrectionMemo").change(function(){
-alert(jQuery("#corJkStoreCorrectionMemo").val());
-var tt=jQuery("#corJkStoreCorrectionMemo").val();
-tt=tt.replaceAll(" ","&nbsp;").replaceAll("\r","<br/>");
-jQuery("#corJkStoreCorrectionMemo").val(tt)
-alert(jQuery("#corJkStoreCorrectionMemo").val());
-}); */
+
 function getFigureAndNumberByItem(){
 	var subItemCode = "";
+	
 	if(itemCode == "01"){
 		if(isNotEmpty(jkModel)){
 			subItemCode = "02";
@@ -425,7 +426,7 @@ function getSizeFigure(itemCode,subItemCode,modelCode,figure){
         data:{"orderPattern":"CO","itemCode":itemCode,"subItemCode":subItemCode,"modelCode":modelCode},
         success: function(data){
            jQuery.each(data, function (index, e) {
-               
+        	 
         	   figure.add(new Option(e.figure,e.figure));
            });
         }
@@ -545,7 +546,7 @@ function getSizeNumber(itemCode,subItemCode,modelCode,number){
 			jQuery("#oj_figureAlter_id3").prop("checked", true);
 		}
 		//var tt="${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}".replaceAll(" ","&nbsp;").replaceAll("\r","<br/>");
-		jQuery("#corJkStoreCorrectionMemo").val("${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}");
+// 		jQuery("#corJkStoreCorrectionMemo").val("${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}");
 	
 	}
 

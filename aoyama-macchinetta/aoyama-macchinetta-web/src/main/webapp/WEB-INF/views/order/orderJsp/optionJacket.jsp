@@ -18,7 +18,7 @@
                             <div class="col-12 col-md-6" align="right" id="jacketModel_Msg">
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="jacketModelMsg" style="margin-top:8px"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="jacketModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="jacketModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -571,7 +571,7 @@
                             <div class="col-12 col-md-6" align="right" id="jacketModel_Msg">
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelMsg" style="margin-top:8px"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -1003,7 +1003,7 @@
 							<div class="col-12 col-md-6" align="right" id="jacketModel_Msg">
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelMsg" style="margin-top:8px"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">フロント釦数</label>
@@ -2212,16 +2212,16 @@
 </div>
 
 <!-- 自作js -->
-<script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.jacket.standard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.jacket.tuxedo.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.jacket.washable.js"></script>
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-
+var orderFlag = "${orderCoForm.orderFlag}";
 var selectIdList = {
 	"bodyBackMate":"00038",
 	"cuffBackMate":"00040",
@@ -2236,11 +2236,34 @@ var selectIdList = {
 
 jQuery(function() {
 	var jacketAdFlag="${orderCoForm.jacketAdFlag}";
+if(orderFlag=="orderCo"){
 	if(jacketAdFlag=="1"){
 		
 	}else{
 		jQuery("#jacketAdFlag").val("0");
 	}
+}
+if(orderFlag=="orderBack"){
+	if(productCategory == "9000101"){
+		var sessionOjJacketModel = "${orderCoForm.coOptionJacketStandardInfo.ojJacketModel}";
+		jQuery("#jacketModel").click(function(){
+			var jacketModel = jQuery("#jacketModel").val();
+			sessionJacketAdFlag(sessionOjJacketModel,jacketModel);
+		});
+	}else if(productCategory == "9000102"){
+		var sessionTjJacketModel = "${orderCoForm.coOptionJacketTuxedoInfo.tjJacketModel}";
+		jQuery("#tj_jacketModel").click(function(){
+			var tjJacketModel = jQuery("#tj_jacketModel").val();
+			sessionJacketAdFlag(sessionTjJacketModel,tjJacketModel);
+		});
+	}else if(productCategory == "9000103"){
+		var sessionWjJacketModel = "${orderCoForm.coOptionJacketWashableInfo.wjJacketModel}";
+		jQuery("#wj_jacketModel").click(function(){
+			var wjJacketModel = jQuery("#wj_jacketModel").val();
+			sessionJacketAdFlag(sessionWjJacketModel,wjJacketModel);
+		});
+	}
+}
 
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -2289,6 +2312,8 @@ jQuery(function() {
 
 	jQuery("#jacketItemFlag").val("1");
 
+	optionJacketChangeModel(productCategory);
+	
 	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderCo"){
 		
@@ -2872,8 +2897,6 @@ jQuery(function() {
 
 	doubleOptionModelPrice();
 
-	optionJacketChangeModel(productCategory);
-
 })	
 
 function setJacketModelDisable(productCategory){
@@ -3199,13 +3222,16 @@ function getPrice(){
 	.change(function(){
 		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var priceUrl = "";
+		var jacketModel = "";
 		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		if(productCategory == "9000101"){
 			priceUrl = "getOrderPriceForJacketProject";
+			jacketModel = jQuery("#jacketModel option:selected").val();
 		}else if(productCategory == "9000103"){
 			priceUrl = "getOrderPriceForJacketWashableProject";
+			jacketModel = jQuery("#wj_jacketModel option:selected").val();
 		}
-		var jacketModel = jQuery("#jacketModel option:selected").val();
+		
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "02";
 		var idValueName = jQuery(this).attr("id");
@@ -3463,7 +3489,80 @@ function getPrice(){
 			var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
 			jQuery("#"+msgIdValueName).html("無料");
 		}
+		allOptionPrice();
 	})
+
+// 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定の全選択、全解除
+	jQuery('[id^="btn_as_amfColorPlace"],[id^="btn_ar_amfColorPlace"],[id^="btn_as_bhColorPlace"],'+
+			'[id^="btn_ar_bhColorPlace"],[id^="btn_as_byColorPlace"],[id^="btn_ar_byColorPlace"]').click(function(){
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		var jacketModel = "";
+		if(productCategory == "9000101"){
+			idValueNameTemp = "";
+			ajaxUrl = "getOrderPriceForJacketProject";
+			jacketModel = jQuery("#jacketModel option:selected").val();
+		}else if(productCategory == "9000102"){
+			idValueNameTemp = "tj_";
+			ajaxUrl = "getOrderPriceForJacketTuxedoProject";
+			jacketModel = jQuery("#tj_jacketModel option:selected").val();
+		}else if(productCategory == "9000103"){
+			idValueNameTemp = "wj_";
+			ajaxUrl = "getOrderPriceForJacketWashableProject";
+			jacketModel = jQuery("#wj_jacketModel option:selected").val();
+		}
+
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "02";
+		var idValueName = jQuery(this).attr("id");
+		var idValueNameTemp = "";
+		var thisValueTemp = "";
+		
+
+		var findIdAmf = idValueName.indexOf("_amfColorPlace");
+		var findIdBh = idValueName.indexOf("_bhColorPlace");
+		var findIdBy = idValueName.indexOf("_byColorPlace");
+		if(findIdAmf != -1){
+			idValueNameTemp = idValueNameTemp + "amfColor_id";
+			thisValueTemp = "00030" + jQuery("#amfColorPlaceAll").val();
+		}else if(findIdBh != -1){
+			idValueNameTemp = idValueNameTemp + "bhColor_id";
+			thisValueTemp = "00033" + jQuery("#bhColorPlaceAll").val();
+		}else if(findIdBy != -1){
+			idValueNameTemp = idValueNameTemp + "byColor_id";
+			thisValueTemp = "00036" + jQuery("#byColorPlaceAll").val();
+		}
+
+		//選択された異なる色の数
+		var colorCount = 0;
+		var findIdAs = idValueName.indexOf("btn_as_");
+		var findIdAr = idValueName.indexOf("btn_ar_");
+		if(findIdAs != -1){
+			colorCount = 1;
+		}else if(findIdAr != -1){
+			colorCount = 0;
+		}
+		
+		if(isNotEmpty(jacketModel)){
+			var code = itemCode + subItemCode + jacketModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":idValueNameTemp,"jspOptionCodeAndBranchCode":thisValueTemp,"colorCount":colorCount},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = idValueName.substring(7);
+					msgIdValueName = msgIdValueName.replace(/Place/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+		allOptionPrice();
+	});
 }
 //--------------------------------------------
 //金額フォーマット
@@ -3867,6 +3966,7 @@ function changeJkOptionByStock(productCategory){
 				})
 			}else if(shirtSleeve == "1"){
 				jQuery("#backSpec option:last-child").prop("disabled",false);
+				jQuery("#backSpec option:first-child").prop("selected",false);
 				jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').change(function(){
 					jQuery("#backSpec option:last-child").prop("disabled",false);
 				})
@@ -4142,17 +4242,16 @@ function optionJacketChangeModel(productCategory){
 		}
 	}
 }
-
-jQuery("#jacketModel").change(function(){
-	//jQuery("#jacketFlag").val("1");
-	jQuery("#jacketAdFlag").val("0");
-})
-jQuery("#tj_jacketModel").change(function(){
-	//jQuery("#jacketFlag").val("1");
-	jQuery("#jacketAdFlag").val("0");
-})
-jQuery("#wj_jacketModel").change(function(){
-	//jQuery("#jacketFlag").val("1");
-	jQuery("#jacketAdFlag").val("0");
+function  sessionJacketAdFlag(oldModel,newModel){
+	if(oldModel != newModel){
+		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
+			 jQuery("#jacketAdFlag").val("0");
+		}
+	}
+}
+jQuery("#jacketModel,#tj_jacketModel,#wj_jacketModel").change(function(){
+	if(orderFlag == "orderCo"){
+		jQuery("#jacketAdFlag").val("0");
+	}
 })
 </script>

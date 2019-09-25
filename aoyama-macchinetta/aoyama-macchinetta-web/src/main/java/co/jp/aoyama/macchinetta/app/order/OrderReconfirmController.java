@@ -27,6 +27,7 @@ import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
 import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
+import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Maker;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
@@ -37,6 +38,7 @@ import co.jp.aoyama.macchinetta.domain.model.Stock;
 import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
 import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
+import co.jp.aoyama.macchinetta.domain.service.order.AdjustService;
 import co.jp.aoyama.macchinetta.domain.service.order.NextGenerationService;
 import co.jp.aoyama.macchinetta.domain.service.order.OptionBranchDeailService;
 import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
@@ -71,6 +73,9 @@ public class OrderReconfirmController {
 	
 	@Inject
 	MakerService makerService;
+	
+	@Inject
+	AdjustService adjustService;
 	
 	@Inject
 	NextGenerationService nextGenerationService;
@@ -331,6 +336,20 @@ public class OrderReconfirmController {
 	}
 	
 	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	public List<Adjust> getAdjustByItem(OrderForm orderForm) {
+		String orderPattern = orderForm.getOrderPattern();
+		String itemCode = orderForm.getProductItem();
+		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
+		return adjustList;
+	}
+	
+	
+	/**
 	 * オーダー内容確認画面の値をデータベースに入力する
 	 * @param orderForm
 	 * @return
@@ -353,6 +372,7 @@ public class OrderReconfirmController {
 			OrderFindFabric findStock = this.findStock(orderForm);
 			Order selectExistOrder = this.selectExistOrder(orderForm);
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedProjects(orderForm);
+			List<Adjust> adjustByItem = this.getAdjustByItem(orderForm);
 		
 			
 			//商品情報_３Piece上代
@@ -478,7 +498,6 @@ public class OrderReconfirmController {
 			orderHelper.measuringMapping(orderForm, measuring,sessionContent.getUserId());
 			orderHelper.nextGenerationRelationCount(orderForm, order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate);
 			
-			
 			measuringService.updateByPrimaryKey(measuring);
 			
 			//挿入の場合
@@ -488,6 +507,11 @@ public class OrderReconfirmController {
 			//更新の場合
 			else {
 				try {
+					// 補正標準値
+					orderHelper.checkBasicValue(order);
+					// 補正絶対値
+					orderHelper.checkAbsolutelyAdjust(adjustByItem, order);
+					
 					//生地品番
 					String fabricNo = orderForm.getProductFabricNo();
 					//商品情報_ITEM(ログ用)

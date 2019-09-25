@@ -6,15 +6,25 @@
 //--------------------------------------------
 function initOptionPants2Standard() {
 
+	jQuery('#op2_pantsModel').attr("oldPants2Model",jQuery('#op2_pantModel').val());
 	// PANTSモデル
 	jQuery('#op2_pantsModel').change(function() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
-
-		if (pantsModel == '' || pantsModel == null) {
-			// 未選択時は何もしない
-			return;
+		var pantsoldModel = jQuery('#op2_pantsModel').attr("oldPants2Model");
+		if (pantsModel != pantsoldModel) {
+			jQuery("#pants2Flag").val("0");
+		}else{
+			jQuery("#pants2Flag").val("1");
 		}
+		jQuery('#op2_pantsModel').attr("oldPants2Model",jQuery('#op2_pantsModel').val());
+		var pants2Flag = jQuery("#pants2Flag").val();
+		if(pants2Flag == "0"){
+			// 選択されたJacketモデルを取得
+			if (pantsModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 
 		// 選択中のタック
 		var tackElem = jQuery('#op2_tack');
@@ -149,6 +159,7 @@ function initOptionPants2Standard() {
 		}
 		// 一時保存のモデルを更新
 		tmpOp2PantsModel = pantsModel;
+		}
 	});
 
 	// 膝裏
@@ -253,7 +264,7 @@ function initOptionPants2Standard() {
 			// 選択中のAMFステッチ
 			var stitchValue = jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]:checked').val();
 
-			if (stitchValue != "無し") {
+			if (stitchValue != "0001903") {
 				// 有りの場合、関連する項目を有効化
 				// ステッチ箇所変更
 				jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').prop("disabled", false);

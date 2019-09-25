@@ -121,7 +121,6 @@ select.hidedown {
 						</div>
 					</div>
 					<div class="row"><div class="col col-md-3"><label class=" form-control-label">　</label></div></div>
-					<div class="row"><div class="col col-md-3"><label class=" form-control-label">　</label></div></div>
 				</div>
 				<div class="col col-lg-6">
 					<div class="row">
@@ -740,10 +739,10 @@ select.hidedown {
 								</div>
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-									<div class="col-12 col-md-7">
+									<div class="col-12 col-md-8">
 										<strong><label class=" form-control-label-value" id="ojAmfColorAndSubItem"></label></strong>
 									</div>
-									<div class="col-12 col-md-2 text-right">
+									<div class="col-12 col-md-1 text-right">
 										<strong><label class=" form-control-label-value" id="ojAmfColor_appear">${standardFrameJkDisplayUpperPrice["amfColor_id"]}</label></strong>
 									</div>
 								</div>
@@ -837,7 +836,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">${orderCoForm.coOptionJacketTuxedoInfo.tjLapelDesignMap[orderCoForm.coOptionJacketTuxedoInfo.tjLapelDesign]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="tjLapelDesign_appear">${tuxedoFrameJkDisplayUpperPrice["tp_lapelDesign_id"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="tjLapelDesign_appear">${tuxedoFrameJkDisplayUpperPrice["tj_lapelDesign_id"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
@@ -1299,15 +1298,15 @@ select.hidedown {
 										<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjDStitchModifyPlace"]}</label></strong>
 									</div>
 									<div class="col-12 col-md-1 text-right">
-										<strong><label class=" form-control-label-value" id="wjDStitchModify_appear">${washableFrameJkDisplayUpperPrice["wj_dStitch_id"]}</label></strong>
+										<strong><label class=" form-control-label-value" id="wjDStitchModify_appear">${washableFrameJkDisplayUpperPrice["wj_dStitchModify_id"]}</label></strong>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-									<div class="col-12 col-md-6">
+									<div class="col-12 col-md-8">
 										<strong><label class=" form-control-label-value">${washableJkServelItemShow["wjAmfColorPlaceAndColor"]}</label></strong>
 									</div>
-									<div class="col-12 col-md-3 text-right">
+									<div class="col-12 col-md-1 text-right">
 										<strong><label class=" form-control-label-value" id="wjAmfColor_appear">${washableFrameJkDisplayUpperPrice["wj_amfColor_id"]}</label></strong>
 									</div>
 								</div>
@@ -1519,28 +1518,28 @@ select.hidedown {
 						<c:if test="${orderCoForm.coOptionGiletStandardInfo.ogStitch != '0000503'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-8">
 									<strong><label class=" form-control-label-value" id="ogStitchModifyAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="ogStitchModify_appear">${standardFrameGlDisplayUpperPrice["og_stitchModify_id"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-8">
 									<strong><label class=" form-control-label-value" id="ogDStitchModifyAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="ogDStitchModify_appear">${standardFrameGlDisplayUpperPrice["og_dStitchModify_id"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-8">
 									<strong><label class=" form-control-label-value" id="ogAmfColorAndSubItem"></label></strong>
 								</div>
-								<div class="col-12 col-md-3 text-right">
+								<div class="col-12 col-md-1 text-right">
 									<strong><label class=" form-control-label-value" id="ogAmfColor_appear">${standardFrameGlDisplayUpperPrice["og_amfColor_id"]}</label></strong>
 								</div>
 							</div>
@@ -1776,28 +1775,28 @@ select.hidedown {
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgStitchModifyPlace"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wgStitchModify_appear">${washableFrameGlDisplayUpperPrice["wg_stitchModify_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgDStitchModifyPlace"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wgDStitchModify_appear">${washableFrameGlDisplayUpperPrice["wg_dStitchModify_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${washableGlServelItemShow["wgAmfColorPlaceAndColor"]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wgAmfColor_appear">${washableFrameGlDisplayUpperPrice["wg_amfColor_id"]}</label></strong>
 							</div>
 						</div>
@@ -1965,15 +1964,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="opKneeBack_appear">${standardFramePtDisplayUpperPrice["op_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opKneeBackMateMap[orderCoForm.coOptionPantsStandardInfo.opKneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPantsStandardInfo.opKneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opKneeBackMateMap[orderCoForm.coOptionPantsStandardInfo.opKneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="opKneeBackMate_appear">${standardFramePtDisplayUpperPrice["op_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opKneeBackMate_appear">${standardFramePtDisplayUpperPrice["op_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -2103,41 +2104,43 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opStitchMap[orderCoForm.coOptionPantsStandardInfo.opStitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="opStitch_appear">${standardFramePtDisplayUpperPrice["op_stitch_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value" id="opStitchModifyAndSubItem"></label></strong>
+						<c:if test="${orderCoForm.coOptionPantsStandardInfo.opStitch != '0001903'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="opStitchModifyAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="opStitchModify_appear">${standardFramePtDisplayUpperPrice["op_stitchModify_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opStitchModify_appear">${standardFramePtDisplayUpperPrice["op_stitchModify_id"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="opDStitchAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="opDStitch_appear">${standardFramePtDisplayUpperPrice["op_dStitch_id"]}</label></strong>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value" id="opDStitchAndSubItem"></label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="opAmfColorAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="opAmfColor_appear">${standardFramePtDisplayUpperPrice["op_amfColor_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opDStitch_appear">${standardFramePtDisplayUpperPrice["op_dStitch_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value" id="opAmfColorAndSubItem"></label></strong>
-							</div>
-							<div class="col-12 col-md-1 text-right">
-								<strong><label class=" form-control-label-value" id="opAmfColor_appear">${standardFramePtDisplayUpperPrice["op_amfColor_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
 							<div class="col-12 col-md-8">
@@ -2175,21 +2178,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opThickMap[orderCoForm.coOptionPantsStandardInfo.opThick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="opBlister_appear">${standardFramePtDisplayUpperPrice["op_thick_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opEightMap[orderCoForm.coOptionPantsStandardInfo.opEight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="opEight_appear">${standardFramePtDisplayUpperPrice["op_eight_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsStandardInfo.opThickMap[orderCoForm.coOptionPantsStandardInfo.opThick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="opBlister_appear">${standardFramePtDisplayUpperPrice["op_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2232,15 +2235,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="tpKneeBack_appear">${tuxedoFramePtDisplayUpperPrice["tp_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMateMap[orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMateMap[orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="tpKneeBackMate_appear">${tuxedoFramePtDisplayUpperPrice["tp_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tpKneeBackMate_appear">${tuxedoFramePtDisplayUpperPrice["tp_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -2358,7 +2363,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="tpHemUp_appear">${tuxedoFramePtDisplayUpperPrice["tp_hemUp"]}</label></strong>
 							</div>
 						</div>
-						<c:if test="${orderCoForm.coOptionPantsStandardInfo.opHemUp == '0001702' || orderCoForm.coOptionPantsStandardInfo.opHemUp == '0001703'}">
+						<c:if test="${orderCoForm.coOptionPantsTuxedoInfo.tpHemUp == '0001702' || orderCoForm.coOptionPantsTuxedoInfo.tpHemUp == '0001703'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
 								<div class="col-12 col-md-6">
@@ -2370,12 +2375,12 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpStitchMap[orderCoForm.coOptionPantsTuxedoInfo.tpStitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tpStitch_appear">${tuxedoFramePtDisplayUpperPrice["tp_stitch_id"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="tpBhColor_appear">${tuxedoFramePtDisplayUpperPrice["tp_stitch_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2415,21 +2420,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpThickMap[orderCoForm.coOptionPantsTuxedoInfo.tpThick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tpThick_appear">${tuxedoFramePtDisplayUpperPrice["tp_thick_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpEightMap[orderCoForm.coOptionPantsTuxedoInfo.tpEight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="tpEight_appear">${tuxedoFramePtDisplayUpperPrice["tp_eight_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsTuxedoInfo.tpThickMap[orderCoForm.coOptionPantsTuxedoInfo.tpThick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="tpThick_appear">${tuxedoFramePtDisplayUpperPrice["tp_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2488,15 +2493,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="wpKneeBack_appear">${washableFramePtDisplayUpperPrice["wp_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMateMap[orderCoForm.coOptionPantsWashableInfo.wpKneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPantsWashableInfo.wpKneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMateMap[orderCoForm.coOptionPantsWashableInfo.wpKneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="wpKneeBackMate_appear">${washableFramePtDisplayUpperPrice["wp_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wpKneeBackMate_appear">${washableFramePtDisplayUpperPrice["wp_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -2614,7 +2621,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="wpHemUp_appear">${washableFramePtDisplayUpperPrice["wp_hemUp"]}</label></strong>
 							</div>
 						</div>
-						<c:if test="${orderCoForm.coOptionPantsStandardInfo.opHemUp == '0001702' || orderCoForm.coOptionPantsStandardInfo.opHemUp == '0001703'}">
+						<c:if test="${orderCoForm.coOptionPantsWashableInfo.wpHemUp == '0001702' || orderCoForm.coOptionPantsWashableInfo.wpHemUp == '0001703'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
 								<div class="col-12 col-md-6">
@@ -2626,41 +2633,43 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpStitchMap[orderCoForm.coOptionPantsWashableInfo.wpStitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wpStitch_appear">${washableFramePtDisplayUpperPrice["wp_stitch_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpStitchModifyPlace"]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPantsWashableInfo.wpStitch != '0001903'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpStitchModifyPlace"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wpStitchModify_appear">${washableFramePtDisplayUpperPrice["wp_stitchModify_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wpStitchModify_appear">${washableFramePtDisplayUpperPrice["wp_stitchModify_id"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpDStitchPlace"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wpDStitch_appear">${washableFramePtDisplayUpperPrice["wp_dStitch_id"]}</label></strong>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpDStitchPlace"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpAmfColorPlaceAndColor"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wpAmfColor_appear">${washableFramePtDisplayUpperPrice["wp_amfColor_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wpDStitch_appear">${washableFramePtDisplayUpperPrice["wp_dStitch_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${washablePtServelItemShow["wpAmfColorPlaceAndColor"]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wpAmfColor_appear">${washableFramePtDisplayUpperPrice["wp_amfColor_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
 							<div class="col-12 col-md-8">
@@ -2698,21 +2707,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpThickMap[orderCoForm.coOptionPantsWashableInfo.wpThick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wpThick_appear">${washableFramePtDisplayUpperPrice["wp_thick_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpEightMap[orderCoForm.coOptionPantsWashableInfo.wpEight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wpEight_appear">${washableFramePtDisplayUpperPrice["wp_eight_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPantsWashableInfo.wpThickMap[orderCoForm.coOptionPantsWashableInfo.wpThick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="wpThick_appear">${washableFramePtDisplayUpperPrice["wp_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -2856,15 +2865,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="op2KneeBack_appear">${standardFramePt2DisplayUpperPrice["op2_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMateMap[orderCoForm.coOptionPants2StandardInfo.op2KneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPants2StandardInfo.op2KneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMateMap[orderCoForm.coOptionPants2StandardInfo.op2KneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="op2KneeBackMate_appear">${standardFramePt2DisplayUpperPrice["op2_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2KneeBackMate_appear">${standardFramePt2DisplayUpperPrice["op2_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -2994,41 +3005,43 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2StitchMap[orderCoForm.coOptionPants2StandardInfo.op2Stitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="op2Stitch_appear">${standardFramePt2DisplayUpperPrice["op2_stitch_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value" id="op2StitchModifyAndSubItem"></label></strong>
+						<c:if test="${orderCoForm.coOptionPants2StandardInfo.op2Stitch != '0001903'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="op2StitchModifyAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="op2StitchModify_appear">${standardFramePt2DisplayUpperPrice["op2_stitchModify_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2StitchModify_appear">${standardFramePt2DisplayUpperPrice["op2_stitchModify_id"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="op2DStitchAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="op2DStitch_appear">${standardFramePt2DisplayUpperPrice["op2_dStitch_id"]}</label></strong>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value" id="op2DStitchAndSubItem"></label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value" id="op2AmfColorAndSubItem"></label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="op2AmfColor_appear">${standardFramePt2DisplayUpperPrice["op2_amfColor_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2DStitch_appear">${standardFramePt2DisplayUpperPrice["op2_dStitch_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value" id="op2AmfColorAndSubItem"></label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2AmfColor_appear">${standardFramePt2DisplayUpperPrice["op2_amfColor_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
 							<div class="col-12 col-md-8">
@@ -3066,21 +3079,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2ThickMap[orderCoForm.coOptionPants2StandardInfo.op2Thick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2Thick_appear">${standardFramePt2DisplayUpperPrice["op2_eight_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2EightMap[orderCoForm.coOptionPants2StandardInfo.op2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="op2Eight_appear">${standardFramePt2DisplayUpperPrice["op2_thick_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2ThickMap[orderCoForm.coOptionPants2StandardInfo.op2Thick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="op2Thick_appear">${standardFramePt2DisplayUpperPrice["op2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3121,15 +3134,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="tp2KneeBack_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMateMap[orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMateMap[orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="tp2KneeBackMate_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tp2KneeBackMate_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -3247,7 +3262,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="tp2HemUp_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_hemUp"]}</label></strong>
 							</div>
 						</div>
-						<c:if test="${orderCoForm.coOptionPants2StandardInfo.op2HemUp == '0001702' || orderCoForm.coOptionPants2StandardInfo.op2HemUp == '0001703'}">
+						<c:if test="${orderCoForm.coOptionPants2TuxedoInfo.tp2HemUp == '0001702' || orderCoForm.coOptionPants2TuxedoInfo.tp2HemUp == '0001703'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
 								<div class="col-12 col-md-6">
@@ -3259,12 +3274,12 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2StitchMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Stitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tp2Stitch_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_stitch_id"]}</label></strong>
+							<div class="col-12 col-md-1 text-right">
+								<strong><label class=" form-control-label-value" id="tp2BhColor_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_stitch_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3304,21 +3319,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2ThickMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Thick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tp2Thick_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_eight_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2EightMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="tp2Eight_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_thick_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2ThickMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Thick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="tp2Thick_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3377,15 +3392,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="wp2KneeBack_appear">${washableFramePt2DisplayUpperPrice["wp2_kneeBack_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMateMap[orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMate]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPants2WashableInfo.wp2KneeBack != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">膝裏素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMateMap[orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="wp2KneeBackMate_appear">${washableFramePt2DisplayUpperPrice["wp2_kneeBackMate_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2KneeBackMate_appear">${washableFramePt2DisplayUpperPrice["wp2_kneeBackMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">フロント仕様</label></div>
 							<div class="col-12 col-md-6">
@@ -3503,7 +3520,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="wp2HemUp_appear">${washableFramePt2DisplayUpperPrice["wp2_hemUp_id"]}</label></strong>
 							</div>
 						</div>
-						<c:if test="${orderCoForm.coOptionPants2StandardInfo.op2HemUp == '0001702' || orderCoForm.coOptionPants2StandardInfo.op2HemUp == '0001703'}">
+						<c:if test="${orderCoForm.coOptionPants2WashableInfo.wp2HemUp == '0001702' || orderCoForm.coOptionPants2WashableInfo.wp2HemUp == '0001703'}">
 							<div class="row">
 								<div class="col col-md-3"><label class=" form-control-label">ダブル幅</label></div>
 								<div class="col-12 col-md-6">
@@ -3515,41 +3532,43 @@ select.hidedown {
 							</div>
 						</c:if>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMFステッチ</label></div>
-							<div class="col-12 col-md-6">
+							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
+							<div class="col-12 col-md-8">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2StitchMap[orderCoForm.coOptionPants2WashableInfo.wp2Stitch]}</label></strong>
 							</div>
-							<div class="col-12 col-md-3 text-right">
+							<div class="col-12 col-md-1 text-right">
 								<strong><label class=" form-control-label-value" id="wp2Stitch_appear">${washableFramePt2DisplayUpperPrice["wp2_stitch_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2StitchModifyPlace"]}</label></strong>
+						<c:if test="${orderCoForm.coOptionPants2WashableInfo.wp2Stitch != '0001903'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2StitchModifyPlace"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wp2StitchModify_appear">${washableFramePt2DisplayUpperPrice["wp2_stitchModify_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2StitchModify_appear">${washableFramePt2DisplayUpperPrice["wp2_stitchModify_id"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2DStitchPlace"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wp2DStitch_appear">${washableFramePt2DisplayUpperPrice["wp2_dStitch_id"]}</label></strong>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2DStitchPlace"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
+								<div class="col-12 col-md-8">
+									<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2AmfColorPlaceAndColor"]}</label></strong>
+								</div>
+								<div class="col-12 col-md-1 text-right">
+									<strong><label class=" form-control-label-value" id="wp2AmfColor_appear">${washableFramePt2DisplayUpperPrice["wp2_amfColor_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2DStitch_appear">${washableFramePt2DisplayUpperPrice["wp2_dStitch_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">AMF色指定</label></div>
-							<div class="col-12 col-md-8">
-								<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2AmfColorPlaceAndColor"]}</label></strong>
-							</div>
-							<div class="col-12 col-md-1 text-right">
-								<strong><label class=" form-control-label-value" id="wp2AmfColor_appear">${washableFramePt2DisplayUpperPrice["wp2_amfColor_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ボタンホール色指定</label></div>
 							<div class="col-12 col-md-8">
@@ -3587,21 +3606,21 @@ select.hidedown {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2ThickMap[orderCoForm.coOptionPants2WashableInfo.wp2Thick]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2Thick_appear">${washableFramePt2DisplayUpperPrice["wp2_eight_id"]}</label></strong>
-							</div>
-						</div>
-						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
 							<div class="col-12 col-md-6">
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2EightMap[orderCoForm.coOptionPants2WashableInfo.wp2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
 								<strong><label class=" form-control-label-value" id="wp2Eight_appear">${washableFramePt2DisplayUpperPrice["wp2_thick_id"]}</label></strong>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+							<div class="col-12 col-md-6">
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2ThickMap[orderCoForm.coOptionPants2WashableInfo.wp2Thick]}</label></strong>
+							</div>
+							<div class="col-12 col-md-3 text-right">
+								<strong><label class=" form-control-label-value" id="wp2Thick_appear">${washableFramePt2DisplayUpperPrice["wp2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3790,7 +3809,7 @@ select.hidedown {
 						</div>
 					</div>
 					<div class="row">
-						<div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
+						<div class="col col-md-3"><label class=" form-control-label">釦</label></div>
 						<div class="col-12 col-md-6">
 							<strong><label class=" form-control-label-value">${orderCoForm.coOptionShirtStandardInfo.osBtnMateMap[orderCoForm.coOptionShirtStandardInfo.osBtnMate]}</label></strong>
 						</div>
@@ -4641,7 +4660,13 @@ var corStNeckCorrect = "${orderCoForm.coAdjustShirtStandardInfo.corStNeckCorrect
 jQuery("#corStNeckCorrect").html(CorrectChange(corStNeckCorrect));
 //st着丈修正
 var corStBodylengthCorrect = "${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}";
-jQuery("#corStBodylengthCorrect").html(CorrectChange(corStBodylengthCorrect));
+if(corStBodylengthCorrect != null && corStBodylengthCorrect != ""){
+	jQuery("#corStBodylengthCorrect").html(CorrectChange(corStBodylengthCorrect));
+}
+else {
+	jQuery("#corStBodylengthCorrect").html('+0');
+}
+
 //st袖丈右修正
 var corStRightsleeveCorrect = "${orderCoForm.coAdjustShirtStandardInfo.corStRightsleeveCorrect}";
 jQuery("#corStRightsleeveCorrect").html(CorrectChange(corStRightsleeveCorrect));

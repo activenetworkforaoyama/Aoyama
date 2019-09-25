@@ -15,11 +15,9 @@
                                 		<form:options items="${orderCoForm.coOptionPantsStandardInfo.opPantsModelMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-6" align="right">
-                            	<output id="op_pantsModel_Msg" ></output>
-                            </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelMsg"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelCheck" style="margin-top:8px"></div>
+                           
+                            <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelMsg" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="op_pantsModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -448,18 +446,7 @@
                             </div>
                             <div class="col-12 col-md-3" id="op_suspenderBtn_Msg" align="right">
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="op_thick_id" path="coOptionPantsStandardInfo.opThick" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opThickMap }"/>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3" align="right">
-                            	<output id="op_thick_Msg"></output>
-                            </div>
-                        </div>
+                        </div>                        
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
                             <div class="col-12 col-md-6">
@@ -468,6 +455,17 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-3" id="op_eight_Msg" align="right">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-check-inline form-check">
+                                    <form:radiobuttons id="op_thick_id" path="coOptionPantsStandardInfo.opThick" class="form-check-input" items="${orderCoForm.coOptionPantsStandardInfo.opThickMap }"/>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right">
+                            	<output id="op_thick_Msg"></output>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -502,9 +500,9 @@
                             	<form:select id="tp_pantsModel" path="coOptionPantsTuxedoInfo.tpPantsModel" class="form-control-sm form-control">
                                 	<form:options items="${orderCoForm.coOptionPantsTuxedoInfo.tpPantsModelMap}"/>
                                 </form:select>
-                            </div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelMsg"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelCheck" style="margin-top:8px"></div>
+                            </div>                   
+                            <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelMsg" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="tp_pantsModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -822,18 +820,7 @@
                             </div>
                             <div class="col-12 col-md-3" id="tp_suspenderBtn_Msg" align="right">
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
-                            <div class="col-12 col-md-6">
-                             	<div class="form-check-inline form-check">
-                                    <form:radiobuttons id="tp_thick_id" path="coOptionPantsTuxedoInfo.tpThick" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpThickMap }"/>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3" align="right">
-                            	<output id="tp_thick_Msg"></output>
-                            </div>
-                        </div> 
+                        </div>                       
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">エイト（滑り止め）</label></div>
                             <div class="col-12 col-md-6">
@@ -844,6 +831,17 @@
                             <div class="col-12 col-md-3" id="tp_eight_Msg" align="right">
                             </div>
                         </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
+                            <div class="col-12 col-md-6">
+                             	<div class="form-check-inline form-check">
+                                    <form:radiobuttons id="tp_thick_id" path="coOptionPantsTuxedoInfo.tpThick" class="form-check-input" items="${orderCoForm.coOptionPantsTuxedoInfo.tpThickMap }"/>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3" align="right">
+                            	<output id="tp_thick_Msg"></output>
+                            </div>
+                        </div> 
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">形状記憶</label></div>
                             <div class="col-12 col-md-6">
@@ -898,12 +896,9 @@
                             	<form:select id="wp_pantsModel" path="coOptionPantsWashableInfo.wpPantsModel" class="form-control-sm form-control">
 									<form:options items="${orderCoForm.coOptionPantsWashableInfo.wpPantsModelMap}"/>
 								</form:select>
-                            </div>
-                             <div class="col-12 col-md-6" align="right">
-                            	<output id="wp_pantsModel_Msg" ></output>
-                            </div>
+                            </div>             
                             <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelMsg"   style="margin-top:8px"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="wp_pantsModelCheck"  style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">タック</label></div>
@@ -1340,7 +1335,7 @@
                             </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col col-md-3"><label class=" form-control-label">シック大（股補強）</label></div>
+                            <div class="col col-md-3"><label class=" form-control-label">シック（股補強）</label></div>
                             <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
 									<form:radiobuttons id="wp_thick_id" path="coOptionPantsWashableInfo.wpThick" class="form-check-input" items="${orderCoForm.coOptionPantsWashableInfo.wpThickMap}"/>
@@ -1365,7 +1360,7 @@
             </div>
             </div>
             
-            <input type="hidden" id="pantsFlag" name="pantsFlag" value="0"/>
+           <!--  <input type="hidden" id="pantsFlag" name="pantsFlag" value="0"/> -->
             <input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
             <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
 			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
@@ -3563,60 +3558,83 @@
     </div>
 </div>
 <!-- 自作js -->
-<script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/config.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/customer.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/tabMenu.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.standard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.tuxedo.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.pants1.washable.js"></script>
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-
+var pantsItemFlag="${orderCoForm.pantsItemFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
 jQuery(function() {
 	var pantsAdFlag="${orderCoForm.pantsAdFlag}";
-	if(pantsAdFlag=="1"){		
-	}else{
-		jQuery("#pantsAdFlag").val("0");
+	
+	if(orderFlag=="orderCo"){
+		if(pantsAdFlag=="1"){	
+		}else{
+			jQuery("#pantsAdFlag").val("0");
+		}
 	}
+	
+	var productCategory="${orderCoForm.productCategory}";
+	if(orderFlag=="orderBack"){
+		if(productCategory == "9000101"){
+			var sessionPtModel = "${orderCoForm.coOptionPantsStandardInfo.opPantsModel}";
+			jQuery("#op_pantsModel").click(function(){
+				var op_pantsModel = jQuery("#op_pantsModel").val();
+				sessionPantsAdFlag(sessionPtModel,op_pantsModel);
+			});
+		}else if(productCategory == "9000102"){
+			var sessionTpPtModel = "${orderCoForm.coOptionPantsTuxedoInfo.tpPantsModel}";
+			jQuery("#tp_pantsModel").click(function(){
+				var tp_pantsModel = jQuery("#tp_pantsModel").val();
+				sessionPantsAdFlag(sessionTpPtModel,tp_pantsModel);
+			});
+		}else if(productCategory == "9000103"){
+			var sessionWpPtModel = "${orderCoForm.coOptionPantsWashableInfo.wpPantsModel}";
+			jQuery("#wp_pantsModel").click(function(){
+				var wp_pantsModel = jQuery("#wp_pantsModel").val();
+				sessionPantsAdFlag(sessionWpPtModel,wp_pantsModel);
+			});
+		}
+		}
+	
+	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-	var productCategory="${orderCoForm.productCategory}";
+	
 	mateInit();
-	setPantsModelDisable(productCategory);
 	initCommon();
-	initTabMenu();
-	initCustomer();
 	initProduct();
-		if(productCategory=="9000101"){
-			initOptionPants1Standard();
-			if("${orderCoForm.pantsItemFlag }"=="1"){
-				opSession();
-				}
-			 getPrice();
-			 showPrice();
-		}else if(productCategory=="9000102"){
-			initOptionPants1Tuxedo();
-			if("${orderCoForm.pantsItemFlag }"=="1"){
-				tpSession();
-				}
-			
-			 getTuPrice();
-			 showPrice();
-		}else if(productCategory=="9000103"){
-			initOptionPants1Washable();
-			if("${orderCoForm.pantsItemFlag }"=="1"){
-				wpSession();
-				}
-			 getWaPrice();
-			 showPrice();
-		}	 
+	if(productCategory == "9000101"){
+		initOptionPants1Standard();
+		if("${orderCoForm.pantsItemFlag }"=="1"){
+			opSession();
+		}
+	}else if(productCategory == "9000102"){
+		initOptionPants1Tuxedo();
+		if("${orderCoForm.pantsItemFlag }"=="1"){
+			tpSession();
+	    }
+	}else if(productCategory == "9000103"){
+		initOptionPants1Washable();
+		if("${orderCoForm.pantsItemFlag }"=="1"){
+			wpSession();
+	    }
+	}
+	setPantsModelDisable(productCategory);
+	getPrice();
+	showPrice();
+	optionPants1ChangeModel(productCategory);
 	jQuery("#pantsItemFlag").val("1");
 	
 })	
@@ -3817,31 +3835,50 @@ function mateInit(){
 		});
 	}
 }
-
-
-
-
 function showPrice(){
-	var opPantsModel = jQuery("#op_pantsModel option:selected").val();
-	if(isNotEmpty(opPantsModel)){
-		jQuery("#op_pantsModel").change();
+	var pantsModel = null;
+	var category = jQuery('input[name="productCategory"]:checked').val();
+	if(category == "9000101"){
+		pantsModel = jQuery("#op_pantsModel");
+	}else if(category == "9000102"){
+		pantsModel = jQuery("#tp_pantsModel");
+	}else if(category == "9000103"){
+		pantsModel = jQuery("#wp_pantsModel");
+	}
+	if(isNotEmpty(pantsModel.val())){
+		pantsModel.change();;
 	}
 }
+
 //--------------------------------------------
-//全部のitem金額制御
+//金額フォーマット
 //--------------------------------------------
 function getPrice(){
-	//opPantsModelの料金を表示
-	var opPantsModel = "";
-	jQuery("#op_pantsModel,#op_tack").change(function(){
+	//PANTSの料金を表示
+	var pantsModel = "";
+	var priceUrl = "";
+	jQuery("#op_pantsModel,#op_tack,#tp_pantsModel,#tp_tack,#wp_pantsModel,#wp_tack").change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		opPantsModel = jQuery("#op_pantsModel option:selected").val();
-	    var itemCode = jQuery("#item").val();
+		var itemCode = jQuery("#item").val();
 	    var subItemCode = "03";
-	    var code = itemCode + subItemCode + opPantsModel;
+	    var category = jQuery('input[name="productCategory"]:checked').val();
+	    if(category == "9000101"){
+	    	pantsModel = jQuery("#op_pantsModel option:selected").val();
+	    	priceUrl = "getOrderPriceForPantsModel";
+		}else if(category == "9000102"){
+			pantsModel = jQuery("#tp_pantsModel option:selected").val();
+			priceUrl = "getOrderPriceForPantsTuModel";
+		}else if(category == "9000103"){
+			pantsModel = jQuery("#wp_pantsModel option:selected").val();
+			priceUrl = "getOrderPriceForPantsWPModel";
+		}
+		if(isEmpty(pantsModel)){
+			return;
+		}
+	    var code = itemCode + subItemCode + pantsModel;
 	    jQuery.ajax({
 	    	type:"get",
-		    url:contextPath + "/orderCo/getOrderPriceForPantsModel",
+		    url:contextPath + "/orderCo/" + priceUrl,
 		    data:{"code":code},
 		    async:false,
 		    success:function(result){
@@ -3862,80 +3899,103 @@ function getPrice(){
 			});
 		});
 	    
-	var opPantsModel = "";
+	var pantsModel = "";
+	var priceUrl = "";
 	//プルダウンの変更処理
 	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
-	jQuery("#op_tack,#op_coinPkt,#op_hemUp,#op_btnMate,#op_btnMateStkNo")
+	jQuery("#op_tack,#op_coinPkt,#op_hemUp,#op_btnMate,#op_btnMateStkNo,"+
+			"#tp_tack,#tp_coinPkt,#tp_hemUp,#tp_btnMate,#tp_btnMateStkNo,"+
+			"#wp_tack,#wp_coinPkt,#wp_hemUp,#wp_btnMate,#wp_btnMateStkNo") 
 	   .change(function(){
-	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-	   opPantsModel = jQuery("#op_pantsModel option:selected").val();
+	   //jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	   var category = jQuery('input[name="productCategory"]:checked').val();
+	   if(category == "9000101"){
+		   pantsModel = jQuery("#op_pantsModel option:selected").val();
+	    	priceUrl = "getOrderPriceForPantsSProject";
+	   }else if(category == "9000102"){
+		   pantsModel = jQuery("#tp_pantsModel option:selected").val();
+			priceUrl = "getOrderPriceForPantsSTuProject";
+	   }else if(category == "9000103"){
+		   pantsModel = jQuery("#wp_pantsModel option:selected").val();
+			priceUrl = "getOrderPriceForPantsSWPProject";
+	   }
+	   var thisVal = "";
+	   var thisValStkNo = "";
 	   var itemCode = jQuery("#item").val();
 	   var subItemCode = "03"
 	   var idValueName = jQuery(this).attr("id");
+	   if(idValueName.indexOf("StkNo") == -1){
+		   thisVal = jQuery("#" + idValueName).val();
+		   thisValStkNo = jQuery("#" + idValueName + "StkNo").val();
+	   }else{
+		   thisValStkNo = jQuery("#" + idValueName).val();
+		   idValueName = idValueName.replace("StkNo","");
+		   thisVal = jQuery("#" + idValueName).val();
+	   }
 	   var price;
-	   if(isNotEmpty(opPantsModel)){
-		   var code = itemCode + subItemCode + opPantsModel;
+	   if(isNotEmpty(pantsModel)){
+		   var code = itemCode + subItemCode + pantsModel;
 		   jQuery.ajax({
 				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSProject",
-			    data:{"code":code,"idValue":idValueName},
+			    url:contextPath + "/orderCo/" + priceUrl,
+			    data:{"code":code,"idValueName":idValueName,"thisVal":thisVal,"thisValStkNo":thisValStkNo},
 			    dataType:"json",
 			    async:false,
 			    success:function(result){
 			    	if(jQuery("#"+idValueName+"_Msg").length>0){
-			    		if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueName+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			        }else{
-			             var lengthforLastFive = idValueName.length - 5;
-			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
-			             if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueTemp+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			             getAllPrice(itemCode, result.optionPrice);
-			             allOptionPrice();
-			        }		    
+						jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
+					}else{
+						var lengthforLastFive = idValueName.length - 5;
+						var idValueTemp = idValueName.substring(0,lengthforLastFive);
+						jQuery("#"+idValueTemp+"_Msg").html(result.idValuePrice);
+					}
+			    	getAllPrice(itemCode, result.optionPrice);
+		            allOptionPrice();
 			   }
 	        });
 		}
 	});
+
+	var pantsModel = "";
+	var priceUrl = "";
 	//ラジオボタンの変更処理
-	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類、ステッチ箇所変更、ダブルステッチ、AMF色指定、ボタンホール色指定、ボタン付け糸指定.サスペンダー釦.シック大（股補強）,エイト（滑り止め）,形状記憶
-	jQuery('input[id^="op_kneeBack_id"],[id^="op_kneeBackMate_id"],[id^="op_frontSpec_id"],[id^="chainHange_id"],[id^="op_pancherina_id"],[id^="op_adjuster_id"],[id^="op_beltLoop_id"],[id^="op_pinLoop_id"],[id^="op_sidePkt_id"],[id^="op_sinobiPkt_id"],[id^="op_flapCoinPkt_id"],[id^="op_pisPktUf_id"],[id^="op_pisPktDf_id"],[id^="op_vCut_id"],[id^="op_stitch_id"],[id^="op_stitchModify_id"],[id^="op_amfColor_id"],[id^="op_bhColor_id"],[id^="op_byColor_id"],[id^="op_suspenderBtn_id"],[id^="op_thick_id"],[id^="op_eight_id"],[id^="op_shapeMemory_id"]')
+	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類、ステッチ箇所変更、ダブルステッチ、AMF色指定、ボタンホール色指定、ボタン付け糸指定、サスペンダー釦、エイト（滑り止め）、シック大（股補強）、形状記憶
+	jQuery('input[id^="op_kneeBack_id"],[id^="op_kneeBackMate_id"],[id^="op_frontSpec_id"],[id^="chainHange_id"],[id^="op_pancherina_id"],[id^="op_adjuster_id"],[id^="op_beltLoop_id"],[id^="op_pinLoop_id"],[id^="op_sidePkt_id"],[id^="op_sinobiPkt_id"],[id^="op_flapCoinPkt_id"],[id^="op_pisPktUf_id"],[id^="op_pisPktDf_id"],[id^="op_vCut_id"],[id^="op_stitch_id"],[id^="op_stitchModify_id"],[id^="op_amfColor_id"],[id^="op_bhColor_id"],[id^="op_byColor_id"],[id^="op_suspenderBtn_id"],[id^="op_thick_id"],[id^="op_eight_id"],[id^="op_shapeMemory_id"],' + 
+		'[id^="tp_kneeBack_id"],[id^="tp_kneeBackMate_id"],[id^="tp_frontSpec_id"],[id^="tp_pancherina_id"],[id^="tp_adjuster_id"],[id^="tp_beltLoop_id"],[id^="tp_pinLoop_id"],[id^="tp_sidePkt_id"],[id^="tp_sinobiPkt_id"],[id^="tp_flapCoinPkt_id"],[id^="tp_pisPktUf_id"],[id^="tp_pisPktDf_id"],[id^="tp_vCut_id"],[id^="tp_stitch_id"],[id^="tp_bhColor_id"],[id^="tp_byColor_id"],[id^="tp_suspenderBtn_id"],[id^="tp_thick_id"],[id^="tp_eight_id"],[id^="tp_shapeMemory_id"],[id^="tp_sideStripe_id"],[id^="tp_sideStripeWidth_id"],'+
+		'[id^="wp_kneeBack_id"],[id^="wp_kneeBackMate_id"],[id^="wp_frontSpec_id"],[id^="wp_pancherina_id"],[id^="wp_adjuster_id"],[id^="wp_beltLoop_id"],[id^="wp_pinLoop_id"],[id^="wp_sidePkt_id"],[id^="wp_sinobiPkt_id"],[id^="wp_flapCoinPkt_id"],[id^="wp_pisPktUf_id"],[id^="wp_pisPktDf_id"],[id^="wp_vCut_id"],[id^="wp_stitch_id"],[id^="wp_stitchModify_id"],[id^="wp_dStitch_id"],[id^="wp_amfColor_id"],[id^="wp_bhColor_id"],[id^="wp_byColor_id"],[id^="wp_suspenderBtn_id"],[id^="wp_eight_id"],[id^="wp_thick_id"],[id^="wp_shapeMemory_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		opPantsModel = jQuery("#op_pantsModel option:selected").val();
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		var category = jQuery('input[name="productCategory"]:checked').val();
+		   if(category == "9000101"){
+			   pantsModel = jQuery("#op_pantsModel option:selected").val();
+		    	priceUrl = "getOrderPriceForPantsSProject";
+		   }else if(category == "9000102"){
+			   pantsModel = jQuery("#tp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSTuProject";
+		   }else if(category == "9000103"){
+			   pantsModel = jQuery("#wp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSWPProject";
+		   }
+		var thisVal = "";  
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "03";
 	    var idValueName = jQuery(this).attr("id");
+	    thisVal = jQuery("#"+idValueName).val();
 	    var price;
 	  	//IDの後の番号を削除します
 	    var findIdPosition = idValueName.indexOf("_id");
 	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
 		    
-		if(isNotEmpty(opPantsModel)){
-			var code = itemCode + subItemCode + opPantsModel;
+		if(isNotEmpty(pantsModel)){
+			var code = itemCode + subItemCode + pantsModel;
 			jQuery.ajax({
 				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSProject",
-			    data:{"code":code,"idValue":interceptedIdValueName},
+			    url:contextPath + "/orderCo/" + priceUrl,
+			    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisVal},
 			    async:false,
 			    success:function(result){
 			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
-			    	if(result.idValuePrice == "0"){
-						price = "無料"
-			         }else{
-			        	price = formatMoney(result.idValuePrice,0,"￥");
-				     }
-			        jQuery("#"+msgIdValueName).html(price);
+			    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
 			        jQuery("#optionPrice").html(result.optionPrice);
 			        getAllPrice(itemCode, result.optionPrice);
 			        allOptionPrice();
@@ -3943,27 +4003,303 @@ function getPrice(){
 	        });
 		}
 	});
+
+	// 	ラジオボタンの変更処理
+	// 	項目：ベルトループ ,ステッチ箇所変更,ダブルステッチ
+	jQuery('input[id^="op_beltLoop_id"],[id^="op_beltLoopPlace_id"],[id^="op_stitchModify_id"],[id^="op_stitchModifyPlace_id"],[id^="op_dStitch_id"],[id^="op_dStitchPlace_id"],[id^="tp_beltLoop_id"],[id^="tp_beltLoopPlace_id"],[id^="wp_beltLoop_id"],[id^="wp_beltLoopPlace_id"],[id^="wp_stitchModify_id"],[id^="wp_stitchModifyPlace_id"],[id^="wp_dStitch_id"],[id^="wp_dStitchPlace_id"]')
+	.change(function(){
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		var priceUrl = "";
+		var pantsModel = "";
+		var category = jQuery('input[name="productCategory"]:checked').val();
+		 if(category == "9000101"){
+			   pantsModel = jQuery("#op_pantsModel option:selected").val();
+		    	priceUrl = "getOrderPriceForPantsSProject";
+		   }else if(category == "9000102"){
+			   pantsModel = jQuery("#tp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSTuProject";
+		   }else if(category == "9000103"){
+			   pantsModel = jQuery("#wp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSWPProject";
+		   }
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "03";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+		var jspOptionCode = "";
+
+		if(thisValueTemp == "0002001"){
+			//ステッチ箇所変更は無しです
+			var i = 1;
+			jQuery('input[id^="op_stitchModifyPlace_id"]').each(function() {
+				jQuery('#op_stitchModifyPlace_id' + i).removeAttr("checked");
+				i++;
+			});
+			jQuery('#op_stitchModify_id1').prop("checked", true);
+			jQuery('#op_stitchModify_id2').prop("disabled", true);
+			jQuery('#op_amfColor_id1').prop("checked", true);
+			jQuery('#op_amfColor_id2').prop("disabled", true);
+			var findIdPosition = idValueName.indexOf("_id");
+		    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+			if(isNotEmpty(pantsModel)){
+				jspOptionCode = "00020"
+				var code = itemCode + subItemCode + pantsModel + jspOptionCode;
+				jQuery.ajax({
+					type:"get",
+				    url:contextPath + "/orderCo/" + priceUrl,
+				    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisValueTemp},
+				    async:false,
+				    success:function(result){
+				    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+				    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
+				        jQuery("#optionPrice").html(result.optionPrice);
+				        getAllPrice(itemCode, result.optionPrice);
+				   }
+		        });
+			}
+			jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]:checked').change();
+			jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]:checked').change();
+		}
+		if(thisValueTemp == "0002002"){
+			//ステッチ箇所変更は有りです
+			jQuery('#op_amfColor_id2').prop("disabled", false);
+			jQuery('#op_amfColor_id2').prop("disabled", false);
+		}
+		if(thisValueTemp == "0002201"){
+			//ダブルステッチは無しです
+			var i = 1;
+			jQuery('input[id^="op_dStitchPlace_id"]').each(function() {
+				jQuery('#op_dStitchPlace_id1' + i).removeAttr("checked");
+				i++;
+			});
+		}
+		
+		//IDの後の番号を削除します
+		var interceptedIdValueName = "";
+		
+		//複数選択ボックスの数,IDにより決定optionCode
+		var ogSomePlace_length = 0;
+		var jspOptionCode = "";
+		if(idValueName.indexOf("op_stitchModifyPlace_id") >= 0){
+			jspOptionCode ="00021";
+			ogSomePlace_length = jQuery('input[id^="op_stitchModifyPlace_id"]').length;
+
+		}else if(idValueName.indexOf("op_dStitchPlace_id") >= 0){
+			jspOptionCode ="00023";
+			ogSomePlace_length = jQuery('input[id^="op_dStitchPlace_id"]').length;
+			
+		}else if(idValueName.indexOf("wp_stitchModifyPlace_id") >= 0){
+			jspOptionCode ="00021";
+			ogSomePlace_length = jQuery('input[id^="wp_stitchModifyPlace_id"]').length;
+			
+		}else if(idValueName.indexOf("wp_dStitchPlace_id") >= 0){
+			jspOptionCode ="00023";
+			ogSomePlace_length = jQuery('input[id^="wp_dStitchPlace_id"]').length;
+
+		}
+
+		//チェックボックスのvalueを保存します
+		var countArr = "";
+		
+		//アイテムのID名をクリックして、"Place_id"フィールドを含めます
+		var findIdPosition = idValueName.indexOf("Place_id");
+		if(findIdPosition != -1){
+			//インターセプトID、最初の数字からPlace_idの前まで
+			var idValueNameTemp = idValueName.substring(0,findIdPosition);
+			interceptedIdValueName = idValueNameTemp + "_id";
+
+			//チェックボックスループ
+			for(var i=1; i<=ogSomePlace_length; i++){
+				//各チェックボックスのIDをループスプライシング
+				//このループの要素を取得します
+				var idValueNameComplete = document.getElementById(idValueNameTemp + "Place_id" + i);
+				if(idValueNameComplete.checked){
+					countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
+				}
+			}
+		}
+
+		if(isNotEmpty(pantsModel) && findIdPosition != -1){
+			var code = itemCode + subItemCode + pantsModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + priceUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"countArr":countArr},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(itemCode, result.optionPrice);
+				}
+			});
+		}else{
+			
+		}
+		allOptionPrice();
+	});
+	
+	var pantsModel = "";
+	var priceUrl = "";
+	jQuery('input[id^="op_amfColor_"],[id^="op_bhColor_"],[id^="op_byColor_"],[id^="tp_bhColor_"],[id^="tp_byColor_"],[id^="wp_bhColor_"],[id^="wp_byColor_"],[id^="wp_amfColor_"]').change(function(){
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		var category = jQuery('input[name="productCategory"]:checked').val();
+		if(category == "9000101"){
+			   pantsModel = jQuery("#op_pantsModel option:selected").val();
+		    	priceUrl = "getOrderPriceForPantsSProject";
+		   }else if(category == "9000102"){
+			   pantsModel = jQuery("#tp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSTuProject";
+		   }else if(category == "9000103"){
+			   pantsModel = jQuery("#wp_pantsModel option:selected").val();
+				priceUrl = "getOrderPriceForPantsSWPProject";
+		   }
+		var itemCode = jQuery("#item").val();
+	    var subItemCode = "02";
+	    var idValueName = jQuery(this).attr("id");
+	    var thisValueTemp = jQuery(this).val();
+	    //IDの後の番号を削除します
+		var interceptedIdValueName = "";
+		//複数選択ボックスの数
+		var jkSomePlace_length = 0;
+		var jspOptionCodeAndBranchCode = "";
+		if(idValueName.indexOf("op_amfColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00026" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="op_amfColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("op_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00029" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="op_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("op_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00032" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="op_byColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("tp_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00029" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="tp_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("tp_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00032" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="tp_byColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wp_bhColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00029" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="wp_bhColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wp_byColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00032" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="wp_byColorPlace_"]').length;
+			
+		}else if(idValueName.indexOf("wp_amfColor_") >= 0){
+			jspOptionCodeAndBranchCode ="00026" + thisValueTemp;
+			jkSomePlace_length = jQuery('input[id^="wp_amfColorPlace_"]').length;
+			
+		}
+		//選択した異なる色のvalueを保存する
+		var countArr = new Array();
+		//選択したさまざまな色の数を保存する
+		var colorCount = 0;
+
+		//アイテムのID名をクリックして、"ID"フィールドを含めます
+		var findIdPosition = idValueName.indexOf("_id");
+		if(findIdPosition == -1){
+			interceptedIdValueName = idValueName.replace(new RegExp(thisValueTemp,"g"),"id");
+			//ラジオの色を変更する
+			//チェックボックスループ
+			for(var i=1; i<=jkSomePlace_length; i++){
+				//各チェックボックスのIDをループスプライシング
+				//選択したチェックボックスの数を取得する
+				var idValueNameAll = "";
+				if(idValueName.indexOf("op_amfColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsStandardInfo.opAmfColor" + i;
+				}else if(idValueName.indexOf("op_bhColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsStandardInfo.opBhColor" + i;
+				}else if(idValueName.indexOf("op_byColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsStandardInfo.opByColor" + i;
+				}else if(idValueName.indexOf("tp_bhColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsTuxedoInfo.tpBhColor" + i;
+				}else if(idValueName.indexOf("tp_byColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsTuxedoInfo.tpByColor" + i;
+				}else if(idValueName.indexOf("wp_amfColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsWashableInfo.wpAmfColor" + i;
+				}else if(idValueName.indexOf("wp_byColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsWashableInfo.wpAmfColor" + i;
+				}else if(idValueName.indexOf("wp_bhColor_") >= 0){
+					
+					idValueNameAll = "coOptionPantsWashableInfo.wpBhColor" + i;
+				}
+				var idValueNameJs = document.getElementsByName(idValueNameAll);
+				//colorループ
+				for(var j=0; j<idValueNameJs.length; j++){
+					if(idValueNameJs[j].checked){
+						//選択した色
+						var arrTemp = false;
+						//配列ループ
+						for(var k=0; k<countArr.length; k++){
+							if(countArr[k] == idValueNameJs[j].value){
+								//選択した色は既に配列に存在します
+								arrTemp = true;
+								break;
+							}
+						}
+						if(arrTemp == false){
+							countArr.push(idValueNameJs[j].value);
+							colorCount++;
+						}
+					}
+				}
+			}
+		}
+
+		if(isNotEmpty(pantsModel) && findIdPosition == -1){
+			var code = itemCode + subItemCode + pantsModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + priceUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"jspOptionCodeAndBranchCode":jspOptionCodeAndBranchCode,"colorCount":colorCount},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}else{
+			interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+			var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+			jQuery("#"+msgIdValueName).html("無料");
+		}
+		allOptionPrice();
+	})
 }
-//--------------------------------------------
-//金額フォーマット
-//--------------------------------------------
+
 function formatMoney(number, places, symbol, thousand, decimal) {
-  number = number || 0;
-  places = !isNaN(places = Math.abs(places)) ? places : 2;
-  symbol = symbol !== undefined ? symbol : "$";
-  thousand = thousand || ",";
-  decimal = decimal || ".";
-  var negative = number < 0 ? "-" : "",
-      i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
-      j = (a = i.length) > 3 ? a % 3 : 0;
-  return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
+number = number || 0;
+places = !isNaN(places = Math.abs(places)) ? places : 2;
+symbol = symbol !== undefined ? symbol : "$";
+thousand = thousand || ",";
+decimal = decimal || ".";
+var negative = number < 0 ? "-" : "",
+    i = parseInt(number = Math.abs(+number || 0).toFixed(places), 10) + "",
+    j = (a = i.length) > 3 ? a % 3 : 0;
+return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 }
 
 function getAllPrice(subItemCode, optionPrice){
-	jQuery("#jkOptionPriceId").val(optionPrice);
+	jQuery("#ptOptionPriceId").val(optionPrice);
     var jkOptionPriceId = optionPrice;
     var ptOptionPriceId = jQuery("#ptOptionPriceId").val();
-    var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
     var pt2OptionPriceId = jQuery("#pt2OptionPriceId").val();
     var glOptionPriceId = jQuery("#glOptionPriceId").val();
     var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
@@ -3987,242 +4323,6 @@ function getAllPrice(subItemCode, optionPrice){
     jQuery("#optionPriceId").val(allPrice);
     jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
 }
-
-function getTuPrice(){
-	//opPantsModelの料金を表示
-	var opPantsModel = "";
-	jQuery("#tp_pantsModel,#tp_tack").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		opPantsModel = jQuery("#tp_pantsModel option:selected").val();
-	    var itemCode = jQuery("#item").val();
-	    var subItemCode = "03";
-	    var code = itemCode + subItemCode + opPantsModel;
-	    jQuery.ajax({
-	    	type:"get",
-		    url:contextPath + "/orderCo/getOrderPriceForPantsTuModel",
-		    data:{"code":code},
-		    async:false,
-		    success:function(result){
-		    		var allPriceMap = result.priceMap;
-		         	for (var priceMapKey in allPriceMap) {
-		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
-		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
-		            	}else{
-		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
-		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
-		            	}
-		         	}
-					jQuery("#optionPriceId").val(result.optionPrice);
-					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
-					getAllPrice(itemCode, result.optionPrice);
-					allOptionPrice();
-				}
-			});
-		});
-	    
-	var tpPantsModel = "";
-	//プルダウンの変更処理
-	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
-	jQuery("#tp_tack,#tp_coinPkt,#tp_hemUp,#tp_btnMate,#tp_btnMateStkNo")
-	   .change(function(){
-	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-	   tpPantsModel = jQuery("#tp_pantsModel option:selected").val();
-	   var itemCode = jQuery("#item").val();
-	   var subItemCode = "03"
-	   var idValueName = jQuery(this).attr("id");
-	   var price;
-	   if(isNotEmpty(tpPantsModel)){
-		   var code = itemCode + subItemCode + tpPantsModel;
-		   jQuery.ajax({
-				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSTuProject",
-			    data:{"code":code,"idValue":idValueName},
-			    dataType:"json",
-			    async:false,
-			    success:function(result){
-			    	if(jQuery("#"+idValueName+"_Msg").length>0){
-			    		if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueName+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			        }else{
-			             var lengthforLastFive = idValueName.length - 5;
-			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
-			             if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueTemp+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			             getAllPrice(itemCode, result.optionPrice);
-			             allOptionPrice();
-			        }		    
-			   }
-	        });
-		}
-	});
-	//ラジオボタンの変更処理
-	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、コインポケット，フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類，ボタンホール色指定、ボタン付け糸指定.サスペンダー釦.シック大（股補強）,エイト（滑り止め）,形状記憶，側章，側章幅
-	jQuery('input[id^="tp_kneeBack_id"],[id^="tp_kneeBackMate_id"],[id^="tp_frontSpec_id"],[id^="tp_pancherina_id"],[id^="tp_adjuster_id"],[id^="tp_beltLoop_id"],[id^="tp_pinLoop_id"],[id^="tp_sidePkt_id"],[id^="tp_sinobiPkt_id"],[id^="tp_flapCoinPkt_id"],[id^="tp_pisPktUf_id"],[id^="tp_pisPktDf_id"],[id^="tp_vCut_id"],[id^="tp_stitch_id"],[id^="tp_bhColor_id"],[id^="tp_byColor_id"],[id^="tp_suspenderBtn_id"],[id^="tp_thick_id"],[id^="tp_eight_id"],[id^="tp_shapeMemory_id"],[id^="tp_sideStripe_id"],[id^="tp_sideStripeWidth_id"]')
-	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		opPantsModel = jQuery("#tp_pantsModel option:selected").val();
-		var itemCode = jQuery("#item").val();
-	    var subItemCode = "03";
-	    var idValueName = jQuery(this).attr("id");
-	    var price;
-	  	//IDの後の番号を削除します
-	    var findIdPosition = idValueName.indexOf("_id");
-	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-		    
-		if(isNotEmpty(opPantsModel)){
-			var code = itemCode + subItemCode + opPantsModel;
-			jQuery.ajax({
-				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSTuProject",
-			    data:{"code":code,"idValue":interceptedIdValueName},
-			    async:false,
-			    success:function(result){
-			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
-			    	if(result.idValuePrice == "0"){
-						price = "無料"
-			         }else{
-			        	price = formatMoney(result.idValuePrice,0,"￥");
-				     }
-			        jQuery("#"+msgIdValueName).html(price);
-			        jQuery("#optionPrice").html(result.optionPrice);
-			        getAllPrice(itemCode, result.optionPrice);
-			        allOptionPrice();
-			   }
-	        });
-		}
-	});
-}
-
-
-
-
-function getWaPrice(){
-	//opPantsModelの料金を表示
-	var wpPantsModel = "";
-	jQuery("#wp_pantsModel,#wp_tack").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		opPantsModel = jQuery("#wp_pantsModel option:selected").val();
-	    var itemCode = jQuery("#item").val();
-	    var subItemCode = "03";
-	    var code = itemCode + subItemCode + wpPantsModel;
-	    jQuery.ajax({
-	    	type:"get",
-		    url:contextPath + "/orderCo/getOrderPriceForPantsWPModel",
-		    data:{"code":code},
-		    async:false,
-		    success:function(result){
-		    		var allPriceMap = result.priceMap;
-		         	for (var priceMapKey in allPriceMap) {
-		            	if(jQuery("#"+priceMapKey+"_Msg").length>0){
-		            	jQuery("#"+priceMapKey+"_Msg").html(allPriceMap[priceMapKey]);
-		            	}else{
-		              	var msgIdValueName = priceMapKey.replace(/_id/,"_Msg");
-		              	jQuery("#"+msgIdValueName).html(allPriceMap[priceMapKey]);
-		            	}
-		         	}
-					jQuery("#optionPriceId").val(result.optionPrice);
-					jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
-					getAllPrice(itemCode, result.optionPrice);
-					allOptionPrice();
-				}
-			});
-		});
-	    
-	var wpPantsModel = "";
-	//プルダウンの変更処理
-	//項目：タック、コインポケット、裾上げ、釦素材、釦素材品番
-	jQuery("#wp_tack,#wp_coinPkt,#wp_hemUp,#wp_btnMate,#wp_btnMateStkNo")
-	   .change(function(){
-	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-	   tpPantsModel = jQuery("#wp_pantsModel option:selected").val();
-	   var itemCode = jQuery("#item").val();
-	   var subItemCode = "03"
-	   var idValueName = jQuery(this).attr("id");
-	   var price;
-	   if(isNotEmpty(tpPantsModel)){
-		   var code = itemCode + subItemCode + tpPantsModel;
-		   jQuery.ajax({
-				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSWPProject",
-			    data:{"code":code,"idValue":idValueName},
-			    dataType:"json",
-			    async:false,
-			    success:function(result){
-			    	if(jQuery("#"+idValueName+"_Msg").length>0){
-			    		if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueName+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			        }else{
-			             var lengthforLastFive = idValueName.length - 5;
-			             var idValueTemp = idValueName.substring(0,lengthforLastFive);
-			             if(result.idValuePrice == "0"){
-							price = "無料"
-				         }else{
-				        	price = formatMoney(result.idValuePrice,0,"￥");
-					     }
-			             jQuery("#"+idValueTemp+"_Msg").html(price);
-			             jQuery("#optionPrice").html(result.optionPrice);
-			             getAllPrice(itemCode, result.optionPrice);
-			             allOptionPrice();
-			        }		    
-			   }
-	        });
-		}
-	});
-	//ラジオボタンの変更処理
-	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、コインポケット，フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類，ステッチ箇所変更,ダブルステッチ,AMF色指定,ボタンホール色指定、ボタン付け糸指定..,サスペンダー釦.エイト（滑り止め）,シック大（股補強）,形状記憶
-	jQuery('input[id^="wp_kneeBack_id"],[id^="wp_kneeBackMate_id"],[id^="wp_frontSpec_id"],[id^="wp_pancherina_id"],[id^="wp_adjuster_id"],[id^="wp_beltLoop_id"],[id^="wp_pinLoop_id"],[id^="wp_sidePkt_id"],[id^="wp_sinobiPkt_id"],[id^="wp_flapCoinPkt_id"],[id^="wp_pisPktUf_id"],[id^="wp_pisPktDf_id"],[id^="wp_vCut_id"],[id^="wp_stitch_id"],[id^="wp_stitchModify_id"],[id^="wp_dStitch_id"],[id^="wp_amfColor_id"],[id^="wp_bhColor_id"],[id^="wp_byColor_id"],[id^="wp_suspenderBtn_id"],[id^="wp_eight_id"],[id^="wp_thick_id"],[id^="wp_shapeMemory_id"]')
-	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		wpPantsModel = jQuery("#wp_pantsModel option:selected").val();
-		var itemCode = jQuery("#item").val();
-	    var subItemCode = "03";
-	    var idValueName = jQuery(this).attr("id");
-	    var price;
-	  	//IDの後の番号を削除します
-	    var findIdPosition = idValueName.indexOf("_id");
-	    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-		    
-		if(isNotEmpty(opPantsModel)){
-			var code = itemCode + subItemCode + wpPantsModel;
-			jQuery.ajax({
-				type:"get",
-			    url:contextPath + "/orderCo/getOrderPriceForPantsSWPProject",
-			    data:{"code":code,"idValue":interceptedIdValueName},
-			    async:false,
-			    success:function(result){
-			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
-			    	if(result.idValuePrice == "0"){
-						price = "無料"
-			         }else{
-			        	price = formatMoney(result.idValuePrice,0,"￥");
-				     }
-			        jQuery("#"+msgIdValueName).html(price);
-			        jQuery("#optionPrice").html(result.optionPrice);
-			        getAllPrice(itemCode, result.optionPrice);
-			        allOptionPrice();
-			   }
-	        });
-		}
-	});
-}
-
-
-
 
 function  opSession(){
 
@@ -4649,7 +4749,249 @@ function  wpSession(){
 	}
 	
 }
+function optionPants1ChangeModel(productCategory){
+	var pantsFlag = jQuery("#pantsFlag").val();
+	 if(pantsFlag == "1"){
+		if(productCategory == "9000101"){
+			var opPantsModel = jQuery("#op_pantsModel").val();
+			//タック
+			var frontBtnCntElem = jQuery('#op_tack');
+			var selectedFrontBtnCnt = frontBtnCntElem.val();
+
+			// フロント釦数の選択肢更新
+			frontBtnCntElem.empty();
+			var tmpFrontBtnCnt = null;
+			var isExistBefore = false;
+			for (tmpFrontBtnCnt of lapelDesignImageMap[opPantsModel].activeList) {
+				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+				if (tmpFrontBtnCnt == selectedFrontBtnCnt) isExistBefore = true;
+			}
+
+			var opTack = "${orderCoForm.coOptionPantsStandardInfo.opTack}";
+			frontBtnCntElem.val(opTack);
+			frontBtnCntElem.change();
+
+			jQuery('input[name="coOptionPantsStandardInfo.opKneeBack"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBack}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opKneeBack"]:checked').change();
+
+			//膝裏素材
+			jQuery('input[name="coOptionPantsStandardInfo.opKneeBackMate"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBackMate}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opKneeBackMate"]:checked').change();
+
+			//フロント仕様
+			jQuery('input[name="coOptionPantsStandardInfo.opFrontSpec"]').val(["${orderCoForm.coOptionPantsStandardInfo.opFrontSpec}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opFrontSpec"]:checked').change();
+			
+			//アジャスター仕様
+			jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAdjuster}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]:checked').change();
+
+			//ピンループ
+			jQuery('input[name="coOptionPantsStandardInfo.opPinLoop"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPinLoop}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opPinLoop"]:checked').change();
+
+			//脇ポケット	
+			jQuery('input[name="coOptionPantsStandardInfo.opSidePkt"]').val(["${orderCoForm.coOptionPantsStandardInfo.opSidePkt}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opSidePkt"]:checked').change();
+			
+			//忍びポケット
+			jQuery('input[name="coOptionPantsStandardInfo.opSinobiPkt"]').val(["${orderCoForm.coOptionPantsStandardInfo.opSinobiPkt}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opSinobiPkt"]:checked').change();
+
+			//フラップ付コインポケット
+			jQuery('input[name="coOptionPantsStandardInfo.opFlapCoinPkt"]').val(["${orderCoForm.coOptionPantsStandardInfo.opFlapCoinPkt}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opFlapCoinPkt"]:checked').change();
+
+			//上前ピスポケット
+			jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPisPktUf}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]:checked').change();
+
+			//下前ピスポケット 
+			jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]').val(["${orderCoForm.coOptionPantsStandardInfo.opPisPktDf}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]:checked').change();
+
+			//Vカット
+            jQuery('input[name="coOptionPantsStandardInfo.opVCut"]').val(["${orderCoForm.coOptionPantsStandardInfo.opVCut}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opVCut"]:checked').change();
+
+			//ステッチ種類 
+			jQuery('input[name="coOptionPantsStandardInfo.opStitch"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitch}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opStitch"]:checked').change();
+
+			//ステッチ箇所変更
+            jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]').val(["${orderCoForm.coOptionPantsStandardInfo.opStitchModify}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]:checked').change();
+
+			//ダブルステッチ
+			jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]').val(["${orderCoForm.coOptionPantsStandardInfo.opDStitch}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]:checked').change();
+
+			//AMF色指定
+			jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]').val(["${orderCoForm.coOptionPantsStandardInfo.opAmfColor}"]);
+			jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]:checked').change();
+
+		}else if(productCategory == "9000102"){
+			var tpPantsModel = jQuery("#tp_pantsModel").val();
+			// 選択中のフロント釦数
+			var frontBtnCntElem = jQuery('#tp_tack');
+			var selectedFrontBtnCnt = frontBtnCntElem.val();
+
+			// フロント釦数の選択肢更新
+			frontBtnCntElem.empty();
+			var tmpFrontBtnCnt = null;
+			for (tmpFrontBtnCnt of lapelDesignTuxedoImageMap[tpPantsModel].activeList) {
+				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+			}
+
+			var tjFrontBtnCnt = "${orderCoForm.coOptionPantsTuxedoInfo.tpTack}";
+			frontBtnCntElem.val(tjFrontBtnCnt);
+			frontBtnCntElem.change();
+
+			//膝裏
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBack"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBack}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBack"]:checked').change();
+
+			//膝裏素材
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBackMate"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMate}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBackMate"]:checked').change();
+
+			//フロント仕様
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpFrontSpec}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]:checked').change();
+
+			//パンチェリーナ
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPancherina}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]:checked').change();
+
+			//アジャスター仕様
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpAdjuster}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]:checked').change();
+
+			//ベルトループ
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoop}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').change();
+
+			//ピンループ
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPinLoop"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPinLoop}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPinLoop"]:checked').change();
+
+			//脇ポケット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpSidePkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSidePkt}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpSidePkt"]:checked').change();
+
+			//忍びポケット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpSinobiPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSinobiPkt}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpSinobiPkt"]:checked').change();
+
+			//フラップ付コインポケット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpFlapCoinPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpFlapCoinPkt}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpFlapCoinPkt"]:checked').change();
+
+			//上前ピスポケット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktUf}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]:checked').change();
+
+			//下前ピスポケット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpPisPktDf}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]:checked').change();
+
+			//Vカット
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpVCut}"]);
+			jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]:checked').change();
+
+			//裾上げ
+			jQuery("#tp_hemUp").val("${orderCoForm.coOptionPantsTuxedoInfo.tpHemUp}");
+		    jQuery("#tp_hemUp").change();
+
+		    //ダブル幅
+			jQuery("#tp_doubleWide").val("${orderCoForm.coOptionPantsTuxedoInfo.tpDoubleWide}");
+		    jQuery("#tp_doubleWide").change();
+			
+		}else if(productCategory == "9000103"){
+			var wpPantsModel = jQuery("#wp_pantsModel").val();
+			// 選択中のフロント釦数
+			var frontBtnCntElem = jQuery('#wp_tack');
+			var selectedFrontBtnCnt = frontBtnCntElem.val();
+
+			// フロント釦数の選択肢更新
+			frontBtnCntElem.empty();
+			var tmpFrontBtnCnt = null;
+			for (tmpFrontBtnCnt of lapelDesignImageMap[wpPantsModel].activeList) {
+				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+			}
+			
+			var wjFrontBtnCnt = "${orderCoForm.coOptionPantsWashableInfo.wpTack}";
+			frontBtnCntElem.val(wjFrontBtnCnt);
+			frontBtnCntElem.change();
+
+			//膝裏
+			jQuery('input[name="coOptionPantsWashableInfo.wpKneeBack"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBack}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpKneeBack"]:checked').change();
+
+			//膝裏素材
+			jQuery('input[name="coOptionPantsWashableInfo.wpKneeBackMate"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMate}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpKneeBackMate"]:checked').change();
+
+			//フロント仕様
+			jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpFrontSpec}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]:checked').change();
+			
+			//パンチェリーナ
+			jQuery('input[name="coOptionPantsWashableInfo.wpPancherina"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPancherina}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpPancherina"]:checked').change();
+
+			//アジャスター仕様
+			jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpAdjuster}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').change();
+
+			//ベルトループ
+			jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpBeltLoop}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').change();
+
+			//ピンループ
+			jQuery('input[name="coOptionPantsWashableInfo.wpPinLoop"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPinLoop}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpPinLoop"]:checked').change();
+			
+			//脇ポケット
+			jQuery('input[name="coOptionPantsWashableInfo.wpSidePkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSidePkt}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpSidePkt"]:checked').change();
+
+			//忍びポケット
+			jQuery('input[name="coOptionPantsWashableInfo.wpSinobiPkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSinobiPkt}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpSinobiPkt"]:checked').change();
+
+			//フラップ付コインポケット
+			jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpFlapCoinPkt}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]:checked').change();
+
+			//上前ピスポケット
+			jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPisPktUf}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]:checked').change();
+
+			//下前ピスポケット 
+			jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpPisPktDf}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked').change();
+
+			//Vカット
+			jQuery('input[name="coOptionPantsWashableInfo.wpVCut"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpVCut}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpVCut"]:checked').change();
+
+			//ステッチ種類
+			jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitch}"]);
+			jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]:checked').change();		
+		}
+	} 
+}
+function  sessionPantsAdFlag(oldModel,newModel){
+	if(oldModel != newModel){
+		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
+			 jQuery("#pantsAdFlag").val("0");
+		}
+	}	
+}
 jQuery("#op_pantsModel,#tp_pantsModel,wp_pantsModel").change(function(){
-	jQuery("#pantsAdFlag").val("0");
+	if(orderFlag == "orderCo"){
+		jQuery("#pantsAdFlag").val("0");
+	}	
 })   
 </script>

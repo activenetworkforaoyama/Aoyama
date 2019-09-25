@@ -42,10 +42,12 @@ function initOptionJacketStandard() {
 					//0はモデルチェク成功の場合
 					jQuery("#jkModelFlag").val("0");
 					jQuery("#jacketModelCheck").empty();
+					jQuery("#jacketModelCheck").hide();
 					jQuery("#fabricMsg").empty();
 				}else if(checkResult == "false"){
 					//2はモデルチェク失敗の場合
 					jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
+					jQuery("#jacketModelCheck").show()
 					setAlert('jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
 				}
 			}
@@ -158,6 +160,12 @@ function initOptionJacketStandard() {
 		jQuery(this).change(changeLapelDesign);
 	});
 
+	var gradeValue = jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]:checked').val();
+	if(gradeValue == "0000301"||gradeValue == "0000303"){
+		jQuery("#backSpec option:last-child").prop("disabled",true);
+	}
+	
+	
 	// グレード選択時の裏仕様制御
 	jQuery('input[id^="grade_"]').each(function() {
 		jQuery(this).change(function(){
@@ -181,7 +189,7 @@ function initOptionJacketStandard() {
 				
 			}
 			
-			if(gradeValue == "0000302"){
+			if(gradeValue == "0000301"||gradeValue == "0000303"){
 				jQuery("#backSpec option:last-child").prop("disabled",true);
 			}
 			
@@ -193,6 +201,15 @@ function initOptionJacketStandard() {
 		});
 	});
 
+	var backSpecValue = jQuery('#backSpec').val();
+	if(backSpecValue == '0000404'){
+		jQuery("#cuffBackMate option:last-child").prop("disabled",false);
+	}else{
+		jQuery("#cuffBackMate option:first").prop('selected', 'selected');
+		jQuery("#cuffBackMate option:last-child").prop("disabled",true);
+		jQuery("#cuffBackMate").change();
+	}
+	
 	// 裏仕様選択時の台場制御
 	jQuery('#backSpec').change(function(){
 		// 選択中グレードの値取得
@@ -210,6 +227,14 @@ function initOptionJacketStandard() {
 			return;
 		}
 
+		if(backSpecValue == '0000404'){
+			jQuery("#cuffBackMate option:last-child").prop("disabled",false);
+		}else{
+			jQuery("#cuffBackMate option:first").prop('selected', 'selected');
+			jQuery("#cuffBackMate option:last-child").prop("disabled",true);
+			jQuery("#cuffBackMate").change();
+		}
+		
 		// 台場の要素取得
 		var fortElem = jQuery('#fort');
 		var beforeValue = fortElem.val();
@@ -234,6 +259,9 @@ function initOptionJacketStandard() {
 
 		// デフォルトを選択
 		fortElem.val(fortList[gradeValue].activeList[backSpecValue].defaultValue);
+		
+		
+		
 	});
 
 	// 台場
@@ -667,28 +695,30 @@ function initOptionJacketStandard() {
 		}
 	});
 	jQuery('#bodyBackMate').change();*/
+	var cuffBackMate = jQuery('#cuffBackMate').val();
+	
+	// 袖裏品番
+	var cuffBackMateStkNoElem = jQuery('#cuffBackMateStkNo');
 
-	/*// 袖裏素材
+	if (cuffBackMate == '2000300') {
+		jQuery('#cuffBackMateStkNo').prop("disabled", false);
+	} else {
+		jQuery('#cuffBackMateStkNo').prop("disabled", true);
+	}
+	// 袖裏素材
 	jQuery('#cuffBackMate').change(function (){
 		var cuffBackMate = jQuery('#cuffBackMate').val();
-
+		
 		// 袖裏品番
 		var cuffBackMateStkNoElem = jQuery('#cuffBackMateStkNo');
 
-		// 選択肢をクリア
-		cuffBackMateStkNoElem.empty();
-
-		if (cuffBackMateStkNoList[cuffBackMate]) {
-			// 定義が存在する場合は品番を選択肢にセット
-			for (var i = 0; i < cuffBackMateStkNoList[cuffBackMate].length; i++) {
-				cuffBackMateStkNoElem.append(jQuery('<option />').val(cuffBackMateStkNoList[cuffBackMate][i]).text(cuffBackMateStkNoList[cuffBackMate][i]));
-			}
+		if (cuffBackMate == '2000300') {
 			jQuery('#cuffBackMateStkNo').prop("disabled", false);
 		} else {
 			jQuery('#cuffBackMateStkNo').prop("disabled", true);
 		}
 	});
-	jQuery('#cuffBackMate').change();*/
+	//jQuery('#cuffBackMate').change();
 
 	/*// 釦素材
 	jQuery('#btnMate').change(function (){
@@ -760,7 +790,7 @@ function changeLapelDesign() {
 	//shawl:0000203
 	if (lapelDesign == "0000203") {
 		// 「ショール」選択時、「無」のみ
-		jQuery('backCollar_id1').prop("disabled", true);
+		jQuery('#backCollar_id1').prop("disabled", true);
 		jQuery('#backCollar_id2').prop("checked", true);
 		jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]:checked').change();
 	} else {
@@ -780,6 +810,16 @@ function changeLapelDesign() {
 		jQuery('#lapelWidth_id3').prop("disabled", false);
 	}
 	
+	//フラワーホールの制御
+	//shawl:0000203
+	if (lapelDesign == "0000203") {
+		// 「ショール」選択時、「通常」のみ
+		jQuery('#flowerHole').val("0001005");
+		jQuery('#flowerHole').prop("disabled",true);
+		jQuery('#flowerHole').change();
+	} else {
+		jQuery('#flowerHole').prop("disabled",false);
+	}
 }
 
 // AMFステッチ変更時
@@ -969,6 +1009,7 @@ function ctrlDStitchModify() {
 			jQuery(this).prop("checked", true);
 		}
 	});
+	jQuery('input[id^="dStitchModifyPlace_id"]').change();
 }
 
 // ダブルステッチ変更(選択肢)の有効/無効を制御する

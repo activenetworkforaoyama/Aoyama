@@ -227,7 +227,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="coAdjustPantsStandardInfo.corPtStoreCorrectionMemo" id="corPtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="coAdjustPantsStandardInfo.corPtStoreCorrectionMemo" id="corPtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -282,6 +282,7 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
 var itemCode ="${orderCoForm.productItem}";
 var pantsAdFlag="${orderCoForm.pantsAdFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
 var productCategory="${orderCoForm.productCategory}";
 var ptModel="";
 var opModel = "${orderCoForm.coOptionPantsStandardInfo.opPantsModel}";
@@ -313,6 +314,7 @@ jQuery(document).ready(function() {
 	}
      getAdjustByItem();
 	 initAlter();
+	 if(orderFlag == "orderCo"){
 	    if(pantsAdFlag==""){
 	    	adjustReInit();
 		}else if(pantsAdFlag=="0"){
@@ -322,6 +324,25 @@ jQuery(document).ready(function() {
 			getFigureAndNumberByItem();
 			adjustSession();
 		}
+	 }
+	 if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
+	     if(pantsAdFlag=="0"){
+			adjustReInit();
+			getFigureAndNumberByItem();
+	    }else if(pantsAdFlag=="1"){
+			getFigureAndNumberByItem();
+			adjustSession();
+		}else if(pantsAdFlag==""){
+			 getFigureAndNumberByItem();
+			 adjustSession();
+		}
+	 }
+	  /*   }
+	    if(orderFlag == "orderLink" || orderFlag == "orderCheck"){
+	    	ptModel = opModel;
+			getFigureAndNumberByItem();
+			adjustSession();
+		} */
 jQuery("#selectPantsFigure,#selectPantsNumber").change(function(){
 	ptAdjust();		
 }) 
@@ -786,7 +807,7 @@ function adjustSession(){
 				jQuery("#ap_hemWidthAbs1").val(left1);
 			}
     }
-	jQuery("#corPtStoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
+// 	jQuery("#corPtStoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
 	
 } 
 

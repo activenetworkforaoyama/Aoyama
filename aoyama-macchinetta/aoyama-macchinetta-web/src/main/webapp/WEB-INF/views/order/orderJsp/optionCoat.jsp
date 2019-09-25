@@ -225,6 +225,7 @@
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
+var orderFlag = "${orderCoForm.orderFlag}";
 var selectIdList = {
 		"oc_lapelDesign":"00001",
 			"oc_waistPkt":"00002",
@@ -249,7 +250,6 @@ var selectIdList = {
 jQuery(document).ready(function() {
 	
 	var coatAdFlag="${orderCoForm.coatAdFlag}";
-	var orderFlag = "${orderCoForm.orderFlag}";
 	var sessioncoatModel = "${orderCoForm.coOptionCoatStandardInfo.coatModel}";
 	if(orderFlag == "orderCo"){
 		if(coatAdFlag=="1"){
@@ -260,7 +260,7 @@ jQuery(document).ready(function() {
 	jQuery("#coatModel").click(function(){
 		var coatModel = jQuery("#coatModel").val();
 		if(sessioncoatModel != coatModel){
-			if(orderFlag == "orderBack"){
+			if(orderFlag == "orderBack" || orderFlag == "orderLink"){
 				 jQuery("#coatAdFlag").val("0");
 			}
 		}
@@ -301,20 +301,6 @@ jQuery(document).ready(function() {
 	doubleOptionModelPrice();
 });
 
-function mateStkNoReInit(){
-	var ctInnerBodyClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocBodyBackMateStkNo}";
-	if(isNotEmpty(ctInnerBodyClothCd)){
-		jQuery("#oc_bodyBackMateStkNo option[value='"+ctInnerBodyClothCd+"']").attr("selected", true);
-	}
-	var ctInnerSleeveClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocCuffBackMateStkNo}";
-	if(isNotEmpty(ctInnerSleeveClothCd)){
-		jQuery("#oc_cuffBackMateStkNo option[value='"+ctInnerSleeveClothCd+"']").attr("selected", true);
-	}
-	var ctBtnMaterialCd = "${orderCoForm.coOptionCoatStandardInfo.ocFrontBtnMateStkNo}";
-	if(isNotEmpty(ctBtnMaterialCd)){
-		jQuery("#oc_frontBtnMateStkNo option[value='"+ctBtnMaterialCd+"']").attr("selected", true);
-	}
-}
 function setCoatModelDisable(){
 	var ctModel = null;
 	ctModel = document.getElementById("coatModel");
@@ -425,18 +411,28 @@ function getPrice(){
 	//項目：ラペルデザイン、腰ポケット、フロント釦数、袖口、袖釦、胴裏素材、胴裏素材品番、袖裏素材、袖裏素材品番、釦素材、釦素材品番
 	jQuery("#oc_lapelDesign,#oc_waistPkt,#oc_frontBtnCnt,#oc_cuffSpec,#oc_sleeveBtnType,#oc_bodyBackMate,#oc_bodyBackMateStkNo,#oc_cuffBackMate,#oc_cuffBackMateStkNo,#oc_frontBtnMate,#oc_frontBtnMateStkNo")
 	   .change(function(){
-	   jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	   //jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   coatModel = jQuery("#coatModel option:selected").val();
+	   var thisVal = "";
+	   var thisValStkNo = "";
 	   var itemCode = "06";
 	   var subItemCode = jQuery("#item").val();
 	   var idValueName = jQuery(this).attr("id");
+	   if(idValueName.indexOf("StkNo") == -1){
+		   thisVal = jQuery("#" + idValueName).val();
+		   thisValStkNo = jQuery("#" + idValueName + "StkNo").val();
+	   }else{
+		   thisValStkNo = jQuery("#" + idValueName).val();
+		   idValueName = idValueName.replace("StkNo","");
+		   thisVal = jQuery("#" + idValueName).val();
+	   }
 	   var price;
 	   if(isNotEmpty(coatModel)){
 		   var code = itemCode + subItemCode + coatModel;
 		   jQuery.ajax({
 				type:"get",
 			    url:contextPath + "/orderCo/getOrderPriceForCoatProject",
-			    data:{"code":code,"idValue":idValueName},
+			    data:{"code":code,"idValue":idValueName,"thisVal":thisVal,"thisValStkNo":thisValStkNo},
 			    dataType:"json",
 			    async:false,
 			    success:function(result){
@@ -471,11 +467,13 @@ function getPrice(){
 	//項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊
 	jQuery('input[id^="oc_sleeveSpec_id"],[id^="oc_changePkt_id"],[id^="oc_slantedPkt_id"],[id^="oc_ventSpec_id"],[id^="oc_backBelt_id"],[id^="oc_chainHange_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		coatModel = jQuery("#coatModel option:selected").val();
+		var thisVal = "";  
 		var itemCode = "06";
 	    var subItemCode = jQuery("#item").val();
 	    var idValueName = jQuery(this).attr("id");
+	    thisVal = jQuery("#"+idValueName).val();
 	    var price;
 	  //IDの後の番号を削除します
 	    var findIdPosition = idValueName.indexOf("_id");
@@ -486,7 +484,7 @@ function getPrice(){
 			jQuery.ajax({
 				type:"get",
 			    url:contextPath + "/orderCo/getOrderPriceForCoatProject",
-			    data:{"code":code,"idValue":interceptedIdValueName},
+			    data:{"code":code,"idValue":interceptedIdValueName,"thisVal":thisVal},
 			    async:false,
 			    success:function(result){
 			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
@@ -630,9 +628,24 @@ function formatMoney(number, places, symbol, thousand, decimal) {
       j = (a = i.length) > 3 ? a % 3 : 0;
   return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 }
-
+function mateStkNoReInit(){
+	var ctInnerBodyClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocBodyBackMateStkNo}";
+	if(isNotEmpty(ctInnerBodyClothCd)){
+		jQuery("#oc_bodyBackMateStkNo option[value='"+ctInnerBodyClothCd+"']").attr("selected", true);
+	}
+	var ctInnerSleeveClothCd = "${orderCoForm.coOptionCoatStandardInfo.ocCuffBackMateStkNo}";
+	if(isNotEmpty(ctInnerSleeveClothCd)){
+		jQuery("#oc_cuffBackMateStkNo option[value='"+ctInnerSleeveClothCd+"']").attr("selected", true);
+	}
+	var ctBtnMaterialCd = "${orderCoForm.coOptionCoatStandardInfo.ocFrontBtnMateStkNo}";
+	if(isNotEmpty(ctBtnMaterialCd)){
+		jQuery("#oc_frontBtnMateStkNo option[value='"+ctBtnMaterialCd+"']").attr("selected", true);
+	}
+}
 jQuery("#coatModel").change(function() {
 	jQuery("#coatFlag").val("1");
-    //jQuery("#coatAdFlag").val("0");
+	if(orderFlag == "orderCo"){
+		jQuery("#coatAdFlag").val("0");
+	}
 });
 </script>

@@ -145,6 +145,7 @@
                             	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlaceAllMap}"/>
                         	</form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_og_amfColorPlace">全選択</button>
+                        	&nbsp;
                         	<button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_og_amfColorPlace">全解除</button>
                         </div>
                         </div>
@@ -234,6 +235,7 @@
                             	<form:options items="${orderCoForm.coOptionGiletStandardInfo.ogByColorPlaceAllMap}"/>
                             </form:select>&nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_as_og_byColorPlace">全選択</button>
+                            &nbsp;
                             <button type="button" class="btn btn-outline-info btn-sm" id="btn_ar_og_byColorPlace">全解除</button>
                         </div>
                         </div>
@@ -904,8 +906,6 @@
 	<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
 	<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
     
-    <input type="hidden" id="giletFlag" name="giletFlag" value="0"/>
-    
 	<input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />	
 	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
 	<input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
@@ -915,12 +915,12 @@
 </form:form>
 
 <!-- 自作js -->
-<script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/resources/app/self/js/rule.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/config.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/customer.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/tabMenu.js"></script>
-<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
+<script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script> --%>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.gilet.standard.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.gilet.tuxedo.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.gilet.washable.js"></script>
@@ -928,7 +928,7 @@
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
-
+var orderFlag = "${orderCoForm.orderFlag}";
 var selectIdList = {
 	"og_backLiningMate":"00017",
 	"og_insideLiningMate":"00019",
@@ -943,21 +943,39 @@ var selectIdList = {
 
 jQuery(function() {
 	var giletAdFlag="${orderCoForm.giletAdFlag}";
+if(orderFlag=="orderCo"){
 	if(giletAdFlag=="1"){
-		jQuery("#giletAdFlag").val("${orderCoForm.giletAdFlag}");
-		}else{
-			jQuery("#giletAdFlag").val("0");
-			}
-	jQuery("#giletModel").change(function(){
+	}else{
 		jQuery("#giletAdFlag").val("0");
-	})
+	}
+}
+var productCategory="${orderCoForm.productCategory}";
+if(orderFlag=="orderBack"){
+	if(productCategory == "9000101"){
+		var sessionGiletModel = "${orderCoForm.coOptionGiletStandardInfo.ogGiletModel}";
+		jQuery("#giletModel").click(function(){
+			var giletModel = jQuery("#giletModel").val();
+			sessionGiletAdFlag(sessionGiletModel,giletModel);
+		});
+	}else if(productCategory == "9000102"){
+		var sessionTgGiletModel = "${orderCoForm.coOptionGiletTuxedoInfo.tgGiletModel}";
+		jQuery("#tg_giletModel").click(function(){
+			var tgGiletModel = jQuery("#tg_giletModel").val();
+			sessionGiletAdFlag(sessionTgGiletModel,tgGiletModel);
+		});
+	}else if(productCategory == "9000103"){
+		var sessionWgGiletModel = "${orderCoForm.coOptionGiletWashableInfo.wgGiletModel}";
+		jQuery("#wg_giletModel").click(function(){
+			var wgGiletModel = jQuery("#wg_giletModel").val();
+			sessionGiletAdFlag(sessionWgGiletModel,wgGiletModel);
+		});
+	}
+	}
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-
-    var productCategory = jQuery('input[name="productCategory"]:checked').val();
 
 	getModelByItem(productCategory);
 
@@ -1006,6 +1024,8 @@ jQuery(function() {
 	doubleOptionModelPrice();
 
 	ogSession();
+
+	optionGiletChangeModel(productCategory);
 
 	jQuery("#giletItemFlag").val("1");
 
@@ -1338,9 +1358,9 @@ function getPrice(){
 // 	項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番,バックベルト
 	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt,#tg_backLiningMate,#tg_backLiningMateStkNo,#tg_insideLiningMate,#tg_insideLiningMateStkNo,#tg_frontBtnMate,#tg_frontBtnMateStkNo,#tg_backBelt,#wg_backLiningMate,#wg_backLiningMateStkNo,#wg_insideLiningMate,#wg_insideLiningMateStkNo,#wg_frontBtnMate,#wg_frontBtnMateStkNo,#wg_backBelt")
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   
-		var giletModel = jQuery("#giletModel option:selected").val();
+		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
@@ -1348,19 +1368,33 @@ function getPrice(){
 		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var ajaxUrl = "";
 		if(productCategory == "9000101"){
+			var giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardProject";
 		}else if(productCategory == "9000102"){
+			var giletModel = jQuery("#tg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
 		}else if(productCategory == "9000103"){
+			var giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableProject";
 		}
+
+		var thisVal = "";
+	    var thisValStkNo = "";
+	    if(idValueName.indexOf("StkNo") == -1){
+		    thisVal = jQuery("#" + idValueName).val();
+		    thisValStkNo = jQuery("#" + idValueName + "StkNo").val();
+	    }else{
+		    thisValStkNo = jQuery("#" + idValueName).val();
+		    idValueName = idValueName.replace("StkNo","");
+		    thisVal = jQuery("#" + idValueName).val();
+	    }
 		
 		if(isNotEmpty(giletModel)){
 			var code = itemCode + subItemCode + giletModel;
 			jQuery.ajax({
 				type:"get",
 				url:contextPath + "/orderCo/" + ajaxUrl,
-				data:{"code":code,"idValueName":idValueName},
+				data:{"code":code,"idValueName":idValueName,"thisVal":thisVal,"thisValStkNo":thisValStkNo},
 				dataType:"json",
 				contentType:"application/json",
 				async:false,
@@ -1373,6 +1407,7 @@ function getPrice(){
 						jQuery("#"+idValueTemp+"_Msg").html(result.idValuePrice);
 					}
 					getAllPrice(subItemCode, result.optionPrice);
+					allOptionPrice();
 				}
 			});
 		}
@@ -1383,7 +1418,7 @@ function getPrice(){
 // 	項目：胸ポケット、腰ポケット、腰ポケット形状、ステッチ種類、襟吊
 	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_stitch_id"],[id^="og_watchChain_id"],[id^="tg_breastPkt_id"],[id^="tg_waistPkt_id"],[id^="tg_waistPktSpec_id"],[id^="tg_waistPktMate_id"],[id^="tg_stitch_id"],[id^="tg_watchChain_id"],[id^="wg_breastPkt_id"],[id^="wg_waistPkt_id"],[id^="wg_waistPktSpec_id"],[id^="wg_stitch_id"],[id^="wg_watchChain_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		
 		var giletModel = jQuery("#giletModel option:selected").val();
 		var itemCode = jQuery("#item").val();
@@ -1426,7 +1461,7 @@ function getPrice(){
 // 	項目：腰ポケット、腰ポケット形状の制御
 	jQuery('input[id^="og_waistPkt_id"],[id^="tg_waistPkt_id"],[id^="wg_waistPkt_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
 		var waistPktValue = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
 		if (waistPktValue == "0000202") {
@@ -1477,7 +1512,7 @@ function getPrice(){
 // 	項目：ステッチ箇所変更,ダブルステッチ
 	jQuery('input[id^="og_stitchModify_id"],[id^="og_stitchModifyPlace_id"],[id^="og_dStitchModify_id"],[id^="og_dStitchModifyPlace_id"],[id^="wg_stitchModify_id"],[id^="wg_stitchModifyPlace_id"],[id^="wg_dStitchModify_id"],[id^="wg_dStitchModifyPlace_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
 		var giletModel = jQuery("#giletModel option:selected").val();
 		var itemCode = jQuery("#item").val();
@@ -1493,17 +1528,25 @@ function getPrice(){
 				jQuery('#og_stitchModifyPlace_id' + i).removeAttr("checked");
 				i++;
 			});
-			jQuery('#og_stitchModify_Msg').html("無料");
 			jQuery('#og_dStitchModify_id1').prop("checked", true);
 			jQuery('#og_dStitchModify_id2').prop("disabled", true);
 			jQuery('#og_dStitchModify_id2').prop("checked", false);
 			jQuery('#og_amfColor_id1').prop("checked", true);
 			jQuery('#og_amfColor_id2').prop("disabled", true);
 			jQuery('#og_amfColor_id2').prop("checked", false);
-			jQuery('#og_dStitchModify_id1').change();
-			jQuery('#og_amfColor_id1').change();
+			jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]:checked').change();
+			jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]:checked').change();
 		}else if(thisValueTemp == "0000602"){
 			//ステッチ箇所変更は有りです
+			//ラペル・フロントと腰ポケット、デフォルト選択
+// 			for(var i=0; i<ogStitchModifyList[giletModel].length; i++){
+// 				jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
+// 					ogStitchModifyList[giletModel][i]
+// 					i++;
+// 				});
+// 			}
+			jQuery('#og_stitchModifyPlace_id1').prop("checked", true);
+			jQuery('#og_stitchModifyPlace_id3').prop("checked", true);
 			jQuery('#og_dStitchModify_id2').prop("disabled", false);
 			jQuery('#og_amfColor_id2').prop("disabled", false);
 		}
@@ -1514,7 +1557,6 @@ function getPrice(){
 				jQuery('#og_dStitchModifyPlace_id' + i).removeAttr("checked");
 				i++;
 			});
-			jQuery('#og_dStitchModify_Msg').html("無料");
 		}
 
 		var productCategory = jQuery('input[name="productCategory"]:checked').val();
@@ -1525,25 +1567,22 @@ function getPrice(){
 			ajaxUrl = "getOrderPriceForGiletWashableProject";
 		}
 
-		//IDの後の番号を削除します
-		var interceptedIdValueName = "";
-		
 		//複数選択ボックスの数,IDにより決定optionCode
 		var ogSomePlace_length = 0;
 		var jspOptionCode = "";
-		if(idValueName.indexOf("og_stitchModifyPlace_id") >= 0){
+		if(idValueName.indexOf("og_stitchModify") >= 0){
 			jspOptionCode ="00007";
 			ogSomePlace_length = jQuery('input[id^="og_stitchModifyPlace_id"]').length;
 
-		}else if(idValueName.indexOf("og_dStitchModifyPlace_id") >= 0){
+		}else if(idValueName.indexOf("og_dStitchModify") >= 0){
 			jspOptionCode ="00027";
 			ogSomePlace_length = jQuery('input[id^="og_dStitchModifyPlace_id"]').length;
 			
-		}else if(idValueName.indexOf("wg_stitchModifyPlace_id") >= 0){
+		}else if(idValueName.indexOf("wg_stitchModify") >= 0){
 			jspOptionCode ="00007";
 			ogSomePlace_length = jQuery('input[id^="wg_stitchModifyPlace_id"]').length;
 			
-		}else if(idValueName.indexOf("wg_dStitchModifyPlace_id") >= 0){
+		}else if(idValueName.indexOf("wg_dStitchModify") >= 0){
 			jspOptionCode ="00027";
 			ogSomePlace_length = jQuery('input[id^="wg_dStitchModifyPlace_id"]').length;
 
@@ -1554,23 +1593,30 @@ function getPrice(){
 		
 		//アイテムのID名をクリックして、"Place_id"フィールドを含めます
 		var findIdPosition = idValueName.indexOf("Place_id");
+		//IDの後の番号を削除します
+		var interceptedIdValueName = "";
+		var idValueNameTemp;
 		if(findIdPosition != -1){
 			//インターセプトID、最初の数字からPlace_idの前まで
-			var idValueNameTemp = idValueName.substring(0,findIdPosition);
+			idValueNameTemp = idValueName.substring(0,findIdPosition);
 			interceptedIdValueName = idValueNameTemp + "_id";
-
-			//チェックボックスループ
-			for(var i=1; i<=ogSomePlace_length; i++){
-				//各チェックボックスのIDをループスプライシング
-				//このループの要素を取得します
-				var idValueNameComplete = document.getElementById(idValueNameTemp + "Place_id" + i);
-				if(idValueNameComplete.checked){
-					countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
-				}
+		}else{
+			//インターセプトID、最初の数字から_idの前まで
+			var findIdPositionNotPlace = idValueName.indexOf("_id");
+			idValueNameTemp = idValueName.substring(0,findIdPositionNotPlace);
+			interceptedIdValueName = idValueNameTemp + "_id";
+		}
+		//チェックボックスループ
+		for(var i=1; i<=ogSomePlace_length; i++){
+			//各チェックボックスのIDをループスプライシング
+			//このループの要素を取得します
+			var idValueNameComplete = document.getElementById(idValueNameTemp + "Place_id" + i);
+			if(idValueNameComplete.checked){
+				countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
 			}
 		}
-
-		if(isNotEmpty(giletModel) && findIdPosition != -1){
+		
+		if(isNotEmpty(giletModel)){
 			var code = itemCode + subItemCode + giletModel;
 			jQuery.ajax({
 				type:"get",
@@ -1585,28 +1631,21 @@ function getPrice(){
 					getAllPrice(subItemCode, result.optionPrice);
 				}
 			});
-		}else{
-// 			var findPositionModify = idValueName.indexOf("Modify_id");
-// 			var ValueIdModify = idValueName.substr(0, findPositionModify);
-// 			var msgIdValueId = ValueIdModify + "Modify_Msg";
-// 			jQuery("#"+msgIdValueId).html("無料1");
-			
-// 		    var glOptionPriceId = jQuery("#glOptionPriceId").val();
-// 			getAllPrice(subItemCode, result.optionPrice);
 		}
+		
 	});
 
 // 	ラジオボタンの変更処理
 // 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定
 	jQuery('input[id^="og_amfColor_"],[id^="og_bhColor_"],[id^="og_byColor_"],[id^="tg_bhColor_"],[id^="tg_byColor_"],[id^="wg_amfColor_"],[id^="wg_bhColor_"],[id^="wg_byColor_"]').change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
 		var giletModel = jQuery("#giletModel option:selected").val();
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
 		var thisValueTemp = jQuery(this).val();
-		//alert(idValueName);
+// 		alert(idValueName);
 		
 		if(thisValueTemp == "0000801"){
 			//AMF色指定は無しです
@@ -1751,6 +1790,76 @@ function getPrice(){
 		}
 	});
 
+// 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定の全選択、全解除
+	jQuery('[id^="btn_as_og_amfColorPlace"],[id^="btn_ar_og_amfColorPlace"],[id^="btn_as_og_bhColorPlace"],'+
+			'[id^="btn_ar_og_bhColorPlace"],[id^="btn_as_og_byColorPlace"],[id^="btn_ar_og_byColorPlace"]').click(function(){
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var giletModel = jQuery("#giletModel option:selected").val();
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var idValueNameTemp = "";
+		var thisValueTemp = "";
+// 		alert(idValueName);
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			idValueNameTemp = "og_";
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			idValueNameTemp = "tg_";
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			idValueNameTemp = "wg_";
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
+
+		var findIdAmf = idValueName.indexOf("_amfColorPlace");
+		var findIdBh = idValueName.indexOf("_bhColorPlace");
+		var findIdBy = idValueName.indexOf("_byColorPlace");
+		if(findIdAmf != -1){
+			idValueNameTemp = idValueNameTemp + "amfColor_id";
+			thisValueTemp = "00010" + jQuery("#og_amfColorPlaceAll").val();
+		}else if(findIdBh != -1){
+			idValueNameTemp = idValueNameTemp + "bhColor_id";
+			thisValueTemp = "00013" + jQuery("#og_bhColorPlaceAll").val();
+		}else if(findIdBy != -1){
+			idValueNameTemp = idValueNameTemp + "byColor_id";
+			thisValueTemp = "00016" + jQuery("#og_byColorPlaceAll").val();
+		}
+
+		//選択された異なる色の数
+		var colorCount = 0;
+		var findIdAs = idValueName.indexOf("btn_as_og_");
+		var findIdAr = idValueName.indexOf("btn_ar_og_");
+		if(findIdAs != -1){
+			colorCount = 1;
+		}else if(findIdAr != -1){
+			colorCount = 0;
+		}
+		
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":idValueNameTemp,"jspOptionCodeAndBranchCode":thisValueTemp,"colorCount":colorCount},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = idValueName.substring(7);
+					msgIdValueName = msgIdValueName.replace(/Place/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+		
+	});
+
 }
 //--------------------------------------------
 //金額フォーマット
@@ -1768,8 +1877,6 @@ return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).re
 }
 
 function ogSession(){
-// 	jQuery('#og_breastPkt_id').val("${orderCoForm.coOptionGiletStandardInfo.ogBreastPkt}");
-	
 	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace1}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace2}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace3}"]);
@@ -1821,21 +1928,104 @@ function ogSession(){
 	jQuery('input[name="coOptionGiletStandardInfo.ogByColor9"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor9}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogByColor10"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor10}"]);
 	jQuery('input[id^="og_byColorPlace_"]').change();
+
+	jQuery('input[name="coOptionGiletStandardInfo.ogBackLiningMateStkNo"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBackLiningMateStkNo}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogInsideLiningMateStkNo"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogInsideLiningMateStkNo}"]);
+	jQuery('input[name="coOptionGiletStandardInfo.ogFrontBtnMateStkNo"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateStkNo}"]);
 	
  	// 選択中のダブルステッチ変更
 	ctrlOgDStitchPlace();
  	// AMF色指定の有効/無効を制御
 	ctrlOgAmfColor();
-
 }
 
-jQuery("#giletModel").change(function(){
-	jQuery("#giletFlag").val("1");
+function optionGiletChangeModel(productCategory){
+	var giletFlag = jQuery("#giletFlag").val();
+	if(giletFlag == "1"){
+		if(productCategory == "9000101"){
+			var giletModel = jQuery("#giletModel").val();
+
+			//胸ポケット
+			jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBreastPkt}"]);
+			jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]:checked').change();
+
+			//腰ポケット形状
+			jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpec}"]);
+			jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').change();
+
+			//背裏地素材
+			jQuery('#og_backLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogBackLiningMateStkNo}");
+			jQuery('#og_backLiningMateStkNo').change();
+
+			//内側裏地素材
+			jQuery('#og_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogInsideLiningMateStkNo}");
+			jQuery('#og_insideLiningMateStkNo').change();
+			
+			//釦素材
+			jQuery('#og_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateStkNo}");
+			jQuery('#og_frontBtnMateStkNo').change();
+			
+		}else if(productCategory == "9000102"){
+			var giletModel = jQuery("#tg_giletModel").val();
+
+			//胸ポケット
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgBreastPkt}"]);
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]:checked').change();
+
+			//腰ポケット形状
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpec}"]);
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').change();
+
+			//背裏地素材
+			jQuery('#tg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgBackLiningMateStkNo}");
+			jQuery('#tg_backLiningMateStkNo').change();
+
+			//内側裏地素材
+			jQuery('#tg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgInsideLiningMateStkNo}");
+			jQuery('#tg_insideLiningMateStkNo').change();
+			
+			//釦素材
+			jQuery('#tg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo}");
+			jQuery('#tg_frontBtnMateStkNo').change();
+
+		}else if(productCategory == "9000103"){
+			var giletModel = jQuery("#wg_giletModel").val();
+
+			//胸ポケット
+			jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgBreastPkt}"]);
+			jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]:checked').change();
+
+			//腰ポケット形状
+			jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpec}"]);
+			jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]:checked').change();
+
+			//背裏地素材
+			jQuery('#wg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgBackLiningMateStkNo}");
+			jQuery('#wg_backLiningMateStkNo').change();
+
+			//内側裏地素材
+			jQuery('#wg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgInsideLiningMateStkNo}");
+			jQuery('#wg_insideLiningMateStkNo').change();
+			
+			//釦素材
+			jQuery('#wg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateStkNo}");
+			jQuery('#wg_frontBtnMateStkNo').change();
+			
+		}
+	}
+}
+function  sessionGiletAdFlag(oldModel,newModel){
+	if(oldModel != newModel){
+		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
+			 jQuery("#giletAdFlag").val("0");
+		}
+	}	
+}
+
+jQuery("#giletModel,#tg_giletModel,#wg_giletModel").change(function(){
+	if(orderFlag == "orderCo"){
+		jQuery("#giletAdFlag").val("0");
+	}	
 })
-jQuery("#tg_giletModel").change(function(){
-	jQuery("#giletFlag").val("1");
-})
-jQuery("#wg_giletModel").change(function(){
-	jQuery("#giletFlag").val("1");
-})
+
 </script>

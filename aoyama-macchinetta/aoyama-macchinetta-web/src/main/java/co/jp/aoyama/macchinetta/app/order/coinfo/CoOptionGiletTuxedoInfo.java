@@ -51,10 +51,10 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String tgStitchModify = "0000601";
 	
 	// ダブルステッチ変更
-	private String tgDblstitchPlc = "0000801";
+	private String tgDblstitchPlc = "0002601";
 	
 	// AMF色指定
-	private String tgAmfColor = "0001101";
+	private String tgAmfColor = "0000801";
 
 	// ボタンホール色指定
 	private String tgBhColor;

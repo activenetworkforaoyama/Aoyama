@@ -32,6 +32,7 @@ import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
 import co.jp.aoyama.macchinetta.domain.model.Shop;
 import co.jp.aoyama.macchinetta.domain.model.Stock;
 import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
+import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
 import co.jp.aoyama.macchinetta.domain.service.order.NextGenerationService;
 import co.jp.aoyama.macchinetta.domain.service.order.OptionBranchDeailService;
 import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
@@ -53,6 +54,9 @@ public class OrderCoReconfirmController {
 	
 	@Inject
 	OrderListService orderListService;
+	
+	@Inject
+	MeasuringService measuringService;
 	
 	@Inject
 	OrderService orderService;
@@ -84,19 +88,19 @@ public class OrderCoReconfirmController {
 
 	@RequestMapping(value = "orderCoReForm")
 	public String toOrderCoReForm(OrderCoForm orderCoForm,Model model,Map<String, Map<String, Integer>> map) {
-//		String status = orderForm.getStatus();
-//		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
-//			//注文ID
-//			String orderId = orderForm.getCustomerMessageInfo().getOrderId();
-//			//注文
-//			Order order = orderListService.findOrderByPk(orderId);
-//			Date productOrderdDate = order.getProductOrderdDate();
-//			if(productOrderdDate != null) {
-//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//				String productOrderdDateFormat = sdf.format(productOrderdDate);
-//				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
-//			}
-//		}
+		String status = orderCoForm.getStatus();
+		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
+			//注文ID
+			String orderId = orderCoForm.getCoCustomerMessageInfo().getOrderId();
+			//注文
+			Order order = orderListService.findOrderByPk(orderId);
+			Date productOrderdDate = order.getProductOrderdDate();
+			if(productOrderdDate != null) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String productOrderdDateFormat = sdf.format(productOrderdDate);
+				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
+			}
+		}
 		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedCoProjects(orderCoForm);
 		OrderFindFabric findStock = this.findStock(orderCoForm);
 		String color = findStock.getColor();
@@ -2680,6 +2684,9 @@ public class OrderCoReconfirmController {
 			orderCoHelper.measuringMapping(orderCoForm, measuring,sessionContent.getUserId());
 			//下代計算
 			orderCoHelper.nextGenerationValueRelationCount(order, selectCoYield, selectCoWholesalePiece, selectCoBasicNextGenerationPrice, priceCode, selectCoMarginRate);
+			
+			// メジャーリングをデータベースに入力する
+			measuringService.updateByPrimaryKey(measuring);
 			
 			//挿入の場合
 			if (orderId == null) {

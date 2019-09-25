@@ -83,6 +83,7 @@ function initOptionCoat() {
 		var oc_cuffSpec_stenOptions_code = ["0000704"];
 		var oc_cuffSpecElem = jQuery('#oc_cuffSpec');
 		var before_oc_cuffSpec = oc_cuffSpecElem.val();
+		var existBefore = false;
 		
 		oc_cuffSpecElem.empty();
 		if (coatModel == "SoutienCollar") {
@@ -90,7 +91,6 @@ function initOptionCoat() {
 				oc_cuffSpecElem.append(jQuery('<option />').val(oc_cuffSpec_stenOptions_code[index]).text(oc_cuffSpec_stenOptions[index]));
 			}
 		} else {
-			var existBefore = false;
 			for (var index = 0; index < oc_cuffSpec_options.length; index++) {
 				oc_cuffSpecElem.append(jQuery('<option />').val(oc_cuffSpec_options_code[index]).text(oc_cuffSpec_options[index]));
 				if (oc_cuffSpec_options_code[index] == before_oc_cuffSpec) {
@@ -107,6 +107,7 @@ function initOptionCoat() {
 			} else {
 				oc_cuffSpecElem.val(oc_cuffSpec_options_code[0]);
 			}
+			
 			
 /*
 			} else if (existBefore) {
@@ -196,7 +197,7 @@ function initOptionCoat() {
 
 		var oc_cuffSpec = jQuery('#oc_cuffSpec').val();
 		var oc_sleeveBtnTypeElem = jQuery('#oc_sleeveBtnType');
-		
+		var before_oc_sleeveBtnType = oc_sleeveBtnTypeElem.val();
 		var oc_sleeveBtnType_k_options = ["重ね4", "並び4"];
 		var oc_sleeveBtnType_k_options_code = ["0000801", "0000802"];
 		var oc_sleeveBtnType_b_options = ["2"];
@@ -205,6 +206,8 @@ function initOptionCoat() {
 		var oc_sleeveBtnType_t_options_code = ["0000803"];
 		var oc_sleeveBtnTypeSet = null;
 		var oc_sleeveBtnTypeSet_code = null;
+		var before_oc_sleeveBtnType = oc_sleeveBtnTypeElem.val();
+		var existBeforeSl = false;
 
 		// option候補値を選択
 		if (oc_cuffSpec == "0000701" || oc_cuffSpec == "0000702") {
@@ -224,6 +227,14 @@ function initOptionCoat() {
 			oc_sleeveBtnTypeElem.append(jQuery('<option />')
 				.val(oc_sleeveBtnTypeSet_code[index])
 				.text(oc_sleeveBtnTypeSet[index]));
+			if (oc_sleeveBtnTypeSet_code[index] == before_oc_sleeveBtnType) {
+				existBeforeSl = true;
+			}
+		}
+		if (existBeforeSl) {
+			oc_sleeveBtnTypeElem.val(before_oc_sleeveBtnType);
+		} else {
+			oc_sleeveBtnTypeElem.val(oc_sleeveBtnTypeSet_code[0]);
 		}
 		jQuery('#oc_sleeveBtnType_div').show();
 
@@ -239,7 +250,7 @@ function initOptionCoat() {
 	});
 	
 	// 袖裏地品番（胴裏地と同じ）
-	jQuery('#btn_oc_cuffBackMate').click(function() {
+/*	jQuery('#btn_oc_cuffBackMate').click(function() {
 		// 胴裏地品番
 		var backLiningMateStkNo = jQuery('#oc_bodyBackMateStkNo').val();
 
@@ -302,7 +313,7 @@ function initOptionCoat() {
 			}
 		}
 	});
-	jQuery('#oc_frontBtnMate').change();
+	jQuery('#oc_frontBtnMate').change();*/
 
 }
 

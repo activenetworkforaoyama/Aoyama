@@ -10,7 +10,7 @@ public enum JacketCoOptionTuxedoNextGenerationPriceEnum {
 	// Value4:orderのmethod
 	// Value5:orderのmethod
 	
-	JK_Tuxedo_OPTION_CODE01("00001","getTjFrontBtnCnt","setJkModelWsWage","setJkModelWsPrice","getJkModelWsWage","getJkModelWsPrice"),//フロント釦数
+	JK_Tuxedo_OPTION_CODE01("00001","getTjFrontBtnCnt","setJkFrtBtnWsWage","setJkFrtBtnWsPrice","getJkFrtBtnWsWage","getJkFrtBtnWsPrice"),//フロント釦数
 	JK_Tuxedo_OPTION_CODE02("00002","getTjLapelDesign","setJkLapelDesignWsWage","setJkLapelDesignWsPrice","getJkLapelDesignWsWage","getJkLapelDesignWsPrice"),//ラペルデザイン
 	JK_Tuxedo_OPTION_CODE03("00003","getTjGrade","setJkGradeWsWage","setJkGradeWsPrice","getJkGradeWsWage","getJkGradeWsPrice"),//グレード
 	JK_Tuxedo_OPTION_CODE04("00004","getTjBackSpec","setJkInnerClothWsWage","setJkInnerClothWsPrice","getJkInnerClothWsWage","getJkInnerClothWsPrice"),//裏仕様

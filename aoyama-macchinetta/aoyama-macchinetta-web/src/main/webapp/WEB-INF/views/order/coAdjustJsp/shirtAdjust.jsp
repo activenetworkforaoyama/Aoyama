@@ -172,7 +172,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="corStoreCorrectionMemoAgain" id="corStoreCorrectionMemoAgain" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="corStoreCorrectionMemoAgain" id="corStoreCorrectionMemoAgain" rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,9 @@ jQuery(document).ready(function() {
     });
 	getAdjustByItem();
     initAlter();
+if(orderFlag == "orderCo"){
     if(shirtAdFlag==""){
+    	adjustReInit();
     	jQuery("#oj_shoulderPat_id1").prop("checked", true);	     
 	}else if(shirtAdFlag=="0"){
 		jQuery("#oj_shoulderPat_id1").prop("checked", true);
@@ -257,19 +259,46 @@ jQuery(document).ready(function() {
 		getFigureAndNumberByItem();
 		adjustSession();
 	}
+}
 
-	if(orderFlag == "orderLink"){
+if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
+	if(shirtAdFlag=="0"){
+		adjustReInit();
+		getFigureAndNumberByItem();
+	}else if(shirtAdFlag=="1"){
+		getFigureAndNumberByItem();
+		adjustSession();
+	}else if(shirtAdFlag==""){
 		getFigureAndNumberByItem();
 		adjustSession();
 	}
+}
+	/* if(orderFlag == "orderLink" || orderFlag == "orderCheck"){
+		getFigureAndNumberByItem();
+		adjustSession();
+	} */
 	
     jQuery("#selectCorStSize").change(function(){
 		shirtAdjust();
+		if(osCasHemLine=="0002002"){
+			jQuery("#corStBodylength_div_Size").val("000.0");
+			jQuery("#corStBodylength_div_Gross").val("000.0");
+			jQuery("#corStBodylength_div_html").html("000.0cm");
+			jQuery("#corStBodylength_out").html("0cm");
+			jQuery("#corStBodylengthRange").val("0");
+			setFont("corStBodylengthRange");
+			 setRangeDisable('corStBodylengthRange',true);
+			 $("#corStBodylengthRange_m").unbind("click");
+			 $("#corStBodylengthRange_p").unbind("click");
+			}
 	})
 	if(osCasHemLine=="0002002"){
-		 jQuery("#corStBodylengthRange").val('0');
-		 jQuery("#corStBodylengthRange_out").val('0');
-		 jQuery("#corStBodylength_div_html").val('000.0cm');
+		jQuery("#corStBodylength_div_Size").val("000.0");
+		jQuery("#corStBodylength_div_Gross").val("000.0");
+		jQuery("#corStBodylength_div_html").html("000.0cm");
+		jQuery("#corStBodylength_out").html("0cm");
+		jQuery("#corStBodylengthRange").val("0");
+		setFont("corStBodylengthRange");
 		 setRangeDisable('corStBodylengthRange',true);
 		 $("#corStBodylengthRange_m").unbind("click");
 		 $("#corStBodylengthRange_p").unbind("click");
@@ -496,6 +525,10 @@ function shirtAdjust(){
 				jQuery("#corStBodylength_div_html").html("000.0cm");
 				}
 			jQuery("#corStBodylengthRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}");
+			if("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}"==null){
+				jQuery("#corStBodylengthRange_out").html("0cm");
+				}
+			
 			jQuery("#corStBodylengthRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}");
 			setFont("corStBodylengthRange");
 
@@ -548,7 +581,7 @@ function shirtAdjust(){
 			jQuery("#corStLeftcuffsSurroundingRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
 			jQuery("#corStLeftcuffsSurroundingRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingCorrect}");
 			setFont("corStLeftcuffsSurroundingRange");
-			jQuery("#corStoreCorrectionMemoAgain").val("${orderCoForm.corStoreCorrectionMemoAgain}");
+// 			jQuery("#corStoreCorrectionMemoAgain").val("${f:js(orderCoForm.corStoreCorrectionMemoAgain)}");
 			var corStBackdartsUnpackCorrect="${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsUnpackCd}";
 			if(corStBackdartsUnpackCorrect=="0002501"){
 			    jQuery("#oj_shoulderPat_id1").prop("checked", true);

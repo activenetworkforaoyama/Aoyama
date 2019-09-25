@@ -100,7 +100,7 @@
                             </div>
                         </div> -->
                         <div class="row form-group">
-                            <div class="col col-md-3"><label class=" form-control-label">釦素材</label></div>
+                            <div class="col col-md-3"><label class=" form-control-label">釦</label></div>
                             <div class="col-12 col-md-3">
                             	<form:select id="os_btnMate" path="coOptionShirtStandardInfo.osBtnMate" class="form-control-sm form-control">
                                 	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osBtnMateMap}"/>
@@ -316,7 +316,6 @@
                 </div>
             </div>
             </div>
-            
             <input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="${orderCoForm.jacketItemFlag }"/>
 			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="${orderCoForm.pantsItemFlag }"/>
 			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="${orderCoForm.giletItemFlag }"/>
@@ -348,12 +347,23 @@ var orderFlag = "${orderCoForm.orderFlag}";
  ************************************************/
  // 自作jsに記載
 jQuery(function() {
+
 	var shirtAdFlag="${orderCoForm.shirtAdFlag}";
+if(orderFlag=="orderCo"){
 	if(shirtAdFlag=="1"){
 	}else{
 		jQuery("#shirtAdFlag").val("0");
 	}
-	
+}
+var sessionOsShirtModel = "${orderCoFormcoOptionShirtStandardInfo.osShirtModel}";
+jQuery("#shirtModel").click(function(){
+	var shirtModel = jQuery("#shirtModel").val();
+	if(sessionOsShirtModel != shirtModel){
+		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
+			 jQuery("#shirtAdFlag").val("0");
+		}
+	}
+});
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -439,12 +449,13 @@ jQuery(function() {
 	//ラジオボタンの変更処理
 	jQuery('input[id^="os_clericSpec_id"],[id^="os_dblCuff_id"],[id^="os_AddCuff_id"],[id^="os_tabBtn_id"],[id^="os_galetteBtnPos_nomal_id"],[id^="os_pinHolePin_id"],[id^="os_breastPk_yes_id"],[id^="os_breastPkSize_normal_id"],[id^="os_pinTack_no_id"],[id^="os_stitch_nomal_id"],[id^="os_colorKeeper_id"],[id^="os_casHemLine_id"],[id^="os_btnPosChg_id"]')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		
 		var shirtModel = jQuery("#shirtModel option:selected").val();
 		var itemCode = jQuery("#item").val();
 		var subItemCode = jQuery("#item").val();
 		var idValueName = jQuery(this).attr("id");
+		var thisVal = jQuery("#"+idValueName).val();
 
 		//IDの後の番号を削除します
 		var findIdPosition = idValueName.indexOf("_id");
@@ -454,7 +465,7 @@ jQuery(function() {
 			jQuery.ajax({
 				type:"get",
 				url:contextPath + "/orderCo/getOrderPriceForShirtProject",
-				data:{"code":code,"idValueName":interceptedIdValueName},
+				data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisVal},
 				dataType:"json",
 				contentType:"application/json",
 				async:false,
@@ -470,19 +481,20 @@ jQuery(function() {
 	//プルダウンの変更処理
 	jQuery('#os_chainModel,#os_cuffs,#os_convertible,#os_adjustBtn,#os_btnMate,#os_frontDesign,#os_bhColor,#os_byColor')
 	.change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		
 		var shirtModel = jQuery("#shirtModel option:selected").val();
 		var itemCode = jQuery("#item").val();
 		var subItemCode = jQuery("#item").val();
 		var idValueName = jQuery(this).attr("id");
+		var thisVal = jQuery("#" + idValueName).val();
 
 		if(isNotEmpty(shirtModel)){
 			var code = itemCode + subItemCode + shirtModel;
 			jQuery.ajax({
 				type:"get",
 				url:contextPath + "/orderCo/getOrderPriceForShirtProject",
-				data:{"code":code,"idValueName":idValueName},
+				data:{"code":code,"idValueName":idValueName,"thisVal":thisVal},
 				dataType:"json",
 				contentType:"application/json",
 				async:false,
@@ -551,7 +563,7 @@ function optionShirtSession() {
 		jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 		if (os_colorKeeper_disabled) {
 			// 元々無効化されていた場合、デフォルトの「有り」を選択状態にする
-			jQuery('#os_colorKeeper_id2').prop('checked', true);
+			jQuery('#os_colorKeeper_id1').prop('checked', true);
 		}
 	}
 
@@ -695,7 +707,9 @@ function getAllPrice(subItemCode, optionPrice){
     jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
 }
 jQuery("#shirtModel").change(function(){
-	jQuery("#shirtAdFlag").val("0");
+	if(orderFlag == "orderCo"){
+		jQuery("#shirtAdFlag").val("0");
+	}
 })
 
 function showPrice(){

@@ -15,7 +15,7 @@ public enum Pants2CoOptionTuxedoNextGenerationPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE03("00003","getTp2KneeBackMate","setPt2KneeinnerClothWsWage","setPt2KneeinnerClothWsPrice","getPt2KneeinnerClothWsWage","getPt2KneeinnerClothWsPrice"),//膝裏素材
 	PANTS_TUXEDO_OPTION_CODE04("00004","getTp2FrontSpec","setPt2FrtTypeWsWage","setPt2FrtTypeWsPrice","getPt2FrtTypeWsWage","getPt2FrtTypeWsPrice"),//フロント仕様
 	PANTS_TUXEDO_OPTION_CODE05("00005","getTp2Pancherina","setPt2PancherinaWsWage","setPt2PancherinaWsPrice","getPt2PancherinaWsWage","getPt2PancherinaWsPrice"),//パンチェリーナ
-	PANTS_TUXEDO_OPTION_CODE06("00006","getTp2Adjuster","setPt2FrtTypeWsWage","setPt2FrtTypeWsPrice","getPt2FrtTypeWsWage","getPt2FrtTypeWsPrice"),//アジャスター仕様
+	PANTS_TUXEDO_OPTION_CODE06("00006","getTp2Adjuster","setPt2AdjusterWsWage","setPt2AdjusterWsPrice","getPt2AdjusterWsWage","getPt2AdjusterWsPrice"),//アジャスター仕様
 	PANTS_TUXEDO_OPTION_CODE07("00007","getTp2BeltLoop","setPt2BeltloopWsWage","setPt2BeltloopWsPrice","getPt2BeltloopWsWage","getPt2BeltloopWsPrice"),//ベルトループ変更
 	PANTS_TUXEDO_OPTION_CODE09("00009","getTp2PinLoop","setPt2PinloopWsWage","setPt2PinloopWsPrice","getPt2PinloopWsWage","getPt2PinloopWsPrice"),//ピンループ
 	PANTS_TUXEDO_OPTION_CODE10("00010","getTp2SidePkt","setPt2SidePktWsWage","setPt2SidePktWsPrice","getPt2SidePktWsWage","getPt2SidePktWsPrice"),//脇ポケット

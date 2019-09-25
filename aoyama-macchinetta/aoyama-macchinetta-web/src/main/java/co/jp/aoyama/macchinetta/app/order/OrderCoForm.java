@@ -284,6 +284,8 @@ public class OrderCoForm implements Serializable {
 	private String jacketFlag;
 
 	private String pantsFlag;
+	
+	private String pants2Flag;
 
 	private String giletFlag;
 
@@ -1214,4 +1216,13 @@ public class OrderCoForm implements Serializable {
 	public void setLcrSewingPrice(String lcrSewingPrice) {
 		this.lcrSewingPrice = lcrSewingPrice;
 	}
+
+	public String getPants2Flag() {
+		return pants2Flag;
+	}
+
+	public void setPants2Flag(String pants2Flag) {
+		this.pants2Flag = pants2Flag;
+	}
+	
 }

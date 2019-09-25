@@ -143,7 +143,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="coAdjustCoatStandardInfo.corCtStoreCorrectionMemo" id="corCtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="coAdjustCoatStandardInfo.corCtStoreCorrectionMemo" id="corCtStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -223,7 +223,7 @@ jQuery(document).ready(function() {
     		adjustSession();
     	}
     }
-    if(orderFlag == "orderBack"){
+   if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
 		if(coatAdFlag=="0"){
 			adjustReInit();
     		getFigureAndNumberByItem();
@@ -394,7 +394,7 @@ function adjustReInit(){
 	jQuery("#corCtWaist_div_Size").val("");
 	jQuery("#corCtWaist_div_Gross").val("");
 	jQuery("#corCtWaist_div_html").html("000.0cm");
-	jQuery("#corStNeckRange_out").html("0");
+	jQuery("#corCtWaistRange_out").html("0");
 	jQuery("#corCtWaistRange").val("0");
 	setFont("corCtWaistRange");
 
@@ -448,7 +448,7 @@ function adjustSession(){
 	if("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistGross}"==""){
 		jQuery("#corCtWaist_div_html").html("000.0cm");
 		}
-	jQuery("#corStNeckRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistCorrect}");
+	jQuery("#corCtWaistRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistCorrect}");
 	jQuery("#corCtWaistRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtWaistCorrect}");
 	setFont("corCtWaistRange");
 
@@ -491,7 +491,7 @@ function adjustSession(){
 	jQuery("#corCtPktposRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}");
 	jQuery("#corCtPktposRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}");
 	setFont("corCtPktposRange");
-	jQuery("#corCtStoreCorrectionMemo").val("${orderCoForm.coAdjustCoatStandardInfo.corCtStoreCorrectionMemo}");
+// 	jQuery("#corCtStoreCorrectionMemo").val("${orderCoForm.coAdjustCoatStandardInfo.corCtStoreCorrectionMemo}");
 	
 	
 } 

@@ -9469,7 +9469,7 @@ function imageCheck(){
 		
 	}
 	
-    //オプションチェク
+    //オプションチェック
     var item = jQuery("#item option:selected").val()
     
     var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
@@ -9496,6 +9496,99 @@ function imageCheck(){
 	    	appendAlertDel('errormssage');
 		}
 
+		//着丈修正
+		var corJkBodySize = jQuery("#corJkBody_div_Size").val();
+		var corJkBodyGross = jQuery("#corJkBody_div_Gross").val();
+		var corJkBodyRangeMax = document.getElementById("corJkBodyRange").max;
+		var corJkBodyRangeMin = document.getElementById("corJkBodyRange").min;
+		
+		//ウエスト修正
+		var corJkWaistSize = jQuery("#corJkWaist_div_Size").val();
+		var corJkWaistGross = jQuery("#corJkWaist_div_Gross").val();
+		var corJkWaistRangeMax = document.getElementById("corJkWaistRange").max;
+		var corJkWaistRangeMin = document.getElementById("corJkWaistRange").min;
+		
+		//袖丈右修正
+		var corJkRightsleeveSize = jQuery("#corJkRightsleeve_div_Size").val();
+		var corJkRightsleeveGross = jQuery("#corJkRightsleeve_div_Gross").val();
+		var corJkRightsleeveRangeMax = document.getElementById("corJkRightsleeveRange").max;
+		var corJkRightsleeveRangeMin = document.getElementById("corJkRightsleeveRange").min;
+		
+		//袖丈左修正
+		var corJkLeftsleeveSize = jQuery("#corJkLeftsleeve_div_Size").val();
+		var corJkLeftsleeveGross = jQuery("#corJkLeftsleeve_div_Gross").val();
+		var corJkLeftsleeveRangeMax = document.getElementById("corJkLeftsleeveRange").max;
+		var corJkLeftsleeveRangeMin = document.getElementById("corJkLeftsleeveRange").min;
+
+		if(isEmpty(corJkBodySize)||corJkBodySize == "0" || corJkBodySize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkWaistSize) || corJkWaistSize == "0" || corJkWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkRightsleeveSize) || corJkRightsleeveSize == "0" || corJkRightsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkLeftsleeveSize) || corJkLeftsleeveSize == "0" || corJkLeftsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+
+		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
+		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+
+		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
+		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+
+		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
+		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
+		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+
+		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+		
 		//ラペルデザイン
 		if (!jQuery("input[name='optionJacketStandardInfo.ojLapelDesign']").is(":checked")) {
 			appendAlert('errormssage', getMsgByOneArg('msg003', 'ラペルデザイン'));
@@ -9537,7 +9630,76 @@ function imageCheck(){
 		}else{
 			appendAlertDel('errormssage');
 		}
+
+		//ウエスト修正
+		var corPtWaistSize = jQuery("#corPtWaist_div_Size").val();
+		var corPtWaistGross = jQuery("#corPtWaist_div_Gross").val();
+		var corPtWaistRangeMax = document.getElementById("corPtWaistRange").max;
+		var corPtWaistRangeMin = document.getElementById("corPtWaistRange").min;
 		
+		//ワタリ幅修正
+		var corPtThighSize = jQuery("#corPtThigh_div_Size").val();
+		var corPtThighGross = jQuery("#corPtThigh_div_Gross").val();
+		var corPtThighRangeMax = document.getElementById("corPtThighRange").max;
+		var corPtThighRangeMin = document.getElementById("corPtThighRange").min;
+		
+		//裾幅
+		var corPtHemwidthSize = jQuery("#corPtHemwidth_div_Size").val();
+		var corPtHemwidthGross = jQuery("#corPtHemwidth_div_Gross").val();
+		var corPtHemwidthRangeMax = document.getElementById("corPtHemwidthRange").max;
+		var corPtHemwidthRangeMin = document.getElementById("corPtHemwidthRange").min;
+
+		if(isEmpty(corPtWaistSize)||corPtWaistSize == "0" || corPtWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtThighSize) || corPtThighSize == "0" || corPtThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtHemwidthSize) || corPtHemwidthSize == "0" || corPtHemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+
+		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+
+		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
+		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+
+		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
     }
     
  	//SUIT、３Pieceが有り、スペアパンツが無しの場合
@@ -9560,6 +9722,99 @@ function imageCheck(){
 	    	appendAlertDel('errormssage');
 		}
 
+		//着丈修正
+		var corJkBodySize = jQuery("#corJkBody_div_Size").val();
+		var corJkBodyGross = jQuery("#corJkBody_div_Gross").val();
+		var corJkBodyRangeMax = document.getElementById("corJkBodyRange").max;
+		var corJkBodyRangeMin = document.getElementById("corJkBodyRange").min;
+		
+		//ウエスト修正
+		var corJkWaistSize = jQuery("#corJkWaist_div_Size").val();
+		var corJkWaistGross = jQuery("#corJkWaist_div_Gross").val();
+		var corJkWaistRangeMax = document.getElementById("corJkWaistRange").max;
+		var corJkWaistRangeMin = document.getElementById("corJkWaistRange").min;
+		
+		//袖丈右修正
+		var corJkRightsleeveSize = jQuery("#corJkRightsleeve_div_Size").val();
+		var corJkRightsleeveGross = jQuery("#corJkRightsleeve_div_Gross").val();
+		var corJkRightsleeveRangeMax = document.getElementById("corJkRightsleeveRange").max;
+		var corJkRightsleeveRangeMin = document.getElementById("corJkRightsleeveRange").min;
+		
+		//袖丈左修正
+		var corJkLeftsleeveSize = jQuery("#corJkLeftsleeve_div_Size").val();
+		var corJkLeftsleeveGross = jQuery("#corJkLeftsleeve_div_Gross").val();
+		var corJkLeftsleeveRangeMax = document.getElementById("corJkLeftsleeveRange").max;
+		var corJkLeftsleeveRangeMin = document.getElementById("corJkLeftsleeveRange").min;
+
+		if(isEmpty(corJkBodySize)||corJkBodySize == "0" || corJkBodySize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkWaistSize) || corJkWaistSize == "0" || corJkWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkRightsleeveSize) || corJkRightsleeveSize == "0" || corJkRightsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkLeftsleeveSize) || corJkLeftsleeveSize == "0" || corJkLeftsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+
+		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
+		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+
+		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
+		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+
+		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
+		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
+		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+
+		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+		
 		//ラペルデザイン
 		if (!jQuery("input[name='optionJacketStandardInfo.ojLapelDesign']").is(":checked")) {
 			appendAlert('errormssage', getMsgByOneArg('msg066', 'ラペルデザイン'));
@@ -9598,6 +9853,75 @@ function imageCheck(){
 		if(corPtRightinseamGross<50||corPtRightinseamGross>110){
 			appendAlert('errormssage', getMsgByOneArg('msg121', 'PANTS（1本目）の股下右'));
 			return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		//ウエスト修正
+		var corPtWaistSize = jQuery("#corPtWaist_div_Size").val();
+		var corPtWaistGross = jQuery("#corPtWaist_div_Gross").val();
+		var corPtWaistRangeMax = document.getElementById("corPtWaistRange").max;
+		var corPtWaistRangeMin = document.getElementById("corPtWaistRange").min;
+		
+		//ワタリ幅修正
+		var corPtThighSize = jQuery("#corPtThigh_div_Size").val();
+		var corPtThighGross = jQuery("#corPtThigh_div_Gross").val();
+		var corPtThighRangeMax = document.getElementById("corPtThighRange").max;
+		var corPtThighRangeMin = document.getElementById("corPtThighRange").min;
+		
+		//裾幅
+		var corPtHemwidthSize = jQuery("#corPtHemwidth_div_Size").val();
+		var corPtHemwidthGross = jQuery("#corPtHemwidth_div_Gross").val();
+		var corPtHemwidthRangeMax = document.getElementById("corPtHemwidthRange").max;
+		var corPtHemwidthRangeMin = document.getElementById("corPtHemwidthRange").min;
+
+		if(isEmpty(corPtWaistSize)||corPtWaistSize == "0" || corPtWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtThighSize) || corPtThighSize == "0" || corPtThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtHemwidthSize) || corPtHemwidthSize == "0" || corPtHemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+
+		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+
+		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
+		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+
+		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
+            return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
@@ -9641,6 +9965,99 @@ function imageCheck(){
 	    	appendAlertDel('errormssage');
 		}
 
+		//着丈修正
+		var corJkBodySize = jQuery("#corJkBody_div_Size").val();
+		var corJkBodyGross = jQuery("#corJkBody_div_Gross").val();
+		var corJkBodyRangeMax = document.getElementById("corJkBodyRange").max;
+		var corJkBodyRangeMin = document.getElementById("corJkBodyRange").min;
+		
+		//ウエスト修正
+		var corJkWaistSize = jQuery("#corJkWaist_div_Size").val();
+		var corJkWaistGross = jQuery("#corJkWaist_div_Gross").val();
+		var corJkWaistRangeMax = document.getElementById("corJkWaistRange").max;
+		var corJkWaistRangeMin = document.getElementById("corJkWaistRange").min;
+		
+		//袖丈右修正
+		var corJkRightsleeveSize = jQuery("#corJkRightsleeve_div_Size").val();
+		var corJkRightsleeveGross = jQuery("#corJkRightsleeve_div_Gross").val();
+		var corJkRightsleeveRangeMax = document.getElementById("corJkRightsleeveRange").max;
+		var corJkRightsleeveRangeMin = document.getElementById("corJkRightsleeveRange").min;
+		
+		//袖丈左修正
+		var corJkLeftsleeveSize = jQuery("#corJkLeftsleeve_div_Size").val();
+		var corJkLeftsleeveGross = jQuery("#corJkLeftsleeve_div_Gross").val();
+		var corJkLeftsleeveRangeMax = document.getElementById("corJkLeftsleeveRange").max;
+		var corJkLeftsleeveRangeMin = document.getElementById("corJkLeftsleeveRange").min;
+
+		if(isEmpty(corJkBodySize)||corJkBodySize == "0" || corJkBodySize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkWaistSize) || corJkWaistSize == "0" || corJkWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkRightsleeveSize) || corJkRightsleeveSize == "0" || corJkRightsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkLeftsleeveSize) || corJkLeftsleeveSize == "0" || corJkLeftsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+
+		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
+		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+
+		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
+		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+
+		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
+		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
+		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+
+		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
 		//ラペルデザイン
 		if (!jQuery("input[name='optionJacketStandardInfo.ojLapelDesign']").is(":checked")) {
 			appendAlert('errormssage', getMsgByOneArg('msg003', 'ラペルデザイン'));
@@ -9682,7 +10099,75 @@ function imageCheck(){
 		}else{
 			appendAlertDel('errormssage');
 		}
+
+		//ウエスト修正
+		var corPtWaistSize = jQuery("#corPtWaist_div_Size").val();
+		var corPtWaistGross = jQuery("#corPtWaist_div_Gross").val();
+		var corPtWaistRangeMax = document.getElementById("corPtWaistRange").max;
+		var corPtWaistRangeMin = document.getElementById("corPtWaistRange").min;
 		
+		//ワタリ幅修正
+		var corPtThighSize = jQuery("#corPtThigh_div_Size").val();
+		var corPtThighGross = jQuery("#corPtThigh_div_Gross").val();
+		var corPtThighRangeMax = document.getElementById("corPtThighRange").max;
+		var corPtThighRangeMin = document.getElementById("corPtThighRange").min;
+		
+		//裾幅
+		var corPtHemwidthSize = jQuery("#corPtHemwidth_div_Size").val();
+		var corPtHemwidthGross = jQuery("#corPtHemwidth_div_Gross").val();
+		var corPtHemwidthRangeMax = document.getElementById("corPtHemwidthRange").max;
+		var corPtHemwidthRangeMin = document.getElementById("corPtHemwidthRange").min;
+
+		if(isEmpty(corPtWaistSize)||corPtWaistSize == "0" || corPtWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtThighSize) || corPtThighSize == "0" || corPtThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtHemwidthSize) || corPtHemwidthSize == "0" || corPtHemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+
+		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+
+		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
+		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+
+		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
 
     	var pants2Model = jQuery("#op2_pantsModel").val();
     	if(pants2Model==""||pants2Model==null){
@@ -9696,7 +10181,7 @@ function imageCheck(){
 		var pt2Number = jQuery("#selectPants2Number").val();
 
     	if(isEmpty(pt2Figure)||isEmpty(pt2Number)){
-			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS（2本目）サイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9720,8 +10205,75 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
+		//ウエスト修正
+		var corPt2WaistSize = jQuery("#corPt2Waist_div_Size").val();
+		var corPt2WaistGross = jQuery("#corPt2Waist_div_Gross").val();
+		var corPt2WaistRangeMax = document.getElementById("corPt2WaistRange").max;
+		var corPt2WaistRangeMin = document.getElementById("corPt2WaistRange").min;
 		
+		//ワタリ幅修正
+		var corPt2ThighSize = jQuery("#corPt2Thigh_div_Size").val();
+		var corPt2ThighGross = jQuery("#corPt2Thigh_div_Gross").val();
+		var corPt2ThighRangeMax = document.getElementById("corPt2ThighRange").max;
+		var corPt2ThighRangeMin = document.getElementById("corPt2ThighRange").min;
 		
+		//裾幅
+		var corPt2HemwidthSize = jQuery("#corPt2Hemwidth_div_Size").val();
+		var corPt2HemwidthGross = jQuery("#corPt2Hemwidth_div_Gross").val();
+		var corPt2HemwidthRangeMax = document.getElementById("corPt2HemwidthRange").max;
+		var corPt2HemwidthRangeMin = document.getElementById("corPt2HemwidthRange").min;
+		
+		if(isEmpty(corPt2WaistSize)||corPt2WaistSize == "0" || corPt2WaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）ウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPt2ThighSize) || corPt2ThighSize == "0" || corPt2ThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）ワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPt2HemwidthSize) || corPt2HemwidthSize == "0" || corPt2HemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2WaistGrossMax = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax);
+		var corPt2WaistGrossMin = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin);
+
+		if(corPt2WaistGross<corPt2WaistGrossMin || corPt2WaistGross>corPt2WaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2ThighGrossMax = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax);
+		var corPt2ThighGrossMin = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin);
+
+		if(corPt2ThighGross<corPt2ThighGrossMin || corPt2ThighGross>corPt2ThighGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2HemwidthGrossMax = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax);
+		var corPt2HemwidthGrossMin = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin);
+
+		if(corPt2HemwidthGross<corPt2HemwidthGrossMin || corPt2HemwidthGross>corPt2HemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
     }
   	//SUIT、３Pieceが有り、スペアパンツが有りの場合
     if(item=='01'&&threePiece=='0009902'&&twoPants=='0009902'){
@@ -9743,6 +10295,99 @@ function imageCheck(){
 	    	appendAlertDel('errormssage');
 		}
 
+		//着丈修正
+		var corJkBodySize = jQuery("#corJkBody_div_Size").val();
+		var corJkBodyGross = jQuery("#corJkBody_div_Gross").val();
+		var corJkBodyRangeMax = document.getElementById("corJkBodyRange").max;
+		var corJkBodyRangeMin = document.getElementById("corJkBodyRange").min;
+		
+		//ウエスト修正
+		var corJkWaistSize = jQuery("#corJkWaist_div_Size").val();
+		var corJkWaistGross = jQuery("#corJkWaist_div_Gross").val();
+		var corJkWaistRangeMax = document.getElementById("corJkWaistRange").max;
+		var corJkWaistRangeMin = document.getElementById("corJkWaistRange").min;
+		
+		//袖丈右修正
+		var corJkRightsleeveSize = jQuery("#corJkRightsleeve_div_Size").val();
+		var corJkRightsleeveGross = jQuery("#corJkRightsleeve_div_Gross").val();
+		var corJkRightsleeveRangeMax = document.getElementById("corJkRightsleeveRange").max;
+		var corJkRightsleeveRangeMin = document.getElementById("corJkRightsleeveRange").min;
+		
+		//袖丈左修正
+		var corJkLeftsleeveSize = jQuery("#corJkLeftsleeve_div_Size").val();
+		var corJkLeftsleeveGross = jQuery("#corJkLeftsleeve_div_Gross").val();
+		var corJkLeftsleeveRangeMax = document.getElementById("corJkLeftsleeveRange").max;
+		var corJkLeftsleeveRangeMin = document.getElementById("corJkLeftsleeveRange").min;
+
+		if(isEmpty(corJkBodySize)||corJkBodySize == "0" || corJkBodySize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkWaistSize) || corJkWaistSize == "0" || corJkWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkRightsleeveSize) || corJkRightsleeveSize == "0" || corJkRightsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkLeftsleeveSize) || corJkLeftsleeveSize == "0" || corJkLeftsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+
+		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
+		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+
+		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
+		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+
+		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
+		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
+		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+
+		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+		
 		//ラペルデザイン
 		if (!jQuery("input[name='optionJacketStandardInfo.ojLapelDesign']").is(":checked")) {
 			appendAlert('errormssage', getMsgByOneArg('msg003', 'ラペルデザイン'));
@@ -9787,19 +10432,88 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-    	var pants2Model = jQuery("#op2_pantsModel").val();
+		//ウエスト修正
+		var corPtWaistSize = jQuery("#corPtWaist_div_Size").val();
+		var corPtWaistGross = jQuery("#corPtWaist_div_Gross").val();
+		var corPtWaistRangeMax = document.getElementById("corPtWaistRange").max;
+		var corPtWaistRangeMin = document.getElementById("corPtWaistRange").min;
+		
+		//ワタリ幅修正
+		var corPtThighSize = jQuery("#corPtThigh_div_Size").val();
+		var corPtThighGross = jQuery("#corPtThigh_div_Gross").val();
+		var corPtThighRangeMax = document.getElementById("corPtThighRange").max;
+		var corPtThighRangeMin = document.getElementById("corPtThighRange").min;
+		
+		//裾幅
+		var corPtHemwidthSize = jQuery("#corPtHemwidth_div_Size").val();
+		var corPtHemwidthGross = jQuery("#corPtHemwidth_div_Gross").val();
+		var corPtHemwidthRangeMax = document.getElementById("corPtHemwidthRange").max;
+		var corPtHemwidthRangeMin = document.getElementById("corPtHemwidthRange").min;
+
+		if(isEmpty(corPtWaistSize)||corPtWaistSize == "0" || corPtWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtThighSize) || corPtThighSize == "0" || corPtThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtHemwidthSize) || corPtHemwidthSize == "0" || corPtHemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+
+		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+
+		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
+		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+
+		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var pants2Model = jQuery("#op2_pantsModel").val();
     	if(pants2Model==""||pants2Model==null){
     		appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS（2本目）モデル'));
             return false;
     	}else{
 	    	appendAlertDel('errormssage');
 		}
-
+		
     	var pt2Figure = jQuery("#selectPants2Figure").val();
 		var pt2Number = jQuery("#selectPants2Number").val();
 
     	if(isEmpty(pt2Figure)||isEmpty(pt2Number)){
-			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTSサイズ'));
+			appendAlert('errormssage', getMsgByOneArg('msg066', 'PANTS（2本目）サイズ'));
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9821,7 +10535,76 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-    	var giletModel = jQuery("#giletModel").val();
+		//ウエスト修正
+		var corPt2WaistSize = jQuery("#corPt2Waist_div_Size").val();
+		var corPt2WaistGross = jQuery("#corPt2Waist_div_Gross").val();
+		var corPt2WaistRangeMax = document.getElementById("corPt2WaistRange").max;
+		var corPt2WaistRangeMin = document.getElementById("corPt2WaistRange").min;
+		
+		//ワタリ幅修正
+		var corPt2ThighSize = jQuery("#corPt2Thigh_div_Size").val();
+		var corPt2ThighGross = jQuery("#corPt2Thigh_div_Gross").val();
+		var corPt2ThighRangeMax = document.getElementById("corPt2ThighRange").max;
+		var corPt2ThighRangeMin = document.getElementById("corPt2ThighRange").min;
+		
+		//裾幅
+		var corPt2HemwidthSize = jQuery("#corPt2Hemwidth_div_Size").val();
+		var corPt2HemwidthGross = jQuery("#corPt2Hemwidth_div_Gross").val();
+		var corPt2HemwidthRangeMax = document.getElementById("corPt2HemwidthRange").max;
+		var corPt2HemwidthRangeMin = document.getElementById("corPt2HemwidthRange").min;
+		
+		if(isEmpty(corPt2WaistSize)||corPt2WaistSize == "0" || corPt2WaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）ウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPt2ThighSize) || corPt2ThighSize == "0" || corPt2ThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）ワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPt2HemwidthSize) || corPt2HemwidthSize == "0" || corPt2HemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（2本目）裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2WaistGrossMax = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax);
+		var corPt2WaistGrossMin = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin);
+
+		if(corPt2WaistGross<corPt2WaistGrossMin || corPt2WaistGross>corPt2WaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2ThighGrossMax = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax);
+		var corPt2ThighGrossMin = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin);
+
+		if(corPt2ThighGross<corPt2ThighGrossMin || corPt2ThighGross>corPt2ThighGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPt2HemwidthGrossMax = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax);
+		var corPt2HemwidthGrossMin = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin);
+
+		if(corPt2HemwidthGross<corPt2HemwidthGrossMin || corPt2HemwidthGross>corPt2HemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var giletModel = jQuery("#giletModel").val();
     	if(giletModel==""||giletModel==null){
     		appendAlert('errormssage', getMsgByOneArg('msg066', 'GILET モデル'));
             return false;
@@ -9857,6 +10640,99 @@ function imageCheck(){
             return false;
 		}else{
 	    	appendAlertDel('errormssage');
+		}
+
+		//着丈修正
+		var corJkBodySize = jQuery("#corJkBody_div_Size").val();
+		var corJkBodyGross = jQuery("#corJkBody_div_Gross").val();
+		var corJkBodyRangeMax = document.getElementById("corJkBodyRange").max;
+		var corJkBodyRangeMin = document.getElementById("corJkBodyRange").min;
+		
+		//ウエスト修正
+		var corJkWaistSize = jQuery("#corJkWaist_div_Size").val();
+		var corJkWaistGross = jQuery("#corJkWaist_div_Gross").val();
+		var corJkWaistRangeMax = document.getElementById("corJkWaistRange").max;
+		var corJkWaistRangeMin = document.getElementById("corJkWaistRange").min;
+		
+		//袖丈右修正
+		var corJkRightsleeveSize = jQuery("#corJkRightsleeve_div_Size").val();
+		var corJkRightsleeveGross = jQuery("#corJkRightsleeve_div_Gross").val();
+		var corJkRightsleeveRangeMax = document.getElementById("corJkRightsleeveRange").max;
+		var corJkRightsleeveRangeMin = document.getElementById("corJkRightsleeveRange").min;
+		
+		//袖丈左修正
+		var corJkLeftsleeveSize = jQuery("#corJkLeftsleeve_div_Size").val();
+		var corJkLeftsleeveGross = jQuery("#corJkLeftsleeve_div_Gross").val();
+		var corJkLeftsleeveRangeMax = document.getElementById("corJkLeftsleeveRange").max;
+		var corJkLeftsleeveRangeMin = document.getElementById("corJkLeftsleeveRange").min;
+
+		if(isEmpty(corJkBodySize)||corJkBodySize == "0" || corJkBodySize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkWaistSize) || corJkWaistSize == "0" || corJkWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkRightsleeveSize) || corJkRightsleeveSize == "0" || corJkRightsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corJkLeftsleeveSize) || corJkLeftsleeveSize == "0" || corJkLeftsleeveSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+
+		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
+		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+
+		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
+		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+
+		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
+		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
+		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+
+		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
 		}
 		
 		//ラペルデザイン
@@ -9902,7 +10778,75 @@ function imageCheck(){
 		}else{
 			appendAlertDel('errormssage');
 		}
+
+		//ウエスト修正
+		var corPtWaistSize = jQuery("#corPtWaist_div_Size").val();
+		var corPtWaistGross = jQuery("#corPtWaist_div_Gross").val();
+		var corPtWaistRangeMax = document.getElementById("corPtWaistRange").max;
+		var corPtWaistRangeMin = document.getElementById("corPtWaistRange").min;
 		
+		//ワタリ幅修正
+		var corPtThighSize = jQuery("#corPtThigh_div_Size").val();
+		var corPtThighGross = jQuery("#corPtThigh_div_Gross").val();
+		var corPtThighRangeMax = document.getElementById("corPtThighRange").max;
+		var corPtThighRangeMin = document.getElementById("corPtThighRange").min;
+		
+		//裾幅
+		var corPtHemwidthSize = jQuery("#corPtHemwidth_div_Size").val();
+		var corPtHemwidthGross = jQuery("#corPtHemwidth_div_Gross").val();
+		var corPtHemwidthRangeMax = document.getElementById("corPtHemwidthRange").max;
+		var corPtHemwidthRangeMin = document.getElementById("corPtHemwidthRange").min;
+
+		if(isEmpty(corPtWaistSize)||corPtWaistSize == "0" || corPtWaistSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtThighSize) || corPtThighSize == "0" || corPtThighSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		if(isEmpty(corPtHemwidthSize) || corPtHemwidthSize == "0" || corPtHemwidthSize == 0){
+			appendAlert('errormssage', getMsgByOneArg('msg135', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+
+		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
+		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+
+		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
+
+		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
+		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+
+		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
+			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
+            return false;
+		}else{
+			appendAlertDel('errormssage');
+		}
     }
     //GILITの場合
     if(item=='04'){

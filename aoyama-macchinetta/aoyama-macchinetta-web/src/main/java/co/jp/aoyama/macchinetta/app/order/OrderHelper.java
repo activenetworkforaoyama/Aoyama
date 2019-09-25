@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -16,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.dozer.util.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.common.message.ResultMessages;
 
 import com.google.gson.Gson;
 
@@ -27,11 +28,7 @@ import co.jp.aoyama.macchinetta.app.order.enums.ItemTypeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.adjust.JacketAdjustCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.adjust.Pants2AdjustCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.adjust.PantsAdjustCodeEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.coat.CoatCoOptionStandardUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.coat.CoatOptionStandardCodeEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletCoOptionStandardNextUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletCoOptionTuxedoUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletCoOptionWashableUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionDetailStandardNextGenerationPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionStandardCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionStandardColorEnum;
@@ -41,9 +38,6 @@ import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionTuxedoCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionTuxedoColorEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionWashableCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.gilet.GiletOptionWashableColorEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketCoOptionStandardUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketCoOptionTuxedoUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketCoOptionWashableUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionDetailStandardNextGenerationPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionStandardCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionStandardColorEnum;
@@ -53,19 +47,12 @@ import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionTuxedoCodeEnu
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionTuxedoColorEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionWashableCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionWashableColorEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionStandardUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionTuxedoPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionTuxedoUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionWashableUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionStandardCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionStandardColorEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionStandardNextGenerationPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionStandardPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionTuxedoCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2OptionWashableCodeEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsCoOptionStandardUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsCoOptionTuxedoUpperPriceEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsCoOptionWashableUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionStandardCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionStandardColorEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionStandardNextGenerationPriceEnum;
@@ -74,7 +61,6 @@ import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionTuxedoCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionTuxedoColorEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionWashableCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.pants.PantsOptionWashableColorEnum;
-import co.jp.aoyama.macchinetta.app.order.enums.shirt.ShirtCoOptionStandardUpperPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.shirt.ShirtOptionStandardCodeEnum;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustGiletStandardInfo;
@@ -12287,6 +12273,432 @@ public class OrderHelper {
 		}
 		
 	}
+	
+	/**
+	 * 
+	 * @param order
+	 * @return 
+	 */
+	public void checkBasicValue(Order order) {
+		ResultMessages messages = ResultMessages.error(); 
+
+		int i = 0; 
+
+		// ３Pieceまたはスペアパンツは有り
+		String productYes = "0009902";
+
+		String productItem = order.getProductItem();
+		String productSparePantsClass = order.getProductSparePantsClass();
+
+		if ("01".equals(productItem)) {
+			// JACKET_着丈_型サイズ
+			BigDecimal corJkBodylengthSize = order.getCorJkBodylengthSize();
+			// JACKET_ウエスト_型サイズ
+			BigDecimal corJkWaistSize = order.getCorJkWaistSize();
+			// JACKET_袖丈右_型サイズ
+			BigDecimal corJkRightsleeveSize = order.getCorJkRightsleeveSize();
+			// JACKET_袖丈左_型サイズ
+			BigDecimal corJkLeftsleeveSize = order.getCorJkLeftsleeveSize();
+
+			// PANTS_ウエスト_型サイズ
+			BigDecimal corPtWaistSize = order.getCorPtWaistSize();
+			// PANTS_ワタリ_型サイズ
+			BigDecimal corPtThighwidthSize = order.getCorPtThighwidthSize();
+			// PANTS_裾幅_修正_型サイズ
+			BigDecimal corPtHemwidthSize = order.getCorPtHemwidthSize();
+
+			if (corJkBodylengthSize == null || corJkBodylengthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの着丈修正");
+				i += 1;
+			} else if (corJkWaistSize == null || corJkWaistSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETのウエスト修正");
+				i += 1;
+			} else if (corJkRightsleeveSize == null || corJkRightsleeveSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの袖丈右修正");
+				i += 1;
+			} else if (corJkLeftsleeveSize == null || corJkLeftsleeveSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの袖丈左修正");
+				i += 1;
+			} else if (corPtWaistSize == null || corPtWaistSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSのウエスト修正");
+				i += 1;
+			} else if (corPtThighwidthSize == null || corPtThighwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSのワタリ幅修正");
+				i += 1;
+			} else if (corPtHemwidthSize == null || corPtHemwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSの裾幅修正");
+				i += 1;
+			}
+
+			if (productYes.equals(productSparePantsClass)) {
+				// 2PANTS_ウエスト_型サイズ
+				BigDecimal corPt2WaistSize = order.getCorPt2WaistSize();
+				// 2PANTS_ワタリ_型サイズ
+				BigDecimal corPt2ThighwidthSize = order.getCorPt2ThighwidthSize();
+				// 2PANTS_裾幅_修正_型サイズ
+				BigDecimal corPt2HemwidthSize = order.getCorPt2HemwidthSize();
+				if (corPt2WaistSize == null || corPt2WaistSize.compareTo(BigDecimal.ZERO) == 0) {
+					messages.add("E034", "2PANTSウエスト修正");
+					i += 1;
+				} else if (corPt2ThighwidthSize == null || corPt2ThighwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+					messages.add("E034", "2PANTSワタリ幅修正");
+					i += 1;
+				} else if (corPt2HemwidthSize == null || corPt2HemwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+					messages.add("E034", "2PANTS裾幅修正");
+					i += 1;
+				}
+			}
+		} else if ("02".equals(productItem)) {
+			// JACKET_着丈_型サイズ
+			BigDecimal corJkBodylengthSize = order.getCorJkBodylengthSize();
+			// JACKET_ウエスト_型サイズ
+			BigDecimal corJkWaistSize = order.getCorJkWaistSize();
+			// JACKET_袖丈右_型サイズ
+			BigDecimal corJkRightsleeveSize = order.getCorJkRightsleeveSize();
+			// JACKET_袖丈左_型サイズ
+			BigDecimal corJkLeftsleeveSize = order.getCorJkLeftsleeveSize();
+
+			if (corJkBodylengthSize == null || corJkBodylengthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの着丈修正");
+				i += 1;
+			} else if (corJkWaistSize == null || corJkWaistSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETのウエスト修正");
+				i += 1;
+			} else if (corJkRightsleeveSize == null || corJkRightsleeveSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの袖丈右修正");
+				i += 1;
+			} else if (corJkLeftsleeveSize == null || corJkLeftsleeveSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "JACKETの袖丈左修正");
+				i += 1;
+			}
+		} else if ("03".equals(productItem)) {
+			// PANTS_ウエスト_型サイズ
+			BigDecimal corPtWaistSize = order.getCorPtWaistSize();
+			// PANTS_ワタリ_型サイズ
+			BigDecimal corPtThighwidthSize = order.getCorPtThighwidthSize();
+			// PANTS_裾幅_修正_型サイズ
+			BigDecimal corPtHemwidthSize = order.getCorPtHemwidthSize();
+
+			if (corPtWaistSize == null || corPtWaistSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSのウエスト修正");
+				i += 1;
+			} else if (corPtThighwidthSize == null || corPtThighwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSのワタリ幅修正");
+				i += 1;
+			} else if (corPtHemwidthSize == null || corPtHemwidthSize.compareTo(BigDecimal.ZERO) == 0) {
+				messages.add("E034", "PANTSの裾幅修正");
+				i += 1;
+			}
+		}
+		
+		if(i != 0) {
+			logger.error(messages.toString());
+            throw new ResourceNotFoundException(messages);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param adjustByItem
+	 * @param orderForm
+	 */
+	public void checkAbsolutelyAdjust(List<Adjust> adjustByItem,Order order) {
+		ResultMessages messages = ResultMessages.error();
+		int j = 0;
+		
+		// ３Pieceまたはスペアパンツは有り
+		String productYes = "0009902";
+		
+		String productItem = order.getProductItem();
+		String productSparePantsClass = order.getProductSparePantsClass();
+		
+		// JACKET_着丈_型サイズ
+		BigDecimal corJkBodylengthSize = order.getCorJkBodylengthSize();
+		// JACKET_着丈_グロス
+		BigDecimal corJkBodylengthGross = order.getCorJkBodylengthGross();
+		
+		// JACKET_ウエスト_型サイズ
+		BigDecimal corJkWaistSize = order.getCorJkWaistSize();
+		// JACKET_ウエスト_グロス
+		BigDecimal corJkWaistGross = order.getCorJkWaistGross();
+				
+		// JACKET_袖丈右_型サイズ
+		BigDecimal corJkRightsleeveSize = order.getCorJkRightsleeveSize();
+		// JACKET_袖丈右_グロス
+		BigDecimal corJkRightsleeveGross = order.getCorJkRightsleeveGross();
+		
+		// JACKET_袖丈左_型サイズ
+		BigDecimal corJkLeftsleeveSize = order.getCorJkLeftsleeveSize();
+		// JACKET_袖丈左_グロス
+		BigDecimal corJkLeftsleeveGross = order.getCorJkLeftsleeveGross();
+		
+		// PANTS_ウエスト_型サイズ
+		BigDecimal corPtWaistSize = order.getCorPtWaistSize();
+		// PANTS_ウエスト_グロス
+		BigDecimal corPtWaistGross = order.getCorPtWaistGross();
+		
+		// PANTS_ワタリ_型サイズ
+		BigDecimal corPtThighwidthSize = order.getCorPtThighwidthSize();
+		// PANTS_ワタリ_グロス
+		BigDecimal corPtThighwidthGross = order.getCorPtThighwidthGross();
+		
+		// PANTS_裾幅_修正_型サイズ
+		BigDecimal corPtHemwidthSize = order.getCorPtHemwidthSize();
+		// PANTS_裾幅_修正_グロス
+		BigDecimal corPtHemwidthGross = order.getCorPtHemwidthGross();
+		
+		// 2PANTS_ウエスト_型サイズ
+		BigDecimal corPt2WaistSize = order.getCorPt2WaistSize();
+		// 2PANTS_ウエスト_グロス
+		BigDecimal corPt2WaistGross = order.getCorPt2WaistGross();
+		
+		// 2PANTS_ワタリ_型サイズ
+		BigDecimal corPt2ThighwidthSize = order.getCorPt2ThighwidthSize();
+		// 2PANTS_ワタリ_グロス
+		BigDecimal corPt2ThighwidthGross = order.getCorPt2ThighwidthGross();
+		
+		// 2PANTS_裾幅_修正_型サイズ
+		BigDecimal corPt2HemwidthSize = order.getCorPt2HemwidthSize();
+		// 2PANTS_裾幅_修正_グロス
+		BigDecimal corPt2HemwidthGross = order.getCorPt2HemwidthGross();
+		
+		for(Adjust adjust : adjustByItem) {
+			if("01".equals(productItem)) {
+				if("01".equals(adjust.getItemCode())) {
+					if("02".equals(adjust.getSubItemCode())) {
+						// 着丈修正
+						if("01".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkBodylengthSize);
+							BigDecimal addMax = adjusteMax.add(corJkBodylengthSize);
+							if(corJkBodylengthGross.compareTo(addMin) == -1 || corJkBodylengthGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの着丈修正");
+								j += 1;
+								break;
+							}
+						}
+						// ウエスト修正
+						if("02".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkWaistSize);
+							BigDecimal addMax = adjusteMax.add(corJkWaistSize);
+							if(corJkWaistGross.compareTo(addMin) == -1 || corJkWaistGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETのウエスト修正");
+								j += 1;
+								break;
+							}
+						}
+						// 袖丈右修正
+						if("03".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkRightsleeveSize);
+							BigDecimal addMax = adjusteMax.add(corJkRightsleeveSize);
+							if(corJkRightsleeveGross.compareTo(addMin) == -1 || corJkRightsleeveGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの袖丈右修正");
+								j += 1;
+								break;
+							}
+						}
+						// 袖丈左修正
+						if("04".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkLeftsleeveSize);
+							BigDecimal addMax = adjusteMax.add(corJkLeftsleeveSize);
+							if(corJkLeftsleeveGross.compareTo(addMin) == -1 || corJkLeftsleeveGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの袖丈左修正");
+								j += 1;
+								break;
+							}
+						}
+					}
+					if("03".equals(adjust.getSubItemCode())) {
+						// ウエスト修正
+						if("06".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtWaistSize);
+							BigDecimal addMax = adjusteMax.add(corPtWaistSize);
+							if(corPtWaistGross.compareTo(addMin) == -1 || corPtWaistGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのウエスト修正");
+								j += 1;
+								break;
+							}
+						}
+						// ワタリ修正
+						if("07".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtThighwidthSize);
+							BigDecimal addMax = adjusteMax.add(corPtThighwidthSize);
+							if(corPtThighwidthGross.compareTo(addMin) == -1 || corPtThighwidthGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのワタリ修正");
+								j += 1;
+								break;
+							}
+						}
+						// 裾幅修正
+						if("08".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtHemwidthSize);
+							BigDecimal addMax = adjusteMax.add(corPtHemwidthSize);
+							if(corPtHemwidthGross.compareTo(addMin) == -1 || corPtHemwidthGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのワタリ修正");
+								j += 1;
+								break;
+							}
+						}
+					}
+					if(productYes.equals(productSparePantsClass)) {
+						if("07".equals(adjust.getSubItemCode())) {
+							// ウエスト修正2
+							if("06".equals(adjust.getAdjusteClass())) {
+								BigDecimal adjusteMax = adjust.getAdjusteMax();
+								BigDecimal adjusteMin = adjust.getAdjusteMin();
+								BigDecimal addMin = adjusteMin.add(corPt2WaistSize);
+								BigDecimal addMax = adjusteMax.add(corPt2WaistSize);
+								if(corPt2WaistGross.compareTo(addMin) == -1 || corPt2WaistGross.compareTo(addMax) == 1) {
+									messages.add("E035","2PANTSのウエスト修正2");
+									j += 1;
+									break;
+								}
+							}
+							// ワタリ修正2
+							if("07".equals(adjust.getAdjusteClass())) {
+								BigDecimal adjusteMax = adjust.getAdjusteMax();
+								BigDecimal adjusteMin = adjust.getAdjusteMin();
+								BigDecimal addMin = adjusteMin.add(corPt2ThighwidthSize);
+								BigDecimal addMax = adjusteMax.add(corPt2ThighwidthSize);
+								if(corPt2ThighwidthGross.compareTo(addMin) == -1 || corPt2ThighwidthGross.compareTo(addMax) == 1) {
+									messages.add("E035","2PANTSのワタリ修正2");
+									j += 1;
+									break;
+								}
+							}
+							// 裾幅修正2
+							if("08".equals(adjust.getAdjusteClass())) {
+								BigDecimal adjusteMax = adjust.getAdjusteMax();
+								BigDecimal adjusteMin = adjust.getAdjusteMin();
+								BigDecimal addMin = adjusteMin.add(corPt2HemwidthSize);
+								BigDecimal addMax = adjusteMax.add(corPt2HemwidthSize);
+								if(corPt2HemwidthGross.compareTo(addMin) == -1 || corPt2HemwidthGross.compareTo(addMax) == 1) {
+									messages.add("E035","2PANTSの裾幅修正2");
+									j += 1;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			else if("02".equals(productItem)) {
+				if("02".equals(adjust.getItemCode())) {
+					if("02".equals(adjust.getSubItemCode())) {
+						// 着丈修正
+						if("01".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkBodylengthSize);
+							BigDecimal addMax = adjusteMax.add(corJkBodylengthSize);
+							if(corJkBodylengthGross.compareTo(addMin) == -1 || corJkBodylengthGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの着丈修正");
+								j += 1;
+								break;
+							}
+						}
+						// ウエスト修正
+						if("02".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkWaistSize);
+							BigDecimal addMax = adjusteMax.add(corJkWaistSize);
+							if(corJkWaistGross.compareTo(addMin) == -1 || corJkWaistGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETのウエスト修正");
+								j += 1;
+								break;
+							}
+						}
+						// 袖丈右修正
+						if("03".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkRightsleeveSize);
+							BigDecimal addMax = adjusteMax.add(corJkRightsleeveSize);
+							if(corJkRightsleeveGross.compareTo(addMin) == -1 || corJkRightsleeveGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの袖丈右修正");
+								j += 1;
+								break;
+							}
+						}
+						// 袖丈左修正
+						if("04".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corJkLeftsleeveSize);
+							BigDecimal addMax = adjusteMax.add(corJkLeftsleeveSize);
+							if(corJkLeftsleeveGross.compareTo(addMin) == -1 || corJkLeftsleeveGross.compareTo(addMax) == 1) {
+								messages.add("E035","JACKETの袖丈左修正");
+								j += 1;
+								break;
+							}
+						}
+					}
+				}
+			}
+			else if("03".equals(productItem)) {
+				if("03".equals(adjust.getItemCode())) {
+					if("03".equals(adjust.getSubItemCode())) {
+						// ウエスト修正
+						if("06".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtWaistSize);
+							BigDecimal addMax = adjusteMax.add(corPtWaistSize);
+							if(corPtWaistGross.compareTo(addMin) == -1 || corPtWaistGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのウエスト修正");
+								j += 1;
+								break;
+							}
+						}
+						// ワタリ修正
+						if("07".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtThighwidthSize);
+							BigDecimal addMax = adjusteMax.add(corPtThighwidthSize);
+							if(corPtThighwidthGross.compareTo(addMin) == -1 || corPtThighwidthGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのワタリ修正");
+								j += 1;
+								break;
+							}
+						}
+						// 裾幅修正
+						if("08".equals(adjust.getAdjusteClass())) {
+							BigDecimal adjusteMax = adjust.getAdjusteMax();
+							BigDecimal adjusteMin = adjust.getAdjusteMin();
+							BigDecimal addMin = adjusteMin.add(corPtHemwidthSize);
+							BigDecimal addMax = adjusteMax.add(corPtHemwidthSize);
+							if(corPtHemwidthGross.compareTo(addMin) == -1 || corPtHemwidthGross.compareTo(addMax) == 1) {
+								messages.add("E035","PANTSのワタリ修正");
+								j += 1;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if(j != 0) {
+			logger.error(messages.toString());
+            throw new ResourceNotFoundException(messages);
+		}
+	}
+	
 	
 //	/**
 //	 * 

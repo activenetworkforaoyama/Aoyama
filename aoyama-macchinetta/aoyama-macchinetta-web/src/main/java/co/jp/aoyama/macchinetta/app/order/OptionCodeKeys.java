@@ -4,6 +4,7 @@ public class OptionCodeKeys {
 	
 	public static final String TWO_PANTS = "0009902";
 	
+	public static final String THREE_PIECE = "0009902";
 	
 	// JACKET
 	// フロント釦数:段返り3つボタン
@@ -214,17 +215,23 @@ public class OptionCodeKeys {
 	// 腰ポケット素材
 	public static final String GL_0000401 = "0000401";
 	// ステッチ種類
+	public static final String GL_0000503 = "0000503";
 	public static final String GL_0000504 = "0000504";
 	// ステッチ箇所変更
 	public static final String GL_0000601 = "0000601";
+	public static final String GL_0000602 = "0000602";
 	// ダブルステッチ
 	public static final String GL_0002601 = "0002601";
+	public static final String GL_0002602 = "0002602";
 	// AMF色指定
 	public static final String GL_0000801 = "0000801";
+	public static final String GL_0000802 = "0000802";
 	// ボタンホール色指定
 	public static final String GL_0001101 = "0001101";
+	public static final String GL_0001102 = "0001102";
 	// ボタン付け糸指定
 	public static final String GL_0001401 = "0001401";
+	public static final String GL_0001402 = "0001402";
 	// 背裏地素材
 	public static final String GL_1000100 = "1000100";
 	// 内側裏地素材

@@ -43,10 +43,12 @@ function initOptionJacketTuxedo() {
 					//0はモデルチェク成功の場合
 					jQuery("#jkModelFlag").val("0");
 					jQuery("#tj_jacketModelCheck").empty();
+					jQuery("#tj_jacketModelCheck").hide();
 					jQuery("#fabricMsg").empty();
 				}else if(checkResult == "false"){
 					//2はモデルチェク失敗の場合
 					jQuery("#jkModelFlag").val("1"+"*"+getMsgByOneArg('msg065','JACKET'));
+					jQuery("#tj_jacketModelCheck").show();
 					setAlert('tj_jacketModelCheck',getMsgByOneArg('msg065','JACKET'));
 				}
 			}

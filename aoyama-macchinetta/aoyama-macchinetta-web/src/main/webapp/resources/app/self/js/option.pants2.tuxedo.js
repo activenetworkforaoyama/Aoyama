@@ -5,16 +5,26 @@
 // 読み込み時
 //--------------------------------------------
 function initOptionPants2Tuxedo() {
-
+	jQuery('#tp2_pantsModel').attr("oldTpPants2Model",jQuery('#tp2_pantsModel').val());
 	// PANTSモデル
 	jQuery('#tp2_pantsModel').change(function() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
 
-		if (pantsModel == '' || pantsModel == null) {
-			// 未選択時は何もしない
-			return;
+		var pantsoldModel = jQuery('#tp2_pantsModel').attr("oldTpPants2Model");
+		if (pantsModel != pantsoldModel) {
+			jQuery("#pants2Flag").val("0");
+		}else{
+			jQuery("#pants2Flag").val("1");
 		}
+		jQuery('#tp2_pantsModel').attr("oldTpPants2Model",jQuery('#tp2_pantsModel').val());
+		var pantsFlag = jQuery("#pants2Flag").val();
+		if(pantsFlag == "0"){
+			// 選択されたJacketモデルを取得
+			if (pantsModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 
 		// 選択中のタック
 		var tackElem = jQuery('#tp2_tack');
@@ -150,6 +160,7 @@ function initOptionPants2Tuxedo() {
 		}
 		// 一時保存のモデルを更新
 		tmpTp2PantsModel = pantsModel;
+		}
 	});
 
 	// 膝裏

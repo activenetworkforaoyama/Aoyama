@@ -2073,6 +2073,9 @@
     </select>    
     <select id="findOrderJkByPk" parameterType="string" resultMap="OrderResultMap">   
         SELECT
+        
+         product_category,
+         jk_model_cd,
          cor_jk_drop,
          cor_jk_size,
          cor_jk_bodylength_size,
@@ -2102,6 +2105,8 @@
     
      <select id="findOrderPtByPk" parameterType="string" resultMap="OrderResultMap">   
         SELECT
+         product_category,
+         pt_model_cd,
          cor_pt_drop,
          cor_pt_size,
          cor_pt_waist_size,
@@ -2136,6 +2141,8 @@
      <select id="findOrderGlByPk" parameterType="string" resultMap="OrderResultMap">
     
         SELECT
+         product_category,
+         gl_model_cd,
          cor_gl_drop,
          cor_gl_size,
          cor_gl_bodylength_size,
@@ -2159,6 +2166,8 @@
     <select id="findOrderPt2ByPk" parameterType="string" resultMap="OrderResultMap">
     
         SELECT
+         product_category,
+         pt2_model_cd,
          cor_pt2_drop,
          cor_pt2_size,
          cor_pt2_waist_size,
@@ -2192,6 +2201,7 @@
      <select id="findOrderCtByPk" parameterType="string" resultMap="OrderResultMap">
     
        SELECT
+        ct_model_cd,
         cor_ct_size,
         cor_ct_bodylength_size,
         cor_ct_bodylength_correct,
@@ -2250,7 +2260,8 @@
           cor_st_leftcuffs_surrounding_size,
           cor_st_leftcuffs_surrounding_correct,
           cor_st_leftcuffs_surrounding_gross,
-          cor_store_correction_memo
+          cor_store_correction_memo,
+          cor_st_backdarts_unpack_cd
         FROM
             dtb_order
         WHERE
@@ -2628,7 +2639,10 @@
 			ct_inner_sleeve_cloth_rt_price,
 			ct_btn_material_cd,
 			ct_btn_material_nm,
-			ct_btn_material_rt_price
+			ct_btn_material_rt_price,
+			ct_inner_body_cloth_type,
+			ct_inner_sleeve_cloth_type,
+			ct_btn_material_type
 		FROM
 			dtb_order 
 		WHERE
@@ -2877,5 +2891,38 @@
 			dtb_order 
 		WHERE
 			order_id = #{ orderId}
+</select>
+<select id="findOrderProductByPk" parameterType="string" resultMap="OrderResultMap">
+	select order_id, order_pattern, store_brand_code, shop_code, billing_amount, product_price, 
+    option_price, total_price, consumption_tax_amount, sales_amount, ws_price, cash_id, 
+    cash_discount_price, cash_product_price, cash_contail_tax_product_price, store_nm, 
+    store_staff_nm, printout_cust_roma_nm, printout_store_staff_roma_nm, cust_cd, cust_nm, 
+    cust_kana_nm, cust_deliver_date, cust_is_deliver_shortning, cust_is_early_discount, 
+    cust_shop_delivery_date, cust_staff, cust_type, cust_shipping_destination, cust_shipping_destnation_otherstore, 
+    cust_remark, product_item, product_item_displaycode, product_is_3piece, product_is_3piece_rt_price, 
+    product_is_3piece_ws_wage, product_is_3piece_ws_price, product_spare_pants_class, 
+    product_spare_pants_rt_price, product_spare_pants_ws_wage, product_spare_pants_ws_price, 
+    product_fabric_no, fabric_color, fabric_pattern, fabric_price, ws_price_adjust, product_category, 
+    product_category_nm, product_brand_type, product_brand_nm, product_lcr_sewing_cd, 
+    product_lcr_sewing, product_lcr_sewing_rt_price, product_lcr_sewing_ws_wage, product_lcr_sewing_ws_price, 
+    product_fabric_nm_necessity, product_fabric_nm_necessity_nm, product_embroidery_necessity, 
+    product_embroidery_necessity_nm, product_embroidery_nm, product_embroidery_font_cd, 
+    product_embroidery_font, product_embroidery_thread_color_cd, product_embroidery_thread_color, 
+    product_embroidery_gazette_cd, product_embroidery_gazette, product_embroidery_gazette_rt_price, 
+    product_embroidery_gazette_ws_wage, product_embroidery_gazette_ws_price, product_embroidery_nm_pos_cd, 
+    product_embroidery_nm_pos, product_embroidery_nm_pos_rt_price, product_embroidery_nm_pos_ws_wage, 
+    product_embroidery_nm_pos_ws_price, product_embroidery_length, product_embroidery_width, 
+    product_remaining_cloth_type, product_remaining_cloth_nm, product_fabric_brand_nm, 
+    product_service_nm, product_compos_frt_fabric, product_compos_body_liner, product_compos_sleeve_liner, 
+    product_notice, product_factory_cd, product_maker_code, product_orderd_date, host_transmit_a_row, 
+    shipping_number, host_transmit_store_cd, host_transmit_item_cd, host_transmit_maker_cd, 
+    host_transmit_nenki_cd, host_transmit_color_cd, host_transmit_size, host_transmit_maker_product, 
+    factory_shipping_method, shipping_date, loading_date, fabric_used_mount, theory_fabric_used_mount, 
+    tsc_status, maker_factory_status, send2factory_status, is_cancelled, theoretical_stock_check, 
+    schedule_data_transmit_status, shipping_transmit_status, version, created_user_id, 
+    created_at, updated_user_id, updated_at, cor_st_backdarts_unpack_cd, cor_st_backdarts_unpack_nm, 
+    cust_is_deliver_shortning_rt_price, cust_is_deliver_shortning_ws_wage, cust_is_deliver_shortning_ws_price
+    from dtb_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
 </select>
 </mapper>

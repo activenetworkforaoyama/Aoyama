@@ -60,4 +60,6 @@ public interface OrderListRepository {
 	Order findOrderGlOptionByOrderId(String orderId);
 	
 	Order findOrderStOptionByOrderId(String orderId);
+
+	Order findOrderProductByPk(String orderId);
 }

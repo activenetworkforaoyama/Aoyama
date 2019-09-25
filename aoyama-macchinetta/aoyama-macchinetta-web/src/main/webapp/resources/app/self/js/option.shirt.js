@@ -19,6 +19,7 @@ function initOptionShirt() {
 				jQuery('#os_casHemLineSize10').val("0");
 				jQuery('#os_casHemLineSize1').val("0");
 				jQuery('#os_casHemLineSizeM1').val("0");
+				jQuery('#stCasualHemlineSize').val("0");
 			}
 		});
 	});
@@ -50,7 +51,7 @@ function initOptionShirt() {
 			jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 			if (os_colorKeeper_disabled) {
 				// 元々無効化されていた場合、デフォルトの「有り」を選択状態にする
-				jQuery('#os_colorKeeper_id2').prop('checked', true);
+				jQuery('#os_colorKeeper_id1').prop('checked', true);
 			}
 		}
 		

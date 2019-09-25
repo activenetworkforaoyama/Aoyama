@@ -5,16 +5,25 @@
 // 読み込み時
 //--------------------------------------------
 function initOptionPants1Washable() {
-
+	jQuery('#wp_pantsModel').attr("oldWpPantsModel",jQuery('#wp_pantsModel').val());
 	// PANTSモデル
 	jQuery('#wp_pantsModel').change(function() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
-
-		if (pantsModel == '' || pantsModel == null) {
-			// 未選択時は何もしない
-			return;
+		var pantsoldModel = jQuery('#wp_pantsModel').attr("oldWpPantsModel");
+		if (pantsModel != pantsoldModel) {
+			jQuery("#pantsFlag").val("0");
+		}else{
+			jQuery("#pantsFlag").val("1");
 		}
+		jQuery('#wp_pantsModel').attr("oldWpPantsModel",jQuery('#wp_pantsModel').val());
+		var pantsFlag = jQuery("#pantsFlag").val();
+		if(pantsFlag == "0"){
+			// 選択されたJacketモデルを取得
+			if (pantsModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var item = jQuery("#item").val();
@@ -181,6 +190,7 @@ function initOptionPants1Washable() {
 		}
 		// 一時保存のモデルを更新
 		tmpWpPantsModel = pantsModel;
+		}
 	});
 
 	// 膝裏

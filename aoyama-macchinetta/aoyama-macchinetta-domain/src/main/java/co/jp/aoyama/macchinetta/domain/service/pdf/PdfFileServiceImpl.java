@@ -1372,6 +1372,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Ct_cuff_data").setData(order.getCtCuffNm());
 		//袖釦
 		form.getField("Ct_sleeve_btn_data").setData(order.getCtSleeveBtnNm());
+		//バックベルト
+		form.getField("Ct_back_belt_data").setData(order.getCtBackBeltNm());
 		//襟吊
 		form.getField("Ct_collar_hang_data").setData(order.getCtCollarHangNm());
 		//胴裏地

@@ -5,16 +5,27 @@
 // 読み込み時
 //--------------------------------------------
 function initOptionPants1Tuxedo() {
-
+	jQuery('#tp_pantsModel').attr("oldTpPantsModel",jQuery('#tp_pantsModel').val());
 	// PANTSモデル
 	jQuery('#tp_pantsModel').change(function() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
-
-		if (pantsModel == '' || pantsModel == null) {
-			// 未選択時は何もしない
-			return;
+		
+		var pantsoldModel = jQuery('#tp_pantsModel').attr("oldTpPantsModel");
+		if (pantsModel != pantsoldModel) {
+			jQuery("#pantsFlag").val("0");
+		}else{
+			jQuery("#pantsFlag").val("1");
 		}
+		
+		jQuery('#tp_pantsModel').attr("oldTpPantsModel",jQuery('#tp_pantsModel').val());
+		var pantsFlag = jQuery("#pantsFlag").val();
+		if(pantsFlag == "0"){
+			// 選択されたJacketモデルを取得
+			if (pantsModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 		
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var item = jQuery("#item").val();
@@ -182,6 +193,7 @@ function initOptionPants1Tuxedo() {
 		}
 		// 一時保存のモデルを更新
 		tmpTpPantsModel = pantsModel;
+		}
 	});
 
 	// 膝裏

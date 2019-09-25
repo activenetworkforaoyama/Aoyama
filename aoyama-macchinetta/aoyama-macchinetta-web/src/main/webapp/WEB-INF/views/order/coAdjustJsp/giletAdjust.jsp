@@ -114,7 +114,7 @@
                                 <label class=" form-control-label">店舗補正入力欄</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <textarea name="coAdjustGiletStandardInfo.corGlStoreCorrectionMemo" id="corGlStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></textarea>
+                                <form:textarea path="coAdjustGiletStandardInfo.corGlStoreCorrectionMemo" id="corGlStoreCorrectionMemo" rows="3" placeholder="再補正コメント" class="form-control"></form:textarea>
                             </div>
                         </div>
                     </div>
@@ -151,6 +151,7 @@
 var orderPattern = "CO";
 var itemCode ="${orderCoForm.productItem}";
 var giletAdFlag="${orderCoForm.giletAdFlag}";
+var orderFlag = "${orderCoForm.orderFlag}";
 var productCategory="${orderCoForm.productCategory}";
 var glModel="";
 var ogModel = "${orderCoForm.coOptionGiletStandardInfo.ogGiletModel}";
@@ -176,8 +177,8 @@ jQuery(document).ready(function() {
 		glModel = wgModel;
 	}
 		getAdjustByItem();
-		if(giletAdFlag==""){
-			
+	if(orderFlag == "orderCo"){
+		if(giletAdFlag==""){	
 		}else if(giletAdFlag=="0"){
 			adjustReInit();
 			getFigureAndNumberByItem();
@@ -185,6 +186,20 @@ jQuery(document).ready(function() {
 			getFigureAndNumberByItem();
 			adjustSession();
 		}
+	}
+
+	 if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
+	     if(giletAdFlag=="0"){
+			adjustReInit();
+			getFigureAndNumberByItem();
+	    }else if(giletAdFlag=="1"){
+			getFigureAndNumberByItem();
+			adjustSession();
+		}else if(giletAdFlag==""){
+			 getFigureAndNumberByItem();
+			 adjustSession();
+		}
+	 }
 	    initAlter();
     jQuery("#selectGiletFigure,#selectGiletNumber").change(function(){
 	   giletAdjust();
@@ -415,7 +430,7 @@ function adjustSession(){
 	jQuery("#corGlWaistRange_out").html("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistCorrect}");
 	jQuery("#corGlWaistRange").val("${orderCoForm.coAdjustGiletStandardInfo.corGlWaistCorrect}");
 	setFont("corGlWaistRange");
-	jQuery("#corGlStoreCorrectionMemo").val("${orderCoForm.coAdjustGiletStandardInfo.corGlStoreCorrectionMemo}");
+// 	jQuery("#corGlStoreCorrectionMemo").val("${orderCoForm.coAdjustGiletStandardInfo.corGlStoreCorrectionMemo}");
 	
 }
 		
