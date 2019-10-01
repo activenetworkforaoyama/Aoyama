@@ -179,6 +179,7 @@ public class CoOptionPants2StandardInfo implements Serializable{
     
     private Map<String,String> op2AmfColorPlaceMap;
     
+    private String op2AmfAllColor;
     //AMF糸色  脇ポケット
     private String op2AmfColor1;
     
@@ -218,6 +219,7 @@ public class CoOptionPants2StandardInfo implements Serializable{
     
     private Map<String,String> op2BhColorPlaceMap;
     
+    private String op2BhAllColor;
     //ボタンホール色指定糸色  フロント
     private String op2BhColor1;
     
@@ -257,6 +259,7 @@ public class CoOptionPants2StandardInfo implements Serializable{
     
     private Map<String,String> op2ByColorPlaceMap;
     
+    private String op2ByAllColor;
     //ボタン付け糸指定糸色  フロント
     private String op2ByColor1;
     
@@ -1536,6 +1539,30 @@ public class CoOptionPants2StandardInfo implements Serializable{
 
 	public void setPt2ShapeMemoryRtPrice(String pt2ShapeMemoryRtPrice) {
 		this.pt2ShapeMemoryRtPrice = pt2ShapeMemoryRtPrice;
+	}
+
+	public String getOp2AmfAllColor() {
+		return op2AmfAllColor;
+	}
+
+	public void setOp2AmfAllColor(String op2AmfAllColor) {
+		this.op2AmfAllColor = op2AmfAllColor;
+	}
+
+	public String getOp2BhAllColor() {
+		return op2BhAllColor;
+	}
+
+	public void setOp2BhAllColor(String op2BhAllColor) {
+		this.op2BhAllColor = op2BhAllColor;
+	}
+
+	public String getOp2ByAllColor() {
+		return op2ByAllColor;
+	}
+
+	public void setOp2ByAllColor(String op2ByAllColor) {
+		this.op2ByAllColor = op2ByAllColor;
 	}
 
 	

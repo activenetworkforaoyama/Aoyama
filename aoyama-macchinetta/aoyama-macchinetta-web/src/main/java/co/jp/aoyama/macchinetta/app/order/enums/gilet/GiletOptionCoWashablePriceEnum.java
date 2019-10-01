@@ -21,8 +21,8 @@ public enum GiletOptionCoWashablePriceEnum {
 	GILET_WASHABLE_OPTION_CODE08("00008","getWgAmfColor","","setGlAmfColorRtPrice","wg_amfColor_id","","getGlAmfColorRtPrice"),//AMF色指定
 	GILET_WASHABLE_OPTION_CODE11("00011","getWgBhColor","","setGlBtnholeColorRtPrice","wg_bhColor_id","","getGlBtnholeColorRtPrice"),//ボタンホール色指定
 	GILET_WASHABLE_OPTION_CODE14("00014","getWgByColor","","setGlBtnthreadColorRtPrice","wg_byColor_id","","getGlBtnthreadColorRtPrice"),//ボタン付け糸指定
-	GILET_WASHABLE_OPTION_CODE17("00017","getWgBackLiningMate","getWgBackLiningMateStkNo","setGlBackClothRtPrice","wg_backLiningMate","wg_backLiningMateStkNo","getGlFrtBtnRtPrice"),//背裏地素材
-	GILET_WASHABLE_OPTION_CODE19("00019","getWgInsideLiningMate","getWgInsideLiningMate","setGlInnnerClothRtPrice","wg_insideLiningMate","wg_insideLiningMateStkNo","getGlFrtBtnRtPrice"),//内側裏地素材
+	GILET_WASHABLE_OPTION_CODE17("00017","getWgBackLiningMate","getWgBackLiningMateStkNo","setGlBackClothRtPrice","wg_backLiningMate","wg_backLiningMateStkNo","getGlBackClothRtPrice"),//背裏地素材
+	GILET_WASHABLE_OPTION_CODE19("00019","getWgInsideLiningMate","getWgInsideLiningMateStkNo","setGlInnnerClothRtPrice","wg_insideLiningMate","wg_insideLiningMateStkNo","getGlInnnerClothRtPrice"),//内側裏地素材
 	GILET_WASHABLE_OPTION_CODE21("00021","getWgFrontBtnMate","getWgFrontBtnMateStkNo","setGlFrtBtnRtPrice","wg_frontBtnMate","wg_frontBtnMateStkNo","getGlFrtBtnRtPrice"),//釦素材
 	GILET_WASHABLE_OPTION_CODE23("00023","getWgBackBelt","","setGlBackBeltRtPrice","wg_backBelt","","getGlBackBeltRtPrice"),//バックベルト
 	GILET_WASHABLE_OPTION_CODE24("00024","getWgWatchChain","","setGlWatchChainRtPrice","wg_watchChain_id","","getGlWatchChainRtPrice");//ウォッチチェーン

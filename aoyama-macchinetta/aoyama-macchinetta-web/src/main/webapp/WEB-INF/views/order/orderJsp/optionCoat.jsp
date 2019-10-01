@@ -275,21 +275,6 @@ jQuery(document).ready(function() {
 	
 	setCoatModelDisable();
 	//--------------------------------------------
-	// 共通
-	//--------------------------------------------
-	initCommon();
-
-	//--------------------------------------------
-	// タブメニュー
-	//--------------------------------------------
-	initTabMenu();
-
-	//--------------------------------------------
-	// 商品タブ
-	//--------------------------------------------
-	initProduct();
-	
-	//--------------------------------------------
 	// オプションタブ（COAT）
 	//--------------------------------------------
 	initOptionCoat();
@@ -648,4 +633,19 @@ jQuery("#coatModel").change(function() {
 		jQuery("#coatAdFlag").val("0");
 	}
 });
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

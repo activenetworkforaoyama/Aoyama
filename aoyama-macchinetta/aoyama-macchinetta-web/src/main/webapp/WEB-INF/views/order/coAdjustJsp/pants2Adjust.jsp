@@ -922,4 +922,19 @@ jQuery('#btn_ap2_samePants').click(function (){
 
 	
 })
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

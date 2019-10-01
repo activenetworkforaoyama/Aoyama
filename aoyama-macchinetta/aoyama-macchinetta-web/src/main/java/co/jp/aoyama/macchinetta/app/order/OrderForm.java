@@ -4,33 +4,25 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+import javax.validation.groups.Default;
+
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import co.jp.aoyama.macchinetta.app.order.info.AdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustJacketStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustPants2StandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.AdjustPantsStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.info.AdjustShirtStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.CustomerMessageInfo;
 import co.jp.aoyama.macchinetta.app.order.info.MeasuringInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionGiletTuxedoInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionGiletWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionJacketTuxedoInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionJacketWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionPants2TuxedoInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionPants2WashableInfo;
 import co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionPantsTuxedoInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionPantsWashableInfo;
-import co.jp.aoyama.macchinetta.app.order.info.OptionShirtStandardInfo;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -38,150 +30,155 @@ public class OrderForm implements Serializable {
 
 	private static final long serialVersionUID = -1277900263857619780L;
 
+	// グループ:Jacket
+    public static interface JkItem {
+    };
+
+    // グループ:Pants
+    public static interface PtItem {
+    };
+
+    // グループ:Gilet
+    public static interface GiletItem {
+    };
+    
+    // グループ:2Pants
+    public static interface Pt2Item {
+    };
+    
+    // グループ:EmbroideredItem（刺繍入れ）
+    public static interface EmbroideredItem {
+    };
+    
+    // グループ:opHemUp（裾上げ）
+    public static interface OpHemUpItem {
+    };
+    
+    // グループ:op2HemUp（裾上げ）
+    public static interface Op2HemUpItem {
+    };
+    
+    // グループ:shippingDestination（出荷先）
+    public static interface ShippingDestinationItem {
+    };
+    
 	// メジャーリング
 	private MeasuringInfo measuringInfo;
 
 	// お客様情報
+    @Valid
 	private CustomerMessageInfo customerMessageInfo;
 
 	// PANTS Standard
+    @Valid
 	private OptionPantsStandardInfo optionPantsStandardInfo;
 
 	// 2PANTS Standard
+    @Valid
 	private OptionPants2StandardInfo optionPants2StandardInfo;
 
-	// PANTS Tuxedo
-	private OptionPantsTuxedoInfo optionPantsTuxedoInfo;
-	
-	// 2PANTS Tuxedo
-	private OptionPants2TuxedoInfo optionPants2TuxedoInfo;
-
-	// PANTS Washable
-	private OptionPantsWashableInfo optionPantsWashableInfo;
-	
-	// 2PANTS Washable
-	private OptionPants2WashableInfo optionPants2WashableInfo;
-
 	// JACKET Standard
+    @Valid
 	private OptionJacketStandardInfo optionJacketStandardInfo;
 
-	// JACKET Tuxedo
-	private OptionJacketTuxedoInfo optionJacketTuxedoInfo;
-
-	// JACKET Washable
-	private OptionJacketWashableInfo optionJacketWashableInfo;
-
 	// GILET Standard
+    @Valid
 	private OptionGiletStandardInfo optionGiletStandardInfo;
 
-	// GILET Tuxedo
-	private OptionGiletTuxedoInfo optionGiletTuxedoInfo;
-
-	// GILET Washable
-	private OptionGiletWashableInfo optionGiletWashableInfo;
-
-	// SHIRT Standard
-	private OptionShirtStandardInfo optionShirtStandardInfo;
-
-	// COAT Standard
-	private OptionCoatStandardInfo optionCoatStandardInfo;
-
-	// オプション価格
-	private List<OrderCodePrice> orderCodePriceList;
-
 	// JACKET補正
+    @Valid
 	private AdjustJacketStandardInfo adjustJacketStandardInfo;
 
 	// PANTS補正
+    @Valid
 	private AdjustPantsStandardInfo adjustPantsStandardInfo;
 
 	// PANTS2補正
+    @Valid
 	private AdjustPants2StandardInfo adjustPants2StandardInfo;
 
 	// GILET補正
+    @Valid
 	private AdjustGiletStandardInfo adjustGiletStandardInfo;
 	
-	//Shirt補正
-	private AdjustShirtStandardInfo adjustShirtStandardInfo;
-	
-	//Coat補正
-	private AdjustCoatStandardInfo adjustCoatStandardInfo;
+	// オプション価格
+	private List<OrderCodePrice> orderCodePriceList;
 	
 	//店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
+	@NotBlank(groups = {Default.class},message = "店舗コード が不正です。")
 	private String shopCode;
 	
 	//業態
+	@NotBlank(groups = {Default.class},message = "業態コード が不正です。")
 	private String storeBrandCode;
 
-	// 商品情報_ITEM
+	//商品情報_ITEM
+	@NotBlank(groups = {Default.class},message = "アイテムを入力して下さい。")
 	private String productItem;
 	
 	private Map<String,String> productItemMap;
 
-	// 商品情報_３Piece
+	//商品情報_３Piece
+	@NotBlank(groups = {Default.class},message = "３Pieceを入力して下さい。")
 	private String productIs3Piece;
 
 	// 商品情報_スペアパンツ
+	@NotBlank(groups = {Default.class},message = "スペアパンツを入力して下さい。")
 	private String productSparePantsClass;
 
 	// 商品情報_生地番号
+	@NotBlank(groups = {Default.class},message = "生地番号を入力して下さい。")
 	private String productFabricNo;
 
 	// 商品情報_カテゴリ
+	@NotBlank(groups = {Default.class},message = "カテゴリを入力して下さい。")
 	private String productCategory;
 
-	// 商品情報_ブランド区分
+	// 商品情報_ブランド区分 
+	@NotBlank(groups = {Default.class},message = "ブランドネームを入力して下さい。")
 	private String productBrandType;
 
 	// 商品情報_ブランドネーム
 	private String productBrandNm;
 
 	// 商品情報_生地ネーム
+	@NotBlank(groups = {Default.class},message = "生地ネームを入力して下さい。")
 	private String productFabricNmNecessity;
 
 	// 商品情報_刺繍入れ
+	@NotBlank(groups = {Default.class},message = "刺繍入れを入力して下さい。")
 	private String productEmbroideryNecessity;
 
 	// 商品情報_刺繍ネーム
+	@NotBlank(groups = {EmbroideredItem.class},message = "刺繍ネームを入力して下さい。")
 	private String productEmbroideryNm;
 
 	// 商品情報_刺繍書体
+	@NotBlank(groups = {EmbroideredItem.class},message = "刺繍書体を入力して下さい。")
 	private String productEmbroideryFont;
 
 	// 商品情報_刺繍糸色
+	@NotBlank(groups = {EmbroideredItem.class},message = "刺繍糸色を入力して下さい。")
 	private String productEmbroideryThreadColor;
 
-	// 商品情報_ガゼット刺繍
-	private String productEmbroideryGazette;
-
-	// 商品情報_ネーム刺繍位置
-	private String productEmbroideryNmPos;
-	
-	//商品情報_刺繍サイズ（縦）
-	private String productEmbroideryLength;
-	
-	//商品情報_刺繍サイズ（横）
-	private String productEmbroideryWidth;
-
-	// 商品情報_残布_type
-	private String productRemainingClothType;
-
-	// 商品情報_残布_名
-	private String productRemainingClothNm;
-
 	// 商品情報_生地ブランド
+	@NotBlank(groups = {Default.class},message = "生地ブランドが不正です。")
 	private String productFabricBrandNm;
 
 	// 商品情報_サービスネーム
+	@NotBlank(groups = {Default.class},message = "素材名をが不正です。")
 	private String productServiceNm;
 
 	// 商品情報_組成表示_表地
+	@NotBlank(groups = {Default.class},message = "組成表示　表地が不正です。")
 	private String productComposFrtFabric;
 
 	// 商品情報_組成表示_胴裏地
+	@NotBlank(groups = {JkItem.class,GiletItem.class},message = "組成表示　胴裏地が不正です。")
 	private String productComposBodyLiner;
 
 	// 商品情報_組成表示_袖裏地
+	@NotBlank(groups = {JkItem.class},message = "組成表示　袖裏地が不正です。")
 	private String productComposSleeveLiner;
 
 	// 商品情報_取扱注意
@@ -191,24 +188,31 @@ public class OrderForm implements Serializable {
 	private String status;
 	
 	// ご請求金額
+	@NotBlank(groups = {Default.class},message = "ご請求金額が不正です。")
 	private String billingAmount;
 	
 	// 商品金額
+	@NotBlank(groups = {Default.class},message = "商品金額が不正です。")
 	private String productPrice;
 	
 	// オプション金額
+	@NotBlank(groups = {Default.class},message = "オプション金額が不正です。")
 	private String optionPrice;
 	
 	// 合計金額
+	@NotBlank(groups = {Default.class},message = "合計金額が不正です。")
 	private String totalPrice;
 	
 	// 内消費税
+	@NotBlank(groups = {Default.class},message = "内消費税が不正です。")
 	private String consumptionTaxAmount;
 	
 	//オーダーパターン
+	@NotBlank(groups = {Default.class},message = "オーダーパターンが不正です。")
 	private String orderPattern;
 	
 	//理論生地使用量
+	@NotBlank(groups = {Default.class},message = "理論生地使用量が不正です。")
 	private String theoryFabricUsedMount;
 	
 	// 権限
@@ -227,19 +231,20 @@ public class OrderForm implements Serializable {
 	private String isUpdate;
 	
 	//生地_色
+	@NotBlank(groups = {Default.class},message = "生地品番　色が不正です。")
 	private String fabricColor;
 	
 	//生地_柄
+	@NotBlank(groups = {Default.class},message = "生地品番　柄が不正です。")
 	private String fabricPattern;
 	
 	//商品情報_工場
+	@NotBlank(groups = {Default.class},message = "工場コードが不正です。")
 	private String productFactoryCd;
 		
 	//商品情報_メーカーコード
+	@NotBlank(groups = {Default.class},message = "メーカーコードが不正です。")
 	private String productMakerCode;
-	
-	//商品情報_LCR縫製
-	private String productLcrSewing;
 	
 	//保存flag
 	private String saveFlag;
@@ -249,82 +254,8 @@ public class OrderForm implements Serializable {
 	private String version;
 	
 	//店舗・担当_店舗名
+	@NotBlank(groups = {Default.class},message = "店舗名が不正です。")
 	private String storeNm;
-	
-	private String jacketItemFlag;
-	
-	private String pantsItemFlag;
-	
-	private String giletItemFlag;
-	
-	private String shirtItemFlag;
-	
-	private String coatItemFlag;
-	
-	private String pants2ItemFlag;
-	
-	private String jacketFlag;
-	
-	private String pantsFlag;
-	
-	private String giletFlag;
-	
-	private String coatFlag;
-	
-	private String shirtFlag;
-	
-	//補正
-	private String jacketAdFlag;
-	
-	private String pantsAdFlag;
-	
-	private String pants2AdFlag;
-	
-	private String giletAdFlag;
-	
-	private String coatAdFlag;
-	
-	private String shirtAdFlag;
-	
-	public String getJacketFlag() {
-		return jacketFlag;
-	}
-
-	public void setJacketFlag(String jacketFlag) {
-		this.jacketFlag = jacketFlag;
-	}
-
-	public String getPantsFlag() {
-		return pantsFlag;
-	}
-
-	public void setPantsFlag(String pantsFlag) {
-		this.pantsFlag = pantsFlag;
-	}
-
-	public String getGiletFlag() {
-		return giletFlag;
-	}
-
-	public void setGiletFlag(String giletFlag) {
-		this.giletFlag = giletFlag;
-	}
-
-	public String getCoatFlag() {
-		return coatFlag;
-	}
-
-	public void setCoatFlag(String coatFlag) {
-		this.coatFlag = coatFlag;
-	}
-
-	public String getShirtFlag() {
-		return shirtFlag;
-	}
-
-	public void setShirtFlag(String shirtFlag) {
-		this.shirtFlag = shirtFlag;
-	}
 
 	public String getVersion() {
 		return version;
@@ -422,38 +353,6 @@ public class OrderForm implements Serializable {
 		this.optionPants2StandardInfo = optionPants2StandardInfo;
 	}
 
-	public OptionPantsTuxedoInfo getOptionPantsTuxedoInfo() {
-		return optionPantsTuxedoInfo;
-	}
-
-	public void setOptionPantsTuxedoInfo(OptionPantsTuxedoInfo optionPantsTuxedoInfo) {
-		this.optionPantsTuxedoInfo = optionPantsTuxedoInfo;
-	}
-	
-	public OptionPants2TuxedoInfo getOptionPants2TuxedoInfo() {
-		return optionPants2TuxedoInfo;
-	}
-
-	public void setOptionPants2TuxedoInfo(OptionPants2TuxedoInfo optionPants2TuxedoInfo) {
-		this.optionPants2TuxedoInfo = optionPants2TuxedoInfo;
-	}
-
-	public OptionPantsWashableInfo getOptionPantsWashableInfo() {
-		return optionPantsWashableInfo;
-	}
-
-	public OptionPants2WashableInfo getOptionPants2WashableInfo() {
-		return optionPants2WashableInfo;
-	}
-
-	public void setOptionPants2WashableInfo(OptionPants2WashableInfo optionPants2WashableInfo) {
-		this.optionPants2WashableInfo = optionPants2WashableInfo;
-	}
-
-	public void setOptionPantsWashableInfo(OptionPantsWashableInfo optionPantsWashableInfo) {
-		this.optionPantsWashableInfo = optionPantsWashableInfo;
-	}
-
 	public OptionJacketStandardInfo getOptionJacketStandardInfo() {
 		return optionJacketStandardInfo;
 	}
@@ -462,60 +361,12 @@ public class OrderForm implements Serializable {
 		this.optionJacketStandardInfo = optionJacketStandardInfo;
 	}
 
-	public OptionJacketTuxedoInfo getOptionJacketTuxedoInfo() {
-		return optionJacketTuxedoInfo;
-	}
-
-	public void setOptionJacketTuxedoInfo(OptionJacketTuxedoInfo optionJacketTuxedoInfo) {
-		this.optionJacketTuxedoInfo = optionJacketTuxedoInfo;
-	}
-
-	public OptionJacketWashableInfo getOptionJacketWashableInfo() {
-		return optionJacketWashableInfo;
-	}
-
-	public void setOptionJacketWashableInfo(OptionJacketWashableInfo optionJacketWashableInfo) {
-		this.optionJacketWashableInfo = optionJacketWashableInfo;
-	}
-
 	public OptionGiletStandardInfo getOptionGiletStandardInfo() {
 		return optionGiletStandardInfo;
 	}
 
 	public void setOptionGiletStandardInfo(OptionGiletStandardInfo optionGiletStandardInfo) {
 		this.optionGiletStandardInfo = optionGiletStandardInfo;
-	}
-
-	public OptionGiletTuxedoInfo getOptionGiletTuxedoInfo() {
-		return optionGiletTuxedoInfo;
-	}
-
-	public void setOptionGiletTuxedoInfo(OptionGiletTuxedoInfo optionGiletTuxedoInfo) {
-		this.optionGiletTuxedoInfo = optionGiletTuxedoInfo;
-	}
-
-	public OptionGiletWashableInfo getOptionGiletWashableInfo() {
-		return optionGiletWashableInfo;
-	}
-
-	public void setOptionGiletWashableInfo(OptionGiletWashableInfo optionGiletWashableInfo) {
-		this.optionGiletWashableInfo = optionGiletWashableInfo;
-	}
-
-	public OptionShirtStandardInfo getOptionShirtStandardInfo() {
-		return optionShirtStandardInfo;
-	}
-
-	public void setOptionShirtStandardInfo(OptionShirtStandardInfo optionShirtStandardInfo) {
-		this.optionShirtStandardInfo = optionShirtStandardInfo;
-	}
-
-	public OptionCoatStandardInfo getOptionCoatStandardInfo() {
-		return optionCoatStandardInfo;
-	}
-
-	public void setOptionCoatStandardInfo(OptionCoatStandardInfo optionCoatStandardInfo) {
-		this.optionCoatStandardInfo = optionCoatStandardInfo;
 	}
 
 	public List<OrderCodePrice> getOrderCodePriceList() {
@@ -644,38 +495,6 @@ public class OrderForm implements Serializable {
 
 	public void setProductEmbroideryThreadColor(String productEmbroideryThreadColor) {
 		this.productEmbroideryThreadColor = productEmbroideryThreadColor;
-	}
-
-	public String getProductEmbroideryGazette() {
-		return productEmbroideryGazette;
-	}
-
-	public void setProductEmbroideryGazette(String productEmbroideryGazette) {
-		this.productEmbroideryGazette = productEmbroideryGazette;
-	}
-
-	public String getProductEmbroideryNmPos() {
-		return productEmbroideryNmPos;
-	}
-
-	public void setProductEmbroideryNmPos(String productEmbroideryNmPos) {
-		this.productEmbroideryNmPos = productEmbroideryNmPos;
-	}
-
-	public String getProductRemainingClothType() {
-		return productRemainingClothType;
-	}
-
-	public void setProductRemainingClothType(String productRemainingClothType) {
-		this.productRemainingClothType = productRemainingClothType;
-	}
-
-	public String getProductRemainingClothNm() {
-		return productRemainingClothNm;
-	}
-
-	public void setProductRemainingClothNm(String productRemainingClothNm) {
-		this.productRemainingClothNm = productRemainingClothNm;
 	}
 
 
@@ -862,141 +681,4 @@ public class OrderForm implements Serializable {
 	public void setFabricPattern(String fabricPattern) {
 		this.fabricPattern = fabricPattern;
 	}
-
-	public AdjustShirtStandardInfo getAdjustShirtStandardInfo() {
-		return adjustShirtStandardInfo;
-	}
-
-	public void setAdjustShirtStandardInfo(AdjustShirtStandardInfo adjustShirtStandardInfo) {
-		this.adjustShirtStandardInfo = adjustShirtStandardInfo;
-	}
-
-	public AdjustCoatStandardInfo getAdjustCoatStandardInfo() {
-		return adjustCoatStandardInfo;
-	}
-
-	public void setAdjustCoatStandardInfo(AdjustCoatStandardInfo adjustCoatStandardInfo) {
-		this.adjustCoatStandardInfo = adjustCoatStandardInfo;
-	}
-	public String getProductEmbroideryLength() {
-		return productEmbroideryLength;
-	}
-
-	public void setProductEmbroideryLength(String productEmbroideryLength) {
-		this.productEmbroideryLength = productEmbroideryLength;
-	}
-
-	public String getProductEmbroideryWidth() {
-		return productEmbroideryWidth;
-	}
-
-	public void setProductEmbroideryWidth(String productEmbroideryWidth) {
-		this.productEmbroideryWidth = productEmbroideryWidth;
-	}
-
-	public String getJacketAdFlag() {
-		return jacketAdFlag;
-	}
-
-	public void setJacketAdFlag(String jacketAdFlag) {
-		this.jacketAdFlag = jacketAdFlag;
-	}
-
-	public String getPantsAdFlag() {
-		return pantsAdFlag;
-	}
-
-	public void setPantsAdFlag(String pantsAdFlag) {
-		this.pantsAdFlag = pantsAdFlag;
-	}
-
-	public String getPants2AdFlag() {
-		return pants2AdFlag;
-	}
-
-	public void setPants2AdFlag(String pants2AdFlag) {
-		this.pants2AdFlag = pants2AdFlag;
-	}
-
-	public String getGiletAdFlag() {
-		return giletAdFlag;
-	}
-
-	public void setGiletAdFlag(String giletAdFlag) {
-		this.giletAdFlag = giletAdFlag;
-	}
-
-	public String getCoatAdFlag() {
-		return coatAdFlag;
-	}
-
-	public void setCoatAdFlag(String coatAdFlag) {
-		this.coatAdFlag = coatAdFlag;
-	}
-
-	public String getShirtAdFlag() {
-		return shirtAdFlag;
-	}
-
-	public void setShirtAdFlag(String shirtAdFlag) {
-		this.shirtAdFlag = shirtAdFlag;
-	}
-
-	public String getJacketItemFlag() {
-		return jacketItemFlag;
-	}
-
-	public void setJacketItemFlag(String jacketItemFlag) {
-		this.jacketItemFlag = jacketItemFlag;
-	}
-
-	public String getPantsItemFlag() {
-		return pantsItemFlag;
-	}
-
-	public void setPantsItemFlag(String pantsItemFlag) {
-		this.pantsItemFlag = pantsItemFlag;
-	}
-
-	public String getGiletItemFlag() {
-		return giletItemFlag;
-	}
-
-	public void setGiletItemFlag(String giletItemFlag) {
-		this.giletItemFlag = giletItemFlag;
-	}
-
-	public String getShirtItemFlag() {
-		return shirtItemFlag;
-	}
-
-	public void setShirtItemFlag(String shirtItemFlag) {
-		this.shirtItemFlag = shirtItemFlag;
-	}
-
-	public String getCoatItemFlag() {
-		return coatItemFlag;
-	}
-
-	public void setCoatItemFlag(String coatItemFlag) {
-		this.coatItemFlag = coatItemFlag;
-	}
-
-	public String getPants2ItemFlag() {
-		return pants2ItemFlag;
-	}
-
-	public void setPants2ItemFlag(String pants2ItemFlag) {
-		this.pants2ItemFlag = pants2ItemFlag;
-	}
-
-	public String getProductLcrSewing() {
-		return productLcrSewing;
-	}
-
-	public void setProductLcrSewing(String productLcrSewing) {
-		this.productLcrSewing = productLcrSewing;
-	}
-	
-	
 }

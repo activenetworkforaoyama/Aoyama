@@ -3,67 +3,87 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderForm.Pt2Item;
+
 public class AdjustPants2StandardInfo implements Serializable {
 	private static final long serialVersionUID = 8082462722647632661L;
 	// 号数
 	private Map<String, String> sizeNumberMap;
-
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の号数を入力して下さい。")
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の体型を入力して下さい。")
 	private String sizeFigure;
 
 	// ウエスト修正2
 	private Map<String, String> corPt2WaistMap;
 	// ウエスト型サイズ2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のウエスト型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）のウエスト型サイズの範囲が不正です。")
 	private String corPt2WaistSize;
 	// ウエスト補正値2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のウエスト補正値を入力して下さい。")
 	private String corPt2WaistCorrect;
 	// ウエストグロス2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）のウエストグロスの範囲が不正です。")
 	private String corPt2WaistGross;
 
 	// ワタリ修正2
 	private Map<String, String> corPt2ThighMap;
 	// ワタリ型サイズ2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のワタリ型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）のワタリ型サイズの範囲が不正です。")
 	private String corPt2ThighSize;
 	// ワタリ補正値2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のワタリ補正値を入力して下さい。")
 	private String corPt2ThighCorrect;
 	// ワタリグロス2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）のワタリグロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）のワタリグロスの範囲が不正です。")
 	private String corPt2ThighGross;
 	
-	// ヒップ修正
-	private Map<String, String> corPt2HipMap;
-	// ワタリ型サイズ2
-	private String corPt2HipSize;
-	// ワタリ補正値2
-	private String corPt2HipCorrect;
-	// ワタリグロス2
-	private String corPt2HipGross;
-
 	// 裾幅修正2
 	private Map<String, String> corPt2HemwidthMap;
 	// 裾幅修正1指定2区分2
 	private String corPt2HemwidthType;
 	// 裾幅型サイズ2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の裾幅型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）の裾幅型サイズの範囲が不正です。")
 	private String corPt2HemwidthSize;
 	// 裾幅補正値2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の裾幅補正値を入力して下さい。")
 	private String corPt2HemwidthCorrect;
 	// 裾幅グロス2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の裾幅グロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）の裾幅グロスの範囲が不正です。")
 	private String corPt2HemwidthGross;
 
 	// 股下右型サイズ2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の股下右型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）の股下右型サイズの範囲が不正です。")
 	private String corPt2RightinseamSize;
 	// 股下右補正値2
 	private String corPt2RightinseamCorrect;
 	// 股下右グロス2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の股下右グロスが不正です。")
+	@Range(min=50, max=110, groups = {Pt2Item.class}, message = "PANTS（2本目）の股下右グロスの範囲が不正です。")
 	private String corPt2RightinseamGross;
 
 	// 股下左型サイズ2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の股下左型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2Item.class}, message = "PANTS（2本目）の股下左型サイズの範囲が不正です。")
 	private String corPt2LeftinseamSize;
 	// 股下左補正値2
 	private String corPt2LeftinseamCorrect;
 	// 股下左グロス2
+	@NotBlank(groups = {Pt2Item.class}, message = "PANTS（2本目）の股下左グロスが不正です。")
+	@Range(min=50, max=110, groups = {Pt2Item.class}, message = "PANTS（2本目）の股下左グロスの範囲が不正です。")
 	private String corPt2LeftinseamGross;
 
 	//Pt2再補正コメント
@@ -75,12 +95,6 @@ public class AdjustPants2StandardInfo implements Serializable {
 
 	// ２PANTS_ウエスト_再補正値フラッグ
 	private String corPt2WaistCorrectAgainFlag;
-
-	// ２PANTS_ヒップ_再補正値
-	private String corPt2HipCorrectAgain;
-
-	// ２PANTS_ヒップ_再補正値フラッグ
-	private String corPt2HipCorrectAgainFlag;
 
 	// ２PANTS_ワタリ_再補正値
 	private String corPt2ThighwidthCorrectAgain;
@@ -105,38 +119,6 @@ public class AdjustPants2StandardInfo implements Serializable {
 
 	// ２PANTS_股下左_再補正値フラッグ
 	private String corPt2LeftinseamCorrectAgainFlag;
-
-	public Map<String, String> getCorPt2HipMap() {
-		return corPt2HipMap;
-	}
-
-	public void setCorPt2HipMap(Map<String, String> corPt2HipMap) {
-		this.corPt2HipMap = corPt2HipMap;
-	}
-
-	public String getCorPt2HipSize() {
-		return corPt2HipSize;
-	}
-
-	public void setCorPt2HipSize(String corPt2HipSize) {
-		this.corPt2HipSize = corPt2HipSize;
-	}
-
-	public String getCorPt2HipCorrect() {
-		return corPt2HipCorrect;
-	}
-
-	public void setCorPt2HipCorrect(String corPt2HipCorrect) {
-		this.corPt2HipCorrect = corPt2HipCorrect;
-	}
-
-	public String getCorPt2HipGross() {
-		return corPt2HipGross;
-	}
-
-	public void setCorPt2HipGross(String corPt2HipGross) {
-		this.corPt2HipGross = corPt2HipGross;
-	}
 
 	public Map<String, String> getSizeNumberMap() {
 		return sizeNumberMap;
@@ -330,14 +312,6 @@ public class AdjustPants2StandardInfo implements Serializable {
 		this.corPt2WaistCorrectAgain = corPt2WaistCorrectAgain;
 	}
 
-	public String getCorPt2HipCorrectAgain() {
-		return corPt2HipCorrectAgain;
-	}
-
-	public void setCorPt2HipCorrectAgain(String corPt2HipCorrectAgain) {
-		this.corPt2HipCorrectAgain = corPt2HipCorrectAgain;
-	}
-
 	public String getCorPt2ThighwidthCorrectAgain() {
 		return corPt2ThighwidthCorrectAgain;
 	}
@@ -376,14 +350,6 @@ public class AdjustPants2StandardInfo implements Serializable {
 
 	public void setCorPt2WaistCorrectAgainFlag(String corPt2WaistCorrectAgainFlag) {
 		this.corPt2WaistCorrectAgainFlag = corPt2WaistCorrectAgainFlag;
-	}
-
-	public String getCorPt2HipCorrectAgainFlag() {
-		return corPt2HipCorrectAgainFlag;
-	}
-
-	public void setCorPt2HipCorrectAgainFlag(String corPt2HipCorrectAgainFlag) {
-		this.corPt2HipCorrectAgainFlag = corPt2HipCorrectAgainFlag;
 	}
 
 	public String getCorPt2ThighwidthCorrectAgainFlag() {

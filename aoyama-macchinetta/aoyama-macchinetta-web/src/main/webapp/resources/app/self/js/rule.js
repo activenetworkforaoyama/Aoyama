@@ -121,8 +121,8 @@ var lapelDesignMap = {
 				defaultValue:'0000202'
 			},
 			'0000104':{
-				activeList:['0000202'],
-				defaultValue:'0000202'
+				activeList:['0000201','0000202','0000203'],
+				defaultValue:'0000201'
 			}
 		},
 		defaultValue:'0000101'
@@ -1259,43 +1259,43 @@ var giletModelDefaultList = {
 		"og_breastPkt":"0000101",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
-		"backBelt":"0002302"
+		"og_backBelt":"0002302"
 	},
 	"CH14":{
 		"og_breastPkt":"0000103",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
-		"backBelt":"0002301"
+		"og_backBelt":"0002301"
 	},
 	"NR04":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
-		"backBelt":"0002302"
+		"og_backBelt":"0002302"
 	},
 	"BS01":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000303",
-		"backBelt":"0002301"
+		"og_backBelt":"0002301"
 	},
 	"BS03":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000303",
-		"backBelt":"0002301"
+		"og_backBelt":"0002301"
 	},
 	"BS01-D":{
 		"og_breastPkt":"0000103",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
-		"backBelt":"0002301"
+		"og_backBelt":"0002301"
 	},
 	"ET15-D":{
 		"og_breastPkt":"0000101",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
-		"backBelt":"0002302"
+		"og_backBelt":"0002302"
 	}
 };
 
@@ -1306,13 +1306,13 @@ var giletModelDefaultList = {
  *     GILETモデル:ステッチ箇所変更のデフォルト値配列
  */
 var ogStitchModifyList = {
-	"TR02":["フロント","腰ポケット"],
-	"CH14":["フロント","胸ポケット","腰ポケット"],
-	"NR04":["フロント","胸ポケット","腰ポケット"],
-	"BS01":["フロント","胸ポケット","腰ポケット"],
-	"BS03":["フロント","胸ポケット","腰ポケット"],
-	"BS01-D":["フロント","胸ポケット","腰ポケット"],
-	"ET15-D":["フロント","腰ポケット"]
+	"TR02":["0000701","0000705"],
+	"CH14":["0000701","0000704","0000705"],
+	"NR04":["0000701","0000704","0000705"],
+	"BS01":["0000701","0000704","0000705"],
+	"BS03":["0000701","0000704","0000705"],
+	"BS01-D":["0000701","0000704","0000705"],
+	"ET15-D":["0000701","0000705"]
 };
 
 

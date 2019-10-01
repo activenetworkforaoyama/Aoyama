@@ -3,311 +3,326 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
-public class OptionPants2StandardInfo implements Serializable{
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderForm.Op2HemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderForm.Pt2Item;
+
+public class OptionPants2StandardInfo implements Serializable {
 	private static final long serialVersionUID = -4505963757793347479L;
-	
-	//PANTS（2本目）モデル
+	// PANTS（2本目）モデル
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）のモデルを入力して下さい。")
 	private String op2PantsModel;
-	
-	private Map<String,String> op2PantsModelMap;
-	
-	//タック
-    private String op2Tack;
-    
-    private Map<String,String> op2TackMap;
-    
-    //膝裏
-    private String op2KneeBack;
-    
-    private Map<String,String> op2KneeBackMap;
-    //膝裏素材
-    private String op2KneeBackMate;
 
-    private Map<String,String> op2KneeBackMateMap;
-    //フロント仕様
-  	private String op2FrontSpec;
-      
-    private Map<String,String> op2FrontSpecMap;
-    //パンチェリーナ
-    private String op2Pancherina;
-    
-    private Map<String,String> op2PancherinaMap;
-    //アジャスター仕様
-    private String op2Adjuster;
-    
-    private Map<String,String> op2AdjusterMap;
-    
-    //ベルトループ
-    private String op2BeltLoop;
-    
-    private Map<String,String> op2BeltLoopMap;
-    
-    //ベルトループ箇所 
-   // private String op2BeltLoopPlace;
-    private String op2BeltLoopPlace;
-    
-    private String op2BeltLoopPlace1;
-    
-    private String op2BeltLoopPlace2;
-    
-    private String op2BeltLoopPlace3;
-    
-    private String op2BeltLoopPlace4;
-    
-    private String op2BeltLoopPlace5;
-    
-    private String op2BeltLoopPlace6;
-    
-    private String op2BeltLoopPlace7;
-    
-    private Map<String,String> op2BeltLoopPlaceMap;
-    
-    //ピンループ
-    private String op2PinLoop;
-    
-    private Map<String,String> op2PinLoopMap;
-    
-    //脇ポケット
-    private String op2SidePkt;
-    
-    private Map<String,String> op2SidePktMap;
-    
-    //忍びポケット
-    private String op2SinobiPkt;
-    
-    private Map<String,String> op2SinobiPktMap;
-    
-    //コインポケット
-    private String op2CoinPkt;
-    
-    private Map<String,String> op2CoinPktMap;
-    
-    //フラップ付コインポケット
-    private String op2FlapCoinPkt;
-    
-    private Map<String,String> op2FlapCoinPktMap;
-    
-    //上前ピスポケット
-    private String op2PisPktUf;
-    
-    private Map<String,String> op2PisPktUfMap;
-    
-    //下前ピスポケット
-    private String op2PisPktDf;
-    
-    private Map<String,String> op2PisPktDfMap;
-    
-    //Vカット
-    private String op2VCut;
-    
-    private Map<String,String> op2VCutMap;
-    
-    //裾上げ
-    private String op2HemUp;
-    
-    private Map<String,String> op2HemUpMap;
-    
-    //ダブル幅
-    private String op2DoubleWide;
-    
-    private Map<String,String> op2DoubleWideMap;
-    
-    //AMFステッチ
-    private String op2Stitch;
-    
-    private Map<String,String> op2StitchMap;
-    
-    //ステッチ箇所変更
-    private String op2StitchModify;
-    
-    private Map<String,String> op2StitchModifyMap;
-    
-    //ステッチ箇所変更箇所
-   // private String op2StitchModifyPlace;
-    private String op2StitchModifyPlace;
-    
-    private String op2StitchModifyPlace1;
-    
-    private String op2StitchModifyPlace2;
-    
-    private String op2StitchModifyPlace3;
-    
-    private String op2StitchModifyPlace4;
-    
-    private Map<String,String> op2StitchModifyPlaceMap;
-    
-    //ダブルステッチ
-    private String op2DStitch;
-    
-    private Map<String,String> op2DStitchMap;
-    
-    //ダブルステッチ箇所
-    //private String op2DStitchPlace;
-    private String op2DStitchPlace;
-    
-    private String op2DStitchPlace1;
+	private Map<String, String> op2PantsModelMap;
 
-    private String op2DStitchPlace2;
-    
-    private String op2DStitchPlace3;
-    
-    private String op2DStitchPlace4;
-    
-    private Map<String,String> op2DStitchPlaceMap;
+	// タック
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）のタックを入力して下さい。")
+	private String op2Tack;
 
-	//AMF色指定
-    private String op2AmfColor;
-    
-    private Map<String,String> op2AmfColorMap;
-    
-    //AMF糸色 
-    private String op2AmfColorPlaceAll;
-    
-    private Map<String,String> op2AmfColorPlaceAllMap;
-    
-    //AMF色指定箇所
-    //private String op2AmfColorPlace;
-    private String op2AmfColorPlace;
-    
-    private String op2AmfColorPlace1;
-    
-    private String op2AmfColorPlace2;
-    
-    private String op2AmfColorPlace3;
-    
-    private String op2AmfColorPlace4;
-    
-    private Map<String,String> op2AmfColorPlaceMap;
-    
-    //AMF糸色  脇ポケット
-    private String op2AmfColor1;
-    
-    //AMF糸色  サイドシーム
-    private String op2AmfColor2;
-    
-    //AMF糸色  ダーツ
-    private String op2AmfColor3;
-  
-    //AMF糸色  ピスフラップ
-    private String op2AmfColor4;
-    
-    //AMF色 key&value
-    private Map<String,String> op2AmfColorsMap;
-    
-    //ボタンホール色指定
-    private String op2BhColor;
-    
-    private Map<String,String> op2BhColorMap;
-    
-    //ボタンホール色指定糸色
-    private String op2BhColorPlaceAll;
-    
-    private Map<String,String> op2BhColorPlaceAllMap;
-    
-    //ボタンホール色指定箇所
-    //private String op2BhColorPlace;
-    private String op2BhColorPlace;
-   
-    private String op2BhColorPlace1;
-    
-    private String op2BhColorPlace2;
-    
-    private String op2BhColorPlace3;
-    
-    private String op2BhColorPlace4;
-    
-    private Map<String,String> op2BhColorPlaceMap;
-    
-    //ボタンホール色指定糸色  フロント
-    private String op2BhColor1;
-    
-    //ボタンホール色指定糸色  上前ピスポケット
-    private String op2BhColor2;
-    
-    //ボタンホール色指定糸色  下前ピスポケット
-    private String op2BhColor3;
-  
-    //ボタンホール色指定糸色  フラップ付コインポケット
-    private String op2BhColor4;
-    
-    //ボタンホール色指定色 key&value
-    private Map<String,String> op2BhColorsMap;
-    
-    //ボタン付け糸指定
-    private String op2ByColor;
-    
-    private Map<String,String> op2ByColorMap;
-    
-    //ボタン付け糸指定糸色
-    private String op2ByColorPlaceAll;
-    
-    private Map<String,String> op2ByColorPlaceAllMap;
-    
-    //ボタン付け糸指定箇所
-    //private String op2ByColorPlace;
-    private String op2ByColorPlace;
-    
-    private String op2ByColorPlace1;
-    
-    private String op2ByColorPlace2;
-    
-    private String op2ByColorPlace3;
-    
-    private String op2ByColorPlace4;
-    
-    private Map<String,String> op2ByColorPlaceMap;
-    
-    //ボタン付け糸指定糸色  フロント
-    private String op2ByColor1;
-    
-    //ボタン付け糸指定糸色  上前ピスポケット
-    private String op2ByColor2;
-    
-    //ボタン付け糸指定糸色  下前ピスポケット
-    private String op2ByColor3;
-  
-    //ボタン付け糸指定糸色  フラップ付コインポケット
-    private String op2ByColor4;
-    
-    //ボタン付け糸指定糸色 key&value
-    private Map<String,String> op2ByColorsMap;
-    
-    //釦素材
-    private String op2Button;
-    
-    private Map<String,String> op2ButtonMap;
-    
-    //釦素材品番
-    private String op2BtnMateStkNo;
-    
-    //サスペンダー釦
-    private String op2SuspenderBtn;
-    
-    private Map<String,String> op2SuspenderBtnMap;
-    
-    //エイト（滑り止め）
-    private String op2Eight;
-    
-    private Map<String,String> op2EightMap;
-    
-    //形状記憶
-    private String op2ShapeMemory; 
-    
-    private Map<String,String> op2ShapeMemoryMap;
-    
-    //靴ずれ
-    private String op2Blister;
-    
-    private Map<String,String> op2BlisterMap;
+	private Map<String, String> op2TackMap;
 
-    //シック（股補強）
-    private String op2Thick;
-    
-    private Map<String,String> op2ThickMap;
-    
-    //品番Map
-    private Map<String,String> pants2MateMap;
-    
+	// アジャスター仕様
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）のアジャスター仕様を入力して下さい。")
+	private String op2Adjuster;
+
+	private Map<String, String> op2AdjusterMap;
+
+	// 裾上げ
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）の裾上げを入力して下さい。")
+	private String op2HemUp;
+
+	private Map<String, String> op2HemUpMap;
+
+	// ダブル幅
+	@NotBlank(groups = { Op2HemUpItem.class }, message = "PANTS（2本目）のダブル幅を入力して下さい。")
+	private String op2DoubleWide;
+
+	private Map<String, String> op2DoubleWideMap;
+
+	// 釦素材
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）の釦素材を入力して下さい。")
+	private String op2Button;
+
+	private Map<String, String> op2ButtonMap;
+
+	// 釦素材品番
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）の釦素材品番を入力して下さい。")
+	private String op2BtnMateStkNo;
+
+	// エイト（滑り止め）
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）のエイト（滑り止め）を入力して下さい。")
+	private String op2Eight;
+
+	private Map<String, String> op2EightMap;
+
+	// シック大（股補強）
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）のシック大（股補強）を入力して下さい。")
+	private String op2Thick;
+
+	private Map<String, String> op2ThickMap;
+
+	// 形状記憶
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）の形状記憶を入力して下さい。")
+	private String op2ShapeMemory;
+
+	private Map<String, String> op2ShapeMemoryMap;
+
+	// 靴ずれ
+	@NotBlank(groups = { Pt2Item.class }, message = "PANTS（2本目）の靴ずれを入力して下さい。")
+	private String op2Blister;
+
+	private Map<String, String> op2BlisterMap;
+
+	// 品番Map
+	private Map<String, String> pants2MateMap;
+
+	// 膝裏
+	private String op2KneeBack;
+
+	private Map<String, String> op2KneeBackMap;
+	// 膝裏素材
+	private String op2KneeBackMate;
+
+	private Map<String, String> op2KneeBackMateMap;
+	// フロント仕様
+	private String op2FrontSpec;
+
+	private Map<String, String> op2FrontSpecMap;
+	// パンチェリーナ
+	private String op2Pancherina;
+
+	private Map<String, String> op2PancherinaMap;
+
+	// ベルトループ
+	private String op2BeltLoop;
+
+	private Map<String, String> op2BeltLoopMap;
+
+	// ベルトループ箇所
+	// private String op2BeltLoopPlace;
+	private String op2BeltLoopPlace;
+
+	private String op2BeltLoopPlace1;
+
+	private String op2BeltLoopPlace2;
+
+	private String op2BeltLoopPlace3;
+
+	private String op2BeltLoopPlace4;
+
+	private String op2BeltLoopPlace5;
+
+	private String op2BeltLoopPlace6;
+
+	private String op2BeltLoopPlace7;
+
+	private Map<String, String> op2BeltLoopPlaceMap;
+
+	// ピンループ
+	private String op2PinLoop;
+
+	private Map<String, String> op2PinLoopMap;
+
+	// 脇ポケット
+	private String op2SidePkt;
+
+	private Map<String, String> op2SidePktMap;
+
+	// 忍びポケット
+	private String op2SinobiPkt;
+
+	private Map<String, String> op2SinobiPktMap;
+
+	// コインポケット
+	private String op2CoinPkt;
+
+	private Map<String, String> op2CoinPktMap;
+
+	// フラップ付コインポケット
+	private String op2FlapCoinPkt;
+
+	private Map<String, String> op2FlapCoinPktMap;
+
+	// 上前ピスポケット
+	private String op2PisPktUf;
+
+	private Map<String, String> op2PisPktUfMap;
+
+	// 下前ピスポケット
+	private String op2PisPktDf;
+
+	private Map<String, String> op2PisPktDfMap;
+
+	// Vカット
+	private String op2VCut;
+
+	private Map<String, String> op2VCutMap;
+
+	// AMFステッチ
+	private String op2Stitch;
+
+	private Map<String, String> op2StitchMap;
+
+	// ステッチ箇所変更
+	private String op2StitchModify;
+
+	private Map<String, String> op2StitchModifyMap;
+
+	// ステッチ箇所変更箇所
+	// private String op2StitchModifyPlace;
+	private String op2StitchModifyPlace;
+
+	private String op2StitchModifyPlace1;
+
+	private String op2StitchModifyPlace2;
+
+	private String op2StitchModifyPlace3;
+
+	private String op2StitchModifyPlace4;
+
+	private Map<String, String> op2StitchModifyPlaceMap;
+
+	// ダブルステッチ
+	private String op2DStitch;
+
+	private Map<String, String> op2DStitchMap;
+
+	// ダブルステッチ箇所
+	// private String op2DStitchPlace;
+	private String op2DStitchPlace;
+
+	private String op2DStitchPlace1;
+
+	private String op2DStitchPlace2;
+
+	private String op2DStitchPlace3;
+
+	private String op2DStitchPlace4;
+
+	private Map<String, String> op2DStitchPlaceMap;
+
+	// AMF色指定
+	private String op2AmfColor;
+
+	private Map<String, String> op2AmfColorMap;
+
+	// AMF糸色
+	private String op2AmfColorPlaceAll;
+
+	private Map<String, String> op2AmfColorPlaceAllMap;
+
+	// AMF色指定箇所
+	// private String op2AmfColorPlace;
+	private String op2AmfColorPlace;
+
+	private String op2AmfColorPlace1;
+
+	private String op2AmfColorPlace2;
+
+	private String op2AmfColorPlace3;
+
+	private String op2AmfColorPlace4;
+
+	private Map<String, String> op2AmfColorPlaceMap;
+
+	// AMF糸色 脇ポケット
+	private String op2AmfColor1;
+
+	// AMF糸色 サイドシーム
+	private String op2AmfColor2;
+
+	// AMF糸色 ダーツ
+	private String op2AmfColor3;
+
+	// AMF糸色 ピスフラップ
+	private String op2AmfColor4;
+
+	// AMF色 key&value
+	private Map<String, String> op2AmfColorsMap;
+
+	// ボタンホール色指定
+	private String op2BhColor;
+
+	private Map<String, String> op2BhColorMap;
+
+	// ボタンホール色指定糸色
+	private String op2BhColorPlaceAll;
+
+	private Map<String, String> op2BhColorPlaceAllMap;
+
+	// ボタンホール色指定箇所
+	// private String op2BhColorPlace;
+	private String op2BhColorPlace;
+
+	private String op2BhColorPlace1;
+
+	private String op2BhColorPlace2;
+
+	private String op2BhColorPlace3;
+
+	private String op2BhColorPlace4;
+
+	private Map<String, String> op2BhColorPlaceMap;
+
+	// ボタンホール色指定糸色 フロント
+	private String op2BhColor1;
+
+	// ボタンホール色指定糸色 上前ピスポケット
+	private String op2BhColor2;
+
+	// ボタンホール色指定糸色 下前ピスポケット
+	private String op2BhColor3;
+
+	// ボタンホール色指定糸色 フラップ付コインポケット
+	private String op2BhColor4;
+
+	// ボタンホール色指定色 key&value
+	private Map<String, String> op2BhColorsMap;
+
+	// ボタン付け糸指定
+	private String op2ByColor;
+
+	private Map<String, String> op2ByColorMap;
+
+	// ボタン付け糸指定糸色
+	private String op2ByColorPlaceAll;
+
+	private Map<String, String> op2ByColorPlaceAllMap;
+
+	// ボタン付け糸指定箇所
+	// private String op2ByColorPlace;
+	private String op2ByColorPlace;
+
+	private String op2ByColorPlace1;
+
+	private String op2ByColorPlace2;
+
+	private String op2ByColorPlace3;
+
+	private String op2ByColorPlace4;
+
+	private Map<String, String> op2ByColorPlaceMap;
+
+	// ボタン付け糸指定糸色 フロント
+	private String op2ByColor1;
+
+	// ボタン付け糸指定糸色 上前ピスポケット
+	private String op2ByColor2;
+
+	// ボタン付け糸指定糸色 下前ピスポケット
+	private String op2ByColor3;
+
+	// ボタン付け糸指定糸色 フラップ付コインポケット
+	private String op2ByColor4;
+
+	// ボタン付け糸指定糸色 key&value
+	private Map<String, String> op2ByColorsMap;
+
+	// サスペンダー釦
+	private String op2SuspenderBtn;
+
+	private Map<String, String> op2SuspenderBtnMap;
 
 	public Map<String, String> getPants2MateMap() {
 		return pants2MateMap;
@@ -1285,7 +1300,4 @@ public class OptionPants2StandardInfo implements Serializable{
 		this.op2ByColorPlace = op2ByColorPlace;
 	}
 
-	
-    
 }
-    

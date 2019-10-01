@@ -3,6 +3,10 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderForm.GiletItem;
+
 public class OptionGiletStandardInfo implements Serializable {
 	private static final long serialVersionUID = -6022359138897696244L;
 
@@ -10,30 +14,66 @@ public class OptionGiletStandardInfo implements Serializable {
 	private Map<String, String> threePieceMap;
 
 	// GILETモデル
+	@NotBlank(groups = { GiletItem.class }, message = "GILETのモデルを入力して下さい。")
 	private String ogGiletModel;
 
 	private Map<String, String> ogGiletModelMap;
 
 	// 胸ポケット
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの胸ポケットを入力して下さい。")
 	private String ogBreastPkt;
 
 	private Map<String, String> ogBreastPktMap;
-	
+
+	// AMFステッチ
+	@NotBlank(groups = { GiletItem.class }, message = "GILETのAMFステッチを入力して下さい。")
+	private String ogStitch;
+
+	private Map<String, String> ogStitchMap;
+
+	// 背裏地素材
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの背裏地素材を入力して下さい。")
+	private String ogBackLiningMate;
+
+	private Map<String, String> ogBackLiningMateMap;
+
+	// 背裏地素材品番
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの背裏地素材品番を入力して下さい。")
+	private String ogBackLiningMateStkNo;
+
+	// 内側裏地素材
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの内側裏地素材を入力して下さい。")
+	private String ogInsideLiningMate;
+
+	private Map<String, String> ogInsideLiningMateMap;
+
+	// 内側裏地素材品番
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの内側裏地素材品番を入力して下さい。")
+	private String ogInsideLiningMateStkNo;
+
+	// 釦素材
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの釦素材を入力して下さい。")
+	private String ogFrontBtnMate;
+
+	private Map<String, String> ogFrontBtnMateMap;
+
+	// 釦素材品番
+	@NotBlank(groups = { GiletItem.class }, message = "GILETの釦素材品番を入力して下さい。")
+	private String ogFrontBtnMateStkNo;
+
+	// 品番Map
+	private Map<String, String> giletMateMap;
+
 	// 腰ポケット
 	private String ogWaistPkt;
 
 	private Map<String, String> ogWaistPktMap;
-	
+
 	// 腰ポケット形状
 	private String ogWaistPktSpec;
 
 	private Map<String, String> ogWaistPktSpecMap;
-	
-	// AMFステッチ
-	private String ogStitch;
 
-	private Map<String, String> ogStitchMap;
-	
 	// ステッチ箇所変更
 	private String ogStitchModify;
 
@@ -45,24 +85,24 @@ public class OptionGiletStandardInfo implements Serializable {
 	private String ogStitchModifyPlace3;
 
 	private Map<String, String> ogStitchModifyPlaceMap;
-	
+
 	// ダブルステッチ変更
 	private String ogDStitchModify;
 
 	private Map<String, String> ogDStitchModifyMap;
-	
+
 	// ダブルステッチ変更箇所
 	private String ogDStitchModifyPlace1;
 	private String ogDStitchModifyPlace2;
 	private String ogDStitchModifyPlace3;
 
 	private Map<String, String> ogDStitchModifyPlaceMap;
-	
+
 	// AMF色指定
 	private String ogAmfColor;
 
 	private Map<String, String> ogAmfColorMap;
-	
+
 	// AMF糸色
 	private String ogAmfColorPlaceAll;
 
@@ -91,7 +131,7 @@ public class OptionGiletStandardInfo implements Serializable {
 	private String ogBhColor;
 
 	private Map<String, String> ogBhColorMap;
-	
+
 	// ボタンホール色指定 糸色
 	private String ogBhColorPlaceAll;
 
@@ -132,7 +172,7 @@ public class OptionGiletStandardInfo implements Serializable {
 	private String ogByColor;
 
 	private Map<String, String> ogByColorMap;
-	
+
 	// ボタンホール色指定 糸色
 	private String ogByColorPlaceAll;
 
@@ -185,42 +225,15 @@ public class OptionGiletStandardInfo implements Serializable {
 	// ボタン付け糸指定糸色 key&value
 	private Map<String, String> ogByColorsMap;
 
-	// 背裏地素材
-	private String ogBackLiningMate;
-
-	private Map<String, String> ogBackLiningMateMap;
-	
-	// 背裏地素材品番
-	private String ogBackLiningMateStkNo;
-	
-	// 内側裏地素材
-	private String ogInsideLiningMate;
-
-	private Map<String, String> ogInsideLiningMateMap;
-
-	// 内側裏地素材品番
-	private String ogInsideLiningMateStkNo;
-	
-	// フロント釦
-	private String ogFrontBtnMate;
-
-	private Map<String, String> ogFrontBtnMateMap;
-
-	// フロント釦品番
-	private String ogFrontBtnMateStkNo;
-	
 	// バックベルト
 	private String ogBackBelt;
 
 	private Map<String, String> ogBackBeltMap;
-	
+
 	// ウォッチチェーン
 	private String ogWatchChain;
 
 	private Map<String, String> ogWatchChainMap;
-	
-	// 品番Map
-	private Map<String, String> giletMateMap;
 
 	public Map<String, String> getGiletMateMap() {
 		return giletMateMap;

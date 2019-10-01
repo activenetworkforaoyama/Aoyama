@@ -179,6 +179,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     
     private Map<String,String> wp2AmfColorPlaceMap;
     
+    private String wp2AmfAllColor;
     //AMF糸色  脇ポケット
     private String wp2AmfColor1;
     
@@ -217,6 +218,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     
     private Map<String,String> wp2BhColorPlaceMap;
     
+    private String wp2BhAllColor;
     //ボタンホール色指定糸色  フロント
     private String wp2BhColor1;
     
@@ -255,6 +257,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     
     private Map<String,String> wp2ByColorPlaceMap;
     
+    private String wp2ByAllColor;
     //ボタン付け糸指定糸色  フロント
     private String wp2ByColor1;
     
@@ -1527,6 +1530,30 @@ public class CoOptionPants2WashableInfo implements Serializable{
 
 	public void setPt2ShapeMemoryRtPrice(String pt2ShapeMemoryRtPrice) {
 		this.pt2ShapeMemoryRtPrice = pt2ShapeMemoryRtPrice;
+	}
+
+	public String getWp2AmfAllColor() {
+		return wp2AmfAllColor;
+	}
+
+	public void setWp2AmfAllColor(String wp2AmfAllColor) {
+		this.wp2AmfAllColor = wp2AmfAllColor;
+	}
+
+	public String getWp2BhAllColor() {
+		return wp2BhAllColor;
+	}
+
+	public void setWp2BhAllColor(String wp2BhAllColor) {
+		this.wp2BhAllColor = wp2BhAllColor;
+	}
+
+	public String getWp2ByAllColor() {
+		return wp2ByAllColor;
+	}
+
+	public void setWp2ByAllColor(String wp2ByAllColor) {
+		this.wp2ByAllColor = wp2ByAllColor;
 	}
     
 }

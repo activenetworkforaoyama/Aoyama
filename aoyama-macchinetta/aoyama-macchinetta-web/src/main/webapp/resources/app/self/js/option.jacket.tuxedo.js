@@ -242,6 +242,31 @@ function initOptionJacketTuxedo() {
 		});
 	});
 
+	// 選択中の腰ポケット
+	var waistPkt = jQuery('#tj_waistPkt').val();
+	
+	//リストが意味のないものなので以下削除
+	if (!slantedPktTuexdoList[waistPkt]) {
+		// 想定外の値の場合は何もしない
+		return;
+	}
+
+	// チェンジポケットの有効無効を制御
+	jQuery('input[id^="tj_changePkt_"]').each(function(index, elem) {
+		var tmpElem = jQuery(elem);
+		if (tmpElem.val() in slantedPktTuexdoList[waistPkt].activeList) {
+			// 有効な場合
+			tmpElem.prop("disabled", false);
+		} else {
+			// 無効な場合
+			tmpElem.prop("disabled", true);
+		}
+	});
+	// デフォルトを選択
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val([slantedPktTuexdoList[waistPkt].defaultValue]);
+	
+	
+	
 	// 腰ポケット
 	jQuery('#tj_waistPkt').change(function(){
 		
@@ -288,6 +313,8 @@ function initOptionJacketTuxedo() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val([slantedPktTuexdoList[waistPkt].defaultValue]);
+		
+		jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]:checked').change();
 
 		// チェンジポケット変更時の制御
 		changeTjChangePkt();

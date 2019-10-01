@@ -218,6 +218,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     
     private Map<String,String> opAmfColorPlaceMap;
     
+    private String opAmfAllColor;
     //AMF糸色  脇ポケット
     private String opAmfColor1;
     
@@ -258,6 +259,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     
     private Map<String,String> opBhColorPlaceMap;
     
+    private String opBhAllColor;
     //ボタンホール色指定糸色  フロント
     private String opBhColor1;
     
@@ -298,6 +300,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     
     private Map<String,String> opByColorPlaceMap;
     
+    private String opByAllColor;
     //ボタン付け糸指定糸色  フロント
     private String opByColor1;
     
@@ -1568,6 +1571,30 @@ public class CoOptionPantsStandardInfo implements Serializable{
 
 	public void setPtChicSlipRtPrice(String ptChicSlipRtPrice) {
 		this.ptChicSlipRtPrice = ptChicSlipRtPrice;
+	}
+
+	public String getOpAmfAllColor() {
+		return opAmfAllColor;
+	}
+
+	public void setOpAmfAllColor(String opAmfAllColor) {
+		this.opAmfAllColor = opAmfAllColor;
+	}
+
+	public String getOpBhAllColor() {
+		return opBhAllColor;
+	}
+
+	public void setOpBhAllColor(String opBhAllColor) {
+		this.opBhAllColor = opBhAllColor;
+	}
+
+	public String getOpByAllColor() {
+		return opByAllColor;
+	}
+
+	public void setOpByAllColor(String opByAllColor) {
+		this.opByAllColor = opByAllColor;
 	}
 
 	

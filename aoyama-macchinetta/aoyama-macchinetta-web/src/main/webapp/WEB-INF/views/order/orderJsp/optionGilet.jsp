@@ -18,6 +18,7 @@
                     <div class="col-12 col-md-6" align="right" id="giletModel_Msg">
                     </div>
                     <div class="col-12 col-md-9 offset-md-3" id="giletModelCheck" style="margin-top:8px"></div>
+                    <div class="col-12 col-md-9 offset-md-3" id="giletModelCheck" style="display:none"></div>
                 </div>
                 <div class="row form-group">
                     <div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
@@ -768,7 +769,7 @@
                         		<c:forEach var="wgBhColorsMap" items="${orderCoForm.coOptionGiletWashableInfo.wgBhColorsMap}">
                         		  <div class="form-check-inline form-check">
                         		     <label for="wg_bhColor" class="form-check-label ">
-                        			    <input type="radio" id="wg_byColor_${wgBhColorsMap.key}" name="coOptionGiletWashableInfo.wgBhColor${row.count}" value="${wgBhColorsMap.key}" class="form-check-input">${wgBhColorsMap.value}
+                        			    <input type="radio" id="wg_bhColor_${wgBhColorsMap.key}" name="coOptionGiletWashableInfo.wgBhColor${row.count}" value="${wgBhColorsMap.key}" class="form-check-input">${wgBhColorsMap.value}
                         		     </label>
                         		  </div>
                         		</c:forEach>
@@ -861,7 +862,7 @@
                     <button type="button" class="btn btn-link btn-sm" data-toggle="modal" data-target="#infotext_wg_frontBtnMate"><i class="fa fa-question-circle text-danger"></i></button>
                     </div>
                     <div class="col col-md-3">
-                    	<form:select id="" path="coOptionGiletWashableInfo.wgFrontBtnMate" class="form-control-sm form-control">
+                    	<form:select id="wg_frontBtnMate" path="coOptionGiletWashableInfo.wgFrontBtnMate" class="form-control-sm form-control">
 							<form:options items="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateMap}"/>
 						</form:select>
                     </div>
@@ -943,33 +944,33 @@ var selectIdList = {
 
 jQuery(function() {
 	var giletAdFlag="${orderCoForm.giletAdFlag}";
-if(orderFlag=="orderCo"){
-	if(giletAdFlag=="1"){
-	}else{
-		jQuery("#giletAdFlag").val("0");
+	if(orderFlag=="orderCo"){
+		if(giletAdFlag=="1"){
+		}else{
+			jQuery("#giletAdFlag").val("0");
+		}
 	}
-}
-var productCategory="${orderCoForm.productCategory}";
-if(orderFlag=="orderBack"){
-	if(productCategory == "9000101"){
-		var sessionGiletModel = "${orderCoForm.coOptionGiletStandardInfo.ogGiletModel}";
-		jQuery("#giletModel").click(function(){
-			var giletModel = jQuery("#giletModel").val();
-			sessionGiletAdFlag(sessionGiletModel,giletModel);
-		});
-	}else if(productCategory == "9000102"){
-		var sessionTgGiletModel = "${orderCoForm.coOptionGiletTuxedoInfo.tgGiletModel}";
-		jQuery("#tg_giletModel").click(function(){
-			var tgGiletModel = jQuery("#tg_giletModel").val();
-			sessionGiletAdFlag(sessionTgGiletModel,tgGiletModel);
-		});
-	}else if(productCategory == "9000103"){
-		var sessionWgGiletModel = "${orderCoForm.coOptionGiletWashableInfo.wgGiletModel}";
-		jQuery("#wg_giletModel").click(function(){
-			var wgGiletModel = jQuery("#wg_giletModel").val();
-			sessionGiletAdFlag(sessionWgGiletModel,wgGiletModel);
-		});
-	}
+	var productCategory="${orderCoForm.productCategory}";
+	if(orderFlag=="orderBack"){
+		if(productCategory == "9000101"){
+			var sessionGiletModel = "${orderCoForm.coOptionGiletStandardInfo.ogGiletModel}";
+			jQuery("#giletModel").click(function(){
+				var giletModel = jQuery("#giletModel").val();
+				sessionGiletAdFlag(sessionGiletModel,giletModel);
+			});
+		}else if(productCategory == "9000102"){
+			var sessionTgGiletModel = "${orderCoForm.coOptionGiletTuxedoInfo.tgGiletModel}";
+			jQuery("#tg_giletModel").click(function(){
+				var tgGiletModel = jQuery("#tg_giletModel").val();
+				sessionGiletAdFlag(sessionTgGiletModel,tgGiletModel);
+			});
+		}else if(productCategory == "9000103"){
+			var sessionWgGiletModel = "${orderCoForm.coOptionGiletWashableInfo.wgGiletModel}";
+			jQuery("#wg_giletModel").click(function(){
+				var wgGiletModel = jQuery("#wg_giletModel").val();
+				sessionGiletAdFlag(sessionWgGiletModel,wgGiletModel);
+			});
+		}
 	}
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -977,27 +978,12 @@ if(orderFlag=="orderBack"){
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
 
-	getModelByItem(productCategory);
+    setGiletModelDisable(productCategory);
 
 	//--------------------------------------------
 	// 共通
 	//--------------------------------------------
 	initCommon();
-
-	//--------------------------------------------
-	// タブメニュー
-	//--------------------------------------------
-	initTabMenu();
-
-	//--------------------------------------------
-	// お客様情報
-	//--------------------------------------------
-	//initCustomer();
-
-	//--------------------------------------------
-	// 商品タブ
-	//--------------------------------------------
-	initProduct();
 
 	//--------------------------------------------
 	// オプションタブ（Gilet）
@@ -1014,12 +1000,20 @@ if(orderFlag=="orderBack"){
 	// 補正タブ
 	//--------------------------------------------
 	initAlter();
-
+	//--------------------------------------------
+	// タブメニュー
+	//--------------------------------------------
+	initTabMenu();
+	//--------------------------------------------
+	// 商品タブ
+	//--------------------------------------------
+	changeViewArea();
+	
 	mateInit();
 
 	getPrice();
 
-	modelWhetherEmpty();
+	showPrice();
 
 	doubleOptionModelPrice();
 
@@ -1029,9 +1023,351 @@ if(orderFlag=="orderBack"){
 
 	jQuery("#giletItemFlag").val("1");
 
+	var orderFlag = "${orderCoForm.orderFlag}";
+	if(orderFlag == "orderCo"){
+	}else if(orderFlag == "orderLink"){
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		if(productCategory == "9000101"){
+
+			var ogStitchModifyPlace = "${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace}";
+			if(isNotEmpty(ogStitchModifyPlace)){
+				var ogStitchModifyPlaceStr = ogStitchModifyPlace.split(",");
+				for(var i=0;i<ogStitchModifyPlaceStr.length;i++){
+					if(ogStitchModifyPlaceStr[i] == "0000701"){
+						jQuery("#og_stitchModifyPlace_id1").prop("checked",true);
+					}else if(ogStitchModifyPlaceStr[i] == "0000704"){
+						jQuery("#og_stitchModifyPlace_id2").prop("checked",true);
+					}else if(ogStitchModifyPlaceStr[i] == "0000705"){
+						jQuery("#og_stitchModifyPlace_id3").prop("checked",true);
+					}
+				}
+			}
+			// 選択中のダブルステッチ変更
+			ctrlOgDStitchPlace();
+			// AMF色指定の有効/無効を制御
+			ctrlOgAmfColor();
+
+			var ogDStitchModifyPlace = "${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace}";
+			if(isNotEmpty(ogDStitchModifyPlace)){
+				var ogDStitchModifyPlaceStr = ogDStitchModifyPlace.split(",");
+				for(var i=0;i<ogDStitchModifyPlaceStr.length;i++){
+					if(ogDStitchModifyPlaceStr[i] == "0002701"){
+						jQuery("#og_dStitchModifyPlace_id1").prop("checked",true);
+					}else if(ogDStitchModifyPlaceStr[i] == "0002702"){
+						jQuery("#og_dStitchModifyPlace_id2").prop("checked",true);
+					}else if(ogDStitchModifyPlaceStr[i] == "0002703"){
+						jQuery("#og_dStitchModifyPlace_id3").prop("checked",true);
+					}
+				}
+			}
+			
+			var ogAmfColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlace}";
+			var ogAmfAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogAmfAllColor}";
+			if(isNotEmpty(ogAmfColorPlace)&&isNotEmpty(ogAmfAllColor)){
+				var ogAmfColorPlaceStr = ogAmfColorPlace.split(",");
+				var ogAmfAllColorStr = ogAmfAllColor.split(",");
+				for(var i=0;i<ogAmfColorPlaceStr.length;i++){
+					for(var i=0;i<ogAmfAllColorStr.length;i++){
+						if(ogAmfColorPlaceStr[i] == "0000901"){
+							jQuery("#og_amfColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor1'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+						}else if(ogAmfColorPlaceStr[i] == "0000902"){
+							jQuery("#og_amfColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor2'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+						}else if(ogAmfColorPlaceStr[i] == "0000903"){
+							jQuery("#og_amfColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor3'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+						}
+					}
+				}
+				jQuery('input[id^="og_amfColorPlace_"]').change();
+			}
+			
+
+			var ogBhColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace}";
+			var ogBhAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogBhAllColor}";
+			if(isNotEmpty(ogBhColorPlace)&&isNotEmpty(ogBhAllColor)){
+				var ogBhColorPlaceStr = ogBhAllColor.split(",");
+				var ogBhAllColorStr = ogBhColorPlace.split(",");
+				for(var i=0;i<ogBhColorPlaceStr.length;i++){
+					//for(var i=0;i<ogBhAllColorStr.length;i++){
+						if(ogBhColorPlaceStr[i] == "0001201"){
+							jQuery("#og_bhColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor1'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}else if(ogBhColorPlaceStr[i] == "0001202"){
+							jQuery("#og_bhColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor2'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}else if(ogBhColorPlaceStr[i] == "0001203"){
+							jQuery("#og_bhColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor3'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}else if(ogBhColorPlaceStr[i] == "0001204"){
+							jQuery("#og_bhColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor4'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}else if(ogBhColorPlaceStr[i] == "0001205"){
+							jQuery("#og_bhColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor5'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}else if(ogBhColorPlaceStr[i] == "0001206"){
+							jQuery("#og_bhColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor6'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+						}
+// 					}
+				}
+				jQuery('input[id^="og_bhColorPlace_"]').change();
+			}
+			
+			var ogByColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace}";
+			var ogByAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogByAllColor}";
+			if(isNotEmpty(ogByAllColor)&&isNotEmpty(ogByColorPlace)){
+				var ogByColorPlaceStr = ogByColorPlace.split(",");
+				var ogByAllColorStr = ogByAllColor.split(",");
+				for(var i=0;i<ogByColorPlaceStr.length;i++){
+					//for(var i=0;i<ogByAllColorStr.length;i++){
+						if(ogByColorPlaceStr[i] == "0001501"){
+							jQuery("#og_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor1'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001502"){
+							jQuery("#og_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor2'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001503"){
+							jQuery("#og_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor3'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001504"){
+							jQuery("#og_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor4'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001505"){
+							jQuery("#og_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor5'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001506"){
+							jQuery("#og_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor6'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001507"){
+							jQuery("#og_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor7'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001508"){
+							jQuery("#og_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor8'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001509"){
+							jQuery("#og_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor9'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}else if(ogByColorPlaceStr[i] == "0001510"){
+							jQuery("#og_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor10'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+						}
+					//}
+				}
+				jQuery('input[id^="og_byColorPlace_"]').change();
+			}
+			
+		}else if(productCategory == "9000102"){
+			var tgAllBhColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgAllBhColor}";
+			var tgBhColorPlace = "${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorPlace}";
+			if(isNotEmpty(tgAllBhColor)&&isNotEmpty(tgBhColorPlace)){
+				var tgBhColorPlaceStr = tgBhColorPlace.split(",");
+				var tgAllBhColorStr = tgAllBhColor.split(",");
+				for(var i=0;i<tgBhColorPlaceStr.length;i++){
+					//for(var i=0;i<tgAllBhColorStr.length;i++){
+						if(tgBhColorPlaceStr[i] == "0001201"){
+							jQuery("#tg_bhColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor1'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}else if(tgBhColorPlaceStr[i] == "0001202"){
+							jQuery("#tg_bhColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor2'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}else if(tgBhColorPlaceStr[i] == "0001203"){
+							jQuery("#tg_bhColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor3'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}else if(tgBhColorPlaceStr[i] == "0001204"){
+							jQuery("#tg_bhColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor4'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}else if(tgBhColorPlaceStr[i] == "0001205"){
+							jQuery("#tg_bhColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor5'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}else if(tgBhColorPlaceStr[i] == "0001206"){
+							jQuery("#tg_bhColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor6'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+						}
+					//}
+				}
+				jQuery('input[id^="tg_bhColorPlace_"]').change();
+			}
+			
+			var tgByColorPlace = "${orderCoForm.coOptionGiletTuxedoInfo.tgByColorPlace}";
+			var tgAllByColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgAllByColor}";
+			if(isNotEmpty(tgAllByColor)&&isNotEmpty(tgByColorPlace)){
+				var tgByColorPlaceStr = tgByColorPlace.split(",");
+				var tgAllByColorStr = tgAllByColor.split(",");
+				for(var i=0;i<tgByColorPlaceStr.length;i++){
+					//for(var i=0;i<tgAllByColorStr.length;i++){
+						if(tgByColorPlaceStr[i] == "0001501"){
+							jQuery("#tg_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor1'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001502"){
+							jQuery("#tg_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor2'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001503"){
+							jQuery("#tg_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor3'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001504"){
+							jQuery("#tg_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor4'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001505"){
+							jQuery("#tg_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor5'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001506"){
+							jQuery("#tg_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor6'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001507"){
+							jQuery("#tg_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor7'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001508"){
+							jQuery("#tg_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor8'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001509"){
+							jQuery("#tg_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor9'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}else if(tgByColorPlaceStr[i] == "0001510"){
+							jQuery("#tg_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor10'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+						}
+				}
+				jQuery('input[id^="tg_byColorPlace_"]').change();
+			}
+			
+		}else if(productCategory == "9000103"){
+			var wgStitchModifyPlace = "${orderCoForm.coOptionGiletWashableInfo.wgStitchModifyPlace}";
+			if(isNotEmpty(wgStitchModifyPlace)){
+				var wgStitchModifyPlaceStr = wgStitchModifyPlace.split(",");
+				for(var i=0;i<wgStitchModifyPlaceStr.length;i++){
+					if(wgStitchModifyPlaceStr[i] == "0000701"){
+						jQuery("#wg_stitchModifyPlace_id1").prop("checked",true);
+					}else if(wgStitchModifyPlaceStr[i] == "0000704"){
+						jQuery("#wg_stitchModifyPlace_id2").prop("checked",true);
+					}else if(wgStitchModifyPlaceStr[i] == "0000705"){
+						jQuery("#wg_stitchModifyPlace_id3").prop("checked",true);
+					}
+				}
+			}
+			
+			// 選択中のダブルステッチ変更
+			ctrlWgDStitchPlace();
+			// AMF色指定の有効/無効を制御
+			ctrlWgAmfColor();
+
+			var wgDStitchModifyPlace = "${orderCoForm.coOptionGiletWashableInfo.wgDStitchModifyPlace}";
+			if(isNotEmpty(wgDStitchModifyPlace)){
+				var wgDStitchModifyPlaceStr = wgDStitchModifyPlace.split(",");
+				for(var i=0;i<wgDStitchModifyPlaceStr.length;i++){
+					if(wgDStitchModifyPlaceStr[i] == "0002701"){
+						jQuery("#wg_dStitchModifyPlace_id1").prop("checked",true);
+					}else if(wgDStitchModifyPlaceStr[i] == "0002702"){
+						jQuery("#wg_dStitchModifyPlace_id2").prop("checked",true);
+					}else if(wgDStitchModifyPlaceStr[i] == "0002703"){
+						jQuery("#wg_dStitchModifyPlace_id3").prop("checked",true);
+					}
+				}
+			}
+			
+			var wgAmfColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgAmfColorPlace}";
+			var wgAmfAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllAmfColor}";
+			if(isNotEmpty(wgAmfAllColor)&&isNotEmpty(wgAmfColorPlace)){
+				var wgAmfColorPlaceStr = wgAmfColorPlace.split(",");
+				var wgAmfAllColorStr = wgAmfAllColor.split(",");
+				for(var i=0;i<wgAmfColorPlaceStr.length;i++){
+					//for(var i=0;i<wgAmfAllColorStr.length;i++){
+						if(wgAmfColorPlaceStr[i] == "0000901"){
+							jQuery("#wg_amfColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor1'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+						}else if(wgAmfColorPlaceStr[i] == "0000902"){
+							jQuery("#wg_amfColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor2'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+						}else if(wgAmfColorPlaceStr[i] == "0000903"){
+							jQuery("#wg_amfColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor3'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+						}
+					//}
+				}
+				jQuery('input[id^="wg_amfColorPlace_"]').change();
+			}
+			
+			var wgBhColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgBhColorPlace}";
+			var wgBhAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllBhColor}";
+			if(isNotEmpty(wjBhAllColor)&&isNotEmpty(wgBhColorPlace)){
+				var wgBhColorPlaceStr = wgBhColorPlace.split(",");
+				var wgBhAllColorStr = wgBhAllColor.split(",");
+				for(var i=0;i<wgBhColorPlaceStr.length;i++){
+					//for(var i=0;i<wgBhAllColorStr.length;i++){
+						if(wgBhColorPlaceStr[i] == "0001201"){
+							jQuery("#wg_bhColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor1'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}else if(wgBhColorPlaceStr[i] == "0001202"){
+							jQuery("#wg_bhColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor2'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}else if(wgBhColorPlaceStr[i] == "0001203"){
+							jQuery("#wg_bhColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor3'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}else if(wgBhColorPlaceStr[i] == "0001204"){
+							jQuery("#wg_bhColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor4'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}else if(wgBhColorPlaceStr[i] == "0001205"){
+							jQuery("#wg_bhColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor5'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}else if(wgBhColorPlaceStr[i] == "0001206"){
+							jQuery("#wg_bhColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor6'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+						}
+					//}
+				}
+				jQuery('input[id^="wg_bhColorPlace_"]').change();
+			}
+			
+			var wgByColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgByColorPlace}";
+			var wgAllByColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllByColor}";
+			if(isNotEmpty(wgByColorPlace)&&isNotEmpty(wjByAllColor)){
+				var wgByColorPlaceStr = wgByColorPlace.split(",");
+				var wgAllByColorStr = wgAllByColor.split(",");
+				for(var i=0;i<wgByColorPlaceStr.length;i++){
+					//for(var i=0;i<wgAllByColorStr.length;i++){
+						if(wgByColorPlaceStr[i] == "0001501"){
+							jQuery("#wg_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor1'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001502"){
+							jQuery("#wg_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor2'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001503"){
+							jQuery("#wg_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor3'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001504"){
+							jQuery("#wg_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor4'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001505"){
+							jQuery("#wg_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor5'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001506"){
+							jQuery("#wg_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor6'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001507"){
+							jQuery("#wg_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor7'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001508"){
+							jQuery("#wg_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor8'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001509"){
+							jQuery("#wg_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor9'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}else if(wgByColorPlaceStr[i] == "0001510"){
+							jQuery("#wg_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor10'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+						}
+					//}
+				}
+				jQuery('input[id^="wg_byColorPlace_"]').change();
+			}
+		}
+	}else if(orderFlag == "orderCheck"){
+	}
+
 })	
 
-function getModelByItem(productCategory){
+function setGiletModelDisable(productCategory){
 	var glModel = null;
 	
 	if(productCategory == "9000101"){
@@ -1211,10 +1547,18 @@ function getAllPrice(subItemCode, optionPrice){
     jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
 }
 
-function modelWhetherEmpty(){
-	var giletModel = jQuery("#giletModel option:selected").val();
-	if(!(giletModel == "")){
-		jQuery("#giletModel").change();
+function showPrice(){
+	var giletModel = null;
+	var category = jQuery('input[name="productCategory"]:checked').val();
+	if(category == "9000101"){
+		giletModel = jQuery("#giletModel");
+	}else if(category == "9000102"){
+		giletModel = jQuery("#tg_giletModel");
+	}else if(category == "9000103"){
+		giletModel = jQuery("#wg_giletModel");
+	}
+	if(isNotEmpty(giletModel.val())){
+		giletModel.change();
 	}
 }
 
@@ -1314,21 +1658,29 @@ function getPrice(){
 	jQuery("#giletModel,#tg_giletModel,#wg_giletModel").change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
-		var giletModel = jQuery("#giletModel option:selected").val();
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 
-		var code = itemCode + subItemCode + giletModel;
-
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var ajaxUrl = "";
 		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardModel";
 		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletTuxedoModel";
 		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableModel";
 		}
+
+		if(isEmpty(giletModel)){
+			return;
+		}
+
+		var code = itemCode + subItemCode + giletModel;
+		
 		$.ajax({
 			type:"get",
 			url:contextPath + "/orderCo/" + ajaxUrl,
@@ -1356,25 +1708,30 @@ function getPrice(){
 	
 // 	プルダウンの変更処理
 // 	項目：背裏地素材,背裏地品番,内側裏地素材,内側裏地品番,釦素材,釦品番,バックベルト
-	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt,#tg_backLiningMate,#tg_backLiningMateStkNo,#tg_insideLiningMate,#tg_insideLiningMateStkNo,#tg_frontBtnMate,#tg_frontBtnMateStkNo,#tg_backBelt,#wg_backLiningMate,#wg_backLiningMateStkNo,#wg_insideLiningMate,#wg_insideLiningMateStkNo,#wg_frontBtnMate,#wg_frontBtnMateStkNo,#wg_backBelt")
+	jQuery("#og_backLiningMate,#og_backLiningMateStkNo,#og_insideLiningMate,#og_insideLiningMateStkNo,"+
+			"#og_frontBtnMate,#og_frontBtnMateStkNo,#og_backBelt,"+
+			"#tg_backLiningMate,#tg_backLiningMateStkNo,#tg_insideLiningMate,#tg_insideLiningMateStkNo,"+
+			"#tg_frontBtnMate,#tg_frontBtnMateStkNo,#tg_backBelt,"+
+			"#wg_backLiningMate,#wg_backLiningMateStkNo,#wg_insideLiningMate,#wg_insideLiningMateStkNo,"+
+			"#wg_frontBtnMate,#wg_frontBtnMateStkNo,#wg_backBelt")
 	.change(function(){
 // 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
 
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var ajaxUrl = "";
 		if(productCategory == "9000101"){
-			var giletModel = jQuery("#giletModel option:selected").val();
+			giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardProject";
 		}else if(productCategory == "9000102"){
-			var giletModel = jQuery("#tg_giletModel option:selected").val();
+			giletModel = jQuery("#tg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
 		}else if(productCategory == "9000103"){
-			var giletModel = jQuery("#wg_giletModel option:selected").val();
+			giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableProject";
 		}
 
@@ -1415,174 +1772,374 @@ function getPrice(){
 	});
 	
 // 	ラジオボタンの変更処理
-// 	項目：胸ポケット、腰ポケット、腰ポケット形状、ステッチ種類、襟吊
-	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_stitch_id"],[id^="og_watchChain_id"],[id^="tg_breastPkt_id"],[id^="tg_waistPkt_id"],[id^="tg_waistPktSpec_id"],[id^="tg_waistPktMate_id"],[id^="tg_stitch_id"],[id^="tg_watchChain_id"],[id^="wg_breastPkt_id"],[id^="wg_waistPkt_id"],[id^="wg_waistPktSpec_id"],[id^="wg_stitch_id"],[id^="wg_watchChain_id"]')
+// 	項目：胸ポケット、腰ポケット形状、ウォッチチェーン、腰ポケット素材
+	jQuery('input[id^="og_breastPkt_id"],[id^="og_waistPktSpec_id"],[id^="og_watchChain_id"],'+
+			'[id^="tg_breastPkt_id"],[id^="tg_waistPktSpec_id"],[id^="tg_waistPktMate_id"],[id^="tg_watchChain_id"],'+
+			'[id^="wg_breastPkt_id"],[id^="wg_waistPktSpec_id"],[id^="wg_watchChain_id"]')
 	.change(function(){
 // 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-		
-		var giletModel = jQuery("#giletModel option:selected").val();
-		var itemCode = jQuery("#item").val();
-		var subItemCode = "04";
-		var idValueName = jQuery(this).attr("id");
 
 		var productCategory = jQuery('input[name="productCategory"]:checked').val();
-		var ajaxUrl = "";
-		if(productCategory == "9000101"){
-			ajaxUrl = "getOrderPriceForGiletStandardProject";
-		}else if(productCategory == "9000102"){
-			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
-		}else if(productCategory == "9000103"){
-			ajaxUrl = "getOrderPriceForGiletWashableProject";
-		}
-
-		//IDの後の番号を削除します
-		var findIdPosition = idValueName.indexOf("_id");
-		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-		 
-		if(isNotEmpty(giletModel)){
-			var code = itemCode + subItemCode + giletModel;
-			jQuery.ajax({
-				type:"get",
-				url:contextPath + "/orderCo/" + ajaxUrl,
-				data:{"code":code,"idValueName":interceptedIdValueName},
-				dataType:"json",
-				contentType:"application/json",
-				async:false,
-				success:function(result){
-					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
-					jQuery("#"+msgIdValueName).html(result.idValuePrice);
-					getAllPrice(subItemCode, result.optionPrice);
-				}
-			});
-		}
-	});
-
-// 	ラジオボタンの変更処理
-// 	項目：腰ポケット、腰ポケット形状の制御
-	jQuery('input[id^="og_waistPkt_id"],[id^="tg_waistPkt_id"],[id^="wg_waistPkt_id"]')
-	.change(function(){
-// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-
-		var waistPktValue = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
-		if (waistPktValue == "0000202") {
-			for(var i=0; i<jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').length; i++){
-				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').get(i).checked = false;
-			}
-			jQuery('#og_waistPktSpec_Msg').html("無料");
-		}
-		
-		var giletModel = jQuery("#giletModel option:selected").val();
-		var itemCode = jQuery("#item").val();
-		var subItemCode = "04";
-		var idValueName = jQuery(this).attr("id");
-
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
-		var ajaxUrl = "";
-		if(productCategory == "9000101"){
-			ajaxUrl = "getOrderPriceForGiletStandardProject";
-		}else if(productCategory == "9000102"){
-			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
-		}else if(productCategory == "9000103"){
-			ajaxUrl = "getOrderPriceForGiletWashableProject";
-		}
-
-		//IDの後の番号を削除します
-		var findIdPosition = idValueName.indexOf("_id");
-		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-		 
-		if(isNotEmpty(giletModel)){
-			var code = itemCode + subItemCode + giletModel;
-			jQuery.ajax({
-				type:"get",
-				url:contextPath + "/orderCo/" + ajaxUrl,
-				data:{"code":code,"idValueName":interceptedIdValueName},
-				dataType:"json",
-				contentType:"application/json",
-				async:false,
-				success:function(result){
-					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
-					jQuery("#"+msgIdValueName).html(result.idValuePrice);
-					getAllPrice(subItemCode, result.optionPrice);
-				}
-			});
-		}
-	});
-
-// 	ラジオボタンの変更処理
-// 	項目：ステッチ箇所変更,ダブルステッチ
-	jQuery('input[id^="og_stitchModify_id"],[id^="og_stitchModifyPlace_id"],[id^="og_dStitchModify_id"],[id^="og_dStitchModifyPlace_id"],[id^="wg_stitchModify_id"],[id^="wg_stitchModifyPlace_id"],[id^="wg_dStitchModify_id"],[id^="wg_dStitchModifyPlace_id"]')
-	.change(function(){
-// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
-
-		var giletModel = jQuery("#giletModel option:selected").val();
+		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
 		var thisValueTemp = jQuery(this).val();
-// 		alert(thisValueTemp);
 
-		if(thisValueTemp == "0000601"){
-			//ステッチ箇所変更は無しです
-			var i = 1;
-			jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
-				jQuery('#og_stitchModifyPlace_id' + i).removeAttr("checked");
-				i++;
-			});
-			jQuery('#og_dStitchModify_id1').prop("checked", true);
-			jQuery('#og_dStitchModify_id2').prop("disabled", true);
-			jQuery('#og_dStitchModify_id2').prop("checked", false);
-			jQuery('#og_amfColor_id1').prop("checked", true);
-			jQuery('#og_amfColor_id2').prop("disabled", true);
-			jQuery('#og_amfColor_id2').prop("checked", false);
-			jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]:checked').change();
-			jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]:checked').change();
-		}else if(thisValueTemp == "0000602"){
-			//ステッチ箇所変更は有りです
-			//ラペル・フロントと腰ポケット、デフォルト選択
-// 			for(var i=0; i<ogStitchModifyList[giletModel].length; i++){
-// 				jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
-// 					ogStitchModifyList[giletModel][i]
-// 					i++;
-// 				});
-// 			}
-			jQuery('#og_stitchModifyPlace_id1').prop("checked", true);
-			jQuery('#og_stitchModifyPlace_id3').prop("checked", true);
-			jQuery('#og_dStitchModify_id2').prop("disabled", false);
-			jQuery('#og_amfColor_id2').prop("disabled", false);
-		}
-		if(thisValueTemp == "0002601"){
-			//ダブルステッチは無しです
-			var i = 1;
-			jQuery('input[id^="og_dStitchModifyPlace_id"]').each(function() {
-				jQuery('#og_dStitchModifyPlace_id' + i).removeAttr("checked");
-				i++;
-			});
-		}
-
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var ajaxUrl = "";
 		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardProject";
+		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
 		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableProject";
+		}
+		
+		var jspOptionCodeAndBranchCode = "";
+		if(idValueName.indexOf("_breastPkt_id") != -1){
+			//胸ポケット
+			jspOptionCodeAndBranchCode = "00001" + thisValueTemp;
+		}else if(idValueName.indexOf("_waistPktSpec_id") != -1){
+			//腰ポケット形状
+			jspOptionCodeAndBranchCode = "00003" + thisValueTemp;
+		}else if(idValueName.indexOf("_watchChain_id") != -1){
+			//ウォッチチェーン
+			jspOptionCodeAndBranchCode = "00024" + thisValueTemp;
+		}else if(idValueName.indexOf("_waistPktMate_id") != -1){
+			//腰ポケット素材
+			jspOptionCodeAndBranchCode = "00004" + thisValueTemp;
+		}
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		 
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"jspOptionCodeAndBranchCode":jspOptionCodeAndBranchCode},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+
+// 	ラジオボタンの変更処理
+// 	項目：腰ポケット
+	jQuery('input[id^="og_waistPkt_id"],[id^="tg_waistPkt_id"],[id^="wg_waistPkt_id"]')
+	.change(function(){
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+
+		var waistPktValue = "";
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+			
+			waistPktValue = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
+			if (waistPktValue == "0000201") {
+				// 腰ポケット形状の設定
+				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').change();
+			}else if (waistPktValue == "0000202") {
+				for(var i=0; i<jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').length; i++){
+					jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').get(i).checked = false;
+				}
+			}
+			
+		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+
+			waistPktValue = jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
+			if (waistPktValue == "0000201") {
+				// 腰ポケット形状の設定
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').change();
+			}else if (waistPktValue == "0000202") {
+				for(var i=0; i<jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').length; i++){
+					jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').get(i).checked = false;
+				}
+			}
+			
+		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+			
+			waistPktValue = jQuery('input[name="coOptionGiletWashableInfo.wgWaistPkt"]:checked').val();
+			if (waistPktValue == "0000201") {
+				// 腰ポケット形状の設定
+				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]:checked').change();
+			}else if (waistPktValue == "0000202") {
+				for(var i=0; i<jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').length; i++){
+					jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').get(i).checked = false;
+				}
+			}
+		}
+
+		var jspOptionCodeAndBranchCode = "";
+		if(idValueName.indexOf("_waistPkt_id") != -1){
+			//胸ポケット
+			jspOptionCodeAndBranchCode = "00002" + thisValueTemp;
+		}
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		 
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"jspOptionCodeAndBranchCode":jspOptionCodeAndBranchCode},
+				dataType:"json",
+				contentType:"application/json",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+	});
+	
+	// 	ラジオボタンの変更処理
+// 	項目：ステッチ種類
+	jQuery('input[id^="og_stitch_id"],[id^="wg_stitch_id"],[id^="tg_stitch_id"]')
+	.change(function(){
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+
+			if(thisValueTemp == "0000503"){
+				//ステッチ種類は無しです
+				jQuery('#og_stitchModify_id1').prop("checked", true);
+				jQuery('#og_stitchModify_id1').prop("disabled", true);
+				jQuery('#og_stitchModify_id2').prop("checked", false);
+				jQuery('#og_stitchModify_id2').prop("disabled", true);
+				jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]:checked').change();
+			}else if(thisValueTemp != "0000503"){
+				//ステッチ種類は有りです
+				jQuery('#og_stitchModify_id1').prop("checked", true);
+				jQuery('#og_stitchModify_id1').prop("disabled", false);
+				jQuery('#og_stitchModify_id2').prop("checked", false);
+				jQuery('#og_stitchModify_id2').prop("disabled", false);
+			}
+			
+		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+
+			if(thisValueTemp == "0000503"){
+				//ステッチ種類は無しです
+				jQuery('#wg_stitchModify_id1').prop("checked", true);
+				jQuery('#wg_stitchModify_id1').prop("disabled", true);
+				jQuery('#wg_stitchModify_id2').prop("checked", false);
+				jQuery('#wg_stitchModify_id2').prop("disabled", true);
+				jQuery('input[name="coOptionGiletWashableInfo.wgStitchModify"]:checked').change();
+			}else if(thisValueTemp != "0000503"){
+				//ステッチ種類は有りです
+// 				jQuery('#wg_stitchModify_id1').prop("checked", true);
+				jQuery('#wg_stitchModify_id1').prop("disabled", false);
+// 				jQuery('#wg_stitchModify_id2').prop("checked", false);
+				jQuery('#wg_stitchModify_id2').prop("disabled", false);
+			}
+			
+		}
+
+		var jspOptionCodeAndBranchCode = "";
+		if(idValueName.indexOf("_stitch_id") != -1){
+			//ステッチ種類
+			jspOptionCodeAndBranchCode = "00005" + thisValueTemp;
+		}
+
+		//IDの後の番号を削除します
+		var findIdPosition = idValueName.indexOf("_id");
+		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+		
+		if(isNotEmpty(giletModel)){
+			var code = itemCode + subItemCode + giletModel;
+			jQuery.ajax({
+				type:"get",
+				url:contextPath + "/orderCo/" + ajaxUrl,
+				data:{"code":code,"idValueName":interceptedIdValueName,"jspOptionCodeAndBranchCode":jspOptionCodeAndBranchCode},
+				dataType:"json",
+				contentType:"application/json;charsetset=UTF-8",
+				async:false,
+				success:function(result){
+					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
+					jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					getAllPrice(subItemCode, result.optionPrice);
+				}
+			});
+		}
+		
+	});
+	
+// 	ラジオボタンの変更処理
+// 	項目：ステッチ箇所変更,ダブルステッチ
+	jQuery('input[id^="og_stitchModify_id"],[id^="og_stitchModifyPlace_id"],[id^="og_dStitchModify_id"],'+
+			'[id^="og_dStitchModifyPlace_id"],'+
+			'[id^="wg_stitchModify_id"],[id^="wg_stitchModifyPlace_id"],[id^="wg_dStitchModify_id"],'+
+			'[id^="wg_dStitchModifyPlace_id"]')
+	.change(function(){
+// 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
+		var itemCode = jQuery("#item").val();
+		var subItemCode = "04";
+		var idValueName = jQuery(this).attr("id");
+		var thisValueTemp = jQuery(this).val();
+
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+
+			if(thisValueTemp == "0000601"){
+				//ステッチ箇所変更は無しです
+				var i = 1;
+				jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
+					jQuery('#og_stitchModifyPlace_id' + i).removeAttr("checked");
+					i++;
+				});
+				jQuery('#og_dStitchModify_id1').prop("checked", true);
+				jQuery('#og_dStitchModify_id2').prop("disabled", true);
+				jQuery('#og_dStitchModify_id2').prop("checked", false);
+				jQuery('#og_amfColor_id1').prop("checked", true);
+				jQuery('#og_amfColor_id2').prop("disabled", true);
+				jQuery('#og_amfColor_id2').prop("checked", false);
+				jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]:checked').change();
+				jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]:checked').change();
+			}else if(thisValueTemp == "0000602"){
+				//ステッチ箇所変更は有りです
+				//ラペル・フロントと腰ポケット、デフォルト選択
+				if(isNotEmpty(giletModel)){
+					for(var i=0; i<ogStitchModifyList[giletModel].length; i++){
+						var j = 1;
+						jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
+							if(jQuery('#og_stitchModifyPlace_id' + j).val() == ogStitchModifyList[giletModel][i]){
+								jQuery('#og_stitchModifyPlace_id' + j).prop("checked", true);
+							}
+							j++;
+						});
+					}
+				}
+				jQuery('#og_dStitchModify_id2').prop("disabled", false);
+				jQuery('#og_amfColor_id2').prop("disabled", false);
+			}
+			if(thisValueTemp == "0002601"){
+				//ダブルステッチは無しです
+				var i = 1;
+				jQuery('input[id^="og_dStitchModifyPlace_id"]').each(function() {
+					jQuery('#og_dStitchModifyPlace_id' + i).removeAttr("checked");
+					i++;
+				});
+			}
+			
+		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+
+			if(thisValueTemp == "0000601"){
+				//ステッチ箇所変更は無しです
+				var i = 1;
+				jQuery('input[id^="wg_stitchModifyPlace_id"]').each(function() {
+					jQuery('#wg_stitchModifyPlace_id' + i).removeAttr("checked");
+					i++;
+				});
+				jQuery('#wg_dStitchModify_id1').prop("checked", true);
+				jQuery('#wg_dStitchModify_id2').prop("disabled", true);
+				jQuery('#wg_dStitchModify_id2').prop("checked", false);
+				jQuery('#wg_amfColor_id1').prop("checked", true);
+				jQuery('#wg_amfColor_id2').prop("disabled", true);
+				jQuery('#wg_amfColor_id2').prop("checked", false);
+				jQuery('input[name="coOptionGiletWashableInfo.wgDStitchModify"]:checked').change();
+				jQuery('input[name="coOptionGiletWashableInfo.wgAmfColor"]:checked').change();
+			}else if(thisValueTemp == "0000602"){
+				//ステッチ箇所変更は有りです
+				//ラペル・フロントと腰ポケット、デフォルト選択
+				if(isNotEmpty(giletModel)){
+					for(var i=0; i<ogStitchModifyList[giletModel].length; i++){
+						var j = 1;
+						jQuery('input[id^="wg_stitchModifyPlace_id"]').each(function() {
+							if(jQuery('#wg_stitchModifyPlace_id' + j).val() == ogStitchModifyList[giletModel][i]){
+								jQuery('#wg_stitchModifyPlace_id' + j).prop("checked", true);
+							}
+							j++;
+						});
+					}
+				}
+				jQuery('#wg_dStitchModify_id2').prop("disabled", false);
+				jQuery('#wg_amfColor_id2').prop("disabled", false);
+			}
+			if(thisValueTemp == "0002601"){
+				//ダブルステッチは無しです
+				var i = 1;
+				jQuery('input[id^="wg_dStitchModifyPlace_id"]').each(function() {
+					jQuery('#wg_dStitchModifyPlace_id' + i).removeAttr("checked");
+					i++;
+				});
+			}
+			
 		}
 
 		//複数選択ボックスの数,IDにより決定optionCode
 		var ogSomePlace_length = 0;
+		var jspOptionCodeUp = "";
 		var jspOptionCode = "";
 		if(idValueName.indexOf("og_stitchModify") >= 0){
+			jspOptionCodeUp ="00006";
 			jspOptionCode ="00007";
 			ogSomePlace_length = jQuery('input[id^="og_stitchModifyPlace_id"]').length;
 
 		}else if(idValueName.indexOf("og_dStitchModify") >= 0){
+			jspOptionCodeUp ="00026";
 			jspOptionCode ="00027";
 			ogSomePlace_length = jQuery('input[id^="og_dStitchModifyPlace_id"]').length;
 			
 		}else if(idValueName.indexOf("wg_stitchModify") >= 0){
+			jspOptionCodeUp ="00006";
 			jspOptionCode ="00007";
 			ogSomePlace_length = jQuery('input[id^="wg_stitchModifyPlace_id"]').length;
 			
 		}else if(idValueName.indexOf("wg_dStitchModify") >= 0){
+			jspOptionCodeUp ="00026";
 			jspOptionCode ="00027";
 			ogSomePlace_length = jQuery('input[id^="wg_dStitchModifyPlace_id"]').length;
 
@@ -1606,6 +2163,7 @@ function getPrice(){
 			idValueNameTemp = idValueName.substring(0,findIdPositionNotPlace);
 			interceptedIdValueName = idValueNameTemp + "_id";
 		}
+		
 		//チェックボックスループ
 		for(var i=1; i<=ogSomePlace_length; i++){
 			//各チェックボックスのIDをループスプライシング
@@ -1614,6 +2172,9 @@ function getPrice(){
 			if(idValueNameComplete.checked){
 				countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
 			}
+		}
+		if(findIdPosition == -1){
+			countArr = countArr + jspOptionCodeUp + thisValueTemp + ",";
 		}
 		
 		if(isNotEmpty(giletModel)){
@@ -1637,39 +2198,138 @@ function getPrice(){
 
 // 	ラジオボタンの変更処理
 // 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定
-	jQuery('input[id^="og_amfColor_"],[id^="og_bhColor_"],[id^="og_byColor_"],[id^="tg_bhColor_"],[id^="tg_byColor_"],[id^="wg_amfColor_"],[id^="wg_bhColor_"],[id^="wg_byColor_"]').change(function(){
+	jQuery('input[id^="og_amfColor_"],[id^="og_bhColor_"],[id^="og_byColor_"],'+
+			'[id^="tg_bhColor_"],[id^="tg_byColor_"],'+
+			'[id^="wg_amfColor_"],[id^="wg_bhColor_"],[id^="wg_byColor_"]').change(function(){
 // 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
-		var giletModel = jQuery("#giletModel option:selected").val();
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
 		var thisValueTemp = jQuery(this).val();
-// 		alert(idValueName);
-		
-		if(thisValueTemp == "0000801"){
-			//AMF色指定は無しです
-			var i = 1;
-			jQuery('input[id^="og_amfColorPlace_"]').each(function() {
-				var valueNameAll = "coOptionGiletStandardInfo.ogAmfColor" + i;
-				var valueNameOne = document.getElementsByName(valueNameAll);
-				var $valueNameOneJq = $(valueNameOne);
-				for(var j=0; j<valueNameOne.length; j++){
-					jQuery($valueNameOneJq).get(j).checked = false;
-				}
-				i++;
-			});
-			jQuery('#og_amfColor_Msg').html("無料");
-		}
 
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		var ajaxUrl = "";
 		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardProject";
+
+			if(thisValueTemp == "0000801"){
+				//AMF色指定は無しです
+				var i = 1;
+				jQuery('input[id^="og_amfColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletStandardInfo.ogAmfColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			if(thisValueTemp == "0001101"){
+				//ボタンホール色指定は無しです
+				var i = 1;
+				jQuery('input[id^="og_bhColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletStandardInfo.ogBhColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			if(thisValueTemp == "0001401"){
+				//ボタン付け糸指定は無しです
+				var i = 1;
+				jQuery('input[id^="og_byColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletStandardInfo.ogByColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			
 		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+
+			if(thisValueTemp == "0001101"){
+				//ボタンホール色指定は無しです
+				var i = 1;
+				jQuery('input[id^="tg_bhColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletTuxedoInfo.tgBhColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			if(thisValueTemp == "0001401"){
+				//ボタン付け糸指定は無しです
+				var i = 1;
+				jQuery('input[id^="tg_byColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletTuxedoInfo.tgByColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			
 		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableProject";
+
+			if(thisValueTemp == "0000801"){
+				//AMF色指定は無しです
+				var i = 1;
+				jQuery('input[id^="wg_amfColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletWashableInfo.wgAmfColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			if(thisValueTemp == "0001101"){
+				//ボタンホール色指定は無しです
+				var i = 1;
+				jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletWashableInfo.wgBhColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			if(thisValueTemp == "0001401"){
+				//ボタン付け糸指定は無しです
+				var i = 1;
+				jQuery('input[id^="wg_byColorPlace_"]').each(function() {
+					var valueNameAll = "coOptionGiletWashableInfo.wgByColor" + i;
+					var valueNameOne = document.getElementsByName(valueNameAll);
+					var $valueNameOneJq = $(valueNameOne);
+					for(var j=0; j<valueNameOne.length; j++){
+						jQuery($valueNameOneJq).get(j).checked = false;
+					}
+					i++;
+				});
+			}
+			
 		}
 
 		//IDの後の番号を削除します
@@ -1728,19 +2388,19 @@ function getPrice(){
 				if(idValueName.indexOf("og_amfColor_") >= 0){
 					idValueNameAll = "coOptionGiletStandardInfo.ogAmfColor" + i;
 				}else if(idValueName.indexOf("og_bhColor_") >= 0){
-					idValueNameAll = "coOptionGiletStandardInfo.ogbhColor" + i;
+					idValueNameAll = "coOptionGiletStandardInfo.ogBhColor" + i;
 				}else if(idValueName.indexOf("og_byColor_") >= 0){
-					idValueNameAll = "coOptionGiletStandardInfo.ogbyColor" + i;
+					idValueNameAll = "coOptionGiletStandardInfo.ogByColor" + i;
 				}else if(idValueName.indexOf("tg_bhColor_") >= 0){
-					idValueNameAll = "coOptionGiletTuxedoInfo.tgbhColor" + i;
+					idValueNameAll = "coOptionGiletTuxedoInfo.tgBhColor" + i;
 				}else if(idValueName.indexOf("tg_byColor_") >= 0){
-					idValueNameAll = "coOptionGiletTuxedoInfo.tgbyColor" + i;
+					idValueNameAll = "coOptionGiletTuxedoInfo.tgByColor" + i;
 				}else if(idValueName.indexOf("wg_amfColor_") >= 0){
 					idValueNameAll = "coOptionGiletWashableInfo.wgAmfColor" + i;
 				}else if(idValueName.indexOf("wg_bhColor_") >= 0){
-					idValueNameAll = "coOptionGiletWashableInfo.wgbhColor" + i;
+					idValueNameAll = "coOptionGiletWashableInfo.wgBhColor" + i;
 				}else if(idValueName.indexOf("wg_byColor_") >= 0){
-					idValueNameAll = "coOptionGiletWashableInfo.wgbyColor" + i;
+					idValueNameAll = "coOptionGiletWashableInfo.wgByColor" + i;
 				}
 				var idValueNameJs = document.getElementsByName(idValueNameAll);
 				//colorループ
@@ -1763,9 +2423,26 @@ function getPrice(){
 					}
 				}
 			}
+		}else{
+			if(idValueName.indexOf("amfColor_") >= 0){
+				jspOptionCodeAndBranchCode ="00008" + thisValueTemp;
+			}else if(idValueName.indexOf("bhColor_") >= 0){
+				jspOptionCodeAndBranchCode ="00011" + thisValueTemp;
+			}else if(idValueName.indexOf("byColor_") >= 0){
+				jspOptionCodeAndBranchCode ="00014" + thisValueTemp;
+			}
+			interceptedIdValueName = idValueName.substring(0, findIdPosition+3);
+			colorCount = -1;
+		}
+		
+		var desiredItemFlag = false;
+		if(interceptedIdValueName == "og_amfColor_id" || interceptedIdValueName == "og_bhColor_id" || interceptedIdValueName == "og_byColor_id" 
+				|| interceptedIdValueName == "tg_bhColor_id" || interceptedIdValueName == "tg_byColor_id" 
+				|| interceptedIdValueName == "wg_amfColor_id" || interceptedIdValueName == "wg_bhColor_id" || interceptedIdValueName == "wg_byColor_id"){
+			desiredItemFlag = true;
 		}
 
-		if(isNotEmpty(giletModel) && findIdPosition == -1){
+		if(isNotEmpty(giletModel) && desiredItemFlag == true){
 			var code = itemCode + subItemCode + giletModel;
 			jQuery.ajax({
 				type:"get",
@@ -1780,60 +2457,82 @@ function getPrice(){
 					getAllPrice(subItemCode, result.optionPrice);
 				}
 			});
-		}else{
-			interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-			var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
-			jQuery("#"+msgIdValueName).html("無料");
-			
-// 		    var glOptionPriceId = jQuery("#glOptionPriceId").val();
-// 			getAllPrice(subItemCode, result.optionPrice);
 		}
+		
 	});
 
 // 	項目：AMF色指定、ボタンホール色指定、ボタン付け糸指定の全選択、全解除
-	jQuery('[id^="btn_as_og_amfColorPlace"],[id^="btn_ar_og_amfColorPlace"],[id^="btn_as_og_bhColorPlace"],'+
-			'[id^="btn_ar_og_bhColorPlace"],[id^="btn_as_og_byColorPlace"],[id^="btn_ar_og_byColorPlace"]').click(function(){
+	jQuery('[id^="btn_as_og_amfColorPlace"],[id^="btn_ar_og_amfColorPlace"],'+
+			'[id^="btn_as_og_bhColorPlace"],[id^="btn_ar_og_bhColorPlace"],'+
+			'[id^="btn_as_og_byColorPlace"],[id^="btn_ar_og_byColorPlace"],'+
+			'[id^="btn_as_tg_bhColorPlace"],[id^="btn_ar_tg_bhColorPlace"],'+
+			'[id^="btn_as_tg_byColorPlace"],[id^="btn_ar_tg_byColorPlace"],'+
+			'[id^="btn_as_wg_amfColorPlace"],[id^="btn_ar_wg_amfColorPlace"],'+
+			'[id^="btn_as_wg_bhColorPlace"],[id^="btn_ar_wg_bhColorPlace"],'+
+			'[id^="btn_as_wg_byColorPlace"],[id^="btn_ar_wg_byColorPlace"]').click(function(){
 // 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 
-		var giletModel = jQuery("#giletModel option:selected").val();
+		var productCategory = jQuery('input[name="productCategory"]:checked').val();
+		var giletModel = "";
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "04";
 		var idValueName = jQuery(this).attr("id");
 		var idValueNameTemp = "";
 		var thisValueTemp = "";
-// 		alert(idValueName);
-
-		var productCategory = jQuery('input[name="productCategory"]:checked').val();
-		var ajaxUrl = "";
-		if(productCategory == "9000101"){
-			idValueNameTemp = "og_";
-			ajaxUrl = "getOrderPriceForGiletStandardProject";
-		}else if(productCategory == "9000102"){
-			idValueNameTemp = "tg_";
-			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
-		}else if(productCategory == "9000103"){
-			idValueNameTemp = "wg_";
-			ajaxUrl = "getOrderPriceForGiletWashableProject";
-		}
 
 		var findIdAmf = idValueName.indexOf("_amfColorPlace");
 		var findIdBh = idValueName.indexOf("_bhColorPlace");
 		var findIdBy = idValueName.indexOf("_byColorPlace");
-		if(findIdAmf != -1){
-			idValueNameTemp = idValueNameTemp + "amfColor_id";
-			thisValueTemp = "00010" + jQuery("#og_amfColorPlaceAll").val();
-		}else if(findIdBh != -1){
-			idValueNameTemp = idValueNameTemp + "bhColor_id";
-			thisValueTemp = "00013" + jQuery("#og_bhColorPlaceAll").val();
-		}else if(findIdBy != -1){
-			idValueNameTemp = idValueNameTemp + "byColor_id";
-			thisValueTemp = "00016" + jQuery("#og_byColorPlaceAll").val();
+		
+		var ajaxUrl = "";
+		if(productCategory == "9000101"){
+			giletModel = jQuery("#giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletStandardProject";
+
+			if(findIdAmf != -1){
+				idValueNameTemp = "og_amfColor_id";
+				thisValueTemp = "00010" + jQuery("#og_amfColorPlaceAll").val();
+			}else if(findIdBh != -1){
+				idValueNameTemp = "og_bhColor_id";
+				thisValueTemp = "00013" + jQuery("#og_bhColorPlaceAll").val();
+			}else if(findIdBy != -1){
+				idValueNameTemp = "og_byColor_id";
+				thisValueTemp = "00016" + jQuery("#og_byColorPlaceAll").val();
+			}
+			
+		}else if(productCategory == "9000102"){
+			giletModel = jQuery("#tg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletTuxedoProject";
+
+			if(findIdBh != -1){
+				idValueNameTemp = "tg_bhColor_id";
+				thisValueTemp = "00013" + jQuery("#tg_bhColorPlaceAll").val();
+			}else if(findIdBy != -1){
+				idValueNameTemp = "tg_byColor_id";
+				thisValueTemp = "00016" + jQuery("#tg_byColorPlaceAll").val();
+			}
+			
+		}else if(productCategory == "9000103"){
+			giletModel = jQuery("#wg_giletModel option:selected").val();
+			ajaxUrl = "getOrderPriceForGiletWashableProject";
+
+			if(findIdAmf != -1){
+				idValueNameTemp = "wg_amfColor_id";
+				thisValueTemp = "00010" + jQuery("#wg_amfColorPlaceAll").val();
+			}else if(findIdBh != -1){
+				idValueNameTemp = "wg_bhColor_id";
+				thisValueTemp = "00013" + jQuery("#wg_bhColorPlaceAll").val();
+			}else if(findIdBy != -1){
+				idValueNameTemp = "wg_byColor_id";
+				thisValueTemp = "00016" + jQuery("#wg_byColorPlaceAll").val();
+			}
+
 		}
 
 		//選択された異なる色の数
 		var colorCount = 0;
-		var findIdAs = idValueName.indexOf("btn_as_og_");
-		var findIdAr = idValueName.indexOf("btn_ar_og_");
+		var findIdAs = idValueName.indexOf("btn_as_");
+		var findIdAr = idValueName.indexOf("btn_ar_");
 		if(findIdAs != -1){
 			colorCount = 1;
 		}else if(findIdAr != -1){
@@ -1945,71 +2644,77 @@ function optionGiletChangeModel(productCategory){
 		if(productCategory == "9000101"){
 			var giletModel = jQuery("#giletModel").val();
 
-			//胸ポケット
-			jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBreastPkt}"]);
-			jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]:checked').change();
-
-			//腰ポケット形状
-			jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpec}"]);
-			jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').change();
-
-			//背裏地素材
-			jQuery('#og_backLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogBackLiningMateStkNo}");
-			jQuery('#og_backLiningMateStkNo').change();
-
-			//内側裏地素材
-			jQuery('#og_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogInsideLiningMateStkNo}");
-			jQuery('#og_insideLiningMateStkNo').change();
-			
-			//釦素材
-			jQuery('#og_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateStkNo}");
-			jQuery('#og_frontBtnMateStkNo').change();
+			if(giletModel != ""){
+				//胸ポケット
+				jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogBreastPkt}"]);
+				jQuery('input[name="coOptionGiletStandardInfo.ogBreastPkt"]:checked').change();
+	
+				//腰ポケット形状
+				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpec}"]);
+				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').change();
+	
+				//背裏地素材
+				jQuery('#og_backLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogBackLiningMateStkNo}");
+				jQuery('#og_backLiningMateStkNo').change();
+	
+				//内側裏地素材
+				jQuery('#og_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogInsideLiningMateStkNo}");
+				jQuery('#og_insideLiningMateStkNo').change();
+				
+				//釦素材
+				jQuery('#og_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateStkNo}");
+				jQuery('#og_frontBtnMateStkNo').change();
+			}
 			
 		}else if(productCategory == "9000102"){
 			var giletModel = jQuery("#tg_giletModel").val();
 
-			//胸ポケット
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgBreastPkt}"]);
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]:checked').change();
-
-			//腰ポケット形状
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpec}"]);
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').change();
-
-			//背裏地素材
-			jQuery('#tg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgBackLiningMateStkNo}");
-			jQuery('#tg_backLiningMateStkNo').change();
-
-			//内側裏地素材
-			jQuery('#tg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgInsideLiningMateStkNo}");
-			jQuery('#tg_insideLiningMateStkNo').change();
-			
-			//釦素材
-			jQuery('#tg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo}");
-			jQuery('#tg_frontBtnMateStkNo').change();
+			if(giletModel != ""){
+				//胸ポケット
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgBreastPkt}"]);
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgBreastPkt"]:checked').change();
+	
+				//腰ポケット形状
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpec}"]);
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').change();
+	
+				//背裏地素材
+				jQuery('#tg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgBackLiningMateStkNo}");
+				jQuery('#tg_backLiningMateStkNo').change();
+	
+				//内側裏地素材
+				jQuery('#tg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgInsideLiningMateStkNo}");
+				jQuery('#tg_insideLiningMateStkNo').change();
+				
+				//釦素材
+				jQuery('#tg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo}");
+				jQuery('#tg_frontBtnMateStkNo').change();
+			}
 
 		}else if(productCategory == "9000103"){
 			var giletModel = jQuery("#wg_giletModel").val();
 
-			//胸ポケット
-			jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgBreastPkt}"]);
-			jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]:checked').change();
-
-			//腰ポケット形状
-			jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpec}"]);
-			jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]:checked').change();
-
-			//背裏地素材
-			jQuery('#wg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgBackLiningMateStkNo}");
-			jQuery('#wg_backLiningMateStkNo').change();
-
-			//内側裏地素材
-			jQuery('#wg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgInsideLiningMateStkNo}");
-			jQuery('#wg_insideLiningMateStkNo').change();
-			
-			//釦素材
-			jQuery('#wg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateStkNo}");
-			jQuery('#wg_frontBtnMateStkNo').change();
+			if(giletModel != ""){
+				//胸ポケット
+				jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgBreastPkt}"]);
+				jQuery('input[name="coOptionGiletWashableInfo.wgBreastPkt"]:checked').change();
+	
+				//腰ポケット形状
+				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val(["${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpec}"]);
+				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]:checked').change();
+	
+				//背裏地素材
+				jQuery('#wg_backLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgBackLiningMateStkNo}");
+				jQuery('#wg_backLiningMateStkNo').change();
+	
+				//内側裏地素材
+				jQuery('#wg_insideLiningMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgInsideLiningMateStkNo}");
+				jQuery('#wg_insideLiningMateStkNo').change();
+				
+				//釦素材
+				jQuery('#wg_frontBtnMateStkNo').val("${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateStkNo}");
+				jQuery('#wg_frontBtnMateStkNo').change();
+			}
 			
 		}
 	}
@@ -2027,5 +2732,19 @@ jQuery("#giletModel,#tg_giletModel,#wg_giletModel").change(function(){
 		jQuery("#giletAdFlag").val("0");
 	}	
 })
-
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

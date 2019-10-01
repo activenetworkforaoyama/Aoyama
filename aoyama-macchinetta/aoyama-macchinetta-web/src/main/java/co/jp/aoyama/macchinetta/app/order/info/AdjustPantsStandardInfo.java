@@ -3,32 +3,50 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderForm.PtItem;
+
 public class AdjustPantsStandardInfo implements Serializable {
 	private static final long serialVersionUID = 8082462722647632661L;
 	// 号数
 	private Map<String, String> sizeNumberMap;
 
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の号数を入力して下さい。")
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
 	
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の体型を入力して下さい。")
 	private String sizeFigure;
 	// ウエスト修正
 	private Map<String, String> corPtWaistMap;
 	// ウエスト型サイズ
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のウエスト型サイズが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）のウエスト型サイズの範囲が不正です。")
 	private String corPtWaistSize;
 	// ウエスト補正値
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のウエスト補正値を入力して下さい。")
 	private String corPtWaistCorrect;
 	// ウエストグロス
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）のウエストグロスの範囲が不正です。")
 	private String corPtWaistGross;
 
 	// ワタリ修正
 	private Map<String, String> corPtThighMap;
 	// ワタリ型サイズ
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のワタリ型サイズが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）のワタリ型サイズの範囲が不正です。")
 	private String corPtThighSize;
 	// ワタリ補正値
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のワタリ補正値を入力して下さい。")
 	private String corPtThighCorrect;
 	// ワタリグロス
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）のワタリグロスが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）のワタリグロスの範囲が不正です。")
 	private String corPtThighGross;
 
 	// 裾幅修正
@@ -36,33 +54,37 @@ public class AdjustPantsStandardInfo implements Serializable {
 	// 裾幅修正1指定2区分
 	private String corPtHemwidthType;
 	// 裾幅型サイズ
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の裾幅型サイズが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）の裾幅型サイズの範囲が不正です。")
 	private String corPtHemwidthSize;
 	// 裾幅補正値
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の裾幅補正値を入力して下さい。")
 	private String corPtHemwidthCorrect;
 	// 裾幅グロス
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の裾幅グロスが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）の裾幅グロスの範囲が不正です。")
 	private String corPtHemwidthGross;
-	
-	//ヒップ修正
-	private Map<String, String> corPtHipMap;
-	// 裾幅型サイズ
-	private String corPtHipSize;
-	// 裾幅補正値
-	private String corPtHipCorrect;
-	// 裾幅グロス
-	private String corPtHipGross;
 
 	// 股下右型サイズ
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の股下右型サイズが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）の股下右型サイズの範囲が不正です。")
 	private String corPtRightinseamSize;
 	// 股下右補正値
 	private String corPtRightinseamCorrect;
 	// 股下右グロス
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の股下右グロスが不正です。")
+	@Range(min=50, max=110, groups = {PtItem.class}, message = "PANTS（1本目）の股下右グロスの範囲が不正です。")
 	private String corPtRightinseamGross;
 
 	// 股下左型サイズ
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の股下左型サイズが不正です。")
+	@Range(min=1, max=999, groups = {PtItem.class}, message = "PANTS（1本目）の股下左型サイズの範囲が不正です。")
 	private String corPtLeftinseamSize;
 	// 股下左補正値
 	private String corPtLeftinseamCorrect;
 	// 股下左グロス
+	@NotBlank(groups = {PtItem.class}, message = "PANTS（1本目）の股下左グロスが不正です。")
+	@Range(min=50, max=110, groups = {PtItem.class}, message = "PANTS（1本目）の股下左グロスの範囲が不正です。")
 	private String corPtLeftinseamGross;
 	
 	//Pt再補正コメント
@@ -74,12 +96,6 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	// PANTS_ウエスト_再補正値フラッグ
 	private String corPtWaistCorrectAgainFlag;
-
-	// PANTS_ヒップ_再補正値
-	private String corPtHipCorrectAgain;
-
-	// PANTS_ヒップ_再補正値フラッグ
-	private String corPtHipCorrectAgainFlag;
 
 	// PANTS_ワタリ_再補正値
 	private String corPtThighwidthCorrectAgain;
@@ -104,38 +120,6 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	// PANTS_股下左_再補正値フラッグ
 	private String corPtLeftinseamCorrectAgainFlag;
-
-	public Map<String, String> getCorPtHipMap() {
-		return corPtHipMap;
-	}
-
-	public void setCorPtHipMap(Map<String, String> corPtHipMap) {
-		this.corPtHipMap = corPtHipMap;
-	}
-
-	public String getCorPtHipSize() {
-		return corPtHipSize;
-	}
-
-	public void setCorPtHipSize(String corPtHipSize) {
-		this.corPtHipSize = corPtHipSize;
-	}
-
-	public String getCorPtHipCorrect() {
-		return corPtHipCorrect;
-	}
-
-	public void setCorPtHipCorrect(String corPtHipCorrect) {
-		this.corPtHipCorrect = corPtHipCorrect;
-	}
-
-	public String getCorPtHipGross() {
-		return corPtHipGross;
-	}
-
-	public void setCorPtHipGross(String corPtHipGross) {
-		this.corPtHipGross = corPtHipGross;
-	}
 
 	public Map<String, String> getSizeNumberMap() {
 		return sizeNumberMap;
@@ -329,14 +313,6 @@ public class AdjustPantsStandardInfo implements Serializable {
 		this.corPtWaistCorrectAgain = corPtWaistCorrectAgain;
 	}
 
-	public String getCorPtHipCorrectAgain() {
-		return corPtHipCorrectAgain;
-	}
-
-	public void setCorPtHipCorrectAgain(String corPtHipCorrectAgain) {
-		this.corPtHipCorrectAgain = corPtHipCorrectAgain;
-	}
-
 	public String getCorPtThighwidthCorrectAgain() {
 		return corPtThighwidthCorrectAgain;
 	}
@@ -375,14 +351,6 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	public void setCorPtWaistCorrectAgainFlag(String corPtWaistCorrectAgainFlag) {
 		this.corPtWaistCorrectAgainFlag = corPtWaistCorrectAgainFlag;
-	}
-
-	public String getCorPtHipCorrectAgainFlag() {
-		return corPtHipCorrectAgainFlag;
-	}
-
-	public void setCorPtHipCorrectAgainFlag(String corPtHipCorrectAgainFlag) {
-		this.corPtHipCorrectAgainFlag = corPtHipCorrectAgainFlag;
 	}
 
 	public String getCorPtThighwidthCorrectAgainFlag() {

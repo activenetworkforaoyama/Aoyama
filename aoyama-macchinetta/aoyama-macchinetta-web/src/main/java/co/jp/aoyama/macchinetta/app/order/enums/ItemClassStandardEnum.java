@@ -9,8 +9,6 @@ public enum ItemClassStandardEnum {
 	ITEM_CODE_JACKET("02","co.jp.aoyama.macchinetta.app.order.info.OptionJacketStandardInfo"),
 	ITEM_CODE_PANTS("03","co.jp.aoyama.macchinetta.app.order.info.OptionPantsStandardInfo"),
 	ITEM_CODE_GILET("04","co.jp.aoyama.macchinetta.app.order.info.OptionGiletStandardInfo"),
-	ITEM_CODE_SHIRTS("05","co.jp.aoyama.macchinetta.app.order.info.OptionShirtStandardInfo"),
-	ITEM_CODE_COAT("06","co.jp.aoyama.macchinetta.app.order.info.OptionCoatStandardInfo"),
 	ITEM_CODE_PANTS2("07","co.jp.aoyama.macchinetta.app.order.info.OptionPants2StandardInfo");
 	
 	private final String key;

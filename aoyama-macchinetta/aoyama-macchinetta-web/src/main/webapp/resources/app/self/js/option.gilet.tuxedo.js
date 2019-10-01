@@ -6,14 +6,24 @@
 //--------------------------------------------
 function initOptionGiletTuxedo() {
 
+	jQuery('#tg_giletModel').attr("oldGlModel",jQuery('#tg_giletModel').val());
 	// GILETモデル
 	jQuery('#tg_giletModel').change(function(){
-		// 選択中のGILETモデルを取得
-		var giletModel = jQuery('#tg_giletModel').val();
-
-		if (giletModel == "選択" || !giletModelDefaultList[giletModel]) {
-			// 未選択状態、または想定外の場合はスルー
-			return;
+		var giletModel = jQuery(this).val();
+		var giletOldModel = jQuery('#tg_giletModel').attr("oldGlModel");
+		if(giletModel != giletOldModel){
+			jQuery("#giletFlag").val("0");
+		}else{
+			jQuery("#giletFlag").val("1");
+		}
+		jQuery('#tg_giletModel').attr("oldGlModel",jQuery('#tg_giletModel').val());
+		var giletFlag = jQuery('#giletFlag').val();
+		if (giletFlag == "0") {
+			// 選択されたGiletモデルを取得
+			if (giletModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 		}
 		
 		var productFabricNo = jQuery("#productFabricNo").val();
@@ -77,7 +87,7 @@ function initOptionGiletTuxedo() {
 
 		// バックベルト
 		var beforeBackBelt = jQuery('#tg_backBelt').val();
-		jQuery('#tg_backBelt').val(giletModelDefaultList[giletModel]["backBelt"]);
+		jQuery('#tg_backBelt').val(giletModelDefaultList[giletModel]["og_backBelt"]);
 
 		// ボタンホール色指定箇所の有効/無効を制御
 		ctrlTgBhColorPlace();

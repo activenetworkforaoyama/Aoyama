@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -108,7 +110,8 @@ public class OrderController {
 	StockService stockService;
 	@Inject
 	CashService cashService;
-
+	@Inject
+	SmartValidator smartValidator;
 	private OrderHelper orderHelper = new OrderHelper();
 	
 	private static final String PO_TYPE = "PO";
@@ -265,11 +268,16 @@ public class OrderController {
 	 * 
 	 */
 	@RequestMapping(value = "orderPoReconfirm")
-	public String toOrderPoReconfirm(HttpServletRequest request, OrderForm orderForm) {
-
-//		Order order = orderListService.findOrderByPk(orderForm.getCustomerMessageInfo().getOrderId());
-//		
-//		orderForm.setVersion(order.getVersion().toString());
+	public String toOrderPoReconfirm(HttpServletRequest request, OrderForm orderForm,  final BindingResult result,Model model) {
+		
+		orderHelper.extractedItem(orderForm, result,smartValidator);
+		
+		if (result.hasErrors()) {
+			String orderFlag = "orderBack";
+			orderForm.setOrderFlag(orderFlag);
+			model.addAttribute("orderFlag", "");
+		    return "order/orderPoForm";
+		}
 		
 		// 素材品番のMapを取得
 		List<OptionBranchDetail> detailList = optionBranchDeailService.getAllOption(PO_TYPE);
@@ -1347,8 +1355,17 @@ public class OrderController {
 	@ResponseBody
 	@RequestMapping(value = "getPoTypeSizeOptimization", method = RequestMethod.GET)
 	public List<TypeSizeOptimization> getPoTypeSizeOptimization (String orderPattern,String subItemCode,String modelCode,String figure,String number) {
+		StringBuffer paramBuffer = new StringBuffer();
+		paramBuffer.append("orderPattern:").append(orderPattern).append(",");
+		paramBuffer.append("subItemCode:").append(subItemCode).append(",");
+		paramBuffer.append("modelCode:").append(modelCode).append(",");
+		paramBuffer.append("figure:").append(figure).append(",");
+		paramBuffer.append("number:").append(number);
+		
+		logger.info("補正サイズの取得処理、パラメータ:" + paramBuffer.toString());
 		List<TypeSize> poTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern,subItemCode,modelCode,figure,number);
 		List<TypeSizeOptimization> poTypeSizeOptimization = orderHelper.getPoTypeSizeOptimization(poTypeSizeList);
+		logger.info("補正サイズの取得処理、補正サイズ結果:" + poTypeSizeOptimization.toString());
 		return poTypeSizeOptimization;
 	}
 	

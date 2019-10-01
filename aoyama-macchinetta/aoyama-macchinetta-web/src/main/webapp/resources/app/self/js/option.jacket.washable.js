@@ -635,37 +635,45 @@ function changeWjStitch() {
 	// 選択中のAMFステッチ
 	var stitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjStitch"]:checked').val();
 	//ミシンステッチ:0002304,AMFステッチ:0002301
-	if (stitchValue == "0002304" || stitchValue == "0002301") {
-		// 有りの場合、関連する項目を有効化
-		// ステッチ箇所変更
-		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", false);
-
-		// ダブルステッチ変更
-		if (stitchValue == "0002301") {
-		    jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').prop("disabled", false);
-		} else {
-			jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').prop("disabled", true);
-		}
-
-		// AMF色指定
-		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", false);
+	
+	// 有りの場合、関連する項目を有効化
+	// ステッチ箇所変更
+	jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", false);
+	// AMF色指定
+	jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", false);
+	
+	// ダブルステッチ変更
+	if (stitchValue != "0002304") {
+	    jQuery('input[id="wj_dStitchModify_id2"]').prop("disabled", false);
 	} else {
-		// 無しの場合、関連する項目を無効化・値変更
-		// ステッチ箇所変更
-		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", true);
-		jQuery('#wj_stitchModify_id1').prop("checked", true);
-		jQuery('#wj_stitchModify_id1').change();
-
-		// ダブルステッチ変更
-		jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').prop("disabled", true);
-		jQuery('#wj_dStitch_id1').prop("checked", true);
-		jQuery('#wj_dStitch_id1').change();
-
-		// AMF色指定
-		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", true);
-		jQuery('#wj_amfColor_id1').prop("checked", true);
-		jQuery('#wj_amfColor_id1').change();
+		jQuery('input[id="wj_dStitchModify_id2"]').prop("disabled", true);
+		jQuery('input[id="wj_dStitchModify_id1"]').prop("checked", true);
+		jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').change();
 	}
+	
+//	if (stitchValue == "0002304" || stitchValue == "0002301") {
+//		// 有りの場合、関連する項目を有効化
+//		// ステッチ箇所変更
+//		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", false);
+//		// AMF色指定
+//		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", false);
+//	} else {
+//		// 無しの場合、関連する項目を無効化・値変更
+//		// ステッチ箇所変更
+//		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", true);
+//		jQuery('#wj_stitchModify_id1').prop("checked", true);
+//		jQuery('#wj_stitchModify_id1').change();
+//
+//		// ダブルステッチ変更
+//		jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').prop("disabled", true);
+//		jQuery('#wj_dStitchModify_id1').prop("checked", true);
+//		jQuery('#wj_dStitchModify_id1').change();
+//
+//		// AMF色指定
+//		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", true);
+//		jQuery('#wj_amfColor_id1').prop("checked", true);
+//		jQuery('#wj_amfColor_id1').change();
+//	}
 }
 
 //ステッチ箇所変更の有効/無効を制御する
@@ -726,6 +734,7 @@ function ctrlWjStitchModify() {
 		jQuery('#btn_as_wj_stitchModifyPlace').prop("disabled", true);
 		jQuery('#btn_ar_wj_stitchModifyPlace').prop("disabled", true);
 	}
+	jQuery('input[id^="wj_stitchModifyPlace_id"]').change();
 }
 
 //ダブルステッチ変更箇所の有効/無効を制御する
@@ -741,9 +750,9 @@ function ctrlWjDStitchModify() {
 	
 	//有り:0002602
 	if (dStitchValue == "0002602") {
-		jQuery('#wj_dStitchPlace').show();
+		jQuery('#wj_dStitchModifyPlace').show();
 	} else {
-		jQuery('#wj_dStitchPlace').hide();
+		jQuery('#wj_dStitchModifyPlace').hide();
 	}
 
 	// 選択中のJacketモデルを取得
@@ -754,7 +763,7 @@ function ctrlWjDStitchModify() {
 
 	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
-		jQuery('input[id^="wj_dStitchPlace_"]').each(function() {
+		jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
 			jQuery(this).prop("checked", false);
 		});
@@ -768,7 +777,7 @@ function ctrlWjDStitchModify() {
 		// 定義取得
 		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
 		// 要素取得
-		tmpStitchModify = jQuery('#wj_dStitchPlace_'+tmpStitchModifyPlace);
+		tmpStitchModify = jQuery('#wj_dStitchModifyPlace_'+tmpStitchModifyPlace);
 
 		// 有効無効設定
 		//有り:0002602
@@ -784,7 +793,7 @@ function ctrlWjDStitchModify() {
 	}
 
 	// ダブルステッチ変更箇所の有効/無効設定
-	jQuery('input[id^="wj_dStitchPlace_"]').each(function() {
+	jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
 		if(jQuery(this).prop("disabled")){
 			// 無効選択肢は何もしない
 			//胸ポケット:0002702,パッチ:0001102
@@ -801,6 +810,7 @@ function ctrlWjDStitchModify() {
 			jQuery(this).prop("checked", true);
 		}
 	});
+	jQuery('input[id^="wj_dStitchModifyPlace_id"]').change();
 
 	// ダブルステッチ変更箇所の有効/無効設定
 	/*
@@ -848,7 +858,7 @@ function ctrlWjDStitchPlace() {
 		// 定義取得
 		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
 		// ダブルステッチ要素取得
-		tmpStitchModify = jQuery('#wj_dStitchPlace_'+tmpStitchModifyPlace);
+		tmpStitchModify = jQuery('#wj_dStitchModifyPlace_'+tmpStitchModifyPlace);
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#wj_stitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
 
@@ -884,16 +894,27 @@ function ctrlWjAmfColor() {
 			id = id.replace("wj_amfColorPlace_", "wj_stitchModifyPlace_id");
 			if (jQuery('#'+id).prop("checked")) {
 				jQuery(this).prop("disabled", false);
+				id = id.replace("wj_stitchModifyPlace_id", "wj_amfColorPlace_");
+				if (jQuery('#'+id).prop("checked")) {
+					jQuery('#'+id +'_div').show();
+				}else{
+					jQuery('#'+id +'_div').hide();
+				}
 			} else {
 				jQuery(this).prop("disabled", true);
 				jQuery(this).prop("checked", false);
+				id = id.replace("wj_stitchModifyPlace_id", "wj_amfColorPlace_");
+				if (jQuery('#'+id).prop("checked")) {
+					jQuery('#'+id +'_div').show();
+				}else{
+					jQuery('#'+id +'_div').hide();
+				}
 			}
 		} else {
 			// 無しの場合は変更不可
 			jQuery(this).prop("disabled", true);
 			jQuery(this).prop("checked", false);
 		}
-		jQuery(this).change();
 	});
 }
 

@@ -741,25 +741,37 @@ function tpChangedBeltLoop() {
 
 	// 選択中のベルトループ
 	var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
-	var disabledFlg = false;
+	//var disabledFlg = false;
 
 	if (selectedBeltLoop == '0000701') {
 		// 表示
 		jQuery('#tp_beltLoopPlace').show();
+		jQuery("#tp_beltLoopPlace_id1").prop("checked", true);
+		jQuery("#tp_beltLoopPlace_id2").prop("checked", true);
+		jQuery("#tp_beltLoopPlace_id3").prop("checked", true);
+		jQuery("#tp_beltLoopPlace_id4").prop("checked", true);
+		jQuery("#tp_beltLoopPlace_id5").prop("checked", true);
+		jQuery("#tp_beltLoopPlace_id6").prop("checked", true);
 	} else {
 		// 非表示
 		jQuery('#tp_beltLoopPlace').hide();
-		disabledFlg = true;
+		jQuery("#tp_beltLoopPlace_id1").prop("checked", false);
+		jQuery("#tp_beltLoopPlace_id2").prop("checked", false);
+		jQuery("#tp_beltLoopPlace_id3").prop("checked", false);
+		jQuery("#tp_beltLoopPlace_id4").prop("checked", false);
+		jQuery("#tp_beltLoopPlace_id5").prop("checked", false);
+		jQuery("#tp_beltLoopPlace_id6").prop("checked", false);
+		//disabledFlg = true;
 	}
 
 	// ベルトループ項目の活性/非活性
-	jQuery('input[id^="tp_beltLoopPlace_"]').each(function() {
+	/*jQuery('input[id^="tp_beltLoopPlace_"]').each(function() {
 		var tmpBeltLoopElem = jQuery(this);
 		tmpBeltLoopElem.prop("disabled", disabledFlg);
 		if (!disabledFlg) {
 			tmpBeltLoopElem.prop("checked", true);
 		}
-	});
+	});*/
 
 	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
 	if (selectedBeltLoop == '0000701') {

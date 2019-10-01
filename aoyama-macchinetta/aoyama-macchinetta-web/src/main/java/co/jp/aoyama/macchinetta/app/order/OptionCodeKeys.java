@@ -111,6 +111,19 @@ public class OptionCodeKeys {
 	public static final String PT_0000601 = "0000601";
 	// ベルトループ:有り
 	public static final String PT_0000701 = "0000701";
+	
+	public static final String PT_0000801 = "0000801";
+	
+	public static final String PT_0000802 = "0000802";
+	
+	public static final String PT_0000803 = "0000803";
+	
+	public static final String PT_0000804 = "0000804";
+	
+	public static final String PT_0000805 = "0000805";
+	
+	public static final String PT_0000806 = "0000806";
+
 	// ピンループ:有り
 	public static final String PT_0000901 = "0000901";
 	// 脇ポケット:斜め
@@ -303,6 +316,18 @@ public class OptionCodeKeys {
 	public static final String PT2_0000601 = "0000601";
 	// ベルトループ:有り
 	public static final String PT2_0000701 = "0000701";
+	
+	public static final String PT2_0000801 = "0000801";
+	
+	public static final String PT2_0000802 = "0000802";
+	
+	public static final String PT2_0000803 = "0000803";
+	
+	public static final String PT2_0000804 = "0000804";
+	
+	public static final String PT2_0000805 = "0000805";
+	
+	public static final String PT2_0000806 = "0000806";
 	// ピンループ:有り
 	public static final String PT2_0000901 = "0000901";
 	// 脇ポケット:斜め

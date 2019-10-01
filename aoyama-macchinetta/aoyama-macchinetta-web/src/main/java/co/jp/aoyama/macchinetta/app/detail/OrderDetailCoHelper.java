@@ -353,6 +353,9 @@ public class OrderDetailCoHelper {
 		orderFm.setProductEmbroideryNmPosRtPriceFm(getRtValue(order.getProductEmbroideryNmPosRtPrice()));
 		orderFm.setProductLcrSewingRtPriceFm(getRtValue(order.getProductLcrSewingRtPrice()));
 		orderFm.setCustIsDeliverShortningRtPriceFm(getRtValue(order.getCustIsDeliverShortningRtPrice()));
+		orderFm.setJkModelRtPriceFm(getRtValue(order.getJkModelRtPrice()));
+		orderFm.setGlModelRtPriceFm(getRtValue(order.getGlModelRtPrice()));
+		orderFm.setCtModelRtPriceFm(getRtValue(order.getCtModelRtPrice()));
 		orderFm.setJkFrtBtnRtPriceFm(getRtValue(order.getJkFrtBtnRtPrice()));
 		orderFm.setJkLapelDesignRtPriceFm(getRtValue(order.getJkLapelDesignRtPrice()));
 		orderFm.setJkGradeRtPriceFm(getRtValue(order.getJkGradeRtPrice()));

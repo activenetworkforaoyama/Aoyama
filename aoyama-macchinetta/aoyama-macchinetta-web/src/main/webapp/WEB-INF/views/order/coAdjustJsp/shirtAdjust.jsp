@@ -262,16 +262,22 @@ if(orderFlag == "orderCo"){
 }
 
 if(orderFlag == "orderLink"||orderFlag == "orderCheck"||orderFlag == "orderBack"){
-	if(shirtAdFlag=="0"){
+	if(shirtModel!=""){
+		if(shirtAdFlag=="0"){
+			adjustReInit();
+			getFigureAndNumberByItem();
+		}else if(shirtAdFlag=="1"){
+			getFigureAndNumberByItem();
+			adjustSession();
+		}else if(shirtAdFlag==""){
+			getFigureAndNumberByItem();
+			adjustSession();
+		}
+	}else{
 		adjustReInit();
-		getFigureAndNumberByItem();
-	}else if(shirtAdFlag=="1"){
-		getFigureAndNumberByItem();
-		adjustSession();
-	}else if(shirtAdFlag==""){
-		getFigureAndNumberByItem();
-		adjustSession();
-	}
+		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+		}
+	
 }
 	/* if(orderFlag == "orderLink" || orderFlag == "orderCheck"){
 		getFigureAndNumberByItem();
@@ -588,5 +594,20 @@ function shirtAdjust(){
 			}else if(corStBackdartsUnpackCorrect=="0002502"){
 				jQuery("#oj_shoulderPat_id2").prop("checked", true);
 				}
-		} 
+		}
+	 if (document.readyState=="complete")  
+	 {  
+	         $.unblockUI();
+	 }  
+	 else  
+	 {  
+	         document.onreadystatechange = function()  
+	         {  
+	              
+	                 if (document.readyState == "complete")  
+	                 {  
+	                         $.unblockUI();   
+	                 }  
+	         }  
+	 } 
 </script>

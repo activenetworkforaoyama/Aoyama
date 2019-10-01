@@ -698,6 +698,9 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label"><strong>JACKETモデル</strong></label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.jkModelNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right">
+						<strong><label class=" form-control-label-value" id="jk_model_rt_price">${orderFm.jkModelRtPriceFm}</label></strong>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">フロント釦数</label></div>
@@ -813,7 +816,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.jkStitchTypeNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="jk_stitch_type_rt_price">${orderFm.jkStitchTypeRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '9000102'}">
+				<c:if test="${order.productCategory != '9000102' && order.jkStitchTypeNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 					<div class="col-12 col-md-8">
@@ -967,6 +970,9 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label"><strong>GILETモデル</strong></label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glModelNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right">
+						<strong><label class=" form-control-label-value" id="gl_model_rt_price">${orderFm.glModelRtPriceFm}</label></strong>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
@@ -995,7 +1001,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glAmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_amf_stitch_rt_price">${orderFm.glAmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '9000102'}">
+				<c:if test="${order.productCategory != '9000102' && order.glAmfStitchNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 					<div class="col-12 col-md-8">
@@ -1225,7 +1231,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptAmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_amf_stitch_rt_price">${orderFm.ptAmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '9000102'}">
+				<c:if test="${order.productCategory != '9000102' && order.ptAmfStitchNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 					<div class="col-12 col-md-8">
@@ -1492,7 +1498,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2AmfStitchNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_amf_stitch_rt_price">${orderFm.pt2AmfStitchRtPriceFm}</label></strong></div>
 				</div>
-				<c:if test="${order.productCategory != '9000102'}">
+				<c:if test="${order.productCategory != '9000102' && order.pt2AmfStitchNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ箇所変更</label></div>
 					<div class="col-12 col-md-8">
@@ -1665,6 +1671,9 @@
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label"><strong>COATモデル</strong></label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ctModelNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right">
+						<strong><label class=" form-control-label-value" id="ct_model_rt_price">${orderFm.ctModelRtPriceFm}</label></strong>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ラペルデザイン</label></div>
@@ -3382,6 +3391,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#product_embroidery_nm_pos_rt_price").hide();
 		jQuery("#product_lcr_sewing_rt_price").hide();
 		jQuery("#cust_is_deliver_shortning_rt_price").hide();
+		jQuery("#jk_model_rt_price").hide();
 		jQuery("#jk_frt_btn_rt_price").hide();
 		jQuery("#jk_lapel_design_rt_price").hide();
 		jQuery("#jk_grade_rt_price").hide();
@@ -3414,6 +3424,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#jk_inner_sleeve_cloth_rt_price").hide();
 		jQuery("#jk_btn_material_rt_price").hide();
 		jQuery("#jk_shape_memory_rt_price").hide();
+		jQuery("#gl_model_rt_price").hide();
 		jQuery("#gl_breast_pkt_rt_price").hide();
 		jQuery("#gl_waist_pkt_rt_price").hide();
 		jQuery("#gl_waist_pkt_shape_rt_price").hide();
@@ -3485,6 +3496,7 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#pt2_chic_slip_rt_price").hide();
 		jQuery("#pt2_shape_memory_rt_price").hide();
 		jQuery("#pt2_tack_rt_price").hide();
+		jQuery("#ct_model_rt_price").hide();
 		jQuery("#ct_lapel_design_rt_price").hide();
 		jQuery("#ct_sleeve_type_rt_price").hide();
 		jQuery("#ct_waist_pkt_rt_price").hide();

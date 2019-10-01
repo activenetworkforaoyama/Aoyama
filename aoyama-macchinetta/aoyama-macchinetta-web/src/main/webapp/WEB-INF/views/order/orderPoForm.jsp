@@ -8,6 +8,18 @@ $.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.
 span {
 	margin-right: 16px;
 }
+.error-message-list {
+	margin-left:20px ;
+	margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #ffffff;
+    background-color: #fde9f3;
+    color: #b94a48;
+    border-color: rgba(216, 80, 48, 0.3);
+    width:800px;
+}
 select.hidedown {
 	-webkit-appearance:none;
 	-moz-appearance:none;
@@ -51,7 +63,9 @@ select.hidedown {
                 </div>
             </div>
 </div>
-
+		<spring:nestedPath path="orderForm">
+    			<form:errors path="*" element="div" class="error-message-list" />
+		</spring:nestedPath>
         <form:form id="formId" action="${pageContext.request.contextPath}/order/orderPoReconfirm" method="post" modelAttribute="orderForm" class="form-horizontal">
         <div class="content mt-3">
             <div class="animated fadeIn">
@@ -596,7 +610,7 @@ select.hidedown {
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">刺繍ネーム</label></div>
                             <div class="col-12 col-md-6">
-                                <input type="text" id="embroideryName" name="productEmbroideryNm" class="form-control-sm form-control" maxlength="40">
+                                <input type="text" id="embroideryName" name="productEmbroideryNm" class="form-control-sm form-control" maxlength="15">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -2363,6 +2377,14 @@ select.hidedown {
 <script src="${pageContext.request.contextPath}/resources/app/js/jquery.i18n.properties.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/js/bootstrap-datepicker.js"></script>
 <script>
+jQuery(document).bind("ajaxError", function(){
+    // ajax失敗
+	swal({
+		text: "データが取得できません。時間をおいて改めて作業してください。",
+		icon: "warning"
+	}).then(function(val){
+	});
+});
 function zenkakuToHankaku(mae){
 	  let zen = new Array('ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ヰ','ユ','ヱ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','゛','°','、','。','「','」','ー','・');
 	  let han = new Array('ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ｲ','ﾕ','ｴ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ｦ','ﾝ','ｶﾞ','ｷﾞ','ｸﾞ','ｹﾞ','ｺﾞ','ｻﾞ','ｼﾞ','ｽﾞ','ｾﾞ','ｿﾞ','ﾀﾞ','ﾁﾞ','ﾂﾞ','ﾃﾞ','ﾄﾞ','ﾊﾞ','ﾋﾞ','ﾌﾞ','ﾍﾞ','ﾎﾞ','ﾊﾟ','ﾋﾟ','ﾌﾟ','ﾍﾟ','ﾎﾟ','ｧ','ｨ','ｩ','ｪ','ｫ','ｬ','ｭ','ｮ','ｯ','ﾞ','ﾟ','､','｡','｢','｣','ｰ','･');
@@ -9131,6 +9153,7 @@ jQuery('#poConfirm').click(function(){
 function imageCheck(){
 	// エラーメッセージのDIVを表示しない
 	jQuery("div.alert-error").hide();
+	jQuery("div.error-message-list").hide();
 	jQuery("div.alert-success").hide();
 	/* var versionFlag = jQuery("#versionFlag").val();
 	if(versionFlag == "true"){
@@ -9440,14 +9463,12 @@ function imageCheck(){
     	appendAlertDel('errormssage');
 	}
 
-	productEmbroideryNecessity
-	
 	//刺繍ネーム
 	var productEmbroideryNecessity = jQuery('input[name=productEmbroideryNecessity]:checked').val();
 	if (productEmbroideryNecessity == '1') {
 		var embroideryName = jQuery("#embroideryName").val();
-		if(embroideryName.length>50){
-			appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','40'));
+		if(embroideryName.length>15){
+			appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','15'));
 			return false;
 		}else{
 	    	appendAlertDel('errormssage');
@@ -9460,11 +9481,11 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		if(charactersCheck(embroideryName)) {
-			appendAlert('errormssage', getMsg('msg120'));
-	        return false;
+		if(embroideryNameCheck(embroideryName)) {
+			appendAlertDel('errormssage');
 	    }else{
-	    	appendAlertDel('errormssage');
+	    	appendAlert('errormssage', getMsgByOneArg('msg137','刺繍ネーム'));
+	        return false;
 		}
 		
 	}
@@ -10982,6 +11003,7 @@ function imageCheck(){
 function temporarySaveCheck(){
 	// エラーメッセージのDIVを表示しない
 	jQuery("div.alert-error").hide();
+	jQuery("div.error-message-list").hide();
 	jQuery("div.alert-success").hide();
 	//会員番号
 	var custCd = jQuery("#custCd").val();
@@ -11251,18 +11273,18 @@ function temporarySaveCheck(){
 	if(isNotEmpty(productEmbroideryNecessity)){
 		if (productEmbroideryNecessity == '1') {
 			var embroideryName = jQuery("#embroideryName").val();
-			if(embroideryName.length>50){
-				appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','40'));
+			if(embroideryName.length>15){
+				appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','15'));
 				return false;
 			}else{
 		    	appendAlertDel('errormssage');
 			}
 
-			if(charactersCheck(embroideryName)) {
-				appendAlert('errormssage', getMsg('msg120'));
-		        return false;
+			if(embroideryNameCheck(embroideryName)) {
+				appendAlertDel('errormssage');
 		    }else{
-		    	appendAlertDel('errormssage');
+		    	appendAlert('errormssage', getMsgByOneArg('msg137','刺繍ネーム'));
+		        return false;
 			}
 		}
 	}
@@ -11381,6 +11403,7 @@ function clearNoNum(obj) {
 function stockCheck(){
 	var item = jQuery("#item option:selected").val();
 	var productFabricNo = jQuery("#productFabricNo").val();
+	jQuery("div.error-message-list").hide();
 	//注文のTSCステータス
 	var orderStatus = "${order.tscStatus}";
 	//戻るの場合、orderFormのTSCステータス

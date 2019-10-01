@@ -6,14 +6,24 @@
 //--------------------------------------------
 function initOptionGiletStandard() {
 
+	jQuery('#giletModel').attr("oldGlModel",jQuery('#giletModel').val());
 	// GILETモデル
 	jQuery('#giletModel').change(function(){
-		// 選択中のGILETモデルを取得
-		var giletModel = jQuery('#giletModel').val();
-
-		if (giletModel == "選択" || !giletModelDefaultList[giletModel]) {
-			// 未選択状態、または想定外の場合はスルー
-			return;
+		var giletModel = jQuery(this).val();
+		var giletOldModel = jQuery('#giletModel').attr("oldGlModel");
+		if(giletModel != giletOldModel){
+			jQuery("#giletFlag").val("0");
+		}else{
+			jQuery("#giletFlag").val("1");
+		}
+		jQuery('#giletModel').attr("oldGlModel",jQuery('#giletModel').val());
+		var giletFlag = jQuery('#giletFlag').val();
+		if (giletFlag == "0") {
+			// 選択されたGiletモデルを取得
+			if (giletModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
 		}
 		
 		var productFabricNo = jQuery("#productFabricNo").val();
@@ -77,7 +87,7 @@ function initOptionGiletStandard() {
 
 		// バックベルト
 		var beforeBackBelt = jQuery('#backBelt').val();
-		jQuery('#backBelt').val(giletModelDefaultList[giletModel]["backBelt"]);
+		jQuery('#og_backBelt').val(giletModelDefaultList[giletModel]["og_backBelt"]);
 
 		// ボタンホール色指定箇所の有効/無効を制御
 		ctrlOgBhColorPlace();
@@ -206,7 +216,7 @@ function initOptionGiletStandard() {
 				jQuery('#og_dStitchModifyPlace').show();
 			}
 			ctrlOgAmfColor();
-			ctrlOgDStitchPlace()
+			ctrlOgDStitchPlace();
 		});
 	});
 	jQuery('#og_dStitchModify_id1').change();
@@ -242,7 +252,7 @@ function initOptionGiletStandard() {
 			}
 		});
 	});
-
+	
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -265,7 +275,7 @@ function initOptionGiletStandard() {
 				// 有りの場合は操作可能
 				ctrlOgBhColorPlace();
 				jQuery('input[id^="og_bhColorPlace_"]').each(function() {
-//					jQuery(this).prop("disabled", false);
+					jQuery(this).prop("disabled", false);
 					if (jQuery(this).prop("checked")) {
 						// 選択されているの場合、色指定エリアを表示
 						jQuery('#'+this.id+'_div').show();
@@ -306,7 +316,7 @@ function initOptionGiletStandard() {
 	});
 	// ボタンホール色指定箇所の制御
 	ctrlOgBhColorPlace();
-
+	
 	// ボタン付け糸指定(有り/無し)
 	jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -498,9 +508,9 @@ function initOptionGiletStandard() {
 
 	// フロント釦（上着と同じ）
 	jQuery('#btn_og_frontBtnMate').click(function() {
-		// JACKET釦素材
+		// GILET釦素材
 		var btnMate = jQuery('#btnMate').val();
-		// JACKET釦品番
+		// GILET釦品番
 		var btnMateStkNo = jQuery('#btnMateStkNo').val();
 
 		// フロント釦への反映

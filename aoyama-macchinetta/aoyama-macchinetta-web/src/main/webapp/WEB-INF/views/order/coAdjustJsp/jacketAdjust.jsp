@@ -549,5 +549,19 @@ function getSizeNumber(itemCode,subItemCode,modelCode,number){
 // 		jQuery("#corJkStoreCorrectionMemo").val("${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}");
 	
 	}
-
+ if (document.readyState=="complete")  
+ {  
+         $.unblockUI();
+ }  
+ else  
+ {  
+         document.onreadystatechange = function()  
+         {  
+              
+                 if (document.readyState == "complete")  
+                 {  
+                         $.unblockUI();   
+                 }  
+         }  
+ }
 </script>

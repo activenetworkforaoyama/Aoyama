@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.common.message.ResultMessages;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
@@ -34,6 +35,7 @@ import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
 import co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
+import co.jp.aoyama.macchinetta.domain.model.OrderPrice;
 import co.jp.aoyama.macchinetta.domain.model.Stock;
 import co.jp.aoyama.macchinetta.domain.service.cash.CashService;
 import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
@@ -96,7 +98,74 @@ public class OrderReconfirmController {
 	@RequestMapping(value = "orderReForm")
 	@TransactionTokenCheck(value = "create",type = TransactionTokenType.BEGIN)
 	public String toOrderReForm(@ModelAttribute(value = "orderForm")OrderForm orderForm,HttpServletRequest req,Model model,Map<String, Map<String, Integer>> map) {
+		OrderHelper orderHelper = new OrderHelper();
 		String status = orderForm.getStatus();
+		String orderPattern = orderForm.getOrderPattern();
+		String productItem = orderForm.getProductItem();
+		OrderFindFabric findStock = this.findStock(orderForm);
+		String productIs3Piece = orderForm.getProductIs3Piece();
+		String productSparePantsClass = orderForm.getProductSparePantsClass();
+		List<OrderCodePrice> optionBranchPriceList = this.getBranchPrice(orderPattern, orderForm);
+		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
+		// 登録画面のオプション金額
+		String optionPrice = orderForm.getOptionPrice();
+		int parseInt = Integer.parseInt(optionPrice);
+		
+		// データベースでオプション金額合計
+		int databasePriceCount = 0;
+		if("01".equals(productItem)) {
+			int set3Piece2PantsPrice = orderHelper.set3Piece2PantsPrice(orderForm, retailPriceRelatedProjects);
+			int orderJacketPriceCount = orderHelper.orderJacketPriceCount(orderForm, optionBranchPriceList);
+			int orderPantsPriceCount = orderHelper.orderPantsPriceCount(orderForm, optionBranchPriceList);
+			databasePriceCount = databasePriceCount + set3Piece2PantsPrice + orderJacketPriceCount + orderPantsPriceCount;
+			if("0009901".equals(productIs3Piece) && "0009902".equals(productSparePantsClass)) {
+				int orderPants2PriceCount = orderHelper.orderPants2PriceCount(orderForm, optionBranchPriceList);
+				databasePriceCount = databasePriceCount + orderPants2PriceCount;
+			}
+			else if("0009902".equals(productIs3Piece) && "0009901".equals(productSparePantsClass)) {
+				int orderGiletPriceCount = orderHelper.orderGiletPriceCount(orderForm, optionBranchPriceList);
+				databasePriceCount = databasePriceCount + orderGiletPriceCount;
+			}
+			else if("0009902".equals(productIs3Piece) && "0009902".equals(productSparePantsClass)) {
+				int orderPants2PriceCount = orderHelper.orderPants2PriceCount(orderForm, optionBranchPriceList);
+				int orderGiletPriceCount = orderHelper.orderGiletPriceCount(orderForm, optionBranchPriceList);
+				databasePriceCount = databasePriceCount + orderPants2PriceCount + orderGiletPriceCount;
+			}
+		}
+		else if("02".equals(productItem)) {
+			int set3Piece2PantsPrice = orderHelper.set3Piece2PantsPrice(orderForm, retailPriceRelatedProjects);
+			int orderJacketPriceCount = orderHelper.orderJacketPriceCount(orderForm, optionBranchPriceList);
+			databasePriceCount = databasePriceCount + orderJacketPriceCount + set3Piece2PantsPrice;
+		}
+		else if("03".equals(productItem)) {
+			int orderPantsPriceCount = orderHelper.orderPantsPriceCount(orderForm, optionBranchPriceList);
+			databasePriceCount = databasePriceCount + orderPantsPriceCount;
+		}
+		else if("04".equals(productItem)) {
+			int orderGiletPriceCount = orderHelper.orderGiletPriceCount(orderForm, optionBranchPriceList);
+			databasePriceCount = databasePriceCount + orderGiletPriceCount;
+		}
+		
+		if(parseInt != databasePriceCount) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E037");
+			model.addAttribute("resultMessages",resultMessages);
+			return "forward:/order/orderPoBack";
+		}
+		
+		// 登録画面の商品金額
+		String productPrice = orderForm.getProductPrice();
+		int productPriceParseInt = Integer.parseInt(productPrice);
+		
+		// データベースで商品金額合計
+		int goodsPrice = orderHelper.getGoodsPrice(findStock, orderForm);
+		if(productPriceParseInt != goodsPrice) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E037");
+			model.addAttribute("resultMessages",resultMessages);
+			return "forward:/order/orderPoBack";
+		}
+		
 		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
 			//注文ID
 			String orderId = orderForm.getCustomerMessageInfo().getOrderId();
@@ -109,8 +178,7 @@ public class OrderReconfirmController {
 				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
 			}
 		}
-		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedProjects(orderForm);
-		OrderFindFabric findStock = this.findStock(orderForm);
+		
 		String color = findStock.getColor();
 		String pattern = findStock.getPattern();
 		model.addAttribute("color",color);
@@ -346,6 +414,20 @@ public class OrderReconfirmController {
 		String itemCode = orderForm.getProductItem();
 		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
 		return adjustList;
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param orderForm
+	 * @return
+	 */
+	public List<OrderCodePrice> getBranchPrice(String orderPattern, OrderForm orderForm) {
+		OrderHelper orderHelper = new OrderHelper();
+		List<OrderPrice> priceList = orderService.getOrderPrice(orderPattern);
+		List<OrderCodePrice> optionBranchPriceList = orderHelper.optionBranchPriceData(priceList);
+		orderForm.setOrderCodePriceList(optionBranchPriceList);
+		return optionBranchPriceList;
 	}
 	
 	

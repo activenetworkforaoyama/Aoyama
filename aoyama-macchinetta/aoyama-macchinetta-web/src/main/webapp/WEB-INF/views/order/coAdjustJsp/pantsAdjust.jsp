@@ -810,5 +810,19 @@ function adjustSession(){
 // 	jQuery("#corPtStoreCorrectionMemo").val("${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}");
 	
 } 
-
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

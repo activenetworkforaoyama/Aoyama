@@ -13,8 +13,7 @@
                                 	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osShirtModelMap}"/>
                                 </form:select>
                             </div>
-                            <!-- <div class="col-12 col-md-9 offset-md-3" id="shirtModelMsg" style="margin-top:8px"></div> -->
-                            <div class="col-12 col-md-9 offset-md-3" id="shirtModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="shirtModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">襟型</label></div>
@@ -718,5 +717,19 @@ function showPrice(){
 		jQuery("#shirtModel").change();
 	}
 }
-
+if (document.readyState=="complete")  
+{  
+        $.unblockUI();
+}  
+else  
+{  
+        document.onreadystatechange = function()  
+        {  
+             
+                if (document.readyState == "complete")  
+                {  
+                        $.unblockUI();   
+                }  
+        }  
+}
 </script>

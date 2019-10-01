@@ -29,13 +29,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
-
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustGiletStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustJacketStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustPants2StandardInfo;
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustPantsStandardInfo;
-import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustShirtStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants1Helper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants2Helper;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo;
@@ -148,9 +146,17 @@ public class OrderCoController {
 	@Inject
 	CashService cashService;
 
-	//private OrderHelper orderHelper = new OrderHelper();
+	OrderCoHelper orderCoHelper = new OrderCoHelper();
 	
-	private OrderCoHelper orderCoHelper = new OrderCoHelper();
+	CoJakcetHelper coJakcetHelper = new CoJakcetHelper();
+	
+	CoPants1Helper coPants1Helper = new CoPants1Helper();
+	
+	CoPants2Helper coPants2Helper = new CoPants2Helper();
+	
+	CoCoatHelper coCoatHelper = new CoCoatHelper();
+
+	CoGiletHelper coGiletHelper = new CoGiletHelper();
 
 	private static final String CO_TYPE = "CO";
 
@@ -165,9 +171,6 @@ public class OrderCoController {
 
 	// TSCステータス 取り置き
 	private static final String TSC_STATUST1 = "T1";
-
-	// 取り消しフラグ 取り消しではない
-	private static final String IS_NOT_CANCELLED = "0";
 
 	// 取り消しフラグ 取り消し
 	private static final String IS_CANCELLED = "1";
@@ -189,12 +192,6 @@ public class OrderCoController {
 
 	// 注文情報が変更されています。もう一度、オーダー一覧へ戻って最新の注文情報を選んでください。
 	private static final String IS_UPDATE6 = "6";
-
-	// 工場ステータス 生産開始前
-	private static final String FACTORY_STATUSF0 = "F0";
-
-	// 工場自動連携ステータス 送信前
-	private static final String SEND2FACTORY_STATUS0 = "0";
 
 	private static final String JACKET_SUBITEM = "02";
 
@@ -266,13 +263,8 @@ public class OrderCoController {
 			String orderId = orderReq.getOrderId();
 			Order order= orderListService.findOrderProductByPk(orderId);
 			
-//			String productItem = order.getProductItem();
-//			String productIs3piece = order.getProductIs3piece();
-//			String productSparePantsClass = order.getProductSparePantsClass();
-			
 			OrderCoForm orderCoForm = new OrderCoForm();
 			orderCoForm.setAuthority(sessionContent.getAuthority());
-			
 			
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(CO_TYPE);
@@ -298,13 +290,13 @@ public class OrderCoController {
 			orderCoHelper.getYield(yieldList, orderCoForm);
 			List<OrderCodePrice> optionBranchPriceData = orderCoHelper.optionBranchPriceData(priceList);
 			orderCoForm.setOrderCodePriceList(optionBranchPriceData);
-			if("orderLink".equals(orderFlag)) {
+			if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag)) {
 				orderCoHelper.setCustomerMessageAndProductOrderLink(order,orderCoForm);
-				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService);
+				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 				orderCoForm.setFabricFlag("0");
 			}else if("orderDivert".equals(orderFlag)) {
 				orderCoHelper.setCustomerMessageAndProductOrderDivert(order,orderCoForm);
-				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService);
+				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 				orderCoForm.setFabricFlag("");
 			}
 			orderCoForm.setOrderFlag(orderFlag);
@@ -336,2774 +328,82 @@ public class OrderCoController {
 	 * 
 	 */
 	@RequestMapping(value = "orderCoReconfirm")
-	public String toOrderPoReconfirm(HttpServletRequest request, OrderCoForm orderCoForm, Model model) {
+	public String toOrderCoReconfirm(HttpServletRequest request, OrderCoForm orderCoForm, Model model) {
 		String item = orderCoForm.getProductItem();
 		String productCategory = orderCoForm.getProductCategory();
 		String threePiece = orderCoForm.getProductIs3Piece();
 		String twoPants = orderCoForm.getProductSparePantsClass();
-
-		//SUITチェック
-		if("01".equals(item)) {
-			boolean jacketFlag = false;
-			String itemFlag = orderCoForm.getJacketItemFlag();
+		Map<String, List<Adjust>> adjustByItem = this.getAdjustByItem(orderCoForm);
+		// SUITチェック
+		if ("01".equals(item)) {
 			ResultMessages messages = ResultMessages.error();
-			//標準の場合
-			if("9000101".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-				String ojJacketModel = coOptionJacketStandardInfo.getOjJacketModel();
-				if("".equals(ojJacketModel)  ||  null == ojJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				//AMF色指定
-				String ojAmfColor = coOptionJacketStandardInfo.getOjAmfColor();
-				if(OptionCodeKeys.JK_0002802.equals(ojAmfColor)) {
-					String ojAmfColorPlace1 = coOptionJacketStandardInfo.getOjAmfColorPlace1();
-					String ojAmfColorPlace2 = coOptionJacketStandardInfo.getOjAmfColorPlace2();
-					String ojAmfColorPlace3 = coOptionJacketStandardInfo.getOjAmfColorPlace3();
-					String ojAmfColorPlace4 = coOptionJacketStandardInfo.getOjAmfColorPlace4();
-					String ojAmfColorPlace5 = coOptionJacketStandardInfo.getOjAmfColorPlace5();
-					String ojAmfColorPlace6 = coOptionJacketStandardInfo.getOjAmfColorPlace6();
-					String ojAmfColorPlace7 = coOptionJacketStandardInfo.getOjAmfColorPlace7();
-					String ojAmfColorPlace8 = coOptionJacketStandardInfo.getOjAmfColorPlace8();
-					String ojAmfColorPlace9 = coOptionJacketStandardInfo.getOjAmfColorPlace9();
-					
-					String ojAmfColor1 = coOptionJacketStandardInfo.getOjAmfColor1();
-					String ojAmfColor2 = coOptionJacketStandardInfo.getOjAmfColor2();
-					String ojAmfColor3 = coOptionJacketStandardInfo.getOjAmfColor3();
-					String ojAmfColor4 = coOptionJacketStandardInfo.getOjAmfColor4();
-					String ojAmfColor5 = coOptionJacketStandardInfo.getOjAmfColor5();
-					String ojAmfColor6 = coOptionJacketStandardInfo.getOjAmfColor6();
-					String ojAmfColor7 = coOptionJacketStandardInfo.getOjAmfColor7();
-					String ojAmfColor8 = coOptionJacketStandardInfo.getOjAmfColor8();
-					String ojAmfColor9 = coOptionJacketStandardInfo.getOjAmfColor9();
-					
-					if(isEmpty(ojAmfColorPlace1)&&isEmpty(ojAmfColorPlace2)&&isEmpty(ojAmfColorPlace3)&&isEmpty(ojAmfColorPlace4)&&
-					   isEmpty(ojAmfColorPlace5)&&isEmpty(ojAmfColorPlace6)&&isEmpty(ojAmfColorPlace7)&&isEmpty(ojAmfColorPlace8)&&isEmpty(ojAmfColorPlace9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojAmfColorPlace1)&&isEmpty(ojAmfColor1)||isNotEmpty(ojAmfColorPlace2)&&isEmpty(ojAmfColor2)||
-					   isNotEmpty(ojAmfColorPlace3)&&isEmpty(ojAmfColor3)||isNotEmpty(ojAmfColorPlace4)&&isEmpty(ojAmfColor4)||
-					   isNotEmpty(ojAmfColorPlace5)&&isEmpty(ojAmfColor5)||isNotEmpty(ojAmfColorPlace6)&&isEmpty(ojAmfColor6)||
-					   isNotEmpty(ojAmfColorPlace7)&&isEmpty(ojAmfColor7)||isNotEmpty(ojAmfColorPlace8)&&isEmpty(ojAmfColor8)||
-					   isNotEmpty(ojAmfColorPlace9)&&isEmpty(ojAmfColor9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					
-				}
-				//ボタンホール色指定
-				String ojBhColor = coOptionJacketStandardInfo.getOjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(ojBhColor)) {
-					String ojBhColorPlace1 = coOptionJacketStandardInfo.getOjBhColorPlace1();
-					String ojBhColorPlace2 = coOptionJacketStandardInfo.getOjBhColorPlace2();
-					String ojBhColorPlace3 = coOptionJacketStandardInfo.getOjBhColorPlace3();
-					String ojBhColorPlace4 = coOptionJacketStandardInfo.getOjBhColorPlace4();
-					String ojBhColorPlace5 = coOptionJacketStandardInfo.getOjBhColorPlace5();
-					String ojBhColorPlace6 = coOptionJacketStandardInfo.getOjBhColorPlace6();
-					String ojBhColorPlace7 = coOptionJacketStandardInfo.getOjBhColorPlace7();
-					String ojBhColorPlace8 = coOptionJacketStandardInfo.getOjBhColorPlace8();
-					String ojBhColorPlace9 = coOptionJacketStandardInfo.getOjBhColorPlace9();
-					String ojBhColorPlace10 = coOptionJacketStandardInfo.getOjBhColorPlace10();
-					String ojBhColorPlace11 = coOptionJacketStandardInfo.getOjBhColorPlace11();
-					String ojBhColorPlace12 = coOptionJacketStandardInfo.getOjBhColorPlace12();
-					String ojBhColorPlace13 = coOptionJacketStandardInfo.getOjBhColorPlace13();
-					String ojBhColorPlace14 = coOptionJacketStandardInfo.getOjBhColorPlace14();
-					String ojBhColorPlace15 = coOptionJacketStandardInfo.getOjBhColorPlace15();
-					String ojBhColorPlace16 = coOptionJacketStandardInfo.getOjBhColorPlace16();
-					String ojBhColorPlace17 = coOptionJacketStandardInfo.getOjBhColorPlace17();
-					
-					String ojBhColor1 = coOptionJacketStandardInfo.getOjBhColor1();
-					String ojBhColor2 = coOptionJacketStandardInfo.getOjBhColor2();
-					String ojBhColor3 = coOptionJacketStandardInfo.getOjBhColor3();
-					String ojBhColor4 = coOptionJacketStandardInfo.getOjBhColor4();
-					String ojBhColor5 = coOptionJacketStandardInfo.getOjBhColor5();
-					String ojBhColor6 = coOptionJacketStandardInfo.getOjBhColor6();
-					String ojBhColor7 = coOptionJacketStandardInfo.getOjBhColor7();
-					String ojBhColor8 = coOptionJacketStandardInfo.getOjBhColor8();
-					String ojBhColor9 = coOptionJacketStandardInfo.getOjBhColor9();
-					String ojBhColor10 = coOptionJacketStandardInfo.getOjBhColor10();
-					String ojBhColor11 = coOptionJacketStandardInfo.getOjBhColor11();
-					String ojBhColor12 = coOptionJacketStandardInfo.getOjBhColor12();
-					String ojBhColor13 = coOptionJacketStandardInfo.getOjBhColor13();
-					String ojBhColor14 = coOptionJacketStandardInfo.getOjBhColor14();
-					String ojBhColor15 = coOptionJacketStandardInfo.getOjBhColor15();
-					String ojBhColor16 = coOptionJacketStandardInfo.getOjBhColor16();
-					String ojBhColor17 = coOptionJacketStandardInfo.getOjBhColor17();
-					
-					if (isEmpty(ojBhColorPlace1) && isEmpty(ojBhColorPlace2) && isEmpty(ojBhColorPlace3)
-							&& isEmpty(ojBhColorPlace4) && isEmpty(ojBhColorPlace5) && isEmpty(ojBhColorPlace6)
-							&& isEmpty(ojBhColorPlace7) && isEmpty(ojBhColorPlace8) && isEmpty(ojBhColorPlace9)
-							&& isEmpty(ojBhColorPlace10)&& isEmpty(ojBhColorPlace11)&& isEmpty(ojBhColorPlace12)
-							&& isEmpty(ojBhColorPlace13)&& isEmpty(ojBhColorPlace14)&& isEmpty(ojBhColorPlace15)
-							&& isEmpty(ojBhColorPlace16)&& isEmpty(ojBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojBhColorPlace1)&&isEmpty(ojBhColor1)||isNotEmpty(ojBhColorPlace2)&&isEmpty(ojBhColor2)||
-					   isNotEmpty(ojBhColorPlace3)&&isEmpty(ojBhColor3)||isNotEmpty(ojBhColorPlace4)&&isEmpty(ojBhColor4)||
-					   isNotEmpty(ojBhColorPlace5)&&isEmpty(ojBhColor5)||isNotEmpty(ojBhColorPlace6)&&isEmpty(ojBhColor6)||
-					   isNotEmpty(ojBhColorPlace7)&&isEmpty(ojBhColor7)||isNotEmpty(ojBhColorPlace8)&&isEmpty(ojBhColor8)||
-					   isNotEmpty(ojBhColorPlace9)&&isEmpty(ojBhColor9)||isNotEmpty(ojBhColorPlace10)&&isEmpty(ojBhColor10)||
-					   isNotEmpty(ojBhColorPlace11)&&isEmpty(ojBhColor11)||isNotEmpty(ojBhColorPlace12)&&isEmpty(ojBhColor12)||
-					   isNotEmpty(ojBhColorPlace13)&&isEmpty(ojBhColor13)||isNotEmpty(ojBhColorPlace14)&&isEmpty(ojBhColor14)||
-					   isNotEmpty(ojBhColorPlace15)&&isEmpty(ojBhColor15)||isNotEmpty(ojBhColorPlace16)&&isEmpty(ojBhColor16)||
-					   isNotEmpty(ojBhColorPlace17)&&isEmpty(ojBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-				}
-				
-				//ボタン付け糸指定
-				String ojByColor = coOptionJacketStandardInfo.getOjByColor();
-				if (OptionCodeKeys.JK_0003402.equals(ojByColor)) {
-					String ojByColorPlace1 = coOptionJacketStandardInfo.getOjByColorPlace1();
-					String ojByColorPlace2 = coOptionJacketStandardInfo.getOjByColorPlace2();
-					String ojByColorPlace3 = coOptionJacketStandardInfo.getOjByColorPlace3();
-					String ojByColorPlace4 = coOptionJacketStandardInfo.getOjByColorPlace4();
-					String ojByColorPlace5 = coOptionJacketStandardInfo.getOjByColorPlace5();
-					String ojByColorPlace6 = coOptionJacketStandardInfo.getOjByColorPlace6();
-					String ojByColorPlace7 = coOptionJacketStandardInfo.getOjByColorPlace7();
-					String ojByColorPlace8 = coOptionJacketStandardInfo.getOjByColorPlace8();
-					String ojByColorPlace9 = coOptionJacketStandardInfo.getOjByColorPlace9();
-					String ojByColorPlace10 = coOptionJacketStandardInfo.getOjByColorPlace10();
-					String ojByColorPlace11 = coOptionJacketStandardInfo.getOjByColorPlace11();
-					String ojByColorPlace12 = coOptionJacketStandardInfo.getOjByColorPlace12();
-					String ojByColorPlace13 = coOptionJacketStandardInfo.getOjByColorPlace13();
-					String ojByColorPlace14 = coOptionJacketStandardInfo.getOjByColorPlace14();
-					String ojByColorPlace15 = coOptionJacketStandardInfo.getOjByColorPlace15();
-					String ojByColorPlace16 = coOptionJacketStandardInfo.getOjByColorPlace16();
-					
-					String ojByColor1 = coOptionJacketStandardInfo.getOjByColor1();
-					String ojByColor2 = coOptionJacketStandardInfo.getOjByColor2();
-					String ojByColor3 = coOptionJacketStandardInfo.getOjByColor3();
-					String ojByColor4 = coOptionJacketStandardInfo.getOjByColor4();
-					String ojByColor5 = coOptionJacketStandardInfo.getOjByColor5();
-					String ojByColor6 = coOptionJacketStandardInfo.getOjByColor6();
-					String ojByColor7 = coOptionJacketStandardInfo.getOjByColor7();
-					String ojByColor8 = coOptionJacketStandardInfo.getOjByColor8();
-					String ojByColor9 = coOptionJacketStandardInfo.getOjByColor9();
-					String ojByColor10 = coOptionJacketStandardInfo.getOjByColor10();
-					String ojByColor11 = coOptionJacketStandardInfo.getOjByColor11();
-					String ojByColor12 = coOptionJacketStandardInfo.getOjByColor12();
-					String ojByColor13 = coOptionJacketStandardInfo.getOjByColor13();
-					String ojByColor14 = coOptionJacketStandardInfo.getOjByColor14();
-					String ojByColor15 = coOptionJacketStandardInfo.getOjByColor15();
-					String ojByColor16 = coOptionJacketStandardInfo.getOjByColor16();
-					
-					if (isEmpty(ojByColorPlace1) && isEmpty(ojByColorPlace2) && isEmpty(ojByColorPlace3)
-							&& isEmpty(ojByColorPlace4) && isEmpty(ojByColorPlace5) && isEmpty(ojByColorPlace6)
-							&& isEmpty(ojByColorPlace7) && isEmpty(ojByColorPlace8) && isEmpty(ojByColorPlace9)
-							&& isEmpty(ojByColorPlace10)&& isEmpty(ojByColorPlace11)&& isEmpty(ojByColorPlace12)
-							&& isEmpty(ojByColorPlace13)&& isEmpty(ojByColorPlace14)&& isEmpty(ojByColorPlace15)
-							&& isEmpty(ojByColorPlace16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojByColorPlace1)&&isEmpty(ojByColor1)||isNotEmpty(ojByColorPlace2)&&isEmpty(ojByColor2)||
-					   isNotEmpty(ojByColorPlace3)&&isEmpty(ojByColor3)||isNotEmpty(ojByColorPlace4)&&isEmpty(ojByColor4)||
-					   isNotEmpty(ojByColorPlace5)&&isEmpty(ojByColor5)||isNotEmpty(ojByColorPlace6)&&isEmpty(ojByColor6)||
-					   isNotEmpty(ojByColorPlace7)&&isEmpty(ojByColor7)||isNotEmpty(ojByColorPlace8)&&isEmpty(ojByColor8)||
-					   isNotEmpty(ojByColorPlace9)&&isEmpty(ojByColor9)||isNotEmpty(ojByColorPlace10)&&isEmpty(ojByColor10)||
-					   isNotEmpty(ojByColorPlace11)&&isEmpty(ojByColor11)||isNotEmpty(ojByColorPlace12)&&isEmpty(ojByColor12)||
-					   isNotEmpty(ojByColorPlace13)&&isEmpty(ojByColor13)||isNotEmpty(ojByColorPlace14)&&isEmpty(ojByColor14)||
-					   isNotEmpty(ojByColorPlace15)&&isEmpty(ojByColor15)||isNotEmpty(ojByColorPlace16)&&isEmpty(ojByColor16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-				}
-			//タキシードの場合
-			}else if("9000102".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-				String tjJacketModel = coOptionJacketTuxedoInfo.getTjJacketModel();
-				if("".equals(tjJacketModel)  ||  null == tjJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				
-				// ボタンホール色指定
-				String ojBhColor = coOptionJacketTuxedoInfo.getTjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(ojBhColor)) {
-					String tjBhColorPlace1 = coOptionJacketTuxedoInfo.getTjBhColorPlace1();
-					String tjBhColorPlace2 = coOptionJacketTuxedoInfo.getTjBhColorPlace2();
-					String tjBhColorPlace3 = coOptionJacketTuxedoInfo.getTjBhColorPlace3();
-					String tjBhColorPlace4 = coOptionJacketTuxedoInfo.getTjBhColorPlace4();
-					String tjBhColorPlace5 = coOptionJacketTuxedoInfo.getTjBhColorPlace5();
-					String tjBhColorPlace6 = coOptionJacketTuxedoInfo.getTjBhColorPlace6();
-					String tjBhColorPlace7 = coOptionJacketTuxedoInfo.getTjBhColorPlace7();
-					String tjBhColorPlace8 = coOptionJacketTuxedoInfo.getTjBhColorPlace8();
-					String tjBhColorPlace9 = coOptionJacketTuxedoInfo.getTjBhColorPlace9();
-					String tjBhColorPlace10 = coOptionJacketTuxedoInfo.getTjBhColorPlace10();
-					String tjBhColorPlace11 = coOptionJacketTuxedoInfo.getTjBhColorPlace11();
-					String tjBhColorPlace12 = coOptionJacketTuxedoInfo.getTjBhColorPlace12();
-					String tjBhColorPlace13 = coOptionJacketTuxedoInfo.getTjBhColorPlace13();
-					String tjBhColorPlace14 = coOptionJacketTuxedoInfo.getTjBhColorPlace14();
-					String tjBhColorPlace15 = coOptionJacketTuxedoInfo.getTjBhColorPlace15();
-					String tjBhColorPlace16 = coOptionJacketTuxedoInfo.getTjBhColorPlace16();
-					String tjBhColorPlace17 = coOptionJacketTuxedoInfo.getTjBhColorPlace17();
-					
-					String tjBhColor1 = coOptionJacketTuxedoInfo.getTjBhColor1();
-					String tjBhColor2 = coOptionJacketTuxedoInfo.getTjBhColor2();
-					String tjBhColor3 = coOptionJacketTuxedoInfo.getTjBhColor3();
-					String tjBhColor4 = coOptionJacketTuxedoInfo.getTjBhColor4();
-					String tjBhColor5 = coOptionJacketTuxedoInfo.getTjBhColor5();
-					String tjBhColor6 = coOptionJacketTuxedoInfo.getTjBhColor6();
-					String tjBhColor7 = coOptionJacketTuxedoInfo.getTjBhColor7();
-					String tjBhColor8 = coOptionJacketTuxedoInfo.getTjBhColor8();
-					String tjBhColor9 = coOptionJacketTuxedoInfo.getTjBhColor9();
-					String tjBhColor10 = coOptionJacketTuxedoInfo.getTjBhColor10();
-					String tjBhColor11 = coOptionJacketTuxedoInfo.getTjBhColor11();
-					String tjBhColor12 = coOptionJacketTuxedoInfo.getTjBhColor12();
-					String tjBhColor13 = coOptionJacketTuxedoInfo.getTjBhColor13();
-					String tjBhColor14 = coOptionJacketTuxedoInfo.getTjBhColor14();
-					String tjBhColor15 = coOptionJacketTuxedoInfo.getTjBhColor15();
-					String tjBhColor16 = coOptionJacketTuxedoInfo.getTjBhColor16();
-					String tjBhColor17 = coOptionJacketTuxedoInfo.getTjBhColor17();
-
-					if (isEmpty(tjBhColorPlace1) && isEmpty(tjBhColorPlace2) && isEmpty(tjBhColorPlace3)
-							&& isEmpty(tjBhColorPlace4) && isEmpty(tjBhColorPlace5) && isEmpty(tjBhColorPlace6)
-							&& isEmpty(tjBhColorPlace7) && isEmpty(tjBhColorPlace8) && isEmpty(tjBhColorPlace9)
-							&& isEmpty(tjBhColorPlace10) && isEmpty(tjBhColorPlace11) && isEmpty(tjBhColorPlace12)
-							&& isEmpty(tjBhColorPlace13) && isEmpty(tjBhColorPlace14) && isEmpty(tjBhColorPlace15)
-							&& isEmpty(tjBhColorPlace16) && isEmpty(tjBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-
-					if(isNotEmpty(tjBhColorPlace1)&&isEmpty(tjBhColor1)||isNotEmpty(tjBhColorPlace2)&&isEmpty(tjBhColor2)||
-					   isNotEmpty(tjBhColorPlace3)&&isEmpty(tjBhColor3)||isNotEmpty(tjBhColorPlace4)&&isEmpty(tjBhColor4)||
-					   isNotEmpty(tjBhColorPlace5)&&isEmpty(tjBhColor5)||isNotEmpty(tjBhColorPlace6)&&isEmpty(tjBhColor6)||
-					   isNotEmpty(tjBhColorPlace7)&&isEmpty(tjBhColor7)||isNotEmpty(tjBhColorPlace8)&&isEmpty(tjBhColor8)||
-					   isNotEmpty(tjBhColorPlace9)&&isEmpty(tjBhColor9)||isNotEmpty(tjBhColorPlace10)&&isEmpty(tjBhColor10)||
-					   isNotEmpty(tjBhColorPlace11)&&isEmpty(tjBhColor11)||isNotEmpty(tjBhColorPlace12)&&isEmpty(tjBhColor12)||
-					   isNotEmpty(tjBhColorPlace13)&&isEmpty(tjBhColor13)||isNotEmpty(tjBhColorPlace14)&&isEmpty(tjBhColor14)||
-					   isNotEmpty(tjBhColorPlace15)&&isEmpty(tjBhColor15)||isNotEmpty(tjBhColorPlace16)&&isEmpty(tjBhColor16)||
-					   isNotEmpty(tjBhColorPlace17)&&isEmpty(tjBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					// ボタン付け糸指定
-					String tjByColor = coOptionJacketTuxedoInfo.getTjByColor();
-					if (OptionCodeKeys.JK_0003402.equals(tjByColor)) {
-						String tjByColorPlace1 = coOptionJacketTuxedoInfo.getTjByColorPlace1();
-						String tjByColorPlace2 = coOptionJacketTuxedoInfo.getTjByColorPlace2();
-						String tjByColorPlace3 = coOptionJacketTuxedoInfo.getTjByColorPlace3();
-						String tjByColorPlace4 = coOptionJacketTuxedoInfo.getTjByColorPlace4();
-						String tjByColorPlace5 = coOptionJacketTuxedoInfo.getTjByColorPlace5();
-						String tjByColorPlace6 = coOptionJacketTuxedoInfo.getTjByColorPlace6();
-						String tjByColorPlace7 = coOptionJacketTuxedoInfo.getTjByColorPlace7();
-						String tjByColorPlace8 = coOptionJacketTuxedoInfo.getTjByColorPlace8();
-						String tjByColorPlace9 = coOptionJacketTuxedoInfo.getTjByColorPlace9();
-						String tjByColorPlace10 = coOptionJacketTuxedoInfo.getTjByColorPlace10();
-						String tjByColorPlace11 = coOptionJacketTuxedoInfo.getTjByColorPlace11();
-						String tjByColorPlace12 = coOptionJacketTuxedoInfo.getTjByColorPlace12();
-						String tjByColorPlace13 = coOptionJacketTuxedoInfo.getTjByColorPlace13();
-						String tjByColorPlace14 = coOptionJacketTuxedoInfo.getTjByColorPlace14();
-						String tjByColorPlace15 = coOptionJacketTuxedoInfo.getTjByColorPlace15();
-						String tjByColorPlace16 = coOptionJacketTuxedoInfo.getTjByColorPlace16();
-						
-						String tjByColor1 = coOptionJacketTuxedoInfo.getTjByColor1();
-						String tjByColor2 = coOptionJacketTuxedoInfo.getTjByColor2();
-						String tjByColor3 = coOptionJacketTuxedoInfo.getTjByColor3();
-						String tjByColor4 = coOptionJacketTuxedoInfo.getTjByColor4();
-						String tjByColor5 = coOptionJacketTuxedoInfo.getTjByColor5();
-						String tjByColor6 = coOptionJacketTuxedoInfo.getTjByColor6();
-						String tjByColor7 = coOptionJacketTuxedoInfo.getTjByColor7();
-						String tjByColor8 = coOptionJacketTuxedoInfo.getTjByColor8();
-						String tjByColor9 = coOptionJacketTuxedoInfo.getTjByColor9();
-						String tjByColor10 = coOptionJacketTuxedoInfo.getTjByColor10();
-						String tjByColor11 = coOptionJacketTuxedoInfo.getTjByColor11();
-						String tjByColor12 = coOptionJacketTuxedoInfo.getTjByColor12();
-						String tjByColor13 = coOptionJacketTuxedoInfo.getTjByColor13();
-						String tjByColor14 = coOptionJacketTuxedoInfo.getTjByColor14();
-						String tjByColor15 = coOptionJacketTuxedoInfo.getTjByColor15();
-						String tjByColor16 = coOptionJacketTuxedoInfo.getTjByColor16();
-						
-						if (isEmpty(tjByColorPlace1) && isEmpty(tjByColorPlace2) && isEmpty(tjByColorPlace3)
-								&& isEmpty(tjByColorPlace4) && isEmpty(tjByColorPlace5) && isEmpty(tjByColorPlace6)
-								&& isEmpty(tjByColorPlace7) && isEmpty(tjByColorPlace8) && isEmpty(tjByColorPlace9)
-								&& isEmpty(tjByColorPlace10) && isEmpty(tjByColorPlace11) && isEmpty(tjByColorPlace12)
-								&& isEmpty(tjByColorPlace13) && isEmpty(tjByColorPlace14) && isEmpty(tjByColorPlace15)
-								&& isEmpty(tjByColorPlace16)) {
-							messages.add("E032", "ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						
-						if(isNotEmpty(tjByColorPlace1)&&isEmpty(tjByColor1)||isNotEmpty(tjByColorPlace2)&&isEmpty(tjByColor2)||
-						   isNotEmpty(tjByColorPlace3)&&isEmpty(tjByColor3)||isNotEmpty(tjByColorPlace4)&&isEmpty(tjByColor4)||
-						   isNotEmpty(tjByColorPlace5)&&isEmpty(tjByColor5)||isNotEmpty(tjByColorPlace6)&&isEmpty(tjByColor6)||
-						   isNotEmpty(tjByColorPlace7)&&isEmpty(tjByColor7)||isNotEmpty(tjByColorPlace8)&&isEmpty(tjByColor8)||
-						   isNotEmpty(tjByColorPlace9)&&isEmpty(tjByColor9)||isNotEmpty(tjByColorPlace10)&&isEmpty(tjByColor10)||
-						   isNotEmpty(tjByColorPlace11)&&isEmpty(tjByColor11)||isNotEmpty(tjByColorPlace12)&&isEmpty(tjByColor12)||
-						   isNotEmpty(tjByColorPlace13)&&isEmpty(tjByColor13)||isNotEmpty(tjByColorPlace14)&&isEmpty(tjByColor14)||
-						   isNotEmpty(tjByColorPlace15)&&isEmpty(tjByColor15)||isNotEmpty(tjByColorPlace16)&&isEmpty(tjByColor16)) {
-							messages.add("E032", "ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-				}
-			}else if("9000103".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-				String wjJacketModel = coOptionJacketWashableInfo.getWjJacketModel();
-				if("".equals(wjJacketModel)  ||  null == wjJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				 
-				//AMF色指定
-				String wjamfColor = coOptionJacketWashableInfo.getWjAmfColor();
-				if(OptionCodeKeys.JK_0002802.equals(wjamfColor)) {
-					String wjAmfColorPlace1 = coOptionJacketWashableInfo.getWjAmfColorPlace1();
-					String wjAmfColorPlace2 = coOptionJacketWashableInfo.getWjAmfColorPlace2();
-					String wjAmfColorPlace3 = coOptionJacketWashableInfo.getWjAmfColorPlace3();
-					String wjAmfColorPlace4 = coOptionJacketWashableInfo.getWjAmfColorPlace4();
-					String wjAmfColorPlace5 = coOptionJacketWashableInfo.getWjAmfColorPlace5();
-					String wjAmfColorPlace6 = coOptionJacketWashableInfo.getWjAmfColorPlace6();
-					String wjAmfColorPlace7 = coOptionJacketWashableInfo.getWjAmfColorPlace7();
-					String wjAmfColorPlace8 = coOptionJacketWashableInfo.getWjAmfColorPlace8();
-					String wjAmfColorPlace9 = coOptionJacketWashableInfo.getWjAmfColorPlace9();
-					
-					String wjAmfColor1 = coOptionJacketWashableInfo.getWjAmfColor1();
-					String wjAmfColor2 = coOptionJacketWashableInfo.getWjAmfColor2();
-					String wjAmfColor3 = coOptionJacketWashableInfo.getWjAmfColor3();
-					String wjAmfColor4 = coOptionJacketWashableInfo.getWjAmfColor4();
-					String wjAmfColor5 = coOptionJacketWashableInfo.getWjAmfColor5();
-					String wjAmfColor6 = coOptionJacketWashableInfo.getWjAmfColor6();
-					String wjAmfColor7 = coOptionJacketWashableInfo.getWjAmfColor7();
-					String wjAmfColor8 = coOptionJacketWashableInfo.getWjAmfColor8();
-					String wjAmfColor9 = coOptionJacketWashableInfo.getWjAmfColor9();
-					
-					if(isEmpty(wjAmfColorPlace1)&&isEmpty(wjAmfColorPlace2)&&isEmpty(wjAmfColorPlace3)&&isEmpty(wjAmfColorPlace4)&&
-					   isEmpty(wjAmfColorPlace5)&&isEmpty(wjAmfColorPlace6)&&isEmpty(wjAmfColorPlace7)&&isEmpty(wjAmfColorPlace8)&&isEmpty(wjAmfColorPlace9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjAmfColorPlace1)&&isEmpty(wjAmfColor1)||isNotEmpty(wjAmfColorPlace2)&&isEmpty(wjAmfColor2)||
-					   isNotEmpty(wjAmfColorPlace3)&&isEmpty(wjAmfColor3)||isNotEmpty(wjAmfColorPlace4)&&isEmpty(wjAmfColor4)||
-					   isNotEmpty(wjAmfColorPlace5)&&isEmpty(wjAmfColor5)||isNotEmpty(wjAmfColorPlace6)&&isEmpty(wjAmfColor6)||
-					   isNotEmpty(wjAmfColorPlace7)&&isEmpty(wjAmfColor7)||isNotEmpty(wjAmfColorPlace8)&&isEmpty(wjAmfColor8)||
-					   isNotEmpty(wjAmfColorPlace9)&&isEmpty(wjAmfColor9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-				}
-				
-				//ボタンホール色指定
-				String wjBhColor = coOptionJacketWashableInfo.getWjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(wjBhColor)) {
-					String wjBhColorPlace1 = coOptionJacketWashableInfo.getWjBhColorPlace1();
-					String wjBhColorPlace2 = coOptionJacketWashableInfo.getWjBhColorPlace2();
-					String wjBhColorPlace3 = coOptionJacketWashableInfo.getWjBhColorPlace3();
-					String wjBhColorPlace4 = coOptionJacketWashableInfo.getWjBhColorPlace4();
-					String wjBhColorPlace5 = coOptionJacketWashableInfo.getWjBhColorPlace5();
-					String wjBhColorPlace6 = coOptionJacketWashableInfo.getWjBhColorPlace6();
-					String wjBhColorPlace7 = coOptionJacketWashableInfo.getWjBhColorPlace7();
-					String wjBhColorPlace8 = coOptionJacketWashableInfo.getWjBhColorPlace8();
-					String wjBhColorPlace9 = coOptionJacketWashableInfo.getWjBhColorPlace9();
-					String wjBhColorPlace10 = coOptionJacketWashableInfo.getWjBhColorPlace10();
-					String wjBhColorPlace11 = coOptionJacketWashableInfo.getWjBhColorPlace11();
-					String wjBhColorPlace12 = coOptionJacketWashableInfo.getWjBhColorPlace12();
-					String wjBhColorPlace13 = coOptionJacketWashableInfo.getWjBhColorPlace13();
-					String wjBhColorPlace14 = coOptionJacketWashableInfo.getWjBhColorPlace14();
-					String wjBhColorPlace15 = coOptionJacketWashableInfo.getWjBhColorPlace15();
-					String wjBhColorPlace16 = coOptionJacketWashableInfo.getWjBhColorPlace16();
-					String wjBhColorPlace17 = coOptionJacketWashableInfo.getWjBhColorPlace17();
-					
-					String wjBhColor1 = coOptionJacketWashableInfo.getWjBhColor1();
-					String wjBhColor2 = coOptionJacketWashableInfo.getWjBhColor2();
-					String wjBhColor3 = coOptionJacketWashableInfo.getWjBhColor3();
-					String wjBhColor4 = coOptionJacketWashableInfo.getWjBhColor4();
-					String wjBhColor5 = coOptionJacketWashableInfo.getWjBhColor5();
-					String wjBhColor6 = coOptionJacketWashableInfo.getWjBhColor6();
-					String wjBhColor7 = coOptionJacketWashableInfo.getWjBhColor7();
-					String wjBhColor8 = coOptionJacketWashableInfo.getWjBhColor8();
-					String wjBhColor9 = coOptionJacketWashableInfo.getWjBhColor9();
-					String wjBhColor10 = coOptionJacketWashableInfo.getWjBhColor10();
-					String wjBhColor11 = coOptionJacketWashableInfo.getWjBhColor11();
-					String wjBhColor12 = coOptionJacketWashableInfo.getWjBhColor12();
-					String wjBhColor13 = coOptionJacketWashableInfo.getWjBhColor13();
-					String wjBhColor14 = coOptionJacketWashableInfo.getWjBhColor14();
-					String wjBhColor15 = coOptionJacketWashableInfo.getWjBhColor15();
-					String wjBhColor16 = coOptionJacketWashableInfo.getWjBhColor16();
-					String wjBhColor17 = coOptionJacketWashableInfo.getWjBhColor17();
-
-					if (isEmpty(wjBhColorPlace1) && isEmpty(wjBhColorPlace2) && isEmpty(wjBhColorPlace3)
-							&& isEmpty(wjBhColorPlace4) && isEmpty(wjBhColorPlace5) && isEmpty(wjBhColorPlace6)
-							&& isEmpty(wjBhColorPlace7) && isEmpty(wjBhColorPlace8) && isEmpty(wjBhColorPlace9)
-							&& isEmpty(wjBhColorPlace10)&& isEmpty(wjBhColorPlace11)&& isEmpty(wjBhColorPlace12)
-							&& isEmpty(wjBhColorPlace13)&& isEmpty(wjBhColorPlace14)&& isEmpty(wjBhColorPlace15)
-							&& isEmpty(wjBhColorPlace16)&& isEmpty(wjBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjBhColorPlace1)&&isEmpty(wjBhColor1)||isNotEmpty(wjBhColorPlace2)&&isEmpty(wjBhColor2)||
-					   isNotEmpty(wjBhColorPlace3)&&isEmpty(wjBhColor3)||isNotEmpty(wjBhColorPlace4)&&isEmpty(wjBhColor4)||
-					   isNotEmpty(wjBhColorPlace5)&&isEmpty(wjBhColor5)||isNotEmpty(wjBhColorPlace6)&&isEmpty(wjBhColor6)||
-					   isNotEmpty(wjBhColorPlace7)&&isEmpty(wjBhColor7)||isNotEmpty(wjBhColorPlace8)&&isEmpty(wjBhColor8)||
-					   isNotEmpty(wjBhColorPlace9)&&isEmpty(wjBhColor9)||isNotEmpty(wjBhColorPlace10)&&isEmpty(wjBhColor10)||
-					   isNotEmpty(wjBhColorPlace11)&&isEmpty(wjBhColor11)||isNotEmpty(wjBhColorPlace12)&&isEmpty(wjBhColor12)||
-					   isNotEmpty(wjBhColorPlace13)&&isEmpty(wjBhColor13)||isNotEmpty(wjBhColorPlace14)&&isEmpty(wjBhColor14)||
-					   isNotEmpty(wjBhColorPlace15)&&isEmpty(wjBhColor15)||isNotEmpty(wjBhColorPlace16)&&isEmpty(wjBhColor16)||
-					   isNotEmpty(wjBhColorPlace17)&&isEmpty(wjBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-				}
-				
-				//ボタン付け糸指定
-				String wjByColor = coOptionJacketWashableInfo.getWjByColor();
-				if (OptionCodeKeys.JK_0003402.equals(wjByColor)) {
-					String wjByColorPlace1 = coOptionJacketWashableInfo.getWjByColorPlace1();
-					String wjByColorPlace2 = coOptionJacketWashableInfo.getWjByColorPlace2();
-					String wjByColorPlace3 = coOptionJacketWashableInfo.getWjByColorPlace3();
-					String wjByColorPlace4 = coOptionJacketWashableInfo.getWjByColorPlace4();
-					String wjByColorPlace5 = coOptionJacketWashableInfo.getWjByColorPlace5();
-					String wjByColorPlace6 = coOptionJacketWashableInfo.getWjByColorPlace6();
-					String wjByColorPlace7 = coOptionJacketWashableInfo.getWjByColorPlace7();
-					String wjByColorPlace8 = coOptionJacketWashableInfo.getWjByColorPlace8();
-					String wjByColorPlace9 = coOptionJacketWashableInfo.getWjByColorPlace9();
-					String wjByColorPlace10 = coOptionJacketWashableInfo.getWjByColorPlace10();
-					String wjByColorPlace11 = coOptionJacketWashableInfo.getWjByColorPlace11();
-					String wjByColorPlace12 = coOptionJacketWashableInfo.getWjByColorPlace12();
-					String wjByColorPlace13 = coOptionJacketWashableInfo.getWjByColorPlace13();
-					String wjByColorPlace14 = coOptionJacketWashableInfo.getWjByColorPlace14();
-					String wjByColorPlace15 = coOptionJacketWashableInfo.getWjByColorPlace15();
-					String wjByColorPlace16 = coOptionJacketWashableInfo.getWjByColorPlace16();
-					
-					String wjByColor1 = coOptionJacketWashableInfo.getWjByColor1();
-					String wjByColor2 = coOptionJacketWashableInfo.getWjByColor2();
-					String wjByColor3 = coOptionJacketWashableInfo.getWjByColor3();
-					String wjByColor4 = coOptionJacketWashableInfo.getWjByColor4();
-					String wjByColor5 = coOptionJacketWashableInfo.getWjByColor5();
-					String wjByColor6 = coOptionJacketWashableInfo.getWjByColor6();
-					String wjByColor7 = coOptionJacketWashableInfo.getWjByColor7();
-					String wjByColor8 = coOptionJacketWashableInfo.getWjByColor8();
-					String wjByColor9 = coOptionJacketWashableInfo.getWjByColor9();
-					String wjByColor10 = coOptionJacketWashableInfo.getWjByColor10();
-					String wjByColor11 = coOptionJacketWashableInfo.getWjByColor11();
-					String wjByColor12 = coOptionJacketWashableInfo.getWjByColor12();
-					String wjByColor13 = coOptionJacketWashableInfo.getWjByColor13();
-					String wjByColor14 = coOptionJacketWashableInfo.getWjByColor14();
-					String wjByColor15 = coOptionJacketWashableInfo.getWjByColor15();
-					String wjByColor16 = coOptionJacketWashableInfo.getWjByColor16();
-					
-					if (isEmpty(wjByColorPlace1) && isEmpty(wjByColorPlace2) && isEmpty(wjByColorPlace3)
-							&& isEmpty(wjByColorPlace4) && isEmpty(wjByColorPlace5) && isEmpty(wjByColorPlace6)
-							&& isEmpty(wjByColorPlace7) && isEmpty(wjByColorPlace8) && isEmpty(wjByColorPlace9)
-							&& isEmpty(wjByColorPlace10)&& isEmpty(wjByColorPlace11)&& isEmpty(wjByColorPlace12)
-							&& isEmpty(wjByColorPlace13)&& isEmpty(wjByColorPlace14)&& isEmpty(wjByColorPlace15)
-							&& isEmpty(wjByColorPlace16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjByColorPlace1)&&isEmpty(wjByColor1)||isNotEmpty(wjByColorPlace2)&&isEmpty(wjByColor2)||
-					   isNotEmpty(wjByColorPlace3)&&isEmpty(wjByColor3)||isNotEmpty(wjByColorPlace4)&&isEmpty(wjByColor4)||
-					   isNotEmpty(wjByColorPlace5)&&isEmpty(wjByColor5)||isNotEmpty(wjByColorPlace6)&&isEmpty(wjByColor6)||
-					   isNotEmpty(wjByColorPlace7)&&isEmpty(wjByColor7)||isNotEmpty(wjByColorPlace8)&&isEmpty(wjByColor8)||
-					   isNotEmpty(wjByColorPlace9)&&isEmpty(wjByColor9)||isNotEmpty(wjByColorPlace10)&&isEmpty(wjByColor10)||
-					   isNotEmpty(wjByColorPlace11)&&isEmpty(wjByColor11)||isNotEmpty(wjByColorPlace12)&&isEmpty(wjByColor12)||
-					   isNotEmpty(wjByColorPlace13)&&isEmpty(wjByColor13)||isNotEmpty(wjByColorPlace14)&&isEmpty(wjByColor14)||
-					   isNotEmpty(wjByColorPlace15)&&isEmpty(wjByColor15)||isNotEmpty(wjByColorPlace16)&&isEmpty(wjByColor16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-				}
-			}
+			boolean jacketFlag = coJakcetHelper.jacketCheck(messages, orderCoForm, productCategory, item, adjustByItem,
+					typeSizeService);
+			boolean pantsFlag = coPants1Helper.pantsCheck(messages, orderCoForm, productCategory, item, adjustByItem,
+					typeSizeService);
 			
-			//補正
-			CoAdjustJacketStandardInfo coAdjustJacketStandardInfo = orderCoForm.getCoAdjustJacketStandardInfo();
-			if(coAdjustJacketStandardInfo == null) {
-				 messages.add("E031", "JACKETサイズ");
-				 jacketFlag = true;
-			}else {
-				String sizeFigure = coAdjustJacketStandardInfo.getSizeFigure();
-				if("".equals(sizeFigure)||null == sizeFigure) {
-					messages.add("E031", "JACKETサイズ体型");
-					jacketFlag = true;
-				}
-				String sizeNumber = coAdjustJacketStandardInfo.getSizeNumber();
-				if("".equals(sizeNumber)||null == sizeNumber) {
-					messages.add("E031", "JACKETサイズ号数");
-					jacketFlag = true;
-				}
+			boolean pants2Flag = false;
+			if (OptionCodeKeys.TWO_PANTS.equals(twoPants)) {
+				    pants2Flag = coPants2Helper.pants2Check(messages, orderCoForm, productCategory, item, adjustByItem,
+						typeSizeService);	
 			}
-			
-			// 標準の場合
-			if ("9000101".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsStandardInfo coOptionPantsStandardInfo = orderCoForm.getCoOptionPantsStandardInfo();
-				String opPantsModel = coOptionPantsStandardInfo.getOpPantsModel();
-				if ("".equals(opPantsModel) || null == opPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					jacketFlag = true;
-				}
-				// ベルトループ
-				String opBeltLoop = coOptionPantsStandardInfo.getOpBeltLoop();
-				if (OptionCodeKeys.PT_0000701.equals(opBeltLoop)) {
-					String opBeltLoopPlace1 = coOptionPantsStandardInfo.getOpBeltLoopPlace1();
-					String opBeltLoopPlace2 = coOptionPantsStandardInfo.getOpBeltLoopPlace2();
-					String opBeltLoopPlace3 = coOptionPantsStandardInfo.getOpBeltLoopPlace3();
-					String opBeltLoopPlace4 = coOptionPantsStandardInfo.getOpBeltLoopPlace4();
-					String opBeltLoopPlace5 = coOptionPantsStandardInfo.getOpBeltLoopPlace5();
-					String opBeltLoopPlace6 = coOptionPantsStandardInfo.getOpBeltLoopPlace6();
-
-					if (isEmpty(opBeltLoopPlace1) && isEmpty(opBeltLoopPlace2) && isEmpty(opBeltLoopPlace3)
-							&& isEmpty(opBeltLoopPlace4) && isEmpty(opBeltLoopPlace5) && isEmpty(opBeltLoopPlace6)) {
-						messages.add("E033", "PANTS ベルトループ");
-						jacketFlag = true;
-					}
-				}
-				// ステッチ箇所変更
-				String opStitchModify = coOptionPantsStandardInfo.getOpStitchModify();
-				if (OptionCodeKeys.PT_0002002.equals(opStitchModify)) {
-					String opStitchModifyPlace1 = coOptionPantsStandardInfo.getOpStitchModifyPlace1();
-					String opStitchModifyPlace2 = coOptionPantsStandardInfo.getOpStitchModifyPlace2();
-					String opStitchModifyPlace3 = coOptionPantsStandardInfo.getOpStitchModifyPlace3();
-					String opStitchModifyPlace4 = coOptionPantsStandardInfo.getOpStitchModifyPlace4();
-
-					if (isEmpty(opStitchModifyPlace1) && isEmpty(opStitchModifyPlace2) && isEmpty(opStitchModifyPlace3)
-							&& isEmpty(opStitchModifyPlace4)) {
-						messages.add("E033", "PANTS ステッチ箇所変更");
-						jacketFlag = true;
-					}
-				}
-				// ダブルステッチ
-				String opDStitch = coOptionPantsStandardInfo.getOpDStitch();
-				if (OptionCodeKeys.PT_0002202.equals(opDStitch)) {
-					String opDStitchPlace1 = coOptionPantsStandardInfo.getOpDStitchPlace1();
-					String opDStitchPlace2 = coOptionPantsStandardInfo.getOpDStitchPlace2();
-					String opDStitchPlace3 = coOptionPantsStandardInfo.getOpDStitchPlace3();
-					String opDStitchPlace4 = coOptionPantsStandardInfo.getOpDStitchPlace4();
-
-					if (isEmpty(opDStitchPlace1) && isEmpty(opDStitchPlace2) && isEmpty(opDStitchPlace3)
-							&& isEmpty(opDStitchPlace4)) {
-						messages.add("E033", "PANTS ダブルステッチ");
-						jacketFlag = true;
-					}
-				}
-				// AMF色指定
-				String opAmfColor = coOptionPantsStandardInfo.getOpAmfColor();
-				if (OptionCodeKeys.PT_0002402.equals(opAmfColor)) {
-					String opAmfColorPlace1 = coOptionPantsStandardInfo.getOpAmfColorPlace1();
-					String opAmfColorPlace2 = coOptionPantsStandardInfo.getOpAmfColorPlace2();
-					String opAmfColorPlace3 = coOptionPantsStandardInfo.getOpAmfColorPlace3();
-					String opAmfColorPlace4 = coOptionPantsStandardInfo.getOpAmfColorPlace4();
-					
-					String opAmfColor1 = coOptionPantsStandardInfo.getOpAmfColor1();
-					String opAmfColor2 = coOptionPantsStandardInfo.getOpAmfColor2();
-					String opAmfColor3 = coOptionPantsStandardInfo.getOpAmfColor3();
-					String opAmfColor4 = coOptionPantsStandardInfo.getOpAmfColor4();
-
-					if (isEmpty(opAmfColorPlace1) && isEmpty(opAmfColorPlace2) && isEmpty(opAmfColorPlace3)
-							&& isEmpty(opAmfColorPlace4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(opAmfColorPlace1)&&isEmpty(opAmfColor1)||isNotEmpty(opAmfColorPlace2)&&isEmpty(opAmfColor2)||
-					   isNotEmpty(opAmfColorPlace3)&&isEmpty(opAmfColor3)||isNotEmpty(opAmfColorPlace4)&&isEmpty(opAmfColor4)) {
-							messages.add("E033", "PANTS AMF色指定");
-							jacketFlag = true;
-					}
-				}
-				// ボタンホール色指定
-				String opBhColor = coOptionPantsStandardInfo.getOpBhColor();
-				if (OptionCodeKeys.PT_0002702.equals(opBhColor)) {
-					String opBhColorPlace1 = coOptionPantsStandardInfo.getOpBhColorPlace1();
-					String opBhColorPlace2 = coOptionPantsStandardInfo.getOpBhColorPlace2();
-					String opBhColorPlace3 = coOptionPantsStandardInfo.getOpBhColorPlace3();
-					String opBhColorPlace4 = coOptionPantsStandardInfo.getOpBhColorPlace4();
-
-					String opBhColor1 = coOptionPantsStandardInfo.getOpBhColor1();
-					String opBhColor2 = coOptionPantsStandardInfo.getOpBhColor2();
-					String opBhColor3 = coOptionPantsStandardInfo.getOpBhColor3();
-					String opBhColor4 = coOptionPantsStandardInfo.getOpBhColor4();
-					if (isEmpty(opBhColorPlace1) && isEmpty(opBhColorPlace2) && isEmpty(opBhColorPlace3)
-							&& isEmpty(opBhColorPlace4)) {
-						messages.add("E033", "PANTS ボタンホール色指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(opBhColorPlace1)&&isEmpty(opBhColor1)||isNotEmpty(opBhColorPlace2)&&isEmpty(opBhColor2)||
-					   isNotEmpty(opBhColorPlace3)&&isEmpty(opBhColor3)||isNotEmpty(opBhColorPlace4)&&isEmpty(opBhColor4)) {
-					    messages.add("E033", "PANTS ボタンホール色指定");
-					    jacketFlag = true;
-					}
-				}
-
-				//PANTS  ボタン付け糸指定
-				String opByColor = coOptionPantsStandardInfo.getOpByColor();
-				if (OptionCodeKeys.PT_0003002.equals(opByColor)) {
-					String opByColorPlace1 = coOptionPantsStandardInfo.getOpByColorPlace1();
-					String opByColorPlace2 = coOptionPantsStandardInfo.getOpByColorPlace2();
-					String opByColorPlace3 = coOptionPantsStandardInfo.getOpByColorPlace3();
-					String opByColorPlace4 = coOptionPantsStandardInfo.getOpByColorPlace4();
-
-					String opByColor1 = coOptionPantsStandardInfo.getOpByColor1();
-					String opByColor2 = coOptionPantsStandardInfo.getOpByColor2();
-					String opByColor3 = coOptionPantsStandardInfo.getOpByColor3();
-					String opByColor4 = coOptionPantsStandardInfo.getOpByColor4();
-					if (isEmpty(opByColorPlace1) && isEmpty(opByColorPlace2) && isEmpty(opByColorPlace3)
-							&& isEmpty(opByColorPlace4)) {
-						messages.add("E033", "PANTS ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(opByColorPlace1)&&isEmpty(opByColor1)||isNotEmpty(opByColorPlace2)&&isEmpty(opByColor2)||
-					   isNotEmpty(opByColorPlace3)&&isEmpty(opByColor3)||isNotEmpty(opByColorPlace4)&&isEmpty(opByColor4)) {
-						messages.add("E033", "PANTS ボタン付け糸指定");
-						jacketFlag = true;
-					}
-				}
-				// タキシードの場合
-			} else if ("9000102".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo = orderCoForm.getCoOptionPantsTuxedoInfo();
-				String tpPantsModel = coOptionPantsTuxedoInfo.getTpPantsModel();
-				if ("".equals(tpPantsModel) || null == tpPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					jacketFlag = true;
-				}
-				//PANTS  ベルトループ
-				String tpBeltLoop = coOptionPantsTuxedoInfo.getTpBeltLoop();
-				if (OptionCodeKeys.PT_0000701.equals(tpBeltLoop)) {
-					String tpBeltLoopPlace1 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace1();
-					String tpBeltLoopPlace2 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace2();
-					String tpBeltLoopPlace3 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace3();
-					String tpBeltLoopPlace4 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace4();
-					String tpBeltLoopPlace5 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace5();
-					String tpBeltLoopPlace6 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace6();
-					String tpBeltLoopPlace7 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace7();
-
-					if (isEmpty(tpBeltLoopPlace1) && isEmpty(tpBeltLoopPlace2) && isEmpty(tpBeltLoopPlace3)
-							&& isEmpty(tpBeltLoopPlace4) && isEmpty(tpBeltLoopPlace5) && isEmpty(tpBeltLoopPlace6)
-							&& isEmpty(tpBeltLoopPlace7)) {
-						messages.add("E033", "PANTS ベルトループ");
-						jacketFlag = true;
-					}
-					//PANTS  ボタンホール色指定
-					String opBhColor = coOptionPantsTuxedoInfo.getTpBhColor();
-					if (OptionCodeKeys.PT_0002702.equals(opBhColor)) {
-						String tpBhColorPlace1 = coOptionPantsTuxedoInfo.getTpBhColorPlace1();
-						String tpBhColorPlace2 = coOptionPantsTuxedoInfo.getTpBhColorPlace2();
-						String tpBhColorPlace3 = coOptionPantsTuxedoInfo.getTpBhColorPlace3();
-						String tpBhColorPlace4 = coOptionPantsTuxedoInfo.getTpBhColorPlace4();
-
-						String tpBhColor1 = coOptionPantsTuxedoInfo.getTpBhColor1();
-						String tpBhColor2 = coOptionPantsTuxedoInfo.getTpBhColor2();
-						String tpBhColor3 = coOptionPantsTuxedoInfo.getTpBhColor3();
-						String tpBhColor4 = coOptionPantsTuxedoInfo.getTpBhColor4();
-						
-						if (isEmpty(tpBhColorPlace1) && isEmpty(tpBhColorPlace2) && isEmpty(tpBhColorPlace3)
-								&& isEmpty(tpBhColorPlace4)) {
-							messages.add("E033", "PANTS ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(tpBhColorPlace1)&&isEmpty(tpBhColor1)||isNotEmpty(tpBhColorPlace2)&&isEmpty(tpBhColor2)||
-						   isNotEmpty(tpBhColorPlace3)&&isEmpty(tpBhColor3)||isNotEmpty(tpBhColorPlace4)&&isEmpty(tpBhColor4)) {
-							 messages.add("E033", "PANTS ボタンホール色指定");
-							 jacketFlag = true;
-						}
-					}
-						//PANTS  ボタン付け糸指定
-						String tpByColor = coOptionPantsTuxedoInfo.getTpByColor();
-						if (OptionCodeKeys.PT_0003002.equals(tpByColor)) {
-							String tpByColorPlace1 = coOptionPantsTuxedoInfo.getTpByColorPlace1();
-							String tpByColorPlace2 = coOptionPantsTuxedoInfo.getTpByColorPlace2();
-							String tpByColorPlace3 = coOptionPantsTuxedoInfo.getTpByColorPlace3();
-							String tpByColorPlace4 = coOptionPantsTuxedoInfo.getTpByColorPlace4();
-
-							String tpByColor1 = coOptionPantsTuxedoInfo.getTpByColor1();
-							String tpByColor2 = coOptionPantsTuxedoInfo.getTpByColor2();
-							String tpByColor3 = coOptionPantsTuxedoInfo.getTpByColor3();
-							String tpByColor4 = coOptionPantsTuxedoInfo.getTpByColor4();
-							
-							if (isEmpty(tpByColorPlace1) && isEmpty(tpByColorPlace2) && isEmpty(tpByColorPlace3)
-									&& isEmpty(tpByColorPlace4)) {
-								messages.add("E033", "PANTS ボタン付け糸指定");
-								jacketFlag = true;
-							}
-							
-							if(isNotEmpty(tpByColorPlace1)&&isEmpty(tpByColor1)||isNotEmpty(tpByColorPlace2)&&isEmpty(tpByColor2)||
-								isNotEmpty(tpByColorPlace3)&&isEmpty(tpByColor3)||isNotEmpty(tpByColorPlace4)&&isEmpty(tpByColor4)) {
-								messages.add("E033", "PANTS ボタン付け糸指定");
-							    jacketFlag = true;
-							}
-						}
-					
-				}
-			} else if ("9000103".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsWashableInfo coOptionPantsWashableInfo = orderCoForm.getCoOptionPantsWashableInfo();
-				String wpPantsModel = coOptionPantsWashableInfo.getWpPantsModel();
-				if ("".equals(wpPantsModel) || null == wpPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					jacketFlag = true;
-				}
-				//PANTS  ステッチ箇所変更
-				String wpStitchModify = coOptionPantsWashableInfo.getWpStitchModify();
-				if (OptionCodeKeys.PT_0002002.equals(wpStitchModify)) {
-					String wpStitchModifyPlace1 = coOptionPantsWashableInfo.getWpStitchModifyPlace1();
-					String wpStitchModifyPlace2 = coOptionPantsWashableInfo.getWpStitchModifyPlace2();
-					String wpStitchModifyPlace3 = coOptionPantsWashableInfo.getWpStitchModifyPlace3();
-					String wpStitchModifyPlace4 = coOptionPantsWashableInfo.getWpStitchModifyPlace4();
-					if (isEmpty(wpStitchModifyPlace1) && isEmpty(wpStitchModifyPlace2) && isEmpty(wpStitchModifyPlace3)
-							&& isEmpty(wpStitchModifyPlace4)) {
-						messages.add("E033", "PANTS ステッチ箇所変更");
-						jacketFlag = true;
-					}
-				}
-				//PANTS  ダブルステッチ
-				String wpDStitch = coOptionPantsWashableInfo.getWpDStitch();
-				if (OptionCodeKeys.PT_0002202.equals(wpDStitch)) {
-					String wpDStitchPlace1 = coOptionPantsWashableInfo.getWpDStitchPlace1();
-					String wpDStitchPlace2 = coOptionPantsWashableInfo.getWpDStitchPlace2();
-					String wpDStitchPlace3 = coOptionPantsWashableInfo.getWpDStitchPlace3();
-					String wpDStitchPlace4 = coOptionPantsWashableInfo.getWpDStitchPlace4();
-					if (isEmpty(wpDStitchPlace1) && isEmpty(wpDStitchPlace2) && isEmpty(wpDStitchPlace3)
-							&& isEmpty(wpDStitchPlace4)) {
-						messages.add("E033", "PANTS ダブルステッチ");
-						jacketFlag = true;
-					}
-				}
-
-				//PANTS  AMF色指定
-				String wpamfColor = coOptionPantsWashableInfo.getWpAmfColor();
-				if (OptionCodeKeys.PT_0002402.equals(wpamfColor)) {
-					String wpamfColorPlace1 = coOptionPantsWashableInfo.getWpAmfColorPlace1();
-					String wpamfColorPlace2 = coOptionPantsWashableInfo.getWpAmfColorPlace2();
-					String wpamfColorPlace3 = coOptionPantsWashableInfo.getWpAmfColorPlace3();
-					String wpamfColorPlace4 = coOptionPantsWashableInfo.getWpAmfColorPlace4();
-					
-					String wpamfColor1 = coOptionPantsWashableInfo.getWpAmfColor1();
-					String wpamfColor2 = coOptionPantsWashableInfo.getWpAmfColor2();
-					String wpamfColor3 = coOptionPantsWashableInfo.getWpAmfColor3();
-					String wpamfColor4 = coOptionPantsWashableInfo.getWpAmfColor4();
-					
-					if (isEmpty(wpamfColorPlace1) && isEmpty(wpamfColorPlace2) && isEmpty(wpamfColorPlace3)
-							&& isEmpty(wpamfColorPlace4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(wpamfColorPlace1)&&isEmpty(wpamfColor1)||isNotEmpty(wpamfColorPlace2)&&isEmpty(wpamfColor2)||
-					   isNotEmpty(wpamfColorPlace3)&&isEmpty(wpamfColor3)||isNotEmpty(wpamfColorPlace4)&&isEmpty(wpamfColor4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						jacketFlag = true;
-					}
-				}
-
-				//PANTS  ボタンホール色指定
-				String wpBhColor = coOptionPantsWashableInfo.getWpBhColor();
-				if (OptionCodeKeys.PT_0002702.equals(wpBhColor)) {
-					String wpBhColorPlace1 = coOptionPantsWashableInfo.getWpBhColorPlace1();
-					String wpBhColorPlace2 = coOptionPantsWashableInfo.getWpBhColorPlace2();
-					String wpBhColorPlace3 = coOptionPantsWashableInfo.getWpBhColorPlace3();
-					String wpBhColorPlace4 = coOptionPantsWashableInfo.getWpBhColorPlace4();
-
-					String wpBhColor1 = coOptionPantsWashableInfo.getWpBhColor1();
-					String wpBhColor2 = coOptionPantsWashableInfo.getWpBhColor2();
-					String wpBhColor3 = coOptionPantsWashableInfo.getWpBhColor3();
-					String wpBhColor4 = coOptionPantsWashableInfo.getWpBhColor4();
-					
-					if (isEmpty(wpBhColorPlace1) && isEmpty(wpBhColorPlace2) && isEmpty(wpBhColorPlace3)
-							&& isEmpty(wpBhColorPlace4)) {
-						messages.add("E033", "PANTS ボタンホール色指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(wpBhColorPlace1)&&isEmpty(wpBhColor1)||isNotEmpty(wpBhColorPlace2)&&isEmpty(wpBhColor2)||
-					   isNotEmpty(wpBhColorPlace3)&&isEmpty(wpBhColor3)||isNotEmpty(wpBhColorPlace4)&&isEmpty(wpBhColor4)) {
-						messages.add("E033", "PANTS ボタンホール色指定");
-					    jacketFlag = true;
-					}
-				}
-
-				// ボタン付け糸指定
-				String wpByColor = coOptionPantsWashableInfo.getWpByColor();
-				if (OptionCodeKeys.PT_0003002.equals(wpByColor)) {
-					String wpByColorPlace1 = coOptionPantsWashableInfo.getWpByColorPlace1();
-					String wpByColorPlace2 = coOptionPantsWashableInfo.getWpByColorPlace2();
-					String wpByColorPlace3 = coOptionPantsWashableInfo.getWpByColorPlace3();
-					String wpByColorPlace4 = coOptionPantsWashableInfo.getWpByColorPlace4();
-					
-					String wpByColor1 = coOptionPantsWashableInfo.getWpByColor1();
-					String wpByColor2 = coOptionPantsWashableInfo.getWpByColor2();
-					String wpByColor3 = coOptionPantsWashableInfo.getWpByColor3();
-					String wpByColor4 = coOptionPantsWashableInfo.getWpByColor4();
-					if (isEmpty(wpByColorPlace1) && isEmpty(wpByColorPlace2) && isEmpty(wpByColorPlace3)
-							&& isEmpty(wpByColorPlace4)) {
-						messages.add("E033", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					if(isNotEmpty(wpByColorPlace1)&&isEmpty(wpByColor1)||isNotEmpty(wpByColorPlace2)&&isEmpty(wpByColor2)||
-					   isNotEmpty(wpByColorPlace3)&&isEmpty(wpByColor3)||isNotEmpty(wpByColorPlace4)&&isEmpty(wpByColor4)) {
-						messages.add("E033", "PANTS  ボタン付け糸指定");
-						jacketFlag = true;
-					}
-				}
-			}
-
-			// 補正
-			CoAdjustPantsStandardInfo coAdjustPantsStandardInfo = orderCoForm.getCoAdjustPantsStandardInfo();
-			if (coAdjustPantsStandardInfo == null) {
-				messages.add("E031", "PANTSサイズ");
-				jacketFlag = true;
-			} else {
-				String sizeFigure = coAdjustPantsStandardInfo.getSizeFigure();
-				if ("".equals(sizeFigure) || null == sizeFigure) {
-					messages.add("E031", "PANTSサイズ体型");
-					jacketFlag = true;
-				}
-				String sizeNumber = coAdjustPantsStandardInfo.getSizeNumber();
-				if ("".equals(sizeNumber) || null == sizeNumber) {
-					messages.add("E031", "PANTSサイズ号数");
-					jacketFlag = true;
-				}
-				String corPtLeftinseamGross = coAdjustPantsStandardInfo.getCorPtLeftinseamGross();
-				boolean falg=GrossCompareTo(corPtLeftinseamGross,messages,"PANTS（1本目）左股下");
-				if(falg) {
-					jacketFlag = true;
-				}
-				String corPtRightinseamGross = coAdjustPantsStandardInfo.getCorPtRightinseamGross();
-				falg=GrossCompareTo(corPtRightinseamGross,messages,"PANTS（1本目）右股下");
-				if(falg) {
-					jacketFlag = true;
-				}
-				
-			}
-			if(OptionCodeKeys.TWO_PANTS.equals(twoPants)) {
-				// 標準の場合
-				if ("9000101".equals(productCategory)) {
-					// PANTS2 モデル未選択の場合
-					CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
-					String op2PantsModel = coOptionPants2StandardInfo.getOp2PantsModel();
-					if ("".equals(op2PantsModel) || null == op2PantsModel) {
-						messages.add("E031", "PANTS（2本目） モデル");
-						jacketFlag = true;
-					}
-					// ベルトループ
-					String op2BeltLoop = coOptionPants2StandardInfo.getOp2BeltLoop();
-					if (OptionCodeKeys.PT2_0000701.equals(op2BeltLoop)) {
-						String op2BeltLoopPlace1 = coOptionPants2StandardInfo.getOp2BeltLoopPlace1();
-						String op2BeltLoopPlace2 = coOptionPants2StandardInfo.getOp2BeltLoopPlace2();
-						String op2BeltLoopPlace3 = coOptionPants2StandardInfo.getOp2BeltLoopPlace3();
-						String op2BeltLoopPlace4 = coOptionPants2StandardInfo.getOp2BeltLoopPlace4();
-						String op2BeltLoopPlace5 = coOptionPants2StandardInfo.getOp2BeltLoopPlace5();
-						String op2BeltLoopPlace6 = coOptionPants2StandardInfo.getOp2BeltLoopPlace6();
-
-						if (isEmpty(op2BeltLoopPlace1) && isEmpty(op2BeltLoopPlace2) && isEmpty(op2BeltLoopPlace3)
-								&& isEmpty(op2BeltLoopPlace4) && isEmpty(op2BeltLoopPlace5) && isEmpty(op2BeltLoopPlace6)) {
-							messages.add("E033", "PANTS（2本目）    ベルトループ");
-							jacketFlag = true;
-						}
-					}
-					// ステッチ箇所変更
-					String op2StitchModify = coOptionPants2StandardInfo.getOp2StitchModify();
-					if (OptionCodeKeys.PT2_0002002.equals(op2StitchModify)) {
-						String op2StitchModifyPlace1 = coOptionPants2StandardInfo.getOp2StitchModifyPlace1();
-						String op2StitchModifyPlace2 = coOptionPants2StandardInfo.getOp2StitchModifyPlace2();
-						String op2StitchModifyPlace3 = coOptionPants2StandardInfo.getOp2StitchModifyPlace3();
-						String op2StitchModifyPlace4 = coOptionPants2StandardInfo.getOp2StitchModifyPlace4();
-
-						if (isEmpty(op2StitchModifyPlace1) && isEmpty(op2StitchModifyPlace2) && isEmpty(op2StitchModifyPlace3)
-								&& isEmpty(op2StitchModifyPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ステッチ箇所変更");
-							jacketFlag = true;
-						}
-					}
-					// ダブルステッチ
-					String op2DStitch = coOptionPants2StandardInfo.getOp2DStitch();
-					if (OptionCodeKeys.PT2_0002202.equals(op2DStitch)) {
-						String op2DStitchPlace1 = coOptionPants2StandardInfo.getOp2DStitchPlace1();
-						String op2DStitchPlace2 = coOptionPants2StandardInfo.getOp2DStitchPlace2();
-						String op2DStitchPlace3 = coOptionPants2StandardInfo.getOp2DStitchPlace3();
-						String op2DStitchPlace4 = coOptionPants2StandardInfo.getOp2DStitchPlace4();
-
-						if (isEmpty(op2DStitchPlace1) && isEmpty(op2DStitchPlace2) && isEmpty(op2DStitchPlace3)
-								&& isEmpty(op2DStitchPlace4)) {
-							messages.add("E033", "PANTS（2本目）  ダブルステッチ");
-							jacketFlag = true;
-						}
-					}
-					// AMF色指定
-					String op2AmfColor = coOptionPants2StandardInfo.getOp2AmfColor();
-					if (OptionCodeKeys.PT2_0002402.equals(op2AmfColor)) {
-						String op2AmfColorPlace1 = coOptionPants2StandardInfo.getOp2AmfColorPlace1();
-						String op2AmfColorPlace2 = coOptionPants2StandardInfo.getOp2AmfColorPlace2();
-						String op2AmfColorPlace3 = coOptionPants2StandardInfo.getOp2AmfColorPlace3();
-						String op2AmfColorPlace4 = coOptionPants2StandardInfo.getOp2AmfColorPlace4();
-
-						String op2AmfColor1 = coOptionPants2StandardInfo.getOp2AmfColor1();
-						String op2AmfColor2 = coOptionPants2StandardInfo.getOp2AmfColor2();
-						String op2AmfColor3 = coOptionPants2StandardInfo.getOp2AmfColor3();
-						String op2AmfColor4 = coOptionPants2StandardInfo.getOp2AmfColor4();
-						if (isEmpty(op2AmfColorPlace1) && isEmpty(op2AmfColorPlace2) && isEmpty(op2AmfColorPlace3)
-								&& isEmpty(op2AmfColorPlace4)) {
-							messages.add("E033", "PANTS（2本目） AMF色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(op2AmfColorPlace1)&&isEmpty(op2AmfColor1)||isNotEmpty(op2AmfColorPlace2)&&isEmpty(op2AmfColor2)||
-						   isNotEmpty(op2AmfColorPlace3)&&isEmpty(op2AmfColor3)||isNotEmpty(op2AmfColorPlace4)&&isEmpty(op2AmfColor4)) {
-							messages.add("E033", "PANTS（2本目） AMF色指定");
-							jacketFlag = true;
-						}
-					}
-					//PANTS2  ボタンホール色指定
-					String op2BhColor = coOptionPants2StandardInfo.getOp2BhColor();
-					if (OptionCodeKeys.PT2_0002702.equals(op2BhColor)) {
-						String op2BhColorPlace1 = coOptionPants2StandardInfo.getOp2BhColorPlace1();
-						String op2BhColorPlace2 = coOptionPants2StandardInfo.getOp2BhColorPlace2();
-						String op2BhColorPlace3 = coOptionPants2StandardInfo.getOp2BhColorPlace3();
-						String op2BhColorPlace4 = coOptionPants2StandardInfo.getOp2BhColorPlace4();
-
-						String op2BhColor1 = coOptionPants2StandardInfo.getOp2BhColor1();
-						String op2BhColor2 = coOptionPants2StandardInfo.getOp2BhColor2();
-						String op2BhColor3 = coOptionPants2StandardInfo.getOp2BhColor3();
-						String op2BhColor4 = coOptionPants2StandardInfo.getOp2BhColor4();
-						
-						if (isEmpty(op2BhColorPlace1) && isEmpty(op2BhColorPlace2) && isEmpty(op2BhColorPlace3)
-								&& isEmpty(op2BhColorPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(op2BhColorPlace1)&&isEmpty(op2BhColor1)||isNotEmpty(op2BhColorPlace2)&&isEmpty(op2BhColor2)||
-						   isNotEmpty(op2BhColorPlace3)&&isEmpty(op2BhColor3)||isNotEmpty(op2BhColorPlace4)&&isEmpty(op2BhColor4)) {
-							messages.add("E033", "PANTS（2本目）   ボタンホール色指定");
-							jacketFlag = true;
-						}
-					}
-
-					// ボタン付け糸指定
-					String op2ByColor = coOptionPants2StandardInfo.getOp2ByColor();
-					if (OptionCodeKeys.PT2_0003002.equals(op2ByColor)) {
-						String op2ByColorPlace1 = coOptionPants2StandardInfo.getOp2ByColorPlace1();
-						String op2ByColorPlace2 = coOptionPants2StandardInfo.getOp2ByColorPlace2();
-						String op2ByColorPlace3 = coOptionPants2StandardInfo.getOp2ByColorPlace3();
-						String op2ByColorPlace4 = coOptionPants2StandardInfo.getOp2ByColorPlace4();
-
-						String op2ByColor1 = coOptionPants2StandardInfo.getOp2ByColor1();
-						String op2ByColor2 = coOptionPants2StandardInfo.getOp2ByColor2();
-						String op2ByColor3 = coOptionPants2StandardInfo.getOp2ByColor3();
-						String op2ByColor4 = coOptionPants2StandardInfo.getOp2ByColor4();
-						if (isEmpty(op2ByColorPlace1) && isEmpty(op2ByColorPlace2) && isEmpty(op2ByColorPlace3)
-								&& isEmpty(op2ByColorPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(op2ByColorPlace1)&&isEmpty(op2ByColor1)||isNotEmpty(op2ByColorPlace2)&&isEmpty(op2ByColor2)||
-						   isNotEmpty(op2ByColorPlace3)&&isEmpty(op2ByColor3)||isNotEmpty(op2ByColorPlace4)&&isEmpty(op2ByColor4)) {
-							messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-					//PANTS  タキシードの場合
-				} else if ("9000102".equals(productCategory)) {
-					// PANTS モデル未選択の場合
-					CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
-					String tp2PantsModel = coOptionPants2TuxedoInfo.getTp2PantsModel();
-					if ("".equals(tp2PantsModel) || null == tp2PantsModel) {
-						messages.add("E031", "PANTS（2本目） モデル");
-						jacketFlag = true;
-					}
-					//PANTS  ベルトループ
-					String tp2BeltLoop = coOptionPants2TuxedoInfo.getTp2BeltLoop();
-					if (OptionCodeKeys.PT2_0000701.equals(tp2BeltLoop)) {
-						String tp2BeltLoopPlace1 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace1();
-						String tp2BeltLoopPlace2 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace2();
-						String tp2BeltLoopPlace3 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace3();
-						String tp2BeltLoopPlace4 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace4();
-						String tp2BeltLoopPlace5 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace5();
-						String tp2BeltLoopPlace6 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace6();
-						String tp2BeltLoopPlace7 = coOptionPants2TuxedoInfo.getTp2BeltLoopPlace7();
-
-						if (isEmpty(tp2BeltLoopPlace1) && isEmpty(tp2BeltLoopPlace2) && isEmpty(tp2BeltLoopPlace3)
-								&& isEmpty(tp2BeltLoopPlace4) && isEmpty(tp2BeltLoopPlace5) && isEmpty(tp2BeltLoopPlace6)
-								&& isEmpty(tp2BeltLoopPlace7)) {
-							messages.add("E033", "PANTS（2本目）   ベルトループ");
-							jacketFlag = true;
-						}
-						// ボタンホール色指定
-						String op2BhColor = coOptionPants2TuxedoInfo.getTp2BhColor();
-						if (OptionCodeKeys.PT2_0002702.equals(op2BhColor)) {
-							String tp2BhColorPlace1 = coOptionPants2TuxedoInfo.getTp2BhColorPlace1();
-							String tp2BhColorPlace2 = coOptionPants2TuxedoInfo.getTp2BhColorPlace2();
-							String tp2BhColorPlace3 = coOptionPants2TuxedoInfo.getTp2BhColorPlace3();
-							String tp2BhColorPlace4 = coOptionPants2TuxedoInfo.getTp2BhColorPlace4();
-
-							String tp2BhColor1 = coOptionPants2TuxedoInfo.getTp2BhColor1();
-							String tp2BhColor2 = coOptionPants2TuxedoInfo.getTp2BhColor2();
-							String tp2BhColor3 = coOptionPants2TuxedoInfo.getTp2BhColor3();
-							String tp2BhColor4 = coOptionPants2TuxedoInfo.getTp2BhColor4();
-							
-							if (isEmpty(tp2BhColorPlace1) && isEmpty(tp2BhColorPlace2) && isEmpty(tp2BhColorPlace3)
-									&& isEmpty(tp2BhColorPlace4)) {
-								messages.add("E033", "PANTS（2本目）  ボタンホール色指定");
-								jacketFlag = true;
-							}
-							if(isNotEmpty(tp2BhColorPlace1)&&isEmpty(tp2BhColor1)||isNotEmpty(tp2BhColorPlace2)&&isEmpty(tp2BhColor2)||
-							   isNotEmpty(tp2BhColorPlace3)&&isEmpty(tp2BhColor3)||isNotEmpty(tp2BhColorPlace4)&&isEmpty(tp2BhColor4)) {
-								messages.add("E033", "PANTS（2本目）  ボタンホール色指定");
-								jacketFlag = true;
-							}
-						}
-							// ボタン付け糸指定
-							String tp2ByColor = coOptionPants2TuxedoInfo.getTp2ByColor();
-							if (OptionCodeKeys.PT2_0003002.equals(tp2ByColor)) {
-								String tp2ByColorPlace1 = coOptionPants2TuxedoInfo.getTp2ByColorPlace1();
-								String tp2ByColorPlace2 = coOptionPants2TuxedoInfo.getTp2ByColorPlace2();
-								String tp2ByColorPlace3 = coOptionPants2TuxedoInfo.getTp2ByColorPlace3();
-								String tp2ByColorPlace4 = coOptionPants2TuxedoInfo.getTp2ByColorPlace4();
-
-								String tp2ByColor1 = coOptionPants2TuxedoInfo.getTp2ByColor1();
-								String tp2ByColor2 = coOptionPants2TuxedoInfo.getTp2ByColor2();
-								String tp2ByColor3 = coOptionPants2TuxedoInfo.getTp2ByColor3();
-								String tp2ByColor4 = coOptionPants2TuxedoInfo.getTp2ByColor4();
-								if (isEmpty(tp2ByColorPlace1) && isEmpty(tp2ByColorPlace2) && isEmpty(tp2ByColorPlace3)
-										&& isEmpty(tp2ByColorPlace4)) {
-									messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-									jacketFlag = true;
-								}
-								if(isNotEmpty(tp2ByColorPlace1)&&isEmpty(tp2ByColor1)||isNotEmpty(tp2ByColorPlace2)&&isEmpty(tp2ByColor2)||
-								   isNotEmpty(tp2ByColorPlace3)&&isEmpty(tp2ByColor3)||isNotEmpty(tp2ByColorPlace4)&&isEmpty(tp2ByColor4)) {
-									messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-									jacketFlag = true;
-								}
-							}
-						
-					}
-				} else if ("9000103".equals(productCategory)) {
-					// PANTS モデル未選択の場合
-					CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
-					String wp2PantsModel = coOptionPants2WashableInfo.getWp2PantsModel();
-					if ("".equals(wp2PantsModel) || null == wp2PantsModel) {
-						messages.add("E031", "PANTS（2本目） モデル");
-						jacketFlag = true;
-					}
-					//PANTS2    ステッチ箇所変更
-					String wp2StitchModify = coOptionPants2WashableInfo.getWp2StitchModify();
-					if (OptionCodeKeys.PT2_0002002.equals(wp2StitchModify)) {
-						String wp2StitchModifyPlace1 = coOptionPants2WashableInfo.getWp2StitchModifyPlace1();
-						String wp2StitchModifyPlace2 = coOptionPants2WashableInfo.getWp2StitchModifyPlace2();
-						String wp2StitchModifyPlace3 = coOptionPants2WashableInfo.getWp2StitchModifyPlace3();
-						String wp2StitchModifyPlace4 = coOptionPants2WashableInfo.getWp2StitchModifyPlace4();
-						if (isEmpty(wp2StitchModifyPlace1) && isEmpty(wp2StitchModifyPlace2) && isEmpty(wp2StitchModifyPlace3)
-								&& isEmpty(wp2StitchModifyPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ステッチ箇所変更");
-							jacketFlag = true;
-						}
-					}
-					//PANTS2    ダブルステッチ
-					String wp2DStitch = coOptionPants2WashableInfo.getWp2DStitch();
-					if (OptionCodeKeys.PT2_0002202.equals(wp2DStitch)) {
-						String wp2DStitchPlace1 = coOptionPants2WashableInfo.getWp2DStitchPlace1();
-						String wp2DStitchPlace2 = coOptionPants2WashableInfo.getWp2DStitchPlace2();
-						String wp2DStitchPlace3 = coOptionPants2WashableInfo.getWp2DStitchPlace3();
-						String wp2DStitchPlace4 = coOptionPants2WashableInfo.getWp2DStitchPlace4();
-						if (isEmpty(wp2DStitchPlace1) && isEmpty(wp2DStitchPlace2) && isEmpty(wp2DStitchPlace3)
-								&& isEmpty(wp2DStitchPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ダブルステッチ");
-							jacketFlag = true;
-						}
-					}
-
-					//PANTS2  AMF色指定
-					String wp2amfColor = coOptionPants2WashableInfo.getWp2AmfColor();
-					if (OptionCodeKeys.PT2_0002402.equals(wp2amfColor)) {
-						String wp2amfColorPlace1 = coOptionPants2WashableInfo.getWp2AmfColorPlace1();
-						String wp2amfColorPlace2 = coOptionPants2WashableInfo.getWp2AmfColorPlace2();
-						String wp2amfColorPlace3 = coOptionPants2WashableInfo.getWp2AmfColorPlace3();
-						String wp2amfColorPlace4 = coOptionPants2WashableInfo.getWp2AmfColorPlace4();
-						
-						String wp2amfColor1 = coOptionPants2WashableInfo.getWp2AmfColor1();
-						String wp2amfColor2 = coOptionPants2WashableInfo.getWp2AmfColor2();
-						String wp2amfColor3 = coOptionPants2WashableInfo.getWp2AmfColor3();
-						String wp2amfColor4 = coOptionPants2WashableInfo.getWp2AmfColor4();
-						if (isEmpty(wp2amfColorPlace1) && isEmpty(wp2amfColorPlace2) && isEmpty(wp2amfColorPlace3)
-								&& isEmpty(wp2amfColorPlace4)) {
-							messages.add("E033", "PANTS（2本目）   AMF色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wp2amfColorPlace1)&&isEmpty(wp2amfColor1)||isNotEmpty(wp2amfColorPlace2)&&isEmpty(wp2amfColor2)||
-						   isNotEmpty(wp2amfColorPlace3)&&isEmpty(wp2amfColor3)||isNotEmpty(wp2amfColorPlace4)&&isEmpty(wp2amfColor4)) {
-							messages.add("E033", "PANTS（2本目）   AMF色指定");
-							jacketFlag = true;
-						}
-					}
-
-					// ボタンホール色指定
-					String wp2BhColor = coOptionPants2WashableInfo.getWp2BhColor();
-					if (OptionCodeKeys.PT2_0002702.equals(wp2BhColor)) {
-						String wp2BhColorPlace1 = coOptionPants2WashableInfo.getWp2BhColorPlace1();
-						String wp2BhColorPlace2 = coOptionPants2WashableInfo.getWp2BhColorPlace2();
-						String wp2BhColorPlace3 = coOptionPants2WashableInfo.getWp2BhColorPlace3();
-						String wp2BhColorPlace4 = coOptionPants2WashableInfo.getWp2BhColorPlace4();
-						
-						String wp2BhColor1 = coOptionPants2WashableInfo.getWp2BhColor1();
-						String wp2BhColor2 = coOptionPants2WashableInfo.getWp2BhColor2();
-						String wp2BhColor3 = coOptionPants2WashableInfo.getWp2BhColor3();
-						String wp2BhColor4 = coOptionPants2WashableInfo.getWp2BhColor4();
-
-						if (isEmpty(wp2BhColorPlace1) && isEmpty(wp2BhColorPlace2) && isEmpty(wp2BhColorPlace3)
-								&& isEmpty(wp2BhColorPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wp2BhColorPlace1)&&isEmpty(wp2BhColor1)||isNotEmpty(wp2BhColorPlace2)&&isEmpty(wp2BhColor2)||
-						   isNotEmpty(wp2BhColorPlace3)&&isEmpty(wp2BhColor3)||isNotEmpty(wp2BhColorPlace4)&&isEmpty(wp2BhColor4)) {
-							messages.add("E033", "PANTS（2本目）   ボタンホール色指定");
-							jacketFlag = true;
-						}
-					}
-
-					// ボタン付け糸指定
-					String wp2ByColor = coOptionPants2WashableInfo.getWp2ByColor();
-					if (OptionCodeKeys.PT2_0003002.equals(wp2ByColor)) {
-						String wp2ByColorPlace1 = coOptionPants2WashableInfo.getWp2ByColorPlace1();
-						String wp2ByColorPlace2 = coOptionPants2WashableInfo.getWp2ByColorPlace2();
-						String wp2ByColorPlace3 = coOptionPants2WashableInfo.getWp2ByColorPlace3();
-						String wp2ByColorPlace4 = coOptionPants2WashableInfo.getWp2ByColorPlace4();
-						
-						String wp2ByColor1 = coOptionPants2WashableInfo.getWp2ByColor1();
-						String wp2ByColor2 = coOptionPants2WashableInfo.getWp2ByColor2();
-						String wp2ByColor3 = coOptionPants2WashableInfo.getWp2ByColor3();
-						String wp2ByColor4 = coOptionPants2WashableInfo.getWp2ByColor4();
-						if (isEmpty(wp2ByColorPlace1) && isEmpty(wp2ByColorPlace2) && isEmpty(wp2ByColorPlace3)
-								&& isEmpty(wp2ByColorPlace4)) {
-							messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wp2ByColorPlace1)&&isEmpty(wp2ByColor1)||isNotEmpty(wp2ByColorPlace2)&&isEmpty(wp2ByColor2)||
-						   isNotEmpty(wp2ByColorPlace3)&&isEmpty(wp2ByColor3)||isNotEmpty(wp2ByColorPlace4)&&isEmpty(wp2ByColor4)) {
-							messages.add("E033", "PANTS（2本目）   ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-				}
-
-				// 補正
-				CoAdjustPants2StandardInfo coAdjustPants2StandardInfo = orderCoForm.getCoAdjustPants2StandardInfo();
-				if (coAdjustPantsStandardInfo == null) {
-					messages.add("E031", "PANTS（2本目）サイズ");
-					jacketFlag = true;
-				} else {
-					String sizeFigure = coAdjustPants2StandardInfo.getSizeFigure();
-					if ("".equals(sizeFigure) || null == sizeFigure) {
-						messages.add("E031", "PANTS（2本目）サイズ体型");
-						jacketFlag = true;
-					}
-					String sizeNumber = coAdjustPants2StandardInfo.getSizeNumber();
-					if ("".equals(sizeNumber) || null == sizeNumber) {
-						messages.add("E031", "PANTS（2本目）サイズ号数");
-						jacketFlag = true;
-					}
 	
-				}
-				String orPt2LeftinseamGross = coAdjustPants2StandardInfo.getCorPt2LeftinseamGross();
-				boolean falg=GrossCompareTo(orPt2LeftinseamGross,messages,"PANTS（2本目）左股下");
-				if(falg) {
-					jacketFlag = true;
-				}
-				String corPt2RightinseamGross = coAdjustPants2StandardInfo.getCorPt2RightinseamGross();
-				falg=GrossCompareTo(corPt2RightinseamGross,messages,"PANTS（2本目）右股下");
-				if(falg) {
-					jacketFlag = true;
-				}
-				
+			boolean giletFlag = false;
+			if (OptionCodeKeys.THREE_PIECE.equals(threePiece)) {
+				// GILETチェック
+				giletFlag = coGiletHelper.giletCheckHelper(messages, orderCoForm, productCategory, item, adjustByItem,
+						typeSizeService);
 			}
 			
-			if(OptionCodeKeys.THREE_PIECE.equals(threePiece)) {
-				// 標準の場合
-				if ("9000101".equals(productCategory)) {
-					// GILETモデル未選択の場合
-					CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-					String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
-					if ("".equals(ogGiletModel) || null == ogGiletModel) {
-						messages.add("E031", "GILET モデル");
-						jacketFlag = true;
-					}
-					//ステッチ箇所変更
-					String ogStitchModify = coOptionGiletStandardInfo.getOgStitchModify();
-					if (OptionCodeKeys.GL_0000602.equals(ogStitchModify)) {
-						String ogStitchModifyPlace1 = coOptionGiletStandardInfo.getOgStitchModifyPlace1();
-						String ogStitchModifyPlace2 = coOptionGiletStandardInfo.getOgStitchModifyPlace2();
-						String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgStitchModifyPlace3();
-
-						if (isEmpty(ogStitchModifyPlace1) && isEmpty(ogStitchModifyPlace2) && isEmpty(ogStitchModifyPlace3)) {
-							messages.add("E033", "GILET ステッチ箇所変更");
-							jacketFlag = true;
-						}
-					}
-					// ダブルステッチ
-					String ogDStitchModify = coOptionGiletStandardInfo.getOgDStitchModify();
-					if (OptionCodeKeys.GL_0002602.equals(ogDStitchModify)) {
-						String ogDStitchModifyPlace1 = coOptionGiletStandardInfo.getOgDStitchModifyPlace1();
-						String ogDStitchModifyPlace2 = coOptionGiletStandardInfo.getOgDStitchModifyPlace2();
-						String ogDStitchModifyPlace3 = coOptionGiletStandardInfo.getOgDStitchModifyPlace3();
-
-						if (isEmpty(ogDStitchModifyPlace1) && isEmpty(ogDStitchModifyPlace2) && isEmpty(ogDStitchModifyPlace3)) {
-							messages.add("E033", "GILET ダブルステッチ");
-							jacketFlag = true;
-						}
-					}
-					// AMF色指定
-					String ogAmfColor = coOptionGiletStandardInfo.getOgAmfColor();
-					if (OptionCodeKeys.GL_0000802.equals(ogAmfColor)) {
-						String ogAmfColorPlace1 = coOptionGiletStandardInfo.getOgAmfColorPlace1();
-						String ogAmfColorPlace2 = coOptionGiletStandardInfo.getOgAmfColorPlace2();
-						String ogAmfColorPlace3 = coOptionGiletStandardInfo.getOgAmfColorPlace3();
-
-						String ogAmfColor1 = coOptionGiletStandardInfo.getOgAmfColor1();
-						String ogAmfColor2 = coOptionGiletStandardInfo.getOgAmfColor2();
-						String ogAmfColor3 = coOptionGiletStandardInfo.getOgAmfColor3();
-						if (isEmpty(ogAmfColorPlace1) && isEmpty(ogAmfColorPlace2) && isEmpty(ogAmfColorPlace3)) {
-							messages.add("E033", "GILET AMF色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(ogAmfColorPlace1)&&isEmpty(ogAmfColor1)||isNotEmpty(ogAmfColorPlace2)&&isEmpty(ogAmfColor2)||
-						   isNotEmpty(ogAmfColorPlace3)&&isEmpty(ogAmfColor3)) {
-							messages.add("E033", "GILET AMF色指定");
-							jacketFlag = true;
-						}
-					}
-					//ボタンホール色指定
-					String ogBhColor = coOptionGiletStandardInfo.getOgBhColor();
-					if (OptionCodeKeys.GL_0001102.equals(ogBhColor)) {
-						String ogBhColorPlace1 = coOptionGiletStandardInfo.getOgBhColorPlace1();
-						String ogBhColorPlace2 = coOptionGiletStandardInfo.getOgBhColorPlace2();
-						String ogBhColorPlace3 = coOptionGiletStandardInfo.getOgBhColorPlace3();
-						String ogBhColorPlace4 = coOptionGiletStandardInfo.getOgBhColorPlace4();
-						String ogBhColorPlace5 = coOptionGiletStandardInfo.getOgBhColorPlace5();
-						String ogBhColorPlace6 = coOptionGiletStandardInfo.getOgBhColorPlace6();
-
-						String ogBhColor1 = coOptionGiletStandardInfo.getOgBhColor1();
-						String ogBhColor2 = coOptionGiletStandardInfo.getOgBhColor2();
-						String ogBhColor3 = coOptionGiletStandardInfo.getOgBhColor3();
-						String ogBhColor4 = coOptionGiletStandardInfo.getOgBhColor4();
-						String ogBhColor5 = coOptionGiletStandardInfo.getOgBhColor5();
-						String ogBhColor6 = coOptionGiletStandardInfo.getOgBhColor6();
-						
-						if (isEmpty(ogBhColorPlace1) && isEmpty(ogBhColorPlace2) && isEmpty(ogBhColorPlace3)
-								&& isEmpty(ogBhColorPlace4) && isEmpty(ogBhColorPlace5) && isEmpty(ogBhColorPlace6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(ogBhColorPlace1)&&isEmpty(ogBhColor1)||isNotEmpty(ogBhColorPlace2)&&isEmpty(ogBhColor2)||
-						   isNotEmpty(ogBhColorPlace3)&&isEmpty(ogBhColor3)||isNotEmpty(ogBhColorPlace4)&&isEmpty(ogBhColor4)||
-						   isNotEmpty(ogBhColorPlace5)&&isEmpty(ogBhColor5)||isNotEmpty(ogBhColorPlace6)&&isEmpty(ogBhColor6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-					}
-					// ボタン付け糸指定
-					String ogByColor = coOptionGiletStandardInfo.getOgByColor();
-					if (OptionCodeKeys.GL_0001402.equals(ogByColor)) {
-						String ogByColorPlace1 = coOptionGiletStandardInfo.getOgByColorPlace1();
-						String ogByColorPlace2 = coOptionGiletStandardInfo.getOgByColorPlace2();
-						String ogByColorPlace3 = coOptionGiletStandardInfo.getOgByColorPlace3();
-						String ogByColorPlace4 = coOptionGiletStandardInfo.getOgByColorPlace4();
-						String ogByColorPlace5 = coOptionGiletStandardInfo.getOgByColorPlace5();
-						String ogByColorPlace6 = coOptionGiletStandardInfo.getOgByColorPlace6();
-						String ogByColorPlace7 = coOptionGiletStandardInfo.getOgByColorPlace7();
-						String ogByColorPlace8 = coOptionGiletStandardInfo.getOgByColorPlace8();
-						String ogByColorPlace9 = coOptionGiletStandardInfo.getOgByColorPlace9();
-						String ogByColorPlace10 = coOptionGiletStandardInfo.getOgByColorPlace10();
-
-						String ogByColor1 = coOptionGiletStandardInfo.getOgByColor1();
-						String ogByColor2 = coOptionGiletStandardInfo.getOgByColor2();
-						String ogByColor3 = coOptionGiletStandardInfo.getOgByColor3();
-						String ogByColor4 = coOptionGiletStandardInfo.getOgByColor4();
-						String ogByColor5 = coOptionGiletStandardInfo.getOgByColor5();
-						String ogByColor6 = coOptionGiletStandardInfo.getOgByColor6();
-						String ogByColor7 = coOptionGiletStandardInfo.getOgByColor7();
-						String ogByColor8 = coOptionGiletStandardInfo.getOgByColor8();
-						String ogByColor9 = coOptionGiletStandardInfo.getOgByColor9();
-						String ogByColor10 = coOptionGiletStandardInfo.getOgByColor10();
-						if (isEmpty(ogByColorPlace1) && isEmpty(ogByColorPlace2) && isEmpty(ogByColorPlace3)
-								&& isEmpty(ogByColorPlace4) && isEmpty(ogByColorPlace5) && isEmpty(ogByColorPlace6)
-								&& isEmpty(ogByColorPlace7) && isEmpty(ogByColorPlace8) && isEmpty(ogByColorPlace9)
-								&& isEmpty(ogByColorPlace10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(ogByColorPlace1)&&isEmpty(ogByColor1)||isNotEmpty(ogByColorPlace2)&&isEmpty(ogByColor2)||
-						   isNotEmpty(ogByColorPlace3)&&isEmpty(ogByColor3)||isNotEmpty(ogByColorPlace4)&&isEmpty(ogByColor4)||
-						   isNotEmpty(ogByColorPlace5)&&isEmpty(ogByColor5)||isNotEmpty(ogByColorPlace6)&&isEmpty(ogByColor6)||
-						   isNotEmpty(ogByColorPlace7)&&isEmpty(ogByColor7)||isNotEmpty(ogByColorPlace8)&&isEmpty(ogByColor8)||
-						   isNotEmpty(ogByColorPlace9)&&isEmpty(ogByColor9)||isNotEmpty(ogByColorPlace10)&&isEmpty(ogByColor10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-					//GILET  タキシードの場合
-				} else if ("9000102".equals(productCategory)) {
-					// GILET モデル未選択の場合
-					CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-					String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
-					if ("".equals(tgGiletModel) || null == tgGiletModel) {
-						messages.add("E031", "GILET モデル");
-						jacketFlag = true;
-					}
-					// ボタンホール色指定
-					String tgBhColor = coOptionGiletTuxedoInfo.getTgBhColor();
-					if (OptionCodeKeys.GL_0001102.equals(tgBhColor)) {
-						String tgBhColorPlace1 = coOptionGiletTuxedoInfo.getTgBhColorPlace1();
-						String tgBhColorPlace2 = coOptionGiletTuxedoInfo.getTgBhColorPlace2();
-						String tgBhColorPlace3 = coOptionGiletTuxedoInfo.getTgBhColorPlace3();
-						String tgBhColorPlace4 = coOptionGiletTuxedoInfo.getTgBhColorPlace4();
-						String tgBhColorPlace5 = coOptionGiletTuxedoInfo.getTgBhColorPlace5();
-						String tgBhColorPlace6 = coOptionGiletTuxedoInfo.getTgBhColorPlace6();
-
-						String tgBhColor1 = coOptionGiletTuxedoInfo.getTgBhColor1();
-						String tgBhColor2 = coOptionGiletTuxedoInfo.getTgBhColor2();
-						String tgBhColor3 = coOptionGiletTuxedoInfo.getTgBhColor3();
-						String tgBhColor4 = coOptionGiletTuxedoInfo.getTgBhColor4();
-						String tgBhColor5 = coOptionGiletTuxedoInfo.getTgBhColor5();
-						String tgBhColor6 = coOptionGiletTuxedoInfo.getTgBhColor6();
-						
-						if (isEmpty(tgBhColorPlace1) && isEmpty(tgBhColorPlace2) && isEmpty(tgBhColorPlace3)
-								&& isEmpty(tgBhColorPlace4) && isEmpty(tgBhColorPlace5) && isEmpty(tgBhColorPlace6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(tgBhColorPlace1)&&isEmpty(tgBhColor1)||isNotEmpty(tgBhColorPlace2)&&isEmpty(tgBhColor2)||
-						   isNotEmpty(tgBhColorPlace3)&&isEmpty(tgBhColor3)||isNotEmpty(tgBhColorPlace4)&&isEmpty(tgBhColor4)||
-						   isNotEmpty(tgBhColorPlace5)&&isEmpty(tgBhColor5)||isNotEmpty(tgBhColorPlace6)&&isEmpty(tgBhColor6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-					}
-					// ボタン付け糸指定
-					String tgByColor = coOptionGiletTuxedoInfo.getTgByColor();
-					if (OptionCodeKeys.GL_0001402.equals(tgByColor)) {
-						String tgByColorPlace1 = coOptionGiletTuxedoInfo.getTgByColorPlace1();
-						String tgByColorPlace2 = coOptionGiletTuxedoInfo.getTgByColorPlace2();
-						String tgByColorPlace3 = coOptionGiletTuxedoInfo.getTgByColorPlace3();
-						String tgByColorPlace4 = coOptionGiletTuxedoInfo.getTgByColorPlace4();
-						String tgByColorPlace5 = coOptionGiletTuxedoInfo.getTgByColorPlace5();
-						String tgByColorPlace6 = coOptionGiletTuxedoInfo.getTgByColorPlace6();
-						String tgByColorPlace7 = coOptionGiletTuxedoInfo.getTgByColorPlace7();
-						String tgByColorPlace8 = coOptionGiletTuxedoInfo.getTgByColorPlace8();
-						String tgByColorPlace9 = coOptionGiletTuxedoInfo.getTgByColorPlace9();
-						String tgByColorPlace10 = coOptionGiletTuxedoInfo.getTgByColorPlace10();
-
-						String tgByColor1 = coOptionGiletTuxedoInfo.getTgByColor1();
-						String tgByColor2 = coOptionGiletTuxedoInfo.getTgByColor2();
-						String tgByColor3 = coOptionGiletTuxedoInfo.getTgByColor3();
-						String tgByColor4 = coOptionGiletTuxedoInfo.getTgByColor4();
-						String tgByColor5 = coOptionGiletTuxedoInfo.getTgByColor5();
-						String tgByColor6 = coOptionGiletTuxedoInfo.getTgByColor6();
-						String tgByColor7 = coOptionGiletTuxedoInfo.getTgByColor7();
-						String tgByColor8 = coOptionGiletTuxedoInfo.getTgByColor8();
-						String tgByColor9 = coOptionGiletTuxedoInfo.getTgByColor9();
-						String tgByColor10 = coOptionGiletTuxedoInfo.getTgByColor10();
-						if (isEmpty(tgByColorPlace1) && isEmpty(tgByColorPlace2) && isEmpty(tgByColorPlace3)
-								&& isEmpty(tgByColorPlace4) && isEmpty(tgByColorPlace5) && isEmpty(tgByColorPlace6)
-								&& isEmpty(tgByColorPlace7) && isEmpty(tgByColorPlace8) && isEmpty(tgByColorPlace9)
-								&& isEmpty(tgByColorPlace10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(tgByColorPlace1)&&isEmpty(tgByColor1)||isNotEmpty(tgByColorPlace2)&&isEmpty(tgByColor2)||
-						   isNotEmpty(tgByColorPlace3)&&isEmpty(tgByColor3)||isNotEmpty(tgByColorPlace4)&&isEmpty(tgByColor4)||
-						   isNotEmpty(tgByColorPlace5)&&isEmpty(tgByColor5)||isNotEmpty(tgByColorPlace6)&&isEmpty(tgByColor6)||
-						   isNotEmpty(tgByColorPlace7)&&isEmpty(tgByColor7)||isNotEmpty(tgByColorPlace8)&&isEmpty(tgByColor8)||
-						   isNotEmpty(tgByColorPlace9)&&isEmpty(tgByColor9)||isNotEmpty(tgByColorPlace10)&&isEmpty(tgByColor10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-				} else if ("9000103".equals(productCategory)) {
-					// GILET モデル未選択の場合
-					CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-					String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
-					if ("".equals(wgGiletModel) || null == wgGiletModel) {
-						messages.add("E031", "GILET モデル");
-						jacketFlag = true;
-					}
-					//ステッチ箇所変更
-					String wgStitchModify = coOptionGiletWashableInfo.getWgStitchModify();
-					if (OptionCodeKeys.GL_0000602.equals(wgStitchModify)) {
-						String wgStitchModifyPlace1 = coOptionGiletWashableInfo.getWgStitchModifyPlace1();
-						String wgStitchModifyPlace2 = coOptionGiletWashableInfo.getWgStitchModifyPlace2();
-						String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgStitchModifyPlace3();
-
-						if (isEmpty(wgStitchModifyPlace1) && isEmpty(wgStitchModifyPlace2) && isEmpty(wgStitchModifyPlace3)) {
-							messages.add("E033", "GILET ステッチ箇所変更");
-							jacketFlag = true;
-						}
-					}
-					// ダブルステッチ
-					String wgDStitchModify = coOptionGiletWashableInfo.getWgDStitchModify();
-					if (OptionCodeKeys.GL_0002602.equals(wgDStitchModify)) {
-						String wgDStitchModifyPlace1 = coOptionGiletWashableInfo.getWgDStitchModifyPlace1();
-						String wgDStitchModifyPlace2 = coOptionGiletWashableInfo.getWgDStitchModifyPlace2();
-						String wgDStitchModifyPlace3 = coOptionGiletWashableInfo.getWgDStitchModifyPlace3();
-
-						if (isEmpty(wgDStitchModifyPlace1) && isEmpty(wgDStitchModifyPlace2) && isEmpty(wgDStitchModifyPlace3)) {
-							messages.add("E033", "GILET ダブルステッチ");
-							jacketFlag = true;
-						}
-					}
-					// AMF色指定
-					String wgAmfColor = coOptionGiletWashableInfo.getWgAmfColor();
-					if (OptionCodeKeys.GL_0000802.equals(wgAmfColor)) {
-						String wgAmfColorPlace1 = coOptionGiletWashableInfo.getWgAmfColorPlace1();
-						String wgAmfColorPlace2 = coOptionGiletWashableInfo.getWgAmfColorPlace2();
-						String wgAmfColorPlace3 = coOptionGiletWashableInfo.getWgAmfColorPlace3();
-
-						String wgAmfColor1 = coOptionGiletWashableInfo.getWgAmfColor1();
-						String wgAmfColor2 = coOptionGiletWashableInfo.getWgAmfColor2();
-						String wgAmfColor3 = coOptionGiletWashableInfo.getWgAmfColor3();
-						if (isEmpty(wgAmfColorPlace1) && isEmpty(wgAmfColorPlace2) && isEmpty(wgAmfColorPlace3)) {
-							messages.add("E033", "GILET AMF色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wgAmfColorPlace1)&&isEmpty(wgAmfColor1)||isNotEmpty(wgAmfColorPlace2)&&isEmpty(wgAmfColor2)||
-						   isNotEmpty(wgAmfColorPlace3)&&isEmpty(wgAmfColor3)) {
-							messages.add("E033", "GILET AMF色指定");
-							jacketFlag = true;
-						}
-					}
-					//ボタンホール色指定
-					String wgBhColor = coOptionGiletWashableInfo.getWgBhColor();
-					if (OptionCodeKeys.GL_0001102.equals(wgBhColor)) {
-						String wgBhColorPlace1 = coOptionGiletWashableInfo.getWgBhColorPlace1();
-						String wgBhColorPlace2 = coOptionGiletWashableInfo.getWgBhColorPlace2();
-						String wgBhColorPlace3 = coOptionGiletWashableInfo.getWgBhColorPlace3();
-						String wgBhColorPlace4 = coOptionGiletWashableInfo.getWgBhColorPlace4();
-						String wgBhColorPlace5 = coOptionGiletWashableInfo.getWgBhColorPlace5();
-						String wgBhColorPlace6 = coOptionGiletWashableInfo.getWgBhColorPlace6();
-
-						String wgBhColor1 = coOptionGiletWashableInfo.getWgBhColor1();
-						String wgBhColor2 = coOptionGiletWashableInfo.getWgBhColor2();
-						String wgBhColor3 = coOptionGiletWashableInfo.getWgBhColor3();
-						String wgBhColor4 = coOptionGiletWashableInfo.getWgBhColor4();
-						String wgBhColor5 = coOptionGiletWashableInfo.getWgBhColor5();
-						String wgBhColor6 = coOptionGiletWashableInfo.getWgBhColor6();
-						
-						if (isEmpty(wgBhColorPlace1) && isEmpty(wgBhColorPlace2) && isEmpty(wgBhColorPlace3)
-								&& isEmpty(wgBhColorPlace4) && isEmpty(wgBhColorPlace5) && isEmpty(wgBhColorPlace6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wgBhColorPlace1)&&isEmpty(wgBhColor1)||isNotEmpty(wgBhColorPlace2)&&isEmpty(wgBhColor2)||
-						   isNotEmpty(wgBhColorPlace3)&&isEmpty(wgBhColor3)||isNotEmpty(wgBhColorPlace4)&&isEmpty(wgBhColor4)||
-						   isNotEmpty(wgBhColorPlace5)&&isEmpty(wgBhColor5)||isNotEmpty(wgBhColorPlace6)&&isEmpty(wgBhColor6)) {
-							messages.add("E033", "GILET ボタンホール色指定");
-							jacketFlag = true;
-						}
-					}
-					// ボタン付け糸指定
-					String wgByColor = coOptionGiletWashableInfo.getWgByColor();
-					if (OptionCodeKeys.GL_0001402.equals(wgByColor)) {
-						String wgByColorPlace1 = coOptionGiletWashableInfo.getWgByColorPlace1();
-						String wgByColorPlace2 = coOptionGiletWashableInfo.getWgByColorPlace2();
-						String wgByColorPlace3 = coOptionGiletWashableInfo.getWgByColorPlace3();
-						String wgByColorPlace4 = coOptionGiletWashableInfo.getWgByColorPlace4();
-						String wgByColorPlace5 = coOptionGiletWashableInfo.getWgByColorPlace5();
-						String wgByColorPlace6 = coOptionGiletWashableInfo.getWgByColorPlace6();
-						String wgByColorPlace7 = coOptionGiletWashableInfo.getWgByColorPlace7();
-						String wgByColorPlace8 = coOptionGiletWashableInfo.getWgByColorPlace8();
-						String wgByColorPlace9 = coOptionGiletWashableInfo.getWgByColorPlace9();
-						String wgByColorPlace10 = coOptionGiletWashableInfo.getWgByColorPlace10();
-
-						String wgByColor1 = coOptionGiletWashableInfo.getWgByColor1();
-						String wgByColor2 = coOptionGiletWashableInfo.getWgByColor2();
-						String wgByColor3 = coOptionGiletWashableInfo.getWgByColor3();
-						String wgByColor4 = coOptionGiletWashableInfo.getWgByColor4();
-						String wgByColor5 = coOptionGiletWashableInfo.getWgByColor5();
-						String wgByColor6 = coOptionGiletWashableInfo.getWgByColor6();
-						String wgByColor7 = coOptionGiletWashableInfo.getWgByColor7();
-						String wgByColor8 = coOptionGiletWashableInfo.getWgByColor8();
-						String wgByColor9 = coOptionGiletWashableInfo.getWgByColor9();
-						String wgByColor10 = coOptionGiletWashableInfo.getWgByColor10();
-						if (isEmpty(wgByColorPlace1) && isEmpty(wgByColorPlace2) && isEmpty(wgByColorPlace3)
-								&& isEmpty(wgByColorPlace4) && isEmpty(wgByColorPlace5) && isEmpty(wgByColorPlace6)
-								&& isEmpty(wgByColorPlace7) && isEmpty(wgByColorPlace8) && isEmpty(wgByColorPlace9)
-								&& isEmpty(wgByColorPlace10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						if(isNotEmpty(wgByColorPlace1)&&isEmpty(wgByColor1)||isNotEmpty(wgByColorPlace2)&&isEmpty(wgByColor2)||
-						   isNotEmpty(wgByColorPlace3)&&isEmpty(wgByColor3)||isNotEmpty(wgByColorPlace4)&&isEmpty(wgByColor4)||
-						   isNotEmpty(wgByColorPlace5)&&isEmpty(wgByColor5)||isNotEmpty(wgByColorPlace6)&&isEmpty(wgByColor6)||
-						   isNotEmpty(wgByColorPlace7)&&isEmpty(wgByColor7)||isNotEmpty(wgByColorPlace8)&&isEmpty(wgByColor8)||
-						   isNotEmpty(wgByColorPlace9)&&isEmpty(wgByColor9)||isNotEmpty(wgByColorPlace10)&&isEmpty(wgByColor10)) {
-							messages.add("E033", "GILET ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-				}
-
-				// 補正
-				CoAdjustGiletStandardInfo coAdjustGiletStandardInfo = orderCoForm.getCoAdjustGiletStandardInfo();
-				if (coAdjustPantsStandardInfo == null) {
-					messages.add("E031", "GILET サイズ");
-					jacketFlag = true;
-				} else {
-					String sizeFigure = coAdjustGiletStandardInfo.getSizeFigure();
-					if ("".equals(sizeFigure) || null == sizeFigure) {
-						messages.add("E031", "GILET サイズ体型");
-						jacketFlag = true;
-					}
-					String sizeNumber = coAdjustGiletStandardInfo.getSizeNumber();
-					if ("".equals(sizeNumber) || null == sizeNumber) {
-						messages.add("E031", "GILET サイズ号数");
-						jacketFlag = true;
-					}
-				}
-				
-			}
-			
-			if (jacketFlag) {
-//				if ("0".equals(itemFlag)) {
-//					orderCoHelper.jacketDefaultValue(orderCoForm);
-//				}
-				orderCoForm.setOrderFlag("orderCheck");
-				model.addAttribute("orderCoForm",orderCoForm);
-				model.addAttribute("resultMessages",messages);
-		        return "order/orderCoForm";
-			}
-		}
-		
-		//JACKETチェック
-		if("02".equals(item)) {
-			boolean jacketFlag = false;
-			//String itemFlag = orderCoForm.getJacketItemFlag();
-			ResultMessages messages = ResultMessages.error();
-			//標準の場合
-			if("9000101".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-				String ojJacketModel = coOptionJacketStandardInfo.getOjJacketModel();
-				if("".equals(ojJacketModel)  ||  null == ojJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				//AMF色指定
-				String ojAmfColor = coOptionJacketStandardInfo.getOjAmfColor();
-				if(OptionCodeKeys.JK_0002802.equals(ojAmfColor)) {
-					String ojAmfColorPlace1 = coOptionJacketStandardInfo.getOjAmfColorPlace1();
-					String ojAmfColorPlace2 = coOptionJacketStandardInfo.getOjAmfColorPlace2();
-					String ojAmfColorPlace3 = coOptionJacketStandardInfo.getOjAmfColorPlace3();
-					String ojAmfColorPlace4 = coOptionJacketStandardInfo.getOjAmfColorPlace4();
-					String ojAmfColorPlace5 = coOptionJacketStandardInfo.getOjAmfColorPlace5();
-					String ojAmfColorPlace6 = coOptionJacketStandardInfo.getOjAmfColorPlace6();
-					String ojAmfColorPlace7 = coOptionJacketStandardInfo.getOjAmfColorPlace7();
-					String ojAmfColorPlace8 = coOptionJacketStandardInfo.getOjAmfColorPlace8();
-					String ojAmfColorPlace9 = coOptionJacketStandardInfo.getOjAmfColorPlace9();
-					
-					String ojAmfColor1 = coOptionJacketStandardInfo.getOjAmfColor1();
-					String ojAmfColor2 = coOptionJacketStandardInfo.getOjAmfColor2();
-					String ojAmfColor3 = coOptionJacketStandardInfo.getOjAmfColor3();
-					String ojAmfColor4 = coOptionJacketStandardInfo.getOjAmfColor4();
-					String ojAmfColor5 = coOptionJacketStandardInfo.getOjAmfColor5();
-					String ojAmfColor6 = coOptionJacketStandardInfo.getOjAmfColor6();
-					String ojAmfColor7 = coOptionJacketStandardInfo.getOjAmfColor7();
-					String ojAmfColor8 = coOptionJacketStandardInfo.getOjAmfColor8();
-					String ojAmfColor9 = coOptionJacketStandardInfo.getOjAmfColor9();
-					
-					if(isEmpty(ojAmfColorPlace1)&&isEmpty(ojAmfColorPlace2)&&isEmpty(ojAmfColorPlace3)&&isEmpty(ojAmfColorPlace4)&&
-					   isEmpty(ojAmfColorPlace5)&&isEmpty(ojAmfColorPlace6)&&isEmpty(ojAmfColorPlace7)&&isEmpty(ojAmfColorPlace8)&&isEmpty(ojAmfColorPlace9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojAmfColorPlace1)&&isEmpty(ojAmfColor1)||isNotEmpty(ojAmfColorPlace2)&&isEmpty(ojAmfColor2)||
-					   isNotEmpty(ojAmfColorPlace3)&&isEmpty(ojAmfColor3)||isNotEmpty(ojAmfColorPlace4)&&isEmpty(ojAmfColor4)||
-					   isNotEmpty(ojAmfColorPlace5)&&isEmpty(ojAmfColor5)||isNotEmpty(ojAmfColorPlace6)&&isEmpty(ojAmfColor6)||
-					   isNotEmpty(ojAmfColorPlace7)&&isEmpty(ojAmfColor7)||isNotEmpty(ojAmfColorPlace8)&&isEmpty(ojAmfColor8)||
-					   isNotEmpty(ojAmfColorPlace9)&&isEmpty(ojAmfColor9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					
-				}
-				//ボタンホール色指定
-				String ojBhColor = coOptionJacketStandardInfo.getOjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(ojBhColor)) {
-					String ojBhColorPlace1 = coOptionJacketStandardInfo.getOjBhColorPlace1();
-					String ojBhColorPlace2 = coOptionJacketStandardInfo.getOjBhColorPlace2();
-					String ojBhColorPlace3 = coOptionJacketStandardInfo.getOjBhColorPlace3();
-					String ojBhColorPlace4 = coOptionJacketStandardInfo.getOjBhColorPlace4();
-					String ojBhColorPlace5 = coOptionJacketStandardInfo.getOjBhColorPlace5();
-					String ojBhColorPlace6 = coOptionJacketStandardInfo.getOjBhColorPlace6();
-					String ojBhColorPlace7 = coOptionJacketStandardInfo.getOjBhColorPlace7();
-					String ojBhColorPlace8 = coOptionJacketStandardInfo.getOjBhColorPlace8();
-					String ojBhColorPlace9 = coOptionJacketStandardInfo.getOjBhColorPlace9();
-					String ojBhColorPlace10 = coOptionJacketStandardInfo.getOjBhColorPlace10();
-					String ojBhColorPlace11 = coOptionJacketStandardInfo.getOjBhColorPlace11();
-					String ojBhColorPlace12 = coOptionJacketStandardInfo.getOjBhColorPlace12();
-					String ojBhColorPlace13 = coOptionJacketStandardInfo.getOjBhColorPlace13();
-					String ojBhColorPlace14 = coOptionJacketStandardInfo.getOjBhColorPlace14();
-					String ojBhColorPlace15 = coOptionJacketStandardInfo.getOjBhColorPlace15();
-					String ojBhColorPlace16 = coOptionJacketStandardInfo.getOjBhColorPlace16();
-					String ojBhColorPlace17 = coOptionJacketStandardInfo.getOjBhColorPlace17();
-					
-					String ojBhColor1 = coOptionJacketStandardInfo.getOjBhColor1();
-					String ojBhColor2 = coOptionJacketStandardInfo.getOjBhColor2();
-					String ojBhColor3 = coOptionJacketStandardInfo.getOjBhColor3();
-					String ojBhColor4 = coOptionJacketStandardInfo.getOjBhColor4();
-					String ojBhColor5 = coOptionJacketStandardInfo.getOjBhColor5();
-					String ojBhColor6 = coOptionJacketStandardInfo.getOjBhColor6();
-					String ojBhColor7 = coOptionJacketStandardInfo.getOjBhColor7();
-					String ojBhColor8 = coOptionJacketStandardInfo.getOjBhColor8();
-					String ojBhColor9 = coOptionJacketStandardInfo.getOjBhColor9();
-					String ojBhColor10 = coOptionJacketStandardInfo.getOjBhColor10();
-					String ojBhColor11 = coOptionJacketStandardInfo.getOjBhColor11();
-					String ojBhColor12 = coOptionJacketStandardInfo.getOjBhColor12();
-					String ojBhColor13 = coOptionJacketStandardInfo.getOjBhColor13();
-					String ojBhColor14 = coOptionJacketStandardInfo.getOjBhColor14();
-					String ojBhColor15 = coOptionJacketStandardInfo.getOjBhColor15();
-					String ojBhColor16 = coOptionJacketStandardInfo.getOjBhColor16();
-					String ojBhColor17 = coOptionJacketStandardInfo.getOjBhColor17();
-					
-					if (isEmpty(ojBhColorPlace1) && isEmpty(ojBhColorPlace2) && isEmpty(ojBhColorPlace3)
-							&& isEmpty(ojBhColorPlace4) && isEmpty(ojBhColorPlace5) && isEmpty(ojBhColorPlace6)
-							&& isEmpty(ojBhColorPlace7) && isEmpty(ojBhColorPlace8) && isEmpty(ojBhColorPlace9)
-							&& isEmpty(ojBhColorPlace10)&& isEmpty(ojBhColorPlace11)&& isEmpty(ojBhColorPlace12)
-							&& isEmpty(ojBhColorPlace13)&& isEmpty(ojBhColorPlace14)&& isEmpty(ojBhColorPlace15)
-							&& isEmpty(ojBhColorPlace16)&& isEmpty(ojBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojBhColorPlace1)&&isEmpty(ojBhColor1)||isNotEmpty(ojBhColorPlace2)&&isEmpty(ojBhColor2)||
-					   isNotEmpty(ojBhColorPlace3)&&isEmpty(ojBhColor3)||isNotEmpty(ojBhColorPlace4)&&isEmpty(ojBhColor4)||
-					   isNotEmpty(ojBhColorPlace5)&&isEmpty(ojBhColor5)||isNotEmpty(ojBhColorPlace6)&&isEmpty(ojBhColor6)||
-					   isNotEmpty(ojBhColorPlace7)&&isEmpty(ojBhColor7)||isNotEmpty(ojBhColorPlace8)&&isEmpty(ojBhColor8)||
-					   isNotEmpty(ojBhColorPlace9)&&isEmpty(ojBhColor9)||isNotEmpty(ojBhColorPlace10)&&isEmpty(ojBhColor10)||
-					   isNotEmpty(ojBhColorPlace11)&&isEmpty(ojBhColor11)||isNotEmpty(ojBhColorPlace12)&&isEmpty(ojBhColor12)||
-					   isNotEmpty(ojBhColorPlace13)&&isEmpty(ojBhColor13)||isNotEmpty(ojBhColorPlace14)&&isEmpty(ojBhColor14)||
-					   isNotEmpty(ojBhColorPlace15)&&isEmpty(ojBhColor15)||isNotEmpty(ojBhColorPlace16)&&isEmpty(ojBhColor16)||
-					   isNotEmpty(ojBhColorPlace17)&&isEmpty(ojBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-				}
-				
-				//ボタン付け糸指定
-				String ojByColor = coOptionJacketStandardInfo.getOjByColor();
-				if (OptionCodeKeys.JK_0003402.equals(ojByColor)) {
-					String ojByColorPlace1 = coOptionJacketStandardInfo.getOjByColorPlace1();
-					String ojByColorPlace2 = coOptionJacketStandardInfo.getOjByColorPlace2();
-					String ojByColorPlace3 = coOptionJacketStandardInfo.getOjByColorPlace3();
-					String ojByColorPlace4 = coOptionJacketStandardInfo.getOjByColorPlace4();
-					String ojByColorPlace5 = coOptionJacketStandardInfo.getOjByColorPlace5();
-					String ojByColorPlace6 = coOptionJacketStandardInfo.getOjByColorPlace6();
-					String ojByColorPlace7 = coOptionJacketStandardInfo.getOjByColorPlace7();
-					String ojByColorPlace8 = coOptionJacketStandardInfo.getOjByColorPlace8();
-					String ojByColorPlace9 = coOptionJacketStandardInfo.getOjByColorPlace9();
-					String ojByColorPlace10 = coOptionJacketStandardInfo.getOjByColorPlace10();
-					String ojByColorPlace11 = coOptionJacketStandardInfo.getOjByColorPlace11();
-					String ojByColorPlace12 = coOptionJacketStandardInfo.getOjByColorPlace12();
-					String ojByColorPlace13 = coOptionJacketStandardInfo.getOjByColorPlace13();
-					String ojByColorPlace14 = coOptionJacketStandardInfo.getOjByColorPlace14();
-					String ojByColorPlace15 = coOptionJacketStandardInfo.getOjByColorPlace15();
-					String ojByColorPlace16 = coOptionJacketStandardInfo.getOjByColorPlace16();
-					
-					String ojByColor1 = coOptionJacketStandardInfo.getOjByColor1();
-					String ojByColor2 = coOptionJacketStandardInfo.getOjByColor2();
-					String ojByColor3 = coOptionJacketStandardInfo.getOjByColor3();
-					String ojByColor4 = coOptionJacketStandardInfo.getOjByColor4();
-					String ojByColor5 = coOptionJacketStandardInfo.getOjByColor5();
-					String ojByColor6 = coOptionJacketStandardInfo.getOjByColor6();
-					String ojByColor7 = coOptionJacketStandardInfo.getOjByColor7();
-					String ojByColor8 = coOptionJacketStandardInfo.getOjByColor8();
-					String ojByColor9 = coOptionJacketStandardInfo.getOjByColor9();
-					String ojByColor10 = coOptionJacketStandardInfo.getOjByColor10();
-					String ojByColor11 = coOptionJacketStandardInfo.getOjByColor11();
-					String ojByColor12 = coOptionJacketStandardInfo.getOjByColor12();
-					String ojByColor13 = coOptionJacketStandardInfo.getOjByColor13();
-					String ojByColor14 = coOptionJacketStandardInfo.getOjByColor14();
-					String ojByColor15 = coOptionJacketStandardInfo.getOjByColor15();
-					String ojByColor16 = coOptionJacketStandardInfo.getOjByColor16();
-					
-					if (isEmpty(ojByColorPlace1) && isEmpty(ojByColorPlace2) && isEmpty(ojByColorPlace3)
-							&& isEmpty(ojByColorPlace4) && isEmpty(ojByColorPlace5) && isEmpty(ojByColorPlace6)
-							&& isEmpty(ojByColorPlace7) && isEmpty(ojByColorPlace8) && isEmpty(ojByColorPlace9)
-							&& isEmpty(ojByColorPlace10)&& isEmpty(ojByColorPlace11)&& isEmpty(ojByColorPlace12)
-							&& isEmpty(ojByColorPlace13)&& isEmpty(ojByColorPlace14)&& isEmpty(ojByColorPlace15)
-							&& isEmpty(ojByColorPlace16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(ojByColorPlace1)&&isEmpty(ojByColor1)||isNotEmpty(ojByColorPlace2)&&isEmpty(ojByColor2)||
-					   isNotEmpty(ojByColorPlace3)&&isEmpty(ojByColor3)||isNotEmpty(ojByColorPlace4)&&isEmpty(ojByColor4)||
-					   isNotEmpty(ojByColorPlace5)&&isEmpty(ojByColor5)||isNotEmpty(ojByColorPlace6)&&isEmpty(ojByColor6)||
-					   isNotEmpty(ojByColorPlace7)&&isEmpty(ojByColor7)||isNotEmpty(ojByColorPlace8)&&isEmpty(ojByColor8)||
-					   isNotEmpty(ojByColorPlace9)&&isEmpty(ojByColor9)||isNotEmpty(ojByColorPlace10)&&isEmpty(ojByColor10)||
-					   isNotEmpty(ojByColorPlace11)&&isEmpty(ojByColor11)||isNotEmpty(ojByColorPlace12)&&isEmpty(ojByColor12)||
-					   isNotEmpty(ojByColorPlace13)&&isEmpty(ojByColor13)||isNotEmpty(ojByColorPlace14)&&isEmpty(ojByColor14)||
-					   isNotEmpty(ojByColorPlace15)&&isEmpty(ojByColor15)||isNotEmpty(ojByColorPlace16)&&isEmpty(ojByColor16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-				}
-			//タキシードの場合
-			}else if("9000102".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-				String tjJacketModel = coOptionJacketTuxedoInfo.getTjJacketModel();
-				if("".equals(tjJacketModel)  ||  null == tjJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				
-				// ボタンホール色指定
-				String ojBhColor = coOptionJacketTuxedoInfo.getTjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(ojBhColor)) {
-					String tjBhColorPlace1 = coOptionJacketTuxedoInfo.getTjBhColorPlace1();
-					String tjBhColorPlace2 = coOptionJacketTuxedoInfo.getTjBhColorPlace2();
-					String tjBhColorPlace3 = coOptionJacketTuxedoInfo.getTjBhColorPlace3();
-					String tjBhColorPlace4 = coOptionJacketTuxedoInfo.getTjBhColorPlace4();
-					String tjBhColorPlace5 = coOptionJacketTuxedoInfo.getTjBhColorPlace5();
-					String tjBhColorPlace6 = coOptionJacketTuxedoInfo.getTjBhColorPlace6();
-					String tjBhColorPlace7 = coOptionJacketTuxedoInfo.getTjBhColorPlace7();
-					String tjBhColorPlace8 = coOptionJacketTuxedoInfo.getTjBhColorPlace8();
-					String tjBhColorPlace9 = coOptionJacketTuxedoInfo.getTjBhColorPlace9();
-					String tjBhColorPlace10 = coOptionJacketTuxedoInfo.getTjBhColorPlace10();
-					String tjBhColorPlace11 = coOptionJacketTuxedoInfo.getTjBhColorPlace11();
-					String tjBhColorPlace12 = coOptionJacketTuxedoInfo.getTjBhColorPlace12();
-					String tjBhColorPlace13 = coOptionJacketTuxedoInfo.getTjBhColorPlace13();
-					String tjBhColorPlace14 = coOptionJacketTuxedoInfo.getTjBhColorPlace14();
-					String tjBhColorPlace15 = coOptionJacketTuxedoInfo.getTjBhColorPlace15();
-					String tjBhColorPlace16 = coOptionJacketTuxedoInfo.getTjBhColorPlace16();
-					String tjBhColorPlace17 = coOptionJacketTuxedoInfo.getTjBhColorPlace17();
-					
-					String tjBhColor1 = coOptionJacketTuxedoInfo.getTjBhColor1();
-					String tjBhColor2 = coOptionJacketTuxedoInfo.getTjBhColor2();
-					String tjBhColor3 = coOptionJacketTuxedoInfo.getTjBhColor3();
-					String tjBhColor4 = coOptionJacketTuxedoInfo.getTjBhColor4();
-					String tjBhColor5 = coOptionJacketTuxedoInfo.getTjBhColor5();
-					String tjBhColor6 = coOptionJacketTuxedoInfo.getTjBhColor6();
-					String tjBhColor7 = coOptionJacketTuxedoInfo.getTjBhColor7();
-					String tjBhColor8 = coOptionJacketTuxedoInfo.getTjBhColor8();
-					String tjBhColor9 = coOptionJacketTuxedoInfo.getTjBhColor9();
-					String tjBhColor10 = coOptionJacketTuxedoInfo.getTjBhColor10();
-					String tjBhColor11 = coOptionJacketTuxedoInfo.getTjBhColor11();
-					String tjBhColor12 = coOptionJacketTuxedoInfo.getTjBhColor12();
-					String tjBhColor13 = coOptionJacketTuxedoInfo.getTjBhColor13();
-					String tjBhColor14 = coOptionJacketTuxedoInfo.getTjBhColor14();
-					String tjBhColor15 = coOptionJacketTuxedoInfo.getTjBhColor15();
-					String tjBhColor16 = coOptionJacketTuxedoInfo.getTjBhColor16();
-					String tjBhColor17 = coOptionJacketTuxedoInfo.getTjBhColor17();
-
-					if (isEmpty(tjBhColorPlace1) && isEmpty(tjBhColorPlace2) && isEmpty(tjBhColorPlace3)
-							&& isEmpty(tjBhColorPlace4) && isEmpty(tjBhColorPlace5) && isEmpty(tjBhColorPlace6)
-							&& isEmpty(tjBhColorPlace7) && isEmpty(tjBhColorPlace8) && isEmpty(tjBhColorPlace9)
-							&& isEmpty(tjBhColorPlace10) && isEmpty(tjBhColorPlace11) && isEmpty(tjBhColorPlace12)
-							&& isEmpty(tjBhColorPlace13) && isEmpty(tjBhColorPlace14) && isEmpty(tjBhColorPlace15)
-							&& isEmpty(tjBhColorPlace16) && isEmpty(tjBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-
-					if(isNotEmpty(tjBhColorPlace1)&&isEmpty(tjBhColor1)||isNotEmpty(tjBhColorPlace2)&&isEmpty(tjBhColor2)||
-					   isNotEmpty(tjBhColorPlace3)&&isEmpty(tjBhColor3)||isNotEmpty(tjBhColorPlace4)&&isEmpty(tjBhColor4)||
-					   isNotEmpty(tjBhColorPlace5)&&isEmpty(tjBhColor5)||isNotEmpty(tjBhColorPlace6)&&isEmpty(tjBhColor6)||
-					   isNotEmpty(tjBhColorPlace7)&&isEmpty(tjBhColor7)||isNotEmpty(tjBhColorPlace8)&&isEmpty(tjBhColor8)||
-					   isNotEmpty(tjBhColorPlace9)&&isEmpty(tjBhColor9)||isNotEmpty(tjBhColorPlace10)&&isEmpty(tjBhColor10)||
-					   isNotEmpty(tjBhColorPlace11)&&isEmpty(tjBhColor11)||isNotEmpty(tjBhColorPlace12)&&isEmpty(tjBhColor12)||
-					   isNotEmpty(tjBhColorPlace13)&&isEmpty(tjBhColor13)||isNotEmpty(tjBhColorPlace14)&&isEmpty(tjBhColor14)||
-					   isNotEmpty(tjBhColorPlace15)&&isEmpty(tjBhColor15)||isNotEmpty(tjBhColorPlace16)&&isEmpty(tjBhColor16)||
-					   isNotEmpty(tjBhColorPlace17)&&isEmpty(tjBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					// ボタン付け糸指定
-					String tjByColor = coOptionJacketTuxedoInfo.getTjByColor();
-					if (OptionCodeKeys.JK_0003402.equals(tjByColor)) {
-						String tjByColorPlace1 = coOptionJacketTuxedoInfo.getTjByColorPlace1();
-						String tjByColorPlace2 = coOptionJacketTuxedoInfo.getTjByColorPlace2();
-						String tjByColorPlace3 = coOptionJacketTuxedoInfo.getTjByColorPlace3();
-						String tjByColorPlace4 = coOptionJacketTuxedoInfo.getTjByColorPlace4();
-						String tjByColorPlace5 = coOptionJacketTuxedoInfo.getTjByColorPlace5();
-						String tjByColorPlace6 = coOptionJacketTuxedoInfo.getTjByColorPlace6();
-						String tjByColorPlace7 = coOptionJacketTuxedoInfo.getTjByColorPlace7();
-						String tjByColorPlace8 = coOptionJacketTuxedoInfo.getTjByColorPlace8();
-						String tjByColorPlace9 = coOptionJacketTuxedoInfo.getTjByColorPlace9();
-						String tjByColorPlace10 = coOptionJacketTuxedoInfo.getTjByColorPlace10();
-						String tjByColorPlace11 = coOptionJacketTuxedoInfo.getTjByColorPlace11();
-						String tjByColorPlace12 = coOptionJacketTuxedoInfo.getTjByColorPlace12();
-						String tjByColorPlace13 = coOptionJacketTuxedoInfo.getTjByColorPlace13();
-						String tjByColorPlace14 = coOptionJacketTuxedoInfo.getTjByColorPlace14();
-						String tjByColorPlace15 = coOptionJacketTuxedoInfo.getTjByColorPlace15();
-						String tjByColorPlace16 = coOptionJacketTuxedoInfo.getTjByColorPlace16();
-						
-						String tjByColor1 = coOptionJacketTuxedoInfo.getTjByColor1();
-						String tjByColor2 = coOptionJacketTuxedoInfo.getTjByColor2();
-						String tjByColor3 = coOptionJacketTuxedoInfo.getTjByColor3();
-						String tjByColor4 = coOptionJacketTuxedoInfo.getTjByColor4();
-						String tjByColor5 = coOptionJacketTuxedoInfo.getTjByColor5();
-						String tjByColor6 = coOptionJacketTuxedoInfo.getTjByColor6();
-						String tjByColor7 = coOptionJacketTuxedoInfo.getTjByColor7();
-						String tjByColor8 = coOptionJacketTuxedoInfo.getTjByColor8();
-						String tjByColor9 = coOptionJacketTuxedoInfo.getTjByColor9();
-						String tjByColor10 = coOptionJacketTuxedoInfo.getTjByColor10();
-						String tjByColor11 = coOptionJacketTuxedoInfo.getTjByColor11();
-						String tjByColor12 = coOptionJacketTuxedoInfo.getTjByColor12();
-						String tjByColor13 = coOptionJacketTuxedoInfo.getTjByColor13();
-						String tjByColor14 = coOptionJacketTuxedoInfo.getTjByColor14();
-						String tjByColor15 = coOptionJacketTuxedoInfo.getTjByColor15();
-						String tjByColor16 = coOptionJacketTuxedoInfo.getTjByColor16();
-						
-						if (isEmpty(tjByColorPlace1) && isEmpty(tjByColorPlace2) && isEmpty(tjByColorPlace3)
-								&& isEmpty(tjByColorPlace4) && isEmpty(tjByColorPlace5) && isEmpty(tjByColorPlace6)
-								&& isEmpty(tjByColorPlace7) && isEmpty(tjByColorPlace8) && isEmpty(tjByColorPlace9)
-								&& isEmpty(tjByColorPlace10) && isEmpty(tjByColorPlace11) && isEmpty(tjByColorPlace12)
-								&& isEmpty(tjByColorPlace13) && isEmpty(tjByColorPlace14) && isEmpty(tjByColorPlace15)
-								&& isEmpty(tjByColorPlace16)) {
-							messages.add("E032", "ボタン付け糸指定");
-							jacketFlag = true;
-						}
-						
-						if(isNotEmpty(tjByColorPlace1)&&isEmpty(tjByColor1)||isNotEmpty(tjByColorPlace2)&&isEmpty(tjByColor2)||
-						   isNotEmpty(tjByColorPlace3)&&isEmpty(tjByColor3)||isNotEmpty(tjByColorPlace4)&&isEmpty(tjByColor4)||
-						   isNotEmpty(tjByColorPlace5)&&isEmpty(tjByColor5)||isNotEmpty(tjByColorPlace6)&&isEmpty(tjByColor6)||
-						   isNotEmpty(tjByColorPlace7)&&isEmpty(tjByColor7)||isNotEmpty(tjByColorPlace8)&&isEmpty(tjByColor8)||
-						   isNotEmpty(tjByColorPlace9)&&isEmpty(tjByColor9)||isNotEmpty(tjByColorPlace10)&&isEmpty(tjByColor10)||
-						   isNotEmpty(tjByColorPlace11)&&isEmpty(tjByColor11)||isNotEmpty(tjByColorPlace12)&&isEmpty(tjByColor12)||
-						   isNotEmpty(tjByColorPlace13)&&isEmpty(tjByColor13)||isNotEmpty(tjByColorPlace14)&&isEmpty(tjByColor14)||
-						   isNotEmpty(tjByColorPlace15)&&isEmpty(tjByColor15)||isNotEmpty(tjByColorPlace16)&&isEmpty(tjByColor16)) {
-							messages.add("E032", "ボタン付け糸指定");
-							jacketFlag = true;
-						}
-					}
-				}
-			}else if("9000103".equals(productCategory)) {
-				//JACKET モデル未選択の場合
-				CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-				String wjJacketModel = coOptionJacketWashableInfo.getWjJacketModel();
-				if("".equals(wjJacketModel)  ||  null == wjJacketModel) {
-					 messages.add("E031", "JACKET モデル");
-					 jacketFlag = true;
-				}
-				 
-				//AMF色指定
-				String wjamfColor = coOptionJacketWashableInfo.getWjAmfColor();
-				if(OptionCodeKeys.JK_0002802.equals(wjamfColor)) {
-					String wjAmfColorPlace1 = coOptionJacketWashableInfo.getWjAmfColorPlace1();
-					String wjAmfColorPlace2 = coOptionJacketWashableInfo.getWjAmfColorPlace2();
-					String wjAmfColorPlace3 = coOptionJacketWashableInfo.getWjAmfColorPlace3();
-					String wjAmfColorPlace4 = coOptionJacketWashableInfo.getWjAmfColorPlace4();
-					String wjAmfColorPlace5 = coOptionJacketWashableInfo.getWjAmfColorPlace5();
-					String wjAmfColorPlace6 = coOptionJacketWashableInfo.getWjAmfColorPlace6();
-					String wjAmfColorPlace7 = coOptionJacketWashableInfo.getWjAmfColorPlace7();
-					String wjAmfColorPlace8 = coOptionJacketWashableInfo.getWjAmfColorPlace8();
-					String wjAmfColorPlace9 = coOptionJacketWashableInfo.getWjAmfColorPlace9();
-					
-					String wjAmfColor1 = coOptionJacketWashableInfo.getWjAmfColor1();
-					String wjAmfColor2 = coOptionJacketWashableInfo.getWjAmfColor2();
-					String wjAmfColor3 = coOptionJacketWashableInfo.getWjAmfColor3();
-					String wjAmfColor4 = coOptionJacketWashableInfo.getWjAmfColor4();
-					String wjAmfColor5 = coOptionJacketWashableInfo.getWjAmfColor5();
-					String wjAmfColor6 = coOptionJacketWashableInfo.getWjAmfColor6();
-					String wjAmfColor7 = coOptionJacketWashableInfo.getWjAmfColor7();
-					String wjAmfColor8 = coOptionJacketWashableInfo.getWjAmfColor8();
-					String wjAmfColor9 = coOptionJacketWashableInfo.getWjAmfColor9();
-					
-					if(isEmpty(wjAmfColorPlace1)&&isEmpty(wjAmfColorPlace2)&&isEmpty(wjAmfColorPlace3)&&isEmpty(wjAmfColorPlace4)&&
-					   isEmpty(wjAmfColorPlace5)&&isEmpty(wjAmfColorPlace6)&&isEmpty(wjAmfColorPlace7)&&isEmpty(wjAmfColorPlace8)&&isEmpty(wjAmfColorPlace9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjAmfColorPlace1)&&isEmpty(wjAmfColor1)||isNotEmpty(wjAmfColorPlace2)&&isEmpty(wjAmfColor2)||
-					   isNotEmpty(wjAmfColorPlace3)&&isEmpty(wjAmfColor3)||isNotEmpty(wjAmfColorPlace4)&&isEmpty(wjAmfColor4)||
-					   isNotEmpty(wjAmfColorPlace5)&&isEmpty(wjAmfColor5)||isNotEmpty(wjAmfColorPlace6)&&isEmpty(wjAmfColor6)||
-					   isNotEmpty(wjAmfColorPlace7)&&isEmpty(wjAmfColor7)||isNotEmpty(wjAmfColorPlace8)&&isEmpty(wjAmfColor8)||
-					   isNotEmpty(wjAmfColorPlace9)&&isEmpty(wjAmfColor9)) {
-						messages.add("E032", "AMF色指定");
-						jacketFlag = true;
-					}
-					
-				}
-				
-				//ボタンホール色指定
-				String wjBhColor = coOptionJacketWashableInfo.getWjBhColor();
-				if (OptionCodeKeys.JK_0003102.equals(wjBhColor)) {
-					String wjBhColorPlace1 = coOptionJacketWashableInfo.getWjBhColorPlace1();
-					String wjBhColorPlace2 = coOptionJacketWashableInfo.getWjBhColorPlace2();
-					String wjBhColorPlace3 = coOptionJacketWashableInfo.getWjBhColorPlace3();
-					String wjBhColorPlace4 = coOptionJacketWashableInfo.getWjBhColorPlace4();
-					String wjBhColorPlace5 = coOptionJacketWashableInfo.getWjBhColorPlace5();
-					String wjBhColorPlace6 = coOptionJacketWashableInfo.getWjBhColorPlace6();
-					String wjBhColorPlace7 = coOptionJacketWashableInfo.getWjBhColorPlace7();
-					String wjBhColorPlace8 = coOptionJacketWashableInfo.getWjBhColorPlace8();
-					String wjBhColorPlace9 = coOptionJacketWashableInfo.getWjBhColorPlace9();
-					String wjBhColorPlace10 = coOptionJacketWashableInfo.getWjBhColorPlace10();
-					String wjBhColorPlace11 = coOptionJacketWashableInfo.getWjBhColorPlace11();
-					String wjBhColorPlace12 = coOptionJacketWashableInfo.getWjBhColorPlace12();
-					String wjBhColorPlace13 = coOptionJacketWashableInfo.getWjBhColorPlace13();
-					String wjBhColorPlace14 = coOptionJacketWashableInfo.getWjBhColorPlace14();
-					String wjBhColorPlace15 = coOptionJacketWashableInfo.getWjBhColorPlace15();
-					String wjBhColorPlace16 = coOptionJacketWashableInfo.getWjBhColorPlace16();
-					String wjBhColorPlace17 = coOptionJacketWashableInfo.getWjBhColorPlace17();
-					
-					String wjBhColor1 = coOptionJacketWashableInfo.getWjBhColor1();
-					String wjBhColor2 = coOptionJacketWashableInfo.getWjBhColor2();
-					String wjBhColor3 = coOptionJacketWashableInfo.getWjBhColor3();
-					String wjBhColor4 = coOptionJacketWashableInfo.getWjBhColor4();
-					String wjBhColor5 = coOptionJacketWashableInfo.getWjBhColor5();
-					String wjBhColor6 = coOptionJacketWashableInfo.getWjBhColor6();
-					String wjBhColor7 = coOptionJacketWashableInfo.getWjBhColor7();
-					String wjBhColor8 = coOptionJacketWashableInfo.getWjBhColor8();
-					String wjBhColor9 = coOptionJacketWashableInfo.getWjBhColor9();
-					String wjBhColor10 = coOptionJacketWashableInfo.getWjBhColor10();
-					String wjBhColor11 = coOptionJacketWashableInfo.getWjBhColor11();
-					String wjBhColor12 = coOptionJacketWashableInfo.getWjBhColor12();
-					String wjBhColor13 = coOptionJacketWashableInfo.getWjBhColor13();
-					String wjBhColor14 = coOptionJacketWashableInfo.getWjBhColor14();
-					String wjBhColor15 = coOptionJacketWashableInfo.getWjBhColor15();
-					String wjBhColor16 = coOptionJacketWashableInfo.getWjBhColor16();
-					String wjBhColor17 = coOptionJacketWashableInfo.getWjBhColor17();
-
-					if (isEmpty(wjBhColorPlace1) && isEmpty(wjBhColorPlace2) && isEmpty(wjBhColorPlace3)
-							&& isEmpty(wjBhColorPlace4) && isEmpty(wjBhColorPlace5) && isEmpty(wjBhColorPlace6)
-							&& isEmpty(wjBhColorPlace7) && isEmpty(wjBhColorPlace8) && isEmpty(wjBhColorPlace9)
-							&& isEmpty(wjBhColorPlace10)&& isEmpty(wjBhColorPlace11)&& isEmpty(wjBhColorPlace12)
-							&& isEmpty(wjBhColorPlace13)&& isEmpty(wjBhColorPlace14)&& isEmpty(wjBhColorPlace15)
-							&& isEmpty(wjBhColorPlace16)&& isEmpty(wjBhColorPlace17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjBhColorPlace1)&&isEmpty(wjBhColor1)||isNotEmpty(wjBhColorPlace2)&&isEmpty(wjBhColor2)||
-					   isNotEmpty(wjBhColorPlace3)&&isEmpty(wjBhColor3)||isNotEmpty(wjBhColorPlace4)&&isEmpty(wjBhColor4)||
-					   isNotEmpty(wjBhColorPlace5)&&isEmpty(wjBhColor5)||isNotEmpty(wjBhColorPlace6)&&isEmpty(wjBhColor6)||
-					   isNotEmpty(wjBhColorPlace7)&&isEmpty(wjBhColor7)||isNotEmpty(wjBhColorPlace8)&&isEmpty(wjBhColor8)||
-					   isNotEmpty(wjBhColorPlace9)&&isEmpty(wjBhColor9)||isNotEmpty(wjBhColorPlace10)&&isEmpty(wjBhColor10)||
-					   isNotEmpty(wjBhColorPlace11)&&isEmpty(wjBhColor11)||isNotEmpty(wjBhColorPlace12)&&isEmpty(wjBhColor12)||
-					   isNotEmpty(wjBhColorPlace13)&&isEmpty(wjBhColor13)||isNotEmpty(wjBhColorPlace14)&&isEmpty(wjBhColor14)||
-					   isNotEmpty(wjBhColorPlace15)&&isEmpty(wjBhColor15)||isNotEmpty(wjBhColorPlace16)&&isEmpty(wjBhColor16)||
-					   isNotEmpty(wjBhColorPlace17)&&isEmpty(wjBhColor17)) {
-						messages.add("E032", "ボタンホール色指定");
-						jacketFlag = true;
-					}
-				}
-				
-				//ボタン付け糸指定
-				String wjByColor = coOptionJacketWashableInfo.getWjByColor();
-				if (OptionCodeKeys.JK_0003402.equals(wjByColor)) {
-					String wjByColorPlace1 = coOptionJacketWashableInfo.getWjByColorPlace1();
-					String wjByColorPlace2 = coOptionJacketWashableInfo.getWjByColorPlace2();
-					String wjByColorPlace3 = coOptionJacketWashableInfo.getWjByColorPlace3();
-					String wjByColorPlace4 = coOptionJacketWashableInfo.getWjByColorPlace4();
-					String wjByColorPlace5 = coOptionJacketWashableInfo.getWjByColorPlace5();
-					String wjByColorPlace6 = coOptionJacketWashableInfo.getWjByColorPlace6();
-					String wjByColorPlace7 = coOptionJacketWashableInfo.getWjByColorPlace7();
-					String wjByColorPlace8 = coOptionJacketWashableInfo.getWjByColorPlace8();
-					String wjByColorPlace9 = coOptionJacketWashableInfo.getWjByColorPlace9();
-					String wjByColorPlace10 = coOptionJacketWashableInfo.getWjByColorPlace10();
-					String wjByColorPlace11 = coOptionJacketWashableInfo.getWjByColorPlace11();
-					String wjByColorPlace12 = coOptionJacketWashableInfo.getWjByColorPlace12();
-					String wjByColorPlace13 = coOptionJacketWashableInfo.getWjByColorPlace13();
-					String wjByColorPlace14 = coOptionJacketWashableInfo.getWjByColorPlace14();
-					String wjByColorPlace15 = coOptionJacketWashableInfo.getWjByColorPlace15();
-					String wjByColorPlace16 = coOptionJacketWashableInfo.getWjByColorPlace16();
-					
-					String wjByColor1 = coOptionJacketWashableInfo.getWjByColor1();
-					String wjByColor2 = coOptionJacketWashableInfo.getWjByColor2();
-					String wjByColor3 = coOptionJacketWashableInfo.getWjByColor3();
-					String wjByColor4 = coOptionJacketWashableInfo.getWjByColor4();
-					String wjByColor5 = coOptionJacketWashableInfo.getWjByColor5();
-					String wjByColor6 = coOptionJacketWashableInfo.getWjByColor6();
-					String wjByColor7 = coOptionJacketWashableInfo.getWjByColor7();
-					String wjByColor8 = coOptionJacketWashableInfo.getWjByColor8();
-					String wjByColor9 = coOptionJacketWashableInfo.getWjByColor9();
-					String wjByColor10 = coOptionJacketWashableInfo.getWjByColor10();
-					String wjByColor11 = coOptionJacketWashableInfo.getWjByColor11();
-					String wjByColor12 = coOptionJacketWashableInfo.getWjByColor12();
-					String wjByColor13 = coOptionJacketWashableInfo.getWjByColor13();
-					String wjByColor14 = coOptionJacketWashableInfo.getWjByColor14();
-					String wjByColor15 = coOptionJacketWashableInfo.getWjByColor15();
-					String wjByColor16 = coOptionJacketWashableInfo.getWjByColor16();
-					
-					if (isEmpty(wjByColorPlace1) && isEmpty(wjByColorPlace2) && isEmpty(wjByColorPlace3)
-							&& isEmpty(wjByColorPlace4) && isEmpty(wjByColorPlace5) && isEmpty(wjByColorPlace6)
-							&& isEmpty(wjByColorPlace7) && isEmpty(wjByColorPlace8) && isEmpty(wjByColorPlace9)
-							&& isEmpty(wjByColorPlace10)&& isEmpty(wjByColorPlace11)&& isEmpty(wjByColorPlace12)
-							&& isEmpty(wjByColorPlace13)&& isEmpty(wjByColorPlace14)&& isEmpty(wjByColorPlace15)
-							&& isEmpty(wjByColorPlace16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-					
-					if(isNotEmpty(wjByColorPlace1)&&isEmpty(wjByColor1)||isNotEmpty(wjByColorPlace2)&&isEmpty(wjByColor2)||
-					   isNotEmpty(wjByColorPlace3)&&isEmpty(wjByColor3)||isNotEmpty(wjByColorPlace4)&&isEmpty(wjByColor4)||
-					   isNotEmpty(wjByColorPlace5)&&isEmpty(wjByColor5)||isNotEmpty(wjByColorPlace6)&&isEmpty(wjByColor6)||
-					   isNotEmpty(wjByColorPlace7)&&isEmpty(wjByColor7)||isNotEmpty(wjByColorPlace8)&&isEmpty(wjByColor8)||
-					   isNotEmpty(wjByColorPlace9)&&isEmpty(wjByColor9)||isNotEmpty(wjByColorPlace10)&&isEmpty(wjByColor10)||
-					   isNotEmpty(wjByColorPlace11)&&isEmpty(wjByColor11)||isNotEmpty(wjByColorPlace12)&&isEmpty(wjByColor12)||
-					   isNotEmpty(wjByColorPlace13)&&isEmpty(wjByColor13)||isNotEmpty(wjByColorPlace14)&&isEmpty(wjByColor14)||
-					   isNotEmpty(wjByColorPlace15)&&isEmpty(wjByColor15)||isNotEmpty(wjByColorPlace16)&&isEmpty(wjByColor16)) {
-						messages.add("E032", "ボタン付け糸指定");
-						jacketFlag = true;
-					}
-				}
-			}
-			
-			//補正
-			CoAdjustJacketStandardInfo coAdjustJacketStandardInfo = orderCoForm.getCoAdjustJacketStandardInfo();
-			if(coAdjustJacketStandardInfo == null) {
-				 messages.add("E031", "JACKETサイズ");
-				 jacketFlag = true;
-			}else {
-				String sizeFigure = coAdjustJacketStandardInfo.getSizeFigure();
-				if("".equals(sizeFigure)||null == sizeFigure) {
-					messages.add("E031", "JACKETサイズ体型");
-					jacketFlag = true;
-				}
-				String sizeNumber = coAdjustJacketStandardInfo.getSizeNumber();
-				if("".equals(sizeNumber)||null == sizeNumber) {
-					messages.add("E031", "JACKETサイズ号数");
-					jacketFlag = true;
-				}
-			}
-			
-			if (jacketFlag) {
-//				if ("0".equals(itemFlag)) {
-//					orderCoHelper.jacketDefaultValue(orderCoForm);
-//				}
-				orderCoForm.setOrderFlag("orderCheck");
-				model.addAttribute("orderCoForm",orderCoForm);
-				model.addAttribute("resultMessages",messages);
-		        //return "forward:/orderCo/orderCoBack";
-				return "order/orderCoForm";
-			}
-		}
-		// PANTSチェック
-		if ("03".equals(item)) {
-			boolean pantstFlag = false;
-			String itemFlag = orderCoForm.getPantsItemFlag();
-			ResultMessages messages = ResultMessages.error();
-			// 標準の場合
-			if ("9000101".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsStandardInfo coOptionPantsStandardInfo = orderCoForm.getCoOptionPantsStandardInfo();
-				String opPantsModel = coOptionPantsStandardInfo.getOpPantsModel();
-				if ("".equals(opPantsModel) || null == opPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					pantstFlag = true;
-				}
-				//PANTS ベルトループ
-				String opBeltLoop = coOptionPantsStandardInfo.getOpBeltLoop();
-				if (OptionCodeKeys.PT_0000701.equals(opBeltLoop)) {
-					String opBeltLoopPlace1 = coOptionPantsStandardInfo.getOpBeltLoopPlace1();
-					String opBeltLoopPlace2 = coOptionPantsStandardInfo.getOpBeltLoopPlace2();
-					String opBeltLoopPlace3 = coOptionPantsStandardInfo.getOpBeltLoopPlace3();
-					String opBeltLoopPlace4 = coOptionPantsStandardInfo.getOpBeltLoopPlace4();
-					String opBeltLoopPlace5 = coOptionPantsStandardInfo.getOpBeltLoopPlace5();
-					String opBeltLoopPlace6 = coOptionPantsStandardInfo.getOpBeltLoopPlace6();
-
-					if (isEmpty(opBeltLoopPlace1) && isEmpty(opBeltLoopPlace2) && isEmpty(opBeltLoopPlace3)
-							&& isEmpty(opBeltLoopPlace4) && isEmpty(opBeltLoopPlace5) && isEmpty(opBeltLoopPlace6)) {
-						messages.add("E033", "PANTS ベルトループ");
-						pantstFlag = true;
-					}
-				}
-				//PANTS ステッチ箇所変更
-				String opStitchModify = coOptionPantsStandardInfo.getOpStitchModify();
-				if (OptionCodeKeys.PT_0002002.equals(opStitchModify)) {
-					String opStitchModifyPlace1 = coOptionPantsStandardInfo.getOpStitchModifyPlace1();
-					String opStitchModifyPlace2 = coOptionPantsStandardInfo.getOpStitchModifyPlace2();
-					String opStitchModifyPlace3 = coOptionPantsStandardInfo.getOpStitchModifyPlace3();
-					String opStitchModifyPlace4 = coOptionPantsStandardInfo.getOpStitchModifyPlace4();
-
-					if (isEmpty(opStitchModifyPlace1) && isEmpty(opStitchModifyPlace2) && isEmpty(opStitchModifyPlace3)
-							&& isEmpty(opStitchModifyPlace4)) {
-						messages.add("E033", "PANTS ステッチ箇所変更");
-						pantstFlag = true;
-					}
-				}
-				//PANTS  ダブルステッチ
-				String opDStitch = coOptionPantsStandardInfo.getOpDStitch();
-				if (OptionCodeKeys.PT_0002202.equals(opDStitch)) {
-					String opDStitchPlace1 = coOptionPantsStandardInfo.getOpDStitchPlace1();
-					String opDStitchPlace2 = coOptionPantsStandardInfo.getOpDStitchPlace2();
-					String opDStitchPlace3 = coOptionPantsStandardInfo.getOpDStitchPlace3();
-					String opDStitchPlace4 = coOptionPantsStandardInfo.getOpDStitchPlace4();
-
-					if (isEmpty(opDStitchPlace1) && isEmpty(opDStitchPlace2) && isEmpty(opDStitchPlace3)
-							&& isEmpty(opDStitchPlace4)) {
-						messages.add("E033", "PANTS ダブルステッチ");
-						pantstFlag = true;
-					}
-				}
-				//PANTS AMF色指定
-				String opAmfColor = coOptionPantsStandardInfo.getOpAmfColor();
-				if (OptionCodeKeys.PT_0002402.equals(opAmfColor)) {
-					String opAmfColorPlace1 = coOptionPantsStandardInfo.getOpAmfColorPlace1();
-					String opAmfColorPlace2 = coOptionPantsStandardInfo.getOpAmfColorPlace2();
-					String opAmfColorPlace3 = coOptionPantsStandardInfo.getOpAmfColorPlace3();
-					String opAmfColorPlace4 = coOptionPantsStandardInfo.getOpAmfColorPlace4();
-
-					String opAmfColor1 = coOptionPantsStandardInfo.getOpAmfColor1();
-					String opAmfColor2 = coOptionPantsStandardInfo.getOpAmfColor2();
-					String opAmfColor3 = coOptionPantsStandardInfo.getOpAmfColor3();
-					String opAmfColor4 = coOptionPantsStandardInfo.getOpAmfColor4();
-					if (isEmpty(opAmfColorPlace1) && isEmpty(opAmfColorPlace2) && isEmpty(opAmfColorPlace3)
-							&& isEmpty(opAmfColorPlace4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						pantstFlag = true;
-					}
-					if(isNotEmpty(opAmfColorPlace1)&&isEmpty(opAmfColor1)||isNotEmpty(opAmfColorPlace2)&&isEmpty(opAmfColor2)||
-					   isNotEmpty(opAmfColorPlace3)&&isEmpty(opAmfColor3)||isNotEmpty(opAmfColorPlace4)&&isEmpty(opAmfColor4)) {
-						 messages.add("E033", "PANTS AMF色指定");
-						 pantstFlag = true;
-					}
-				}
-				// ボタンホール色指定
-				String opBhColor = coOptionPantsStandardInfo.getOpBhColor();
-				if (OptionCodeKeys.PT_0002702.equals(opBhColor)) {
-					String opBhColorPlace1 = coOptionPantsStandardInfo.getOpBhColorPlace1();
-					String opBhColorPlace2 = coOptionPantsStandardInfo.getOpBhColorPlace2();
-					String opBhColorPlace3 = coOptionPantsStandardInfo.getOpBhColorPlace3();
-					String opBhColorPlace4 = coOptionPantsStandardInfo.getOpBhColorPlace4();
-
-					String opBhColor1 = coOptionPantsStandardInfo.getOpBhColor1();
-					String opBhColor2 = coOptionPantsStandardInfo.getOpBhColor2();
-					String opBhColor3 = coOptionPantsStandardInfo.getOpBhColor3();
-					String opBhColor4 = coOptionPantsStandardInfo.getOpBhColor4();
-					
-					if (isEmpty(opBhColorPlace1) && isEmpty(opBhColorPlace2) && isEmpty(opBhColorPlace3)
-							&& isEmpty(opBhColorPlace4)) {
-						messages.add("E033", "ボタンホール色指定");
-						pantstFlag = true;
-					}
-					
-					if(isNotEmpty(opBhColorPlace1)&&isEmpty(opBhColor1)||isNotEmpty(opBhColorPlace2)&&isEmpty(opBhColor2)||
-					isNotEmpty(opBhColorPlace3)&&isEmpty(opBhColor3)||isNotEmpty(opBhColorPlace4)&&isEmpty(opBhColor4)) {
-						messages.add("E033", "PANTS ボタンホール色指定");
-						pantstFlag = true;
-					}
-				}
-
-				// ボタン付け糸指定
-				String opByColor = coOptionPantsStandardInfo.getOpByColor();
-				if (OptionCodeKeys.PT_0003002.equals(opByColor)) {
-					String opByColorPlace1 = coOptionPantsStandardInfo.getOpByColorPlace1();
-					String opByColorPlace2 = coOptionPantsStandardInfo.getOpByColorPlace2();
-					String opByColorPlace3 = coOptionPantsStandardInfo.getOpByColorPlace3();
-					String opByColorPlace4 = coOptionPantsStandardInfo.getOpByColorPlace4();
-
-					String opByColor1 = coOptionPantsStandardInfo.getOpByColor1();
-					String opByColor2 = coOptionPantsStandardInfo.getOpByColor2();
-					String opByColor3 = coOptionPantsStandardInfo.getOpByColor3();
-					String opByColor4 = coOptionPantsStandardInfo.getOpByColor4();
-					if (isEmpty(opByColorPlace1) && isEmpty(opByColorPlace2) && isEmpty(opByColorPlace3)
-							&& isEmpty(opByColorPlace4)) {
-						messages.add("E033", "ボタン付け糸指定");
-						pantstFlag = true;
-					}
-					if(isNotEmpty(opByColorPlace1)&&isEmpty(opByColor1)||isNotEmpty(opByColorPlace2)&&isEmpty(opByColor2)||
-					   isNotEmpty(opByColorPlace3)&&isEmpty(opByColor3)||isNotEmpty(opByColorPlace4)&&isEmpty(opByColor4)) {
-						messages.add("E033", "PANTS ボタン付け糸指定");
-						pantstFlag = true;
-					}
-				}
-				//PANTS  タキシードの場合
-			} else if ("9000102".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo = orderCoForm.getCoOptionPantsTuxedoInfo();
-				String tpPantsModel = coOptionPantsTuxedoInfo.getTpPantsModel();
-				if ("".equals(tpPantsModel) || null == tpPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					pantstFlag = true;
-				}
-				//PANTS  ベルトループ
-				String tpBeltLoop = coOptionPantsTuxedoInfo.getTpBeltLoop();
-				if (OptionCodeKeys.PT_0000701.equals(tpBeltLoop)) {
-					String tpBeltLoopPlace1 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace1();
-					String tpBeltLoopPlace2 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace2();
-					String tpBeltLoopPlace3 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace3();
-					String tpBeltLoopPlace4 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace4();
-					String tpBeltLoopPlace5 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace5();
-					String tpBeltLoopPlace6 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace6();
-					String tpBeltLoopPlace7 = coOptionPantsTuxedoInfo.getTpBeltLoopPlace7();
-
-					if (isEmpty(tpBeltLoopPlace1) && isEmpty(tpBeltLoopPlace2) && isEmpty(tpBeltLoopPlace3)
-							&& isEmpty(tpBeltLoopPlace4) && isEmpty(tpBeltLoopPlace5) && isEmpty(tpBeltLoopPlace6)
-							&& isEmpty(tpBeltLoopPlace7)) {
-						messages.add("E033", "PANTS ベルトループ");
-						pantstFlag = true;
-					}
-					//PANTS  ボタンホール色指定
-					String opBhColor = coOptionPantsTuxedoInfo.getTpBhColor();
-					if (OptionCodeKeys.PT_0002702.equals(opBhColor)) {
-						String tpBhColorPlace1 = coOptionPantsTuxedoInfo.getTpBhColorPlace1();
-						String tpBhColorPlace2 = coOptionPantsTuxedoInfo.getTpBhColorPlace2();
-						String tpBhColorPlace3 = coOptionPantsTuxedoInfo.getTpBhColorPlace3();
-						String tpBhColorPlace4 = coOptionPantsTuxedoInfo.getTpBhColorPlace4();
-
-						String tpBhColor1 = coOptionPantsTuxedoInfo.getTpBhColor1();
-						String tpBhColor2 = coOptionPantsTuxedoInfo.getTpBhColor2();
-						String tpBhColor3 = coOptionPantsTuxedoInfo.getTpBhColor3();
-						String tpBhColor4 = coOptionPantsTuxedoInfo.getTpBhColor4();
-						
-						if (isEmpty(tpBhColorPlace1) && isEmpty(tpBhColorPlace2) && isEmpty(tpBhColorPlace3)
-								&& isEmpty(tpBhColorPlace4)) {
-							messages.add("E033", "PANTS ボタンホール色指定");
-							pantstFlag = true;
-						}
-						if(isNotEmpty(tpBhColorPlace1)&&isEmpty(tpBhColor1)||isNotEmpty(tpBhColorPlace2)&&isEmpty(tpBhColor2)||
-						   isNotEmpty(tpBhColorPlace3)&&isEmpty(tpBhColor3)||isNotEmpty(tpBhColorPlace4)&&isEmpty(tpBhColor4)) {
-							 messages.add("E033", "PANTS ボタンホール色指定");
-							 pantstFlag = true;
-						}
-					}
-						// ボタン付け糸指定
-						String tpByColor = coOptionPantsTuxedoInfo.getTpByColor();
-						if (OptionCodeKeys.PT_0003002.equals(tpByColor)) {
-							String tpByColorPlace1 = coOptionPantsTuxedoInfo.getTpByColorPlace1();
-							String tpByColorPlace2 = coOptionPantsTuxedoInfo.getTpByColorPlace2();
-							String tpByColorPlace3 = coOptionPantsTuxedoInfo.getTpByColorPlace3();
-							String tpByColorPlace4 = coOptionPantsTuxedoInfo.getTpByColorPlace4();
-							
-							String tpByColor1 = coOptionPantsTuxedoInfo.getTpByColor1();
-							String tpByColor2 = coOptionPantsTuxedoInfo.getTpByColor2();
-							String tpByColor3 = coOptionPantsTuxedoInfo.getTpByColor3();
-							String tpByColor4 = coOptionPantsTuxedoInfo.getTpByColor4();
-
-							if (isEmpty(tpByColorPlace1) && isEmpty(tpByColorPlace2) && isEmpty(tpByColorPlace3)
-									&& isEmpty(tpByColorPlace4)) {
-								messages.add("E033", "ボタン付け糸指定");
-								pantstFlag = true;
-							}
-							if(isNotEmpty(tpByColorPlace1)&&isEmpty(tpByColor1)||isNotEmpty(tpByColorPlace2)&&isEmpty(tpByColor2)||
-							   isNotEmpty(tpByColorPlace3)&&isEmpty(tpByColor3)||isNotEmpty(tpByColorPlace4)&&isEmpty(tpByColor4)) {
-								messages.add("E033", "PANTS ボタン付け糸指定");
-								pantstFlag = true;
-							}
-						}
-					
-				}
-			} else if ("9000103".equals(productCategory)) {
-				// PANTS モデル未選択の場合
-				CoOptionPantsWashableInfo coOptionPantsWashableInfo = orderCoForm.getCoOptionPantsWashableInfo();
-				String wpPantsModel = coOptionPantsWashableInfo.getWpPantsModel();
-				if ("".equals(wpPantsModel) || null == wpPantsModel) {
-					messages.add("E031", "PANTS モデル");
-					pantstFlag = true;
-				}
-				//PANTS ステッチ箇所変更
-				String wpStitchModify = coOptionPantsWashableInfo.getWpStitchModify();
-				if (OptionCodeKeys.PT_0002002.equals(wpStitchModify)) {
-					String wpStitchModifyPlace1 = coOptionPantsWashableInfo.getWpStitchModifyPlace1();
-					String wpStitchModifyPlace2 = coOptionPantsWashableInfo.getWpStitchModifyPlace2();
-					String wpStitchModifyPlace3 = coOptionPantsWashableInfo.getWpStitchModifyPlace3();
-					String wpStitchModifyPlace4 = coOptionPantsWashableInfo.getWpStitchModifyPlace4();
-					if (isEmpty(wpStitchModifyPlace1) && isEmpty(wpStitchModifyPlace2) && isEmpty(wpStitchModifyPlace3)
-							&& isEmpty(wpStitchModifyPlace4)) {
-						messages.add("E033", "PANTS ステッチ箇所変更");
-						pantstFlag = true;
-					}
-				}
-				//PANTS ダブルステッチ
-				String wpDStitch = coOptionPantsWashableInfo.getWpDStitch();
-				if (OptionCodeKeys.PT_0002202.equals(wpDStitch)) {
-					String wpDStitchPlace1 = coOptionPantsWashableInfo.getWpDStitchPlace1();
-					String wpDStitchPlace2 = coOptionPantsWashableInfo.getWpDStitchPlace2();
-					String wpDStitchPlace3 = coOptionPantsWashableInfo.getWpDStitchPlace3();
-					String wpDStitchPlace4 = coOptionPantsWashableInfo.getWpDStitchPlace4();
-					if (isEmpty(wpDStitchPlace1) && isEmpty(wpDStitchPlace2) && isEmpty(wpDStitchPlace3)
-							&& isEmpty(wpDStitchPlace4)) {
-						messages.add("E033", "PANTS ダブルステッチ");
-						pantstFlag = true;
-					}
-				}
-
-				//PANTS AMF色指定
-				String wpamfColor = coOptionPantsWashableInfo.getWpAmfColor();
-				if (OptionCodeKeys.PT_0002402.equals(wpamfColor)) {
-					String wpamfColorPlace1 = coOptionPantsWashableInfo.getWpAmfColorPlace1();
-					String wpamfColorPlace2 = coOptionPantsWashableInfo.getWpAmfColorPlace2();
-					String wpamfColorPlace3 = coOptionPantsWashableInfo.getWpAmfColorPlace3();
-					String wpamfColorPlace4 = coOptionPantsWashableInfo.getWpAmfColorPlace4();
-					
-					String wpamfColor1 = coOptionPantsWashableInfo.getWpAmfColor1();
-					String wpamfColor2 = coOptionPantsWashableInfo.getWpAmfColor2();
-					String wpamfColor3 = coOptionPantsWashableInfo.getWpAmfColor3();
-					String wpamfColor4 = coOptionPantsWashableInfo.getWpAmfColor4();
-					
-					if (isEmpty(wpamfColorPlace1) && isEmpty(wpamfColorPlace2) && isEmpty(wpamfColorPlace3)
-							&& isEmpty(wpamfColorPlace4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						pantstFlag = true;
-					}
-					if(isNotEmpty(wpamfColorPlace1)&&isEmpty(wpamfColor1)||isNotEmpty(wpamfColorPlace2)&&isEmpty(wpamfColor2)||
-					  isNotEmpty(wpamfColorPlace3)&&isEmpty(wpamfColor3)||isNotEmpty(wpamfColorPlace4)&&isEmpty(wpamfColor4)) {
-						messages.add("E033", "PANTS AMF色指定");
-						pantstFlag = true;
-					}
-				}
-
-				//PANTS  ボタンホール色指定
-				String wpBhColor = coOptionPantsWashableInfo.getWpBhColor();
-				if (OptionCodeKeys.PT_0002702.equals(wpBhColor)) {
-					String wpBhColorPlace1 = coOptionPantsWashableInfo.getWpBhColorPlace1();
-					String wpBhColorPlace2 = coOptionPantsWashableInfo.getWpBhColorPlace2();
-					String wpBhColorPlace3 = coOptionPantsWashableInfo.getWpBhColorPlace3();
-					String wpBhColorPlace4 = coOptionPantsWashableInfo.getWpBhColorPlace4();
-
-					String wpBhColor1 = coOptionPantsWashableInfo.getWpBhColor1();
-					String wpBhColor2 = coOptionPantsWashableInfo.getWpBhColor2();
-					String wpBhColor3 = coOptionPantsWashableInfo.getWpBhColor3();
-					String wpBhColor4 = coOptionPantsWashableInfo.getWpBhColor4();
-					
-					if (isEmpty(wpBhColorPlace1) && isEmpty(wpBhColorPlace2) && isEmpty(wpBhColorPlace3)
-							&& isEmpty(wpBhColorPlace4)) {
-						messages.add("E033", "ボタンホール色指定");
-						pantstFlag = true;
-					}
-					if(isNotEmpty(wpBhColorPlace1)&&isEmpty(wpBhColor1)||isNotEmpty(wpBhColorPlace2)&&isEmpty(wpBhColor2)||
-					   isNotEmpty(wpBhColorPlace3)&&isEmpty(wpBhColor3)||isNotEmpty(wpBhColorPlace4)&&isEmpty(wpBhColor4)) {
-						messages.add("E033", "PANTS ボタンホール色指定");
-						pantstFlag = true;
-							}
-				}
-
-				// ボタン付け糸指定
-				String wpByColor = coOptionPantsWashableInfo.getWpByColor();
-				if (OptionCodeKeys.PT_0003002.equals(wpByColor)) {
-					String wpByColorPlace1 = coOptionPantsWashableInfo.getWpByColorPlace1();
-					String wpByColorPlace2 = coOptionPantsWashableInfo.getWpByColorPlace2();
-					String wpByColorPlace3 = coOptionPantsWashableInfo.getWpByColorPlace3();
-					String wpByColorPlace4 = coOptionPantsWashableInfo.getWpByColorPlace4();
-					
-					String wpByColor1 = coOptionPantsWashableInfo.getWpByColor1();
-					String wpByColor2 = coOptionPantsWashableInfo.getWpByColor2();
-					String wpByColor3 = coOptionPantsWashableInfo.getWpByColor3();
-					String wpByColor4 = coOptionPantsWashableInfo.getWpByColor4();
-					
-					if (isEmpty(wpByColorPlace1) && isEmpty(wpByColorPlace2) && isEmpty(wpByColorPlace3)
-							&& isEmpty(wpByColorPlace4)) {
-						messages.add("E033", "ボタン付け糸指定");
-						pantstFlag = true;
-					}
-					if(isNotEmpty(wpByColorPlace1)&&isEmpty(wpByColor1)||isNotEmpty(wpByColorPlace2)&&isEmpty(wpByColor2)||
-					   isNotEmpty(wpByColorPlace3)&&isEmpty(wpByColor3)||isNotEmpty(wpByColorPlace4)&&isEmpty(wpByColor4)) {
-						 messages.add("E033", "PANTS  ボタン付け糸指定");
-						 pantstFlag = true;
-					}
-				}
-			}
-
-			// 補正
-			CoAdjustPantsStandardInfo coAdjustPantsStandardInfo = orderCoForm.getCoAdjustPantsStandardInfo();
-			if (coAdjustPantsStandardInfo == null) {
-				messages.add("E031", "PANTSサイズ");
-				pantstFlag = true;
+			if (!jacketFlag && !pantsFlag && !giletFlag && !pants2Flag) {
 			} else {
-				String sizeFigure = coAdjustPantsStandardInfo.getSizeFigure();
-				if ("".equals(sizeFigure) || null == sizeFigure) {
-					messages.add("E031", "PANTSサイズ体型");
-					pantstFlag = true;
-				}
-				String sizeNumber = coAdjustPantsStandardInfo.getSizeNumber();
-				if ("".equals(sizeNumber) || null == sizeNumber) {
-					messages.add("E031", "PANTSサイズ号数");
-					pantstFlag = true;
-				}
-			}
-			String corPtLeftinseamGross = coAdjustPantsStandardInfo.getCorPtLeftinseamGross();
-			
-			boolean falg=GrossCompareTo(corPtLeftinseamGross,messages,"PANTS（1本目）左股下");
-			if(falg) {
-				pantstFlag = true;
-			}
-			String corPtRightinseamGross = coAdjustPantsStandardInfo.getCorPtRightinseamGross();
-			falg=GrossCompareTo(corPtRightinseamGross,messages,"PANTS（1本目）右股下");
-			if(falg) {
-				pantstFlag = true;
-			}
-
-			if (pantstFlag) {
 				orderCoForm.setOrderFlag("orderCheck");
 				model.addAttribute("orderCoForm", orderCoForm);
 				model.addAttribute("resultMessages", messages);
-				return "forward:/orderCo/orderCoBack";
+				return "order/orderCoForm";
 			}
 		}
-		
-		
+		//JACKETチェック
+		if("02".equals(item)) {
+			ResultMessages messages = ResultMessages.error();
+			boolean jacketFlag = coJakcetHelper.jacketCheck(messages,orderCoForm,productCategory,item,adjustByItem,typeSizeService);
+			if (jacketFlag) {
+				orderCoForm.setOrderFlag("orderCheck");
+				model.addAttribute("orderCoForm",orderCoForm);
+				model.addAttribute("resultMessages",messages);
+				return "order/orderCoForm";
+			}
+		}
+		//PANTSチェック
+		if("03".equals(item)) {
+		  ResultMessages messages = ResultMessages.error();
+		  boolean pantsFlag = coPants1Helper.pantsCheck(messages,orderCoForm,productCategory,item,adjustByItem,typeSizeService);
+		  if (pantsFlag) {
+			 orderCoForm.setOrderFlag("orderCheck");
+			 model.addAttribute("orderCoForm",orderCoForm);
+			 model.addAttribute("resultMessages",messages);
+			 return "order/orderCoForm";
+			}
+		}
 		// GILETチェック
 		if ("04".equals(item)) {
-			boolean giletFlag = false;
-//			String itemFlag = orderCoForm.getGiletItemFlag();
 			ResultMessages messages = ResultMessages.error();
-			
-			if ("9000101".equals(productCategory)) {
-				// GILETモデル未選択の場合
-				CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-				String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
-				if ("".equals(ogGiletModel) || null == ogGiletModel) {
-					messages.add("E031", "GILET モデル");
-					giletFlag = true;
-				}
-				//ステッチ箇所変更
-				String ogStitchModify = coOptionGiletStandardInfo.getOgStitchModify();
-				if (OptionCodeKeys.GL_0000602.equals(ogStitchModify)) {
-					String ogStitchModifyPlace1 = coOptionGiletStandardInfo.getOgStitchModifyPlace1();
-					String ogStitchModifyPlace2 = coOptionGiletStandardInfo.getOgStitchModifyPlace2();
-					String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgStitchModifyPlace3();
-
-					if (isEmpty(ogStitchModifyPlace1) && isEmpty(ogStitchModifyPlace2) && isEmpty(ogStitchModifyPlace3)) {
-						messages.add("E033", "GILET ステッチ箇所変更");
-						giletFlag = true;
-					}
-				}
-				// ダブルステッチ
-				String ogDStitchModify = coOptionGiletStandardInfo.getOgDStitchModify();
-				if (OptionCodeKeys.GL_0002602.equals(ogDStitchModify)) {
-					String ogDStitchModifyPlace1 = coOptionGiletStandardInfo.getOgDStitchModifyPlace1();
-					String ogDStitchModifyPlace2 = coOptionGiletStandardInfo.getOgDStitchModifyPlace2();
-					String ogDStitchModifyPlace3 = coOptionGiletStandardInfo.getOgDStitchModifyPlace3();
-
-					if (isEmpty(ogDStitchModifyPlace1) && isEmpty(ogDStitchModifyPlace2) && isEmpty(ogDStitchModifyPlace3)) {
-						messages.add("E033", "GILET ダブルステッチ");
-						giletFlag = true;
-					}
-				}
-				// AMF色指定
-				String ogAmfColor = coOptionGiletStandardInfo.getOgAmfColor();
-				if (OptionCodeKeys.GL_0000802.equals(ogAmfColor)) {
-					String ogAmfColorPlace1 = coOptionGiletStandardInfo.getOgAmfColorPlace1();
-					String ogAmfColorPlace2 = coOptionGiletStandardInfo.getOgAmfColorPlace2();
-					String ogAmfColorPlace3 = coOptionGiletStandardInfo.getOgAmfColorPlace3();
-
-					String ogAmfColor1 = coOptionGiletStandardInfo.getOgAmfColor1();
-					String ogAmfColor2 = coOptionGiletStandardInfo.getOgAmfColor2();
-					String ogAmfColor3 = coOptionGiletStandardInfo.getOgAmfColor3();
-					if (isEmpty(ogAmfColorPlace1) && isEmpty(ogAmfColorPlace2) && isEmpty(ogAmfColorPlace3)) {
-						messages.add("E033", "GILET AMF色指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(ogAmfColorPlace1)&&isEmpty(ogAmfColor1)||isNotEmpty(ogAmfColorPlace2)&&isEmpty(ogAmfColor2)||
-					   isNotEmpty(ogAmfColorPlace3)&&isEmpty(ogAmfColor3)) {
-						messages.add("E033", "GILET AMF色指定");
-						giletFlag = true;
-					}
-				}
-				//ボタンホール色指定
-				String ogBhColor = coOptionGiletStandardInfo.getOgBhColor();
-				if (OptionCodeKeys.GL_0001102.equals(ogBhColor)) {
-					String ogBhColorPlace1 = coOptionGiletStandardInfo.getOgBhColorPlace1();
-					String ogBhColorPlace2 = coOptionGiletStandardInfo.getOgBhColorPlace2();
-					String ogBhColorPlace3 = coOptionGiletStandardInfo.getOgBhColorPlace3();
-					String ogBhColorPlace4 = coOptionGiletStandardInfo.getOgBhColorPlace4();
-					String ogBhColorPlace5 = coOptionGiletStandardInfo.getOgBhColorPlace5();
-					String ogBhColorPlace6 = coOptionGiletStandardInfo.getOgBhColorPlace6();
-
-					String ogBhColor1 = coOptionGiletStandardInfo.getOgBhColor1();
-					String ogBhColor2 = coOptionGiletStandardInfo.getOgBhColor2();
-					String ogBhColor3 = coOptionGiletStandardInfo.getOgBhColor3();
-					String ogBhColor4 = coOptionGiletStandardInfo.getOgBhColor4();
-					String ogBhColor5 = coOptionGiletStandardInfo.getOgBhColor5();
-					String ogBhColor6 = coOptionGiletStandardInfo.getOgBhColor6();
-					
-					if (isEmpty(ogBhColorPlace1) && isEmpty(ogBhColorPlace2) && isEmpty(ogBhColorPlace3)
-							&& isEmpty(ogBhColorPlace4) && isEmpty(ogBhColorPlace5) && isEmpty(ogBhColorPlace6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(ogBhColorPlace1)&&isEmpty(ogBhColor1)||isNotEmpty(ogBhColorPlace2)&&isEmpty(ogBhColor2)||
-					   isNotEmpty(ogBhColorPlace3)&&isEmpty(ogBhColor3)||isNotEmpty(ogBhColorPlace4)&&isEmpty(ogBhColor4)||
-					   isNotEmpty(ogBhColorPlace5)&&isEmpty(ogBhColor5)||isNotEmpty(ogBhColorPlace6)&&isEmpty(ogBhColor6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-				}
-				// ボタン付け糸指定
-				String ogByColor = coOptionGiletStandardInfo.getOgByColor();
-				if (OptionCodeKeys.GL_0001402.equals(ogByColor)) {
-					String ogByColorPlace1 = coOptionGiletStandardInfo.getOgByColorPlace1();
-					String ogByColorPlace2 = coOptionGiletStandardInfo.getOgByColorPlace2();
-					String ogByColorPlace3 = coOptionGiletStandardInfo.getOgByColorPlace3();
-					String ogByColorPlace4 = coOptionGiletStandardInfo.getOgByColorPlace4();
-					String ogByColorPlace5 = coOptionGiletStandardInfo.getOgByColorPlace5();
-					String ogByColorPlace6 = coOptionGiletStandardInfo.getOgByColorPlace6();
-					String ogByColorPlace7 = coOptionGiletStandardInfo.getOgByColorPlace7();
-					String ogByColorPlace8 = coOptionGiletStandardInfo.getOgByColorPlace8();
-					String ogByColorPlace9 = coOptionGiletStandardInfo.getOgByColorPlace9();
-					String ogByColorPlace10 = coOptionGiletStandardInfo.getOgByColorPlace10();
-
-					String ogByColor1 = coOptionGiletStandardInfo.getOgByColor1();
-					String ogByColor2 = coOptionGiletStandardInfo.getOgByColor2();
-					String ogByColor3 = coOptionGiletStandardInfo.getOgByColor3();
-					String ogByColor4 = coOptionGiletStandardInfo.getOgByColor4();
-					String ogByColor5 = coOptionGiletStandardInfo.getOgByColor5();
-					String ogByColor6 = coOptionGiletStandardInfo.getOgByColor6();
-					String ogByColor7 = coOptionGiletStandardInfo.getOgByColor7();
-					String ogByColor8 = coOptionGiletStandardInfo.getOgByColor8();
-					String ogByColor9 = coOptionGiletStandardInfo.getOgByColor9();
-					String ogByColor10 = coOptionGiletStandardInfo.getOgByColor10();
-					if (isEmpty(ogByColorPlace1) && isEmpty(ogByColorPlace2) && isEmpty(ogByColorPlace3)
-							&& isEmpty(ogByColorPlace4) && isEmpty(ogByColorPlace5) && isEmpty(ogByColorPlace6)
-							&& isEmpty(ogByColorPlace7) && isEmpty(ogByColorPlace8) && isEmpty(ogByColorPlace9)
-							&& isEmpty(ogByColorPlace10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(ogByColorPlace1)&&isEmpty(ogByColor1)||isNotEmpty(ogByColorPlace2)&&isEmpty(ogByColor2)||
-					   isNotEmpty(ogByColorPlace3)&&isEmpty(ogByColor3)||isNotEmpty(ogByColorPlace4)&&isEmpty(ogByColor4)||
-					   isNotEmpty(ogByColorPlace5)&&isEmpty(ogByColor5)||isNotEmpty(ogByColorPlace6)&&isEmpty(ogByColor6)||
-					   isNotEmpty(ogByColorPlace7)&&isEmpty(ogByColor7)||isNotEmpty(ogByColorPlace8)&&isEmpty(ogByColor8)||
-					   isNotEmpty(ogByColorPlace9)&&isEmpty(ogByColor9)||isNotEmpty(ogByColorPlace10)&&isEmpty(ogByColor10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-				}
-				
-			}else if ("9000102".equals(productCategory)) {
-				// GILET モデル未選択の場合
-				CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-				String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
-				if ("".equals(tgGiletModel) || null == tgGiletModel) {
-					messages.add("E031", "GILET モデル");
-					giletFlag = true;
-				}
-				// ボタンホール色指定
-				String tgBhColor = coOptionGiletTuxedoInfo.getTgBhColor();
-				if (OptionCodeKeys.GL_0001102.equals(tgBhColor)) {
-					String tgBhColorPlace1 = coOptionGiletTuxedoInfo.getTgBhColorPlace1();
-					String tgBhColorPlace2 = coOptionGiletTuxedoInfo.getTgBhColorPlace2();
-					String tgBhColorPlace3 = coOptionGiletTuxedoInfo.getTgBhColorPlace3();
-					String tgBhColorPlace4 = coOptionGiletTuxedoInfo.getTgBhColorPlace4();
-					String tgBhColorPlace5 = coOptionGiletTuxedoInfo.getTgBhColorPlace5();
-					String tgBhColorPlace6 = coOptionGiletTuxedoInfo.getTgBhColorPlace6();
-
-					String tgBhColor1 = coOptionGiletTuxedoInfo.getTgBhColor1();
-					String tgBhColor2 = coOptionGiletTuxedoInfo.getTgBhColor2();
-					String tgBhColor3 = coOptionGiletTuxedoInfo.getTgBhColor3();
-					String tgBhColor4 = coOptionGiletTuxedoInfo.getTgBhColor4();
-					String tgBhColor5 = coOptionGiletTuxedoInfo.getTgBhColor5();
-					String tgBhColor6 = coOptionGiletTuxedoInfo.getTgBhColor6();
-					
-					if (isEmpty(tgBhColorPlace1) && isEmpty(tgBhColorPlace2) && isEmpty(tgBhColorPlace3)
-							&& isEmpty(tgBhColorPlace4) && isEmpty(tgBhColorPlace5) && isEmpty(tgBhColorPlace6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(tgBhColorPlace1)&&isEmpty(tgBhColor1)||isNotEmpty(tgBhColorPlace2)&&isEmpty(tgBhColor2)||
-					   isNotEmpty(tgBhColorPlace3)&&isEmpty(tgBhColor3)||isNotEmpty(tgBhColorPlace4)&&isEmpty(tgBhColor4)||
-					   isNotEmpty(tgBhColorPlace5)&&isEmpty(tgBhColor5)||isNotEmpty(tgBhColorPlace6)&&isEmpty(tgBhColor6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-				}
-				// ボタン付け糸指定
-				String tgByColor = coOptionGiletTuxedoInfo.getTgByColor();
-				if (OptionCodeKeys.GL_0001402.equals(tgByColor)) {
-					String tgByColorPlace1 = coOptionGiletTuxedoInfo.getTgByColorPlace1();
-					String tgByColorPlace2 = coOptionGiletTuxedoInfo.getTgByColorPlace2();
-					String tgByColorPlace3 = coOptionGiletTuxedoInfo.getTgByColorPlace3();
-					String tgByColorPlace4 = coOptionGiletTuxedoInfo.getTgByColorPlace4();
-					String tgByColorPlace5 = coOptionGiletTuxedoInfo.getTgByColorPlace5();
-					String tgByColorPlace6 = coOptionGiletTuxedoInfo.getTgByColorPlace6();
-					String tgByColorPlace7 = coOptionGiletTuxedoInfo.getTgByColorPlace7();
-					String tgByColorPlace8 = coOptionGiletTuxedoInfo.getTgByColorPlace8();
-					String tgByColorPlace9 = coOptionGiletTuxedoInfo.getTgByColorPlace9();
-					String tgByColorPlace10 = coOptionGiletTuxedoInfo.getTgByColorPlace10();
-
-					String tgByColor1 = coOptionGiletTuxedoInfo.getTgByColor1();
-					String tgByColor2 = coOptionGiletTuxedoInfo.getTgByColor2();
-					String tgByColor3 = coOptionGiletTuxedoInfo.getTgByColor3();
-					String tgByColor4 = coOptionGiletTuxedoInfo.getTgByColor4();
-					String tgByColor5 = coOptionGiletTuxedoInfo.getTgByColor5();
-					String tgByColor6 = coOptionGiletTuxedoInfo.getTgByColor6();
-					String tgByColor7 = coOptionGiletTuxedoInfo.getTgByColor7();
-					String tgByColor8 = coOptionGiletTuxedoInfo.getTgByColor8();
-					String tgByColor9 = coOptionGiletTuxedoInfo.getTgByColor9();
-					String tgByColor10 = coOptionGiletTuxedoInfo.getTgByColor10();
-					if (isEmpty(tgByColorPlace1) && isEmpty(tgByColorPlace2) && isEmpty(tgByColorPlace3)
-							&& isEmpty(tgByColorPlace4) && isEmpty(tgByColorPlace5) && isEmpty(tgByColorPlace6)
-							&& isEmpty(tgByColorPlace7) && isEmpty(tgByColorPlace8) && isEmpty(tgByColorPlace9)
-							&& isEmpty(tgByColorPlace10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(tgByColorPlace1)&&isEmpty(tgByColor1)||isNotEmpty(tgByColorPlace2)&&isEmpty(tgByColor2)||
-					   isNotEmpty(tgByColorPlace3)&&isEmpty(tgByColor3)||isNotEmpty(tgByColorPlace4)&&isEmpty(tgByColor4)||
-					   isNotEmpty(tgByColorPlace5)&&isEmpty(tgByColor5)||isNotEmpty(tgByColorPlace6)&&isEmpty(tgByColor6)||
-					   isNotEmpty(tgByColorPlace7)&&isEmpty(tgByColor7)||isNotEmpty(tgByColorPlace8)&&isEmpty(tgByColor8)||
-					   isNotEmpty(tgByColorPlace9)&&isEmpty(tgByColor9)||isNotEmpty(tgByColorPlace10)&&isEmpty(tgByColor10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-				}
-			} else if ("9000103".equals(productCategory)) {
-				// GILET モデル未選択の場合
-				CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-				String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
-				if ("".equals(wgGiletModel) || null == wgGiletModel) {
-					messages.add("E031", "GILET モデル");
-					giletFlag = true;
-				}
-				
-				//ステッチ箇所変更
-				String wgStitchModify = coOptionGiletWashableInfo.getWgStitchModify();
-				if (OptionCodeKeys.GL_0000602.equals(wgStitchModify)) {
-					String wgStitchModifyPlace1 = coOptionGiletWashableInfo.getWgStitchModifyPlace1();
-					String wgStitchModifyPlace2 = coOptionGiletWashableInfo.getWgStitchModifyPlace2();
-					String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgStitchModifyPlace3();
-
-					if (isEmpty(wgStitchModifyPlace1) && isEmpty(wgStitchModifyPlace2) && isEmpty(wgStitchModifyPlace3)) {
-						messages.add("E033", "GILET ステッチ箇所変更");
-						giletFlag = true;
-					}
-				}
-				// ダブルステッチ
-				String wgDStitchModify = coOptionGiletWashableInfo.getWgDStitchModify();
-				if (OptionCodeKeys.GL_0002602.equals(wgDStitchModify)) {
-					String wgDStitchModifyPlace1 = coOptionGiletWashableInfo.getWgDStitchModifyPlace1();
-					String wgDStitchModifyPlace2 = coOptionGiletWashableInfo.getWgDStitchModifyPlace2();
-					String wgDStitchModifyPlace3 = coOptionGiletWashableInfo.getWgDStitchModifyPlace3();
-
-					if (isEmpty(wgDStitchModifyPlace1) && isEmpty(wgDStitchModifyPlace2) && isEmpty(wgDStitchModifyPlace3)) {
-						messages.add("E033", "GILET ダブルステッチ");
-						giletFlag = true;
-					}
-				}
-				// AMF色指定
-				String wgAmfColor = coOptionGiletWashableInfo.getWgAmfColor();
-				if (OptionCodeKeys.GL_0000802.equals(wgAmfColor)) {
-					String wgAmfColorPlace1 = coOptionGiletWashableInfo.getWgAmfColorPlace1();
-					String wgAmfColorPlace2 = coOptionGiletWashableInfo.getWgAmfColorPlace2();
-					String wgAmfColorPlace3 = coOptionGiletWashableInfo.getWgAmfColorPlace3();
-
-					String wgAmfColor1 = coOptionGiletWashableInfo.getWgAmfColor1();
-					String wgAmfColor2 = coOptionGiletWashableInfo.getWgAmfColor2();
-					String wgAmfColor3 = coOptionGiletWashableInfo.getWgAmfColor3();
-					if (isEmpty(wgAmfColorPlace1) && isEmpty(wgAmfColorPlace2) && isEmpty(wgAmfColorPlace3)) {
-						messages.add("E033", "GILET AMF色指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(wgAmfColorPlace1)&&isEmpty(wgAmfColor1)||isNotEmpty(wgAmfColorPlace2)&&isEmpty(wgAmfColor2)||
-					   isNotEmpty(wgAmfColorPlace3)&&isEmpty(wgAmfColor3)) {
-						messages.add("E033", "GILET AMF色指定");
-						giletFlag = true;
-					}
-				}
-				//ボタンホール色指定
-				String wgBhColor = coOptionGiletWashableInfo.getWgBhColor();
-				if (OptionCodeKeys.GL_0001102.equals(wgBhColor)) {
-					String wgBhColorPlace1 = coOptionGiletWashableInfo.getWgBhColorPlace1();
-					String wgBhColorPlace2 = coOptionGiletWashableInfo.getWgBhColorPlace2();
-					String wgBhColorPlace3 = coOptionGiletWashableInfo.getWgBhColorPlace3();
-					String wgBhColorPlace4 = coOptionGiletWashableInfo.getWgBhColorPlace4();
-					String wgBhColorPlace5 = coOptionGiletWashableInfo.getWgBhColorPlace5();
-					String wgBhColorPlace6 = coOptionGiletWashableInfo.getWgBhColorPlace6();
-
-					String wgBhColor1 = coOptionGiletWashableInfo.getWgBhColor1();
-					String wgBhColor2 = coOptionGiletWashableInfo.getWgBhColor2();
-					String wgBhColor3 = coOptionGiletWashableInfo.getWgBhColor3();
-					String wgBhColor4 = coOptionGiletWashableInfo.getWgBhColor4();
-					String wgBhColor5 = coOptionGiletWashableInfo.getWgBhColor5();
-					String wgBhColor6 = coOptionGiletWashableInfo.getWgBhColor6();
-					
-					if (isEmpty(wgBhColorPlace1) && isEmpty(wgBhColorPlace2) && isEmpty(wgBhColorPlace3)
-							&& isEmpty(wgBhColorPlace4) && isEmpty(wgBhColorPlace5) && isEmpty(wgBhColorPlace6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(wgBhColorPlace1)&&isEmpty(wgBhColor1)||isNotEmpty(wgBhColorPlace2)&&isEmpty(wgBhColor2)||
-					   isNotEmpty(wgBhColorPlace3)&&isEmpty(wgBhColor3)||isNotEmpty(wgBhColorPlace4)&&isEmpty(wgBhColor4)||
-					   isNotEmpty(wgBhColorPlace5)&&isEmpty(wgBhColor5)||isNotEmpty(wgBhColorPlace6)&&isEmpty(wgBhColor6)) {
-						messages.add("E033", "GILET ボタンホール色指定");
-						giletFlag = true;
-					}
-				}
-				// ボタン付け糸指定
-				String wgByColor = coOptionGiletWashableInfo.getWgByColor();
-				if (OptionCodeKeys.GL_0001402.equals(wgByColor)) {
-					String wgByColorPlace1 = coOptionGiletWashableInfo.getWgByColorPlace1();
-					String wgByColorPlace2 = coOptionGiletWashableInfo.getWgByColorPlace2();
-					String wgByColorPlace3 = coOptionGiletWashableInfo.getWgByColorPlace3();
-					String wgByColorPlace4 = coOptionGiletWashableInfo.getWgByColorPlace4();
-					String wgByColorPlace5 = coOptionGiletWashableInfo.getWgByColorPlace5();
-					String wgByColorPlace6 = coOptionGiletWashableInfo.getWgByColorPlace6();
-					String wgByColorPlace7 = coOptionGiletWashableInfo.getWgByColorPlace7();
-					String wgByColorPlace8 = coOptionGiletWashableInfo.getWgByColorPlace8();
-					String wgByColorPlace9 = coOptionGiletWashableInfo.getWgByColorPlace9();
-					String wgByColorPlace10 = coOptionGiletWashableInfo.getWgByColorPlace10();
-
-					String wgByColor1 = coOptionGiletWashableInfo.getWgByColor1();
-					String wgByColor2 = coOptionGiletWashableInfo.getWgByColor2();
-					String wgByColor3 = coOptionGiletWashableInfo.getWgByColor3();
-					String wgByColor4 = coOptionGiletWashableInfo.getWgByColor4();
-					String wgByColor5 = coOptionGiletWashableInfo.getWgByColor5();
-					String wgByColor6 = coOptionGiletWashableInfo.getWgByColor6();
-					String wgByColor7 = coOptionGiletWashableInfo.getWgByColor7();
-					String wgByColor8 = coOptionGiletWashableInfo.getWgByColor8();
-					String wgByColor9 = coOptionGiletWashableInfo.getWgByColor9();
-					String wgByColor10 = coOptionGiletWashableInfo.getWgByColor10();
-					if (isEmpty(wgByColorPlace1) && isEmpty(wgByColorPlace2) && isEmpty(wgByColorPlace3)
-							&& isEmpty(wgByColorPlace4) && isEmpty(wgByColorPlace5) && isEmpty(wgByColorPlace6)
-							&& isEmpty(wgByColorPlace7) && isEmpty(wgByColorPlace8) && isEmpty(wgByColorPlace9)
-							&& isEmpty(wgByColorPlace10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-					if(isNotEmpty(wgByColorPlace1)&&isEmpty(wgByColor1)||isNotEmpty(wgByColorPlace2)&&isEmpty(wgByColor2)||
-					   isNotEmpty(wgByColorPlace3)&&isEmpty(wgByColor3)||isNotEmpty(wgByColorPlace4)&&isEmpty(wgByColor4)||
-					   isNotEmpty(wgByColorPlace5)&&isEmpty(wgByColor5)||isNotEmpty(wgByColorPlace6)&&isEmpty(wgByColor6)||
-					   isNotEmpty(wgByColorPlace7)&&isEmpty(wgByColor7)||isNotEmpty(wgByColorPlace8)&&isEmpty(wgByColor8)||
-					   isNotEmpty(wgByColorPlace9)&&isEmpty(wgByColor9)||isNotEmpty(wgByColorPlace10)&&isEmpty(wgByColor10)) {
-						messages.add("E033", "GILET ボタン付け糸指定");
-						giletFlag = true;
-					}
-				}
-			}
-
-			// 補正
-			CoAdjustGiletStandardInfo coAdjustGiletStandardInfo = orderCoForm.getCoAdjustGiletStandardInfo();
-			if (coAdjustGiletStandardInfo == null) {
-				messages.add("E031", "GILET サイズ");
-				giletFlag = true;
-			} else {
-				String sizeFigure = coAdjustGiletStandardInfo.getSizeFigure();
-				if ("".equals(sizeFigure) || null == sizeFigure) {
-					messages.add("E031", "GILET サイズ体型");
-					giletFlag = true;
-				}
-				String sizeNumber = coAdjustGiletStandardInfo.getSizeNumber();
-				if ("".equals(sizeNumber) || null == sizeNumber) {
-					messages.add("E031", "GILET サイズ号数");
-					giletFlag = true;
-				}
-			}
+			boolean giletFlag = coGiletHelper.giletCheckHelper(messages,orderCoForm,productCategory,item,adjustByItem,typeSizeService);
 		
 			if (giletFlag) {
 				orderCoForm.setOrderFlag("orderCheck");
 				model.addAttribute("orderCoForm", orderCoForm);
 				model.addAttribute("resultMessages", messages);
-				return "forward:/orderCo/orderCoBack";
+				return "order/orderCoForm";
 			}
 		}
-		
-		
-		
 		//SHIRTチェック
 		if ("05".equals(orderCoForm.getProductItem())) {
 
 			ResultMessages messages = ResultMessages.error();
 			boolean shirtFlag = false;
+			List<Adjust> stAdjustList = adjustByItem.get("05");
+			List<TypeSizeOptimization> coStTypeSizeOptimization = orderCoHelper.getCoStTypeSizeOptimization(orderCoForm,typeSizeService);
 			
 			String orderFlag = orderCoForm.getOrderFlag();
 			String osClericSpec = "";
@@ -3112,72 +412,40 @@ public class OrderCoController {
 			
 			if ("orderLink".equals(orderFlag)) {
 				Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				//受注テーブルにレコードがある、レコード値を設定する
-//				if (!(null == orderST || "".equals(orderST))) {
-////					orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
-////					osClericSpec = orderCoForm.getCoOptionShirtStandardInfo().getOsClericSpec();
-////					osDblCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsDblCuff();
-////					osAddCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsAddCuff();
-//					
-//					//SHIRTチェック
-//					shirtFlag = shirtCheck(orderCoForm, messages);
-//					
-//					// 受注テーブルにレコードがなし、初期値を設定
-//				} else if (null == orderST || "".equals(orderST)) {
-//					
-//					//SHIRTチェック
-//					shirtFlag = shirtCheck(orderCoForm, messages);
-//					
-//					orderCoHelper.shirtDefaultValue(orderCoForm);
-//				}
-				
 				//SHIRTチェック
-				shirtFlag = shirtCheck(orderCoForm, messages);
+				shirtFlag = orderCoHelper.shirtCheck(orderCoForm, messages,stAdjustList,coStTypeSizeOptimization);
 				
-				if (null == orderST || "".equals(orderST)) {
+				// 受注テーブルにレコードがなし、初期値を設定
+				if (null == orderST) {
 					orderCoHelper.shirtDefaultValue(orderCoForm);
 				}
 			} else {
 				//SHIRTチェック
-				shirtFlag = shirtCheck(orderCoForm, messages);
+				shirtFlag = orderCoHelper.shirtCheck(orderCoForm, messages,stAdjustList,coStTypeSizeOptimization);
 				
 				osClericSpec = orderCoForm.getCoOptionShirtStandardInfo().getOsClericSpec();
 				osDblCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsDblCuff();
 				osAddCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsAddCuff();
 				
-				if ("".equals(osClericSpec) || "".equals(osDblCuff) || "".equals(osAddCuff) || null == osClericSpec
-						|| null == osDblCuff || null == osAddCuff) {
+				//オプションデータがなし、初期値を設定
+				if ("".equals(osClericSpec) || "".equals(osDblCuff) || "".equals(osAddCuff) 
+						|| null == osClericSpec || null == osDblCuff || null == osAddCuff) {
 					orderCoHelper.shirtDefaultValue(orderCoForm);
 				}
 			}
-				
+
+			// エラーがある場合、注文画面へ遷移
 			if (shirtFlag) {
-			orderCoForm.setOrderFlag("orderCheck");
-			model.addAttribute("orderCoForm",orderCoForm);
-			model.addAttribute("resultMessages",messages);
-	        return "order/orderCoForm";
-		}
+				orderCoForm.setOrderFlag("orderCheck");
+				model.addAttribute("orderCoForm", orderCoForm);
+				model.addAttribute("resultMessages", messages);
+				return "order/orderCoForm";
+			}
 		}
 		//COATチェック
 		if("06".equals(item)) {
-			boolean coatFlag = false;
 			ResultMessages messages = ResultMessages.error();
-			String coatModel = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();
-			if("".equals(coatModel) || coatModel == null) {
-	            messages.add("E031", "COAT モデル");
-	            coatFlag = true;
-			}
-			CoAdjustCoatStandardInfo coAdjustCoatStandardInfo = orderCoForm.getCoAdjustCoatStandardInfo();
-			if(coAdjustCoatStandardInfo == null) {
-	            messages.add("E031", "COATサイズ");
-	            coatFlag = true;
-			}else {
-				String corCtSize = coAdjustCoatStandardInfo.getCorCtSize();
-				if("".equals(corCtSize) || corCtSize == null) {
-		            messages.add("E031", "COATサイズ");
-		            coatFlag = true;
-				}
-			}
+			boolean coatFlag = coCoatHelper.coatCheck(messages,orderCoForm,item,adjustByItem,typeSizeService);
 			if(coatFlag) {
 				orderCoForm.setOrderFlag("orderCheck");
 				model.addAttribute("orderCoForm",orderCoForm);
@@ -3188,67 +456,6 @@ public class OrderCoController {
 		return "forward:/orderCoConfirm/orderCoReForm";
 	}
 
-	public boolean shirtCheck(OrderCoForm orderCoForm, ResultMessages messages) {
-		
-		boolean shirtFlag = false;
-		
-		//SHIRT モデル未選択の場合
-		String osShirtModel = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();
-		if ("".equals(osShirtModel)  || null == osShirtModel) {
-	        messages.add("E031", "SHIRT モデル");
-	        shirtFlag = true;
-		}
-
-		//襟型未選択の場合
-		String osChainModel = orderCoForm.getCoOptionShirtStandardInfo().getOsChainModel();
-		if ("0000100".equals(osChainModel)  || null == osChainModel || "".equals(osChainModel) ) {
-	        messages.add("E031", "襟型");
-	        shirtFlag = true;
-		}
-
-		//カフス未選択の場合
-		String osCuffs = orderCoForm.getCoOptionShirtStandardInfo().getOsCuffs();
-		if ("0000200".equals(osCuffs)  || null == osCuffs || "".equals(osCuffs) ) {
-	        messages.add("E031", "カフス");
-	        shirtFlag = true;
-		}
-		
-		//ボタン位置変更未選択の場合
-		String osBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getOsBtnPosChg();
-		BigDecimal stNeckbandBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStNeckbandBtnPosChg();
-		BigDecimal stFrtfirstBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStFrtfirstBtnPosChg();
-		BigDecimal stFrtsecondBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStFrtsecondBtnPosChg();
-		
-		if ("0002102".equals(osBtnPosChg) && (BigDecimal.ZERO.equals(stNeckbandBtnPosChg) || "".equals(stNeckbandBtnPosChg) || null == stNeckbandBtnPosChg)
-				&& (BigDecimal.ZERO.equals(stFrtfirstBtnPosChg) || "".equals(stFrtfirstBtnPosChg) || null == stFrtfirstBtnPosChg)
-				&& (BigDecimal.ZERO.equals(stFrtsecondBtnPosChg) || "".equals(stFrtsecondBtnPosChg) || null == stFrtsecondBtnPosChg)) {
-			messages.add("E029", "ボタン位置変更値");
-	        shirtFlag = true;
-		}
-		
-		//カジュアルヘムライン値未選択の場合
-		String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
-		BigDecimal stCasualHemlineSize = orderCoForm.getCoOptionShirtStandardInfo().getStCasualHemlineSize();
-		if ("0002002".equals(osCasHemLine) && ((BigDecimal.ZERO).equals(stCasualHemlineSize) || "".equals(stCasualHemlineSize) || null == stCasualHemlineSize)) {
-	        messages.add("E029", "カジュアルヘムライン値");
-	        shirtFlag = true;
-		}
-		
-		//SHIRTサイズ
-		CoAdjustShirtStandardInfo coAdjustShirtStandardInfo = orderCoForm.getCoAdjustShirtStandardInfo();
-		if(coAdjustShirtStandardInfo == null) {
-            messages.add("E031", "SHIRTサイズ");
-            shirtFlag = true;
-		}else {
-			String corStSize = coAdjustShirtStandardInfo.getCorStSize();
-			if("".equals(corStSize) || corStSize == null) {
-	            messages.add("E031", "SHIRTサイズ");
-	            shirtFlag = true;
-			}
-		}
-		
-		return shirtFlag;
-	}
 	/**
 	 * 「オーダー詳細」に遷移する。
 	 * 
@@ -4379,6 +1586,8 @@ public class OrderCoController {
 		if(orderFindFabric!=null) {
 			orderCoHelper.setGoodsPrice(orderFindFabric,orderCoForm);
 			orderCoHelper.findStockModelDoublePrice(orderFindFabric,orderCoForm);
+			orderCoHelper.set3Piece2PantsPrice(orderFindFabric, orderCoForm);
+			//orderCoHelper.getYieldNum(orderCoForm,yieldService);
 			BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
 			BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
 			BigDecimal result = theoretical.subtract(reservation);
@@ -4855,6 +2064,18 @@ public class OrderCoController {
 		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern, itemCode);
 		return adjustList;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Map<String,List<Adjust>> getAdjustByItem(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String itemCode = orderCoForm.getProductItem();
+		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
+		Map<String,List<Adjust>> adjustItemList = orderCoHelper.getAdjustItemList(adjustList);
+		return adjustItemList;
+	}
 
 	@RequestMapping(value = "/goToJacketOption", method = RequestMethod.GET)
 	public @ResponseBody ModelAndView jacketStandardJsp(OrderCoForm orderCoForm, ModelAndView m) {
@@ -4894,9 +2115,7 @@ public class OrderCoController {
 		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionJacket");
-
 		return m;
-
 	}
 
 	@RequestMapping(value = "/goToPants1Option", method = RequestMethod.GET)
@@ -4906,13 +2125,12 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS_SUBITEM);
 		orderCoHelper.getPantsModelMap(orderCoForm, modelList);
-		if("orderCo".equals(orderFlag)) {
+		if ("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
 				orderCoHelper.pantsDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 			}
-			
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
@@ -4951,7 +2169,6 @@ public class OrderCoController {
 			} else if ("1".equals(itemFlag)) {
 
 			}
-			
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPants2ItemFlag();
 			if ("0".equals(itemFlag)) {
@@ -4973,9 +2190,7 @@ public class OrderCoController {
 		}		
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionPants2");
-
 		return m;
-
 	}
 
 	@RequestMapping(value = "/goToGiletOption", method = RequestMethod.GET)
@@ -5011,13 +2226,10 @@ public class OrderCoController {
 					orderCoHelper.giletDefaultValueFromDb(orderCoForm,orderGl);
 				}
 			}else {
-				
 			}
 		}
-		
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionGilet");
-
 		return m;
 	}
 
@@ -5063,11 +2275,11 @@ public class OrderCoController {
 			Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			//一覧画面から注文画面へ遷移
 			//受注テーブルにレコードがある、一回目オプション画面をクリック場合、レコード値を設定する
-			if (!(null == orderST || "".equals(orderST)) && ("".equals(itemFlag) || "0".equals(itemFlag))) {
+			if (!(null == orderST) && ("".equals(itemFlag) || "0".equals(itemFlag))) {
 				//orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
 				
 			//受注テーブルにレコードがなし、初期値を設定
-			} else if (null == orderST || "".equals(orderST)) {
+			} else if (null == orderST) {
 				orderCoHelper.shirtDefaultValue(orderCoForm);
 			}
 		}
@@ -5142,7 +2354,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderJK = orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderJK || "".equals(orderJK))) {
+			if (!(null == orderJK)) {
 				orderCoHelper.jacketAdjustFromDb(orderCoForm,orderJK);
 			}
 		}
@@ -5158,7 +2370,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderPT = orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderPT || "".equals(orderPT))) {
+			if (!(null == orderPT)) {
 				orderCoHelper.pantsAdjustFromDb(orderCoForm,orderPT);
 			}
 		}
@@ -5175,7 +2387,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderPT2 = orderListService.findOrderPt2ByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderPT2 || "".equals(orderPT2))) {
+			if (!(null == orderPT2)) {
 				orderCoHelper.pants2AdjustFromDb(orderCoForm,orderPT2);
 			}
 		}
@@ -5192,7 +2404,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderGL = orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderGL || "".equals(orderGL))) {
+			if (!(null == orderGL)) {
 				orderCoHelper.giletAdjustFromDb(orderCoForm, orderGL);
 			}
 		}
@@ -5209,7 +2421,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderST = orderListService.findOrderStByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderST || "".equals(orderST))) {
+			if (!(null == orderST)) {
 				orderCoHelper.shirtAdjustFromDb(orderCoForm, orderST);
 			}
 		}
@@ -5226,7 +2438,7 @@ public class OrderCoController {
 		String orderFlag = orderCoForm.getOrderFlag();
 		if("orderLink".equals(orderFlag)) {	
 			Order orderCT = orderListService.findOrderCtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			if (!(null == orderCT || "".equals(orderCT))) {
+			if (!(null == orderCT)) {
 				orderCoHelper.coatAdjustFromDb(orderCoForm, orderCT);
 			}
 		}
@@ -5492,13 +2704,14 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForJacketTuxedoModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForJacketTuxedoModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForJacketTuxedoModel(OrderCoForm orderCoForm, String code) {
 		CoOptionJacketTuxedoInfo optionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
 		
 		JacketOptionCoTuxedoPriceEnum[] priceEnum = JacketOptionCoTuxedoPriceEnum.values();
@@ -5568,13 +2781,14 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForJacketWashableModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForJacketWashableModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForJacketWashableModel(OrderCoForm orderCoForm, String code) {
 		CoOptionJacketWashableInfo optionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
 		
 		JacketOptionCoWashablePriceEnum[] priceEnum = JacketOptionCoWashablePriceEnum.values();
@@ -5644,6 +2858,7 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
@@ -5719,8 +2934,12 @@ public class OrderCoController {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 
 				if (hasIdvalueName == true) {
@@ -5774,6 +2993,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -5788,8 +3008,8 @@ public class OrderCoController {
 	 */
 	@RequestMapping(value = "/getOrderPriceForJacketTuxedoProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForJacketTuxedoProject(OrderCoForm orderCoForm, String code, Model model,
-			String idValueName, String colorCount,String thisVal,String thisValStkNo) {
+	public Map<String, String> getOrderPriceForJacketTuxedoProject(OrderCoForm orderCoForm, String code,
+			String idValueName,String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
 		String tjFrontBtnCnt = coOptionJacketTuxedoInfo.getTjFrontBtnCnt();
 		JacketOptionCoTuxedoPriceEnum[] priceEnum = JacketOptionCoTuxedoPriceEnum.values();
@@ -5827,12 +3047,29 @@ public class OrderCoController {
 					splicingCodeForFindUniquePrice = code + key + invokeOne;
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
+				
+				if(("tj_bhColor_id".equals(idValueName)&&"tj_bhColor_id".equals(valueFour))||
+				   ("tj_byColor_id".equals(idValueName))&&"tj_byColor_id".equals(valueFour)) {
+						hasIdvalueName = true;
+						String projectPriceCode = code + jspOptionCodeAndBranchCode;
+						String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+						if("-1".equals(colorCount)) {
+							orderPrice = orderPriceInner;
+						}else {
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+							orderPrice = String.valueOf(colorPrice);
+						}
+				}
 
 				if (hasIdvalueName == true) {
 					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
-						orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}else{
-						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					Class<?> cls;
 					Object[] args = { orderPrice };
@@ -5865,14 +3102,6 @@ public class OrderCoController {
 			}
 		}
 		 
-		if("tj_bhColor_id".equals(idValueName)||"tj_byColor_id".equals(idValueName)) {
-			Integer colorPrice = 0;
-			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-				colorPrice = colorPrice + 100;
-			}
-			orderPrice = String.valueOf(colorPrice);
-		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -5882,6 +3111,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -5896,8 +3126,8 @@ public class OrderCoController {
 	 */
 	@RequestMapping(value = "/getOrderPriceForJacketWashableProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForJacketWashableProject(OrderCoForm orderCoForm, String code, Model model,
-			String idValueName, String colorCount,String thisVal,String thisValStkNo) {
+	public Map<String, String> getOrderPriceForJacketWashableProject(OrderCoForm orderCoForm, String code,String idValueName,
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
 		String wjFrontBtnCnt = coOptionJacketWashableInfo.getWjFrontBtnCnt();
 		JacketOptionCoWashablePriceEnum[] priceEnum = JacketOptionCoWashablePriceEnum.values();
@@ -5935,13 +3165,50 @@ public class OrderCoController {
 					splicingCodeForFindUniquePrice = code + key + invokeOne;
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
-
-				if (hasIdvalueName == true) {
-					if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
-						orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				
+				if(("wj_stitchModify_id".equals(idValueName) && "wj_stitchModify_id".equals(valueFour))|| ("wj_dStitchModify_id".equals(idValueName) &&"wj_dStitchModify_id".equals(valueFour))) {
+					hasIdvalueName = true;
+					if(isEmpty(countArr)) {
+						splicingCodeForFindUniquePrice = code + thisVal;
+						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}else {
+						Integer orderPriceInt = 0;
+						String[] strArr = countArr.split(",");
+						for (int i = 0; i < strArr.length; i++) {
+							String projectPriceCode = code + strArr[i];
+							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+							orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+						}
+						orderPrice = String.valueOf(orderPriceInt);
 					}
+				}
+				
+				if(("wj_amfColor_id".equals(idValueName)&&"wj_amfColor_id".equals(valueFour))||
+				   ("wj_bhColor_id".equals(idValueName)&&"wj_bhColor_id".equals(valueFour))||
+				   ("wj_byColor_id".equals(idValueName))&&"wj_byColor_id".equals(valueFour)) {
+					hasIdvalueName = true;
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
+				}
+				
+				if (hasIdvalueName == true) {
+					
+					if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					
 					Class<?> cls;
 					Object[] args = { orderPrice };
 					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketWashableInfo");
@@ -5973,14 +3240,6 @@ public class OrderCoController {
 			}
 		}
 		 
-		if("wj_bhColor_id".equals(idValueName)||"wj_byColor_id".equals(idValueName)||"wj_amfColor_id".equals(idValueName)) {
-			Integer colorPrice = 0;
-			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-				colorPrice = colorPrice + 100;
-			}
-			orderPrice = String.valueOf(colorPrice);
-		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -5990,6 +3249,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -5998,6 +3258,7 @@ public class OrderCoController {
 	@ResponseBody
 	public Map<String, Object> getOrderPriceForGiletStandardModel(OrderCoForm orderCoForm, String code) {
 		CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+		String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
 		
 		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
 		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
@@ -6017,7 +3278,12 @@ public class OrderCoController {
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				String orderPrice = "";
+				if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}else{
+					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}
 				
 				Class<?> cls;
 				Object[] args = {orderPrice};
@@ -6057,14 +3323,16 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletTuxedoModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForGiletTuxedoModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForGiletTuxedoModel(OrderCoForm orderCoForm, String code) {
 		CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+		String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
 		
 		GiletOptionCoTuxedoPriceEnum[] priceEnum = GiletOptionCoTuxedoPriceEnum.values();
 		for (GiletOptionCoTuxedoPriceEnum price : priceEnum) {
@@ -6084,7 +3352,12 @@ public class OrderCoController {
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				String orderPrice = "";
+				if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}else{
+					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}
 				
 				Class<?> cls;
 				Object[] args = {orderPrice};
@@ -6124,14 +3397,16 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletWashableModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForGiletWashableModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForGiletWashableModel(OrderCoForm orderCoForm, String code) {
 		CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+		String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
 		
 		GiletOptionCoWashablePriceEnum[] priceEnum = GiletOptionCoWashablePriceEnum.values();
 		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
@@ -6151,7 +3426,12 @@ public class OrderCoController {
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				String orderPrice = "";
+				if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}else{
+					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}
 				
 				Class<?> cls;
 				Object[] args = {orderPrice};
@@ -6191,6 +3471,7 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
@@ -6200,6 +3481,7 @@ public class OrderCoController {
 	public Map<String, String> getOrderPriceForGiletStandardProject(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+		String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
 		
 		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
 		String orderPrice = "";
@@ -6215,23 +3497,60 @@ public class OrderCoController {
 			
 			boolean hasIdvalueName = false;
 			try {
+				if("og_stitch_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+				}
+				
+				if("og_breastPkt_id".equals(idValueName) || "og_waistPktSpec_id".equals(idValueName) || "og_watchChain_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+				}
+				
 				if("og_waistPkt_id".equals(idValueName)) {
-					try {
-						Class<?> cls;
-						Object[] args = {"0"};
-						cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo");
-						Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-						ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletStandardInfo(), args);
-					} catch (ClassNotFoundException e) {
-						e.printStackTrace();
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					
+					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
+						try {
+							Class<?> cls;
+							Object[] args = {"0"};
+							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo");
+							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
+							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletStandardInfo(), args);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 				
 				if("og_amfColor_id".equals(idValueName) || "og_bhColor_id".equals(idValueName) || "og_byColor_id".equals(idValueName)) {
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					String orderPriceInner = "";
+					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 				
 				if("og_stitchModify_id".equals(idValueName) || "og_dStitchModify_id".equals(idValueName)) {
@@ -6239,10 +3558,17 @@ public class OrderCoController {
 					String[] strArr = countArr.split(",");
 					for (int i = 0; i < strArr.length; i++) {
 						String projectPriceCode = code + strArr[i];
-						String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+						String orderPriceInner = "";
+						if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+							orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+						}else{
+							orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+						}
+						
 						orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
 					}
 					orderPrice = String.valueOf(orderPriceInt);
+					hasIdvalueName = true;
 				}
 				
 				if(idValueName.equals(valueFour)) {
@@ -6273,16 +3599,22 @@ public class OrderCoController {
 						|| "og_insideLiningMate".equals(idValueName) || "og_insideLiningMateStkNo".equals(idValueName) 
 						|| "og_frontBtnMate".equals(idValueName) || "og_frontBtnMateStkNo".equals(idValueName) 
 						|| "og_backBelt".equals(idValueName))) {
-					hasIdvalueName = true;
 					splicingCodeForFindUniquePrice = code + key + thisVal;
 					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
 						splicingCodeDetail = code + key + thisVal + thisValStkNo;
 					}
+					hasIdvalueName = true;
 				}
 				
 				if(hasIdvalueName == true) {
-					if("".equals(orderPrice)) {
-						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					
 					Class<?> cls;
@@ -6326,15 +3658,17 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletTuxedoProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForGiletTuxedoProject(OrderCoForm orderCoForm, String code, Model model, 
-			String idValueName, String colorCount) {
+	public Map<String, String> getOrderPriceForGiletTuxedoProject(OrderCoForm orderCoForm, String code,String idValueName,
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+		String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
 		
 		GiletOptionCoTuxedoPriceEnum[] priceEnum = GiletOptionCoTuxedoPriceEnum.values();
 		String orderPrice = "";
@@ -6350,6 +3684,55 @@ public class OrderCoController {
 			
 			boolean hasIdvalueName = false;
 			try {
+				if("tg_breastPkt_id".equals(idValueName) || "tg_waistPktSpec_id".equals(idValueName) 
+						|| "tg_waistPktMate_id".equals(idValueName) || "tg_watchChain_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("tg_waistPkt_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
+						try {
+							Class<?> cls;
+							Object[] args = {"0"};
+							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
+							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
+							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("tg_bhColor_id".equals(idValueName) || "tg_byColor_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					String orderPriceInner = "";
+					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
+					hasIdvalueName = true;
+				}
+				
 				if(idValueName.equals(valueFour)) {
 					Method methodOne = coOptionGiletTuxedoInfo.getClass().getMethod(valueOne);
 					Object invokeOne = methodOne.invoke(coOptionGiletTuxedoInfo);
@@ -6373,8 +3756,28 @@ public class OrderCoController {
 					hasIdvalueName = true;
 				}
 				
+				if((idValueName.equals(valueFour) || idValueName.equals(valueFive)) 
+						&& ("tg_backLiningMate".equals(idValueName) || "tg_backLiningMateStkNo".equals(idValueName) 
+						|| "tg_insideLiningMate".equals(idValueName) || "tg_insideLiningMateStkNo".equals(idValueName) 
+						|| "tg_frontBtnMate".equals(idValueName) || "tg_frontBtnMateStkNo".equals(idValueName) 
+						|| "tg_backBelt".equals(idValueName))) {
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+					hasIdvalueName = true;
+				}
+				
 				if(hasIdvalueName == true) {
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
 					
 					Class<?> cls;
 					Object[] args = {orderPrice};
@@ -6387,18 +3790,6 @@ public class OrderCoController {
 			} catch (NoSuchMethodException | SecurityException | 
 					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
 					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if("tg_waistPkt_id".equals(idValueName)) {
-			try {
-				Class<?> cls;
-				Object[] args = {"0"};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
-				Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
-			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -6420,14 +3811,6 @@ public class OrderCoController {
 			}
 		}
 		
-		if("tg_bhColor_id".equals(idValueName) || "tg_byColor_id".equals(idValueName)) {
-			Integer colorPrice = 0;
-			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-				colorPrice = colorPrice + 100;
-			}
-			orderPrice = String.valueOf(colorPrice);
-		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -6437,18 +3820,20 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletWashableProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForGiletWashableProject(OrderCoForm orderCoForm, String code, Model model, 
-			String idValueName, String colorCount) {
+	public Map<String, String> getOrderPriceForGiletWashableProject(OrderCoForm orderCoForm, String code,String idValueName,
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+		String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
 		
 		GiletOptionCoWashablePriceEnum[] priceEnum = GiletOptionCoWashablePriceEnum.values();
-		String orderPrice = "";
+		String orderPrice = ""; 
 		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
@@ -6461,11 +3846,87 @@ public class OrderCoController {
 			
 			boolean hasIdvalueName = false;
 			try {
+				if("wg_stitch_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("wg_breastPkt_id".equals(idValueName) || "wg_waistPktSpec_id".equals(idValueName) || "wg_watchChain_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("wg_waistPkt_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
+						try {
+							Class<?> cls;
+							Object[] args = {"0"};
+							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo");
+							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
+							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletWashableInfo(), args);
+						} catch (ClassNotFoundException e) {
+							e.printStackTrace();
+						}
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("wg_amfColor_id".equals(idValueName) || "wg_bhColor_id".equals(idValueName) || "wg_byColor_id".equals(idValueName)) {
+					String projectPriceCode = code + jspOptionCodeAndBranchCode;
+					String orderPriceInner = "";
+					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+					}else{
+						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+					}
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
+					hasIdvalueName = true;
+				}
+				
+				if("wg_stitchModify_id".equals(idValueName) || "wg_dStitchModify_id".equals(idValueName)) {
+					Integer orderPriceInt = 0;
+					String[] strArr = countArr.split(",");
+					for (int i = 0; i < strArr.length; i++) {
+						String projectPriceCode = code + strArr[i];
+						String orderPriceInner = "";
+						if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+							orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+						}else{
+							orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
+						}
+						
+						orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+					}
+					orderPrice = String.valueOf(orderPriceInt);
+					hasIdvalueName = true;
+				}
+				
 				if(idValueName.equals(valueFour)) {
 					Method methodOne = coOptionGiletWashableInfo.getClass().getMethod(valueOne);
 					Object invokeOne = methodOne.invoke(coOptionGiletWashableInfo);
 					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
+					if(!("".equals(thisValStkNo)) && thisValStkNo != null) {
 						Method methodTwo = coOptionGiletWashableInfo.getClass().getMethod(valueTwo);
 						invokeTwo = methodTwo.invoke(coOptionGiletWashableInfo);
 					}
@@ -6484,8 +3945,28 @@ public class OrderCoController {
 					hasIdvalueName = true;
 				}
 				
+				if((idValueName.equals(valueFour) || idValueName.equals(valueFive)) 
+						&& ("wg_backLiningMate".equals(idValueName) || "wg_backLiningMateStkNo".equals(idValueName) 
+						|| "wg_insideLiningMate".equals(idValueName) || "wg_insideLiningMateStkNo".equals(idValueName) 
+						|| "wg_frontBtnMate".equals(idValueName) || "wg_frontBtnMateStkNo".equals(idValueName) 
+						|| "wg_backBelt".equals(idValueName))) {
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+					hasIdvalueName = true;
+				}
+				
 				if(hasIdvalueName == true) {
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
 					
 					Class<?> cls;
 					Object[] args = {orderPrice};
@@ -6498,18 +3979,6 @@ public class OrderCoController {
 			} catch (NoSuchMethodException | SecurityException | 
 					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
 					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if("wg_waistPkt_id".equals(idValueName)) {
-			try {
-				Class<?> cls;
-				Object[] args = {"0"};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo");
-				Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletWashableInfo(), args);
-			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -6531,14 +4000,6 @@ public class OrderCoController {
 			}
 		}
 		
-		if("wg_amfColor_id".equals(idValueName) || "wg_bhColor_id".equals(idValueName) || "wg_byColor_id".equals(idValueName)) {
-			Integer colorPrice = 0;
-			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-				colorPrice = colorPrice + 100;
-			}
-			orderPrice = String.valueOf(colorPrice);
-		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -6548,6 +4009,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
@@ -6614,6 +4076,7 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setStOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 		
 	}
@@ -6722,7 +4185,7 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/getOrderPriceForPants2Model", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2Model(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForPants2Model(OrderCoForm orderCoForm, String code) {
 		CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
 		
 		Pants2CoOptionStandardPriceEnum[] priceEnum = Pants2CoOptionStandardPriceEnum.values();
@@ -6789,7 +4252,7 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/getOrderPriceForPants2tModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2tModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForPants2tModel(OrderCoForm orderCoForm, String code) {
 		CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
 		
 		Pants2CoOptionTuxedoPriceEnum[] priceEnum = Pants2CoOptionTuxedoPriceEnum.values();
@@ -6856,7 +4319,7 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/getOrderPriceForPants2wModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2wModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForPants2wModel(OrderCoForm orderCoForm, String code) {
 		CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
 		
 		Pants2CoOptionWashablePriceEnum[] priceEnum = Pants2CoOptionWashablePriceEnum.values();
@@ -6926,7 +4389,7 @@ public class OrderCoController {
 	public Map<String, String> getOrderPriceForPants2Project(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
-		
+		String op2PantsModel = coOptionPants2StandardInfo.getOp2PantsModel();
 		Pants2CoOptionStandardPriceEnum[] priceEnum = Pants2CoOptionStandardPriceEnum.values();
 		String orderPrice = "";
 		for (Pants2CoOptionStandardPriceEnum price : priceEnum) {
@@ -6981,18 +4444,28 @@ public class OrderCoController {
 				}
 				if(("op2_amfColor_id".equals(idValueName)&&"op2_amfColor_id".equals(valueFour))||
 					("op2_bhColor_id".equals(idValueName)&&"op2_bhColor_id".equals(valueFour))||
-					("op2_byColor_id".equals(idValueName))&&"op2_byColor_id".equals(valueFour)) {
+					("op2_byColor_id".equals(idValueName)&&"op2_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 				
 				if(hasIdvalueName == true) {
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					if("0".equals(orderPrice)) {
-						//orderPrice = "無料";
+					
+					if("0000105".equals(op2PantsModel) || "0000106".equals(op2PantsModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					
 					Class<?> cls;
@@ -7028,14 +4501,6 @@ public class OrderCoController {
 			}
 		}
 		
-//		if("og_amfColor_id".equals(idValueName)) {
-//			Integer colorPrice = 0;
-//			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-//				colorPrice = colorPrice + 100;
-//			}
-//			orderPrice = String.valueOf(colorPrice);
-//		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -7045,6 +4510,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 	}
 	
@@ -7053,7 +4519,7 @@ public class OrderCoController {
 	public Map<String, String> getOrderPriceForPants2tProject(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
-		
+		String tp2PantsModel = coOptionPants2TuxedoInfo.getTp2PantsModel();
 		Pants2CoOptionTuxedoPriceEnum[] priceEnum = Pants2CoOptionTuxedoPriceEnum.values();
 		String orderPrice = "";
 		for (Pants2CoOptionTuxedoPriceEnum price : priceEnum) {
@@ -7106,19 +4572,27 @@ public class OrderCoController {
 						orderPrice = String.valueOf(orderPriceInt);
 					}
 				}
-				if(("tp2_amfColor_id".equals(idValueName)&&"tp2_amfColor_id".equals(valueFour))||
-					("tp2_bhColor_id".equals(idValueName)&&"tp2_bhColor_id".equals(valueFour))||
-					("tp2_byColor_id".equals(idValueName))&&"tp2_byColor_id".equals(valueFour)) {
+				if(("tp2_bhColor_id".equals(idValueName)&&"tp2_bhColor_id".equals(valueFour))||
+				   ("tp2_byColor_id".equals(idValueName)&&"tp2_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 				if(hasIdvalueName == true) {
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					if("0".equals(orderPrice)) {
-						//orderPrice = "無料";
+					if("0000105".equals(tp2PantsModel) || "0000106".equals(tp2PantsModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					
 					Class<?> cls;
@@ -7154,14 +4628,6 @@ public class OrderCoController {
 			}
 		}
 		
-//		if("og_amfColor_id".equals(idValueName)) {
-//			Integer colorPrice = 0;
-//			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-//				colorPrice = colorPrice + 100;
-//			}
-//			orderPrice = String.valueOf(colorPrice);
-//		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -7171,6 +4637,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 	}
 
@@ -7179,7 +4646,7 @@ public class OrderCoController {
 	public Map<String, String> getOrderPriceForPants2wProject(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
-		
+		String wp2PantsModel = coOptionPants2WashableInfo.getWp2PantsModel();
 		Pants2CoOptionWashablePriceEnum[] priceEnum = Pants2CoOptionWashablePriceEnum.values();
 		String orderPrice = "";
 		for (Pants2CoOptionWashablePriceEnum price : priceEnum) {
@@ -7233,19 +4700,28 @@ public class OrderCoController {
 					}
 				}
 				if(("wp2_amfColor_id".equals(idValueName)&&"wp2_amfColor_id".equals(valueFour))||
-					("wp2_bhColor_id".equals(idValueName)&&"wp2_bhColor_id".equals(valueFour))||
-					("wp2_byColor_id".equals(idValueName))&&"wp2_byColor_id".equals(valueFour)) {
+				   ("wp2_bhColor_id".equals(idValueName)&&"wp2_bhColor_id".equals(valueFour))||
+				   ("wp2_byColor_id".equals(idValueName)&&"wp2_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 				
 				if(hasIdvalueName == true) {
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					if("0".equals(orderPrice)) {
-						//orderPrice = "無料";
+					if("0000105".equals(wp2PantsModel) || "0000106".equals(wp2PantsModel)) {
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					
 					Class<?> cls;
@@ -7281,14 +4757,6 @@ public class OrderCoController {
 			}
 		}
 		
-//		if("og_amfColor_id".equals(idValueName)) {
-//			Integer colorPrice = 0;
-//			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
-//				colorPrice = colorPrice + 100;
-//			}
-//			orderPrice = String.valueOf(colorPrice);
-//		}
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -7298,6 +4766,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 	}
 	
@@ -7734,20 +5203,28 @@ public class OrderCoController {
 				}
 				if(("op_amfColor_id".equals(idValueName)&&"op_amfColor_id".equals(valueFour))||
 					("op_bhColor_id".equals(idValueName)&&"op_bhColor_id".equals(valueFour))||
-					("op_byColor_id".equals(idValueName))&&"op_byColor_id".equals(valueFour)) {
+					("op_byColor_id".equals(idValueName)&&"op_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 
 				if (hasIdvalueName == true) {
 					if("0000105".equals(opTack) || "0000106".equals(opTack)) {
+						if("".equals(orderPrice)) {
 						orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					}else{
+						}
+				}else{
+					if("".equals(orderPrice)) {
 						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 					}
+				}
 					Class<?> cls;
 					Object[] args = { orderPrice };
 					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsStandardInfo");
@@ -7769,7 +5246,7 @@ public class OrderCoController {
 				Method methodSix = coOptionPantsStandardInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionPantsStandardInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)))  {
+				if (!("0".equals(valueOf)) &&  !("null".equals(valueOf)))  {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -7777,17 +5254,22 @@ public class OrderCoController {
 				e.printStackTrace();
 			}
 		}
-
+		if("0".equals(orderPrice)) {
+			orderPrice = "無料";
+		}else {
+			orderPrice = "￥" + formatPrice(orderPrice);
+		}
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsTuModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPantsTuModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForPantsTuModel(OrderCoForm orderCoForm, String code) {
 		CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo =orderCoForm.getCoOptionPantsTuxedoInfo();
 		PantsCoOptionTuxedoPriceEnum[] priceEnum = PantsCoOptionTuxedoPriceEnum.values();
 		
@@ -7919,20 +5401,27 @@ public class OrderCoController {
 						orderPrice = String.valueOf(orderPriceInt);
 					}
 				}
-				if(("tp_amfColor_id".equals(idValueName)&&"tp_amfColor_id".equals(valueFour))||
-					("tp_bhColor_id".equals(idValueName)&&"tp_bhColor_id".equals(valueFour))||
-					("tp_byColor_id".equals(idValueName))&&"tp_byColor_id".equals(valueFour)) {
+				if(("tp_bhColor_id".equals(idValueName)&&"tp_bhColor_id".equals(valueFour))||
+					("tp_byColor_id".equals(idValueName)&&"tp_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 				if (hasIdvalueName == true) {
 					if("0000105".equals(tpTack) || "0000106".equals(tpTack)) {
+						if("".equals(orderPrice)) {
 						orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					      }
 					}else{
+					    if("".equals(orderPrice)) {
 						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}
 					Class<?> cls;
 					Object[] args = { orderPrice };
@@ -7954,7 +5443,7 @@ public class OrderCoController {
 				Method methodSix = coOptionPantsTuxedoInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionPantsTuxedoInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)))  {
+				if (!("0".equals(valueOf)) &&  !("null".equals(valueOf)))  {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -7962,17 +5451,22 @@ public class OrderCoController {
 				e.printStackTrace();
 			}
 		}
-
+		if("0".equals(orderPrice)) {
+			orderPrice = "無料";
+		}else {
+			orderPrice = "￥" + formatPrice(orderPrice);
+		}
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsWPModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPantsWPModel(OrderCoForm orderCoForm, String code, Model model) {
+	public Map<String, Object> getOrderPriceForPantsWPModel(OrderCoForm orderCoForm, String code) {
 		CoOptionPantsWashableInfo coOptionPantsWashableInfo =orderCoForm.getCoOptionPantsWashableInfo();
 		PantsCoOptionWashablePriceEnum[] priceEnum = PantsCoOptionWashablePriceEnum.values();
 		
@@ -8106,20 +5600,28 @@ public class OrderCoController {
 					}
 				}
 				if(("wp_amfColor_id".equals(idValueName)&&"wp_amfColor_id".equals(valueFour))||
-					("wp_bhColor_id".equals(idValueName)&&"wp_bhColor_id".equals(valueFour))||
-					("wp_byColor_id".equals(idValueName))&&"wp_byColor_id".equals(valueFour)) {
+				   ("wp_bhColor_id".equals(idValueName)&&"wp_bhColor_id".equals(valueFour))||
+				   ("wp_byColor_id".equals(idValueName)&&"wp_byColor_id".equals(valueFour))) {
 					hasIdvalueName = true;
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-					orderPrice = String.valueOf(colorPrice);
+					if("-1".equals(colorCount)) {
+						orderPrice = orderPriceInner;
+					}else {
+						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+						orderPrice = String.valueOf(colorPrice);
+					}
 				}
 
 				if (hasIdvalueName == true) {
 					if("0000105".equals(wpTack) || "0000106".equals(wpTack)) {
+						if("".equals(orderPrice)) {
 						orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
 					}else{
-						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						if("".equals(orderPrice)) {
+						orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);					
+						}
 					}
 					Class<?> cls;
 					Object[] args = { orderPrice };
@@ -8141,7 +5643,7 @@ public class OrderCoController {
 				Method methodSix = coOptionPantsWashableInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionPantsWashableInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)))  {
+				if (!("0".equals(valueOf)) &&  !("null".equals(valueOf)))  {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -8149,10 +5651,15 @@ public class OrderCoController {
 				e.printStackTrace();
 			}
 		}
-
+		if("0".equals(orderPrice)) {
+			orderPrice = "無料";
+		}else {
+			orderPrice = "￥" + formatPrice(orderPrice);
+		}
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -8171,27 +5678,4 @@ public class OrderCoController {
 		  }
 		  return true;
 	}
-	private boolean GrossCompareTo(String gross, ResultMessages messages, String msg) {
-		if(gross==null||gross=="") {
-			messages.add("E036", msg);
-			return true;
-		}
-		String maxGross = "110";
-		String minGross = "50";
-		BigDecimal maxGross1 = new BigDecimal(maxGross);
-		BigDecimal minGross1 = new BigDecimal(minGross);
-		BigDecimal gross1 = new BigDecimal(gross);
-
-		if (gross1.compareTo(minGross1) == -1) {
-			messages.add("E036", msg);
-			return true;
-		}
-		if (gross1.compareTo(maxGross1) == 1) {
-			messages.add("E036", msg);
-			return true;
-		}
-		return false;
-
-	}
-	
 }

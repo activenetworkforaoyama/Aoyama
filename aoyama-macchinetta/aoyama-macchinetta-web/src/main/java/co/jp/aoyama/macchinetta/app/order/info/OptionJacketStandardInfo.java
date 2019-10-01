@@ -3,37 +3,120 @@ package co.jp.aoyama.macchinetta.app.order.info;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderForm.JkItem;
+
 public class OptionJacketStandardInfo implements Serializable {
 	private static final long serialVersionUID = 545856920818855386L;
 
 	// JACKETモデル
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのモデルを入力して下さい。")
 	private String ojJacketModel;
 
 	private Map<String, String> ojJacketModelMap;
 
 	// フロント釦数
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのフロント釦数を入力して下さい。")
 	private String ojFrontBtnCnt;
 
 	private Map<String, String> ojFrontBtnCntMap;
 
 	// ラペルデザイン
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのラペルデザインを入力して下さい。")
 	private String ojLapelDesign;
 
 	private Map<String, String> ojLapelDesignMap;
 
-	// グレード
 	private String ojGrade;
 
 	private Map<String, String> ojGradeMap;
+
 	// 裏仕様
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの裏仕様を入力して下さい。")
 	private String ojGackSpec;
 
 	private Map<String, String> ojGackSpecMap;
 
 	// 台場
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの台場を入力して下さい。")
 	private String ojFort;
 
 	private Map<String, String> ojFortMap;
+
+	// 腰ポケット
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの腰ポケットを入力して下さい。")
+	private String ojWaistPkt;
+
+	private Map<String, String> ojWaistPktMap;
+
+	// チェンジポケット
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのチェンジポケットを入力して下さい。")
+	private String ojChangePkt;
+
+	private Map<String, String> ojChangePktMap;
+
+	// スランテッドポケット
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのスランテッドポケットを入力して下さい。")
+	private String ojSlantedPkt;
+
+	private Map<String, String> ojSlantedPktMap;
+
+	// 袖口
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの袖口を入力して下さい。")
+	private String ojCuffSpec;
+
+	private Map<String, String> ojCuffSpecMap;
+
+	// ステッチ種類
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのAMFステッチを入力して下さい。")
+	private String ojStitch;
+
+	private Map<String, String> ojStitchMap;
+
+	// ベント
+	@NotBlank(groups = { JkItem.class }, message = "JACKETのベントを入力して下さい。")
+	private String ojVentSpec;
+
+	private Map<String, String> ojVentSpecMap;
+
+	// 胴裏素材
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの胴裏素材を入力して下さい。")
+	private String ojBodyBackMate;
+
+	private Map<String, String> ojBodyBackMateMap;
+
+	// 胴裏素材品番
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの胴裏素材品番を入力して下さい。")
+	private String ojBodyBackMateStkNo;
+
+	// 袖裏素材
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの袖裏素材を入力して下さい。")
+	private String ojCuffBackMate;
+
+	private Map<String, String> ojCuffBackMateMap;
+
+	// 袖裏素材品番
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの袖裏素材品番を入力して下さい。")
+	private String ojCuffBackMateStkNo;
+
+	// 釦素材
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの釦素材を入力して下さい。")
+	private String ojBtnMate;
+
+	private Map<String, String> ojBtnMateMap;
+
+	// 釦素材品番
+	@NotBlank(groups = { JkItem.class }, message = "JACKETの釦素材品番を入力して下さい。")
+	private String ojBtnMateStkNo;
+
+	// 形状記憶
+	private String ojShapeMemory;
+
+	private Map<String, String> ojShapeMemoryMap;
+
+	// 品番Map
+	private Map<String, String> jacketMateMap;
 
 	// 襟裏（ヒゲ）
 	private String ojBackCollar;
@@ -60,21 +143,6 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	private Map<String, String> ojBreastPktMap;
 
-	// 腰ポケット
-	private String ojWaistPkt;
-
-	private Map<String, String> ojWaistPktMap;
-
-	// チェンジポケット
-	private String ojChangePkt;
-
-	private Map<String, String> ojChangePktMap;
-
-	// スランテッドポケット
-	private String ojSlantedPkt;
-
-	private Map<String, String> ojSlantedPktMap;
-
 	// 忍びポケット
 	private String ojCoinPkt;
 
@@ -98,11 +166,6 @@ public class OptionJacketStandardInfo implements Serializable {
 	// 袖釦数
 	private String ojSleeveBtnCnt;
 
-	// 袖口
-	private String ojCuffSpec;
-
-	private Map<String, String> ojCuffSpecMap;
-
 	// 内ポケット変更
 	private String ojInsidePktChange;
 
@@ -110,13 +173,13 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// 内ポケット変更箇所
 	private String ojInsidePktPlace;
-	
+
 	private String ojInsidePktPlace1;
-	
+
 	private String ojInsidePktPlace2;
-	
+
 	private String ojInsidePktPlace3;
-	
+
 	private String ojInsidePktPlace4;
 
 	private Map<String, String> ojInsidePktPlaceMap;
@@ -126,11 +189,6 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	private Map<String, String> ojBreastInnerPktMap;
 
-	// ステッチ種類
-	private String ojStitch;
-
-	private Map<String, String> ojStitchMap;
-
 	// ステッチ変更
 	private String ojStitchModify;
 
@@ -138,23 +196,23 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// ステッチ変更箇所
 	private String ojStitchModifyPlace;
-	
+
 	private String ojStitchModifyPlace1;
-	
+
 	private String ojStitchModifyPlace2;
-	
+
 	private String ojStitchModifyPlace3;
-	
+
 	private String ojStitchModifyPlace4;
-	
+
 	private String ojStitchModifyPlace5;
-	
+
 	private String ojStitchModifyPlace6;
-	
+
 	private String ojStitchModifyPlace7;
-	
+
 	private String ojStitchModifyPlace8;
-	
+
 	private String ojStitchModifyPlace9;
 
 	private Map<String, String> ojStitchModifyPlaceMap;
@@ -166,23 +224,23 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// ダブルステッチ変更箇所
 	private String ojDStitchModifyPlace;
-	
+
 	private String ojDStitchModifyPlace1;
-	
+
 	private String ojDStitchModifyPlace2;
-	
+
 	private String ojDStitchModifyPlace3;
-	
+
 	private String ojDStitchModifyPlace4;
-	
+
 	private String ojDStitchModifyPlace5;
-	
+
 	private String ojDStitchModifyPlace6;
-	
+
 	private String ojDStitchModifyPlace7;
-	
+
 	private String ojDStitchModifyPlace8;
-	
+
 	private String ojDStitchModifyPlace9;
 
 	private Map<String, String> ojDStitchModifyPlaceMap;
@@ -199,29 +257,29 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// AMF色指定箇所
 	private String ojAmfColorPlace;
-	
+
 	private String ojAmfColorPlace1;
-	
+
 	private String ojAmfColorPlace2;
-	
+
 	private String ojAmfColorPlace3;
-	
+
 	private String ojAmfColorPlace4;
-	
+
 	private String ojAmfColorPlace5;
-	
+
 	private String ojAmfColorPlace6;
-	
+
 	private String ojAmfColorPlace7;
-	
+
 	private String ojAmfColorPlace8;
-	
+
 	private String ojAmfColorPlace9;
 
 	private Map<String, String> ojAmfColorPlaceMap;
 
 	private String ojAmfAllColor;
-	
+
 	// AMF糸色 ラペル・フロント
 	private String ojAmfColor1;
 
@@ -267,39 +325,39 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// ボタンホール色指定箇所
 	private String ojBhColorPlace;
-	
+
 	private String ojBhColorPlace1;
-	
+
 	private String ojBhColorPlace2;
-	
+
 	private String ojBhColorPlace3;
-	
+
 	private String ojBhColorPlace4;
-	
+
 	private String ojBhColorPlace5;
-	
+
 	private String ojBhColorPlace6;
-	
+
 	private String ojBhColorPlace7;
-	
+
 	private String ojBhColorPlace8;
-	
+
 	private String ojBhColorPlace9;
-	
+
 	private String ojBhColorPlace10;
-	
+
 	private String ojBhColorPlace11;
-	
+
 	private String ojBhColorPlace12;
-	
+
 	private String ojBhColorPlace13;
-	
+
 	private String ojBhColorPlace14;
-	
+
 	private String ojBhColorPlace15;
-	
+
 	private String ojBhColorPlace16;
-	
+
 	private String ojBhColorPlace17;
 
 	private Map<String, String> ojBhColorPlaceMap;
@@ -373,39 +431,39 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// ボタン付け糸指定箇所
 	private String ojByColorPlace;
-	
+
 	private String ojByColorPlace1;
-	
+
 	private String ojByColorPlace2;
-	
+
 	private String ojByColorPlace3;
-	
+
 	private String ojByColorPlace4;
-	
+
 	private String ojByColorPlace5;
-	
+
 	private String ojByColorPlace6;
-	
+
 	private String ojByColorPlace7;
-	
+
 	private String ojByColorPlace8;
-	
+
 	private String ojByColorPlace9;
-	
+
 	private String ojByColorPlace10;
-	
+
 	private String ojByColorPlace11;
-	
+
 	private String ojByColorPlace12;
-	
+
 	private String ojByColorPlace13;
-	
+
 	private String ojByColorPlace14;
-	
+
 	private String ojByColorPlace15;
-	
+
 	private String ojByColorPlace16;
-	
+
 	private Map<String, String> ojByColorPlaceMap;
 
 //    //ボタン付け糸指定糸色全部箇所
@@ -461,43 +519,6 @@ public class OptionJacketStandardInfo implements Serializable {
 
 	// ボタン付け糸指定糸色 key&value
 	private Map<String, String> ojByColorsMap;
-
-	// ベント
-	private String ojVentSpec;
-
-	private Map<String, String> ojVentSpecMap;
-
-	// 胴裏素材
-	private String ojBodyBackMate;
-
-	private Map<String, String> ojBodyBackMateMap;
-
-	// 胴裏素材品番
-	private String ojBodyBackMateStkNo;
-
-	// 袖裏素材
-	private String ojCuffBackMate;
-
-	private Map<String, String> ojCuffBackMateMap;
-
-	// 袖裏素材品番
-	private String ojCuffBackMateStkNo;
-
-	// 釦素材
-	private String ojBtnMate;
-
-	private Map<String, String> ojBtnMateMap;
-
-	// 釦素材品番
-	private String ojBtnMateStkNo;
-
-	// 形状記憶
-	private String ojShapeMemory;
-
-	private Map<String, String> ojShapeMemoryMap;
-
-	// 品番Map
-	private Map<String, String> jacketMateMap;
 
 	public Map<String, String> getJacketMateMap() {
 		return jacketMateMap;
@@ -898,7 +919,6 @@ public class OptionJacketStandardInfo implements Serializable {
 	public void setOjStitchModifyMap(Map<String, String> ojStitchModifyMap) {
 		this.ojStitchModifyMap = ojStitchModifyMap;
 	}
-
 
 	public Map<String, String> getOjStitchModifyPlaceMap() {
 		return ojStitchModifyPlaceMap;
@@ -2075,5 +2095,5 @@ public class OptionJacketStandardInfo implements Serializable {
 	public void setOjInsidePktPlace(String ojInsidePktPlace) {
 		this.ojInsidePktPlace = ojInsidePktPlace;
 	}
-	
+
 }

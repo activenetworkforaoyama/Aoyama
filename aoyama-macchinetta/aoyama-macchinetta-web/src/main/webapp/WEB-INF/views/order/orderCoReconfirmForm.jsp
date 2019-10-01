@@ -21,6 +21,7 @@ select.hidedown {
     width:800px;
 }
 </style>
+<script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
 <form:form id="idForm" action="${pageContext.request.contextPath}/orderCoConfirm/orderCoReFormInDb" method="post" modelAttribute="orderCoForm" class="form-horizontal">
 <div class="breadcrumbs">
 	<div class="col-sm-4">
@@ -32,6 +33,7 @@ select.hidedown {
 	</div>
 </div>
 <div class="content mt-3">
+<t:messagesPanel  messagesAttributeName="resultMessages"/>
 <div class="alert alert-error" id="errormssage" style="display:none"></div>
 	<div class="animated fadeIn">
 		<div class="row">
@@ -313,7 +315,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">有り</label></strong>
 								</div>
 								<div class="col-12 col-md-1" align="right">
-									<strong><label class=" form-control-label-value" id="productIs3Piece_appear"></label></strong>
+									<strong><label class=" form-control-label-value" id="productIs3Piece_appear">${productAboutPrice["is3PiecePrice"]}</label></strong>
 								</div>
 							</div>
 						</c:if>
@@ -339,7 +341,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">2パンツ</label></strong>
 								</div>
 								<div class="col-12 col-md-1" align="right">
-									<strong><label class=" form-control-label-value" id="productSparePantsClass_appear"></label></strong>
+									<strong><label class=" form-control-label-value" id="productSparePantsClass_appear">${productAboutPrice["is2PantsPrice"]}</label></strong>
 								</div>
 							</div>
 						</c:if>
@@ -405,7 +407,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">${orderCoForm.coProductInfo.productEmbroideryFontMap[orderCoForm.productEmbroideryFont]}</label></strong>
 								</div>
 							</div>
-							<c:if test="${orderCoForm.productItem == '01' || orderCoForm.productItem == '02'}">
+							<c:if test="${orderCoForm.productItem == '01' || orderCoForm.productItem == '02' || orderCoForm.productItem == '06'}">
 								<div class="row">
 									<div class="col col-md-3">
 										<label class=" form-control-label">刺繍糸色</label>
@@ -4560,11 +4562,6 @@ function formatMoney(number, places, symbol, thousand, decimal) {
      return symbol + negative + (j ? i.substr(0, j) + thousand : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousand) + (places ? decimal + Math.abs(number - i).toFixed(places).slice(2) : "");
 }
 
-//３Piece
-jQuery("#productIs3Piece_appear").html(formatMoney("${priceMap.price3Piece}",0,"￥"));
-//スペアパンツ
-jQuery("#productSparePantsClass_appear").html(formatMoney("${priceMap.sparePants}",0,"￥"));
-
 //オーダー内容確認画面上部のご請求金額の表示について
 jQuery("#header_billingAmount").html(formatMoney("${orderCoForm.billingAmount}",0,""));
 jQuery("#header_consumptionTaxAmount").html(formatMoney("${orderCoForm.consumptionTaxAmount}",0,""));
@@ -5565,8 +5562,32 @@ function initStandardComplexOptions(){
 	}
 	
 }
+function alertWin() {
+
+    var iWidth = document.documentElement.clientWidth;
+
+    var iHeight = document.documentElement.clientHeight;
+
+    var bgObj = document.createElement("div");
+
+    bgObj.setAttribute("id", "divbgObj");
+
+    bgObj.style.cssText = "position:absolute;left:0px;top:0px;width:" + iWidth + "px;height:" + Math.max(document.body.clientHeight, iHeight) + "px;filter:Alpha(Opacity=30);opacity:0.3;background-color:#000000;z-index:101;text-align:center;vertical-align:middle;"; 
+
+    var bgimg = document.createElement("img"); 
+
+    bgimg.setAttribute("src", "${pageContext.request.contextPath}/resources/app/images/loading.gif");
+
+    bgimg.setAttribute("style","margin:50%");
+    
+    bgObj.appendChild(bgimg);
+
+    document.body.appendChild(bgObj);
+
+}
 
 function imageCheck(){
+	
 	//会員番号
 	var custCd = "${orderCoForm.coCustomerMessageInfo.custCd}";
 
@@ -6539,5 +6560,7 @@ function imageCheck(){
 			}
 		}
 	}
+	alertWin();
  }
+
 </script>

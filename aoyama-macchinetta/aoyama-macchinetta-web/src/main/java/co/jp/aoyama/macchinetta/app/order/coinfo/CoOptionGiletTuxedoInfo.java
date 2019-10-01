@@ -69,6 +69,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private Map<String, String> tgBhColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
+	private String tgBhColorPlace;
 	private String tgBhColorPlace1;
 	private String tgBhColorPlace2;
 	private String tgBhColorPlace3;
@@ -78,21 +79,17 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgBhColorPlaceMap;
 
+	private String tgAllBhColor;
 	// ボタンホール色指定 フロント1
 	private String tgBhColor1;
-
 	// ボタンホール色指定 フロント2
 	private String tgBhColor2;
-
 	// ボタンホール色指定 フロント3
 	private String tgBhColor3;
-
 	// ボタンホール色指定 フロント4
 	private String tgBhColor4;
-
 	// ボタンホール色指定 フロント5
 	private String tgBhColor5;
-
 	// ボタンホール色指定 フロント6
 	private String tgBhColor6;
 
@@ -112,6 +109,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private Map<String, String> tgByColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
+	private String tgByColorPlace;
 	private String tgByColorPlace1;
 	private String tgByColorPlace2;
 	private String tgByColorPlace3;
@@ -125,33 +123,25 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgByColorPlaceMap;
 
+	private String tgAllByColor;
 	// ボタンホール色指定 フロント下前1
 	private String tgByColor1;
-
 	// ボタンホール色指定 フロント下前2
 	private String tgByColor2;
-
 	// ボタンホール色指定 フロント下前3
 	private String tgByColor3;
-
 	// ボタンホール色指定 フロント下前4
 	private String tgByColor4;
-
 	// ボタンホール色指定 フロント下前5
 	private String tgByColor5;
-
 	// ボタンホール色指定 フロント下前6
 	private String tgByColor6;
-
 	// ボタンホール色指定 フロント上前1
 	private String tgByColor7;
-
 	// ボタンホール色指定 フロント上前2
 	private String tgByColor8;
-
 	// ボタンホール色指定 フロント上前3
 	private String tgByColor9;
-
 	// ボタンホール色指定 フロント上前4
 	private String tgByColor10;
 
@@ -872,6 +862,38 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	public void setTgByColorPlace10(String tgByColorPlace10) {
 		this.tgByColorPlace10 = tgByColorPlace10;
+	}
+
+	public String getTgBhColorPlace() {
+		return tgBhColorPlace;
+	}
+
+	public void setTgBhColorPlace(String tgBhColorPlace) {
+		this.tgBhColorPlace = tgBhColorPlace;
+	}
+
+	public String getTgByColorPlace() {
+		return tgByColorPlace;
+	}
+
+	public void setTgByColorPlace(String tgByColorPlace) {
+		this.tgByColorPlace = tgByColorPlace;
+	}
+
+	public String getTgAllBhColor() {
+		return tgAllBhColor;
+	}
+
+	public void setTgAllBhColor(String tgAllBhColor) {
+		this.tgAllBhColor = tgAllBhColor;
+	}
+
+	public String getTgAllByColor() {
+		return tgAllByColor;
+	}
+
+	public void setTgAllByColor(String tgAllByColor) {
+		this.tgAllByColor = tgAllByColor;
 	}
 	
 }

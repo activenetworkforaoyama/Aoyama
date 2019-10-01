@@ -733,7 +733,7 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">刺繍ネーム</label></div>
                             <div class="col-12 col-md-6">
                                 <!-- <input type="text" id="embroideryName" name="productEmbroideryNm" class="form-control-sm form-control"> -->
-                                <form:input id="embroideryName" path="productEmbroideryNm" class="form-control-sm form-control"/>
+                                <form:input id="embroideryName" path="productEmbroideryNm" class="form-control-sm form-control" maxlength="15"/>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -1256,7 +1256,7 @@ select.hidedown {
 				<div class="card-body">
 					<div class="row">
 						<div class="col col-lg-10">
-						<textarea id="corStoreCorrectionMemo" name="corStoreCorrectionMemoAgain" rows="3" class="form-control" maxlength="500"></textarea>
+						<textarea id="corStoreCorrectionMemoAgain" name="corStoreCorrectionMemoAgain" rows="3" class="form-control" maxlength="500"></textarea>
 						</div>
 					</div>
 				</div>
@@ -1399,26 +1399,26 @@ select.hidedown {
 			<input type="hidden" id="productNotice"  name="productNotice"   value="" />
 			
 			<!-- ご請求金額 -->
-			<input type="hidden" id="billingAmountId"  name="billingAmount"   value="0" />
+			<input type="hidden" id="billingAmountId"  name="billingAmount"   value="${orderCoForm.billingAmount}" />
 			<!-- 商品金額 -->
-			<input type="hidden" id="productPriceId"  name="productPrice"   value="0" />
+			<input type="hidden" id="productPriceId"  name="productPrice"   value="${orderCoForm.productPrice}" />
 			<!-- オプション金額 -->
-			<input type="hidden" id="optionPriceId"  name="optionPrice"   value="0" />
-			<input type="hidden" id="jkOptionPriceId"  name="jkOptionPrice"   value="0" />
-            <input type="hidden" id="ptOptionPriceId"  name="ptOptionPrice"   value="0" />
-            <input type="hidden" id="pt2OptionPriceId"  name="pt2OptionPrice"   value="0" />
-            <input type="hidden" id="glOptionPriceId"  name="glOptionPrice"   value="0" />
-            <input type="hidden" id="ctOptionPriceId"  name="ctOptionPrice"   value="0" />
-            <input type="hidden" id="stOptionPriceId"  name="stOptionPrice"   value="0" />
+			<input type="hidden" id="optionPriceId"  name="optionPrice"   value="${orderCoForm.optionPrice}" />
+			<input type="hidden" id="jkOptionPriceId"  name="jkOptionPrice"   value="${orderCoForm.jkOptionPrice}" />
+            <input type="hidden" id="ptOptionPriceId"  name="ptOptionPrice"   value="${orderCoForm.ptOptionPrice}" />
+            <input type="hidden" id="pt2OptionPriceId"  name="pt2OptionPrice"   value="${orderCoForm.pt2OptionPrice}" />
+            <input type="hidden" id="glOptionPriceId"  name="glOptionPrice"   value="${orderCoForm.glOptionPrice}" />
+            <input type="hidden" id="ctOptionPriceId"  name="ctOptionPrice"   value="${orderCoForm.ctOptionPrice}" />
+            <input type="hidden" id="stOptionPriceId"  name="stOptionPrice"   value="${orderCoForm.stOptionPrice}" />
             
-            <input type="hidden" id="jkDoubleModelPrice"  name="jkDoubleModelPrice"   value="0" />
-            <input type="hidden" id="glDoubleModelPrice"  name="glDoubleModelPrice"   value="0" />
-            <input type="hidden" id="ctDoubleModelPrice"  name="ctDoubleModelPrice"   value="0" />
+            <input type="hidden" id="jkDoubleModelPrice"  name="jkDoubleModelPrice"   value="${orderCoForm.jkDoubleModelPrice}" />
+            <input type="hidden" id="glDoubleModelPrice"  name="glDoubleModelPrice"   value="${orderCoForm.glDoubleModelPrice}" />
+            <input type="hidden" id="ctDoubleModelPrice"  name="ctDoubleModelPrice"   value="${orderCoForm.ctDoubleModelPrice}" />
             
 			<!-- 合計金額 -->
-			<input type="hidden" id="totalPriceId"  name="totalPrice"   value="0" />
+			<input type="hidden" id="totalPriceId"  name="totalPrice"   value="${orderCoForm.totalPrice}" />
 			<!-- 内消費税 -->
-			<input type="hidden" id="consumptionTaxAmountId"  name="consumptionTaxAmount"   value="0" />
+			<input type="hidden" id="consumptionTaxAmountId"  name="consumptionTaxAmount"   value="${orderCoForm.consumptionTaxAmount}" />
 			<!-- 生地色 -->
 			<input type="hidden" id="fabricColor"  name="fabricColor"   value="" />
 			<!-- 生地柄 -->
@@ -2292,7 +2292,7 @@ jQuery(function() {
 
 		//コメント入力欄
 		var corStoreCorrectionMemoAgain = "${f:js(order.corStoreCorrectionMemoAgain)}";
-		jQuery("#corStoreCorrectionMemo").val(corStoreCorrectionMemoAgain);
+		jQuery("#corStoreCorrectionMemoAgain").val(corStoreCorrectionMemoAgain);
 
 		// 再補正の符号ボタン切替
 		jQuery('.re_alter_sign').on('click', function() {
@@ -2414,6 +2414,7 @@ jQuery(function() {
 	initAlter();
 
 	jQuery('a[href="#nav2_JACKET"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery(".giletbox").removeClass("activebk");
 		jQuery(".pantsbox").removeClass("activebk");
@@ -2425,6 +2426,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_PANTS"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery(".jacketbox").removeClass("activebk");
 		jQuery(".giletbox").removeClass("activebk");
@@ -2436,6 +2438,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_2PANTS"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery(".jacketbox").removeClass("activebk");
 		jQuery(".giletbox").removeClass("activebk");
@@ -2447,6 +2450,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_GILET"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery(".jacketbox").removeClass("activebk");
 		jQuery(".pantsbox").removeClass("activebk");
@@ -2458,6 +2462,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_SHIRT"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
@@ -2466,6 +2471,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_COAT"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".tabbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
@@ -2474,7 +2480,6 @@ jQuery(function() {
 	})
 	
 	jQuery("#nav2_option").click(function(){
-
 		jQuery(".alertbox").removeClass("activebk");
 		jQuery(".jacketbox").addClass("activebk");
 		jQuery(".giletbox").addClass("activebk");
@@ -2525,7 +2530,6 @@ jQuery(function() {
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		compositionExpress();
-		shirtProductPrice();
 		jQuery("#nav3_div_choose").hide();
 		jQuery("#option_div_adjust").hide();
 		jQuery("#option_div").hide();
@@ -2545,6 +2549,7 @@ jQuery(function() {
 	
 	//js
 	jQuery('a[href="#nav2_JACKET_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery(".gladjustbox").removeClass("activebk");
 		jQuery(".ptadjustbox").removeClass("activebk");
@@ -2556,6 +2561,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_PANTS_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery(".gladjustbox").removeClass("activebk");
 		jQuery(".jkadjustbox").removeClass("activebk");
@@ -2566,6 +2572,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_2PANTS_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery(".gladjustbox").removeClass("activebk");
 		jQuery(".jkadjustbox").removeClass("activebk");
@@ -2576,6 +2583,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_GILET_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery(".pt2adjustbox").removeClass("activebk");
 		jQuery(".jkadjustbox").removeClass("activebk");
@@ -2586,6 +2594,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_SHIRT_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
@@ -2593,6 +2602,7 @@ jQuery(function() {
 	})
 
 	jQuery('a[href="#nav2_COAT_Ad"]').click(function(){
+		$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 		jQuery(".alertbox").addClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
@@ -4208,12 +4218,14 @@ function optionRetailPrice(result){
 		  var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 		  //3Pieceが有りの場合
 		  if(threePiece == "0009902"){
-			 //上代
+			 /* //上代
 			 var retailPrice = Number(result.retailPrice);
 			 //シングルGILET追加増額率/100
 			 var additionalSingleGiletRate = Number(result.additionalSingleGiletRate)/100;
+			 var formulaPrice = retailPrice*additionalSingleGiletRate; */
 			 
-			 var formulaPrice = retailPrice*additionalSingleGiletRate;
+			 var formulaPrice = result.is3PiecePrice;
+			 
 			 var format = formatMoney(Number(formulaPrice),0,"￥");
 			 jQuery("#threePiece_Msg").html(format);
 			 
@@ -4227,12 +4239,12 @@ function optionRetailPrice(result){
 			  var threePiece = jQuery(this).val();
 			  //3Pieceが有りの場合
 			  if(threePiece == "0009902"){
-				 //上代
+				 /* //上代
 				 var retailPrice = Number(result.retailPrice);
 				 //シングルGILET追加増額率/100
 				 var additionalSingleGiletRate = Number(result.additionalSingleGiletRate)/100;
-				 
-				 var formulaPrice = retailPrice*additionalSingleGiletRate;
+				 var formulaPrice = retailPrice*additionalSingleGiletRate; */
+				 var formulaPrice = result.is3PiecePrice;
 				 var format = formatMoney(Number(formulaPrice),0,"￥");
 				 jQuery("#threePiece_Msg").html(format);
 				 
@@ -4247,11 +4259,12 @@ function optionRetailPrice(result){
 		  //2Pantsが有りの場合
 		  if(twoPants == "0009902"){
 			 //上代
-			 var retailPrice = Number(result.retailPrice);
+			/*  var retailPrice = Number(result.retailPrice);
 			 //PANTS追加増額率/100
 			 var additionalPantsRate = Number(result.additionalPantsRate)/100;
+			 var formulaPrice = retailPrice*additionalPantsRate; */
 			 
-			 var formulaPrice = retailPrice*additionalPantsRate;
+			 var formulaPrice = result.is3PiecePrice;
 			 var format = formatMoney(Number(formulaPrice),0,"￥");
 			 jQuery("#sparePants_Msg").html(format);
 		  }
@@ -4264,12 +4277,12 @@ function optionRetailPrice(result){
 			  var twoPants = jQuery(this).val();
 			  //2Pantsが有りの場合
 			  if(twoPants == "0009902"){
-				 //上代
+				 /* //上代
 				 var retailPrice = Number(result.retailPrice);
 				 //PANTS追加増額率/100
 				 var additionalPantsRate = Number(result.additionalPantsRate)/100;
-				 
-				 var formulaPrice = retailPrice*additionalPantsRate;
+				 var formulaPrice = retailPrice*additionalPantsRate; */
+				 var formulaPrice = result.is3PiecePrice;
 				 var format = formatMoney(Number(formulaPrice),0,"￥");
 				 jQuery("#sparePants_Msg").html(format);
 			  }
@@ -4365,11 +4378,6 @@ function allGoodsPrice(result){
 	threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 	
 	hasTwoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
-	
-	giletModel = jQuery("#giletModel option:selected").val();
-	
-	//フロント釦数 : oj_frontBtnCnt   0000102: 2つボタン  0000103: 1つボタン      0000105: ダブル6つボタン    
-	frontBtnCnt = jQuery("#oj_frontBtnCnt option:selected").val();
 	
 	//threePiece　　　	 0009901： 無し　0009902：有り　　
 	//hasTwoPants　　　　　　0009901： 無し　0009902：有り　　
@@ -5960,8 +5968,8 @@ function entryCheck(){
 		}
 	}
 
-	var corStoreCorrectionMemo = jQuery('#corStoreCorrectionMemo').val();
-	if(charactersCheck(corStoreCorrectionMemo)) {
+	var corStoreCorrectionMemoAgain = jQuery('#corStoreCorrectionMemoAgain').val();
+	if(charactersCheck(corStoreCorrectionMemoAgain)) {
 	  	appendAlert('errormssage', getMsg('msg120'));
 	    return false;
 	}else{

@@ -184,6 +184,23 @@ function charactersCheck(argVlaue) {
     	 return false;
     }
 }
+
+/**2019/9/25 
+ * 文字チェック 刺繍ネーム
+ * @param argVlaue パラメータ
+ * @returns true/false
+ */
+function embroideryNameCheck(argVlaue) {
+	var patrn = /(^$)|^[ a-z0-9A-Z!@&$():;.”?*#’\[\]\/-]+$/g;
+	
+	if (patrn.test(argVlaue)) {
+		   return true;
+    }else{
+    	 return false;
+    }
+}
+
+
 //function charactersCheck(argVlaue) {
 //	var patrn = /[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
 //	if (patrn.test(argVlaue)) {

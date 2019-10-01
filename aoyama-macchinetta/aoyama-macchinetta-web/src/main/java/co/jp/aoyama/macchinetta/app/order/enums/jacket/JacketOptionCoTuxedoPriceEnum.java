@@ -14,7 +14,7 @@ public enum JacketOptionCoTuxedoPriceEnum {
 	JK_Tuxedo_OPTION_CODE04("00004","getTjBackSpec","","setJkInnerClothRtPrice","tj_backSpec","","getJkInnerClothRtPrice"),//裏仕様
 	JK_Tuxedo_OPTION_CODE05("00005","getTjFort","","setJkDaibaRtPrice","tj_fort","","getJkDaibaRtPrice"),//台場
 	JK_Tuxedo_OPTION_CODE06("00006","getTjGlossFablic","","setJkLookClothRtPrice","tj_GlossFablic","","getJkLookClothRtPrice"),//拝見地
-	JK_Tuxedo_OPTION_CODE07("00007","getTjBackSpec","","setJkCollarInnerRtPrice","tj_backCollar_id","","getJkCollarInnerRtPrice"),//襟裏（ヒゲ）
+	JK_Tuxedo_OPTION_CODE07("00007","getTjBackCollar","","setJkCollarInnerRtPrice","tj_backCollar_id","","getJkCollarInnerRtPrice"),//襟裏（ヒゲ）
 	JK_Tuxedo_OPTION_CODE08("00008","getTjChainHange","","setJkCollarHangRtPrice","tj_chainHange_id","","getJkCollarHangRtPrice"),//襟吊
 	JK_Tuxedo_OPTION_CODE09("00009","getTjLapelWidth","","setJkLapelWidthRtPrice","tj_lapelWidth_id","","getJkLapelWidthRtPrice"),//ラペル幅
 	JK_Tuxedo_OPTION_CODE10("00010","getTjFlowerHole","","setJkFlowerHoleRtPrice","tj_flowerHole","","getJkFlowerHoleRtPrice"),//フラワーホール

@@ -48,4 +48,10 @@ public class TypeSizeOptimization implements Serializable{
 	public void setTypeSize2Outtack(String typeSize2Outtack) {
 		this.typeSize2Outtack = typeSize2Outtack;
 	}
+	@Override
+	public String toString() {
+		return "TypeSizeOptimization [adjustClass=" + adjustClass + ", typeSize=" + typeSize + ", typeSize1Intack="
+				+ typeSize1Intack + ", typeSize2Intack=" + typeSize2Intack + ", typeSize1Outtack=" + typeSize1Outtack
+				+ ", typeSize2Outtack=" + typeSize2Outtack + "]";
+	}
 }

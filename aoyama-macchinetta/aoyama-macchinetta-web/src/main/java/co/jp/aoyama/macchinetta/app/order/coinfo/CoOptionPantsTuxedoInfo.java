@@ -190,6 +190,8 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpBhColorPlaceMap;
     
+    private String tpBhAllColor;
+    
     //ボタンホール色指定糸色  フロント
     private String tpBhColor1;
     
@@ -230,6 +232,7 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
     
     private Map<String,String> tpByColorPlaceMap;
     
+    private String tpByAllColor;
     //ボタン付け糸指定糸色  フロント
     private String tpByColor1;
     
@@ -1270,6 +1273,22 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
 
 	public void setPtSideStripeWidthRtPrice(String ptSideStripeWidthRtPrice) {
 		this.ptSideStripeWidthRtPrice = ptSideStripeWidthRtPrice;
+	}
+
+	public String getTpBhAllColor() {
+		return tpBhAllColor;
+	}
+
+	public void setTpBhAllColor(String tpBhAllColor) {
+		this.tpBhAllColor = tpBhAllColor;
+	}
+
+	public String getTpByAllColor() {
+		return tpByAllColor;
+	}
+
+	public void setTpByAllColor(String tpByAllColor) {
+		this.tpByAllColor = tpByAllColor;
 	}
 
 	

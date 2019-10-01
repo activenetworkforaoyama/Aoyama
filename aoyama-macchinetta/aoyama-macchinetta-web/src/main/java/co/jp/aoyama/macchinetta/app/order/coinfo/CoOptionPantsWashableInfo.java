@@ -218,6 +218,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpAmfColorPlaceMap;
     
+    private String wpAmfAllColor;
     //AMF糸色  脇ポケット
     private String wpAmfColor1;
     
@@ -258,6 +259,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpBhColorPlaceMap;
     
+    private String wpBhAllColor;
     //ボタンホール色指定糸色  フロント
     private String wpBhColor1;
     
@@ -298,6 +300,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     
     private Map<String,String> wpByColorPlaceMap;
     
+    private String wpByAllColor;
     //ボタン付け糸指定糸色  フロント
     private String wpByColor1;
     
@@ -1546,6 +1549,30 @@ public class CoOptionPantsWashableInfo implements Serializable{
 
 	public void setPtAmfStitchRtPrice(String ptAmfStitchRtPrice) {
 		this.ptAmfStitchRtPrice = ptAmfStitchRtPrice;
+	}
+
+	public String getWpAmfAllColor() {
+		return wpAmfAllColor;
+	}
+
+	public void setWpAmfAllColor(String wpAmfAllColor) {
+		this.wpAmfAllColor = wpAmfAllColor;
+	}
+
+	public String getWpBhAllColor() {
+		return wpBhAllColor;
+	}
+
+	public void setWpBhAllColor(String wpBhAllColor) {
+		this.wpBhAllColor = wpBhAllColor;
+	}
+
+	public String getWpByAllColor() {
+		return wpByAllColor;
+	}
+
+	public void setWpByAllColor(String wpByAllColor) {
+		this.wpByAllColor = wpByAllColor;
 	}
     
 }

@@ -92,12 +92,11 @@ public class CoOptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogAmfColorPlaceMap;
 
+	private String ogAmfAllColor;
 	// AMF糸色 襟・ラペル・フロント
 	private String ogAmfColor1;
-
 	// AMF糸色 胸ポケット
 	private String ogAmfColor2;
-
 	// AMF糸色 腰ポケット
 	private String ogAmfColor3;
 
@@ -127,21 +126,17 @@ public class CoOptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogBhColorPlaceMap;
 
+	private String ogBhAllColor;
 	// ボタンホール色指定 フロント1
 	private String ogBhColor1;
-
 	// ボタンホール色指定 フロント2
 	private String ogBhColor2;
-
 	// ボタンホール色指定 フロント3
 	private String ogBhColor3;
-
 	// ボタンホール色指定 フロント4
 	private String ogBhColor4;
-
 	// ボタンホール色指定 フロント5
 	private String ogBhColor5;
-
 	// ボタンホール色指定 フロント6
 	private String ogBhColor6;
 
@@ -175,33 +170,25 @@ public class CoOptionGiletStandardInfo implements Serializable {
 
 	private Map<String, String> ogByColorPlaceMap;
 
+	private String ogByAllColor;
 	// ボタンホール色指定 フロント下前1
 	private String ogByColor1;
-
 	// ボタンホール色指定 フロント下前2
 	private String ogByColor2;
-
 	// ボタンホール色指定 フロント下前3
 	private String ogByColor3;
-
 	// ボタンホール色指定 フロント下前4
 	private String ogByColor4;
-
 	// ボタンホール色指定 フロント下前5
 	private String ogByColor5;
-
 	// ボタンホール色指定 フロント下前6
 	private String ogByColor6;
-
 	// ボタンホール色指定 フロント上前1
 	private String ogByColor7;
-
 	// ボタンホール色指定 フロント上前2
 	private String ogByColor8;
-
 	// ボタンホール色指定 フロント上前3
 	private String ogByColor9;
-
 	// ボタンホール色指定 フロント上前4
 	private String ogByColor10;
 
@@ -1151,6 +1138,30 @@ public class CoOptionGiletStandardInfo implements Serializable {
 
 	public void setOgByColorPlace(String ogByColorPlace) {
 		this.ogByColorPlace = ogByColorPlace;
+	}
+
+	public String getOgAmfAllColor() {
+		return ogAmfAllColor;
+	}
+
+	public void setOgAmfAllColor(String ogAmfAllColor) {
+		this.ogAmfAllColor = ogAmfAllColor;
+	}
+
+	public String getOgBhAllColor() {
+		return ogBhAllColor;
+	}
+
+	public void setOgBhAllColor(String ogBhAllColor) {
+		this.ogBhAllColor = ogBhAllColor;
+	}
+
+	public String getOgByAllColor() {
+		return ogByAllColor;
+	}
+
+	public void setOgByAllColor(String ogByAllColor) {
+		this.ogByAllColor = ogByAllColor;
 	}
 
 }

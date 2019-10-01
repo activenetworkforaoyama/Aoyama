@@ -20,9 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
+import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
 import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
+import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Maker;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
@@ -31,16 +34,20 @@ import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
 import co.jp.aoyama.macchinetta.domain.model.Shop;
 import co.jp.aoyama.macchinetta.domain.model.Stock;
+import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
+import co.jp.aoyama.macchinetta.domain.service.order.AdjustService;
 import co.jp.aoyama.macchinetta.domain.service.order.NextGenerationService;
 import co.jp.aoyama.macchinetta.domain.service.order.OptionBranchDeailService;
 import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
+import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
 import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 import co.jp.aoyama.macchinetta.domain.service.shop.ShopService;
 
 @Controller
 @RequestMapping("/orderCoConfirm")
+@TransactionTokenCheck("/orderCoConfirm")
 @SessionAttributes(value = {"orderCoForm"})
 public class OrderCoReconfirmController {
 	
@@ -59,10 +66,16 @@ public class OrderCoReconfirmController {
 	MeasuringService measuringService;
 	
 	@Inject
+	TypeSizeService typeSizeService;
+	
+	@Inject
 	OrderService orderService;
 	
 	@Inject
 	MakerService makerService;
+	
+	@Inject
+	AdjustService adjustService;
 	
 	@Inject
 	Mapper standardBeanMapper;
@@ -87,6 +100,7 @@ public class OrderCoReconfirmController {
 	}
 
 	@RequestMapping(value = "orderCoReForm")
+	@TransactionTokenCheck(value = "create",type = TransactionTokenType.BEGIN)
 	public String toOrderCoReForm(OrderCoForm orderCoForm,Model model,Map<String, Map<String, Integer>> map) {
 		String status = orderCoForm.getStatus();
 		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
@@ -101,13 +115,11 @@ public class OrderCoReconfirmController {
 				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
 			}
 		}
-		Map<String, Integer> retailPriceRelatedProjects = this.retailPriceRelatedCoProjects(orderCoForm);
 		OrderFindFabric findStock = this.findStock(orderCoForm);
 		String color = findStock.getColor();
 		String pattern = findStock.getPattern();
 		model.addAttribute("color",color);
 		model.addAttribute("pattern",pattern);
-		map.put("priceMap", retailPriceRelatedProjects);
 		//モデルダブル価格
 		Map<String, String> modelDoublePriceShow = orderCoHelper.modelDoublePriceShow(orderCoForm);
 		model.addAttribute("modelDoublePriceShow",modelDoublePriceShow);
@@ -1564,6 +1576,164 @@ public class OrderCoReconfirmController {
 		return selectCoMarginRate;
 	}
 	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	public List<Adjust> getAdjustByItem(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String itemCode = orderCoForm.getProductItem();
+		List<Adjust> adjustList = adjustService.getAdjustByItem(orderPattern,itemCode);
+		return adjustList;
+	}
+	
+	/**
+	 * JACKETの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoJkTypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String productCategory = orderCoForm.getProductCategory();
+		String subItemCode = "02";
+		String modelCode = null;
+		if("9000101".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionJacketStandardInfo().getOjJacketModel();	
+		}
+		else if("9000102".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionJacketTuxedoInfo().getTjJacketModel();
+		}
+		else if("9000103".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionJacketWashableInfo().getWjJacketModel();
+		}
+		 
+		String figure = orderCoForm.getCoAdjustJacketStandardInfo().getSizeFigure();
+		String number = orderCoForm.getCoAdjustJacketStandardInfo().getSizeNumber();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coJkTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coJkTypeSizeOptimization;
+	}
+
+	/**
+	 *GILETの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoGlTypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String productCategory = orderCoForm.getProductCategory();
+		String subItemCode = "04";
+		String modelCode = null;
+		if("9000101".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel();	
+		}
+		else if("9000102".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel();
+		}
+		else if("9000103".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel();
+		}
+		 
+		String figure = orderCoForm.getCoAdjustGiletStandardInfo().getSizeFigure();
+		String number = orderCoForm.getCoAdjustGiletStandardInfo().getSizeNumber();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coGlTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coGlTypeSizeOptimization;
+	}
+	
+	/**
+	 *PANTSの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoPtTypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String productCategory = orderCoForm.getProductCategory();
+		String subItemCode = "03";
+		String modelCode = null;
+		if("9000101".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPantsStandardInfo().getOpPantsModel();	
+		}
+		else if("9000102".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPantsTuxedoInfo().getTpPantsModel();
+		}
+		else if("9000103".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPantsWashableInfo().getWpPantsModel();
+		}
+		 
+		String figure = orderCoForm.getCoAdjustPantsStandardInfo().getSizeFigure();
+		String number = orderCoForm.getCoAdjustPantsStandardInfo().getSizeNumber();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coPtTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coPtTypeSizeOptimization;
+	}
+	
+	/**
+	 *2PANTSの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoPt2TypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String productCategory = orderCoForm.getProductCategory();
+		String subItemCode = "07";
+		String modelCode = null;
+		if("9000101".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPants2StandardInfo().getOp2PantsModel();	
+		}
+		else if("9000102".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2PantsModel();
+		}
+		else if("9000103".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPants2WashableInfo().getWp2PantsModel();
+		}
+		 
+		String figure = orderCoForm.getCoAdjustPants2StandardInfo().getSizeFigure();
+		String number = orderCoForm.getCoAdjustPants2StandardInfo().getSizeNumber();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coPt2TypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coPt2TypeSizeOptimization;
+	}
+	
+	/**
+	 *SHIRTの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoStTypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String subItemCode = "05";
+		String modelCode = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();	
+		String figure = null;
+		String number = orderCoForm.getCoAdjustShirtStandardInfo().getCorStSize();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coStTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coStTypeSizeOptimization;
+	}
+	
+	/**
+	 *COATの標準値取得
+	 * @param orderCoForm
+	 * @return
+	 */
+	public List<TypeSizeOptimization> getCoCtTypeSizeOptimization(OrderCoForm orderCoForm) {
+		String orderPattern = orderCoForm.getOrderPattern();
+		String subItemCode = "06";
+		String modelCode = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();	
+		String figure = null;
+		String number = orderCoForm.getCoAdjustCoatStandardInfo().getCorCtSize();
+		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+				figure, number);
+		List<TypeSizeOptimization> coCtTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		return coCtTypeSizeOptimization;
+	}
 	
 	/**
 	 * 
@@ -1573,7 +1743,8 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	@RequestMapping(value = "orderCoReFormInDb", method = RequestMethod.POST)
-	public String orderCoReFormInDb(OrderCoForm orderCoForm,SessionStatus sessionStatus,Model model) {
+	@TransactionTokenCheck(value = "create",type = TransactionTokenType.IN)
+	public String orderCoReFormInDb(OrderCoForm orderCoForm,SessionStatus sessionStatus,Model model,Map<String, Map<String, Integer>> map) {
 		
 		Order order = new Order();
 		Measuring measuring = new Measuring();
@@ -1597,6 +1768,7 @@ public class OrderCoReconfirmController {
 			List<NextGenerationPrice> selectCoBasicNextGenerationPrice = this.selectCoBasicNextGenerationPrice(orderCoForm);
 			NextGenerationPrice selectCoMarginRate = this.selectCoMarginRate(orderCoForm);
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedCoProjects(orderCoForm);
+			List<Adjust> adjustByItem = this.getAdjustByItem(orderCoForm);
 			//JACKETのステッチ箇所変更下代付属
 			List<NextGenerationPrice> selectJkOjInsidePktPlaceList = this.selectJkOjInsidePktPlaceList(orderCoForm);
 			//JACKETのステッチ箇所変更下代工賃
@@ -1676,10 +1848,6 @@ public class OrderCoReconfirmController {
 				
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
 
-				//商品情報_３Piece上代
-				orderCoHelper.order3PiecePrice(orderCoForm, order,retailPriceRelatedMap);
-				//スペアパンツ上代
-				orderCoHelper.orderSparePantsPrice(orderCoForm, order,retailPriceRelatedMap);
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
 				orderCoHelper.getGl3PieceNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
 				//商品情報_スペアパンツ_下代工賃と下代付属をデータベースに入力する
@@ -2045,10 +2213,6 @@ public class OrderCoReconfirmController {
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
 				List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderCoForm);
 				
-				//商品情報_３Piece上代
-				orderCoHelper.order3PiecePrice(orderCoForm, order,retailPriceRelatedMap);
-				//スペアパンツ上代
-				orderCoHelper.orderSparePantsPrice(orderCoForm, order,retailPriceRelatedMap);
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
 				orderCoHelper.getGl3PieceNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
 				//商品情報_スペアパンツ_下代工賃と下代付属をデータベースに入力する
@@ -2365,10 +2529,6 @@ public class OrderCoReconfirmController {
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
 				List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderCoForm);
 				
-				//商品情報_３Piece上代
-				orderCoHelper.order3PiecePrice(orderCoForm, order,retailPriceRelatedMap);
-				//スペアパンツ上代
-				orderCoHelper.orderSparePantsPrice(orderCoForm, order,retailPriceRelatedMap);
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
 				orderCoHelper.getGl3PieceNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
 				//商品情報_スペアパンツ_下代工賃と下代付属をデータベースに入力する
@@ -2695,6 +2855,19 @@ public class OrderCoReconfirmController {
 			//更新の場合
 			else {
 				try {
+					List<TypeSizeOptimization> coJkTypeSizeOptimization = this.getCoJkTypeSizeOptimization(orderCoForm);
+					List<TypeSizeOptimization> coGlTypeSizeOptimization = this.getCoGlTypeSizeOptimization(orderCoForm);
+					List<TypeSizeOptimization> coPtTypeSizeOptimization = this.getCoPtTypeSizeOptimization(orderCoForm);
+					List<TypeSizeOptimization> coPt2TypeSizeOptimization = this.getCoPt2TypeSizeOptimization(orderCoForm);
+					List<TypeSizeOptimization> coStTypeSizeOptimization = this.getCoStTypeSizeOptimization(orderCoForm);
+					List<TypeSizeOptimization> coCtTypeSizeOptimization = this.getCoCtTypeSizeOptimization(orderCoForm);
+					// 補正標準値
+					orderCoHelper.checkBasicValue(order);
+					// 補正絶対値
+					orderCoHelper.checkAbsolutelyAdjust(adjustByItem, order, orderCoForm,
+							coJkTypeSizeOptimization, coGlTypeSizeOptimization, coPtTypeSizeOptimization,
+							coPt2TypeSizeOptimization, coStTypeSizeOptimization, coCtTypeSizeOptimization);
+					
 					//生地品番
 					String fabricNo = orderCoForm.getProductFabricNo();
 					//商品情報_ITEM(ログ用)
@@ -2734,6 +2907,10 @@ public class OrderCoReconfirmController {
 							model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
 						}
 					}
+					
+					model.addAttribute("resultMessages", e.getResultMessages());
+					this.toOrderCoReForm(orderCoForm, model, map);
+					return "order/orderCoReconfirmForm";
 				}
 			}
 			if("".equals(orderCoForm.getStatus()) || "T0".equals(orderCoForm.getStatus()) || "T1".equals(orderCoForm.getStatus())) {

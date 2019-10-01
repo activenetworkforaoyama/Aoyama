@@ -26,7 +26,7 @@ public enum JacketOptionCoStandardPriceEnum {
 	JK_Standard_OPTION_CODE17("00017","getOjManica","","setJkManicaRtPrice","manica_id","","getJkManicaRtPrice"),//マニカ
 	JK_Standard_OPTION_CODE18("00018","getOjSleeveBtnType","","setJkSleeveBtnRtPrice","sleeveBtnType_id","","getJkSleeveBtnRtPrice"),//袖釦
 	JK_Standard_OPTION_CODE19("00019","getOjCuffSpec","","setJkCuffRtPrice","cuffSpec_id","","getJkCuffRtPrice"),//袖口
-	JK_Standard_OPTION_CODE20("00020","getOjInsidePktPlace","","setJkInnerPktRtPrice","insidePktChange_id","","getJkInnerPktRtPrice"),//内ポケット変更
+	JK_Standard_OPTION_CODE20("00020","getOjInsidePktChange","","setJkInnerPktRtPrice","insidePktChange_id","","getJkInnerPktRtPrice"),//内ポケット変更
 	JK_Standard_OPTION_CODE22("00022","getOjBreastInnerPkt","","setJkRightInnerPktTypeRtPrice","breastInnerPkt_id","","getJkRightInnerPktTypeRtPrice"),//下前胸内ポケット仕様
 	JK_Standard_OPTION_CODE23("00023","getOjStitch","","setJkStitchTypeRtPrice","stitch_id","","getJkStitchTypeRtPrice"),//ステッチ種類
 	JK_Standard_OPTION_CODE24("00024","getOjStitchModify","","setJkStitchPlcRtPrice","stitchModify_id","","getJkStitchPlcRtPrice"),//ステッチ箇所変更

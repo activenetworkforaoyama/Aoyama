@@ -6,16 +6,26 @@
 //--------------------------------------------
 function initOptionGiletWashable() {
 
+	jQuery('#wg_giletModel').attr("oldGlModel",jQuery('#wg_giletModel').val());
 	// GILETモデル
 	jQuery('#wg_giletModel').change(function(){
-		// 選択中のGILETモデルを取得
-		var giletModel = jQuery('#wg_giletModel').val();
-
-		if (giletModel == "選択" || !giletModelDefaultList[giletModel]) {
-			// 未選択状態、または想定外の場合はスルー
-			return;
+		var giletModel = jQuery(this).val();
+		var giletOldModel = jQuery('#wg_giletModel').attr("oldGlModel");
+		if(giletModel != giletOldModel){
+			jQuery("#giletFlag").val("0");
+		}else{
+			jQuery("#giletFlag").val("1");
 		}
-
+		jQuery('#wg_giletModel').attr("oldGlModel",jQuery('#wg_giletModel').val());
+		var giletFlag = jQuery('#giletFlag').val();
+		if (giletFlag == "0") {
+			// 選択されたGiletモデルを取得
+			if (giletModel == '') {
+				// 未選択時は何もしない
+				return;
+			}
+		}
+	
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var itemCode = "";
 		var item = jQuery("#item").val();
@@ -77,7 +87,7 @@ function initOptionGiletWashable() {
 
 		// バックベルト
 		var beforeBackBelt = jQuery('#wg_backBelt').val();
-		jQuery('#wg_backBelt').val(giletModelDefaultList[giletModel]["backBelt"]);
+		jQuery('#wg_backBelt').val(giletModelDefaultList[giletModel]["og_backBelt"]);
 
 		// ボタンホール色指定箇所の有効/無効を制御
 		ctrlWgBhColorPlace();

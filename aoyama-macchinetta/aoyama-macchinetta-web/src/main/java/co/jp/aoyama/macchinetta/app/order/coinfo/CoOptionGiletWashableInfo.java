@@ -47,6 +47,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glStitchPlcRtPrice;
 
 	// ステッチ変更箇所
+	private String wgStitchModifyPlace;
 	private String wgStitchModifyPlace1;
 	private String wgStitchModifyPlace2;
 	private String wgStitchModifyPlace3;
@@ -61,6 +62,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glDblstitchPlcRtPrice;
 	
 	//ダブルステッチ変更箇所
+	private String wgDStitchModifyPlace;
 	private String wgDStitchModifyPlace1;
 	private String wgDStitchModifyPlace2;
 	private String wgDStitchModifyPlace3;
@@ -80,18 +82,18 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgAmfColorPlaceAllMap;
 
 	// AMF色指定箇所
+	private String wgAmfColorPlace;
 	private String wgAmfColorPlace1;
 	private String wgAmfColorPlace2;
 	private String wgAmfColorPlace3;
 	
 	private Map<String, String> wgAmfColorPlaceMap;
 
+	private String wgAllAmfColor;
 	// AMF糸色 襟・ラペル・フロント
 	private String wgAmfColor1;
-
 	// AMF糸色 胸ポケット
 	private String wgAmfColor2;
-
 	// AMF糸色 腰ポケット
 	private String wgAmfColor3;
 
@@ -111,6 +113,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgBhColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
+	private String wgBhColorPlace;
 	private String wgBhColorPlace1;
 	private String wgBhColorPlace2;
 	private String wgBhColorPlace3;
@@ -120,21 +123,17 @@ public class CoOptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgBhColorPlaceMap;
 
+	private String wgAllBhColor;
 	// ボタンホール色指定 フロント1
 	private String wgBhColor1;
-
 	// ボタンホール色指定 フロント2
 	private String wgBhColor2;
-
 	// ボタンホール色指定 フロント3
 	private String wgBhColor3;
-
 	// ボタンホール色指定 フロント4
 	private String wgBhColor4;
-
 	// ボタンホール色指定 フロント5
 	private String wgBhColor5;
-
 	// ボタンホール色指定 フロント6
 	private String wgBhColor6;
 
@@ -154,6 +153,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgByColorPlaceAllMap;
 
 	// ボタンホール色指定 箇所
+	private String wgByColorPlace;
 	private String wgByColorPlace1;
 	private String wgByColorPlace2;
 	private String wgByColorPlace3;
@@ -167,33 +167,25 @@ public class CoOptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgByColorPlaceMap;
 
+	private String wgAllByColor;
 	// ボタンホール色指定 フロント下前1
 	private String wgByColor1;
-
 	// ボタンホール色指定 フロント下前2
 	private String wgByColor2;
-
 	// ボタンホール色指定 フロント下前3
 	private String wgByColor3;
-
 	// ボタンホール色指定 フロント下前4
 	private String wgByColor4;
-
 	// ボタンホール色指定 フロント下前5
 	private String wgByColor5;
-
 	// ボタンホール色指定 フロント下前6
 	private String wgByColor6;
-
 	// ボタンホール色指定 フロント上前1
 	private String wgByColor7;
-
 	// ボタンホール色指定 フロント上前2
 	private String wgByColor8;
-
 	// ボタンホール色指定 フロント上前3
 	private String wgByColor9;
-
 	// ボタンホール色指定 フロント上前4
 	private String wgByColor10;
 
@@ -1082,6 +1074,70 @@ public class CoOptionGiletWashableInfo implements Serializable {
 
 	public void setWgByColorPlace10(String wgByColorPlace10) {
 		this.wgByColorPlace10 = wgByColorPlace10;
+	}
+
+	public String getWgStitchModifyPlace() {
+		return wgStitchModifyPlace;
+	}
+
+	public void setWgStitchModifyPlace(String wgStitchModifyPlace) {
+		this.wgStitchModifyPlace = wgStitchModifyPlace;
+	}
+
+	public String getWgDStitchModifyPlace() {
+		return wgDStitchModifyPlace;
+	}
+
+	public void setWgDStitchModifyPlace(String wgDStitchModifyPlace) {
+		this.wgDStitchModifyPlace = wgDStitchModifyPlace;
+	}
+
+	public String getWgAmfColorPlace() {
+		return wgAmfColorPlace;
+	}
+
+	public void setWgAmfColorPlace(String wgAmfColorPlace) {
+		this.wgAmfColorPlace = wgAmfColorPlace;
+	}
+
+	public String getWgBhColorPlace() {
+		return wgBhColorPlace;
+	}
+
+	public void setWgBhColorPlace(String wgBhColorPlace) {
+		this.wgBhColorPlace = wgBhColorPlace;
+	}
+
+	public String getWgByColorPlace() {
+		return wgByColorPlace;
+	}
+
+	public void setWgByColorPlace(String wgByColorPlace) {
+		this.wgByColorPlace = wgByColorPlace;
+	}
+
+	public String getWgAllAmfColor() {
+		return wgAllAmfColor;
+	}
+
+	public void setWgAllAmfColor(String wgAllAmfColor) {
+		this.wgAllAmfColor = wgAllAmfColor;
+	}
+
+	public String getWgAllBhColor() {
+		return wgAllBhColor;
+	}
+
+	public void setWgAllBhColor(String wgAllBhColor) {
+		this.wgAllBhColor = wgAllBhColor;
+	}
+
+	public String getWgAllByColor() {
+		return wgAllByColor;
+	}
+
+	public void setWgAllByColor(String wgAllByColor) {
+		this.wgAllByColor = wgAllByColor;
 	}
 	
 }

@@ -864,11 +864,14 @@ function changeStitch() {
 
 	// AMFステッチが有りの場合はダブルステッチを有効化する
 	//有り(AMFステッチ):0002301
-	if (stitchValue == '0002301') {
-		jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]').prop("disabled", false);
+	if (stitchValue != '0002304') {
+		jQuery('input[id="dStitchModify_id2"]').prop("disabled", false);
+		//jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]').prop("disabled", false);
 	} else {
-		jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]').prop("disabled", true);
+		//jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]').prop("disabled", true);
+		jQuery('input[id="dStitchModify_id2"]').prop("disabled", true);
 		jQuery('input[id="dStitchModify_id1"]').prop("checked", true);
+		jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]:checked').change();
 	}
 }
 

@@ -160,6 +160,10 @@ public class OrderFindFabric implements Serializable {
 	
 	private Boolean shModelCheck; 
 	
+	private String is3PiecePrice;
+	
+	private String is2PantsPrice;
+	
 //	private String suit2PGoodsPrice;
 //	
 //	private String jkSingleGoodsPrice;
@@ -619,6 +623,22 @@ public class OrderFindFabric implements Serializable {
 
 	public void setGlDoublePrice(String glDoublePrice) {
 		this.glDoublePrice = glDoublePrice;
+	}
+
+	public String getIs3PiecePrice() {
+		return is3PiecePrice;
+	}
+
+	public void setIs3PiecePrice(String is3PiecePrice) {
+		this.is3PiecePrice = is3PiecePrice;
+	}
+
+	public String getIs2PantsPrice() {
+		return is2PantsPrice;
+	}
+
+	public void setIs2PantsPrice(String is2PantsPrice) {
+		this.is2PantsPrice = is2PantsPrice;
 	}
 	
 }

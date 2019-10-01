@@ -686,7 +686,11 @@ public class OrderListController {
 			DecimalFormat df=new DecimalFormat("0000");
 			
 			for (int i = 0; i < headerTitleEnum.length; i++) {
-				title[i] = HeaderTitleEnum.getValue(df.format(i)) + ",";
+				if(i == (headerTitleEnum.length - 1)) {
+					title[i] = HeaderTitleEnum.getValue(df.format(i));
+				}else {
+					title[i] = HeaderTitleEnum.getValue(df.format(i)) + ",";
+				}
 			}
 			
 			String[] content = new String[orderList.size()];
