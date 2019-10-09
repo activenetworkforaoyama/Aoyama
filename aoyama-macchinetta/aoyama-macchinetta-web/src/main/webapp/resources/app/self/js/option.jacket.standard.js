@@ -96,9 +96,27 @@ function initOptionJacketStandard() {
 			// ダブルステッチ変更箇所の制御
 			ctrlDStitchModify();
 			ctrlDStitchModifyPlace();
+			
+			//ステッチ箇所変更
+			jQuery("#stitchModify_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojStitchModify"]').change();
+			
+			//ダブルステッチ変更
+			jQuery("#dStitchModify_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]').change();
+			
+			//AMF色指定
+			jQuery("#amfColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojAmfColor"]').change();
+			
+			//ボタンホール色指定
+			jQuery("#bhColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojBhColor"]').change();
+			
+			//ボタン付け糸指定
+			jQuery("#byColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojByColor"]').change();
 		}
-		
-		
 	});
 
 	// フロント釦数変更時の制御

@@ -9570,9 +9570,8 @@ function imageCheck(){
 		}
 
 
-		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
-		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
-
+		var corJkBodyGrossMax = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax)));
+		var corJkBodyGrossMin = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin)));
 		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
             return false;
@@ -9580,9 +9579,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
-		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
-
+		var corJkWaistGrossMax = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax)));
+		var corJkWaistGrossMin = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin)));
 		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
             return false;
@@ -9590,8 +9588,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
-		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+		var corJkRightsleeveGrossMax = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax)));
+		var corJkRightsleeveGrossMin = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin)));
 
 		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
@@ -9600,8 +9598,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
-		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+		var corJkLeftsleeveGrossMax = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax)));
+		var corJkLeftsleeveGrossMin = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin)));
 
 		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
@@ -9691,8 +9689,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+		var corPtWaistGrossMax = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax)));
+		var corPtWaistGrossMin = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin)));
 
 		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
@@ -9701,18 +9699,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+		var corPtThighGrossMax = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax)));
+		var corPtThighGrossMin = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin)));
 
-		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+		if(corPtThighGross<corPtThighGrossMin || corPtThighGross>corPtThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
-		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+		var corPtHemwidthGrossMax = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax)));
+		var corPtHemwidthGrossMin = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin)));
 
 		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
@@ -9796,8 +9794,8 @@ function imageCheck(){
 		}
 
 
-		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
-		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+		var corJkBodyGrossMax = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax)));
+		var corJkBodyGrossMin = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin)));
 
 		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
@@ -9806,8 +9804,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
-		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+		var corJkWaistGrossMax = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax)));
+		var corJkWaistGrossMin = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin)));
 
 		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
@@ -9816,8 +9814,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
-		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+		var corJkRightsleeveGrossMax = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax)));
+		var corJkRightsleeveGrossMin = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin)));
 
 		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
@@ -9826,8 +9824,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
-		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+		var corJkLeftsleeveGrossMax = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax)));
+		var corJkLeftsleeveGrossMin = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin)));
 
 		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
@@ -9917,8 +9915,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+		var corPtWaistGrossMax = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax)));
+		var corPtWaistGrossMin = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin)));
 
 		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
@@ -9927,18 +9925,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+		var corPtThighGrossMax = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax)));
+		var corPtThighGrossMin = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin)));
 
-		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+		if(corPtThighGross<corPtThighGrossMin || corPtThighGross>corPtThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
-		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+		var corPtHemwidthGrossMax = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax)));
+		var corPtHemwidthGrossMin = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin)));
 
 		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
@@ -10039,8 +10037,8 @@ function imageCheck(){
 		}
 
 
-		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
-		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+		var corJkBodyGrossMax = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax)));
+		var corJkBodyGrossMin = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin)));
 
 		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
@@ -10049,8 +10047,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
-		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+		var corJkWaistGrossMax = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax)));
+		var corJkWaistGrossMin = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin)));
 
 		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
@@ -10059,8 +10057,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
-		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+		var corJkRightsleeveGrossMax = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax)));
+		var corJkRightsleeveGrossMin = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin)));
 
 		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
@@ -10069,8 +10067,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
-		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+		var corJkLeftsleeveGrossMax = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax)));
+		var corJkLeftsleeveGrossMin = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin)));
 
 		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
@@ -10160,8 +10158,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+		var corPtWaistGrossMax = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax)));
+		var corPtWaistGrossMin = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin)));
 
 		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
@@ -10170,18 +10168,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+		var corPtThighGrossMax = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax)));
+		var corPtThighGrossMin = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin)));
 
-		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+		if(corPtThighGross<corPtThighGrossMin || corPtThighGross>corPtThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
-		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+		var corPtHemwidthGrossMax = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax)));
+		var corPtHemwidthGrossMin = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin)));
 
 		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
@@ -10265,8 +10263,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2WaistGrossMax = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax);
-		var corPt2WaistGrossMin = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin);
+		var corPt2WaistGrossMax = keepFloatPrecision((parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax)));
+		var corPt2WaistGrossMin = keepFloatPrecision((parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin)));
 
 		if(corPt2WaistGross<corPt2WaistGrossMin || corPt2WaistGross>corPt2WaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ウエスト修正'));
@@ -10275,8 +10273,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2ThighGrossMax = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax);
-		var corPt2ThighGrossMin = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin);
+		var corPt2ThighGrossMax = keepFloatPrecision((parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax)));
+		var corPt2ThighGrossMin = keepFloatPrecision((parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin)));
 
 		if(corPt2ThighGross<corPt2ThighGrossMin || corPt2ThighGross>corPt2ThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ワタリ幅修正'));
@@ -10285,8 +10283,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2HemwidthGrossMax = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax);
-		var corPt2HemwidthGrossMin = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin);
+		var corPt2HemwidthGrossMax = keepFloatPrecision((parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax)));
+		var corPt2HemwidthGrossMin = keepFloatPrecision((parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin)));
 
 		if(corPt2HemwidthGross<corPt2HemwidthGrossMin || corPt2HemwidthGross>corPt2HemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）裾幅'));
@@ -10369,8 +10367,8 @@ function imageCheck(){
 		}
 
 
-		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
-		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+		var corJkBodyGrossMax = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax)));
+		var corJkBodyGrossMin = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin)));
 
 		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
@@ -10379,9 +10377,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
-		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
-
+		var corJkWaistGrossMax = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax)));
+		var corJkWaistGrossMin = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin)));
 		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
             return false;
@@ -10389,8 +10386,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
-		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+		var corJkRightsleeveGrossMax = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax)));
+		var corJkRightsleeveGrossMin = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin)));
 
 		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
@@ -10399,8 +10396,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
-		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+		var corJkLeftsleeveGrossMax = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax)));
+		var corJkLeftsleeveGrossMin = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin)));
 
 		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
@@ -10492,8 +10489,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+		var corPtWaistGrossMax = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax)));
+		var corPtWaistGrossMin = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin)));
 
 		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
@@ -10502,18 +10499,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+		var corPtThighGrossMax = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax)));
+		var corPtThighGrossMin = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin)));
 
-		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+		if(corPtThighGross<corPtThighGrossMin || corPtThighGross>corPtThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
-		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+		var corPtHemwidthGrossMax = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax)));
+		var corPtHemwidthGrossMin = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin)));
 
 		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
@@ -10595,8 +10592,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2WaistGrossMax = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax);
-		var corPt2WaistGrossMin = parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin);
+		var corPt2WaistGrossMax = keepFloatPrecision((parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMax)));
+		var corPt2WaistGrossMin = keepFloatPrecision((parseFloat(corPt2WaistSize) + parseFloat(corPt2WaistRangeMin)));
 
 		if(corPt2WaistGross<corPt2WaistGrossMin || corPt2WaistGross>corPt2WaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ウエスト修正'));
@@ -10605,18 +10602,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2ThighGrossMax = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax);
-		var corPt2ThighGrossMin = parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin);
+		var corPt2ThighGrossMax = keepFloatPrecision((parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMax)));
+		var corPt2ThighGrossMin = keepFloatPrecision((parseFloat(corPt2ThighSize) + parseFloat(corPt2ThighRangeMin)));
 
-		if(corPt2ThighGross<corPt2ThighGrossMin || corPt2ThighGross>corPt2ThighGrossMax){
+		if(corPt2ThighGross<corPt2ThighGrossMin ||corPt2ThighGross>corPt2ThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）ワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPt2HemwidthGrossMax = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax);
-		var corPt2HemwidthGrossMin = parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin);
+		var corPt2HemwidthGrossMax = keepFloatPrecision((parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMax)));
+		var corPt2HemwidthGrossMin = keepFloatPrecision((parseFloat(corPt2HemwidthSize) + parseFloat(corPt2HemwidthRangeMin)));
 
 		if(corPt2HemwidthGross<corPt2HemwidthGrossMin || corPt2HemwidthGross>corPt2HemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（2本目）裾幅'));
@@ -10716,18 +10713,18 @@ function imageCheck(){
 		}
 
 
-		var corJkBodyGrossMax = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax);
-		var corJkBodyGrossMin = parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin);
+		var corJkBodyGrossMax = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMax)));
+		var corJkBodyGrossMin = keepFloatPrecision((parseFloat(corJkBodySize) + parseFloat(corJkBodyRangeMin)));
 
-		if(corJkBodyGross<corJkBodyGrossMin || corJkBodyGross>corJkBodyGrossMax){
+		if(corJkBodyGross<corJkBodyGrossMin ||corJkBodyGross>corJkBodyGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの着丈修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corJkWaistGrossMax = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax);
-		var corJkWaistGrossMin = parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin);
+		var corJkWaistGrossMax = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMax)));
+		var corJkWaistGrossMin = keepFloatPrecision((parseFloat(corJkWaistSize) + parseFloat(corJkWaistRangeMin)));
 
 		if(corJkWaistGross<corJkWaistGrossMin || corJkWaistGross>corJkWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETのウエスト修正'));
@@ -10736,18 +10733,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corJkRightsleeveGrossMax = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax);
-		var corJkRightsleeveGrossMin = parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin);
+		var corJkRightsleeveGrossMax = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMax)));
+		var corJkRightsleeveGrossMin = keepFloatPrecision((parseFloat(corJkRightsleeveSize) + parseFloat(corJkRightsleeveRangeMin)));
 
-		if(corJkRightsleeveGross<corJkRightsleeveGrossMin || corJkRightsleeveGross>corJkRightsleeveGrossMax){
+		if(corJkRightsleeveGross<corJkRightsleeveGrossMin ||corJkRightsleeveGross>corJkRightsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈右修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corJkLeftsleeveGrossMax = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax);
-		var corJkLeftsleeveGrossMin = parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin);
+		var corJkLeftsleeveGrossMax = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMax)));
+		var corJkLeftsleeveGrossMin = keepFloatPrecision((parseFloat(corJkLeftsleeveSize) + parseFloat(corJkLeftsleeveRangeMin)));
 
 		if(corJkLeftsleeveGross<corJkLeftsleeveGrossMin || corJkLeftsleeveGross>corJkLeftsleeveGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'JACKETの袖丈左修正'));
@@ -10839,8 +10836,8 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin);
+		var corPtWaistGrossMax = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMax)));
+		var corPtWaistGrossMin = keepFloatPrecision((parseFloat(corPtWaistSize) + parseFloat(corPtWaistRangeMin)));
 
 		if(corPtWaistGross<corPtWaistGrossMin || corPtWaistGross>corPtWaistGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のウエスト修正'));
@@ -10849,18 +10846,18 @@ function imageCheck(){
 			appendAlertDel('errormssage');
 		}
 
-		var corPtWaistGrossMax = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax);
-		var corPtWaistGrossMin = parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin);
+		var corPtThighGrossMax = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMax)));
+		var corPtThighGrossMin = keepFloatPrecision((parseFloat(corPtThighSize) + parseFloat(corPtThighRangeMin)));
 
-		if(corPtThighGross<corPtWaistGrossMin || corPtThighGross>corPtWaistGrossMax){
+		if(corPtThighGross<corPtThighGrossMin || corPtThighGross>corPtThighGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）のワタリ幅修正'));
             return false;
 		}else{
 			appendAlertDel('errormssage');
 		}
 
-		var corPtHemwidthGrossMax = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax);
-		var corPtHemwidthGrossMin = parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin);
+		var corPtHemwidthGrossMax = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMax)));
+		var corPtHemwidthGrossMin = keepFloatPrecision((parseFloat(corPtHemwidthSize) + parseFloat(corPtHemwidthRangeMin)));
 
 		if(corPtHemwidthGross<corPtHemwidthGrossMin || corPtHemwidthGross>corPtHemwidthGrossMax){
 			appendAlert('errormssage', getMsgByOneArg('msg136', 'PANTS（1本目）の裾幅'));
@@ -12861,6 +12858,10 @@ function colorSet(item,color){
 			
 		 }
 	}
+}
+
+function keepFloatPrecision(target){
+	return Math.floor((parseFloat(target)*10))/10;
 }
 
 if (document.readyState=="complete")  

@@ -40,6 +40,63 @@ public class CoJakcetHelper {
 				 messages.add("E031", "JACKET モデル");
 				 jacketFlag = true;
 			}
+			//内ポケット変更
+			String ojInsidePktChange = coOptionJacketStandardInfo.getOjInsidePktChange();
+			if(OptionCodeKeys.JK_0002002.equals(ojInsidePktChange)) {
+				String ojInsidePktPlace1 = coOptionJacketStandardInfo.getOjInsidePktPlace1();
+				String ojInsidePktPlace2 = coOptionJacketStandardInfo.getOjInsidePktPlace2();
+				String ojInsidePktPlace3 = coOptionJacketStandardInfo.getOjInsidePktPlace3();
+				String ojInsidePktPlace4 = coOptionJacketStandardInfo.getOjInsidePktPlace4();
+				if (BaseCheckUtil.isEmpty(ojInsidePktPlace1) && BaseCheckUtil.isEmpty(ojInsidePktPlace2)
+						&& BaseCheckUtil.isEmpty(ojInsidePktPlace3) && BaseCheckUtil.isEmpty(ojInsidePktPlace4)) {
+					messages.add("E033", "内ポケット変更");
+					jacketFlag = true;
+				}
+			}
+			
+			//ステッチ箇所変更
+			String ojStitchModify = coOptionJacketStandardInfo.getOjStitchModify();
+			if(OptionCodeKeys.JK_0002402.equals(ojStitchModify)) {
+				String ojStitchModifyPlace1 = coOptionJacketStandardInfo.getOjStitchModifyPlace1();
+				String ojStitchModifyPlace2 = coOptionJacketStandardInfo.getOjStitchModifyPlace2();
+				String ojStitchModifyPlace3 = coOptionJacketStandardInfo.getOjStitchModifyPlace3();
+				String ojStitchModifyPlace4 = coOptionJacketStandardInfo.getOjStitchModifyPlace4();
+				String ojStitchModifyPlace5 = coOptionJacketStandardInfo.getOjStitchModifyPlace5();
+				String ojStitchModifyPlace6 = coOptionJacketStandardInfo.getOjStitchModifyPlace6();
+				String ojStitchModifyPlace7 = coOptionJacketStandardInfo.getOjStitchModifyPlace7();
+				String ojStitchModifyPlace8 = coOptionJacketStandardInfo.getOjStitchModifyPlace8();
+				String ojStitchModifyPlace9 = coOptionJacketStandardInfo.getOjStitchModifyPlace9();
+				
+				if (BaseCheckUtil.isEmpty(ojStitchModifyPlace1) && BaseCheckUtil.isEmpty(ojStitchModifyPlace2)
+						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace3) && BaseCheckUtil.isEmpty(ojStitchModifyPlace4)
+						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace5) && BaseCheckUtil.isEmpty(ojStitchModifyPlace6)
+						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace7) && BaseCheckUtil.isEmpty(ojStitchModifyPlace8)
+						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace9)) {
+					messages.add("E033", "ステッチ箇所変更");
+					jacketFlag = true;
+				}
+			}
+			
+			//ダブルステッチ変更
+			String ojDStitchModify = coOptionJacketStandardInfo.getOjDStitchModify();
+			if(OptionCodeKeys.JK_0002602.equals(ojDStitchModify)) {
+				String ojDStitchModifyPlace1 = coOptionJacketStandardInfo.getOjDStitchModifyPlace1();
+				String ojDStitchModifyPlace2 = coOptionJacketStandardInfo.getOjDStitchModifyPlace2();
+				String ojDStitchModifyPlace3 = coOptionJacketStandardInfo.getOjDStitchModifyPlace3();
+				String ojDStitchModifyPlace4 = coOptionJacketStandardInfo.getOjDStitchModifyPlace4();
+				String ojDStitchModifyPlace5 = coOptionJacketStandardInfo.getOjDStitchModifyPlace5();
+				String ojDStitchModifyPlace6 = coOptionJacketStandardInfo.getOjDStitchModifyPlace6();
+				String ojDStitchModifyPlace7 = coOptionJacketStandardInfo.getOjDStitchModifyPlace7();
+				String ojDStitchModifyPlace8 = coOptionJacketStandardInfo.getOjDStitchModifyPlace8();
+				if (BaseCheckUtil.isEmpty(ojDStitchModifyPlace1) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace2)
+						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace3) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace4)
+						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace5) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace6)
+						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace7) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace8)) {
+					messages.add("E033", "ダブルステッチ変更");
+					jacketFlag = true;
+				}
+			}
+			
 			//AMF色指定
 			String ojAmfColor = coOptionJacketStandardInfo.getOjAmfColor();
 			if(OptionCodeKeys.JK_0002802.equals(ojAmfColor)) {
@@ -342,6 +399,49 @@ public class CoJakcetHelper {
 			if("".equals(wjJacketModel)  ||  null == wjJacketModel) {
 				 messages.add("E031", "JACKET モデル");
 				 jacketFlag = true;
+			}
+			
+			//ステッチ箇所変更
+			String wjStitchModify = coOptionJacketWashableInfo.getWjStitchModify();
+			if(OptionCodeKeys.JK_0002402.equals(wjStitchModify)) {
+				String wjStitchModifyPlace1 = coOptionJacketWashableInfo.getWjStitchModifyPlace1();
+				String wjStitchModifyPlace2 = coOptionJacketWashableInfo.getWjStitchModifyPlace2();
+				String wjStitchModifyPlace3 = coOptionJacketWashableInfo.getWjStitchModifyPlace3();
+				String wjStitchModifyPlace4 = coOptionJacketWashableInfo.getWjStitchModifyPlace4();
+				String wjStitchModifyPlace5 = coOptionJacketWashableInfo.getWjStitchModifyPlace5();
+				String wjStitchModifyPlace6 = coOptionJacketWashableInfo.getWjStitchModifyPlace6();
+				String wjStitchModifyPlace7 = coOptionJacketWashableInfo.getWjStitchModifyPlace7();
+				String wjStitchModifyPlace8 = coOptionJacketWashableInfo.getWjStitchModifyPlace8();
+				String wjStitchModifyPlace9 = coOptionJacketWashableInfo.getWjStitchModifyPlace9();
+				
+				if (BaseCheckUtil.isEmpty(wjStitchModifyPlace1) && BaseCheckUtil.isEmpty(wjStitchModifyPlace2)
+						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace3) && BaseCheckUtil.isEmpty(wjStitchModifyPlace4)
+						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace5) && BaseCheckUtil.isEmpty(wjStitchModifyPlace6)
+						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace7) && BaseCheckUtil.isEmpty(wjStitchModifyPlace8)
+						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace9)) {
+					messages.add("E033", "ステッチ箇所変更");
+					jacketFlag = true;
+				}
+			}
+			
+			//ダブルステッチ変更
+			String wjDStitchModify = coOptionJacketWashableInfo.getWjDStitchModify();
+			if(OptionCodeKeys.JK_0002602.equals(wjDStitchModify)) {
+				String wjDStitchModifyPlace1 = coOptionJacketWashableInfo.getWjDStitchModifyPlace1();
+				String wjDStitchModifyPlace2 = coOptionJacketWashableInfo.getWjDStitchModifyPlace2();
+				String wjDStitchModifyPlace3 = coOptionJacketWashableInfo.getWjDStitchModifyPlace3();
+				String wjDStitchModifyPlace4 = coOptionJacketWashableInfo.getWjDStitchModifyPlace4();
+				String wjDStitchModifyPlace5 = coOptionJacketWashableInfo.getWjDStitchModifyPlace5();
+				String wjDStitchModifyPlace6 = coOptionJacketWashableInfo.getWjDStitchModifyPlace6();
+				String wjDStitchModifyPlace7 = coOptionJacketWashableInfo.getWjDStitchModifyPlace7();
+				String wjDStitchModifyPlace8 = coOptionJacketWashableInfo.getWjDStitchModifyPlace8();
+				if (BaseCheckUtil.isEmpty(wjDStitchModifyPlace1) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace2)
+						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace3) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace4)
+						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace5) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace6)
+						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace7) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace8)) {
+					messages.add("E033", "ダブルステッチ変更");
+					jacketFlag = true;
+				}
 			}
 			 
 			//AMF色指定

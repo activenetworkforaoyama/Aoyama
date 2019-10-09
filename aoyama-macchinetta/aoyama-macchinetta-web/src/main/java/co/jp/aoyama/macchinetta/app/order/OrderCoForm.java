@@ -311,6 +311,8 @@ public class OrderCoForm implements Serializable {
 	private String coatAdFlag;
 
 	private String shirtAdFlag;
+	
+	private String ojBtnMateFlag;
 
 	//
 	private OrderFindFabric orderFindFabric;
@@ -1243,6 +1245,14 @@ public class OrderCoForm implements Serializable {
 
 	public void setIs2PantsPrice(String is2PantsPrice) {
 		this.is2PantsPrice = is2PantsPrice;
+	}
+
+	public String getOjBtnMateFlag() {
+		return ojBtnMateFlag;
+	}
+
+	public void setOjBtnMateFlag(String ojBtnMateFlag) {
+		this.ojBtnMateFlag = ojBtnMateFlag;
 	}
 	
 }

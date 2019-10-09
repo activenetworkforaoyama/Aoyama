@@ -95,6 +95,14 @@ function initOptionJacketTuxedo() {
 			}
 			// 一時保存のモデルを更新
 			tmpTjJacketModel = jacketModel;
+			
+			//ボタンホール色指定
+			jQuery("#tj_bhColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]').change();
+			
+			//ボタン付け糸指定
+			jQuery("#tj_byColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]').change();
 		}
 
 	});

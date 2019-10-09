@@ -1523,6 +1523,7 @@
             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />	
+            <input type="hidden" id="ojBtnMateFlag" name="ojBtnMateFlag" value="${orderCoForm.ojBtnMateFlag }" />
             
 </form:form>
 <!-- 標準 JACKET JACKETモデル -->
@@ -2279,23 +2280,22 @@ if(orderFlag=="orderBack"){
 	//--------------------------------------------
 	if(productCategory == "9000101"){
 		initOptionJacketStandard();
-		ojSession();
 	}else if(productCategory == "9000102"){
 		initOptionJacketTuxedo();
-		tjSession();
 	}else if(productCategory == "9000103"){
 		initOptionJacketWashable();
 		jQuery("#wj_jacketModel option[value='BS05']").remove();
-		wjSession();
 	}
 	
 	mateInit();
 
 	changeJkOptionByStock(productCategory);
 
-	jQuery("#jacketItemFlag").val("1");
+	
 
 	optionJacketChangeModel(productCategory);
+
+	optionColorReSave(productCategory);
 	
 	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderCo"){
@@ -2903,7 +2903,13 @@ if(orderFlag=="orderBack"){
 	showPrice();
 
 	doubleOptionModelPrice();
+	jQuery("#jacketItemFlag").val("1");
+})	
 
+jQuery("#btnMateStkNo,#btnMate").change(function(){
+    if(jQuery("#jacketItemFlag").val()=="1"){
+    	jQuery("#ojBtnMateFlag").val("1"); 
+    }
 })	
 
 function setJacketModelDisable(productCategory){
@@ -4683,6 +4689,15 @@ function optionJacketChangeModel(productCategory){
 			//袖釦数
 			jQuery("#wj_sleeveBtnCnt").val("${orderCoForm.coOptionJacketWashableInfo.wjSleeveBtnCnt}");
 		}
+	}
+}
+function optionColorReSave(productCategory){
+	if(productCategory == "9000101"){
+		ojSession();
+	}else if(productCategory == "9000102"){
+		tjSession();
+	}else if(productCategory == "9000103"){
+		wjSession();
 	}
 }
 function  sessionJacketAdFlag(oldModel,newModel){

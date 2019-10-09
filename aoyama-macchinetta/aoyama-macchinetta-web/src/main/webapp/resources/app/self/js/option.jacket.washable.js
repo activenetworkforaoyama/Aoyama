@@ -99,6 +99,25 @@ function initOptionJacketWashable() {
 			// AMF色指定の有効/無効を制御する
 			ctrlWjAmfColor();
 
+			//ステッチ箇所変更
+			jQuery("#wj_stitchModify_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').change();
+			
+			//ダブルステッチ変更
+			jQuery("#wj_dStitchModify_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').change();
+			
+			//AMF色指定
+			jQuery("#wj_amfColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').change();
+			
+			//ボタンホール色指定
+			jQuery("#wj_bhColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjBhColor"]').change();
+			
+			//ボタン付け糸指定
+			jQuery("#wj_byColor_id1").prop("checked",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjByColor"]').change();
 		}
 		
 	});

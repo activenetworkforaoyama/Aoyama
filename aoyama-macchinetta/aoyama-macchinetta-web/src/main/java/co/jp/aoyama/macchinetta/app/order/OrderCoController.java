@@ -519,15 +519,6 @@ public class OrderCoController {
 
 			orderId = belongCode.concat(last8digits);
 			
-//			String orderIdCheckCd = belongCode.concat(ONE);
-//			String maxOrderId = orderService.selectMaxOrderId(orderIdCheckCd, PO_TYPE);
-//			if (maxOrderId == null) {
-//				orderId = belongCode.concat(MIN_CODE);
-//			} else {
-//				long parseLong = Long.parseLong(maxOrderId) + 1;
-//				orderId = String.format("%012d", parseLong);
-//			}
-
 			// オーダーのデーター → orderCoForm
 			orderCoFormToOrder(orderCoForm, order, measuring);
 

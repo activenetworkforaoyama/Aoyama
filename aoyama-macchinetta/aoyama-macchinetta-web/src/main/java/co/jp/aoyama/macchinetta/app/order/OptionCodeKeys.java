@@ -60,6 +60,8 @@ public class OptionCodeKeys {
 	public static final String JK_0001901 = "0001901";
 	// 内ポケット変更
 	public static final String JK_0002001 = "0002001";
+	
+	public static final String JK_0002002 = "0002002";
 	// 下前胸内ポケット仕様
 	public static final String JK_0002201 = "0002201";
 	// ステッチ種類
@@ -71,8 +73,12 @@ public class OptionCodeKeys {
 
 	// ステッチ箇所変更
 	public static final String JK_0002401 = "0002401";
+	
+	public static final String JK_0002402 = "0002402";
 	// ダブルステッチ変更
 	public static final String JK_0002601 = "0002601";
+	
+	public static final String JK_0002602 = "0002602";
 	// AMF色指定
 	public static final String JK_0002801 = "0002801";
 	

@@ -34,16 +34,12 @@ function initAlter() {
 			var labelVaUplCm = jQuery('#'+idRe+'_html').html();
 			if(typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null){
 				var idRejQ = jQuery('#'+idRe);
-				
 				var labelValUp = labelVaUplCm.replace('cm','');
-				
-				var maxVal = (parseFloat(max)+parseFloat(sizeVal)).toFixed(1);
-				
-				var val = (parseFloat(labelValUp)+parseFloat(step)).toFixed(1);
-
+				var maxVal = keepFloatPrecision(parseFloat(max)+parseFloat(sizeVal));
+				var val = keepFloatPrecision(parseFloat(labelValUp)+parseFloat(step));	
 				if(val<=maxVal){
 					jQuery("#"+idRe+"_html").html(val+"cm");
-					jQuery('#'+idRe+'_Gross').val(val);
+					jQuery('#'+idRe+'_Gross').val(val);	
 				}else{
 					return false;
 				}
@@ -62,14 +58,10 @@ function initAlter() {
 			if(typeof(labelValDoCm)!="undefined"&&labelValDoCm!=null){
 				
 				var idRejQ = jQuery('#'+idRe);
-
 				var labelValDo = labelValDoCm.replace('cm','');
-
 				var minVal = (parseFloat(min)+parseFloat(sizeVal)).toFixed(1);
-				
 				var val = (parseFloat(labelValDo)-parseFloat(step)).toFixed(1);
-				if(val>=minVal){
-					
+				if(val>=minVal){			
 					jQuery("#"+idRe+"_html").html(val+"cm");
 					jQuery('#'+idRe+'_Gross').val(val);
 				}else{
@@ -228,3 +220,7 @@ function checkRange(id, val) {
 	
 	return (resultRange && resultHip);
 }
+
+function keepFloatPrecision(target){
+	 return Math.floor((parseFloat(target)*10))/10;
+	}

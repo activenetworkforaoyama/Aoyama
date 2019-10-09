@@ -1379,6 +1379,7 @@
             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
+            <input type="hidden" id="ojBtnMateFlag" name="ojBtnMateFlag" value="${orderCoForm.ojBtnMateFlag }" />
 </form:form>
 <!-- 標準 PANTS PANTSモデル-->
 <div class="modal fade" id="infotext_op_pantsModel" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
@@ -3578,6 +3579,8 @@ var contextPath = jQuery("meta[name='contextPath']").attr("content");
 var orderPattern = "CO";
 var pantsItemFlag="${orderCoForm.pantsItemFlag}";
 var orderFlag = "${orderCoForm.orderFlag}";
+var ojBtnMateFlag = "${orderCoForm.ojBtnMateFlag}";
+var ojBtnMateStkNo="${orderCoForm.coOptionJacketStandardInfo.ojBtnMateStkNo}";
 jQuery(function() {
 	var pantsAdFlag="${orderCoForm.pantsAdFlag}";
 	
@@ -3589,7 +3592,28 @@ jQuery(function() {
 			jQuery("#pantsAdFlag").val("0");
 		}
 	}
-	
+	if(ojBtnMateFlag=="1"){
+		var ojBtnMate="${orderCoForm.coOptionJacketStandardInfo.ojBtnMate}";
+		//var ojBtnMateStkNo="${orderCoForm.coOptionJacketStandardInfo.ojBtnMateStkNo}";
+		if(ojBtnMate!="3000800" && ojBtnMate!="3000200" && ojBtnMate!="3000300" && ojBtnMate!="3000400" &&
+		   ojBtnMate!="3000500" && ojBtnMate!="3000600" && ojBtnMate!="3000900"){
+			jQuery('#op_btnMate').val("3000800");
+			jQuery('#op_btnMate').change();   
+		}else{
+			jQuery('#op_btnMate').val(ojBtnMate);
+			jQuery('#op_btnMate').change();
+		}
+		/* if(ojBtnMateStkNo!="300020001" && ojBtnMateStkNo!="300080002" && ojBtnMateStkNo!="300080003" && ojBtnMateStkNo!="300080004" &&
+		   ojBtnMateStkNo!="300080005"){
+		    jQuery('#op_btnMateStkNo').val("300080001");
+		    jQuery('#op_btnMateStkNo').change();
+		}else{
+			alert(ojBtnMateStkNo);
+			jQuery('#op_btnMateStkNo').val(ojBtnMateStkNo);
+		    jQuery('#op_btnMateStkNo').change();
+		} */
+		//jQuery('#ojBtnMateFlag').val("0");
+	}
 	var productCategory="${orderCoForm.productCategory}";
 	if(orderFlag=="orderBack"){
 		if(productCategory == "9000101"){
@@ -3623,12 +3647,12 @@ jQuery(function() {
 	initCommon();
 	if(productCategory == "9000101"){
 		initOptionPants1Standard();
-		if("${orderCoForm.pantsItemFlag }"=="1"){
+		if("${orderCoForm.pantsItemFlag }"=="1" && orderFlag=="orderCo"){
 			opSession();
 		}
 	}else if(productCategory == "9000102"){
 		initOptionPants1Tuxedo();
-		if("${orderCoForm.pantsItemFlag }"=="1"){
+		if("${orderCoForm.pantsItemFlag }"=="1"&& orderFlag=="orderCo"){
 			tpSession();
 	    }
 	}else if(productCategory == "9000103"){
@@ -3637,7 +3661,7 @@ jQuery(function() {
 		jQuery("#wp_pantsModel option[value='RS01']").remove();
 		jQuery("#wp_pantsModel option[value='JW21']").remove();
 		jQuery("#wp_pantsModel option[value='AY01']").remove();
-		if("${orderCoForm.pantsItemFlag }"=="1"){
+		if("${orderCoForm.pantsItemFlag }"=="1"&& orderFlag=="orderCo"){
 			wpSession();
 	    }
 	}
@@ -3742,7 +3766,7 @@ jQuery(function() {
 
 
 			var opBhColorPlace = "${orderCoForm.coOptionPantsStandardInfo.opBhColorPlace}";
-			var opBhAllColor = "${orderCoForm.coOptionPantsStandardInfo.opBhColor}";
+			var opBhAllColor = "${orderCoForm.coOptionPantsStandardInfo.opBhAllColor}";
 			if(isNotEmpty(opBhColorPlace)&&isNotEmpty(opBhColorPlace)){
 				opBhColorPlace = opBhColorPlace.split(",");
 				opBhAllColor = opBhAllColor.split(",");
@@ -3750,24 +3774,24 @@ jQuery(function() {
 					for(var i=0;i<opBhAllColor.length;i++){
 						if(opBhColorPlace[i] == "0002901"){
 							jQuery("#op_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColorPlace1'][value='" + opBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColor1'][value='" + opBhAllColor[i] + "']").prop("checked", true);
 						}else if(opBhColorPlace[i] == "0002902"){
 							jQuery("#op_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColorPlace2'][value='" + opBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColor2'][value='" + opBhAllColor[i] + "']").prop("checked", true);
 						}else if(opBhColorPlace[i] == "0002903"){
 							jQuery("#op_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColorPlace3'][value='" + opBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColor3'][value='" + opBhAllColor[i] + "']").prop("checked", true);
 						}else if(opBhColorPlace[i] == "0002904"){
 							jQuery("#op_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColorPlace4'][value='" + opBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opBhColor4'][value='" + opBhAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
 				jQuery('input[id^="op_bhColorPlace_"]').change();
 			} 
-
+			 
 			var opByColorPlace = "${orderCoForm.coOptionPantsStandardInfo.opByColorPlace}";
-			var opByAllColor = "${orderCoForm.coOptionPantsStandardInfo.opByColor}";
+			var opByAllColor = "${orderCoForm.coOptionPantsStandardInfo.opByAllColor}";
 			if(isNotEmpty(opByColorPlace)&&isNotEmpty(opByColorPlace)){
 				opByColorPlace = opByColorPlace.split(",");
 				opByAllColor = opByAllColor.split(",");
@@ -3775,21 +3799,21 @@ jQuery(function() {
 					for(var i=0;i<opByAllColor.length;i++){
 						if(opByColorPlace[i] == "0003201"){
 							jQuery("#op_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opByColorPlace1'][value='" + opByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opByColor1'][value='" + opByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003202"){
 							jQuery("#op_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opByColorPlace2'][value='" + opByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opByColor2'][value='" + opByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003203"){
 							jQuery("#op_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opByColorPlace3'][value='" + opByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opByColor3'][value='" + opByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003204"){
 							jQuery("#op_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.opByColorPlace4'][value='" + opByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.opByColor4'][value='" + opByAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
 				jQuery('input[id^="op_bhColorPlace_"]').change();
-			} 
+			}  
 
 		}else if(productCategory == "9000102"){
 			var tpBeltLoopPlace = "${orderCoForm.coOptionPantsTuxedoInfo.tpBeltLoopPlace}";
@@ -3814,7 +3838,7 @@ jQuery(function() {
 				}
 			}
 			var tpBhColorPlace = "${orderCoForm.coOptionPantsTuxedoInfo.tpBhColorPlace}";
-			var tpBhAllColor = "${orderCoForm.coOptionPantsTuxedoInfo.tpBhColor}";
+			var tpBhAllColor = "${orderCoForm.coOptionPantsTuxedoInfo.tpBhAllColor}";
 			if(isNotEmpty(tpBhColorPlace)&&isNotEmpty(tpBhColorPlace)){
 				tpBhColorPlace = tpBhColorPlace.split(",");
 				tpBhAllColor = tpBhAllColor.split(",");
@@ -3822,16 +3846,16 @@ jQuery(function() {
 					for(var i=0;i<tpBhAllColor.length;i++){
 						if(tpBhColorPlace[i] == "0002901"){
 							jQuery("#tp_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColorPlace1'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColor1'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
 						}else if(tpBhColorPlace[i] == "0002902"){
 							jQuery("#tp_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColorPlace2'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColor2'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
 						}else if(tpBhColorPlace[i] == "0002903"){
 							jQuery("#tp_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColorPlace3'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColor3'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
 						}else if(tpBhColorPlace[i] == "0002904"){
 							jQuery("#tp_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColorPlace4'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsStandardInfo.tpBhColor4'][value='" + tpBhAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
@@ -3839,7 +3863,7 @@ jQuery(function() {
 			} 
 
 			var tpByColorPlace = "${orderCoForm.coOptionPantsTuxedoInfo.tpByColorPlace}";
-			var tpByAllColor = "${orderCoForm.coOptionPantsTuxedoInfo.tpByColor}";
+			var tpByAllColor = "${orderCoForm.coOptionPantsTuxedoInfo.tpByAllColor}";
 			if(isNotEmpty(tpByColorPlace)&&isNotEmpty(tpByColorPlace)){
 				tpByColorPlace = tpByColorPlace.split(",");
 				tpByAllColor = tpByAllColor.split(",");
@@ -3847,16 +3871,16 @@ jQuery(function() {
 					for(var i=0;i<tpByAllColor.length;i++){
 						if(tpByColorPlace[i] == "0003201"){
 							jQuery("#tp_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColorPlace1'][value='" + tpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColor1'][value='" + tpByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003202"){
 							jQuery("#tp_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColorPlace2'][value='" + tpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColor2'][value='" + tpByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003203"){
 							jQuery("#tp_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColorPlace3'][value='" + tpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColor3'][value='" + tpByAllColor[i] + "']").prop("checked", true);
 						}else if(opByColorPlace[i] == "0003204"){
 							jQuery("#tp_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColorPlace4'][value='" + tpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsTuxedoInfo.tpByColor4'][value='" + tpByAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
@@ -3949,7 +3973,7 @@ jQuery(function() {
 
 
 			var wpBhColorPlace = "${orderCoForm.coOptionPantsWashableInfo.wpBhColorPlace}";
-			var wpBhAllColor = "${orderCoForm.coOptionPantsWashableInfo.wpBhColor}";
+			var wpBhAllColor = "${orderCoForm.coOptionPantsWashableInfo.wpBhAllColor}";
 			if(isNotEmpty(wpBhColorPlace)&&isNotEmpty(wpBhColorPlace)){
 				wpBhColorPlace = wpBhColorPlace.split(",");
 				wpBhAllColor = wpBhAllColor.split(",");
@@ -3957,16 +3981,16 @@ jQuery(function() {
 					for(var i=0;i<wpBhAllColor.length;i++){
 						if(wpBhColorPlace[i] == "0002901"){
 							jQuery("#wp_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColorPlace1'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColor1'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
 						}else if(wpBhColorPlace[i] == "0002902"){
 							jQuery("#wp_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColorPlace2'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColor2'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
 						}else if(wpBhColorPlace[i] == "0002903"){
 							jQuery("#wp_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColorPlace3'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColor3'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
 						}else if(wpBhColorPlace[i] == "0002904"){
 							jQuery("#wp_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColorPlace4'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpBhColor4'][value='" + wpBhAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
@@ -3974,7 +3998,7 @@ jQuery(function() {
 			} 
 
 			var wpByColorPlace = "${orderCoForm.coOptionPantsWashableInfo.wpByColorPlace}";
-			var wpByAllColor = "${orderCoForm.coOptionPantsWashableInfo.wpByColor}";
+			var wpByAllColor = "${orderCoForm.coOptionPantsWashableInfo.wpByAllColor}";
 			if(isNotEmpty(wpByColorPlace)&&isNotEmpty(wpByColorPlace)){
 				wpByColorPlace = wpByColorPlace.split(",");
 				wpByAllColor = wpByAllColor.split(",");
@@ -3982,23 +4006,23 @@ jQuery(function() {
 					for(var i=0;i<wpByAllColor.length;i++){
 						if(wpByColorPlace[i] == "0003201"){
 							jQuery("#wp_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColorPlace1'][value='" + wpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColor1'][value='" + wpByAllColor[i] + "']").prop("checked", true);
 						}else if(wpByColorPlace[i] == "0003202"){
 							jQuery("#wp_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColorPlace2'][value='" + wpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColor2'][value='" + wpByAllColor[i] + "']").prop("checked", true);
 						}else if(wpByColorPlace[i] == "0003203"){
 							jQuery("#wp_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColorPlace3'][value='" + wpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColor3'][value='" + wpByAllColor[i] + "']").prop("checked", true);
 						}else if(wpByColorPlace[i] == "0003204"){
 							jQuery("#wp_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColorPlace4'][value='" + wpByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionPantsWashableInfo.wpByColor4'][value='" + wpByAllColor[i] + "']").prop("checked", true);
 						}
 					}
 				}
 				jQuery('input[id^="wp_bhColorPlace_"]').change();
 			}    
          }	
-	}
+	} 
 	
 })	
 
@@ -4190,9 +4214,24 @@ function mateInit(){
 					 StkNoSelect.prop("disabled",true);
 				 }else{
 					 StkNoSelect.removeAttr("disabled");
+					 var nums=[];
+					 nums.length = 0;
 					 for (var key in result) {
 						 StkNoSelect.append(jQuery('<option />').val(key).text(result[key]));
-					 }
+						 if(ojBtnMateFlag=="1"){
+							 nums.push(key);
+						 }	
+					 }	
+					if(ojBtnMateFlag=="1"){
+						for(var j=0;j<nums.length;j++){
+							if(ojBtnMateStkNo==nums[j]){								
+								jQuery('#op_btnMateStkNo').val(ojBtnMateStkNo);
+								jQuery('#op_btnMateStkNo').change();
+								jQuery('#ojBtnMateFlag').val("0");
+								return;
+							}
+						}
+					}			
 				 }
 			 }
 		});
