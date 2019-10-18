@@ -62,4 +62,6 @@ public interface OrderListRepository {
 	Order findOrderStOptionByOrderId(String orderId);
 
 	Order findOrderProductByPk(String orderId);
+	
+	Order findOrderByPkChinese(String orderId);
 }

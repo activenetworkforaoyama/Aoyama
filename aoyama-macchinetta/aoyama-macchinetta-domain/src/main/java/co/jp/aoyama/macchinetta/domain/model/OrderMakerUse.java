@@ -2,6 +2,7 @@ package co.jp.aoyama.macchinetta.domain.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OrderMakerUse implements Serializable {
@@ -1042,6 +1043,20 @@ public class OrderMakerUse implements Serializable {
     private String corPt2StoreCorrectionMemo;
     private String corCtStoreCorrectionMemo;
     private String corGlStoreCorrectionMemo;
+    
+    private String productCategoryNm;
+    private String productLcrSewingCd;
+    private String productFabricNmNecessityNm;
+    private String productEmbroideryNecessityNm;
+    private String productEmbroideryFontCd;
+    private String productEmbroideryThreadColorCd;
+    private String productEmbroideryGazetteCd;
+    private String productEmbroideryNmPosCd;
+    private String corJkShoulderpadCd;
+    private String corJkFigureCorrectCd;
+    private String corStBackdartsUnpackCd;
+    private String corStBackdartsUnpackNm;
+    
 	public String getOrderId() {
 		return orderId;
 	}
@@ -7255,6 +7270,8 @@ public class OrderMakerUse implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		SimpleDateFormat yyyyMmDdSDF = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat yyyyMmDdHhMmSsSDF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		builder.append(orderId == null ? "" : orderId);
 		builder.append(",");
 		builder.append(orderPattern == null ? "" : orderPattern);
@@ -7297,9 +7314,13 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(productCategory == null ? "" : productCategory);
 		builder.append(",");
+		builder.append(productCategoryNm == null ? "" : productCategoryNm);
+		builder.append(",");
 		builder.append(productBrandType == null ? "" : productBrandType);
 		builder.append(",");
 		builder.append(productBrandNm == null ? "" : productBrandNm);
+		builder.append(",");
+		builder.append(productLcrSewingCd == null ? "" : productLcrSewingCd);
 		builder.append(",");
 		builder.append(productLcrSewing == null ? "" : productLcrSewing);
 		builder.append(",");
@@ -7309,19 +7330,31 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(productFabricNmNecessity == null ? "" : productFabricNmNecessity);
 		builder.append(",");
+		builder.append(productFabricNmNecessityNm == null ? "" : productFabricNmNecessityNm);
+		builder.append(",");
 		builder.append(productEmbroideryNecessity == null ? "" : productEmbroideryNecessity);
+		builder.append(",");
+		builder.append(productEmbroideryNecessityNm == null ? "" : productEmbroideryNecessityNm);
 		builder.append(",");
 		builder.append(productEmbroideryNm == null ? "" : productEmbroideryNm);
 		builder.append(",");
+		builder.append(productEmbroideryFontCd == null ? "" : productEmbroideryFontCd);
+		builder.append(",");
 		builder.append(productEmbroideryFont == null ? "" : productEmbroideryFont);
 		builder.append(",");
+		builder.append(productEmbroideryThreadColorCd == null ? "" : productEmbroideryThreadColorCd);
+		builder.append(",");
 		builder.append(productEmbroideryThreadColor == null ? "" : productEmbroideryThreadColor);
+		builder.append(",");
+		builder.append(productEmbroideryGazetteCd == null ? "" : productEmbroideryGazetteCd);
 		builder.append(",");
 		builder.append(productEmbroideryGazette == null ? "" : productEmbroideryGazette);
 		builder.append(",");
 		builder.append(productEmbroideryGazetteWsWage == null ? "" : productEmbroideryGazetteWsWage);
 		builder.append(",");
 		builder.append(productEmbroideryGazetteWsPrice == null ? "" : productEmbroideryGazetteWsPrice);
+		builder.append(",");
+		builder.append(productEmbroideryNmPosCd == null ? "" : productEmbroideryNmPosCd);
 		builder.append(",");
 		builder.append(productEmbroideryNmPos == null ? "" : productEmbroideryNmPos);
 		builder.append(",");
@@ -7353,7 +7386,7 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(productMakerCode == null ? "" : productMakerCode);
 		builder.append(",");
-		builder.append(productOrderdDate == null ? "" : productOrderdDate);
+		builder.append(productOrderdDate == null ? "" : yyyyMmDdSDF.format(productOrderdDate));
 		builder.append(",");
 		builder.append(jkModelCd == null ? "" : jkModelCd);
 		builder.append(",");
@@ -9033,7 +9066,11 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(corJkLeftsleeveGross == null ? "" : corJkLeftsleeveGross);
 		builder.append(",");
+		builder.append(corJkShoulderpadCd == null ? "" : corJkShoulderpadCd);
+		builder.append(",");
 		builder.append(corJkShoulderpad == null ? "" : corJkShoulderpad);
+		builder.append(",");
+		builder.append(corJkFigureCorrectCd == null ? "" : corJkFigureCorrectCd);
 		builder.append(",");
 		builder.append(corJkFigureCorrect == null ? "" : corJkFigureCorrect);
 		builder.append(",");
@@ -9227,6 +9264,10 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(corStBackdartsPackGross == null ? "" : corStBackdartsPackGross);
 		builder.append(",");
+		builder.append(corStBackdartsUnpackCd == null ? "" : corStBackdartsUnpackCd);
+		builder.append(",");
+		builder.append(corStBackdartsUnpackNm == null ? "" : corStBackdartsUnpackNm);
+		builder.append(",");
 		builder.append(corStBackdartsUnpackSize == null ? "" : corStBackdartsUnpackSize);
 		builder.append(",");
 		builder.append(corStBackdartsUnpackCorrect == null ? "" : corStBackdartsUnpackCorrect);
@@ -9293,9 +9334,9 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(factoryShippingMethod == null ? "" : factoryShippingMethod);
 		builder.append(",");
-		builder.append(shippingDate == null ? "" : shippingDate);
+		builder.append(shippingDate == null ? "" : yyyyMmDdSDF.format(shippingDate));
 		builder.append(",");
-		builder.append(loadingDate == null ? "" : loadingDate);
+		builder.append(loadingDate == null ? "" : yyyyMmDdSDF.format(loadingDate));
 		builder.append(",");
 		builder.append(fabricUsedMount == null ? "" : fabricUsedMount);
 		builder.append(",");
@@ -9319,12 +9360,84 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(createdUserId == null ? "" : createdUserId);
 		builder.append(",");
-		builder.append(createdAt == null ? "" : createdAt);
+		builder.append(createdAt == null ? "" : yyyyMmDdHhMmSsSDF.format(createdAt));
 		builder.append(",");
 		builder.append(updatedUserId == null ? "" : updatedUserId);
 		builder.append(",");
-		builder.append(updatedAt == null ? "" : updatedAt);
+		builder.append(updatedAt == null ? "" : yyyyMmDdHhMmSsSDF.format(updatedAt));
 		return builder.toString();
+	}
+	public String getProductCategoryNm() {
+		return productCategoryNm;
+	}
+	public void setProductCategoryNm(String productCategoryNm) {
+		this.productCategoryNm = productCategoryNm;
+	}
+	public String getProductLcrSewingCd() {
+		return productLcrSewingCd;
+	}
+	public void setProductLcrSewingCd(String productLcrSewingCd) {
+		this.productLcrSewingCd = productLcrSewingCd;
+	}
+	public String getProductFabricNmNecessityNm() {
+		return productFabricNmNecessityNm;
+	}
+	public void setProductFabricNmNecessityNm(String productFabricNmNecessityNm) {
+		this.productFabricNmNecessityNm = productFabricNmNecessityNm;
+	}
+	public String getProductEmbroideryNecessityNm() {
+		return productEmbroideryNecessityNm;
+	}
+	public void setProductEmbroideryNecessityNm(String productEmbroideryNecessityNm) {
+		this.productEmbroideryNecessityNm = productEmbroideryNecessityNm;
+	}
+	public String getProductEmbroideryFontCd() {
+		return productEmbroideryFontCd;
+	}
+	public void setProductEmbroideryFontCd(String productEmbroideryFontCd) {
+		this.productEmbroideryFontCd = productEmbroideryFontCd;
+	}
+	public String getProductEmbroideryThreadColorCd() {
+		return productEmbroideryThreadColorCd;
+	}
+	public void setProductEmbroideryThreadColorCd(String productEmbroideryThreadColorCd) {
+		this.productEmbroideryThreadColorCd = productEmbroideryThreadColorCd;
+	}
+	public String getProductEmbroideryGazetteCd() {
+		return productEmbroideryGazetteCd;
+	}
+	public void setProductEmbroideryGazetteCd(String productEmbroideryGazetteCd) {
+		this.productEmbroideryGazetteCd = productEmbroideryGazetteCd;
+	}
+	public String getProductEmbroideryNmPosCd() {
+		return productEmbroideryNmPosCd;
+	}
+	public void setProductEmbroideryNmPosCd(String productEmbroideryNmPosCd) {
+		this.productEmbroideryNmPosCd = productEmbroideryNmPosCd;
+	}
+	public String getCorJkShoulderpadCd() {
+		return corJkShoulderpadCd;
+	}
+	public void setCorJkShoulderpadCd(String corJkShoulderpadCd) {
+		this.corJkShoulderpadCd = corJkShoulderpadCd;
+	}
+	public String getCorJkFigureCorrectCd() {
+		return corJkFigureCorrectCd;
+	}
+	public void setCorJkFigureCorrectCd(String corJkFigureCorrectCd) {
+		this.corJkFigureCorrectCd = corJkFigureCorrectCd;
+	}
+	public String getCorStBackdartsUnpackCd() {
+		return corStBackdartsUnpackCd;
+	}
+	public void setCorStBackdartsUnpackCd(String corStBackdartsUnpackCd) {
+		this.corStBackdartsUnpackCd = corStBackdartsUnpackCd;
+	}
+	public String getCorStBackdartsUnpackNm() {
+		return corStBackdartsUnpackNm;
+	}
+	public void setCorStBackdartsUnpackNm(String corStBackdartsUnpackNm) {
+		this.corStBackdartsUnpackNm = corStBackdartsUnpackNm;
 	}
 
 }

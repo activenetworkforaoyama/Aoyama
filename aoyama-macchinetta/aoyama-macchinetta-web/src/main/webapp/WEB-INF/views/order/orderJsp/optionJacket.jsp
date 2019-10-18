@@ -222,15 +222,13 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-check-inline form-check">
-                                    <form:radiobuttons id="sleeveBtnType_id" path="coOptionJacketStandardInfo.ojSleeveBtnType" class="form-check-input" items="${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnTypeMap}"/>袖釦数
+                                    <form:radiobuttons id="sleeveBtnType_id" path="coOptionJacketStandardInfo.ojSleeveBtnType" class="form-check-input" items="${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnTypeMap}"/>
+                                    <label class=" form-control-label">袖釦数</label>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="#" id="sleeveBtnCnt_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                    <!-- <input type="text" id="sleeveBtnCnt" name="coOptionJacketStandardInfo.ojSleeveBtnCnt" class="form-control-sm form-control" readonly style="width:36px">&nbsp; -->
                                     <form:input id="sleeveBtnCnt" path="coOptionJacketStandardInfo.ojSleeveBtnCnt" class="form-control-sm form-control" readonly = "true" style="width:36px"/>&nbsp;
                                     <a href="#" id="sleeveBtnCnt_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 </div>
                             </div>
-                            <!-- <div class="col-12 col-md-9 offset-md-3" id="sleeveBtnCntMsg">
-                            </div> -->
                             <div class="col-12 col-md-3" id="sleeveBtnType_Msg" align="right">
                             </div>
                         </div>
@@ -564,7 +562,7 @@
                                 	<form:options items="${orderCoForm.coOptionJacketTuxedoInfo.tjJacketModelMap}"/>
                                 </form:select>
                             </div>
-                            <div class="col-12 col-md-6" align="right" id="jacketModel_Msg">
+                            <div class="col-12 col-md-6" align="right" id="tj_jacketModel_Msg">
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelMsg" style="margin-top:8px"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="tj_jacketModelCheck" style="display:none"></div>
@@ -777,9 +775,8 @@
                             <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
 									<form:radiobuttons id="tj_sleeveBtnType_id" path="coOptionJacketTuxedoInfo.tjSleeveBtnType" class="form-check-input" items="${orderCoForm.coOptionJacketTuxedoInfo.tjSleeveBtnTypeMap}"/>
-									袖釦数
+									<label class=" form-control-label">袖釦数</label>&nbsp;&nbsp;&nbsp;&nbsp;
 									<a href="#" id="tj_sleeveBtnCnt_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                    <!-- <input type="text" id="tj_sleeveBtnCnt" name="coOptionJacketTuxedoInfo.tjSleeveBtnCnt" value="4" class="form-control-sm form-control" readonly style="width:36px">&nbsp; -->
                                     <form:input id="tj_sleeveBtnCnt" path="coOptionJacketTuxedoInfo.tjSleeveBtnCnt" class="form-control-sm form-control" readonly = "true" style="width:36px"/>&nbsp;
                                     <a href="#" id="tj_sleeveBtnCnt_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 </div>
@@ -996,7 +993,7 @@
 									<form:options items="${orderCoForm.coOptionJacketWashableInfo.wjJacketModelMap}"/>
 								</form:select>
 							</div>
-							<div class="col-12 col-md-6" align="right" id="jacketModel_Msg">
+							<div class="col-12 col-md-6" align="right" id="wj_jacketModel_Msg">
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelMsg" style="margin-top:8px"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="wj_jacketModelCheck" style="display:none"></div>
@@ -1212,9 +1209,8 @@
                             <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
 									<form:radiobuttons id="wj_sleeveBtnTypeKasane_id" path="coOptionJacketWashableInfo.wjSleeveBtnType" class="form-check-input" items="${orderCoForm.coOptionJacketWashableInfo.wjSleeveBtnTypeMap}"/>
-									袖釦数　
+									<label class=" form-control-label">袖釦数</label>&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="#" id="wj_sleeveBtnCnt_m"><i class="fa fa-minus-square" style="font-size:32px"></i></a>&nbsp;
-                                    <!-- <input type="text" id="wj_sleeveBtnCnt" name="coOptionJacketWashableInfo.wjSleeveBtnCnt" value="4" class="form-control-sm form-control" readonly style="width:36px">&nbsp; -->
                                     <form:input id="wj_sleeveBtnCnt" path="coOptionJacketWashableInfo.wjSleeveBtnCnt" class="form-control-sm form-control" readonly = "true" style="width:36px"/>&nbsp;
                                     <a href="#" id="wj_sleeveBtnCnt_p"><i class="fa fa-plus-square" style="font-size:32px"></i></a>
                                 </div>
@@ -1523,7 +1519,25 @@
             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />	
-            <input type="hidden" id="ojBtnMateFlag" name="ojBtnMateFlag" value="${orderCoForm.ojBtnMateFlag }" />
+            <input type="hidden" id="jacketBtnMateGlFlag" name="jacketBtnMateGlFlag" value="${orderCoForm.jacketBtnMateGlFlag }" />
+            <input type="hidden" id="ojBtnMatePtFlag" name="ojBtnMatePtFlag" value="${orderCoForm.ojBtnMatePtFlag }" />
+            <input type="hidden" id="ojBtnMatePt2Flag" name="ojBtnMatePt2Flag" value="${orderCoForm.ojBtnMatePt2Flag }" />    
+             
+            <input type="hidden" id="opBtnMate" name="coOptionPantsStandardInfo.opButton" value="${orderCoForm.coOptionPantsStandardInfo.opButton }" /> 
+            <input type="hidden" id="tpBtnMate" name="coOptionPantsTuxedoInfo.tpButton" value="${orderCoForm.coOptionPantsTuxedoInfo.tpButton }" /> 
+            <input type="hidden" id="wpBtnMate" name="coOptionPantsWashableInfo.wpButton" value="${orderCoForm.coOptionPantsWashableInfo.wpButton }" />  
+            
+            <input type="hidden" id="opBtnMateStkNo" name="coOptionPantsStandardInfo.opBtnMateStkNo" value="${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo }" /> 
+            <input type="hidden" id="tpBtnMateStkNo" name="coOptionPantsTuxedoInfo.tpBtnMateStkNo" value="${orderCoForm.coOptionPantsTuxedoInfo.tpBtnMateStkNo }" /> 
+            <input type="hidden" id="wpBtnMateStkNo" name="coOptionPantsWashableInfo.wpBtnMateStkNo" value="${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo }" /> 
+            
+            <input type="hidden" id="ogFrontBtnMate" name="coOptionGiletStandardInfo.ogFrontBtnMate" value="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMate }" /> 
+            <input type="hidden" id="tgFrontBtnMate" name="coOptionGiletTuxedoInfo.tgFrontBtnMate" value="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMate }" /> 
+            <input type="hidden" id="wgFrontBtnMate" name="coOptionGiletWashableInfo.wgFrontBtnMate" value="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMate }" />  
+            
+            <input type="hidden" id="ogFrontBtnMateStkNo" name="coOptionGiletStandardInfo.ogFrontBtnMateStkNo" value="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateStkNo }" /> 
+            <input type="hidden" id="tgFrontBtnMateStkNo" name="coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo" value="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateStkNo }" /> 
+            <input type="hidden" id="wgFrontBtnMateStkNo" name="coOptionGiletWashableInfo.wgFrontBtnMateStkNo" value="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateStkNo }" /> 
             
 </form:form>
 <!-- 標準 JACKET JACKETモデル -->
@@ -2227,38 +2241,18 @@ var selectIdList = {
 	"wj_cuffBackMate":"00040",
 	"wj_btnMate":"00042"
 };
-
+var productCategory = "${orderCoForm.productCategory}";
 jQuery(function() {
 	var jacketAdFlag="${orderCoForm.jacketAdFlag}";
-if(orderFlag=="orderCo"){
-	if(jacketAdFlag=="1"){
+	if("orderCo"==orderFlag){
+		if(jacketAdFlag=="1"){
+		}else{
+			jQuery("#jacketAdFlag").val("0");
+		}
+	}else if("0"==jQuery("#jacketItemFlag").val() && "orderCo"!=orderFlag){
+		    jQuery("#jacketAdFlag").val("1");
+	}
 		
-	}else{
-		jQuery("#jacketAdFlag").val("0");
-	}
-}
-if(orderFlag=="orderBack"){
-	if(productCategory == "9000101"){
-		var sessionOjJacketModel = "${orderCoForm.coOptionJacketStandardInfo.ojJacketModel}";
-		jQuery("#jacketModel").click(function(){
-			var jacketModel = jQuery("#jacketModel").val();
-			sessionJacketAdFlag(sessionOjJacketModel,jacketModel);
-		});
-	}else if(productCategory == "9000102"){
-		var sessionTjJacketModel = "${orderCoForm.coOptionJacketTuxedoInfo.tjJacketModel}";
-		jQuery("#tj_jacketModel").click(function(){
-			var tjJacketModel = jQuery("#tj_jacketModel").val();
-			sessionJacketAdFlag(sessionTjJacketModel,tjJacketModel);
-		});
-	}else if(productCategory == "9000103"){
-		var sessionWjJacketModel = "${orderCoForm.coOptionJacketWashableInfo.wjJacketModel}";
-		jQuery("#wj_jacketModel").click(function(){
-			var wjJacketModel = jQuery("#wj_jacketModel").val();
-			sessionJacketAdFlag(sessionWjJacketModel,wjJacketModel);
-		});
-	}
-}
-
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -2291,22 +2285,16 @@ if(orderFlag=="orderBack"){
 
 	changeJkOptionByStock(productCategory);
 
-	
-
-	optionJacketChangeModel(productCategory);
-
-	optionColorReSave(productCategory);
-	
 	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderCo"){
 		
-	}else if(orderFlag == "orderLink"){
+	}else if(orderFlag == "orderLink" || orderFlag == "orderDivert"){
 		var productCategory = jQuery('input[name="productCategory"]:checked').val();
 		if(productCategory == "9000101"){
 
 			var ojInsidePktPlace = "${orderCoForm.coOptionJacketStandardInfo.ojInsidePktPlace}";
 			if(isNotEmpty(ojInsidePktPlace)){
-				ojInsidePktPlace = ojInsidePktPlace.split(",");
+				ojInsidePktPlace = ojInsidePktPlace.split("/");
 				for(var i=0;i<ojInsidePktPlace.length;i++){
 					if(ojInsidePktPlace[i] == "0002101"){
 						jQuery("#insidePktPlace_id1").prop("checked",true);
@@ -2322,7 +2310,7 @@ if(orderFlag=="orderBack"){
 			
 			var ojStitchModifyPlace = "${orderCoForm.coOptionJacketStandardInfo.ojStitchModifyPlace}";
 			if(isNotEmpty(ojInsidePktPlace)){
-				ojStitchModifyPlace = ojStitchModifyPlace.split(",");
+				ojStitchModifyPlace = ojStitchModifyPlace.split("/");
 				for(var i=0;i<ojStitchModifyPlace.length;i++){
 					if(ojStitchModifyPlace[i] == "0002501"){
 						jQuery("#stitchModifyPlace_id1").prop("checked",true);
@@ -2352,7 +2340,7 @@ if(orderFlag=="orderBack"){
 
 			var ojDStitchModifyPlace = "${orderCoForm.coOptionJacketStandardInfo.ojDStitchModifyPlace}";
 			if(isNotEmpty(ojDStitchModifyPlace)){
-				ojDStitchModifyPlace = ojDStitchModifyPlace.split(",");
+				ojDStitchModifyPlace = ojDStitchModifyPlace.split("/");
 				for(var i=0;i<ojDStitchModifyPlace.length;i++){
 					if(ojDStitchModifyPlace[i] == "0002701"){
 						jQuery("#dStitchModifyPlace_id1").prop("checked",true);
@@ -2380,8 +2368,8 @@ if(orderFlag=="orderBack"){
 			var ojAmfColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojAmfColorPlace}";
 			var ojAmfAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojAmfAllColor}";
 			if(isNotEmpty(ojAmfColorPlace)&&isNotEmpty(ojAmfAllColor)){
-				ojAmfColorPlace = ojAmfColorPlace.split(",");
-				ojAmfAllColor = ojAmfAllColor.split(",");
+				ojAmfColorPlace = ojAmfColorPlace.split("/");
+				ojAmfAllColor = ojAmfAllColor.split("/");
 				for(var i=0;i<ojAmfColorPlace.length;i++){
 					for(var i=0;i<ojAmfAllColor.length;i++){
 						if(ojAmfColorPlace[i] == "0002901"){
@@ -2421,8 +2409,8 @@ if(orderFlag=="orderBack"){
 			var ojBhColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojBhColorPlace}";
 			var ojBhAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojBhAllColor}";
 			if(isNotEmpty(ojBhColorPlace)&&isNotEmpty(ojBhAllColor)){
-				ojBhAllColor = ojBhAllColor.split(",");
-				ojBhColorPlace = ojBhColorPlace.split(",");
+				ojBhAllColor = ojBhAllColor.split("/");
+				ojBhColorPlace = ojBhColorPlace.split("/");
 				for(var i=0;i<ojBhColorPlace.length;i++){
 					//for(var i=0;i<ojBhAllColor.length;i++){
 						if(ojBhColorPlace[i] == "0003201"){
@@ -2485,8 +2473,8 @@ if(orderFlag=="orderBack"){
 			var ojByColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojByColorPlace}";
 			var ojByAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojByAllColor}";
 			if(isNotEmpty(ojByAllColor)&&isNotEmpty(ojByColorPlace)){
-				ojByAllColor = ojByAllColor.split(",");
-				ojByColorPlace = ojByColorPlace.split(",");
+				ojByAllColor = ojByAllColor.split("/");
+				ojByColorPlace = ojByColorPlace.split("/");
 				for(var i=0;i<ojByColorPlace.length;i++){
 					//for(var i=0;i<ojByAllColor.length;i++){
 						if(ojByColorPlace[i] == "0003501"){
@@ -2547,8 +2535,8 @@ if(orderFlag=="orderBack"){
 			var tjAllBhColor = "${orderCoForm.coOptionJacketTuxedoInfo.tjAllBhColor}";
 			var tjBhColorPlace = "${orderCoForm.coOptionJacketTuxedoInfo.tjBhColorPlace}";
 			if(isNotEmpty(tjAllBhColor)&&isNotEmpty(tjBhColorPlace)){
-				tjBhColorPlace = tjBhColorPlace.split(",");
-				tjAllBhColor = tjAllBhColor.split(",");
+				tjBhColorPlace = tjBhColorPlace.split("/");
+				tjAllBhColor = tjAllBhColor.split("/");
 				for(var i=0;i<tjBhColorPlace.length;i++){
 					//for(var i=0;i<ojBhAllColor.length;i++){
 						if(tjBhColorPlace[i] == "0003201"){
@@ -2611,8 +2599,8 @@ if(orderFlag=="orderBack"){
 			var tjByColorPlace = "${orderCoForm.coOptionJacketTuxedoInfo.tjByColorPlace}";
 			var tjAllByColor = "${orderCoForm.coOptionJacketTuxedoInfo.tjAllByColor}";
 			if(isNotEmpty(tjByColorPlace)&&isNotEmpty(tjAllByColor)){
-				tjByColorPlace = tjByColorPlace.split(",");
-				tjAllByColor = tjAllByColor.split(",");
+				tjByColorPlace = tjByColorPlace.split("/");
+				tjAllByColor = tjAllByColor.split("/");
 				for(var i=0;i<tjByColorPlace.length;i++){
 					//for(var i=0;i<ojByAllColor.length;i++){
 						if(tjByColorPlace[i] == "0003501"){
@@ -2670,7 +2658,7 @@ if(orderFlag=="orderBack"){
 		}else if(productCategory == "9000103"){
 			var wjStitchModifyPlace = "${orderCoForm.coOptionJacketWashableInfo.wjStitchModifyPlace}";
 			if(isNotEmpty(wjStitchModifyPlace)){
-				wjStitchModifyPlace = wjStitchModifyPlace.split(",");
+				wjStitchModifyPlace = wjStitchModifyPlace.split("/");
 				for(var i=0;i<wjStitchModifyPlace.length;i++){
 					if(wjStitchModifyPlace[i] == "0002501"){
 						jQuery("#wj_stitchModifyPlace_id1").prop("checked",true);
@@ -2701,7 +2689,7 @@ if(orderFlag=="orderBack"){
 
 			var wjDStitchModifyPlace = "${orderCoForm.coOptionJacketWashableInfo.wjDStitchModifyPlace}";
 			if(isNotEmpty(wjDStitchModifyPlace)){
-				wjDStitchModifyPlace = wjDStitchModifyPlace.split(",");
+				wjDStitchModifyPlace = wjDStitchModifyPlace.split("/");
 				for(var i=0;i<wjDStitchModifyPlace.length;i++){
 					if(wjDStitchModifyPlace[i] == "0002701"){
 						jQuery("#wj_dStitchModifyPlace_id1").prop("checked",true);
@@ -2729,8 +2717,8 @@ if(orderFlag=="orderBack"){
 			var wjAmfColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjAmfColorPlace}";
 			var wjAmfAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllAmfColor}";
 			if(isNotEmpty(wjAmfAllColor)&&isNotEmpty(wjAmfColorPlace)){
-				wjAmfAllColor = wjAmfAllColor.split(",");
-				wjAmfColorPlace = wjAmfColorPlace.split(",");
+				wjAmfAllColor = wjAmfAllColor.split("/");
+				wjAmfColorPlace = wjAmfColorPlace.split("/");
 				for(var i=0;i<wjAmfColorPlace.length;i++){
 					//for(var i=0;i<wjamfAllColor.length;i++){
 						if(wjAmfColorPlace[i] == "0002901"){
@@ -2769,8 +2757,8 @@ if(orderFlag=="orderBack"){
 			var wjBhColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjBhColorPlace}";
 			var wjBhAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllBhColor}";
 			if(isNotEmpty(wjBhAllColor)&&isNotEmpty(wjBhColorPlace)){
-				wjBhAllColor = wjBhAllColor.split(",");
-				wjBhColorPlace = wjBhColorPlace.split(",");
+				wjBhAllColor = wjBhAllColor.split("/");
+				wjBhColorPlace = wjBhColorPlace.split("/");
 				for(var i=0;i<wjBhColorPlace.length;i++){
 					//for(var i=0;i<wjBhAllColor.length;i++){
 						if(wjBhColorPlace[i] == "0003201"){
@@ -2833,8 +2821,8 @@ if(orderFlag=="orderBack"){
 			var wjByColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjByColorPlace}";
 			var wjByAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllByColor}";
 			if(isNotEmpty(wjByColorPlace)&&isNotEmpty(wjByAllColor)){
-				wjByAllColor = wjByAllColor.split(",");
-				wjByColorPlace = wjByColorPlace.split(",");
+				wjByAllColor = wjByAllColor.split("/");
+				wjByColorPlace = wjByColorPlace.split("/");
 				for(var i=0;i<wjByColorPlace.length;i++){
 					//for(var i=0;i<wjByAllColor.length;i++){
 						if(wjByColorPlace[i] == "0003501"){
@@ -2901,16 +2889,122 @@ if(orderFlag=="orderBack"){
 	
 	getPrice();
 	showPrice();
-
+	
+	optionJacketChangeModel(productCategory);
+	optionColorReSave(productCategory);
+	
 	doubleOptionModelPrice();
 	jQuery("#jacketItemFlag").val("1");
 })	
 
-jQuery("#btnMateStkNo,#btnMate").change(function(){
+jQuery("#btnMateStkNo,#btnMate,#tj_btnMate,#tj_btnMateStkNo,#wj_btnMate,#wj_btnMateStkNo").change(function(){
     if(jQuery("#jacketItemFlag").val()=="1"){
-    	jQuery("#ojBtnMateFlag").val("1"); 
+    	jQuery("#ojBtnMatePtFlag").val("1"); 
+    	jQuery("#ojBtnMatePt2Flag").val("1"); 
+    	jQuery("#jacketBtnMateGlFlag").val("1"); 
+    	var jkBtnMateStkNo="";
+    	var wpButtonMap="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap}";
+    	var opButtonMap="${orderCoForm.coOptionPantsStandardInfo.opButtonMap }";
+    	var tpButtonMap="${orderCoForm.coOptionPantsTuxedoInfo.tpButtonMap }"
+    		
+    		if(productCategory == "9000101"){
+    			var jkBtnMate =jQuery("#btnMate").val(); 
+    			var opButtonMap="${orderCoForm.coOptionPantsStandardInfo.opButtonMap }";
+    			var ptBtnMate="opBtnMate";
+    			var subItemCode="03";
+    			var optionCode="00033"; 
+    			var opBtnMateStkNo ="opBtnMateStkNo";
+    			jkBtnMateStkNo=jQuery("#btnMateStkNo").val();			
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,opButtonMap,ptBtnMate,subItemCode,optionCode,1,opBtnMateStkNo,jkBtnMateStkNo);
+
+    			var ogFrontBtnMateMap="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateMap }";
+    			var ogFrontBtnMate="ogFrontBtnMate";
+    			var subItemCodeGilet="04";
+    			var optionCodeGilet="00021"; 
+    			var ogFrontBtnMateStkNo ="ogFrontBtnMateStkNo";
+    			glBtnMatecompareOtherBtnMate(jkBtnMate,ogFrontBtnMateMap,ogFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,ogFrontBtnMateStkNo,jkBtnMateStkNo);
+
+        	}else if(productCategory == "9000102"){
+    			var jkBtnMate =jQuery("#tj_btnMate").val(); 
+    			var tpButtonMap="${orderCoForm.coOptionPantsTuxedoInfo.tpButtonMap }";
+    			var ptBtnMate="tpBtnMate";
+    			var subItemCode="03";
+    			var optionCode="00033"; 
+    			var tpBtnMateStkNo ="tpBtnMateStkNo";
+    			jkBtnMateStkNo=jQuery("#tj_btnMateStkNo").val();			
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,tpButtonMap,ptBtnMate,subItemCode,optionCode,2,tpBtnMateStkNo,jkBtnMateStkNo);
+
+    	        var tgFrontBtnMateMap="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateMap }";
+    			var tgFrontBtnMate="tgFrontBtnMate";
+    			var subItemCodeGilet="04";
+    			var optionCodeGilet="00021"; 
+    			var tgFrontBtnMateStkNo ="tgFrontBtnMateStkNo";
+    			glBtnMatecompareOtherBtnMate(jkBtnMate,tgFrontBtnMateMap,tgFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,tgFrontBtnMateStkNo,jkBtnMateStkNo);
+            
+        	}else if(productCategory == "9000103"){
+    			var jkBtnMate =jQuery("#wj_btnMate").val(); 
+    			var tpButtonMap="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap }";
+    			var ptBtnMate="wpBtnMate";
+    			var subItemCode="03";
+    			var optionCode="00033"; 
+    			var wpBtnMateStkNo ="wpBtnMateStkNo";
+    			jkBtnMateStkNo=jQuery("#wj_btnMateStkNo").val();			
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,wpButtonMap,ptBtnMate,subItemCode,optionCode,3,wpBtnMateStkNo,jkBtnMateStkNo);
+
+    			var wgFrontBtnMateMap="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateMap }";
+    			var wgFrontBtnMate="wgFrontBtnMate";
+    			var subItemCodeGilet="04";
+    			var optionCodeGilet="00021"; 
+    			var wgFrontBtnMateStkNo ="wgFrontBtnMateStkNo";
+    			glBtnMatecompareOtherBtnMate(jkBtnMate,wgFrontBtnMateMap,wgFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,wgFrontBtnMateStkNo,jkBtnMateStkNo);
+            
+        	}
     }
 })	
+function  jkBtnMatecompareOtherBtnMate(jkBtnMate,otherBtnMateMap,otherBtnMate,subItemCode,optionCode,type,otherBtnMateStkNo,jkBtnMateStkNo){
+	var tt=[];
+	tt.length = 0;
+	var ttt=[];
+	ttt.length = 0;
+	otherBtnMateMap=otherBtnMateMap.substr(1,otherBtnMateMap.length);
+	otherBtnMateMap = otherBtnMateMap.split(",");
+	for(var i=0;i<otherBtnMateMap.length;i++){
+		tt= otherBtnMateMap[i].split("=");
+			ttt.push(tt[0]);
+	}
+	for(var i=0;i<ttt.length;i++){
+		if(ttt[i]==" "+jkBtnMate){
+			jQuery('#'+otherBtnMate).val(jkBtnMate);
+			var itemCode = jQuery("#item").val();
+			mateSelect2(itemCode,subItemCode,jkBtnMate,optionCode,type,orderPattern,otherBtnMateStkNo,jkBtnMateStkNo);
+			i=ttt.length;
+		}else{
+			jQuery('#'+otherBtnMate).val("3000800");
+		}
+	}
+}
+function  glBtnMatecompareOtherBtnMate(jkBtnMate,otherBtnMateMap,otherBtnMate,subItemCode,optionCode,type,otherBtnMateStkNo,jkBtnMateStkNo){
+	var tt=[];
+	tt.length = 0;
+	var ttt=[];
+	ttt.length = 0;
+	otherBtnMateMap=otherBtnMateMap.substr(1,otherBtnMateMap.length);
+	otherBtnMateMap = otherBtnMateMap.split(",");
+	for(var i=0;i<otherBtnMateMap.length;i++){
+		tt= otherBtnMateMap[i].split("=");
+			ttt.push(tt[0]);
+	}
+	for(var i=0;i<ttt.length;i++){
+		if(ttt[i]==" "+jkBtnMate){
+			jQuery('#'+otherBtnMate).val(jkBtnMate);
+			var itemCode = jQuery("#item").val();
+			mateSelect2(itemCode,subItemCode,jkBtnMate,optionCode,type,orderPattern,otherBtnMateStkNo,jkBtnMateStkNo);
+			i=ttt.length;
+		}else{
+			jQuery('#'+otherBtnMate).val("3000800");
+		}
+	}
+}
 
 function setJacketModelDisable(productCategory){
 	var jkModel = null;
@@ -3049,6 +3143,7 @@ function mateInit(){
 				 StkNoSelect.empty();
 				 StkNoSelect.empty();
 				 if(Object.keys(result).length==0){
+					 StkNoSelect.append(jQuery('<option />').val("").text(""));
 					 StkNoSelect.prop("disabled",true);
 				 }else{
 					 StkNoSelect.removeAttr("disabled");
@@ -3060,6 +3155,43 @@ function mateInit(){
 		});
 	}
 }
+
+//素材によって　品番を設定
+function mateSelect2(itemCode,subItemCode,mateChecked,optionCode,type,orderPattern,otherBtnMateStkNo,jkBtnMateStkNo){
+	var url;
+	if (type == 1){
+		url = "/orderCo/standardMateSelect";
+	}else if(type == 2){
+		url = "/orderCo/tuxdoMateSelect";
+	}else if(type == 3){
+		url = "/orderCo/washabiMateSelect";
+	}
+	jQuery.ajax({
+		 type:"get",
+		 url: contextPath + url,
+		 async: false,
+		 data:{"itemCode":itemCode,"subItemCode":subItemCode,"mateChecked":mateChecked,"orderPattern":orderPattern,"optionCode":optionCode},
+		 success:function(result){
+			 if(Object.keys(result).length==0){
+				 
+			 }else{
+				 var nums=[];
+				 nums.length = 0;
+				 for (var key in result) {
+					 nums.push(key);	 
+				 }				
+				 jQuery("#"+otherBtnMateStkNo).val(mateChecked+"01"); 
+				  for(var j=0;j<nums.length;j++){ 	   
+						if(jkBtnMateStkNo==nums[j]){	
+							jQuery('#'+otherBtnMateStkNo).val(jkBtnMateStkNo);
+							j=nums.length;
+						}
+				 }	 	
+			 }
+		 }
+	});
+}
+
 
 function showPrice(){
 	var jacketModel = null;
@@ -3083,7 +3215,7 @@ function getPrice(){
 	var jacketModel = "";
 	var priceUrl = "";
 	jQuery("#jacketModel,#oj_frontBtnCnt,#tj_jacketModel,#tj_frontBtnCnt,#wj_jacketModel,#wj_frontBtnCnt").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "02";
 	    var category = jQuery('input[name="productCategory"]:checked').val();
@@ -3105,7 +3237,7 @@ function getPrice(){
 	    	type:"get",
 		    url:contextPath + "/orderCo/" + priceUrl,
 		    data:{"code":code},
-		    async:false,
+		    //async:false,
 		    success:function(result){
 		    		var allPriceMap = result.priceMap;
 		         	for (var priceMapKey in allPriceMap) {
@@ -3132,7 +3264,6 @@ function getPrice(){
 			"#tj_frontBtnCnt,#tj_waistPkt,#tj_flowerHole,#tj_coinPkt,#tj_bodyBackMate,#tj_bodyBackMateStkNo,#tj_cuffBackMate,#tj_cuffBackMateStkNo,#tj_btnMate,#tj_btnMateStkNo,"+
 			"#wj_frontBtnCnt,#wj_backSpec,#wj_fort,#wj_flowerHole,#wj_waistPkt,#wj_coinPkt,#wj_bodyBackMate,#wj_cuffBackMate,#wj_bodyBackMateStkNo,#wj_cuffBackMateStkNo,#wj_btnMate,#wj_btnMateStkNo") 
 	   .change(function(){
-	   //jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   var category = jQuery('input[name="productCategory"]:checked').val();
 	   if(category == "9000101"){
 	    	jacketModel = jQuery("#jacketModel option:selected").val();
@@ -3165,7 +3296,7 @@ function getPrice(){
 			    url:contextPath + "/orderCo/" + priceUrl,
 			    data:{"code":code,"idValueName":idValueName,"thisVal":thisVal,"thisValStkNo":thisValStkNo},
 			    dataType:"json",
-			    async:false,
+			    //async:false,
 			    success:function(result){
 			    	if(jQuery("#"+idValueName+"_Msg").length>0){
 						jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
@@ -3185,11 +3316,10 @@ function getPrice(){
 	var priceUrl = "";
 	//ラジオボタンの変更処理
 	//項目：ラペルデザイン、グレード、襟裏（ヒゲ）、襟吊、ラペル幅、胸ポケット、チェンジポケット、スランテッドポケット、袖仕様、マニカ、袖釦、内ポケット変更、ステッチ種類、ステッチ箇所変更、ダブルステッチ変更、AMF色指定、ボタンホール色指定、ボタン付け糸指定、ベント、形状記憶
-	jQuery('input[id^="lapelDesign_id"],[id^="grade_id"],[id^="backCollar_id"],[id^="chainHange_id"],[id^="lapelWidth_id"],[id^="breastPkt_id"],[id^="changePkt_id"],[id^="slantedPkt_id"],[id^="sleeveSpec_id"],[id^="manica_id"],[id^="sleeveBtnType_id"],[id^="insidePktChange_id"],[id^="breastInnerPkt_id"],[id^="stitch_id"],[id^="ventSpec_id"],[id^="shapeMemory_id"],' + 
+	jQuery('input[id^="lapelDesign_id"],[id^="grade_id"],[id^="backCollar_id"],[id^="chainHange_id"],[id^="lapelWidth_id"],[id^="breastPkt_id"],[id^="changePkt_id"],[id^="slantedPkt_id"],[id^="sleeveSpec_id"],[id^="manica_id"],[id^="sleeveBtnType_id"],[id^="insidePktChange_id"],[id^="cuffSpec_id"],[id^="breastInnerPkt_id"],[id^="stitch_id"],[id^="ventSpec_id"],[id^="shapeMemory_id"],' + 
 		'[id^="tj_lapelDesign_id"],[id^="tj_grade_id"],[id^="tj_backCollar_id"],[id^="tj_chainHange_id"],[id^="tj_lapelWidth_id"],[id^="tj_breastPkt_id"],[id^="tj_changePkt_id"],[id^="tj_slantedPkt_id"],[id^="tj_sleeveSpec_id"],[id^="tj_manica_id"],[id^="tj_sleeveBtnType_id"],[id^="tj_cuffSpec_id"],[id^="tj_insidePktChange_id"],[id^="tj_breastInnerPkt_id"],[id^="tj_stitch_id"],[id^="tj_ventSpec_id"],[id^="tj_ventSpec_id"],[id^="tj_shapeMemory_id"],'+
 		'[id^="wj_lapelDesign_id"],[id^="wj_grade_id"],[id^="wj_backCollar_id"],[id^="wj_chainHange_id"],[id^="wj_lapelWidth_id"],[id^="wj_breastPkt_id"],[id^="wj_changePkt_id"],[id^="wj_slantedPkt_id"],[id^="wj_sleeveSpec_id"],[id^="wj_manica_id"],[id^="wj_sleeveBtnTypeKasane_id"],[id^="wj_cuffSpec_id"],[id^="wj_insidePktChange_id"],[id^="wj_breastInnerPkt_id"],[id^="wj_stitch_id"],[id^="wj_ventSpec_id"],[id^="wj_shapeMemory_id"]')
 	.change(function(){
-		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var category = jQuery('input[name="productCategory"]:checked').val();
 		   if(category == "9000101"){
 		    	jacketModel = jQuery("#jacketModel option:selected").val();
@@ -3217,7 +3347,7 @@ function getPrice(){
 				type:"get",
 			    url:contextPath + "/orderCo/" + priceUrl,
 			    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisVal},
-			    async:false,
+			    //async:false,
 			    success:function(result){
 			    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
 			    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
@@ -3243,7 +3373,9 @@ function getPrice(){
 			priceUrl = "getOrderPriceForJacketWashableProject";
 			jacketModel = jQuery("#wj_jacketModel option:selected").val();
 		}
-		
+		if(isEmpty(jacketModel)){
+			return;
+		}
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "02";
 		var idValueName = jQuery(this).attr("id");
@@ -3252,17 +3384,6 @@ function getPrice(){
 
 		if(productCategory == "9000101"){
 			if(thisValueTemp == "0002401"){
-				
-				//ステッチ箇所変更は無しです
-				var i = 1;
-				jQuery('input[id^="stitchModifyPlace_id"]').each(function() {
-					jQuery('#stitchModifyPlace_id' + i).removeAttr("checked");
-					i++;
-				});
-				jQuery('#dStitchModify_id1').prop("checked", true);
-				jQuery('#dStitchModify_id2').prop("disabled", true);
-				jQuery('#amfColor_id1').prop("checked", true);
-				jQuery('#amfColor_id2').prop("disabled", true);
 				var findIdPosition = idValueName.indexOf("_id");
 			    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
 				if(isNotEmpty(jacketModel)){
@@ -3281,28 +3402,18 @@ function getPrice(){
 					   }
 			        });
 				}
-				jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]:checked').change();
-				jQuery('input[name="coOptionJacketStandardInfo.ojAmfColor"]:checked').change();
 			}else if(thisValueTemp == "0002402"){
 				//ステッチ箇所変更は有りです
 				var stitchValue = jQuery('input[name="coOptionJacketStandardInfo.ojStitch"]:checked').val();
-				if(stitchValue != "0002304"){
+				if(stitchValue == "0002304" || stitchValue == "0002303"){
+					jQuery('#dStitchModify_id2').prop("disabled", true);
+				}else{
 					jQuery('#dStitchModify_id2').prop("disabled", false);
 				}
-				jQuery('#amfColor_id2').prop("disabled", false);
 			}
 		}else if(productCategory == "9000103"){
 			if(thisValueTemp == "0002401"){
 				//ステッチ箇所変更は無しです
-				var i = 1;
-				jQuery('input[id^="wj_stitchModifyPlace_id"]').each(function() {
-					jQuery('#wj_stitchModifyPlace_id' + i).removeAttr("checked");
-					i++;
-				});
-				jQuery('#wj_dStitchModify_id1').prop("checked", true);
-				jQuery('#wj_dStitchModify_id2').prop("disabled", true);
-				jQuery('#wj_amfColor_id1').prop("checked", true);
-				jQuery('#wj_amfColor_id2').prop("disabled", true);
 				var findIdPosition = idValueName.indexOf("_id");
 			    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
 				if(isNotEmpty(jacketModel)){
@@ -3318,15 +3429,16 @@ function getPrice(){
 					    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
 					        jQuery("#optionPrice").html(result.optionPrice);
 					        getAllPrice(itemCode, result.optionPrice);
-					   }
+					    }
 			        });
 				}
-				jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').change();
-				jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]:checked').change();
 			}else if(thisValueTemp == "0002402"){
-				//ステッチ箇所変更は有りです
-				jQuery('#wj_dStitchModify_id2').prop("disabled", false);
-				jQuery('#wj_amfColor_id2').prop("disabled", false);
+				var stitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjStitch"]:checked').val();
+				if(stitchValue == "0002304" || stitchValue == "0002303"){
+					jQuery('#dStitchModify_id2').prop("disabled", true);
+				}else{
+					jQuery('#dStitchModify_id2').prop("disabled", false);
+				}
 			}
 		}
 		
@@ -3334,11 +3446,24 @@ function getPrice(){
 		
 		if(thisValueTemp == "0002601"){
 			//ダブルステッチは無しです
-			var i = 1;
-			jQuery('input[id^="dStitchModifyPlace_id"]').each(function() {
-				jQuery('#dStitchModifyPlace_id' + i).removeAttr("checked");
-				i++;
-			});
+			var findIdPosition = idValueName.indexOf("_id");
+		    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+			if(isNotEmpty(jacketModel)){
+				jspOptionCode = "00026"
+				var code = itemCode + subItemCode + jacketModel + jspOptionCode;
+				jQuery.ajax({
+					type:"get",
+				    url:contextPath + "/orderCo/" + priceUrl,
+				    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisValueTemp},
+				    async:false,
+				    success:function(result){
+				    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+				    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
+				        jQuery("#optionPrice").html(result.optionPrice);
+				        getAllPrice(itemCode, result.optionPrice);
+				   }
+		        });
+			}
 		}
 
 		//IDの後の番号を削除します
@@ -3381,7 +3506,7 @@ function getPrice(){
 				//このループの要素を取得します
 				var idValueNameComplete = document.getElementById(idValueNameTemp + "Place_id" + i);
 				if(idValueNameComplete.checked){
-					countArr = countArr + jspOptionCode + idValueNameComplete.value + ",";
+					countArr = countArr + jspOptionCode + idValueNameComplete.value + "/";
 				}
 			}
 		}
@@ -3421,6 +3546,9 @@ function getPrice(){
 				jacketModel = jQuery("#wj_jacketModel option:selected").val();
 				priceUrl = "getOrderPriceForJacketWashableProject";
 		   }
+		if(isEmpty(jacketModel)){
+			return;
+		}
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "02";
 	    var idValueName = jQuery(this).attr("id");
@@ -3592,7 +3720,9 @@ function getPrice(){
 			ajaxUrl = "getOrderPriceForJacketWashableProject";
 			jacketModel = jQuery("#wj_jacketModel option:selected").val();
 		}
-
+		if(isEmpty(jacketModel)){
+			return;
+		}
 		var itemCode = jQuery("#item").val();
 		var subItemCode = "02";
 		var idValueName = jQuery(this).attr("id");
@@ -3705,6 +3835,8 @@ function getAllPrice(subItemCode, optionPrice){
 function doubleOptionModelPrice(){
 	var frontBtnCnt = null;
 	jQuery("#jacketModel_Msg").empty();
+	jQuery("#tj_jacketModel_Msg").empty();
+	jQuery("#wj_jacketModel_Msg").empty();
 	var productCategory = jQuery('input[name="productCategory"]:checked').val();
 
 	if(productCategory == "9000101"){
@@ -3737,16 +3869,34 @@ function doubleOptionModelPrice(){
 				if(isNotEmpty(result)){
 					if(result.jkDoublePrice == "0"){
 						jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
-						jQuery("#jacketModel_Msg").html("無料");
+						if(productCategory == "9000101"){
+							jQuery("#jacketModel_Msg").html("無料");
+						}else if(productCategory == "9000102"){
+							jQuery("#tj_jacketModel_Msg").html("無料");
+						}else if(productCategory == "9000103"){
+							jQuery("#wj_jacketModel_Msg").html("無料");
+						}
 						allOptionPrice();
 					}else{
 						jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
-						jQuery("#jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+						if(productCategory == "9000101"){
+							jQuery("#jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+						}else if(productCategory == "9000102"){
+							jQuery("#tj_jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+						}else if(productCategory == "9000103"){
+							jQuery("#wj_jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+						}
 						allOptionPrice();
 					}
 				}else{
 					jQuery("#jkDoubleModelPrice").val("0");
-					jQuery("#jacketModel_Msg").html("無料");
+					if(productCategory == "9000101"){
+						jQuery("#jacketModel_Msg").html("無料");
+					}else if(productCategory == "9000102"){
+						jQuery("#tj_jacketModel_Msg").html("無料");
+					}else if(productCategory == "9000103"){
+						jQuery("#wj_jacketModel_Msg").html("無料");
+					}
 					allOptionPrice();
 				}
 		     }
@@ -3776,31 +3926,42 @@ function doubleOptionModelPrice(){
 				 data:{"fabricNo":productFabricNo,"orderPattern":orderPattern,"doubleCheck":ojFrontBtnCnt,"item":item,"subItem":subItem},
 				 async:false,
 				 success:function(result){
-					if(isNotEmpty(result)){
-						if(result.jkDoublePrice == "0"){
-							jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
-							jQuery("#jacketModel_Msg").html("無料");
-							allOptionPrice();
+					 if(isNotEmpty(result)){
+							if(result.jkDoublePrice == "0"){
+								jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
+								if(productCategory == "9000101"){
+									jQuery("#jacketModel_Msg").html("無料");
+								}else if(productCategory == "9000102"){
+									jQuery("#tj_jacketModel_Msg").html("無料");
+								}else if(productCategory == "9000103"){
+									jQuery("#wj_jacketModel_Msg").html("無料");
+								}
+								allOptionPrice();
+							}else{
+								jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
+								if(productCategory == "9000101"){
+									jQuery("#jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+								}else if(productCategory == "9000102"){
+									jQuery("#tj_jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+								}else if(productCategory == "9000103"){
+									jQuery("#wj_jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+								}
+								allOptionPrice();
+							}
 						}else{
-							jQuery("#jkDoubleModelPrice").val(result.jkDoublePrice);
-							jQuery("#jacketModel_Msg").html(formatMoney(result.jkDoublePrice,0,"￥"));
+							jQuery("#jkDoubleModelPrice").val("0");
+							if(productCategory == "9000101"){
+								jQuery("#jacketModel_Msg").html("無料");
+							}else if(productCategory == "9000102"){
+								jQuery("#tj_jacketModel_Msg").html("無料");
+							}else if(productCategory == "9000103"){
+								jQuery("#wj_jacketModel_Msg").html("無料");
+							}
 							allOptionPrice();
 						}
-					}else{
-						jQuery("#jkDoubleModelPrice").val("0");
-						jQuery("#jacketModel_Msg").html("無料");
-						allOptionPrice();
-					}
 			     }
 			});
 		}
-		/* if(ojFrontBtnCnt == "0000105"||ojFrontBtnCnt == "0000106"){ */
-			
-		/* }else{
-			jQuery("#jkDoubleModelPrice").val("0");
-			jQuery("#jacketModel_Msg").html("無料");
-			allOptionPrice();
-		} */
 	})
 }
 
@@ -4378,19 +4539,38 @@ function changeJkOptionByStock(productCategory){
 					jQuery("#manica_id2").prop("disabled",true);
 					jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
 				}
+				
+				jQuery("#jacketModel").change(function(){
+					var jacketModel = jQuery(this).val();
+					if(jacketModel == "TR02"){
+						jQuery("#manica_id1").prop("checked",true);
+						jQuery("#manica_id2").prop("disabled",false);
+						jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
+					}else{
+						jQuery("#manica_id1").prop("checked",true);
+						jQuery("#manica_id2").prop("disabled",true);
+						jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
+					}
+				})
 			}
 			//F0002:上海服良
 			else if(factoryCode == "F00002"){
+				jQuery("#grade_id1").prop("checked",true);
+				jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').change();
 				//1：可能、0：不可
 				if(fullHaircloth == "0"){
 					jQuery("#grade_id2").prop("disabled",true);
 				}else if(fullHaircloth == "1"){
 					jQuery("#grade_id2").prop("disabled",false);
 				}
-				jQuery("#grade_id1").prop("checked",true);
-				jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').change();
+				jQuery("#manica_id1").prop("checked",true);
+				jQuery("#manica_id2").prop("disabled",true);
+				jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
+				
 			}else{
-				//何もしない
+				jQuery("#manica_id1").prop("checked",true);
+				jQuery("#manica_id2").prop("disabled",true);
+				jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
 			}
 
 			if(shirtSleeve == "0"){
@@ -4428,6 +4608,18 @@ function changeJkOptionByStock(productCategory){
 					jQuery("#tj_manica_id2").prop("disabled",true);
 					jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
 				}
+				jQuery("#tj_jacketModel").change(function(){
+					var jacketModel = jQuery(this).val();
+					if(jacketModel == "TR02"){
+						jQuery("#tj_manica_id1").prop("checked",true);
+						jQuery("#tj_manica_id2").prop("disabled",false);
+						jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
+					}else{
+						jQuery("#tj_manica_id1").prop("checked",true);
+						jQuery("#tj_manica_id2").prop("disabled",true);
+						jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
+					}
+				})
 			}
 			//F0002:上海服良
 			else if(factoryCode == "F00002"){
@@ -4439,24 +4631,60 @@ function changeJkOptionByStock(productCategory){
 				}
 				jQuery("#tj_grade_id1").prop("checked",true);
 				jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]').change();
+
+				jQuery("#tj_manica_id1").prop("checked",true);
+				jQuery("#tj_manica_id2").prop("disabled",true);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
 			}else{
-				//何もしない
+				jQuery("#tj_manica_id1").prop("checked",true);
+				jQuery("#tj_manica_id2").prop("disabled",true);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
 			}
-		}
-	}else{
-		//F0001:大連LCR
-		if(factoryCode == "F00001"){
-			//1：可能、0：不可
-			var jacketModel = jQuery("#wj_jacketModel").val();
-			if(jacketModel == "TR02"){
-				jQuery("#wj_manica_id1").prop("checked",true);
-				jQuery("#wj_manica_id2").prop("disabled",false);
-				jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
+		}else{
+			//F0001:大連LCR
+			if(factoryCode == "F00001"){
+				//1：可能、0：不可
+				var jacketModel = jQuery("#wj_jacketModel").val();
+				if(jacketModel == "TR02"){
+					jQuery("#wj_manica_id1").prop("checked",true);
+					jQuery("#wj_manica_id2").prop("disabled",false);
+					jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
+				}else{
+					jQuery("#wj_manica_id1").prop("checked",true);
+					jQuery("#wj_manica_id2").prop("disabled",true);
+					jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
+				}
+				jQuery("#wj_jacketModel").change(function(){
+					var jacketModel = jQuery(this).val();
+					if(jacketModel == "TR02"){
+						jQuery("#wj_manica_id1").prop("checked",true);
+						jQuery("#wj_manica_id2").prop("disabled",false);
+						jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
+					}else{
+						jQuery("#wj_manica_id1").prop("checked",true);
+						jQuery("#wj_manica_id2").prop("disabled",true);
+						jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
+					}
+				})
 			}else{
 				jQuery("#wj_manica_id1").prop("checked",true);
 				jQuery("#wj_manica_id2").prop("disabled",true);
 				jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
 			}
+		}
+	}else{
+		if(productCategory == "9000101"){
+			jQuery("#manica_id1").prop("checked",true);
+			jQuery("#manica_id2").prop("disabled",true);
+			jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').change();
+		}else if(productCategory == "9000102"){
+			jQuery("#tj_manica_id1").prop("checked",true);
+			jQuery("#tj_manica_id2").prop("disabled",true);
+			jQuery('input[name="coOptionJacketTuxedoInfo.tjManica"]').change();
+		}else{
+			jQuery("#wj_manica_id1").prop("checked",true);
+			jQuery("#wj_manica_id2").prop("disabled",true);
+			jQuery('input[name="coOptionJacketWashableInfo.wjManica"]').change();
 		}
 	}
 }
@@ -4538,19 +4766,32 @@ function optionJacketChangeModel(productCategory){
 			frontBtnCntElem.val(ojFrontBtnCnt);
 			frontBtnCntElem.change();
 
-			jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojLapelDesign}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').change();
+			var ojLapelDesignSession = "${orderCoForm.coOptionJacketStandardInfo.ojLapelDesign}";
+			var ojLapelDesign = jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]').val();
+			if(ojLapelDesignSession != ojLapelDesign){
+				jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]').val([ojLapelDesignSession]);
+				jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').change();
+			}
 
-			//グレード
-			jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojGrade}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]:checked').change();
+			var ojGradeSession = "${orderCoForm.coOptionJacketStandardInfo.ojGrade}";
+			var ojGrade = jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').val();
+			if(ojLapelDesignSession != ojLapelDesign){
+				//グレード
+				jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]').val([ojGradeSession])
+				jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]:checked').change();
+			}
 
-			//裏仕様
-			jQuery('#backSpec').val("${orderCoForm.coOptionJacketStandardInfo.ojGackSpec}");
-			jQuery('#backSpec').change();
+			var ojGackSpecSession = "${orderCoForm.coOptionJacketStandardInfo.ojGackSpec}";
+			var ojGackSpec = jQuery('#backSpec').val();
+			if(ojGackSpecSession != ojGackSpec){
+				//裏仕様
+				jQuery('#backSpec').val(ojGackSpecSession);
+				jQuery('#backSpec').change();
+			}
 
 			var gradeValue = jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]:checked').val();
 			var backSpecValue = jQuery('#backSpec').val();
+			
 			// 台場の要素取得
 			var fortElem = jQuery('#fort');
 			var beforeValue = fortElem.val();
@@ -4564,30 +4805,46 @@ function optionJacketChangeModel(productCategory){
 			jQuery('#fort').val("${orderCoForm.coOptionJacketStandardInfo.ojFort}");
 			jQuery('#fort').change();
 
-			//襟裏（ヒゲ）
-			jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojBackCollar}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]:checked').change();
+			var ojBackCollarSession = "${orderCoForm.coOptionJacketStandardInfo.ojBackCollar}";
+			var ojBackCollar = jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]').val();
+			if(ojBackCollarSession != ojBackCollar){
+				//襟裏（ヒゲ）
+				jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]').val([ojBackCollarSession]);
+				jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]:checked').change();
+			}
 
-			//腰ポケット
-			jQuery("#waistPkt").val("${orderCoForm.coOptionJacketStandardInfo.ojWaistPkt}");
-			jQuery("#waistPkt").change();
+			var ojWaistPktSession = "${orderCoForm.coOptionJacketStandardInfo.ojWaistPkt}";
+			var ojWaistPkt = jQuery("#waistPkt").val();
+			if(ojWaistPktSession != ojWaistPkt){
+				//腰ポケット
+				jQuery("#waistPkt").val(ojWaistPktSession);
+				jQuery("#waistPkt").change();
+			}
 
 			//チェンジポケット
-			jQuery('input[name="coOptionJacketStandardInfo.ojChangePkt"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojChangePkt}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojChangePkt"]:checked').change();
+			var ojChangePktSession = "${orderCoForm.coOptionJacketStandardInfo.ojChangePkt}";
+			var ojChangePkt = jQuery('input[name="coOptionJacketStandardInfo.ojChangePkt"]').val();
+			if(ojChangePktSession != ojChangePkt){
+				jQuery('input[name="coOptionJacketStandardInfo.ojChangePkt"]').val([ojChangePktSession]);
+				jQuery('input[name="coOptionJacketStandardInfo.ojChangePkt"]:checked').change();
+			}
 
 			//スランテッドポケット
-			jQuery('input[name="coOptionJacketStandardInfo.ojSlantedPkt"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojSlantedPkt}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojSlantedPkt"]:checked').change();
-
-			//マニカ
-			/* jQuery('input[name="coOptionJacketStandardInfo.ojManica"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojManica}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojManica"]:checked').change(); */
+			var ojSlantedPktSession = "${orderCoForm.coOptionJacketStandardInfo.ojSlantedPkt}";
+			var ojSlantedPkt = jQuery('input[name="coOptionJacketStandardInfo.ojSlantedPkt"]').val();
+			if(ojSlantedPktSession != ojSlantedPkt){
+				jQuery('input[name="coOptionJacketStandardInfo.ojSlantedPkt"]').val([ojSlantedPktSession]);
+				jQuery('input[name="coOptionJacketStandardInfo.ojSlantedPkt"]:checked').change();
+			}
 
 			//袖釦
-			jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val(["${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnType}"]);
-			jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]:checked').change();
-
+			var ojSleeveBtnTypeSession = "${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnType}";
+			var ojSleeveBtnType = jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val();
+			if(ojSleeveBtnTypeSession != ojSleeveBtnType){
+				jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val(ojSleeveBtnTypeSession);
+				jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]:checked').change();
+			}
+			
 			//袖釦数
 			jQuery("#sleeveBtnCnt").val("${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnCnt}");
 				
@@ -4612,33 +4869,62 @@ function optionJacketChangeModel(productCategory){
 			frontBtnCntElem.change();
 
 			//ラペルデザイン
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjLapelDesign}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').change();
+			var tjLapelDesignSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjLapelDesign}";
+			var tjLapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]').val();
+			if(tjLapelDesignSession!=tjLapelDesign){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]').val([tjLapelDesignSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').change();
+			}
 
 			//グレード
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjGrade}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]:checked').change();
+			var tjGradeSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjGrade}";
+			var tjGrade = jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]').val();
+			if(tjGradeSession!=tjGrade){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]').val([tjGradeSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjGrade"]:checked').change();
+			}
+			
 
 			//襟裏（ヒゲ）
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjBackCollar}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]:checked').change();
-
+			var tjBackCollarSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjBackCollar}";
+			var tjBackCollar = jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]').val();
+			if(tjBackCollarSession!=tjBackCollar){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]').val([tjBackCollarSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjBackCollar"]:checked').change();
+			}
+			
 			//腰ポケット
-			jQuery("#tj_waistPkt").val("${orderCoForm.coOptionJacketTuxedoInfo.tjWaistPkt}");
-			jQuery("#tj_waistPkt").change();
+			var tjWaistPktSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjWaistPkt}";
+			var tjWaistPkt = jQuery("#tj_waistPkt").val();
+			if(tjWaistPktSession!=tjWaistPkt){
+				jQuery("#tj_waistPkt").val(tjWaistPktSession);
+				jQuery("#tj_waistPkt").change();
+			}
 
 			//チェンジポケット
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjChangePkt}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]:checked').change();
-
+			var tjChangePktSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjChangePkt}";
+			var tjChangePkt = jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val();
+			if(tjChangePktSession!=tjChangePkt){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]').val([tjChangePktSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjChangePkt"]:checked').change();
+			}
+			
 			//スランテッドポケット
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjSlantedPkt}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]:checked').change();
+			var tjSlantedPktSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjSlantedPkt}";
+			var tjSlantedPkt = jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]').val();
+			if(tjSlantedPktSession!=tjSlantedPkt){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]').val([tjSlantedPktSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjSlantedPkt"]:checked').change();
+			}
 
 			//袖釦
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjSleeveBtnType}"]);
-			jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').change();
-
+			var tjSleeveBtnTypeSession = "${orderCoForm.coOptionJacketTuxedoInfo.tjSleeveBtnType}";
+			var tjSleeveBtnType = jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]').val();
+			if(tjSleeveBtnTypeSession!=tjSleeveBtnType){
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]').val([tjSleeveBtnTypeSession]);
+				jQuery('input[name="coOptionJacketTuxedoInfo.tjSleeveBtnType"]:checked').change();
+			}
+			
 			//袖釦数
 			jQuery("#tj_sleeveBtnCnt").val("${orderCoForm.coOptionJacketTuxedoInfo.tjSleeveBtnCnt}");
 			
@@ -4663,29 +4949,53 @@ function optionJacketChangeModel(productCategory){
 			frontBtnCntElem.change();
 
 			//ラペルデザイン
-			jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]').val(["${orderCoForm.coOptionJacketWashableInfo.wjLapelDesign}"]);
-			jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').change();
+			var wjLapelDesignSession = "${orderCoForm.coOptionJacketWashableInfo.wjLapelDesign}";
+			var wjLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]').val();
+			if(wjLapelDesignSession!=wjLapelDesign){
+				jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]').val([wjLapelDesignSession]);
+				jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').change();
+			}
 
 			//襟裏（ヒゲ）
-			jQuery('input[name="coOptionJacketWashableInfo.wjBackCollar"]').val(["${orderCoForm.coOptionJacketWashableInfo.wjBackCollar}"]);
-			jQuery('input[name="coOptionJacketWashableInfo.wjBackCollar"]:checked').change();
-
+			var wjBackCollarSession = "${orderCoForm.coOptionJacketWashableInfo.wjBackCollar}";
+			var wjBackCollar = jQuery('input[name="coOptionJacketWashableInfo.wjBackCollar"]').val();
+			if(wjBackCollarSession!=wjBackCollar){
+				jQuery('input[name="coOptionJacketWashableInfo.wjBackCollar"]').val([wjBackCollarSession]);
+				jQuery('input[name="coOptionJacketWashableInfo.wjBackCollar"]:checked').change();
+			}
+			
 			//腰ポケット
-			jQuery("#wj_waistPkt").val("${orderCoForm.coOptionJacketWashableInfo.wjWaistPkt}");
-			jQuery("#wj_waistPkt").change();
+			var wjWaistPktSession = "${orderCoForm.coOptionJacketWashableInfo.wjBackCollar}";
+			var wjWaist = jQuery("#wj_waistPkt").val();
+			if(wjWaistPktSession!=wjWaist){
+				jQuery("#wj_waistPkt").val(wjWaistPktSession);
+				jQuery("#wj_waistPkt").change();
+			}
 
 			//チェンジポケット
-			jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').val(["${orderCoForm.coOptionJacketWashableInfo.wjChangePkt}"]);
-			jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]:checked').change();
+			var wjChangePktSession = "${orderCoForm.coOptionJacketWashableInfo.wjChangePkt}";
+			var wjChangePkt = jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').val();
+			if(wjChangePktSession!=wjChangePkt){
+				jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').val([wjChangePktSession]);
+				jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]:checked').change();
+			}
 
 			//スランテッドポケット
-			jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]').val(["${orderCoForm.coOptionJacketWashableInfo.wjSlantedPkt}"]);
-			jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]:checked').change();
-
+			var wjSlantedPktSession = "${orderCoForm.coOptionJacketWashableInfo.wjSlantedPkt}";
+			var wjSlantedPkt = jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]').val();
+			if(wjSlantedPktSession!=wjSlantedPkt){
+				jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]').val([wjSlantedPktSession]);
+				jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]:checked').change();
+			}
+			
 			//袖釦
-			jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]').val(["${orderCoForm.coOptionJacketWashableInfo.wjSleeveBtnType}"]);
-			jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]:checked').change();
-
+			var wjSleeveBtnTypeSession = "${orderCoForm.coOptionJacketWashableInfo.wjSleeveBtnType}";
+			var wjSleeveBtnType = jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]').val();
+			if(wjSleeveBtnTypeSession!=wjSleeveBtnType){
+				jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]').val([wjSleeveBtnTypeSession]);
+				jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]:checked').change();
+			}
+			
 			//袖釦数
 			jQuery("#wj_sleeveBtnCnt").val("${orderCoForm.coOptionJacketWashableInfo.wjSleeveBtnCnt}");
 		}
@@ -4700,16 +5010,13 @@ function optionColorReSave(productCategory){
 		wjSession();
 	}
 }
-function  sessionJacketAdFlag(oldModel,newModel){
-	if(oldModel != newModel){
-		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
-			 jQuery("#jacketAdFlag").val("0");
-		}
-	}
-}
 jQuery("#jacketModel,#tj_jacketModel,#wj_jacketModel").change(function(){
-	if(orderFlag == "orderCo"){
-		jQuery("#jacketAdFlag").val("0");
+	if("orderCo"==orderFlag){
+		jQuery("#jacketAdFlag").val("0");	
+	}else if("1"==jQuery("#jacketItemFlag").val()){
+		if("orderCo"!=orderFlag ){
+			jQuery("#jacketAdFlag").val("0");
+		}
 	}
 })
 if (document.readyState=="complete")  

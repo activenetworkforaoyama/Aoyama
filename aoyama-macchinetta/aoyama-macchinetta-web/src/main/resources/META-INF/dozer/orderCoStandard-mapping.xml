@@ -925,11 +925,11 @@
 		<b>corJkLeftsleeveGross</b> 
 	</field>
 	<field>
-		<a>corJkShoulderPad</a> 
+		<a>corJkShoulderPadCd</a> 
 		<b>corJkShoulderpadCd</b> 
 	</field>
 	<field>
-		<a>corJkFigureCorrect</a> 
+		<a>corJkFigureCorrectCd</a> 
 		<b>corJkFigureCorrectCd</b> 
 	</field>
 </mapping>

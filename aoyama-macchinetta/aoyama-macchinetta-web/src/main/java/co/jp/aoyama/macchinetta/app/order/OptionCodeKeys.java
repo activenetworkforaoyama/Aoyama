@@ -9,6 +9,8 @@ public class OptionCodeKeys {
 	// JACKET
 	// フロント釦数:段返り3つボタン
 	public static final String JK_0000101 = "0000101";
+	public static final String JK_0000105 = "0000105";
+	public static final String JK_0000106 = "0000106";
 	// ラペルデザイン:ノッチ
 	public static final String JK_0000201 = "0000201";
 	// グレード:ハーフ毛芯
@@ -281,7 +283,7 @@ public class OptionCodeKeys {
 	// 釦素材
 	public static final String sht_0000801 = "0000801";
 	// タブ釦
-	public static final String sht_0000901 = "0000901";
+	public static final String sht_0000903 = "0000903";
 	// ガントレットボタン位置
 	public static final String sht_0001001 = "0001001";
 	// ピンホールピン

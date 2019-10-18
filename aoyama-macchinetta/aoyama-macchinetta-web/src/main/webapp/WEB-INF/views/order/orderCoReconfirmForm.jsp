@@ -127,10 +127,10 @@ select.hidedown {
 				<div class="col col-lg-6">
 					<div class="row">
 						<div class="col col-md-3"><label class=" form-control-label">納期短縮</label></div>
-						<div class="col-12 col-md-8">
+						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${orderCoForm.coProductInfo.custIsDeliverShortningMap[orderCoForm.custIsDeliverShortning]}</label></strong>
 						</div>
-						<div class="col-12 col-md-1" align="right">
+						<div class="col-12 col-md-5 text-right">
 							<strong><label class=" form-control-label-value">${productAboutPrice["expediteDeliveryPrice"]}</label></strong>
 						</div>
 					</div>
@@ -358,15 +358,17 @@ select.hidedown {
 							<strong><label class=" form-control-label-value">${orderCoForm.coProductInfo.productCategoryMap[orderCoForm.productCategory]}</label></strong>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col col-md-3"><label class=" form-control-label">LCR縫製</label></div>
-						<div class="col-12 col-md-8">
-							<strong><label class=" form-control-label-value">${orderCoForm.coProductInfo.productLcrSewingMap[orderCoForm.productLcrSewing]}</label></strong>
+					<c:if test="${orderCoForm.productItem == '01'|| orderCoForm.productItem == '02' || orderCoForm.productItem == '03' || orderCoForm.productItem == '04'}">
+						<div class="row">
+							<div class="col col-md-3"><label class=" form-control-label">LCR縫製</label></div>
+							<div class="col-12 col-md-8">
+								<strong><label class=" form-control-label-value">${orderCoForm.coProductInfo.productLcrSewingMap[orderCoForm.productLcrSewing]}</label></strong>
+							</div>
+							<div class="col-12 col-md-1" align="right">
+								<strong><label class=" form-control-label-value">${productAboutPrice["lcrSewingPrice"]}</label></strong>
+							</div>
 						</div>
-						<div class="col-12 col-md-1" align="right">
-							<strong><label class=" form-control-label-value">${productAboutPrice["lcrSewingPrice"]}</label></strong>
-						</div>
-					</div>
+					</c:if>
 					<div class="row">
 						<div class="col col-md-3"><label class=" form-control-label">ブランドネーム</label></div>
 						<div class="col-12 col-md-6">
@@ -1430,33 +1432,17 @@ select.hidedown {
 								<label class=" form-control-label">肩パット</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionJacketStandardInfo.corJkShoulderPadMap[orderCoForm.coAdjustJacketStandardInfo.corJkShoulderPad]}</label></strong>
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionJacketStandardInfo.corJkShoulderPadMap[orderCoForm.coAdjustJacketStandardInfo.corJkShoulderPadCd]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
 								<label class=" form-control-label">体型補正</label>
 							</div>
 							<div class="col-12 col-md-4">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionJacketStandardInfo.corJkFigureCorrectMap[orderCoForm.coAdjustJacketStandardInfo.corJkFigureCorrect]}</label></strong>
+								<strong><label class=" form-control-label-value">${orderCoForm.coOptionJacketStandardInfo.corJkFigureCorrectMap[orderCoForm.coAdjustJacketStandardInfo.corJkFigureCorrectCd]}</label></strong>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.coAdjustJacketStandardInfo.corJkStoreCorrectionMemo}</textarea>
-							</div>	
-						</div>
-					</div>
-				</div>
-			</div>
 			</div>
 		</div>
 	</div>
@@ -1499,15 +1485,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="ogWaistPkt_appear">${standardFrameGlDisplayUpperPrice["og_waistPkt_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpecMap[orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpec]}</label></strong>
+						<c:if test="${orderCoForm.coOptionGiletStandardInfo.ogWaistPkt != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpecMap[orderCoForm.coOptionGiletStandardInfo.ogWaistPktSpec]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="ogWaistPktSpec_appear">${standardFrameGlDisplayUpperPrice["og_waistPktSpec_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="ogWaistPktSpec_appear">${standardFrameGlDisplayUpperPrice["og_waistPktSpec_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類 </label></div>
 							<div class="col-12 col-md-6">
@@ -1638,24 +1626,26 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="tgWaistPkt_appear">${tuxedoFrameGlDisplayUpperPrice["tg_waistPkt_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpecMap[orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpec]}</label></strong>
+						<c:if test="${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPkt != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpecMap[orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktSpec]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="tgWaistPktSpec_appear">${tuxedoFrameGlDisplayUpperPrice["tg_waistPktSpec_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tgWaistPktSpec_appear">${tuxedoFrameGlDisplayUpperPrice["tg_waistPktSpec_id"]}</label></strong>
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">腰ポケット素材</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMateMap[orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMate]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="tgWaistPktMate_appear">${tuxedoFrameGlDisplayUpperPrice["tg_waistPktMate_id"]}</label></strong>
+								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">腰ポケット素材</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMateMap[orderCoForm.coOptionGiletTuxedoInfo.tgWaistPktMate]}</label></strong>
-							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tgWaistPktMate_appear">${tuxedoFrameGlDisplayUpperPrice["tg_waistPktMate_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類 </label></div>
 							<div class="col-12 col-md-6">
@@ -1757,15 +1747,17 @@ select.hidedown {
 								<strong><label class=" form-control-label-value" id="wgWaistPkt_appear">${washableFrameGlDisplayUpperPrice["wg_waistPkt_id"]}</label></strong>
 							</div>
 						</div>
-						<div class="row">
-							<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
-							<div class="col-12 col-md-6">
-								<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpecMap[orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpec]}</label></strong>
+						<c:if test="${orderCoForm.coOptionGiletWashableInfo.wgWaistPkt != '0000202'}">
+							<div class="row">
+								<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
+								<div class="col-12 col-md-6">
+									<strong><label class=" form-control-label-value">${orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpecMap[orderCoForm.coOptionGiletWashableInfo.wgWaistPktSpec]}</label></strong>
+								</div>
+								<div class="col-12 col-md-3 text-right">
+									<strong><label class=" form-control-label-value" id="wgWaistPktSpec_appear">${washableFrameGlDisplayUpperPrice["wg_waistPktSpec_id"]}</label></strong>
+								</div>
 							</div>
-							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wgWaistPktSpec_appear">${washableFrameGlDisplayUpperPrice["wg_waistPktSpec_id"]}</label></strong>
-							</div>
-						</div>
+						</c:if>
 						<div class="row">
 							<div class="col col-md-3"><label class=" form-control-label">ステッチ種類 </label></div>
 							<div class="col-12 col-md-6">
@@ -1905,22 +1897,6 @@ select.hidedown {
 						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${orderCoForm.coAdjustGiletStandardInfo.corGlWaistGross}</label>cm</strong>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.coAdjustGiletStandardInfo.corGlStoreCorrectionMemo}</textarea>
-							</div>	
 						</div>
 					</div>
 				</div>
@@ -2811,22 +2787,6 @@ select.hidedown {
 				</div>
 			</div>
 		</div>
-		<div class="row">
-				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.coAdjustPantsStandardInfo.corPtStoreCorrectionMemo}</textarea>
-							</div>	
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 <!-- PANTS 1 End -->
@@ -3710,22 +3670,6 @@ select.hidedown {
 				</div>
 			</div>
 		</div>
-		<div class="row">
-				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.coAdjustPants2StandardInfo.corPt2StoreCorrectionMemo}</textarea>
-							</div>	
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 <!-- PANTS 2 End -->
@@ -4008,7 +3952,7 @@ select.hidedown {
 							<strong><label class=" form-control-label-value" id="corStBodylengthCorrect"></label>cm</strong>
 						</div>
 						<div class="col-12 col-md-4">
-							<strong><label class=" form-control-label-value">${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}</label>cm</strong>
+							<strong><label class=" form-control-label-value" id="corStBodylengthGross"></label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">袖丈右修正</label>
@@ -4057,22 +4001,6 @@ select.hidedown {
 						</div>
 						<div class="col-12 col-md-4">
 							<strong><label class=" form-control-label-value">${orderCoForm.coAdjustShirtStandardInfo.corStLeftcuffsSurroundingGross}</label>cm</strong>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.corStoreCorrectionMemoAgain}</textarea>
-							</div>	
 						</div>
 					</div>
 				</div>
@@ -4297,17 +4225,22 @@ select.hidedown {
 				</div>
 			</div>
 		</div>
-		<div class="row">
+	</div>
+</div>
+<!-- COAT End -->
+
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header">
+			<strong class="card-title">店舗補正入力欄</strong>
+		</div>
+		<div class="card-body">
+			<div class="row">
 				<div class="col col-lg-12">
-				<div class="card">
-					<div class="card-header">
-						<label class=" form-control-label"><strong>店舗補正入力欄</strong></label>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input" rows="3"  class="form-control">${orderCoForm.coAdjustCoatStandardInfo.corCtStoreCorrectionMemo}</textarea>
-							</div>	
+					<div class="row">
+						<div class="col col-lg-12">
+							<textarea readonly name="textarea-input" id="textarea-input"
+								rows="3" class="form-control">${orderCoForm.corStoreCorrectionMemo}</textarea>
 						</div>
 					</div>
 				</div>
@@ -4315,7 +4248,7 @@ select.hidedown {
 		</div>
 	</div>
 </div>
-<!-- COAT End -->
+
 <div class="col-md-12">
 	<div class="card">
 		<div class="card-body">
@@ -4657,6 +4590,14 @@ var corStNeckCorrect = "${orderCoForm.coAdjustShirtStandardInfo.corStNeckCorrect
 jQuery("#corStNeckCorrect").html(CorrectChange(corStNeckCorrect));
 //st着丈修正
 var corStBodylengthCorrect = "${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthCorrect}";
+var corStBodylengthGross = "${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}";
+var osCasHemLine = "${orderCoForm.coOptionShirtStandardInfo.osCasHemLine}";
+if(osCasHemLine == '0002002'){
+	jQuery("#corStBodylengthGross").html('000.0');
+}
+else {
+	jQuery("#corStBodylengthGross").html(corStBodylengthGross);
+}
 if(corStBodylengthCorrect != null && corStBodylengthCorrect != ""){
 	jQuery("#corStBodylengthCorrect").html(CorrectChange(corStBodylengthCorrect));
 }
@@ -6551,7 +6492,7 @@ function imageCheck(){
 			}
 
 			//GILET_号数
-			if(!SisEmpty(corGlSize)){
+			if(!isEmpty(corGlSize)){
 				appendAlert('errormssage', getMsgByOneArg('msg114', 'GILET号数'));
 				return false;
 			}

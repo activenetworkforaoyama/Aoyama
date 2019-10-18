@@ -25,6 +25,10 @@ function initOptionGiletWashable() {
 				return;
 			}
 		}
+		//モデルを選択すると、"ステッチ箇所変更"は選択できます
+		if(giletModel != null && giletModel != ""){
+			jQuery('input[id^="wg_stitchModifyPlace_id"]').prop("disabled", false);
+		}
 	
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var itemCode = "";
@@ -100,8 +104,7 @@ function initOptionGiletWashable() {
 		
 
 		// 別モデルに変更された場合はアラート表示
-		if (tmpWgGiletModel != '選択' && giletModel != tmpWgGiletModel) {
-//		    appendAlert('wg_giletModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
+		if (tmpWgGiletModel != '' && giletModel != tmpWgGiletModel) {
 		    setAlert('wg_giletModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
@@ -178,7 +181,10 @@ function initOptionGiletWashable() {
 				jQuery('#wg_stitchModifyPlace').hide();
 			} else {
 				// 有りの場合は全て有効化
-				jQuery('input[id^="wg_stitchModifyPlace_id"]').prop("disabled", false);
+				var wg_giletModel = jQuery('#wg_giletModel').val();
+				if(wg_giletModel != null && wg_giletModel != ""){
+					jQuery('input[id^="wg_stitchModifyPlace_id"]').prop("disabled", false);
+				}
 				jQuery('#btn_as_wg_stitchModifyPlace').prop("disabled", false);
 				jQuery('#btn_ar_wg_stitchModifyPlace').prop("disabled", false);
 				jQuery('#wg_stitchModifyPlace').show();
@@ -231,29 +237,74 @@ function initOptionGiletWashable() {
 	ctrlWgAmfColor();
 
 	// AMF色指定(全選択)
-	jQuery('#btn_as_wg_amfColorPlace').click(function(){
-		// 全選択する色を取得
-		var allColor = jQuery('#wg_amfColorPlaceAll').val();
+	jQuery('#btn_as_wg_amfColorPlace').click(function(){ 
+		// 全選択する色を取得 
+		var allColor = jQuery('#wg_amfColorPlaceAll').val(); 
+	
+		jQuery('#wg_amfColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+				var amfCheckBoxId = elemCheckBox.attr("id"); 
+				jQuery('#'+amfCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.val() == allColor) elem.prop('checked', true); 
+				});
+			} 
+		}); 
+	}); 
 
-		jQuery('#wg_amfColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+	// AMF色指定箇所 
+	jQuery('input[id^="wg_amfColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
 	});
+	
+	// 選択中のボタンホール色指定を取得
+	var bhColor = jQuery('input[name="coOptionGiletWashableInfo.wgBhColor"]:checked').val();
 
-	// AMF色指定箇所
-	jQuery('input[id^="wg_amfColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
+	if (bhColor == '0001101') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#wg_bhColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_wg_bhColorPlace').prop("disabled", true);
+
+		// 無しの場合は2階層目を表示しない
+		jQuery('#wg_bhColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+		ctrlWgBhColorPlace();
+		jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
+//			jQuery(this).prop("disabled", false);
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
 			}
 		});
-	});
+		jQuery('#wg_bhColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_wg_bhColorPlace').prop("disabled", false);
 
+		// 有りの場合は2階層目を表示
+		jQuery('#wg_bhColor_div').show();
+	}
+	
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[name="coOptionGiletWashableInfo.wgBhColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -293,31 +344,77 @@ function initOptionGiletWashable() {
 	jQuery('#wg_bhColor_id1').change();
 
 	// ボタンホール色指定(全選択)
-	jQuery('#btn_as_wg_bhColorPlace').click(function(){
-		// 全選択する色を取得
-		var allColor = jQuery('#wg_bhColorPlaceAll').val();
-
-		jQuery('#wg_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
-	});
+	jQuery('#btn_as_wg_bhColorPlace').click(function(){ 
+		// 全選択する色を取得 
+		var allColor = jQuery('#wg_bhColorPlaceAll').val(); 
+	
+		jQuery('#wg_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+				var bhCheckBoxId = elemCheckBox.attr("id"); 
+				jQuery('#'+bhCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.val() == allColor) elem.prop('checked', true); 
+				});
+			} 
+		}); 
+	}); 
 
 	// ボタンホール色指定箇所
-	jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
-			if (jQuery(this).prop("checked")) {
-				// 選択されているの場合、色指定エリアを表示
-				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
-			}
-		});
+	jQuery('input[id^="wg_bhColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
 	});
+
 	// ボタンホール色指定箇所の制御
 	ctrlWgBhColorPlace();
 
+	// 選択中のボタンホール色指定を取得
+	var byColor = jQuery('input[name="coOptionGiletWashableInfo.wgByColor"]:checked').val();
+
+	if (byColor == '0001401') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="wg_byColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#wg_byColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_wg_byColorPlace').prop("disabled", true);
+
+		// 無しの場合は2階層目を表示しない
+		jQuery('#wg_byColor_div').hide();
+	} else {
+		// ボタン付け糸指定箇所の有効/無効を制御
+		ctrlWgByColorPlace();
+
+		jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#wg_byColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_wg_byColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#wg_byColor_div').show();
+	}
+	
 	// ボタン付け糸指定(有り/無し)
 	jQuery('input[name="coOptionGiletWashableInfo.wgByColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -357,30 +454,44 @@ function initOptionGiletWashable() {
 	jQuery('#wg_byColor_id1').change();
 
 	// ボタン付け糸指定(全選択)
-	jQuery('#btn_as_wg_byColorPlace').click(function(){
-		// 全選択する色を取得
-		var allColor = jQuery('#wg_byColorPlaceAll').val();
+	jQuery('#btn_as_wg_byColorPlace').click(function(){ 
+		// 全選択する色を取得 
+		var allColor = jQuery('#wg_byColorPlaceAll').val(); 
+	
+		jQuery('#wg_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+				var byCheckBoxId = elemCheckBox.attr("id"); 
+				jQuery('#'+byCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.val() == allColor) elem.prop('checked', true); 
+				});
+			} 
+		}); 
+	}); 
 
-		jQuery('#wg_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+	// ボタンホール色指定箇所
+	jQuery('input[id^="wg_byColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
 	});
+	
 	// ボタン付け糸指定箇所の有効/無効を制御
 	ctrlWgByColorPlace();
-
-	// ボタン付け糸指定箇所
-	jQuery('input[id^="wg_byColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
-			if (jQuery(this).prop("checked")) {
-				// 選択されているの場合、色指定エリアを表示
-				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
-			}
-		});
-	});
 
 	// 背裏地素材
 	jQuery('#wg_backLiningMate').change(function (){
@@ -437,18 +548,18 @@ function initOptionGiletWashable() {
 	});
 	jQuery('#wg_backLiningMate').change();
 
-	// 背裏地素材（上着と同じ）
-	jQuery('#btn_wg_backLiningMate').click(function() {
-		// JACKET胴裏素材
-		var bodyBackMate = jQuery('#wj_bodyBackMate').val();
-		// JACKET胴裏品番
-		var bodyBackMateStkNo = jQuery('#wj_bodyBackMateStkNo').val();
-
-		// 背裏地素材への反映
-		jQuery('#wg_backLiningMate').val(bodyBackMate);
-		jQuery('#wg_backLiningMate').change();
-		jQuery('#wg_backLiningMateStkNo').val(bodyBackMateStkNo);
-	});
+//	// 背裏地素材（上着と同じ）
+//	jQuery('#btn_wg_backLiningMate').click(function() {
+//		// JACKET胴裏素材
+//		var wjBackLiningMate="${orderCoForm.coOptionJacketWashableInfo.wjBodyBackMate}";
+//		// JACKET胴裏品番
+//		var wjBackLiningMateStkNo="${orderCoForm.coOptionJacketWashableInfo.wjBodyBackMateStkNo}";
+//
+//		// 背裏地素材への反映
+//		jQuery('#wg_backLiningMate').val(wjBtnMate);
+//		jQuery('#wg_backLiningMate').change();
+//		jQuery('#wg_backLiningMateStkNo').val(wjBtnMateStkNo);
+//	});
 
 	// 内側裏地素材
 	jQuery('#wg_insideLiningMate').change(function (){
@@ -499,18 +610,18 @@ function initOptionGiletWashable() {
 	});
 	jQuery('#wg_frontBtnMate').change();
 
-	// フロント釦（上着と同じ）
-	jQuery('#btn_wg_frontBtnMate').click(function() {
-		// JACKET釦素材
-		var btnMate = jQuery('#wj_btnMate').val();
-		// JACKET釦品番
-		var btnMateStkNo = jQuery('#wj_btnMateStkNo').val();
-
-		// フロント釦への反映
-		jQuery('#wg_frontBtnMate').val(btnMate);
-		jQuery('#wg_frontBtnMate').change();
-		jQuery('#wg_frontBtnMateStkNo').val(btnMateStkNo);
-	});
+//	// フロント釦（上着と同じ）
+//	jQuery('#btn_wg_frontBtnMate').click(function() {
+//		// JACKET釦素材
+//		var btnMate = jQuery('#wj_btnMate').val();
+//		// JACKET釦品番
+//		var btnMateStkNo = jQuery('#wj_btnMateStkNo').val();
+//
+//		// フロント釦への反映
+//		jQuery('#wg_frontBtnMate').val(btnMate);
+//		jQuery('#wg_frontBtnMate').change();
+//		jQuery('#wg_frontBtnMateStkNo').val(btnMateStkNo);
+//	});
 }
 
 //--------------------------------------------
@@ -625,18 +736,22 @@ function ctrlWgAmfColor() {
 	} else {
 		jQuery('#wg_amfColor_div').hide();
 	}
+	
+	var stitchModifyValue = jQuery('input[name="coOptionGiletWashableInfo.wgStitchModify"]:checked').val();
 
 	// AMF色指定の有効/無効設定
 	jQuery('input[id^="wg_amfColorPlace_"]').each(function() {
 		if (amfColorValue == "0000802") {
-			// 有りの場合はステッチ箇所変更に基づく
-			var id = this.id;
-			id = id.replace("wg_amfColorPlace_", "wg_stitchModifyPlace_id");
-			if (jQuery('#'+id).prop("checked")) {
-				jQuery(this).prop("disabled", false);
-			} else {
-				jQuery(this).prop("disabled", true);
-				jQuery(this).prop("checked", false);
+			if(stitchModifyValue == "0000602"){
+				// 有りの場合はステッチ箇所変更に基づく
+				var id = this.id;
+				id = id.replace("wg_amfColorPlace_", "wg_stitchModifyPlace_id");
+				if (jQuery('#'+id).prop("checked")) {
+					jQuery(this).prop("disabled", false);
+				} else {
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);
+				}
 			}
 		} else {
 			// 無しの場合は変更不可

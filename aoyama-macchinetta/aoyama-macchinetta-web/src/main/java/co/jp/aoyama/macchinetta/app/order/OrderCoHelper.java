@@ -21,6 +21,12 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 
 import com.google.gson.Gson;
 
+import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
+import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoShirtHelper;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustJacketStandardInfo;
@@ -154,8 +160,15 @@ public class OrderCoHelper {
 	@Inject
 	TypeSizeService typeSizeService;
 	
-	@Inject
-	YieldService yieldService;
+	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
+	
+	CoShirtHelper coShirtHelper =new CoShirtHelper();
+	
+	CoJakcetHelper coJakcetHelper =new CoJakcetHelper();
+	
+	CoCoatHelper coCoatHelper =new CoCoatHelper();
+	
+	CoGiletHelper coGiletHelper =new CoGiletHelper();
 
 	// 在庫チェックなし
 	private static final String IS_NOT_THEORETICAL_STOCKCECK = "0";
@@ -2260,6 +2273,8 @@ public class OrderCoHelper {
 			List<NextGenerationPrice> wholesalePieceList, List<NextGenerationPrice> basicNextGenerationPriceList,
 			NextGenerationPrice priceCode, NextGenerationPrice marginRate) {
 
+		String productItem = order.getProductItem();
+		
 		// 下代関連計算方法の オプション工賃
 		BigDecimal jkNextGenerationWageTotal = this.jkNextGenerationWageTotal(order);
 		BigDecimal jkNextGenerationDetailWageTotal = this.jkNextGenerationDetailWageTotal(order);
@@ -2297,13 +2312,24 @@ public class OrderCoHelper {
 		}
 				
 		// 基本工賃 + オプション工賃合計
-		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+        BigDecimal NextGenerationWageTotal = new BigDecimal(0);
+        if("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+            NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
 				.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
 				.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
 				.add(shirtNextGenerationWageTotal).add(coatNextGenerationWageTotal).add(coatNextGenerationDetailWageTotal)
 				.add(productIs3pieceWsWage).add(productSparePantsWsWage)
 				.add(custIsDeliverShortningWsWage).add(productLcrSewingWsWage)
 				.add(productEmbroideryGazetteWsWageValue)	.add(productEmbroideryNmPosWsWageValue);
+        }
+        else {
+            NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+                    .add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
+                    .add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
+                    .add(shirtNextGenerationWageTotal).add(coatNextGenerationWageTotal)
+                    .add(coatNextGenerationDetailWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage)
+                    .add(custIsDeliverShortningWsWage).add(productEmbroideryGazetteWsWageValue).add(productEmbroideryNmPosWsWageValue);
+        }
 
 		// 下代関連計算方法の オプション付属
 		Integer jkNextGenerationPriceTotal = this.jkNextGenerationPriceTotal(order);
@@ -2341,12 +2367,23 @@ public class OrderCoHelper {
 		}
 				
 		// オプション付属合計
-		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+        Integer NextGenerationPriceTotal = 0;
+        if("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+        	NextGenerationPriceTotal= basePriceCount + jkNextGenerationPriceTotal
 				+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
 				+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + shirtNextGenerationPriceTotal
 				+ coatNextGenerationPriceTotal + coatNextGenerationDetailPriceTotal + productIs3pieceWsPrice
 				+ productSparePantsWsPrice + custIsDeliverShortningWsPrice + productLcrSewingWsPrice
 				+ productEmbroideryGazetteWsPriceValue + productEmbroideryNmPosWsPriceValue;
+        }
+        else {
+            NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+                    + jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
+                    + ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + shirtNextGenerationPriceTotal
+                    + coatNextGenerationPriceTotal + coatNextGenerationDetailPriceTotal + productIs3pieceWsPrice
+                    + productSparePantsWsPrice + custIsDeliverShortningWsPrice
+                    + productEmbroideryGazetteWsPriceValue + productEmbroideryNmPosWsPriceValue;
+        }
 
 		// 下代関連計算方法の要尺
 		Integer jacketYield = this.getJacketYield(order, yieldList);
@@ -2421,6 +2458,8 @@ public class OrderCoHelper {
 			List<NextGenerationPrice> wholesalePieceList, List<NextGenerationPrice> basicNextGenerationPriceList,
 			NextGenerationPrice priceCode, NextGenerationPrice marginRate) {
 
+		String productItem = order.getProductItem();
+		
 		// 下代関連計算方法の オプション工賃
 		BigDecimal jkNextGenerationWageTotal = this.jkNextGenerationWageTotal(order);
 		BigDecimal jkNextGenerationDetailWageTotal = this.jkNextGenerationDetailWageTotal(order);
@@ -2457,14 +2496,26 @@ public class OrderCoHelper {
 			productEmbroideryNmPosWsWageValue = productEmbroideryNmPosWsWage;
 		}
 		// 基本工賃 + オプション工賃合計
-		BigDecimal NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
-				.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
-				.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
-				.add(shirtNextGenerationWageTotal).add(coatNextGenerationWageTotal)
-				.add(coatNextGenerationDetailWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage)
-				.add(custIsDeliverShortningWsWage).add(productLcrSewingWsWage).add(productEmbroideryGazetteWsWageValue)
-				.add(productEmbroideryNmPosWsWageValue);
-
+		BigDecimal NextGenerationWageTotal = new BigDecimal(0);
+		if("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+			NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+					.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
+					.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
+					.add(shirtNextGenerationWageTotal).add(coatNextGenerationWageTotal)
+					.add(coatNextGenerationDetailWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage)
+					.add(custIsDeliverShortningWsWage).add(productLcrSewingWsWage).add(productEmbroideryGazetteWsWageValue)
+					.add(productEmbroideryNmPosWsWageValue);
+		}
+		else {
+			NextGenerationWageTotal = baseWageCount.add(jkNextGenerationWageTotal)
+					.add(jkNextGenerationDetailWageTotal).add(glNextGenerationWageTotal)
+					.add(glNextGenerationDetailWageTotal).add(ptNextGenerationWageTotal).add(pt2NextGenerationWageTotal)
+					.add(shirtNextGenerationWageTotal).add(coatNextGenerationWageTotal)
+					.add(coatNextGenerationDetailWageTotal).add(productIs3pieceWsWage).add(productSparePantsWsWage)
+					.add(custIsDeliverShortningWsWage).add(productEmbroideryGazetteWsWageValue)
+					.add(productEmbroideryNmPosWsWageValue);
+		}
+		
 		// 下代関連計算方法の オプション付属
 		Integer jkNextGenerationPriceTotal = this.jkNextGenerationPriceTotal(order);
 		Integer jkNextGenerationDetailPriceTotal = this.jkNextGenerationDetailPriceTotal(order);
@@ -2500,12 +2551,23 @@ public class OrderCoHelper {
 			productEmbroideryNmPosWsPriceValue = productEmbroideryNmPosWsPrice;
 		}
 		// オプション付属合計
-		Integer NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
-				+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
-				+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + shirtNextGenerationPriceTotal
-				+ coatNextGenerationPriceTotal + coatNextGenerationDetailPriceTotal + productIs3pieceWsPrice
-				+ productSparePantsWsPrice + custIsDeliverShortningWsPrice + productLcrSewingWsPrice
-				+ productEmbroideryGazetteWsPriceValue + productEmbroideryNmPosWsPriceValue;
+		Integer NextGenerationPriceTotal = 0;
+		if("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+			NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+					+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
+					+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + shirtNextGenerationPriceTotal
+					+ coatNextGenerationPriceTotal + coatNextGenerationDetailPriceTotal + productIs3pieceWsPrice
+					+ productSparePantsWsPrice + custIsDeliverShortningWsPrice + productLcrSewingWsPrice
+					+ productEmbroideryGazetteWsPriceValue + productEmbroideryNmPosWsPriceValue;
+		}
+		else {
+			NextGenerationPriceTotal = basePriceCount + jkNextGenerationPriceTotal
+					+ jkNextGenerationDetailPriceTotal + glNextGenerationPriceTotal + glNextGenerationDetailPriceTotal
+					+ ptNextGenerationPriceTotal + pt2NextGenerationPriceTotal + shirtNextGenerationPriceTotal
+					+ coatNextGenerationPriceTotal + coatNextGenerationDetailPriceTotal + productIs3pieceWsPrice
+					+ productSparePantsWsPrice + custIsDeliverShortningWsPrice
+					+ productEmbroideryGazetteWsPriceValue + productEmbroideryNmPosWsPriceValue;
+		}
 
 		// 下代関連計算方法の要尺
 		Integer jacketYield = this.getJacketYield(order, yieldList);
@@ -3367,6 +3429,7 @@ public class OrderCoHelper {
 	 */
 	public void getYield(List<Yield> yieldList, OrderCoForm orderCoForm) {
 		orderCoForm.setYield(new Gson().toJson(yieldList));
+		orderCoForm.setYieldList(yieldList);
 	}
 
 	/**
@@ -3436,7 +3499,7 @@ public class OrderCoHelper {
 		return optionCodePriceList;
 	}
 
-	public void customerAndProductDefaultValue(OrderCoForm orderCoForm) {
+	public void customerAndProductDefaultValue(OrderCoForm orderCoForm, SessionContent sessionContent) {
 		CoCustomerMessageInfo customerMessageInfo = new CoCustomerMessageInfo();
 		customerMessageInfo.setOrderId("");
 		customerMessageInfo.setCustCd("");
@@ -3467,7 +3530,13 @@ public class OrderCoHelper {
 
 		orderCoForm.setProductLcrSewing("9000201");
 
-		orderCoForm.setProductBrandNm("");
+		//ブランドネーム
+		String storeBrandCode = sessionContent.getStoreBrandCode();
+		if("01".equals(storeBrandCode)) {
+			orderCoForm.setProductBrandNm("9000302");
+		}else {
+			orderCoForm.setProductBrandNm("9000301");
+		}
 
 		orderCoForm.setProductFabricNmNecessity("9000401");
 
@@ -3480,292 +3549,6 @@ public class OrderCoHelper {
 		orderCoForm.setProductEmbroideryNmPos("0002201");
 		orderCoForm.setProductEmbroideryGazette("0002301");
 		orderCoForm.setProductRemainingClothType("9000801");
-	}
-
-	public void jacketDefaultValue(OrderCoForm orderCoForm) {
-		// 標準
-		CoOptionJacketStandardInfo optionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-		optionJacketStandardInfo.setOjJacketModel("");
-		optionJacketStandardInfo.setOjFrontBtnCnt(OptionCodeKeys.JK_0000101);
-		optionJacketStandardInfo.setOjLapelDesign(OptionCodeKeys.JK_0000201);
-		optionJacketStandardInfo.setOjGrade(OptionCodeKeys.JK_0000301);
-		optionJacketStandardInfo.setOjGackSpec(OptionCodeKeys.JK_0000401);
-		optionJacketStandardInfo.setOjFort(OptionCodeKeys.JK_0000501);
-		optionJacketStandardInfo.setOjBackCollar(OptionCodeKeys.JK_0000701);
-		optionJacketStandardInfo.setOjChainHange(OptionCodeKeys.JK_0000801);
-		optionJacketStandardInfo.setOjLapelWidth(OptionCodeKeys.JK_0000901);
-		optionJacketStandardInfo.setOjFlowerHole(OptionCodeKeys.JK_0001001);
-		optionJacketStandardInfo.setOjBreastPkt(OptionCodeKeys.JK_0001101);
-		optionJacketStandardInfo.setOjWaistPkt(OptionCodeKeys.JK_0001201);
-		optionJacketStandardInfo.setOjChangePkt(OptionCodeKeys.JK_0001301);
-		optionJacketStandardInfo.setOjSlantedPkt(OptionCodeKeys.JK_0001401);
-		optionJacketStandardInfo.setOjCoinPkt(OptionCodeKeys.JK_0001501);
-		optionJacketStandardInfo.setOjSleeveSpec(OptionCodeKeys.JK_0001601);
-		optionJacketStandardInfo.setOjManica(OptionCodeKeys.JK_0001701);
-		optionJacketStandardInfo.setOjSleeveBtnType(OptionCodeKeys.JK_0001801);
-		optionJacketStandardInfo.setOjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
-		optionJacketStandardInfo.setOjCuffSpec(OptionCodeKeys.JK_0001901);
-		optionJacketStandardInfo.setOjInsidePktChange(OptionCodeKeys.JK_0002001);
-		optionJacketStandardInfo.setOjInsidePktPlace(null);
-		optionJacketStandardInfo.setOjBreastInnerPkt(OptionCodeKeys.JK_0002201);
-		optionJacketStandardInfo.setOjStitch(OptionCodeKeys.JK_0002301);
-		optionJacketStandardInfo.setOjStitchModify(OptionCodeKeys.JK_0002401);
-		optionJacketStandardInfo.setOjStitchModifyPlace(null);
-		optionJacketStandardInfo.setOjDStitchModify(OptionCodeKeys.JK_0002601);
-		optionJacketStandardInfo.setOjDStitchModifyPlace(null);
-		optionJacketStandardInfo.setOjAmfColor(OptionCodeKeys.JK_0002801);
-		optionJacketStandardInfo.setOjAmfColorPlace(null);
-		optionJacketStandardInfo.setOjAmfAllColor(null);
-		optionJacketStandardInfo.setOjBhColor(OptionCodeKeys.JK_0003101);
-		optionJacketStandardInfo.setOjBhColorPlace(null);
-		optionJacketStandardInfo.setOjBhAllColor(null);
-		optionJacketStandardInfo.setOjByColor(OptionCodeKeys.JK_0003401);
-		optionJacketStandardInfo.setOjByColorPlace(null);
-		optionJacketStandardInfo.setOjByAllColor(null);
-		optionJacketStandardInfo.setOjVentSpec(OptionCodeKeys.JK_0003701);
-		optionJacketStandardInfo.setOjBodyBackMate(OptionCodeKeys.JK_1000100);
-		optionJacketStandardInfo.setOjBodyBackMateStkNo(null);
-		optionJacketStandardInfo.setOjCuffBackMate(OptionCodeKeys.JK_2000100);
-		optionJacketStandardInfo.setOjCuffBackMateStkNo(null);
-		optionJacketStandardInfo.setOjBtnMate(OptionCodeKeys.JK_3000800);
-		optionJacketStandardInfo.setOjBtnMateStkNo(null);
-		optionJacketStandardInfo.setOjShapeMemory(OptionCodeKeys.JK_0004401);
-
-		// タキシード
-		CoOptionJacketTuxedoInfo optionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-		optionJacketTuxedoInfo.setTjJacketModel("");
-		optionJacketTuxedoInfo.setTjFrontBtnCnt(OptionCodeKeys.JK_0000101);
-		optionJacketTuxedoInfo.setTjLapelDesign(OptionCodeKeys.JK_0000201);
-		optionJacketTuxedoInfo.setTjGrade(OptionCodeKeys.JK_0000301);
-		optionJacketTuxedoInfo.setTjBackSpec(OptionCodeKeys.JK_0000401);
-		optionJacketTuxedoInfo.setTjFort(OptionCodeKeys.JK_0000502);
-		optionJacketTuxedoInfo.setTjGlossFablic(OptionCodeKeys.JK_0000601);
-		optionJacketTuxedoInfo.setTjBackCollar(OptionCodeKeys.JK_0000701);
-		optionJacketTuxedoInfo.setTjChainHange(OptionCodeKeys.JK_0000801);
-		optionJacketTuxedoInfo.setTjLapelWidth(OptionCodeKeys.JK_0000901);
-		optionJacketTuxedoInfo.setTjFlowerHole(OptionCodeKeys.JK_0001001);
-		optionJacketTuxedoInfo.setTjBreastPkt(OptionCodeKeys.JK_0001101);
-		optionJacketTuxedoInfo.setTjWaistPkt(OptionCodeKeys.JK_0001205);
-		optionJacketTuxedoInfo.setTjChangePkt(OptionCodeKeys.JK_0001301);
-		optionJacketTuxedoInfo.setTjSlantedPkt(OptionCodeKeys.JK_0001401);
-		optionJacketTuxedoInfo.setTjCoinPkt(OptionCodeKeys.JK_0001501);
-		optionJacketTuxedoInfo.setTjSleeveSpec(OptionCodeKeys.JK_0001601);
-		optionJacketTuxedoInfo.setTjManica(OptionCodeKeys.JK_0001701);
-		optionJacketTuxedoInfo.setTjSleeveBtnType(OptionCodeKeys.JK_0001801);
-		optionJacketTuxedoInfo.setTjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
-		optionJacketTuxedoInfo.setTjCuffSpec(OptionCodeKeys.JK_0001901);
-		optionJacketTuxedoInfo.setTjInsidePktChange(OptionCodeKeys.JK_0002001);
-		optionJacketTuxedoInfo.setTjBreastInnerPkt(OptionCodeKeys.JK_0002201);
-		optionJacketTuxedoInfo.setTjStitch(OptionCodeKeys.JK_0002302);
-		optionJacketTuxedoInfo.setTjBhColor(OptionCodeKeys.JK_0003101);
-		optionJacketTuxedoInfo.setTjBhColorPlace(null);
-		optionJacketTuxedoInfo.setTjAllBhColor(null);
-		optionJacketTuxedoInfo.setTjByColor(OptionCodeKeys.JK_0003401);
-		optionJacketTuxedoInfo.setTjByColorPlace(null);
-		optionJacketTuxedoInfo.setTjAllByColor(null);
-		optionJacketTuxedoInfo.setTjVentSpec(OptionCodeKeys.JK_0003701);
-		optionJacketTuxedoInfo.setTjBodyBackMate(OptionCodeKeys.JK_1000100);
-		optionJacketTuxedoInfo.setTjBodyBackMateStkNo(null);
-		optionJacketTuxedoInfo.setTjCuffBackMate(OptionCodeKeys.JK_2000100);
-		optionJacketTuxedoInfo.setTjCuffBackMateStkNo(null);
-		optionJacketTuxedoInfo.setTjBtnMate(OptionCodeKeys.JK_3000800);
-		optionJacketTuxedoInfo.setTjBtnMateStkNo(null);
-		optionJacketTuxedoInfo.setTjShapeMemory(OptionCodeKeys.JK_0004401);
-
-		// ウォッシャブル
-		CoOptionJacketWashableInfo optionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-		optionJacketWashableInfo.setWjJacketModel("");
-		optionJacketWashableInfo.setWjFrontBtnCnt(OptionCodeKeys.JK_0000101);
-		optionJacketWashableInfo.setWjLapelDesign(OptionCodeKeys.JK_0000201);
-		optionJacketWashableInfo.setWjGrade(OptionCodeKeys.JK_0000304);
-		optionJacketWashableInfo.setWjBackSpec(OptionCodeKeys.JK_0000405);
-		optionJacketWashableInfo.setWjFort(OptionCodeKeys.JK_0000503);
-		optionJacketWashableInfo.setWjBackCollar(OptionCodeKeys.JK_0000701);
-		optionJacketWashableInfo.setWjChainHange(OptionCodeKeys.JK_0000801);
-		optionJacketWashableInfo.setWjLapelWidth(OptionCodeKeys.JK_0000901);
-		optionJacketWashableInfo.setWjFlowerHole(OptionCodeKeys.JK_0001001);
-		optionJacketWashableInfo.setWjBreastPkt(OptionCodeKeys.JK_0001101);
-		optionJacketWashableInfo.setWjWaistPkt(OptionCodeKeys.JK_0001201);
-		optionJacketWashableInfo.setWjChangePkt(OptionCodeKeys.JK_0001301);
-		optionJacketWashableInfo.setWjSlantedPkt(OptionCodeKeys.JK_0001401);
-		optionJacketWashableInfo.setWjCoinPkt(OptionCodeKeys.JK_0001501);
-		optionJacketWashableInfo.setWjSleeveSpec(OptionCodeKeys.JK_0001601);
-		optionJacketWashableInfo.setWjManica(OptionCodeKeys.JK_0001701);
-		optionJacketWashableInfo.setWjSleeveBtnType(OptionCodeKeys.JK_0001801);
-		optionJacketWashableInfo.setWjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
-		optionJacketWashableInfo.setWjCuffSpec(OptionCodeKeys.JK_0001901);
-		optionJacketWashableInfo.setWjInsidePktChange(OptionCodeKeys.JK_0002001);
-		optionJacketWashableInfo.setWjBreastInnerPkt(OptionCodeKeys.JK_0002201);
-		optionJacketWashableInfo.setWjStitch(OptionCodeKeys.JK_0002304);
-		optionJacketWashableInfo.setWjStitchModify(OptionCodeKeys.JK_0002401);
-		optionJacketWashableInfo.setWjStitchModifyPlace(null);
-		optionJacketWashableInfo.setWjDStitchModify(OptionCodeKeys.JK_0002601);
-		optionJacketWashableInfo.setWjDStitchModifyPlace(null);
-		optionJacketWashableInfo.setWjAmfColor(OptionCodeKeys.JK_0002801);
-		optionJacketWashableInfo.setWjAmfColorPlace(null);
-		optionJacketWashableInfo.setWjAllAmfColor(null);
-		optionJacketWashableInfo.setWjBhColor(OptionCodeKeys.JK_0003101);
-		optionJacketWashableInfo.setWjBhColorPlace(null);
-		optionJacketWashableInfo.setWjAllBhColor(null);
-		optionJacketWashableInfo.setWjByColor(OptionCodeKeys.JK_0003401);
-		optionJacketWashableInfo.setWjByColorPlace(null);
-		optionJacketWashableInfo.setWjAllByColor(null);
-		optionJacketWashableInfo.setWjVentSpec(OptionCodeKeys.JK_0003701);
-		optionJacketWashableInfo.setWjBodyBackMate(OptionCodeKeys.JK_1000100);
-		optionJacketWashableInfo.setWjBodyBackMateStkNo(null);
-		optionJacketWashableInfo.setWjCuffBackMate(OptionCodeKeys.JK_2000100);
-		optionJacketWashableInfo.setWjCuffBackMateStkNo(null);
-		optionJacketWashableInfo.setWjBtnMate(OptionCodeKeys.JK_3000800);
-		optionJacketWashableInfo.setWjBtnMateStkNo(null);
-		optionJacketWashableInfo.setWjShapeMemory(OptionCodeKeys.JK_0004401);
-	}
-
-	public void giletDefaultValue(OrderCoForm orderCoForm) {
-		// 標準
-		CoOptionGiletStandardInfo optionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-		String ogGiletModel = optionGiletStandardInfo.getOgGiletModel();
-
-		if ("TR02".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgBreastPkt(OptionCodeKeys.GL_0000101);
-		} else if ("NR04".equals(ogGiletModel) || "BS01".equals(ogGiletModel) || "BS03".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgBreastPkt(OptionCodeKeys.GL_0000102);
-		} else if ("CH14".equals(ogGiletModel) || "BS01-D".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgBreastPkt(OptionCodeKeys.GL_0000103);
-		}
-
-		if (!("".equals(ogGiletModel))) {
-			optionGiletStandardInfo.setOgWaistPkt(OptionCodeKeys.GL_0000201);
-		}
-
-		if ("TR02".equals(ogGiletModel) || "NR04".equals(ogGiletModel) || "CH14".equals(ogGiletModel)
-				|| "ET15-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgWaistPktSpec(OptionCodeKeys.GL_0000301);
-		} else if ("BS01".equals(ogGiletModel) || "BS03".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgWaistPktSpec(OptionCodeKeys.GL_0000303);
-		}
-		optionGiletStandardInfo.setOgStitch(OptionCodeKeys.GL_0000504);
-		optionGiletStandardInfo.setOgStitchModify(OptionCodeKeys.GL_0000601);
-		optionGiletStandardInfo.setOgDStitchModify(OptionCodeKeys.GL_0002601);
-		optionGiletStandardInfo.setOgAmfColor(OptionCodeKeys.GL_0000801);
-		optionGiletStandardInfo.setOgBhColor(OptionCodeKeys.GL_0001101);
-		optionGiletStandardInfo.setOgByColor(OptionCodeKeys.GL_0001401);
-		optionGiletStandardInfo.setOgBackLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletStandardInfo.setOgBackLiningMateStkNo(null);
-		optionGiletStandardInfo.setOgInsideLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletStandardInfo.setOgInsideLiningMateStkNo(null);
-		optionGiletStandardInfo.setOgFrontBtnMate(OptionCodeKeys.GL_3000800);
-		optionGiletStandardInfo.setOgFrontBtnMateStkNo(null);
-		if ("CH14".equals(ogGiletModel) || "BS01".equals(ogGiletModel) || "BS03".equals(ogGiletModel)
-				|| "BS01-D".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgBackBelt(OptionCodeKeys.GL_0002301);
-		} else if ("TR02".equals(ogGiletModel) || "NR04".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-			optionGiletStandardInfo.setOgBackBelt(OptionCodeKeys.GL_0002302);
-		}
-		optionGiletStandardInfo.setOgWatchChain(OptionCodeKeys.GL_0002401);
-
-		// タキシード
-		CoOptionGiletTuxedoInfo optionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-		String tgGiletModel = optionGiletTuxedoInfo.getTgGiletModel();
-
-		if ("TR02".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgBreastPkt(OptionCodeKeys.GL_0000101);
-		} else if ("NR04".equals(tgGiletModel) || "BS01".equals(tgGiletModel) || "BS03".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgBreastPkt(OptionCodeKeys.GL_0000102);
-		} else if ("CH14".equals(tgGiletModel) || "BS01-D".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgBreastPkt(OptionCodeKeys.GL_0000103);
-		}
-
-		if (!("".equals(tgGiletModel))) {
-			optionGiletTuxedoInfo.setTgWaistPkt(OptionCodeKeys.GL_0000201);
-		}
-
-		if ("TR02".equals(tgGiletModel) || "NR04".equals(tgGiletModel) || "CH14".equals(tgGiletModel)
-				|| "ET15-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgWaistPktSpec(OptionCodeKeys.GL_0000301);
-		} else if ("BS01".equals(tgGiletModel) || "BS03".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgWaistPktSpec(OptionCodeKeys.GL_0000303);
-		}
-		optionGiletTuxedoInfo.setTgWaistPktMate(OptionCodeKeys.GL_0000401);
-		optionGiletTuxedoInfo.setTgStitch(OptionCodeKeys.GL_0000503);
-		optionGiletTuxedoInfo.setTgBhColor(OptionCodeKeys.GL_0001101);
-		optionGiletTuxedoInfo.setTgByColor(OptionCodeKeys.GL_0001401);
-		optionGiletTuxedoInfo.setTgBackLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletTuxedoInfo.setTgBackLiningMateStkNo(null);
-		optionGiletTuxedoInfo.setTgInsideLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletTuxedoInfo.setTgInsideLiningMateStkNo(null);
-		optionGiletTuxedoInfo.setTgFrontBtnMate(OptionCodeKeys.GL_3000800);
-		optionGiletTuxedoInfo.setTgFrontBtnMateStkNo(null);
-		if ("CH14".equals(tgGiletModel) || "BS01".equals(tgGiletModel) || "BS03".equals(tgGiletModel)
-				|| "BS01-D".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgBackBelt(OptionCodeKeys.GL_0002301);
-		} else if ("TR02".equals(tgGiletModel) || "NR04".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-			optionGiletTuxedoInfo.setTgBackBelt(OptionCodeKeys.GL_0002302);
-		}
-		optionGiletTuxedoInfo.setTgWatchChain(OptionCodeKeys.GL_0002401);
-
-		// ウォッシャブル
-		CoOptionGiletWashableInfo optionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-		String wgGiletModel = optionGiletWashableInfo.getWgGiletModel();
-
-		if ("TR02".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgBreastPkt(OptionCodeKeys.GL_0000101);
-		} else if ("NR04".equals(wgGiletModel) || "BS01".equals(wgGiletModel) || "BS03".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgBreastPkt(OptionCodeKeys.GL_0000102);
-		} else if ("CH14".equals(wgGiletModel) || "BS01-D".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgBreastPkt(OptionCodeKeys.GL_0000103);
-		}
-
-		if (!("".equals(wgGiletModel))) {
-			optionGiletWashableInfo.setWgWaistPkt(OptionCodeKeys.GL_0000201);
-		}
-
-		if ("TR02".equals(wgGiletModel) || "NR04".equals(wgGiletModel) || "CH14".equals(wgGiletModel)
-				|| "ET15-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgWaistPktSpec(OptionCodeKeys.GL_0000301);
-		} else if ("BS01".equals(wgGiletModel) || "BS03".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgWaistPktSpec(OptionCodeKeys.GL_0000303);
-		}
-		optionGiletWashableInfo.setWgStitch(OptionCodeKeys.GL_0000504);
-		optionGiletWashableInfo.setWgStitchModify(OptionCodeKeys.GL_0000601);
-		optionGiletWashableInfo.setWgDStitchModify(OptionCodeKeys.GL_0002601);
-		optionGiletWashableInfo.setWgAmfColor(OptionCodeKeys.GL_0000801);
-		optionGiletWashableInfo.setWgBhColor(OptionCodeKeys.GL_0001101);
-		optionGiletWashableInfo.setWgByColor(OptionCodeKeys.GL_0001401);
-		optionGiletWashableInfo.setWgBackLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletWashableInfo.setWgBackLiningMateStkNo(null);
-		optionGiletWashableInfo.setWgInsideLiningMate(OptionCodeKeys.GL_1000100);
-		optionGiletWashableInfo.setWgInsideLiningMateStkNo(null);
-		optionGiletWashableInfo.setWgFrontBtnMate(OptionCodeKeys.GL_3000800);
-		optionGiletWashableInfo.setWgFrontBtnMateStkNo(null);
-		if ("CH14".equals(wgGiletModel) || "BS01".equals(wgGiletModel) || "BS03".equals(wgGiletModel)
-				|| "BS01-D".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgBackBelt(OptionCodeKeys.GL_0002301);
-		} else if ("TR02".equals(wgGiletModel) || "NR04".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-			optionGiletWashableInfo.setWgBackBelt(OptionCodeKeys.GL_0002302);
-		}
-		optionGiletWashableInfo.setWgWatchChain(OptionCodeKeys.GL_0002401);
-	}
-
-	public void coatDefaultValue(OrderCoForm orderCoForm) {
-		CoOptionCoatStandardInfo optionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
-		optionCoatStandardInfo.setCoatModel("");
-		optionCoatStandardInfo.setOcLapelDesign(OptionCodeKeys.CT_0000101);
-		optionCoatStandardInfo.setOcWaistPkt(OptionCodeKeys.CT_0000201);
-		optionCoatStandardInfo.setOcChangePkt(OptionCodeKeys.CT_0000301);
-		optionCoatStandardInfo.setOcSlantedPkt(OptionCodeKeys.CT_0000401);
-		optionCoatStandardInfo.setOcVentSpec(OptionCodeKeys.CT_0000501);
-		optionCoatStandardInfo.setOcFrontBtnCnt(OptionCodeKeys.CT_0000601);
-		optionCoatStandardInfo.setOcCuffSpec(OptionCodeKeys.CT_0000701);
-		optionCoatStandardInfo.setOcSleeveBtnType(OptionCodeKeys.CT_0000801);
-		optionCoatStandardInfo.setOcBackBelt(OptionCodeKeys.CT_0000901);
-		optionCoatStandardInfo.setOcChainHange(OptionCodeKeys.CT_0001001);
-		optionCoatStandardInfo.setOcBodyBackMate(OptionCodeKeys.CT_4000100);
-		optionCoatStandardInfo.setOcBodyBackMateStkNo(null);
-		optionCoatStandardInfo.setOcCuffBackMate(OptionCodeKeys.CT_5000100);
-		optionCoatStandardInfo.setOcCuffBackMateStkNo(null);
-		optionCoatStandardInfo.setOcFrontBtnMate(OptionCodeKeys.CT_6000100);
-		optionCoatStandardInfo.setOcFrontBtnMateStkNo(null);
-		optionCoatStandardInfo.setOcSleeveSpec(OptionCodeKeys.CT_0001401);
 	}
 
 	public void setCustomerMessageAndProductOrderLink(Order order, OrderCoForm orderCoForm) {
@@ -3843,9 +3626,9 @@ public class OrderCoHelper {
 //
 //		customerMessageInfo.setCustIsEarlyDiscount(order.getCustIsEarlyDiscount());
 		
-		orderCoForm.setCustIsDeliverShortning(order.getCustIsDeliverShortning());
+		orderCoForm.setCustIsDeliverShortning("9000901");
 		
-		orderCoForm.setCustIsEarlyDiscount(order.getCustIsEarlyDiscount());
+		orderCoForm.setCustIsEarlyDiscount("9001001");
 
 		customerMessageInfo.setCustStaff(order.getCustStaff());
 
@@ -3868,7 +3651,7 @@ public class OrderCoHelper {
 
 		orderCoForm.setProductCategory(order.getProductCategory());
 
-		orderCoForm.setProductLcrSewing(order.getProductLcrSewingCd());
+		orderCoForm.setProductLcrSewing("9000201");
 
 		orderCoForm.setProductBrandNm(order.getProductBrandNm());
 
@@ -4165,17 +3948,6 @@ public class OrderCoHelper {
 		return buttonsMap;
 	}
 
-	public void getJacketModelMap(OrderCoForm orderCoForm, List<Model> modelList) {
-		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
-		for (Model model : modelList) {
-			modelMap.put("", "モデル選択");
-			modelMap.put(model.getModelCode(), model.getModelName());
-		}
-		orderCoForm.getCoOptionJacketStandardInfo().setOjJacketModelMap(modelMap);
-		orderCoForm.getCoOptionJacketTuxedoInfo().setTjJacketModelMap(modelMap);
-		orderCoForm.getCoOptionJacketWashableInfo().setWjJacketModelMap(modelMap);
-	}
-
 	public void getPantsModelMap(OrderCoForm orderCoForm, List<Model> modelList) {
 		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
 		for (Model model : modelList) {
@@ -4200,28 +3972,6 @@ public class OrderCoHelper {
 
 	}
 
-	public void getGiletModelMap(OrderCoForm orderCoForm, List<Model> modelList) {
-		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
-		for (Model model : modelList) {
-			modelMap.put("", "モデル選択");
-			modelMap.put(model.getModelCode(), model.getModelName());
-		}
-		orderCoForm.getCoOptionGiletStandardInfo().setOgGiletModelMap(modelMap);
-		orderCoForm.getCoOptionGiletTuxedoInfo().setTgGiletModelMap(modelMap);
-		orderCoForm.getCoOptionGiletWashableInfo().setWgGiletModelMap(modelMap);
-
-	}
-
-	public void getShirtModelMap(OrderCoForm orderCoForm, List<Model> modelList) {
-		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
-		for (Model model : modelList) {
-			modelMap.put("", "モデル選択");
-			modelMap.put(model.getModelCode(), model.getModelName());
-		}
-		orderCoForm.getCoOptionShirtStandardInfo().setOsShirtModelMap(modelMap);
-
-	}
-
 	public void getCoatModelMap(OrderCoForm orderCoForm, List<Model> modelList) {
 		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
 		for (Model model : modelList) {
@@ -4231,1130 +3981,6 @@ public class OrderCoHelper {
 		orderCoForm.getCoOptionCoatStandardInfo().setCoatModelMap(modelMap);
 	}
 
-	public void jacketDefaultValueFromDb(OrderCoForm orderCoForm, Order orderJK) {
-		String productCategory = orderCoForm.getProductCategory();
-		if("9000101".equals(productCategory)) {
-			// 標準
-			CoOptionJacketStandardInfo optionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-			optionJacketStandardInfo.setOjJacketModel(orderJK.getJkModelCd());
-			optionJacketStandardInfo.setOjFrontBtnCnt(orderJK.getJkFrtBtnCd());
-			optionJacketStandardInfo.setOjLapelDesign(orderJK.getJkLapelDesignCd());
-			optionJacketStandardInfo.setOjGrade(orderJK.getJkGradeCd());
-			optionJacketStandardInfo.setOjGackSpec(orderJK.getJkInnerClothCd());
-			optionJacketStandardInfo.setOjFort(orderJK.getJkDaibaCd());
-			optionJacketStandardInfo.setOjBackCollar(orderJK.getJkCollarInnerCd());
-			optionJacketStandardInfo.setOjChainHange(orderJK.getJkCollarHangCd());
-			optionJacketStandardInfo.setOjLapelWidth(orderJK.getJkLapelWidthCd());
-			optionJacketStandardInfo.setOjFlowerHole(orderJK.getJkFlowerHoleCd());
-			optionJacketStandardInfo.setOjBreastPkt(orderJK.getJkBreastPktCd());
-			optionJacketStandardInfo.setOjWaistPkt(orderJK.getJkWaistPktCd());
-			optionJacketStandardInfo.setOjChangePkt(orderJK.getJkChgPktCd());
-			optionJacketStandardInfo.setOjSlantedPkt(orderJK.getJkSlantedPktCd());
-			optionJacketStandardInfo.setOjCoinPkt(orderJK.getJkShinobiPktCd());
-			optionJacketStandardInfo.setOjSleeveSpec(orderJK.getJkSleeveTypeCd());
-			optionJacketStandardInfo.setOjManica(orderJK.getJkManicaCd());
-			optionJacketStandardInfo.setOjSleeveBtnType(orderJK.getJkSleeveBtnCd());
-			optionJacketStandardInfo.setOjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
-			optionJacketStandardInfo.setOjCuffSpec(orderJK.getJkCuffCd());
-			optionJacketStandardInfo.setOjInsidePktChange(orderJK.getJkInnerPktType());
-			optionJacketStandardInfo.setOjInsidePktPlace(orderJK.getJkInnerPktCd());
-			optionJacketStandardInfo.setOjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
-			optionJacketStandardInfo.setOjStitch(orderJK.getJkStitchTypeCd());
-			optionJacketStandardInfo.setOjStitchModify(orderJK.getJkStitchPlcType());
-			optionJacketStandardInfo.setOjStitchModifyPlace(orderJK.getJkStitchPlcCd());
-			optionJacketStandardInfo.setOjDStitchModify(orderJK.getJkDblstitchPlcType());
-			optionJacketStandardInfo.setOjDStitchModifyPlace(orderJK.getJkDblstitchPlcCd());
-			optionJacketStandardInfo.setOjAmfColor(orderJK.getJkAmfColorType());
-			optionJacketStandardInfo.setOjAmfColorPlace(orderJK.getJkAmfColorPlcCd());
-			optionJacketStandardInfo.setOjAmfAllColor(orderJK.getJkAmfColorCd());
-			optionJacketStandardInfo.setOjBhColor(orderJK.getJkBtnholeColorType());
-			optionJacketStandardInfo.setOjBhColorPlace(orderJK.getJkBtnholeColorPlcCd());
-			optionJacketStandardInfo.setOjBhAllColor(orderJK.getJkBtnholeColorCd());
-			optionJacketStandardInfo.setOjByColor(orderJK.getJkBtnthreadColorType());
-			optionJacketStandardInfo.setOjByColorPlace(orderJK.getJkBtnthreadColorPlcCd());
-			optionJacketStandardInfo.setOjByAllColor(orderJK.getJkBtnthreadColorCd());
-			optionJacketStandardInfo.setOjVentSpec(orderJK.getJkVentCd());
-			optionJacketStandardInfo.setOjBodyBackMate(orderJK.getJkInnerBodyClothType());
-			optionJacketStandardInfo.setOjBodyBackMateStkNo(orderJK.getJkInnerBodyClothCd());
-			optionJacketStandardInfo.setOjCuffBackMate(orderJK.getJkInnerSleeveClothType());
-			optionJacketStandardInfo.setOjCuffBackMateStkNo(orderJK.getJkInnerSleeveClothCd());
-			optionJacketStandardInfo.setOjBtnMate(orderJK.getJkBtnMaterialType());
-			optionJacketStandardInfo.setOjBtnMateStkNo(orderJK.getJkBtnMaterialCd());
-			optionJacketStandardInfo.setOjShapeMemory(orderJK.getJkShapeMemoryCd());
-			
-			pluralJkStandardOptionItem(optionJacketStandardInfo,orderJK);
-			
-		}else if("9000102".equals(productCategory)) {
-			// タキシード
-			CoOptionJacketTuxedoInfo optionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-			optionJacketTuxedoInfo.setTjJacketModel(orderJK.getJkModelCd());
-			optionJacketTuxedoInfo.setTjFrontBtnCnt(orderJK.getJkFrtBtnCd());
-			optionJacketTuxedoInfo.setTjLapelDesign(orderJK.getJkLapelDesignCd());
-			optionJacketTuxedoInfo.setTjGrade(orderJK.getJkGradeCd());
-			optionJacketTuxedoInfo.setTjBackSpec(orderJK.getJkInnerClothCd());
-			optionJacketTuxedoInfo.setTjFort(orderJK.getJkDaibaCd());
-			optionJacketTuxedoInfo.setTjGlossFablic(orderJK.getJkLookClothCd());
-			optionJacketTuxedoInfo.setTjBackCollar(orderJK.getJkCollarInnerCd());
-			optionJacketTuxedoInfo.setTjChainHange(orderJK.getJkCollarHangCd());
-			optionJacketTuxedoInfo.setTjLapelWidth(orderJK.getJkLapelWidthCd());
-			optionJacketTuxedoInfo.setTjFlowerHole(orderJK.getJkFlowerHoleCd());
-			optionJacketTuxedoInfo.setTjBreastPkt(orderJK.getJkBreastPktCd());
-			optionJacketTuxedoInfo.setTjWaistPkt(orderJK.getJkWaistPktCd());
-			optionJacketTuxedoInfo.setTjChangePkt(orderJK.getJkChgPktCd());
-			optionJacketTuxedoInfo.setTjSlantedPkt(orderJK.getJkSlantedPktCd());
-			optionJacketTuxedoInfo.setTjCoinPkt(orderJK.getJkShinobiPktCd());
-			optionJacketTuxedoInfo.setTjSleeveSpec(orderJK.getJkSleeveTypeCd());
-			optionJacketTuxedoInfo.setTjManica(orderJK.getJkManicaCd());
-			optionJacketTuxedoInfo.setTjSleeveBtnType(orderJK.getJkSleeveBtnType());
-			optionJacketTuxedoInfo.setTjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
-			optionJacketTuxedoInfo.setTjCuffSpec(orderJK.getJkCuffCd());
-			optionJacketTuxedoInfo.setTjInsidePktChange(orderJK.getJkInnerPktType());
-			optionJacketTuxedoInfo.setTjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
-			optionJacketTuxedoInfo.setTjStitch(orderJK.getJkStitchTypeCd());
-			optionJacketTuxedoInfo.setTjBhColor(orderJK.getJkBtnholeColorType());
-			optionJacketTuxedoInfo.setTjBhColorPlace(orderJK.getJkBtnholeColorPlcCd());
-			optionJacketTuxedoInfo.setTjAllBhColor(orderJK.getJkBtnholeColorCd());
-			optionJacketTuxedoInfo.setTjByColor(orderJK.getJkBtnthreadColorType());
-			optionJacketTuxedoInfo.setTjByColorPlace(orderJK.getJkBtnthreadColorPlcCd());
-			optionJacketTuxedoInfo.setTjAllByColor(orderJK.getJkBtnthreadColorCd());
-			optionJacketTuxedoInfo.setTjVentSpec(orderJK.getJkVentCd());
-			optionJacketTuxedoInfo.setTjBodyBackMate(orderJK.getJkInnerBodyClothType());
-			optionJacketTuxedoInfo.setTjCuffBackMate(orderJK.getJkInnerSleeveClothType());
-			optionJacketTuxedoInfo.setTjBtnMate(orderJK.getJkBtnMaterialType());
-			optionJacketTuxedoInfo.setTjBodyBackMateStkNo(orderJK.getJkInnerBodyClothCd());
-			optionJacketTuxedoInfo.setTjCuffBackMateStkNo(orderJK.getJkInnerSleeveClothCd());
-			optionJacketTuxedoInfo.setTjBtnMateStkNo(orderJK.getJkBtnMaterialCd());
-			optionJacketTuxedoInfo.setTjShapeMemory(orderJK.getJkShapeMemoryCd());
-			
-			pluralJkTuxedoOptionItem(optionJacketTuxedoInfo,orderJK);
-		}else if("9000103".equals(productCategory)) {
-			// ウォッシャブル
-			CoOptionJacketWashableInfo optionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-			optionJacketWashableInfo.setWjJacketModel(orderJK.getJkModelCd());
-			optionJacketWashableInfo.setWjFrontBtnCnt(orderJK.getJkFrtBtnCd());
-			optionJacketWashableInfo.setWjLapelDesign(orderJK.getJkLapelDesignCd());
-			optionJacketWashableInfo.setWjGrade(orderJK.getJkGradeCd());
-			optionJacketWashableInfo.setWjBackSpec(orderJK.getJkInnerClothCd());
-			optionJacketWashableInfo.setWjFort(orderJK.getJkDaibaCd());
-			optionJacketWashableInfo.setWjBackCollar(orderJK.getJkCollarInnerCd());
-			optionJacketWashableInfo.setWjChainHange(orderJK.getJkCollarHangCd());
-			optionJacketWashableInfo.setWjLapelWidth(orderJK.getJkLapelWidthCd());
-			optionJacketWashableInfo.setWjFlowerHole(orderJK.getJkFlowerHoleCd());
-			optionJacketWashableInfo.setWjBreastPkt(orderJK.getJkBreastPktCd());
-			optionJacketWashableInfo.setWjWaistPkt(orderJK.getJkWaistPktCd());
-			optionJacketWashableInfo.setWjChangePkt(orderJK.getJkChgPktCd());
-			optionJacketWashableInfo.setWjSlantedPkt(orderJK.getJkSlantedPktCd());
-			optionJacketWashableInfo.setWjCoinPkt(orderJK.getJkShinobiPktCd());
-			optionJacketWashableInfo.setWjSleeveSpec(orderJK.getJkSleeveTypeCd());
-			optionJacketWashableInfo.setWjManica(orderJK.getJkManicaCd());
-			optionJacketWashableInfo.setWjSleeveBtnType(orderJK.getJkSleeveBtnType());
-			optionJacketWashableInfo.setWjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
-			optionJacketWashableInfo.setWjCuffSpec(orderJK.getJkCuffCd());
-			optionJacketWashableInfo.setWjInsidePktChange(orderJK.getJkInnerPktType());
-			optionJacketWashableInfo.setWjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
-			optionJacketWashableInfo.setWjStitch(orderJK.getJkStitchTypeCd());
-			optionJacketWashableInfo.setWjStitchModify(orderJK.getJkStitchPlcType());
-			optionJacketWashableInfo.setWjStitchModifyPlace(orderJK.getJkStitchPlcCd());
-			optionJacketWashableInfo.setWjDStitchModify(orderJK.getJkDblstitchPlcType());
-			optionJacketWashableInfo.setWjDStitchModifyPlace(orderJK.getJkDblstitchPlcCd());
-			optionJacketWashableInfo.setWjAmfColor(orderJK.getJkAmfColorType());
-			optionJacketWashableInfo.setWjAmfColorPlace(orderJK.getJkAmfColorPlcCd());
-			optionJacketWashableInfo.setWjAllAmfColor(orderJK.getJkAmfColorCd());
-			optionJacketWashableInfo.setWjBhColor(orderJK.getJkBtnholeColorType());
-			optionJacketWashableInfo.setWjBhColorPlace(orderJK.getJkBtnholeColorPlcCd());
-			optionJacketWashableInfo.setWjAllBhColor(orderJK.getJkBtnholeColorCd());
-			optionJacketWashableInfo.setWjByColor(orderJK.getJkBtnthreadColorType());
-			optionJacketWashableInfo.setWjByColorPlace(orderJK.getJkBtnthreadColorPlcCd());
-			optionJacketWashableInfo.setWjAllByColor(orderJK.getJkBtnthreadColorCd());
-			optionJacketWashableInfo.setWjVentSpec(orderJK.getJkVentCd());
-			optionJacketWashableInfo.setWjBodyBackMate(orderJK.getJkInnerBodyClothType());
-			optionJacketWashableInfo.setWjCuffBackMate(orderJK.getJkInnerSleeveClothType());
-			optionJacketWashableInfo.setWjBtnMate(orderJK.getJkBtnMaterialType());
-			optionJacketWashableInfo.setWjBtnMate(orderJK.getJkBtnMaterialType());
-			optionJacketWashableInfo.setWjBodyBackMateStkNo(orderJK.getJkInnerBodyClothCd());
-			optionJacketWashableInfo.setWjCuffBackMateStkNo(orderJK.getJkInnerSleeveClothCd());
-			optionJacketWashableInfo.setWjShapeMemory(orderJK.getJkShapeMemoryCd());
-			
-			pluralJkWashableOptionItem(optionJacketWashableInfo,orderJK);
-		}
-		
-	}
-
-	private void pluralJkWashableOptionItem(CoOptionJacketWashableInfo optionJacketWashableInfo, Order orderJK) {
-		String regex = ",";
-		
-		//ステッチ箇所変更
-		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if(jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)) {
-			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
-			for (String stitchPlcCode : jkStitchPlcSplit) {
-				if("0002501".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace1(stitchPlcCode);
-				}else if("0002502".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace2(stitchPlcCode);
-				}else if("0002503".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace3(stitchPlcCode);
-				}else if("0002504".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace4(stitchPlcCode);
-				}else if("0002505".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace5(stitchPlcCode);
-				}else if("0002507".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace6(stitchPlcCode);
-				}else if("0002508".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace7(stitchPlcCode);
-				}else if("0002509".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace8(stitchPlcCode);
-				}else if("0002510".equals(stitchPlcCode)) {
-					optionJacketWashableInfo.setWjStitchModifyPlace9(stitchPlcCode);
-				}
-			}
-		}
-		
-		//ダブルステッチ変更
-		String jkDblstitchPlcCd = orderJK.getJkDblstitchPlcCd();
-		if(jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)) {
-			String[] jkDblstitchPlcSplit = jkDblstitchPlcCd.split(regex);
-			for (String dblstitchPlcCode : jkDblstitchPlcSplit) {
-				if("0002701".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace1(dblstitchPlcCode);
-				}else if("0002702".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace2(dblstitchPlcCode);
-				}else if("0002703".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace3(dblstitchPlcCode);
-				}else if("0002705".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace4(dblstitchPlcCode);
-				}else if("0002707".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace5(dblstitchPlcCode);
-				}else if("0002708".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace6(dblstitchPlcCode);
-				}else if("0002709".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace7(dblstitchPlcCode);
-				}else if("0002710".equals(dblstitchPlcCode)) {
-					optionJacketWashableInfo.setWjDStitchModifyPlace8(dblstitchPlcCode);
-				}
-			}
-		}
-		
-		//AMF色指定
-		String jkAmfColorPlcCd = orderJK.getJkAmfColorPlcCd();
-		String jkAmfColorCd = orderJK.getJkAmfColorCd();
-		if(jkAmfColorPlcCd!=null && !"".equals(jkAmfColorPlcCd) && jkAmfColorCd !=null && !"".equals(jkAmfColorCd)) {
-			String[] jkAmfColorPlcSplit = jkAmfColorPlcCd.split(regex);
-			String[] jkAmfColorSplit = jkAmfColorCd.split(regex);
-			for (int i = 0;i<jkAmfColorPlcSplit.length;i++) {
-				if("0002901".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace1(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor1(jkAmfColorSplit[i]);
-				}else if("0002902".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace2(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor2(jkAmfColorSplit[i]);
-				}else if("0002903".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace3(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor3(jkAmfColorSplit[i]);
-				}else if("0002904".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace4(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor4(jkAmfColorSplit[i]);
-				}else if("0002905".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace5(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor5(jkAmfColorSplit[i]);
-				}else if("0002907".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace6(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor6(jkAmfColorSplit[i]);
-				}else if("0002908".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace7(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor7(jkAmfColorSplit[i]);
-				}else if("0002909".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace8(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor8(jkAmfColorSplit[i]);
-				}else if("0002910".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjAmfColorPlace9(jkAmfColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjAmfColor9(jkAmfColorSplit[i]);
-				}
-			}
-		}
-		
-		//ボタンホール色指定
-		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
-		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
-		if(!"".equals(jkBtnholeColorPlcCd)&&jkBtnholeColorPlcCd!=null&&!"".equals(jkBtnholeColorCd)&&jkBtnholeColorCd!=null) {
-			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
-			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
-			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
-				if("0003201".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor1(jkBtnholeColorSplit[i]);
-				}else if("0003202".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace2(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor2(jkBtnholeColorSplit[i]);
-				}else if("0003203".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace3(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor3(jkBtnholeColorSplit[i]);
-				}else if("0003204".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace4(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor4(jkBtnholeColorSplit[i]);
-				}else if("0003205".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace5(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor5(jkBtnholeColorSplit[i]);
-				}else if("0003206".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace6(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor6(jkBtnholeColorSplit[i]);
-				}else if("0003207".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace7(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor7(jkBtnholeColorSplit[i]);
-				}else if("0003208".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace8(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor8(jkBtnholeColorSplit[i]);
-				}else if("0003209".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace9(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor9(jkBtnholeColorSplit[i]);
-				}else if("0003210".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace10(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor10(jkBtnholeColorSplit[i]);
-				}else if("0003211".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace11(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor11(jkBtnholeColorSplit[i]);
-				}else if("0003212".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace12(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor12(jkBtnholeColorSplit[i]);
-				}else if("0003213".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace13(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor13(jkBtnholeColorSplit[i]);
-				}else if("0003214".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace14(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor14(jkBtnholeColorSplit[i]);
-				}else if("0003215".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace15(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor15(jkBtnholeColorSplit[i]);
-				}else if("0003216".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace16(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor16(jkBtnholeColorSplit[i]);
-				}else if("0003217".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjBhColorPlace17(jkBtnholeColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjBhColor17(jkBtnholeColorSplit[i]);
-				}
-			}
-		}
-		
-		//ボタン付け糸指定
-		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
-		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
-		if(!"".equals(jkBtnthreadColorPlcCd)&&jkBtnthreadColorPlcCd!=null&&!"".equals(jkBtnthreadColorCd)&&jkBtnthreadColorCd!=null) {
-			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
-			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
-			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
-				if("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor1(jkBtnthreadColorSplit[i]);
-				}else if("0003502".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace2(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor2(jkBtnthreadColorSplit[i]);
-				}else if("0003503".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace3(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor3(jkBtnthreadColorSplit[i]);
-				}else if("0003504".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace4(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor4(jkBtnthreadColorSplit[i]);
-				}else if("0003505".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace5(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor5(jkBtnthreadColorSplit[i]);
-				}else if("0003506".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace6(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor6(jkBtnthreadColorSplit[i]);
-				}else if("0003507".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace7(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor7(jkBtnthreadColorSplit[i]);
-				}else if("0003508".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace8(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor8(jkBtnthreadColorSplit[i]);
-				}else if("0003509".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace9(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor9(jkBtnthreadColorSplit[i]);
-				}else if("0003510".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace10(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor10(jkBtnthreadColorSplit[i]);
-				}else if("0003511".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace11(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor11(jkBtnthreadColorSplit[i]);
-				}else if("0003512".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace12(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor12(jkBtnthreadColorSplit[i]);
-				}else if("0003513".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace13(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor13(jkBtnthreadColorSplit[i]);
-				}else if("0003514".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace14(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor14(jkBtnthreadColorSplit[i]);
-				}else if("0003515".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace15(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor15(jkBtnthreadColorSplit[i]);
-				}else if("0003516".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketWashableInfo.setWjByColorPlace16(jkBtnthreadColorPlcSplit[i]);
-					optionJacketWashableInfo.setWjByColor16(jkBtnthreadColorSplit[i]);
-				}
-			}
-		}
-	}
-
-	private void pluralJkTuxedoOptionItem(CoOptionJacketTuxedoInfo optionJacketTuxedoInfo, Order orderJK) {
-		String regex = ",";
-		// ボタンホール色指定
-		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
-		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
-		if (!"".equals(jkBtnholeColorPlcCd) && jkBtnholeColorPlcCd != null && !"".equals(jkBtnholeColorCd)
-				&& jkBtnholeColorCd != null) {
-			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
-			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
-			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
-				if ("0003201".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor1(jkBtnholeColorSplit[i]);
-				} else if ("0003202".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace2(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor2(jkBtnholeColorSplit[i]);
-				} else if ("0003203".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace3(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor3(jkBtnholeColorSplit[i]);
-				} else if ("0003204".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace4(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor4(jkBtnholeColorSplit[i]);
-				} else if ("0003205".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace5(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor5(jkBtnholeColorSplit[i]);
-				} else if ("0003206".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace6(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor6(jkBtnholeColorSplit[i]);
-				} else if ("0003207".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace7(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor7(jkBtnholeColorSplit[i]);
-				} else if ("0003208".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace8(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor8(jkBtnholeColorSplit[i]);
-				} else if ("0003209".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace9(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor9(jkBtnholeColorSplit[i]);
-				} else if ("0003210".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace10(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor10(jkBtnholeColorSplit[i]);
-				} else if ("0003211".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace11(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor11(jkBtnholeColorSplit[i]);
-				} else if ("0003212".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace12(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor12(jkBtnholeColorSplit[i]);
-				} else if ("0003213".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace13(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor13(jkBtnholeColorSplit[i]);
-				} else if ("0003214".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace14(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor14(jkBtnholeColorSplit[i]);
-				} else if ("0003215".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace15(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor15(jkBtnholeColorSplit[i]);
-				} else if ("0003216".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace16(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor16(jkBtnholeColorSplit[i]);
-				} else if ("0003217".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjBhColorPlace17(jkBtnholeColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjBhColor17(jkBtnholeColorSplit[i]);
-				}
-			}
-		}
-
-		// ボタン付け糸指定
-		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
-		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
-		if (!"".equals(jkBtnthreadColorPlcCd) && jkBtnthreadColorPlcCd != null && !"".equals(jkBtnthreadColorCd)
-				&& jkBtnthreadColorCd != null) {
-			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
-			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
-			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
-				if ("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor1(jkBtnthreadColorSplit[i]);
-				} else if ("0003502".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace2(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor2(jkBtnthreadColorSplit[i]);
-				} else if ("0003503".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace3(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor3(jkBtnthreadColorSplit[i]);
-				} else if ("0003504".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace4(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor4(jkBtnthreadColorSplit[i]);
-				} else if ("0003505".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace5(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor5(jkBtnthreadColorSplit[i]);
-				} else if ("0003506".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace6(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor6(jkBtnthreadColorSplit[i]);
-				} else if ("0003507".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace7(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor7(jkBtnthreadColorSplit[i]);
-				} else if ("0003508".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace8(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor8(jkBtnthreadColorSplit[i]);
-				} else if ("0003509".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace9(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor9(jkBtnthreadColorSplit[i]);
-				} else if ("0003510".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace10(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor10(jkBtnthreadColorSplit[i]);
-				} else if ("0003511".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace11(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor11(jkBtnthreadColorSplit[i]);
-				} else if ("0003512".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace12(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor12(jkBtnthreadColorSplit[i]);
-				} else if ("0003513".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace13(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor13(jkBtnthreadColorSplit[i]);
-				} else if ("0003514".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace14(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor14(jkBtnthreadColorSplit[i]);
-				} else if ("0003515".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace15(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor15(jkBtnthreadColorSplit[i]);
-				} else if ("0003516".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketTuxedoInfo.setTjByColorPlace16(jkBtnthreadColorPlcSplit[i]);
-					optionJacketTuxedoInfo.setTjByColor16(jkBtnthreadColorSplit[i]);
-				}
-			}
-		}
-	}
-
-	private void pluralJkStandardOptionItem(CoOptionJacketStandardInfo optionJacketStandardInfo, Order orderJK) {
-		String regex = ",";
-		//内ポケット変更
-		String jkInnerPktCd = orderJK.getJkInnerPktCd();
-		if(jkInnerPktCd != null && !"".equals(jkInnerPktCd)) {
-			String[] jkInnerPktSplit = jkInnerPktCd.split(regex);
-			for (String innerPktCode : jkInnerPktSplit) {
-				if("0002101".equals(innerPktCode)) {
-					optionJacketStandardInfo.setOjInsidePktPlace1(innerPktCode);
-				}else if("0002102".equals(innerPktCode)) {
-					optionJacketStandardInfo.setOjInsidePktPlace2(innerPktCode);
-				}else if("0002103".equals(innerPktCode)) {
-					optionJacketStandardInfo.setOjInsidePktPlace3(innerPktCode);
-				}else if("0002104".equals(innerPktCode)) {
-					optionJacketStandardInfo.setOjInsidePktPlace4(innerPktCode);
-				}
-			}
-		}
-		
-		//ステッチ箇所変更
-		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if(jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)) {
-			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
-			for (String stitchPlcCode : jkStitchPlcSplit) {
-				if("0002501".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace1(stitchPlcCode);
-				}else if("0002502".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace2(stitchPlcCode);
-				}else if("0002503".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace3(stitchPlcCode);
-				}else if("0002504".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace4(stitchPlcCode);
-				}else if("0002505".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace5(stitchPlcCode);
-				}else if("0002507".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace6(stitchPlcCode);
-				}else if("0002508".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace7(stitchPlcCode);
-				}else if("0002509".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace8(stitchPlcCode);
-				}else if("0002510".equals(stitchPlcCode)) {
-					optionJacketStandardInfo.setOjStitchModifyPlace9(stitchPlcCode);
-				}
-			}
-		}
-		
-		//ダブルステッチ変更
-		String jkDblstitchPlcCd = orderJK.getJkDblstitchPlcCd();
-		if(jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)) {
-			String[] jkDblstitchPlcSplit = jkDblstitchPlcCd.split(regex);
-			for (String dblstitchPlcCode : jkDblstitchPlcSplit) {
-				if("0002701".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace1(dblstitchPlcCode);
-				}else if("0002702".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace2(dblstitchPlcCode);
-				}else if("0002703".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace3(dblstitchPlcCode);
-				}else if("0002705".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace4(dblstitchPlcCode);
-				}else if("0002707".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace5(dblstitchPlcCode);
-				}else if("0002708".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace6(dblstitchPlcCode);
-				}else if("0002709".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace7(dblstitchPlcCode);
-				}else if("0002710".equals(dblstitchPlcCode)) {
-					optionJacketStandardInfo.setOjDStitchModifyPlace8(dblstitchPlcCode);
-				}
-			}
-		}
-		
-		//AMF色指定
-		String jkAmfColorPlcCd = orderJK.getJkAmfColorPlcCd();
-		String jkAmfColorCd = orderJK.getJkAmfColorCd();
-		if(jkAmfColorPlcCd!=null && !"".equals(jkAmfColorPlcCd) && jkAmfColorCd !=null && !"".equals(jkAmfColorCd)) {
-			String[] jkAmfColorPlcSplit = jkAmfColorPlcCd.split(regex);
-			String[] jkAmfColorSplit = jkAmfColorCd.split(regex);
-			for (int i = 0;i<jkAmfColorPlcSplit.length;i++) {
-				if("0002901".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace1(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor1(jkAmfColorSplit[i]);
-				}else if("0002902".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace2(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor2(jkAmfColorSplit[i]);
-				}else if("0002903".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace3(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor3(jkAmfColorSplit[i]);
-				}else if("0002904".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace4(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor4(jkAmfColorSplit[i]);
-				}else if("0002905".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace5(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor5(jkAmfColorSplit[i]);
-				}else if("0002907".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace6(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor6(jkAmfColorSplit[i]);
-				}else if("0002908".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace7(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor7(jkAmfColorSplit[i]);
-				}else if("0002909".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace8(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor8(jkAmfColorSplit[i]);
-				}else if("0002910".equals(jkAmfColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjAmfColorPlace9(jkAmfColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjAmfColor9(jkAmfColorSplit[i]);
-				}
-			}
-		}
-		
-		//ボタンホール色指定
-		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
-		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
-		if(!"".equals(jkBtnholeColorPlcCd)&&jkBtnholeColorPlcCd!=null&&!"".equals(jkBtnholeColorCd)&&jkBtnholeColorCd!=null) {
-			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
-			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
-			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
-				if("0003201".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor1(jkBtnholeColorSplit[i]);
-				}else if("0003202".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace2(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor2(jkBtnholeColorSplit[i]);
-				}else if("0003203".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace3(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor3(jkBtnholeColorSplit[i]);
-				}else if("0003204".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace4(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor4(jkBtnholeColorSplit[i]);
-				}else if("0003205".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace5(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor5(jkBtnholeColorSplit[i]);
-				}else if("0003206".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace6(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor6(jkBtnholeColorSplit[i]);
-				}else if("0003207".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace7(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor7(jkBtnholeColorSplit[i]);
-				}else if("0003208".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace8(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor8(jkBtnholeColorSplit[i]);
-				}else if("0003209".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace9(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor9(jkBtnholeColorSplit[i]);
-				}else if("0003210".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace10(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor10(jkBtnholeColorSplit[i]);
-				}else if("0003211".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace11(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor11(jkBtnholeColorSplit[i]);
-				}else if("0003212".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace12(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor12(jkBtnholeColorSplit[i]);
-				}else if("0003213".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace13(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor13(jkBtnholeColorSplit[i]);
-				}else if("0003214".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace14(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor14(jkBtnholeColorSplit[i]);
-				}else if("0003215".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace15(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor15(jkBtnholeColorSplit[i]);
-				}else if("0003216".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace16(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor16(jkBtnholeColorSplit[i]);
-				}else if("0003217".equals(jkBtnholeColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjBhColorPlace17(jkBtnholeColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjBhColor17(jkBtnholeColorSplit[i]);
-				}
-			}
-		}
-		
-		//ボタン付け糸指定
-		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
-		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
-		if(!"".equals(jkBtnthreadColorPlcCd)&&jkBtnthreadColorPlcCd!=null&&!"".equals(jkBtnthreadColorCd)&&jkBtnthreadColorCd!=null) {
-			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
-			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
-			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
-				if("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor1(jkBtnthreadColorSplit[i]);
-				}else if("0003502".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace2(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor2(jkBtnthreadColorSplit[i]);
-				}else if("0003503".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace3(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor3(jkBtnthreadColorSplit[i]);
-				}else if("0003504".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace4(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor4(jkBtnthreadColorSplit[i]);
-				}else if("0003505".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace5(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor5(jkBtnthreadColorSplit[i]);
-				}else if("0003506".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace6(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor6(jkBtnthreadColorSplit[i]);
-				}else if("0003507".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace7(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor7(jkBtnthreadColorSplit[i]);
-				}else if("0003508".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace8(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor8(jkBtnthreadColorSplit[i]);
-				}else if("0003509".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace9(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor9(jkBtnthreadColorSplit[i]);
-				}else if("0003510".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace10(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor10(jkBtnthreadColorSplit[i]);
-				}else if("0003511".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace11(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor11(jkBtnthreadColorSplit[i]);
-				}else if("0003512".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace12(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor12(jkBtnthreadColorSplit[i]);
-				}else if("0003513".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace13(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor13(jkBtnthreadColorSplit[i]);
-				}else if("0003514".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace14(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor14(jkBtnthreadColorSplit[i]);
-				}else if("0003515".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace15(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor15(jkBtnthreadColorSplit[i]);
-				}else if("0003516".equals(jkBtnthreadColorPlcSplit[i])) {
-					optionJacketStandardInfo.setOjByColorPlace16(jkBtnthreadColorPlcSplit[i]);
-					optionJacketStandardInfo.setOjByColor16(jkBtnthreadColorSplit[i]);
-				}
-			}
-		}
-	}
-	
-	private void pluralGlStandardOptionItem(CoOptionGiletStandardInfo coOptionGiletStandardInfo, Order orderGl) {
-		String regex = ",";
-		//ステッチ箇所変更
-		String glStitchPlcCd = orderGl.getGlStitchPlcCd();
-		if(glStitchPlcCd != null && !"".equals(glStitchPlcCd)) {
-			String[] glStitchPlcCdStr = glStitchPlcCd.split(regex);
-			for (String glStitchPlcCdInner : glStitchPlcCdStr) {
-				if("0000701".equals(glStitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgStitchModifyPlace1(glStitchPlcCdInner);
-				}else if("0000704".equals(glStitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgStitchModifyPlace2(glStitchPlcCdInner);
-				}else if("0000705".equals(glStitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgStitchModifyPlace3(glStitchPlcCdInner);
-				}
-			}
-		}
-		
-		//ダブルステッチ
-		String glDblstitchPlcCd = orderGl.getGlDblstitchPlcCd();
-		if(glDblstitchPlcCd != null && !"".equals(glDblstitchPlcCd)) {
-			String[] glDblstitchPlcCdStr = glDblstitchPlcCd.split(regex);
-			for (String glDblstitchPlcCdInner : glDblstitchPlcCdStr) {
-				if("0002701".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgDStitchModifyPlace1(glDblstitchPlcCdInner);
-				}else if("0002702".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgDStitchModifyPlace2(glDblstitchPlcCdInner);
-				}else if("0002703".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletStandardInfo.setOgDStitchModifyPlace3(glDblstitchPlcCdInner);
-				}
-			}
-		}
-		
-		//AMF色指定
-		String glAmfColorPlcCd = orderGl.getGlAmfColorPlcCd();
-		String glAmfColorCd = orderGl.getGlAmfColorCd();
-		if(glAmfColorPlcCd!=null && !"".equals(glAmfColorPlcCd) 
-				&& glAmfColorCd !=null && !"".equals(glAmfColorCd)) {
-			String[] glAmfColorPlcCdStr = glAmfColorPlcCd.split(regex);
-			String[] glAmfColorCdStr = glAmfColorCd.split(regex);
-			for (int i = 0;i<glAmfColorPlcCdStr.length;i++) {
-				if("0000901".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgAmfColorPlace1(glAmfColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgAmfColor1(glAmfColorCdStr[i]);
-				}else if("0000902".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgAmfColorPlace2(glAmfColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgAmfColor2(glAmfColorCdStr[i]);
-				}else if("0000903".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgAmfColorPlace3(glAmfColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgAmfColor3(glAmfColorCdStr[i]);
-				}
-			}
-		}
-		
-		//ボタンホール色指定
-		String glBtnholeColorPlcCd = orderGl.getGlBtnholeColorPlcCd();
-		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
-				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null) {
-			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
-			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
-			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
-				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor1(glBtnholeColorCdStr[i]);
-				}else if("0001202".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace2(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor2(glBtnholeColorCdStr[i]);
-				}else if("0001203".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace3(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor3(glBtnholeColorCdStr[i]);
-				}else if("0001204".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace4(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor4(glBtnholeColorCdStr[i]);
-				}else if("0001205".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace5(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor5(glBtnholeColorCdStr[i]);
-				}else if("0001206".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgBhColorPlace6(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgBhColor6(glBtnholeColorCdStr[i]);
-				}
-			}
-		}
-		
-		//ボタン付け糸指定
-		String glBtnthreadColorPlcCd = orderGl.getGlBtnthreadColorPlcCd();
-		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
-				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null) {
-			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
-			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
-			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
-				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor1(glBtnthreadColorCdStr[i]);
-				}else if("0001502".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace2(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor2(glBtnthreadColorCdStr[i]);
-				}else if("0001503".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace3(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor3(glBtnthreadColorCdStr[i]);
-				}else if("0001504".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace4(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor4(glBtnthreadColorCdStr[i]);
-				}else if("0001505".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace5(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor5(glBtnthreadColorCdStr[i]);
-				}else if("0001506".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace6(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor6(glBtnthreadColorCdStr[i]);
-				}else if("0001507".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace7(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor7(glBtnthreadColorCdStr[i]);
-				}else if("0001508".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace8(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor8(glBtnthreadColorCdStr[i]);
-				}else if("0001509".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace9(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor9(glBtnthreadColorCdStr[i]);
-				}else if("0001510".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletStandardInfo.setOgByColorPlace10(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletStandardInfo.setOgByColor10(glBtnthreadColorCdStr[i]);
-				}
-			}
-		}
-	}
-	
-	private void pluralGlTuxedoOptionItem(CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo, Order orderGl) {
-		String regex = ",";
-		//ボタンホール色指定
-		String glBtnholeColorPlcCd = orderGl.getGlBtnholeColorPlcCd();
-		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
-				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null) {
-			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
-			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
-			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
-				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor1(glBtnholeColorCdStr[i]);
-				}else if("0001202".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace2(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor2(glBtnholeColorCdStr[i]);
-				}else if("0001203".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace3(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor3(glBtnholeColorCdStr[i]);
-				}else if("0001204".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace4(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor4(glBtnholeColorCdStr[i]);
-				}else if("0001205".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace5(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor5(glBtnholeColorCdStr[i]);
-				}else if("0001206".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgBhColorPlace6(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgBhColor6(glBtnholeColorCdStr[i]);
-				}
-			}
-		}
-		
-		//ボタン付け糸指定
-		String glBtnthreadColorPlcCd = orderGl.getGlBtnthreadColorPlcCd();
-		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
-				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null) {
-			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
-			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
-			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
-				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor1(glBtnthreadColorCdStr[i]);
-				}else if("0001502".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace2(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor2(glBtnthreadColorCdStr[i]);
-				}else if("0001503".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace3(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor3(glBtnthreadColorCdStr[i]);
-				}else if("0001504".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace4(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor4(glBtnthreadColorCdStr[i]);
-				}else if("0001505".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace5(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor5(glBtnthreadColorCdStr[i]);
-				}else if("0001506".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace6(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor6(glBtnthreadColorCdStr[i]);
-				}else if("0001507".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace7(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor7(glBtnthreadColorCdStr[i]);
-				}else if("0001508".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace8(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor8(glBtnthreadColorCdStr[i]);
-				}else if("0001509".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace9(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor9(glBtnthreadColorCdStr[i]);
-				}else if("0001510".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletTuxedoInfo.setTgByColorPlace10(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletTuxedoInfo.setTgByColor10(glBtnthreadColorCdStr[i]);
-				}
-			}
-		}
-	}
-	
-	private void pluralGlWashableOptionItem(CoOptionGiletWashableInfo coOptionGiletWashableInfo, Order orderGl) {
-		String regex = ",";
-		//ステッチ箇所変更
-		String glStitchPlcCd = orderGl.getGlStitchPlcCd();
-		if(glStitchPlcCd != null && !"".equals(glStitchPlcCd)) {
-			String[] glStitchPlcCdStr = glStitchPlcCd.split(regex);
-			for (String glStitchPlcCdInner : glStitchPlcCdStr) {
-				if("0000701".equals(glStitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgStitchModifyPlace1(glStitchPlcCdInner);
-				}else if("0000704".equals(glStitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgStitchModifyPlace2(glStitchPlcCdInner);
-				}else if("0000705".equals(glStitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgStitchModifyPlace3(glStitchPlcCdInner);
-				}
-			}
-		}
-		
-		//ダブルステッチ
-		String glDblstitchPlcCd = orderGl.getGlDblstitchPlcCd();
-		if(glDblstitchPlcCd != null && !"".equals(glDblstitchPlcCd)) {
-			String[] glDblstitchPlcCdStr = glDblstitchPlcCd.split(regex);
-			for (String glDblstitchPlcCdInner : glDblstitchPlcCdStr) {
-				if("0002701".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgDStitchModifyPlace1(glDblstitchPlcCdInner);
-				}else if("0002702".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgDStitchModifyPlace2(glDblstitchPlcCdInner);
-				}else if("0002703".equals(glDblstitchPlcCdInner)) {
-					coOptionGiletWashableInfo.setWgDStitchModifyPlace3(glDblstitchPlcCdInner);
-				}
-			}
-		}
-		
-		//AMF色指定
-		String glAmfColorPlcCd = orderGl.getGlAmfColorPlcCd();
-		String glAmfColorCd = orderGl.getGlAmfColorCd();
-		if(glAmfColorPlcCd!=null && !"".equals(glAmfColorPlcCd) 
-				&& glAmfColorCd !=null && !"".equals(glAmfColorCd)) {
-			String[] glAmfColorPlcCdStr = glAmfColorPlcCd.split(regex);
-			String[] glAmfColorCdStr = glAmfColorCd.split(regex);
-			for (int i = 0;i<glAmfColorPlcCdStr.length;i++) {
-				if("0000901".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgAmfColorPlace1(glAmfColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgAmfColor1(glAmfColorCdStr[i]);
-				}else if("0000902".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgAmfColorPlace2(glAmfColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgAmfColor2(glAmfColorCdStr[i]);
-				}else if("0000903".equals(glAmfColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgAmfColorPlace3(glAmfColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgAmfColor3(glAmfColorCdStr[i]);
-				}
-			}
-		}
-		
-		//ボタンホール色指定
-		String glBtnholeColorPlcCd = orderGl.getGlBtnholeColorPlcCd();
-		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
-				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null) {
-			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
-			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
-			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
-				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor1(glBtnholeColorCdStr[i]);
-				}else if("0001202".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace2(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor2(glBtnholeColorCdStr[i]);
-				}else if("0001203".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace3(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor3(glBtnholeColorCdStr[i]);
-				}else if("0001204".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace4(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor4(glBtnholeColorCdStr[i]);
-				}else if("0001205".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace5(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor5(glBtnholeColorCdStr[i]);
-				}else if("0001206".equals(glBtnholeColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgBhColorPlace6(glBtnholeColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgBhColor6(glBtnholeColorCdStr[i]);
-				}
-			}
-		}
-		
-		//ボタン付け糸指定
-		String glBtnthreadColorPlcCd = orderGl.getGlBtnthreadColorPlcCd();
-		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
-				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null) {
-			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
-			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
-			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
-				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor1(glBtnthreadColorCdStr[i]);
-				}else if("0001502".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace2(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor2(glBtnthreadColorCdStr[i]);
-				}else if("0001503".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace3(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor3(glBtnthreadColorCdStr[i]);
-				}else if("0001504".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace4(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor4(glBtnthreadColorCdStr[i]);
-				}else if("0001505".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace5(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor5(glBtnthreadColorCdStr[i]);
-				}else if("0001506".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace6(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor6(glBtnthreadColorCdStr[i]);
-				}else if("0001507".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace7(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor7(glBtnthreadColorCdStr[i]);
-				}else if("0001508".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace8(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor8(glBtnthreadColorCdStr[i]);
-				}else if("0001509".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace9(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor9(glBtnthreadColorCdStr[i]);
-				}else if("0001510".equals(glBtnthreadColorPlcCdStr[i])) {
-					coOptionGiletWashableInfo.setWgByColorPlace10(glBtnthreadColorPlcCdStr[i]);
-					coOptionGiletWashableInfo.setWgByColor10(glBtnthreadColorCdStr[i]);
-				}
-			}
-		}
-	}
-
-	public void jacketAdjustFromDb(OrderCoForm orderCoForm, Order order) {
-
-		if("9000101".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionJacketStandardInfo().setOjJacketModel(order.getJkModelCd());
-		}else if("9000102".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionJacketTuxedoInfo().setTjJacketModel(order.getJkModelCd());
-		}else if("9000103".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionJacketWashableInfo().setWjJacketModel(order.getJkModelCd());
-		}
-		orderCoForm.getCoAdjustJacketStandardInfo().setSizeNumber(order.getCorJkSize());
-		orderCoForm.getCoAdjustJacketStandardInfo().setSizeFigure(order.getCorJkDrop());
-
-		BigDecimal corJkBodylengthSize = order.getCorJkBodylengthSize();
-		if(isNotBigDecimalNull(corJkBodylengthSize)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkBodySize(String.valueOf(corJkBodylengthSize));
-		}
-		BigDecimal corJkBodylengthGross = order.getCorJkBodylengthGross();
-		if(isNotBigDecimalNull(corJkBodylengthGross)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkBodyGross(String.valueOf(corJkBodylengthGross));
-		}
-		BigDecimal corJkBodylengthCorrect = order.getCorJkBodylengthCorrect();
-		if(isNotBigDecimalNull(corJkBodylengthCorrect)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkBodyCorrect(String.valueOf(corJkBodylengthCorrect));
-		}
-
-		BigDecimal corJkWaistSize = order.getCorJkWaistSize();
-		if(isNotBigDecimalNull(corJkWaistSize)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkWaistSize(String.valueOf(corJkWaistSize));
-		}
-		
-		BigDecimal corJkWaistGross = order.getCorJkWaistGross();
-		if(isNotBigDecimalNull(corJkWaistGross)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkWaistGross(String.valueOf(corJkWaistGross));
-		}
-		
-		BigDecimal corJkWaistCorrect = order.getCorJkWaistCorrect();
-		if(isNotBigDecimalNull(corJkWaistCorrect)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkWaistCorrect(String.valueOf(corJkWaistCorrect));
-		}
-		
-		BigDecimal corJkRightsleeveSize = order.getCorJkRightsleeveSize();
-		if(isNotBigDecimalNull(corJkRightsleeveSize)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkRightsleeveSize(String.valueOf(corJkRightsleeveSize));
-		}
-		
-		BigDecimal corJkRightsleeveGross = order.getCorJkRightsleeveGross();
-		if(isNotBigDecimalNull(corJkRightsleeveGross)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkRightsleeveGross(String.valueOf(corJkRightsleeveGross));
-		}
-		
-		BigDecimal corJkRightsleeveCorrect = order.getCorJkRightsleeveCorrect();
-		if(isNotBigDecimalNull(corJkRightsleeveCorrect)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkRightsleeveCorrect(String.valueOf(corJkRightsleeveCorrect));
-		}
-
-		BigDecimal corJkLeftsleeveSize = order.getCorJkLeftsleeveSize();
-		if(isNotBigDecimalNull(corJkLeftsleeveSize)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkLeftsleeveSize(String.valueOf(corJkLeftsleeveSize));
-		}
-		
-		BigDecimal corJkLeftsleeveGross = order.getCorJkLeftsleeveGross();
-		if(isNotBigDecimalNull(corJkLeftsleeveGross)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkLeftsleeveGross(String.valueOf(corJkLeftsleeveGross));
-		}
-		
-		BigDecimal corJkLeftsleeveCorrect = order.getCorJkLeftsleeveCorrect();
-		if(isNotBigDecimalNull(corJkLeftsleeveCorrect)) {
-			orderCoForm.getCoAdjustJacketStandardInfo().setCorJkLeftsleeveCorrect(String.valueOf(corJkLeftsleeveCorrect));
-		}
-
-		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkShoulderPad(order.getCorJkShoulderpad());
-		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkFigureCorrect(order.getCorJkFigureCorrect());
-		
-		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkStoreCorrectionMemo(order.getCorJkStoreCorrectionMemo());
-
-	}
 
 	public ProductCompos getComposBodyIiner(OrderCoForm orderCoForm) {
 		ProductCompos productCompos = new ProductCompos();
@@ -5577,9 +4203,15 @@ public class OrderCoHelper {
 		optionPantsStandardInfo.setOpByColorPlace(null);
 		optionPantsStandardInfo.setOpByAllColor(null);
 		// 釦素材
-		optionPantsStandardInfo.setOpButton(OptionCodeKeys.PT_3000800);
-		
-		optionPantsStandardInfo.setOpBtnMateStkNo(null);
+		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+			
+		}else {
+			optionPantsStandardInfo.setOpButton(OptionCodeKeys.PT_3000800);
+			
+			optionPantsStandardInfo.setOpBtnMateStkNo(null);
+		}
+		//optionPantsStandardInfo.setOpButton(OptionCodeKeys.PT_3000800);		
+		//optionPantsStandardInfo.setOpBtnMateStkNo(null);
 		// サスペンダー釦
 		optionPantsStandardInfo.setOpSuspenderBtn(OptionCodeKeys.PT_0003501);
 		// シック大（股補強）
@@ -5651,9 +4283,12 @@ public class OrderCoHelper {
 		optionPantsTuxedoInfo.setTpByColorPlace(null);
 		optionPantsTuxedoInfo.setTpByAllColor(null);
 		// 釦素材
-		optionPantsTuxedoInfo.setTpButton(OptionCodeKeys.PT_3000800);
-		
-		optionPantsTuxedoInfo.setTpBtnMateStkNo(null);
+		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+			
+		}else {
+		    optionPantsTuxedoInfo.setTpButton(OptionCodeKeys.PT_3000800);
+		    optionPantsTuxedoInfo.setTpBtnMateStkNo(null);
+		}
 		// サスペンダー釦
 		optionPantsTuxedoInfo.setTpSuspenderBtn(OptionCodeKeys.PT_0003501);
 		// シック大（股補強）
@@ -5740,9 +4375,13 @@ public class OrderCoHelper {
 		optionPantsWashableInfo.setWpByColorPlace(null);
 		optionPantsWashableInfo.setWpByAllColor(null);
 		// 釦素材
-		optionPantsWashableInfo.setWpButton(OptionCodeKeys.PT_3000800);
+		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+			
+		}else {
+		    optionPantsWashableInfo.setWpButton(OptionCodeKeys.PT_3000800);
 		
-		optionPantsWashableInfo.setWpBtnMateStkNo(null);
+		    optionPantsWashableInfo.setWpBtnMateStkNo(null);
+		}
 		// サスペンダー釦
 		optionPantsWashableInfo.setWpSuspenderBtn(OptionCodeKeys.PT_0003501);
 		// シック大（股補強）
@@ -7981,7 +6620,7 @@ public class OrderCoHelper {
 	 * @return
 	 */
 	public List<String> deteleRepeatValue(String ojAmfColorPlace, String ojAmfColor, List<String> ojAmfColorsList) {
-		if (ojAmfColorPlace != null) {
+		if (ojAmfColorPlace != null && !"".equals(ojAmfColorPlace)) {
 			if (!ojAmfColorsList.contains(ojAmfColor)) {
 				ojAmfColorsList.add(ojAmfColor);
 			}
@@ -11536,13 +10175,18 @@ public class OrderCoHelper {
 	public String severalCodeInDb(List<String> inDbList) {
 		List<String> actualInDbList = new ArrayList<String>();
 		for(int i = 0;i<inDbList.size();i++) {
-			actualInDbList.add(inDbList.get(i));
+			if("".equals(inDbList.get(i))) {
+				actualInDbList.add(null);
+			}
+			else {
+				actualInDbList.add(inDbList.get(i));
+			}
 		}
 		actualInDbList.removeAll(Collections.singleton(null));
 		if(!actualInDbList.isEmpty()) {
 			StringBuffer stringbufferCodeValue = new StringBuffer();
 			for (String simpleCodeValue : actualInDbList) {
-				stringbufferCodeValue.append(",").append(simpleCodeValue);
+				stringbufferCodeValue.append("/").append(simpleCodeValue);
 			}
 			String stringCode = stringbufferCodeValue.toString();
 			String substrCode = null;
@@ -11565,18 +10209,23 @@ public class OrderCoHelper {
 	public String severalColorCodeInDb(List<String> inDbList,List<String> colorInDbList) {
 		List<String> actualInDbList = new ArrayList<String>();
 		for(int i = 0; i<inDbList.size(); i++) {
-			if(inDbList.get(i) == null) {
+			if(inDbList.get(i) == null || "".equals(inDbList.get(i))) {
 				colorInDbList.set(i, null);
 			}
 		}
 		for(int j = 0; j<colorInDbList.size(); j++) {
-			actualInDbList.add(colorInDbList.get(j));
+			if("".equals(colorInDbList.get(j))) {
+				actualInDbList.add(null);
+			}
+			else {
+				actualInDbList.add(colorInDbList.get(j));
+			}
 		}
 		actualInDbList.removeAll(Collections.singleton(null));
 		if(!actualInDbList.isEmpty()) {
 			StringBuffer stringbufferCodeValue = new StringBuffer();
 			for (String simpleCodeValue : actualInDbList) {
-				stringbufferCodeValue.append(",").append(simpleCodeValue);
+				stringbufferCodeValue.append("/").append(simpleCodeValue);
 			}
 			String stringCode = stringbufferCodeValue.toString();
 			String substrCode = null;
@@ -11599,14 +10248,19 @@ public class OrderCoHelper {
 	public String severalNameInDb(List<String> inDbList, Map<String, String> ojInsidePktPlaceMap) {
 		List<String> actualInDbList = new ArrayList<String>();
 		for(int i =0;i<inDbList.size();i++) {
-			actualInDbList.add(inDbList.get(i));
+			if("".equals(inDbList.get(i))) {
+				actualInDbList.add(null);
+			}
+			else {
+				actualInDbList.add(inDbList.get(i));
+			}
 		}
 		actualInDbList.removeAll(Collections.singleton(null));
 		if(!actualInDbList.isEmpty()) {
 			StringBuffer stringbufferNameValue = new StringBuffer();
 			for (String simpleNameValue : actualInDbList) {
 				String simpleName = ojInsidePktPlaceMap.get(simpleNameValue);
-				stringbufferNameValue.append(",").append(simpleName);
+				stringbufferNameValue.append("/").append(simpleName);
 			}
 			String stringName = stringbufferNameValue.toString();
 			String substrName = null;
@@ -11628,12 +10282,17 @@ public class OrderCoHelper {
 	 * @return
 	 */
 	public String severalColorNameInDb(List<String> inDbList,List<String> colorInDbList,Map<String, String> ojInsidePktPlaceMap) {
+		for(int i = 0;i<inDbList.size();i++) {
+			if("".equals(inDbList.get(i)) || inDbList.get(i) == null) {
+				colorInDbList.set(i,null);
+			}
+		}
 		colorInDbList.removeAll(Collections.singleton(null));
 		if(!colorInDbList.isEmpty()) {
 			StringBuffer stringbufferNameValue = new StringBuffer();
 			for (String simpleNameValue : colorInDbList) {
 				String simpleName = ojInsidePktPlaceMap.get(simpleNameValue);
-				stringbufferNameValue.append(",").append(simpleName);
+				stringbufferNameValue.append("/").append(simpleName);
 			}
 			String stringName = stringbufferNameValue.toString();
 			String substrName = null;
@@ -18501,6 +17160,9 @@ public class OrderCoHelper {
 			if (ogBackLiningMateStkNo != null && ogBackLiningMateStkNo.equals(optionBranchDetailCode)) {
 				standardGlMaterialMap.put("ogBackLiningMateStkNo", ogBackLiningMateName + "　　" + optionBranchDetailName);
 			}
+			else if(ogBackLiningMateStkNo == null || ogBackLiningMateStkNo.isEmpty()) {
+				standardGlMaterialMap.put("ogBackLiningMateStkNo", ogBackLiningMateName);
+			}
 			if (ogInsideLiningMateStkNo != null && ogInsideLiningMateStkNo.equals(optionBranchDetailCode)) {
 				standardGlMaterialMap.put("ogInsideLiningMateStkNo",
 						ogInsideLiningMateName + "　　" + optionBranchDetailName);
@@ -18665,12 +17327,18 @@ public class OrderCoHelper {
 			if (tgBackLiningMateStkNo != null && tgBackLiningMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoGlMaterialMap.put("tgBackLiningMateStkNo", tgBackLiningMateName + "　　" + optionBranchDetailName);
 			}
+			else if(tgBackLiningMateStkNo == null || tgBackLiningMateStkNo.isEmpty()){
+				tuxedoGlMaterialMap.put("tgBackLiningMateStkNo", tgBackLiningMateName);
+			}
 			if (tgInsideLiningMateStkNo != null && tgInsideLiningMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoGlMaterialMap.put("tgInsideLiningMateStkNo",
 						tgInsideLiningMateName + "　　" + optionBranchDetailName);
 			}
 			if (tgFrontBtnMateStkNo != null && tgFrontBtnMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoGlMaterialMap.put("tgFrontBtnMateStkNo", tgFrontBtnMateName + "　　" + optionBranchDetailName);
+			}
+			else if(tgFrontBtnMateStkNo == null || tgFrontBtnMateStkNo.isEmpty()) {
+				tuxedoGlMaterialMap.put("tgFrontBtnMateStkNo", tgFrontBtnMateName);
 			}
 		}
 		return tuxedoGlMaterialMap;
@@ -18782,6 +17450,7 @@ public class OrderCoHelper {
 		String wgInsideLiningMateName = orderCoForm.getCoOptionGiletWashableInfo().getWgInsideLiningMateMap()
 				.get(orderCoForm.getCoOptionGiletWashableInfo().getWgInsideLiningMate());
 		// GLフロント釦
+		String wgFrontBtnMateStkNo = orderCoForm.getCoOptionGiletWashableInfo().getWgFrontBtnMateStkNo();
 		String wgFrontBtnMateName = orderCoForm.getCoOptionGiletWashableInfo().getWgFrontBtnMateMap()
 				.get(orderCoForm.getCoOptionGiletWashableInfo().getWgFrontBtnMate());
 
@@ -18791,12 +17460,15 @@ public class OrderCoHelper {
 			if (wgBackLiningMateStkNo != null && wgBackLiningMateStkNo.equals(optionBranchDetailCode)) {
 				washableGlMaterialMap.put("wgBackLiningMateStkNo", wgBackLiningMateName + "　　" + optionBranchDetailName);
 			}
+			else if(wgBackLiningMateStkNo == null || wgBackLiningMateStkNo.isEmpty()){
+				washableGlMaterialMap.put("wgBackLiningMateStkNo", wgBackLiningMateName);
+			}
 			if (wgInsideLiningMateStkNo != null && wgInsideLiningMateStkNo.equals(optionBranchDetailCode)) {
 				washableGlMaterialMap.put("wgInsideLiningMateStkNo",
 						wgInsideLiningMateName + "　　" + optionBranchDetailName);
 			}
-			if (wgFrontBtnMateName != null ) {
-				washableGlMaterialMap.put("wgFrontBtnMateStkNo", wgFrontBtnMateName);
+			if (wgFrontBtnMateName != null && wgFrontBtnMateStkNo.equals(optionBranchDetailCode)) {
+				washableGlMaterialMap.put("wgFrontBtnMateStkNo", wgFrontBtnMateName + "　　" + optionBranchDetailName);
 			}
 		}
 		return washableGlMaterialMap;
@@ -20000,76 +18672,23 @@ public class OrderCoHelper {
 		}
 		
 		//商品情報_LCR縫製
-		String productLcrSewing = orderCoForm.getProductLcrSewing();
-		String productLcrSewingNm = orderCoForm.getCoProductInfo().getProductLcrSewingMap().get(productLcrSewing);
-		order.setProductLcrSewing(productLcrSewingNm);
+		if("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem) || "04".equals(productItem)) {
+			String productLcrSewing = orderCoForm.getProductLcrSewing();
+			String productLcrSewingNm = orderCoForm.getCoProductInfo().getProductLcrSewingMap().get(productLcrSewing);
+			order.setProductLcrSewing(productLcrSewingNm);
+		}
+		else {
+			order.setProductLcrSewingCd(null);
+			order.setProductLcrSewingRtPrice(null);
+			order.setProductLcrSewingWsWage(null);
+			order.setProductLcrSewingWsPrice(null);
+		}
 		
 		// 3Pieceまたはスペアパンツは有り
 		String productYes = "0009902";
 		
-		if("01".equals(productItem)) {
-			if(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkStoreCorrectionMemo() != null) {
-				//JK補正コメント
-				order.setCorJkStoreCorrectionMemo(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-			if(orderCoForm.getCoAdjustPantsStandardInfo().getCorPtStoreCorrectionMemo() != null) {
-				//Pt補正コメント
-				order.setCorPtStoreCorrectionMemo(orderCoForm.getCoAdjustPantsStandardInfo().getCorPtStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-			if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
-				if(orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2StoreCorrectionMemo() != null) {
-					//Pt2補正コメント
-					order.setCorPt2StoreCorrectionMemo(orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2StoreCorrectionMemo().replaceAll("\\n", ""));
-				}
-				if(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo() != null) {
-					//gl補正コメント
-					order.setCorGlStoreCorrectionMemo(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo().replaceAll("\\n", ""));
-				}
-			}
-			else if(!productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
-				if(orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2StoreCorrectionMemo() != null) {
-					//Pt2補正コメント
-					order.setCorPt2StoreCorrectionMemo(orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2StoreCorrectionMemo().replaceAll("\\n", ""));
-				}
-			}
-			else if(productYes.equals(productIs3Piece) && !productYes.equals(productSparePantsClass)) {
-				if(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo() != null) {
-					//gl補正コメント
-					order.setCorGlStoreCorrectionMemo(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo().replaceAll("\\n", ""));
-				}
-			}
-		}
-		else if("02".equals(productItem)) {
-			if(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkStoreCorrectionMemo() != null) {
-				//JK補正コメント
-				order.setCorJkStoreCorrectionMemo(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-		}
-		else if("03".equals(productItem)) {
-			if(orderCoForm.getCoAdjustPantsStandardInfo().getCorPtStoreCorrectionMemo() != null) {
-				//Pt補正コメント
-				order.setCorPtStoreCorrectionMemo(orderCoForm.getCoAdjustPantsStandardInfo().getCorPtStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-		}
-		else if("04".equals(productItem)) {
-			if(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo() != null) {
-				//gl補正コメント
-				order.setCorGlStoreCorrectionMemo(orderCoForm.getCoAdjustGiletStandardInfo().getCorGlStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-		}
-		else if("05".equals(productItem)) {
-			if(orderCoForm.getCorStoreCorrectionMemoAgain() != null) {
-				//st補正コメント
-				order.setCorStoreCorrectionMemo(orderCoForm.getCorStoreCorrectionMemoAgain().replaceAll("\\n", ""));
-				order.setCorStoreCorrectionMemoAgain(null);
-			}
-		}
-		else if("06".equals(productItem)) {
-			if(orderCoForm.getCoAdjustCoatStandardInfo().getCorCtStoreCorrectionMemo() != null) {
-				//ct補正コメント
-				order.setCorCtStoreCorrectionMemo(orderCoForm.getCoAdjustCoatStandardInfo().getCorCtStoreCorrectionMemo().replaceAll("\\n", ""));
-			}
-		}
+		//　店舗補正入力欄
+		order.setCorStoreCorrectionMemo(orderCoForm.getCorStoreCorrectionMemo().replaceAll("\\n", ""));
 		
 		//胸ポケット大きさ
 		String osBreastPk = orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPkMap().get(orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPk());
@@ -20095,13 +18714,13 @@ public class OrderCoHelper {
 		
 		// JACKET_肩パット
 		if("01".equals(productItem) || "02".equals(productItem)) {
-			String corJkShoulderpadNm = orderCoForm.getCoOptionJacketStandardInfo().getCorJkShoulderPadMap().get(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkShoulderPad());
+			String corJkShoulderpadNm = orderCoForm.getCoOptionJacketStandardInfo().getCorJkShoulderPadMap().get(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkShoulderPadCd());
 			order.setCorJkShoulderpad(corJkShoulderpadNm);
 		}
 		
 		// JACKET_体型補正
 		if("01".equals(productItem) || "02".equals(productItem)) {
-			String corJkFigureCorrectNm = orderCoForm.getCoOptionJacketStandardInfo().getCorJkFigureCorrectMap().get(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkFigureCorrect()); 
+			String corJkFigureCorrectNm = orderCoForm.getCoOptionJacketStandardInfo().getCorJkFigureCorrectMap().get(orderCoForm.getCoAdjustJacketStandardInfo().getCorJkFigureCorrectCd()); 
 			order.setCorJkFigureCorrect(corJkFigureCorrectNm);
 		}
 		
@@ -20306,6 +18925,47 @@ public class OrderCoHelper {
 		else {
 			order.setProductIs3pieceRtPrice(0);
 			order.setProductSparePantsRtPrice(0);
+		}
+		
+		// 腰ポケットは無しの場合
+		String ogWaistPkt = orderCoForm.getCoOptionGiletStandardInfo().getOgWaistPkt();
+		String tgWaistPkt = orderCoForm.getCoOptionGiletTuxedoInfo().getTgWaistPkt();
+		String wgWaistPkt = orderCoForm.getCoOptionGiletWashableInfo().getWgWaistPkt();
+		//標準
+		if("9000101".equals(productCategory)) {
+			if("0000202".equals(ogWaistPkt)) {
+				order.setGlWaistPktShapeCd(null);
+				order.setGlWaistPktShapeNm(null);
+				order.setGlWaistPktShapeRtPrice(null);
+				order.setGlWaistPktShapeWsWage(null);
+				order.setGlWaistPktShapeWsPrice(null);
+			}
+		}
+		//タキシード
+		else if("9000102".equals(productCategory)) {
+			if("0000202".equals(tgWaistPkt)) {
+				order.setGlWaistPktShapeCd(null);
+				order.setGlWaistPktShapeNm(null);
+				order.setGlWaistPktShapeRtPrice(null);
+				order.setGlWaistPktShapeWsWage(null);
+				order.setGlWaistPktShapeWsPrice(null);
+				
+				order.setGlWaistPktClothCd(null);
+				order.setGlWaistPktClothNm(null);
+				order.setGlWaistPktClothRtPrice(null);
+				order.setGlWaistPktClothWsWage(null);
+				order.setGlWaistPktClothWsPrice(null);
+			}
+		}
+		//ウォッシャブル
+		else if("9000103".equals(productCategory)) {
+			if("0000202".equals(wgWaistPkt)) {
+				order.setGlWaistPktShapeCd(null);
+				order.setGlWaistPktShapeNm(null);
+				order.setGlWaistPktShapeRtPrice(null);
+				order.setGlWaistPktShapeWsWage(null);
+				order.setGlWaistPktShapeWsPrice(null);
+			}
 		}
 	}
 
@@ -21426,6 +20086,10 @@ public class OrderCoHelper {
 	}
 
 	public void orderMappingLogOn(OrderCoForm orderCoForm, Order order, SessionContent sessionContent) {
+		String productItem = orderCoForm.getProductItem();
+		String productCategory = orderCoForm.getProductCategory();
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
 		// 業態
 		order.setStoreBrandCode(sessionContent.getStoreBrandCode());
 
@@ -21464,17 +20128,47 @@ public class OrderCoHelper {
 		// 注文承り日
 		order.setProductOrderdDate(new Date());
 
+		// 残布
+		order.setProductRemainingClothType(orderCoForm.getProductRemainingClothType());
+
 		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderCoForm.getProductEmbroideryNecessity();
-		if ("0".equals(productEmbroideryNecessity)) {
+		if ("9000501".equals(productEmbroideryNecessity)) {
+			order.setProductEmbroideryNecessityNm(
+					orderCoForm.getCoProductInfo().getProductEmbroideryNecessityMap().get(productEmbroideryNecessity));
 			order.setProductEmbroideryNm(null);
-			order.setProductEmbroideryFont(null);
+			order.setProductEmbroideryFontCd(null);
 			order.setProductEmbroideryThreadColor(null);
+		} else if ("9000502".equals(productEmbroideryNecessity)) {
+			order.setProductEmbroideryNecessityNm(
+					orderCoForm.getCoProductInfo().getProductEmbroideryNecessityMap().get(productEmbroideryNecessity));
+			order.setProductEmbroideryFont(orderCoForm.getCoProductInfo().getProductEmbroideryFontMap()
+					.get(orderCoForm.getProductEmbroideryFont()));
+			if ("01".equals(productItem) || "02".equals(productItem) || "06".equals(productItem)) {
+				order.setProductEmbroideryThreadColorCd(orderCoForm.getJkProductEmbroideryThreadColor());
+				order.setProductEmbroideryThreadColor(orderCoForm.getCoOptionJacketStandardInfo()
+						.getJkProductEmbroideryThreadColorMap().get(orderCoForm.getJkProductEmbroideryThreadColor()));
+			} else if ("05".equals(productItem)) {
+				order.setProductEmbroideryThreadColorCd(orderCoForm.getStProductEmbroideryThreadColor());
+				order.setProductEmbroideryThreadColor(orderCoForm.getCoOptionShirtStandardInfo()
+						.getStProductEmbroideryThreadColorMap().get(orderCoForm.getStProductEmbroideryThreadColor()));
+			}
 		}
 
+		String opHemUp = null;
+		String op2HemUp = null;
+		if ("9000101".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2StandardInfo().getOp2HemUp();
+		} else if ("9000102".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsTuxedoInfo().getTpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2HemUp();
+		} else if ("9000103".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsWashableInfo().getWpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2WashableInfo().getWp2HemUp();
+		}
 		// PANTS_ダブル幅についての項目はnull値の判定
-		String opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
-		if ("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
+		if (!"0001702".equals(opHemUp) && !"0001703".equals(opHemUp)) {
 			order.setPtDblWidthCd(null);
 			order.setPtDblWidthNm(null);
 			order.setPtDblWidthRtPrice(null);
@@ -21483,14 +20177,266 @@ public class OrderCoHelper {
 		}
 
 		// PANTS2_ダブル幅についての項目はnull値の判定
-		String op2HemUp = orderCoForm.getCoOptionPants2StandardInfo().getOp2HemUp();
-		if ("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
+		if (!"0001702".equals(op2HemUp) && !"0001703".equals(op2HemUp)) {
 			order.setPt2DblWidthCd(null);
 			order.setPt2DblWidthNm(null);
 			order.setPt2DblWidthRtPrice(null);
 			order.setPt2DblWidthWsWage(null);
 			order.setPt2DblWidthWsPrice(null);
 		}
+
+		if ("01".equals(productItem) || "02".equals(productItem)) {
+			// JACKET_モデル_上代
+			String jkRtModelPrice = orderCoForm.getJkDoubleModelPrice();
+			if(BaseCheckUtil.isEmpty(jkRtModelPrice)) {
+				order.setJkModelRtPrice(0);
+			}else {
+				Integer jkRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(jkRtModelPrice));
+				order.setJkModelRtPrice(jkRtModelPriceParseInt);
+			}
+			
+		}
+		if (("01".equals(productItem) && "0009902".equals(productIs3Piece)) || "04".equals(productItem)) {
+			// GILET_モデル_上代
+			String glRtModelPrice = orderCoForm.getGlDoubleModelPrice();
+			if(BaseCheckUtil.isEmpty(glRtModelPrice)) {
+				order.setGlModelRtPrice(0);
+			}else {
+				Integer glRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(glRtModelPrice));
+				order.setGlModelRtPrice(glRtModelPriceParseInt);
+			}
+		}
+		if ("06".equals(productItem)) {
+			// COAT_モデル_上代
+			String ctRtModelPrice = orderCoForm.getCtDoubleModelPrice();
+			if(BaseCheckUtil.isEmpty(ctRtModelPrice)) {
+				order.setCtModelRtPrice(0);
+			}else {
+				Integer ctRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(ctRtModelPrice));
+				order.setCtModelRtPrice(ctRtModelPriceParseInt);
+			}
+		}
+
+		// 商品情報_ガゼット刺繍
+		if (!"05".equals(productItem) || ("05".equals(productItem) && "9000501".equals(productEmbroideryNecessity))) {
+			order.setProductEmbroideryGazetteCd(null);
+			// 商品情報_刺繍箇所_コード
+			order.setProductEmbroideryNmPos(null);
+			// 商品情報_ガゼット刺繍_上代
+			order.setProductEmbroideryGazetteRtPrice(null);
+			// 商品情報_刺繍箇所_上代
+			order.setProductEmbroideryNmPosRtPrice(null);
+		} else if ("05".equals(productItem) && "9000502".equals(productEmbroideryNecessity)) {
+			String productEmbroideryGazetteName = orderCoForm.getCoOptionShirtStandardInfo()
+					.getProductEmbroideryGazetteMap().get(orderCoForm.getProductEmbroideryGazette());
+			order.setProductEmbroideryGazette(productEmbroideryGazetteName);
+
+			// 商品情報_刺繍箇所_コード
+			order.setProductEmbroideryNmPosCd(orderCoForm.getProductEmbroideryNmPos());
+			// 商品情報_刺繍箇所
+			String productEmbroideryNmPos = orderCoForm.getCoOptionShirtStandardInfo().getProductEmbroideryNmPosMap()
+					.get(orderCoForm.getProductEmbroideryNmPos());
+			order.setProductEmbroideryNmPos(productEmbroideryNmPos);
+		}
+
+		// 商品情報_LCR縫製
+		if ("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem)
+				|| "04".equals(productItem)) {
+		} else {
+			order.setProductLcrSewingCd(null);
+			order.setProductLcrSewingRtPrice(null);
+			order.setProductLcrSewingWsWage(null);
+			order.setProductLcrSewingWsPrice(null);
+		}
+
+		if (!"05".equals(productItem)) {
+			// 商品情報_刺繍サイズ（縦）
+			order.setProductEmbroideryLength(null);
+			// 商品情報_刺繍サイズ（横）
+			order.setProductEmbroideryWidth(null);
+		}
+
+		// SHIRTS_着丈_補正値
+		String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
+		if ("05".equals(productItem) && "0002002".equals(osCasHemLine)) {
+			order.setCorStBodylengthCorrect(new BigDecimal(0));
+		}
+
+		// SHIRT_ボタン位置変更_コード
+		String osBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getOsBtnPosChg();
+		if ("05".equals(productItem) && "0002101".equals(osBtnPosChg)) {
+			// SHIRT_台襟釦_補正値
+			order.setStNeckbandBtnPosChg(null);
+			// SHIRT_フロント第1釦_補正値
+			order.setStFrtfirstBtnPosChg(null);
+			// SHIRT_フロント第2釦_変更値
+			order.setStFrtsecondBtnPosChg(null);
+		}
+
+		// 1PANTS_膝裏_コード
+		String ptKneeinnerTypeCd = order.getPtKneeinnerTypeCd();
+		// 2PANTS_膝裏_コード
+		String pt2KneeinnerTypeCd = order.getPt2KneeinnerTypeCd();
+
+		if ("01".equals(productItem)) {
+			if ("0000202".equals(ptKneeinnerTypeCd)) {
+				order.setPtKneeinnerClothCd(null);
+				order.setPtKneeinnerClothNm(null);
+				order.setPtKneeinnerClothRtPrice(null);
+				order.setPtKneeinnerClothWsWage(null);
+				order.setPtKneeinnerClothWsPrice(null);
+			}
+
+			if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+				if ("0000202".equals(pt2KneeinnerTypeCd)) {
+					order.setPt2KneeinnerClothCd(null);
+					order.setPt2KneeinnerClothNm(null);
+					order.setPt2KneeinnerClothRtPrice(null);
+					order.setPt2KneeinnerClothWsWage(null);
+					order.setPt2KneeinnerClothWsPrice(null);
+				}
+			}
+		} else if ("03".equals(productItem)) {
+			if ("0000202".equals(ptKneeinnerTypeCd)) {
+				order.setPtKneeinnerClothCd(null);
+				order.setPtKneeinnerClothNm(null);
+				order.setPtKneeinnerClothRtPrice(null);
+				order.setPtKneeinnerClothWsWage(null);
+				order.setPtKneeinnerClothWsPrice(null);
+			}
+		}
+
+		if ("01".equals(productItem)) {
+			// PANTS_靴ずれ _コード
+			order.setPtShoeSoreCd("1");
+			if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+				// 2PANTS_靴ずれ _コード
+				order.setPt2ShoeSoreCd("1");
+			}
+		} else if ("03".equals(productItem)) {
+			// PANTS_靴ずれ _コード
+			order.setPtShoeSoreCd("1");
+		}
+
+		// 標準
+		if ("9000101".equals(productCategory)) {
+			// 標準JACKETステッチ種類
+			String ojStitch = orderCoForm.getCoOptionJacketStandardInfo().getOjStitch();
+			// 標準PANTSステッチ種類
+			String opStitch = orderCoForm.getCoOptionPantsStandardInfo().getOpStitch();
+			// 標準GILETステッチ種類
+			String ogStitch = orderCoForm.getCoOptionGiletStandardInfo().getOgStitch();
+			// 標準2PANTSステッチ種類
+			String op2Stitch = orderCoForm.getCoOptionPants2StandardInfo().getOp2Stitch();
+
+			if ("01".equals(productItem)) {
+				if ("0002302".equals(ojStitch)) {
+					order.setJkStitchPlcRtPrice(null);
+					order.setJkStitchPlcWsWage(null);
+					order.setJkStitchPlcWsPrice(null);
+					order.setJkDblstitchPlcRtPrice(null);
+					order.setJkDblstitchPlcWsWage(null);
+					order.setJkDblstitchPlcWsPrice(null);
+					order.setJkAmfColorRtPrice(null);
+					order.setJkAmfColorWsWage(null);
+					order.setJkAmfColorWsPrice(null);
+				}
+				if ("0001903".equals(opStitch)) {
+					order.setPtStitchPlcRtPrice(null);
+					order.setPtStitchPlcWsWage(null);
+					order.setPtStitchPlcWsPrice(null);
+					order.setPtDblstitchPlcRtPrice(null);
+					order.setPtDblstitchPlcWsWage(null);
+					order.setPtDblstitchPlcWsPrice(null);
+					order.setPtAmfColorRtPrice(null);
+					order.setPtAmfColorWsWage(null);
+					order.setPtAmfColorWsPrice(null);
+				}
+				if (OptionCodeKeys.TWO_PANTS.equals(productIs3Piece)) {
+					if ("0000503".equals(ogStitch)) {
+						order.setGlStitchPlcRtPrice(null);
+						order.setGlStitchPlcWsWage(null);
+						order.setGlStitchPlcWsPrice(null);
+						order.setGlDblstitchPlcRtPrice(null);
+						order.setGlDblstitchPlcWsWage(null);
+						order.setGlDblstitchPlcWsPrice(null);
+						order.setGlAmfColorRtPrice(null);
+						order.setGlAmfColorWsWage(null);
+						order.setGlAmfColorWsPrice(null);
+					}
+				}
+				if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+					if ("0001903".equals(op2Stitch)) {
+						order.setPt2StitchPlcRtPrice(null);
+						order.setPt2StitchPlcWsWage(null);
+						order.setPt2StitchPlcWsPrice(null);
+						order.setPt2DblstitchPlcRtPrice(null);
+						order.setPt2DblstitchPlcWsWage(null);
+						order.setPt2DblstitchPlcWsPrice(null);
+						order.setPt2AmfColorRtPrice(null);
+						order.setPt2AmfColorWsWage(null);
+						order.setPt2AmfColorWsPrice(null);
+					}
+				}
+			} else if ("02".equals(productItem)) {
+				if ("0002302".equals(ojStitch)) {
+					order.setJkStitchPlcRtPrice(null);
+					order.setJkStitchPlcWsWage(null);
+					order.setJkStitchPlcWsPrice(null);
+					order.setJkDblstitchPlcRtPrice(null);
+					order.setJkDblstitchPlcWsWage(null);
+					order.setJkDblstitchPlcWsPrice(null);
+					order.setJkAmfColorRtPrice(null);
+					order.setJkAmfColorWsWage(null);
+					order.setJkAmfColorWsPrice(null);
+				}
+			} else if ("03".equals(productItem)) {
+				if ("0001903".equals(opStitch)) {
+					order.setPtStitchPlcRtPrice(null);
+					order.setPtStitchPlcWsWage(null);
+					order.setPtStitchPlcWsPrice(null);
+					order.setPtDblstitchPlcRtPrice(null);
+					order.setPtDblstitchPlcWsWage(null);
+					order.setPtDblstitchPlcWsPrice(null);
+					order.setPtAmfColorRtPrice(null);
+					order.setPtAmfColorWsWage(null);
+					order.setPtAmfColorWsPrice(null);
+				}
+			} else if ("04".equals(productItem)) {
+				if ("0000503".equals(ogStitch)) {
+					order.setGlStitchPlcRtPrice(null);
+					order.setGlStitchPlcWsWage(null);
+					order.setGlStitchPlcWsPrice(null);
+					order.setGlDblstitchPlcRtPrice(null);
+					order.setGlDblstitchPlcWsWage(null);
+					order.setGlDblstitchPlcWsPrice(null);
+					order.setGlAmfColorRtPrice(null);
+					order.setGlAmfColorWsWage(null);
+					order.setGlAmfColorWsPrice(null);
+				}
+			}
+		}
+
+		if ("01".equals(productItem)) {
+			String is3PiecePrice = orderCoForm.getIs3PiecePrice();
+			String is2PantsPrice = orderCoForm.getIs2PantsPrice();
+			if (BaseCheckUtil.isNotEmpty(is3PiecePrice)) {
+				order.setProductIs3pieceRtPrice(Integer.valueOf(is3PiecePrice));
+			} else {
+				order.setProductIs3pieceRtPrice(0);
+			}
+
+			if (BaseCheckUtil.isNotEmpty(is2PantsPrice)) {
+				order.setProductSparePantsRtPrice(Integer.valueOf(is2PantsPrice));
+			} else {
+				order.setProductSparePantsRtPrice(0);
+			}
+
+		} else {
+			order.setProductIs3pieceRtPrice(0);
+			order.setProductSparePantsRtPrice(0);
+		}
+
 	}
 
 	public void orderMappingLogOn(OrderCoForm orderCoForm, Order order, SessionContent sessionContent,
@@ -21569,6 +20515,11 @@ public class OrderCoHelper {
 			order.setVersion((short) 0);
 		}
 
+		String productItem = orderCoForm.getProductItem();
+		String productCategory = orderCoForm.getProductCategory();
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+
 		// お客様氏名
 		order.setCustNm(null);
 
@@ -21581,17 +20532,47 @@ public class OrderCoHelper {
 		// 注文承り日
 		order.setProductOrderdDate(new Date());
 
+		// 残布
+		order.setProductRemainingClothType(orderCoForm.getProductRemainingClothType());
+
 		// 商品情報_刺繍ネーム、商品情報_刺繍書体、商品情報_刺繍糸色はnull値の判定
 		String productEmbroideryNecessity = orderCoForm.getProductEmbroideryNecessity();
-		if ("0".equals(productEmbroideryNecessity)) {
+		if ("9000501".equals(productEmbroideryNecessity)) {
+			order.setProductEmbroideryNecessityNm(
+					orderCoForm.getCoProductInfo().getProductEmbroideryNecessityMap().get(productEmbroideryNecessity));
 			order.setProductEmbroideryNm(null);
-			order.setProductEmbroideryFont(null);
+			order.setProductEmbroideryFontCd(null);
 			order.setProductEmbroideryThreadColor(null);
+		} else if ("9000502".equals(productEmbroideryNecessity)) {
+			order.setProductEmbroideryNecessityNm(
+					orderCoForm.getCoProductInfo().getProductEmbroideryNecessityMap().get(productEmbroideryNecessity));
+			order.setProductEmbroideryFont(orderCoForm.getCoProductInfo().getProductEmbroideryFontMap()
+					.get(orderCoForm.getProductEmbroideryFont()));
+			if ("01".equals(productItem) || "02".equals(productItem) || "06".equals(productItem)) {
+				order.setProductEmbroideryThreadColorCd(orderCoForm.getJkProductEmbroideryThreadColor());
+				order.setProductEmbroideryThreadColor(orderCoForm.getCoOptionJacketStandardInfo()
+						.getJkProductEmbroideryThreadColorMap().get(orderCoForm.getJkProductEmbroideryThreadColor()));
+			} else if ("05".equals(productItem)) {
+				order.setProductEmbroideryThreadColorCd(orderCoForm.getStProductEmbroideryThreadColor());
+				order.setProductEmbroideryThreadColor(orderCoForm.getCoOptionShirtStandardInfo()
+						.getStProductEmbroideryThreadColorMap().get(orderCoForm.getStProductEmbroideryThreadColor()));
+			}
 		}
 
+		String opHemUp = null;
+		String op2HemUp = null;
+		if ("9000101".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2StandardInfo().getOp2HemUp();
+		} else if ("9000102".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsTuxedoInfo().getTpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2HemUp();
+		} else if ("9000103".equals(productCategory)) {
+			opHemUp = orderCoForm.getCoOptionPantsWashableInfo().getWpHemUp();
+			op2HemUp = orderCoForm.getCoOptionPants2WashableInfo().getWp2HemUp();
+		}
 		// PANTS_ダブル幅についての項目はnull値の判定
-		String opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
-		if ("0001701".equals(opHemUp) || "0001704".equals(opHemUp)) {
+		if (!"0001702".equals(opHemUp) && !"0001703".equals(opHemUp)) {
 			order.setPtDblWidthCd(null);
 			order.setPtDblWidthNm(null);
 			order.setPtDblWidthRtPrice(null);
@@ -21600,14 +20581,266 @@ public class OrderCoHelper {
 		}
 
 		// PANTS2_ダブル幅についての項目はnull値の判定
-		String op2HemUp = orderCoForm.getCoOptionPants2StandardInfo().getOp2HemUp();
-		if ("0001701".equals(op2HemUp) || "0001704".equals(op2HemUp)) {
+		if (!"0001702".equals(op2HemUp) && !"0001703".equals(op2HemUp)) {
 			order.setPt2DblWidthCd(null);
 			order.setPt2DblWidthNm(null);
 			order.setPt2DblWidthRtPrice(null);
 			order.setPt2DblWidthWsWage(null);
 			order.setPt2DblWidthWsPrice(null);
 		}
+
+		if ("01".equals(productItem) || "02".equals(productItem)) {
+			// JACKET_モデル_上代
+			String jkRtModelPrice = orderCoForm.getJkDoubleModelPrice();
+			if (BaseCheckUtil.isEmpty(jkRtModelPrice)) {
+				order.setJkModelRtPrice(0);
+			} else {
+				Integer jkRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(jkRtModelPrice));
+				order.setJkModelRtPrice(jkRtModelPriceParseInt);
+			}
+
+		}
+		if (("01".equals(productItem) && "0009902".equals(productIs3Piece)) || "04".equals(productItem)) {
+			// GILET_モデル_上代
+			String glRtModelPrice = orderCoForm.getGlDoubleModelPrice();
+			if (BaseCheckUtil.isEmpty(glRtModelPrice)) {
+				order.setGlModelRtPrice(0);
+			} else {
+				Integer glRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(glRtModelPrice));
+				order.setGlModelRtPrice(glRtModelPriceParseInt);
+			}
+		}
+		if ("06".equals(productItem)) {
+			// COAT_モデル_上代
+			String ctRtModelPrice = orderCoForm.getCtDoubleModelPrice();
+			if (BaseCheckUtil.isEmpty(ctRtModelPrice)) {
+				order.setCtModelRtPrice(0);
+			} else {
+				Integer ctRtModelPriceParseInt = Integer.parseInt(subStrPriceMethod(ctRtModelPrice));
+				order.setCtModelRtPrice(ctRtModelPriceParseInt);
+			}
+		}
+
+		// 商品情報_ガゼット刺繍
+		if (!"05".equals(productItem) || ("05".equals(productItem) && "9000501".equals(productEmbroideryNecessity))) {
+			order.setProductEmbroideryGazetteCd(null);
+			// 商品情報_刺繍箇所_コード
+			order.setProductEmbroideryNmPos(null);
+			// 商品情報_ガゼット刺繍_上代
+			order.setProductEmbroideryGazetteRtPrice(null);
+			// 商品情報_刺繍箇所_上代
+			order.setProductEmbroideryNmPosRtPrice(null);
+		} else if ("05".equals(productItem) && "9000502".equals(productEmbroideryNecessity)) {
+			String productEmbroideryGazetteName = orderCoForm.getCoOptionShirtStandardInfo()
+					.getProductEmbroideryGazetteMap().get(orderCoForm.getProductEmbroideryGazette());
+			order.setProductEmbroideryGazette(productEmbroideryGazetteName);
+
+			// 商品情報_刺繍箇所_コード
+			order.setProductEmbroideryNmPosCd(orderCoForm.getProductEmbroideryNmPos());
+			// 商品情報_刺繍箇所
+			String productEmbroideryNmPos = orderCoForm.getCoOptionShirtStandardInfo().getProductEmbroideryNmPosMap()
+					.get(orderCoForm.getProductEmbroideryNmPos());
+			order.setProductEmbroideryNmPos(productEmbroideryNmPos);
+		}
+
+		// 商品情報_LCR縫製
+		if ("01".equals(productItem) || "02".equals(productItem) || "03".equals(productItem)
+				|| "04".equals(productItem)) {
+		} else {
+			order.setProductLcrSewingCd(null);
+			order.setProductLcrSewingRtPrice(null);
+			order.setProductLcrSewingWsWage(null);
+			order.setProductLcrSewingWsPrice(null);
+		}
+
+		if (!"05".equals(productItem)) {
+			// 商品情報_刺繍サイズ（縦）
+			order.setProductEmbroideryLength(null);
+			// 商品情報_刺繍サイズ（横）
+			order.setProductEmbroideryWidth(null);
+		}
+
+		// SHIRTS_着丈_補正値
+		String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
+		if ("05".equals(productItem) && "0002002".equals(osCasHemLine)) {
+			order.setCorStBodylengthCorrect(new BigDecimal(0));
+		}
+
+		// SHIRT_ボタン位置変更_コード
+		String osBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getOsBtnPosChg();
+		if ("05".equals(productItem) && "0002101".equals(osBtnPosChg)) {
+			// SHIRT_台襟釦_補正値
+			order.setStNeckbandBtnPosChg(null);
+			// SHIRT_フロント第1釦_補正値
+			order.setStFrtfirstBtnPosChg(null);
+			// SHIRT_フロント第2釦_変更値
+			order.setStFrtsecondBtnPosChg(null);
+		}
+
+		// 1PANTS_膝裏_コード
+		String ptKneeinnerTypeCd = order.getPtKneeinnerTypeCd();
+		// 2PANTS_膝裏_コード
+		String pt2KneeinnerTypeCd = order.getPt2KneeinnerTypeCd();
+
+		if ("01".equals(productItem)) {
+			if ("0000202".equals(ptKneeinnerTypeCd)) {
+				order.setPtKneeinnerClothCd(null);
+				order.setPtKneeinnerClothNm(null);
+				order.setPtKneeinnerClothRtPrice(null);
+				order.setPtKneeinnerClothWsWage(null);
+				order.setPtKneeinnerClothWsPrice(null);
+			}
+
+			if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+				if ("0000202".equals(pt2KneeinnerTypeCd)) {
+					order.setPt2KneeinnerClothCd(null);
+					order.setPt2KneeinnerClothNm(null);
+					order.setPt2KneeinnerClothRtPrice(null);
+					order.setPt2KneeinnerClothWsWage(null);
+					order.setPt2KneeinnerClothWsPrice(null);
+				}
+			}
+		} else if ("03".equals(productItem)) {
+			if ("0000202".equals(ptKneeinnerTypeCd)) {
+				order.setPtKneeinnerClothCd(null);
+				order.setPtKneeinnerClothNm(null);
+				order.setPtKneeinnerClothRtPrice(null);
+				order.setPtKneeinnerClothWsWage(null);
+				order.setPtKneeinnerClothWsPrice(null);
+			}
+		}
+
+		if ("01".equals(productItem)) {
+			// PANTS_靴ずれ _コード
+			order.setPtShoeSoreCd("1");
+			if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+				// 2PANTS_靴ずれ _コード
+				order.setPt2ShoeSoreCd("1");
+			}
+		} else if ("03".equals(productItem)) {
+			// PANTS_靴ずれ _コード
+			order.setPtShoeSoreCd("1");
+		}
+
+		// 標準
+		if ("9000101".equals(productCategory)) {
+			// 標準JACKETステッチ種類
+			String ojStitch = orderCoForm.getCoOptionJacketStandardInfo().getOjStitch();
+			// 標準PANTSステッチ種類
+			String opStitch = orderCoForm.getCoOptionPantsStandardInfo().getOpStitch();
+			// 標準GILETステッチ種類
+			String ogStitch = orderCoForm.getCoOptionGiletStandardInfo().getOgStitch();
+			// 標準2PANTSステッチ種類
+			String op2Stitch = orderCoForm.getCoOptionPants2StandardInfo().getOp2Stitch();
+
+			if ("01".equals(productItem)) {
+				if ("0002302".equals(ojStitch)) {
+					order.setJkStitchPlcRtPrice(null);
+					order.setJkStitchPlcWsWage(null);
+					order.setJkStitchPlcWsPrice(null);
+					order.setJkDblstitchPlcRtPrice(null);
+					order.setJkDblstitchPlcWsWage(null);
+					order.setJkDblstitchPlcWsPrice(null);
+					order.setJkAmfColorRtPrice(null);
+					order.setJkAmfColorWsWage(null);
+					order.setJkAmfColorWsPrice(null);
+				}
+				if ("0001903".equals(opStitch)) {
+					order.setPtStitchPlcRtPrice(null);
+					order.setPtStitchPlcWsWage(null);
+					order.setPtStitchPlcWsPrice(null);
+					order.setPtDblstitchPlcRtPrice(null);
+					order.setPtDblstitchPlcWsWage(null);
+					order.setPtDblstitchPlcWsPrice(null);
+					order.setPtAmfColorRtPrice(null);
+					order.setPtAmfColorWsWage(null);
+					order.setPtAmfColorWsPrice(null);
+				}
+				if (OptionCodeKeys.TWO_PANTS.equals(productIs3Piece)) {
+					if ("0000503".equals(ogStitch)) {
+						order.setGlStitchPlcRtPrice(null);
+						order.setGlStitchPlcWsWage(null);
+						order.setGlStitchPlcWsPrice(null);
+						order.setGlDblstitchPlcRtPrice(null);
+						order.setGlDblstitchPlcWsWage(null);
+						order.setGlDblstitchPlcWsPrice(null);
+						order.setGlAmfColorRtPrice(null);
+						order.setGlAmfColorWsWage(null);
+						order.setGlAmfColorWsPrice(null);
+					}
+				}
+				if (OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+					if ("0001903".equals(op2Stitch)) {
+						order.setPt2StitchPlcRtPrice(null);
+						order.setPt2StitchPlcWsWage(null);
+						order.setPt2StitchPlcWsPrice(null);
+						order.setPt2DblstitchPlcRtPrice(null);
+						order.setPt2DblstitchPlcWsWage(null);
+						order.setPt2DblstitchPlcWsPrice(null);
+						order.setPt2AmfColorRtPrice(null);
+						order.setPt2AmfColorWsWage(null);
+						order.setPt2AmfColorWsPrice(null);
+					}
+				}
+			} else if ("02".equals(productItem)) {
+				if ("0002302".equals(ojStitch)) {
+					order.setJkStitchPlcRtPrice(null);
+					order.setJkStitchPlcWsWage(null);
+					order.setJkStitchPlcWsPrice(null);
+					order.setJkDblstitchPlcRtPrice(null);
+					order.setJkDblstitchPlcWsWage(null);
+					order.setJkDblstitchPlcWsPrice(null);
+					order.setJkAmfColorRtPrice(null);
+					order.setJkAmfColorWsWage(null);
+					order.setJkAmfColorWsPrice(null);
+				}
+			} else if ("03".equals(productItem)) {
+				if ("0001903".equals(opStitch)) {
+					order.setPtStitchPlcRtPrice(null);
+					order.setPtStitchPlcWsWage(null);
+					order.setPtStitchPlcWsPrice(null);
+					order.setPtDblstitchPlcRtPrice(null);
+					order.setPtDblstitchPlcWsWage(null);
+					order.setPtDblstitchPlcWsPrice(null);
+					order.setPtAmfColorRtPrice(null);
+					order.setPtAmfColorWsWage(null);
+					order.setPtAmfColorWsPrice(null);
+				}
+			} else if ("04".equals(productItem)) {
+				if ("0000503".equals(ogStitch)) {
+					order.setGlStitchPlcRtPrice(null);
+					order.setGlStitchPlcWsWage(null);
+					order.setGlStitchPlcWsPrice(null);
+					order.setGlDblstitchPlcRtPrice(null);
+					order.setGlDblstitchPlcWsWage(null);
+					order.setGlDblstitchPlcWsPrice(null);
+					order.setGlAmfColorRtPrice(null);
+					order.setGlAmfColorWsWage(null);
+					order.setGlAmfColorWsPrice(null);
+				}
+			}
+		}
+
+		if ("01".equals(productItem)) {
+			String is3PiecePrice = orderCoForm.getIs3PiecePrice();
+			String is2PantsPrice = orderCoForm.getIs2PantsPrice();
+			if (BaseCheckUtil.isNotEmpty(is3PiecePrice)) {
+				order.setProductIs3pieceRtPrice(Integer.valueOf(is3PiecePrice));
+			} else {
+				order.setProductIs3pieceRtPrice(0);
+			}
+
+			if (BaseCheckUtil.isNotEmpty(is2PantsPrice)) {
+				order.setProductSparePantsRtPrice(Integer.valueOf(is2PantsPrice));
+			} else {
+				order.setProductSparePantsRtPrice(0);
+			}
+
+		} else {
+			order.setProductIs3pieceRtPrice(0);
+			order.setProductSparePantsRtPrice(0);
+		}
+
 	}
 
 	public void setGoodsPrice(OrderFindFabric orderFindFabric, OrderCoForm orderCoForm) {
@@ -21826,6 +21059,8 @@ public class OrderCoHelper {
 		
 		optionPants2StandardInfo.setOp2BeltLoopPlace6(OptionCodeKeys.PT2_0000806);
 		
+		optionPants2StandardInfo.setOp2BeltLoopPlace7(null);
+		
 		optionPants2StandardInfo.setOp2BeltLoopPlace(null);
 		// ピンループ
 		optionPants2StandardInfo.setOp2PinLoop(OptionCodeKeys.PT2_0000901);
@@ -21852,20 +21087,40 @@ public class OrderCoHelper {
 		// ステッチ箇所変更
 		optionPants2StandardInfo.setOp2StitchModify(OptionCodeKeys.PT2_0002001);
 		optionPants2StandardInfo.setOp2StitchModifyPlace(null);
+		optionPants2StandardInfo.setOp2StitchModifyPlace1(null);
+		optionPants2StandardInfo.setOp2StitchModifyPlace2(null);
+		optionPants2StandardInfo.setOp2StitchModifyPlace3(null);
+		optionPants2StandardInfo.setOp2StitchModifyPlace4(null);
 		// ダブルステッチ
 		optionPants2StandardInfo.setOp2DStitch(OptionCodeKeys.PT2_0002201);
 		optionPants2StandardInfo.setOp2DStitchPlace(null);
+		optionPants2StandardInfo.setOp2DStitchPlace1(null);
+		optionPants2StandardInfo.setOp2DStitchPlace2(null);
+		optionPants2StandardInfo.setOp2DStitchPlace3(null);
+		optionPants2StandardInfo.setOp2DStitchPlace4(null);
 		// AMF色指定
 		optionPants2StandardInfo.setOp2AmfColor(OptionCodeKeys.PT2_0002401);
 		optionPants2StandardInfo.setOp2AmfColorPlace(null);
+		optionPants2StandardInfo.setOp2AmfColorPlace1(null);
+		optionPants2StandardInfo.setOp2AmfColorPlace2(null);
+		optionPants2StandardInfo.setOp2AmfColorPlace3(null);
+		optionPants2StandardInfo.setOp2AmfColorPlace4(null);
 		optionPants2StandardInfo.setOp2AmfAllColor(null);
 		// ボタンホール色指定
 		optionPants2StandardInfo.setOp2BhColor(OptionCodeKeys.PT2_0002701);
 		optionPants2StandardInfo.setOp2BhColorPlace(null);
+		optionPants2StandardInfo.setOp2BhColorPlace1(null);
+		optionPants2StandardInfo.setOp2BhColorPlace2(null);
+		optionPants2StandardInfo.setOp2BhColorPlace3(null);
+		optionPants2StandardInfo.setOp2BhColorPlace4(null);
 		optionPants2StandardInfo.setOp2BhAllColor(null);
 		// ボタン付け糸指定
 		optionPants2StandardInfo.setOp2ByColor(OptionCodeKeys.PT2_0003001);
 		optionPants2StandardInfo.setOp2ByColorPlace(null);
+		optionPants2StandardInfo.setOp2ByColorPlace1(null);
+		optionPants2StandardInfo.setOp2ByColorPlace2(null);
+		optionPants2StandardInfo.setOp2ByColorPlace3(null);
+		optionPants2StandardInfo.setOp2ByColorPlace4(null);
 		optionPants2StandardInfo.setOp2ByAllColor(null);
 		// 釦素材
 		optionPants2StandardInfo.setOp2Button(OptionCodeKeys.PT2_3000800);
@@ -21911,6 +21166,8 @@ public class OrderCoHelper {
 		
 		optionPants2TuxedoInfo.setTp2BeltLoopPlace6(OptionCodeKeys.PT2_0000806);
 		
+		optionPants2TuxedoInfo.setTp2BeltLoopPlace7(null);
+		
 		optionPants2TuxedoInfo.setTp2BeltLoopPlace(null);
 		// ピンループ
 		optionPants2TuxedoInfo.setTp2PinLoop(OptionCodeKeys.PT2_0000901);
@@ -21937,10 +21194,18 @@ public class OrderCoHelper {
 		// ボタンホール色指定
 		optionPants2TuxedoInfo.setTp2BhColor(OptionCodeKeys.PT2_0002701);
 		optionPants2TuxedoInfo.setTp2BhColorPlace(null);
+		optionPants2TuxedoInfo.setTp2BhColorPlace1(null);
+		optionPants2TuxedoInfo.setTp2BhColorPlace2(null);
+		optionPants2TuxedoInfo.setTp2BhColorPlace3(null);
+		optionPants2TuxedoInfo.setTp2BhColorPlace4(null);
 		optionPants2TuxedoInfo.setTp2BhAllColor(null);
 		// ボタン付け糸指定
 		optionPants2TuxedoInfo.setTp2ByColor(OptionCodeKeys.PT2_0003001);
 		optionPants2TuxedoInfo.setTp2ByColorPlace(null);
+		optionPants2TuxedoInfo.setTp2ByColorPlace1(null);
+		optionPants2TuxedoInfo.setTp2ByColorPlace2(null);
+		optionPants2TuxedoInfo.setTp2ByColorPlace3(null);
+		optionPants2TuxedoInfo.setTp2ByColorPlace4(null);
 		optionPants2TuxedoInfo.setTp2ByAllColor(null);
 		// 釦素材
 		optionPants2TuxedoInfo.setTp2Button(OptionCodeKeys.PT2_3000800);
@@ -21990,6 +21255,8 @@ public class OrderCoHelper {
 		
 		optionPants2WashableInfo.setWp2BeltLoopPlace6(OptionCodeKeys.PT2_0000806);
 		
+		optionPants2WashableInfo.setWp2BeltLoopPlace7(null);
+		
 		optionPants2WashableInfo.setWp2BeltLoopPlace(null);
 		// ピンループ
 		optionPants2WashableInfo.setWp2PinLoop(OptionCodeKeys.PT2_0000901);
@@ -22016,20 +21283,40 @@ public class OrderCoHelper {
 		// ステッチ箇所変更
 		optionPants2WashableInfo.setWp2StitchModify(OptionCodeKeys.PT2_0002001);
 		optionPants2WashableInfo.setWp2StitchModifyPlace(null);
+		optionPants2WashableInfo.setWp2StitchModifyPlace1(null);
+		optionPants2WashableInfo.setWp2StitchModifyPlace2(null);
+		optionPants2WashableInfo.setWp2StitchModifyPlace3(null);
+		optionPants2WashableInfo.setWp2StitchModifyPlace4(null);
 		// ダブルステッチ
 		optionPants2WashableInfo.setWp2DStitch(OptionCodeKeys.PT2_0002201);
 		optionPants2WashableInfo.setWp2DStitchPlace(null);
+		optionPants2WashableInfo.setWp2DStitchPlace1(null);
+		optionPants2WashableInfo.setWp2DStitchPlace2(null);
+		optionPants2WashableInfo.setWp2DStitchPlace3(null);
+		optionPants2WashableInfo.setWp2DStitchPlace4(null);
 		// AMF色指定
 		optionPants2WashableInfo.setWp2AmfColor(OptionCodeKeys.PT2_0002401);
 		optionPants2WashableInfo.setWp2AmfColorPlace(null);
+		optionPants2WashableInfo.setWp2AmfColorPlace1(null);
+		optionPants2WashableInfo.setWp2AmfColorPlace2(null);
+		optionPants2WashableInfo.setWp2AmfColorPlace3(null);
+		optionPants2WashableInfo.setWp2AmfColorPlace4(null);
 		optionPants2WashableInfo.setWp2AmfAllColor(null);
 		// ボタンホール色指定
 		optionPants2WashableInfo.setWp2BhColor(OptionCodeKeys.PT2_0002701);
 		optionPants2WashableInfo.setWp2BhColorPlace(null);
+		optionPants2WashableInfo.setWp2BhColorPlace1(null);
+		optionPants2WashableInfo.setWp2BhColorPlace2(null);
+		optionPants2WashableInfo.setWp2BhColorPlace3(null);
+		optionPants2WashableInfo.setWp2BhColorPlace4(null);
 		optionPants2WashableInfo.setWp2BhAllColor(null);
 		// ボタン付け糸指定
 		optionPants2WashableInfo.setWp2ByColor(OptionCodeKeys.PT2_0003001);
 		optionPants2WashableInfo.setWp2ByColorPlace(null);
+		optionPants2WashableInfo.setWp2ByColorPlace1(null);
+		optionPants2WashableInfo.setWp2ByColorPlace2(null);
+		optionPants2WashableInfo.setWp2ByColorPlace3(null);
+		optionPants2WashableInfo.setWp2ByColorPlace4(null);
 		optionPants2WashableInfo.setWp2ByAllColor(null);
 		// 釦素材
 		optionPants2WashableInfo.setWp2Button(OptionCodeKeys.PT2_3000800);
@@ -22084,7 +21371,7 @@ public class OrderCoHelper {
 			optionPants2StandardInfo.setOp2ByColor(orderPt2.getPt2BtnthreadColorType());
 			optionPants2StandardInfo.setOp2ByColorPlace(orderPt2.getPt2BtnthreadColorPlcCd());
 			optionPants2StandardInfo.setOp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
-			optionPants2StandardInfo.setOp2Button(orderPt2.getPt2BtnMaterialCd());
+			optionPants2StandardInfo.setOp2Button(orderPt2.getPt2BtnMaterialType());
 			optionPants2StandardInfo.setOp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2StandardInfo.setOp2Eight(orderPt2.getPt2NonSlipCd());
 			optionPants2StandardInfo.setOp2ShapeMemory(orderPt2.getPt2ShapeMemoryCd());
@@ -22126,7 +21413,7 @@ public class OrderCoHelper {
 			optionPants2TuxedoInfo.setTp2ByColor(orderPt2.getPt2BtnthreadColorType());
 			optionPants2TuxedoInfo.setTp2ByColorPlace(orderPt2.getPt2BtnthreadColorPlcCd());
 			optionPants2TuxedoInfo.setTp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
-			optionPants2TuxedoInfo.setTp2Button(orderPt2.getPt2BtnMaterialCd());
+			optionPants2TuxedoInfo.setTp2Button(orderPt2.getPt2BtnMaterialType());
 			// optionPantsTuxedoInfo.setTpBtnMateStkNo(tpBtnMateStkNo);
 			optionPants2TuxedoInfo.setTp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2TuxedoInfo.setTp2Eight(orderPt2.getPt2NonSlipCd());
@@ -22172,7 +21459,7 @@ public class OrderCoHelper {
 			optionPants2WashableInfo.setWp2ByColor(orderPt2.getPt2BtnthreadColorType());
 			optionPants2WashableInfo.setWp2ByColorPlace(orderPt2.getPt2BtnthreadColorPlcCd());
 			optionPants2WashableInfo.setWp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
-			optionPants2WashableInfo.setWp2Button(orderPt2.getPt2BtnMaterialCd());
+			optionPants2WashableInfo.setWp2Button(orderPt2.getPt2BtnMaterialType());
 			optionPants2WashableInfo.setWp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2WashableInfo.setWp2Eight(orderPt2.getPt2NonSlipCd());
 			optionPants2WashableInfo.setWp2Thick(orderPt2.getPt2ChicSlipCd());
@@ -22184,226 +21471,20 @@ public class OrderCoHelper {
 
 	}
 	
-	public void giletDefaultValueFromDb(OrderCoForm orderCoForm, Order orderGl) {
-		String productCategory = orderCoForm.getProductCategory();
-	
-		if ("9000101".equals(productCategory)) {
-			CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-			coOptionGiletStandardInfo.setOgGiletModel(orderGl.getGlModelNm());
-			coOptionGiletStandardInfo.setOgBreastPkt(orderGl.getGlBreastPktNm());
-			coOptionGiletStandardInfo.setOgWaistPkt(orderGl.getGlWaistPktNm());
-			coOptionGiletStandardInfo.setOgWaistPktSpec(orderGl.getGlWaistPktShapeNm());
-			coOptionGiletStandardInfo.setOgStitch(orderGl.getGlAmfStitchNm());
-			coOptionGiletStandardInfo.setOgStitchModify(orderGl.getGlStitchPlcType());
-			coOptionGiletStandardInfo.setOgStitchModifyPlace(orderGl.getGlStitchPlcCd());
-			coOptionGiletStandardInfo.setOgDStitchModify(orderGl.getGlDblstitchPlcType());
-			coOptionGiletStandardInfo.setOgDStitchModifyPlace(orderGl.getGlDblstitchPlcCd());
-			coOptionGiletStandardInfo.setOgAmfColor(orderGl.getGlAmfColorType());
-			coOptionGiletStandardInfo.setOgAmfColorPlace(orderGl.getGlAmfColorPlcCd());
-			//coOptionGiletStandardInfo.setOgAmfColorPlaceAll();
-			coOptionGiletStandardInfo.setOgBhColor(orderGl.getGlBtnholeColorType());
-			coOptionGiletStandardInfo.setOgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletStandardInfo.setOgBhColorPlaceAll();
-			coOptionGiletStandardInfo.setOgByColor(orderGl.getGlBtnthreadColorType());
-			coOptionGiletStandardInfo.setOgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletStandardInfo.setOgByColorPlaceAll();
-			coOptionGiletStandardInfo.setOgBackLiningMate(orderGl.getGlBackClothType());
-			coOptionGiletStandardInfo.setOgBackLiningMateStkNo(orderGl.getGlBackClothCd());
-			coOptionGiletStandardInfo.setOgInsideLiningMate(orderGl.getGlInnnerClothType());
-			coOptionGiletStandardInfo.setOgInsideLiningMateStkNo(orderGl.getGlInnnerClothCd());
-			coOptionGiletStandardInfo.setOgFrontBtnMate(orderGl.getGlFrtBtnType());
-			coOptionGiletStandardInfo.setOgFrontBtnMateStkNo(orderGl.getGlFrtBtnCd());
-			coOptionGiletStandardInfo.setOgBackBelt(orderGl.getGlBackBeltCd());
-			coOptionGiletStandardInfo.setOgWatchChain(orderGl.getGlWatchChainNm());
-			
-			pluralGlStandardOptionItem(coOptionGiletStandardInfo, orderGl);
-			
-		}else if ("9000102".equals(productCategory)) {
-			CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-			coOptionGiletTuxedoInfo.setTgGiletModel(orderGl.getGlModelNm());
-			coOptionGiletTuxedoInfo.setTgBreastPkt(orderGl.getGlBreastPktNm());
-			coOptionGiletTuxedoInfo.setTgWaistPkt(orderGl.getGlWaistPktNm());
-			coOptionGiletTuxedoInfo.setTgWaistPktSpec(orderGl.getGlWaistPktShapeNm());
-			coOptionGiletTuxedoInfo.setTgStitch(orderGl.getGlAmfStitchNm());
-			coOptionGiletTuxedoInfo.setTgStitchModify(orderGl.getGlStitchPlcType());
-			coOptionGiletTuxedoInfo.setTgDblstitchPlc(orderGl.getGlDblstitchPlcType());
-			coOptionGiletTuxedoInfo.setTgBhColor(orderGl.getGlBtnholeColorType());
-			coOptionGiletTuxedoInfo.setTgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletTuxedoInfo.setTgBhColorPlaceAll();
-			coOptionGiletTuxedoInfo.setTgByColor(orderGl.getGlBtnthreadColorType());
-			coOptionGiletTuxedoInfo.setTgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletTuxedoInfo.setTgByColorPlaceAll();
-			coOptionGiletTuxedoInfo.setTgBackLiningMate(orderGl.getGlBackClothType());
-			coOptionGiletTuxedoInfo.setTgBackLiningMateStkNo(orderGl.getGlBackClothCd());
-			coOptionGiletTuxedoInfo.setTgInsideLiningMate(orderGl.getGlInnnerClothType());
-			coOptionGiletTuxedoInfo.setTgInsideLiningMateStkNo(orderGl.getGlInnnerClothCd());
-			coOptionGiletTuxedoInfo.setTgFrontBtnMate(orderGl.getGlFrtBtnType());
-			coOptionGiletTuxedoInfo.setTgFrontBtnMateStkNo(orderGl.getGlFrtBtnCd());
-			coOptionGiletTuxedoInfo.setTgBackBelt(orderGl.getGlBackBeltCd());
-			coOptionGiletTuxedoInfo.setTgWatchChain(orderGl.getGlWatchChainNm());
-			
-			pluralGlTuxedoOptionItem(coOptionGiletTuxedoInfo, orderGl);
-			
-		}else if ("9000103".equals(productCategory)) {
-			CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-			coOptionGiletWashableInfo.setWgGiletModel(orderGl.getGlModelNm());
-			coOptionGiletWashableInfo.setWgBreastPkt(orderGl.getGlBreastPktNm());
-			coOptionGiletWashableInfo.setWgWaistPkt(orderGl.getGlWaistPktNm());
-			coOptionGiletWashableInfo.setWgWaistPktSpec(orderGl.getGlWaistPktShapeNm());
-			coOptionGiletWashableInfo.setWgStitch(orderGl.getGlAmfStitchNm());
-			coOptionGiletWashableInfo.setWgStitchModify(orderGl.getGlStitchPlcType());
-			coOptionGiletWashableInfo.setWgStitchModifyPlace(orderGl.getGlStitchPlcCd());
-			coOptionGiletWashableInfo.setWgDStitchModify(orderGl.getGlDblstitchPlcType());
-			coOptionGiletWashableInfo.setWgDStitchModifyPlace(orderGl.getGlDblstitchPlcCd());
-			coOptionGiletWashableInfo.setWgAmfColor(orderGl.getGlAmfColorType());
-			coOptionGiletWashableInfo.setWgAmfColorPlace(orderGl.getGlAmfColorPlcCd());
-			//coOptionGiletWashableInfo.setWgAmfColorPlaceAll();
-			coOptionGiletWashableInfo.setWgBhColor(orderGl.getGlBtnholeColorType());
-			coOptionGiletWashableInfo.setWgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletWashableInfo.setWgBhColorPlaceAll();
-			coOptionGiletWashableInfo.setWgByColor(orderGl.getGlBtnthreadColorType());
-			coOptionGiletWashableInfo.setWgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletWashableInfo.setWgByColorPlaceAll();
-			coOptionGiletWashableInfo.setWgBackLiningMate(orderGl.getGlBackClothType());
-			coOptionGiletWashableInfo.setWgBackLiningMateStkNo(orderGl.getGlBackClothCd());
-			coOptionGiletWashableInfo.setWgInsideLiningMate(orderGl.getGlInnnerClothType());
-			coOptionGiletWashableInfo.setWgInsideLiningMateStkNo(orderGl.getGlInnnerClothCd());
-			coOptionGiletWashableInfo.setWgFrontBtnMate(orderGl.getGlFrtBtnType());
-			coOptionGiletWashableInfo.setWgFrontBtnMateStkNo(orderGl.getGlFrtBtnCd());
-			coOptionGiletWashableInfo.setWgBackBelt(orderGl.getGlBackBeltCd());
-			coOptionGiletWashableInfo.setWgWatchChain(orderGl.getGlWatchChainNm());
-			
-			pluralGlWashableOptionItem(coOptionGiletWashableInfo, orderGl);
-		}
-	}
-
-	public void shirtDefaultValueFromDb(CoOptionShirtStandardInfo coOptionShirtStandardInfo, Order orderSt) {
-		
-		// SHIRTモデル
-		coOptionShirtStandardInfo.setOsShirtModel(orderSt.getStModelCd());
-		// 襟型
-		coOptionShirtStandardInfo.setOsChainModel(orderSt.getStCollarTypeCd());
-		// カフス
-		coOptionShirtStandardInfo.setOsCuffs(orderSt.getStCuffsCd());
-		// コンバーチブル
-		coOptionShirtStandardInfo.setOsConvertible(orderSt.getStConvertibleCd());
-		// アジャスト釦
-		coOptionShirtStandardInfo.setOsAdjustBtn(orderSt.getStAdjusterBtnCd());
-		// クレリック仕様
-		coOptionShirtStandardInfo.setOsClericSpec(orderSt.getStClericCd());
-		// ダブルカフス仕様
-		coOptionShirtStandardInfo.setOsDblCuff(orderSt.getStDblCuffsCd());
-		//カフスボタン追加
-		coOptionShirtStandardInfo.setOsAddCuff(orderSt.getStCuffsBtnCd());
-		// 釦素材
-		coOptionShirtStandardInfo.setOsBtnMate(orderSt.getStBtnMaterialCd());
-		//タブ釦
-		coOptionShirtStandardInfo.setOsTabBtn(orderSt.getStDblBtnCd());
-		// ガントレットボタン位置
-		coOptionShirtStandardInfo.setOsGaletteBtnPos(orderSt.getStGauntletBtnPosCd());
-		// ピンホールピン
-		coOptionShirtStandardInfo.setOsPinHolePin(orderSt.getStPinholePinCd());
-		// 胸ポケット
-		coOptionShirtStandardInfo.setOsBreastPk(orderSt.getStBreastPktCd());
-		//胸ポケット大きさ
-		coOptionShirtStandardInfo.setOsBreastPkSize(orderSt.getStBreastSizeCd());
-		// フロントデザイン
-		coOptionShirtStandardInfo.setOsFrontDesign(orderSt.getStFrtDesignCd());
-		// ピンタックブザム
-		coOptionShirtStandardInfo.setOsPinTack(orderSt.getStPintuckBosomCd());
-		// ステッチ
-		coOptionShirtStandardInfo.setOsStitch(orderSt.getStStitchCd());
-		// カラーキーパー
-		coOptionShirtStandardInfo.setOsColorKeeper(orderSt.getStColarKeeperCd());
-		// ボタン付け糸色変更
-		coOptionShirtStandardInfo.setOsByColor(orderSt.getStBtnthreadColorCd());
-		// ボタンホール色変更
-		coOptionShirtStandardInfo.setOsBhColor(orderSt.getStBtnholeColorCd());
-		//カジュアルヘムライン仕様
-		coOptionShirtStandardInfo.setOsCasHemLine(orderSt.getStCasualHemlineCd());
-		//カジュアルヘムライン仕様_サイズ
-		coOptionShirtStandardInfo.setStCasualHemlineSize(orderSt.getStCasualHemlineSize());
-		//ボタン位置変更
-		coOptionShirtStandardInfo.setOsBtnPosChg(orderSt.getStBtnposChgCd());
-		// ボタン位置変更 台襟釦
-		coOptionShirtStandardInfo.setOsBtnPosChgCollar(orderSt.getStNeckbandBtnChgCd());
-		// ボタン位置変更 フロント第1釦
-		coOptionShirtStandardInfo.setOsBtnPosChgFront1(orderSt.getStFrtfirstBtnChgCd());
-		// ボタン位置変更 フロント第2釦
-		coOptionShirtStandardInfo.setOsBtnPosChgFront2(orderSt.getStFrtsecondBtnChgCd());
-		
-		// ボタン位置変更 台襟釦値
-		coOptionShirtStandardInfo.setStNeckbandBtnPosChg(orderSt.getStNeckbandBtnPosChg());
-		// ボタン位置変更 フロント第1釦値
-		coOptionShirtStandardInfo.setStFrtfirstBtnPosChg(orderSt.getStFrtfirstBtnPosChg());
-		// ボタン位置変更 フロント第2釦値
-		coOptionShirtStandardInfo.setStFrtsecondBtnPosChg(orderSt.getStFrtsecondBtnPosChg());
-	}
-	
-	public void shirtDefaultValue(OrderCoForm orderCoForm) {
-		// 標準
-		CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
-		optionShirtStandardInfo.setOsShirtModel("");
-		optionShirtStandardInfo.setOsChainModel(OptionCodeKeys.sht_0000100);
-		optionShirtStandardInfo.setOsCuffs(OptionCodeKeys.sht_0000200);
-		optionShirtStandardInfo.setOsConvertible(OptionCodeKeys.sht_0000301);
-		optionShirtStandardInfo.setOsAdjustBtn(OptionCodeKeys.sht_0000401);
-		optionShirtStandardInfo.setOsClericSpec(OptionCodeKeys.sht_0000501);
-		optionShirtStandardInfo.setOsDblCuff(OptionCodeKeys.sht_0000601);
-		optionShirtStandardInfo.setOsAddCuff(OptionCodeKeys.sht_0000701);
-		optionShirtStandardInfo.setOsBtnMate(OptionCodeKeys.sht_0000801);
-		optionShirtStandardInfo.setOsTabBtn(OptionCodeKeys.sht_0000901);
-		optionShirtStandardInfo.setOsGaletteBtnPos(OptionCodeKeys.sht_0001001);
-		optionShirtStandardInfo.setOsPinHolePin(OptionCodeKeys.sht_0001101);
-		optionShirtStandardInfo.setOsBreastPk(OptionCodeKeys.sht_0001201);
-		optionShirtStandardInfo.setOsBreastPkSize(OptionCodeKeys.sht_0001301);
-		optionShirtStandardInfo.setOsFrontDesign(OptionCodeKeys.sht_0001401);
-		optionShirtStandardInfo.setOsPinTack(OptionCodeKeys.sht_0001501);
-		optionShirtStandardInfo.setOsStitch(OptionCodeKeys.sht_0001601);
-		optionShirtStandardInfo.setOsColorKeeper(OptionCodeKeys.sht_0001701);
-		optionShirtStandardInfo.setOsBhColor(OptionCodeKeys.sht_0001901);
-		optionShirtStandardInfo.setOsByColor(OptionCodeKeys.sht_0001801);
-		optionShirtStandardInfo.setOsCasHemLine(OptionCodeKeys.sht_0002001);
-		optionShirtStandardInfo.setOsBtnPosChg(OptionCodeKeys.sht_0002101);
-
-	}
-
-	public void coatDefaultValueFromDb(OrderCoForm orderCoForm, Order orderCt) {
-		CoOptionCoatStandardInfo optionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
-		optionCoatStandardInfo.setCoatModel(orderCt.getCtModelCd());
-		optionCoatStandardInfo.setOcLapelDesign(orderCt.getCtLapelDesignCd());
-		optionCoatStandardInfo.setOcWaistPkt(orderCt.getCtWaistPktCd());
-		optionCoatStandardInfo.setOcChangePkt(orderCt.getCtChgPktCd());
-		optionCoatStandardInfo.setOcSlantedPkt(orderCt.getCtSlantedPktCd());
-		optionCoatStandardInfo.setOcVentSpec(orderCt.getCtVentCd());
-		optionCoatStandardInfo.setOcFrontBtnCnt(orderCt.getCtFrtBtnCd());
-		optionCoatStandardInfo.setOcCuffSpec(orderCt.getCtCuffCd());
-		optionCoatStandardInfo.setOcSleeveBtnType(orderCt.getCtSleeveBtnCd());
-		optionCoatStandardInfo.setOcBackBelt(orderCt.getCtBackBeltCd());
-		optionCoatStandardInfo.setOcChainHange(orderCt.getCtCollarHangCd());
-		optionCoatStandardInfo.setOcBodyBackMate(orderCt.getCtInnerBodyClothType());
-		optionCoatStandardInfo.setOcBodyBackMateStkNo(orderCt.getCtInnerBodyClothCd());
-		optionCoatStandardInfo.setOcCuffBackMate(orderCt.getCtInnerSleeveClothType());
-		optionCoatStandardInfo.setOcCuffBackMateStkNo(orderCt.getCtInnerSleeveClothCd());
-		optionCoatStandardInfo.setOcFrontBtnMate(orderCt.getCtBtnMaterialType());
-		optionCoatStandardInfo.setOcFrontBtnMateStkNo(orderCt.getCtBtnMaterialCd());
-		optionCoatStandardInfo.setOcSleeveSpec(orderCt.getCtSleeveTypeCd());
-	}
-
-	public List<TypeSizeOptimization> getCoTypeSizeOptimization(List<TypeSize> coTypeSizeList) {
-		List<TypeSizeOptimization> typeSizeList = new ArrayList<TypeSizeOptimization>();
-		for (TypeSize typeSize : coTypeSizeList) {
-			TypeSizeOptimization typeSizeOptimization = new TypeSizeOptimization();
-			typeSizeOptimization.setAdjustClass(typeSize.getAdjustClass());
-			typeSizeOptimization.setTypeSize(typeSize.getTypeSize().toString());
-			typeSizeOptimization.setTypeSize1Intack(typeSize.getTypeSize1Intack().toString());
-			typeSizeOptimization.setTypeSize1Outtack(typeSize.getTypeSize1Outtack().toString());
-			typeSizeOptimization.setTypeSize2Intack(typeSize.getTypeSize2Intack().toString());
-			typeSizeOptimization.setTypeSize2Outtack(typeSize.getTypeSize2Outtack().toString());
-			typeSizeList.add(typeSizeOptimization);
-		}
-		return typeSizeList;
-	}
+//	public List<TypeSizeOptimization> getCoTypeSizeOptimization(List<TypeSize> coTypeSizeList) {
+//		List<TypeSizeOptimization> typeSizeList = new ArrayList<TypeSizeOptimization>();
+//		for (TypeSize typeSize : coTypeSizeList) {
+//			TypeSizeOptimization typeSizeOptimization = new TypeSizeOptimization();
+//			typeSizeOptimization.setAdjustClass(typeSize.getAdjustClass());
+//			typeSizeOptimization.setTypeSize(typeSize.getTypeSize().toString());
+//			typeSizeOptimization.setTypeSize1Intack(typeSize.getTypeSize1Intack().toString());
+//			typeSizeOptimization.setTypeSize1Outtack(typeSize.getTypeSize1Outtack().toString());
+//			typeSizeOptimization.setTypeSize2Intack(typeSize.getTypeSize2Intack().toString());
+//			typeSizeOptimization.setTypeSize2Outtack(typeSize.getTypeSize2Outtack().toString());
+//			typeSizeList.add(typeSizeOptimization);
+//		}
+//		return typeSizeList;
+//	}
 
 	public void pantsAdjustFromDb(OrderCoForm orderCoForm, Order order) {
 		if("9000101".equals(order.getProductCategory())) {
@@ -22413,124 +21494,97 @@ public class OrderCoHelper {
 		}else if("9000103".equals(order.getProductCategory())) {
 			orderCoForm.getCoOptionPantsWashableInfo().setWpPantsModel(order.getPtModelCd());
 		}
-		orderCoForm.getCoOptionPantsStandardInfo().setOpStitchModify(order.getPtModelCd());
 		
 		orderCoForm.getCoAdjustPantsStandardInfo().setSizeFigure(order.getCorPtDrop());
 		orderCoForm.getCoAdjustPantsStandardInfo().setSizeNumber(order.getCorPtSize());
 
 		BigDecimal corPtWaistSize = order.getCorPtWaistSize();
-		if(isNotBigDecimalNull(corPtWaistSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtWaistSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtWaistSize(String.valueOf(corPtWaistSize));
 		}
 		
 		BigDecimal corPtWaistGross = order.getCorPtWaistGross();
-		if(isNotBigDecimalNull(corPtWaistSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtWaistSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtWaistGross(String.valueOf(corPtWaistGross));
 		}
 		
 		BigDecimal corPtWaistCorrect = order.getCorPtWaistCorrect();
-		if(isNotBigDecimalNull(corPtWaistSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtWaistSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtWaistCorrect(String.valueOf(corPtWaistCorrect));
 		}
 		
 		BigDecimal corPtThighwidthSize = order.getCorPtThighwidthSize();
-		if(isNotBigDecimalNull(corPtThighwidthSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtThighwidthSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtThighSize(String.valueOf(corPtThighwidthSize));
 		}
 		
 		BigDecimal corPtThighwidthGross = order.getCorPtThighwidthGross();
-		if(isNotBigDecimalNull(corPtThighwidthGross)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtThighwidthGross)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtThighGross(String.valueOf(corPtThighwidthGross));
 		}
 		
 		BigDecimal corPtThighwidthCorrect = order.getCorPtThighwidthCorrect();
-		if(isNotBigDecimalNull(corPtThighwidthCorrect)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtThighwidthCorrect)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtThighCorrect(String.valueOf(corPtThighwidthCorrect));
 		}
 
 		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthType(order.getCorPtHemwidthType());
 		if("1".equals(order.getCorPtHemwidthType())) {
 			BigDecimal corPtHemwidthSize = order.getCorPtHemwidthSize();
-			if(isNotBigDecimalNull(corPtHemwidthSize)) {
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthSize)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthSize(String.valueOf(corPtHemwidthSize));
 			}
 			BigDecimal corPtHemwidthGross = order.getCorPtHemwidthGross();
-			if(isNotBigDecimalNull(corPtHemwidthGross)) {
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthGross)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthGross(String.valueOf(corPtHemwidthGross));
 			}
 			BigDecimal corPtHemwidthCorrect = order.getCorPtHemwidthCorrect();
-			if(isNotBigDecimalNull(corPtHemwidthCorrect)) {
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthCorrect)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthCorrect(String.valueOf(corPtHemwidthCorrect));
 			}
 		}else if("2".equals(order.getCorPtHemwidthType())) {
 			BigDecimal corPtHemwidthDegignate = order.getCorPtHemwidthDegignate();
-			if(isNotBigDecimalNull(corPtHemwidthDegignate)) {
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthDegignate)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthDegignate(String.valueOf(corPtHemwidthDegignate));
 			}
 		}
 
 		BigDecimal corPtHipSize = order.getCorPtHipSize();
-		if(isNotBigDecimalNull(corPtHipSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtHipSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHipSize(String.valueOf(corPtHipSize));
 		}
 		BigDecimal corPtHipGross = order.getCorPtHipGross();
-		if(isNotBigDecimalNull(corPtHipGross)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtHipGross)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHipGross(String.valueOf(corPtHipGross));
 		}
 		BigDecimal corPtHipCorrect = order.getCorPtHipCorrect();
-		if(isNotBigDecimalNull(corPtHipCorrect)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtHipCorrect)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHipCorrect(String.valueOf(corPtHipCorrect));
 		}
 
 		BigDecimal corPtRightinseamSize = order.getCorPtRightinseamSize();
-		if(isNotBigDecimalNull(corPtRightinseamSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtRightinseamSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtRightinseamSize(String.valueOf(corPtRightinseamSize));
 		}
 		BigDecimal corPtRightinseamGross = order.getCorPtRightinseamGross();
-		if(isNotBigDecimalNull(corPtRightinseamGross)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtRightinseamGross)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtRightinseamGross(String.valueOf(corPtRightinseamGross));
 		}
 		//orderCoForm.getCoAdjustPantsStandardInfo()
 				//.setCorPtRightinseamCorrect(order.getCorPtRightinseamCorrect().toString());
 
 		BigDecimal corPtLeftinseamSize = order.getCorPtLeftinseamSize();
-		if(isNotBigDecimalNull(corPtLeftinseamSize)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtLeftinseamSize)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtLeftinseamSize(String.valueOf(corPtLeftinseamSize));
 		}
 		BigDecimal corPtLeftinseamGross = order.getCorPtLeftinseamGross();
-		if(isNotBigDecimalNull(corPtLeftinseamGross)) {
+		if(BaseCheckUtil.isNotBigDecimalNull(corPtLeftinseamGross)) {
 			orderCoForm.getCoAdjustPantsStandardInfo().setCorPtLeftinseamGross(String.valueOf(corPtLeftinseamGross));
 		}
 		//orderCoForm.getCoAdjustPantsStandardInfo()
 				//.setCorPtLeftinseamCorrect(order.getCorPtLeftinseamCorrect().toString());
 
-		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtStoreCorrectionMemo(order.getCorPtStoreCorrectionMemo());
-
-	}
-
-	public void giletAdjustFromDb(OrderCoForm orderCoForm, Order order) {
-		
-		if("9000101".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionGiletStandardInfo().setOgGiletModel(order.getGlModelCd());
-		}else if("9000102".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionGiletTuxedoInfo().setTgGiletModel(order.getGlModelCd());
-		}else if("9000103".equals(order.getProductCategory())) {
-			orderCoForm.getCoOptionGiletWashableInfo().setWgGiletModel(order.getGlModelCd());
-		}
-		orderCoForm.getCoAdjustGiletStandardInfo().setSizeFigure(order.getCorGlDrop());
-		orderCoForm.getCoAdjustGiletStandardInfo().setSizeNumber(order.getCorGlSize());
-
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBodySize(order.getCorGlBodylengthSize().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBodyGross(order.getCorGlBodylengthGross().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBodyCorrect(order.getCorGlBodylengthCorrect().toString());
-
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBustSize(order.getCorGlBustSize().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBustGross(order.getCorGlBustGross().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlBustCorrect(order.getCorGlBustCorrect().toString());
-
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlWaistSize(order.getCorGlWaistSize().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlWaistCorrect(order.getCorGlWaistCorrect().toString());
-		orderCoForm.getCoAdjustGiletStandardInfo().setCorGlWaistGross(order.getCorGlWaistGross().toString());
+		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
 
 	}
 
@@ -22561,7 +21615,7 @@ public class OrderCoHelper {
 			orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2HemwidthGross(order.getCorPt2HemwidthGross().toString());
 			orderCoForm.getCoAdjustPants2StandardInfo()
 					.setCorPt2HemwidthCorrect(order.getCorPt2HemwidthCorrect().toString());	
-		}else if("1".equals(order.getCorPt2HemwidthType())) {
+		}else if("2".equals(order.getCorPt2HemwidthType())) {
 			orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2HemwidthDegignate(order.getCorPt2HemwidthDegignate().toString());
 		}
 
@@ -22582,102 +21636,7 @@ public class OrderCoHelper {
 		//orderCoForm.getCoAdjustPants2StandardInfo()
 				//.setCorPt2LeftinseamCorrect(order.getCorPt2LeftinseamCorrect().toString());
 
-		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2StoreCorrectionMemo(order.getCorPt2StoreCorrectionMemo());
-
-	}
-
-	public void shirtAdjustFromDb(OrderCoForm orderCoForm, Order order) {
-		
-		orderCoForm.getCoOptionShirtStandardInfo().setOsShirtModel(order.getStModelCd());
-		orderCoForm.getCoOptionShirtStandardInfo().setOsCasHemLine(order.getStCasualHemlineCd());
-		
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStSize(order.getCorStSize());
-
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStNeckSize(order.getCorStNeckSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStNeckGross(order.getCorStNeckGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStNeckCorrect(order.getCorStNeckCorrect().toString());
-
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBodylengthSize(order.getCorStBodylengthSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBodylengthGross(order.getCorStBodylengthGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStBodylengthCorrect(order.getCorStBodylengthCorrect().toString());
-
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStRightsleeveSize(order.getCorStRightsleeveSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStRightsleeveGross(order.getCorStRightsleeveGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStRightsleeveCorrect(order.getCorStRightsleeveCorrect().toString());
-
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStLeftsleeveSize(order.getCorStLeftsleeveSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStLeftsleeveGross(order.getCorStLeftsleeveGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStLeftsleeveCorrect(order.getCorStLeftsleeveCorrect().toString());
-
-//		orderCoForm.getCoAdjustShirtStandardInfo()
-//				.setCorStBackdartsPackSize(order.getCorStBackdartsPackSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStBackdartsPackGross(order.getCorStBackdartsPackGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStBackdartsPackCorrect(order.getCorStBackdartsPackCorrect().toString());
-
-//		orderCoForm.getCoAdjustShirtStandardInfo()
-//				.setCorStBackdartsUnpackSize(order.getCorStBackdartsUnpackSize().toString());
-//		orderCoForm.getCoAdjustShirtStandardInfo()
-//				.setCorStBackdartsUnpackGross(order.getCorStBackdartsUnpackGross().toString());
-//		orderCoForm.getCoAdjustShirtStandardInfo()
-//				.setCorStBackdartsUnpackCorrect(order.getCorStBackdartsUnpackCorrect().toString());
-
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStRightcuffsSurroundingSize(order.getCorStRightcuffsSurroundingSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStRightcuffsSurroundingGross(order.getCorStRightcuffsSurroundingGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStRightcuffsSurroundingCorrect(order.getCorStRightcuffsSurroundingCorrect().toString());
-
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStLeftcuffsSurroundingSize(order.getCorStLeftcuffsSurroundingSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStLeftcuffsSurroundingGross(order.getCorStLeftcuffsSurroundingGross().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStLeftcuffsSurroundingCorrect(order.getCorStLeftcuffsSurroundingCorrect().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsUnpackCd(order.getCorStBackdartsUnpackCd());
-		
 		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
-		
-
-	}
-
-	public void coatAdjustFromDb(OrderCoForm orderCoForm, Order order) {
-		orderCoForm.getCoOptionCoatStandardInfo().setCoatModel(order.getCtModelCd());
-		
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtSize(order.getCorCtSize());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtBodylengthSize(order.getCorCtBodylengthSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtBodylengthGross(order.getCorCtBodylengthGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo()
-				.setCorCtBodylengthCorrect(order.getCorCtBodylengthCorrect().toString());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistSize(order.getCorCtWaistSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistGross(order.getCorCtWaistGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistCorrect(order.getCorCtWaistCorrect().toString());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtRightsleeveSize(order.getCorCtRightsleeveSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtRightsleeveGross(order.getCorCtRightsleeveGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo()
-				.setCorCtRightsleeveCorrect(order.getCorCtRightsleeveCorrect().toString());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtLeftsleeveSize(order.getCorCtLeftsleeveSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtLeftsleeveGross(order.getCorCtLeftsleeveGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo()
-				.setCorCtLeftsleeveCorrect(order.getCorCtLeftsleeveCorrect().toString());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightSize(order.getCorCtVenthightSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightGross(order.getCorCtVenthightGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightCorrect(order.getCorCtVenthightCorrect().toString());
-
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposSize(order.getCorCtPktposSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposGross(order.getCorCtPktposGross().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposCorrect(order.getCorCtPktposCorrect().toString());
 
 	}
 
@@ -23595,22 +22554,42 @@ public class OrderCoHelper {
 
 				for (NextGenerationPrice ptNextGenerationPrice : optionNextGenerationPriceList) {
 					if (keyCode.equals(ptNextGenerationPrice.getKeyCode())) {
-						cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
-						Method myMethodTwo = getMethod(cls, valueTwo);
-						Method myMethodThree = getMethod(cls, valueThree);
-						// オプション工賃
-						BigDecimal optionWage = ptNextGenerationPrice.getMowWage();
-						BigDecimal nextGenerationWageValue = optionWage;
-						// オプション付属
-						Integer optionPrice = ptNextGenerationPrice.getMoapPrice();
-						Integer nextGenerationPriceValue = optionPrice;
-						Object[] argsValueTwo = { nextGenerationWageValue };
-						Object[] argsValueThree = { nextGenerationPriceValue };
-						if (myMethodTwo != null) {
-							ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
-						}
-						if (myMethodThree != null) {
-							ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
+						if("DoubleChester".equals(orderCoForm.getCoOptionCoatStandardInfo().getCoatModel()) || "DoublePolo".equals(orderCoForm.getCoOptionCoatStandardInfo().getCoatModel())) {
+							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+							Method myMethodTwo = getMethod(cls, valueTwo);
+							Method myMethodThree = getMethod(cls, valueThree);
+							// オプション工賃
+							BigDecimal optionWage = ptNextGenerationPrice.getMowWage();
+							BigDecimal nextGenerationWageValue = optionWage;
+							// オプション付属
+							Integer optionPrice = ptNextGenerationPrice.getMoapDoublePrice();
+							Integer nextGenerationPriceValue = optionPrice;
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
+							if (myMethodTwo != null) {
+								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
+							}
+							if (myMethodThree != null) {
+								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
+							}
+						}else {
+							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+							Method myMethodTwo = getMethod(cls, valueTwo);
+							Method myMethodThree = getMethod(cls, valueThree);
+							// オプション工賃
+							BigDecimal optionWage = ptNextGenerationPrice.getMowWage();
+							BigDecimal nextGenerationWageValue = optionWage;
+							// オプション付属
+							Integer optionPrice = ptNextGenerationPrice.getMoapPrice();
+							Integer nextGenerationPriceValue = optionPrice;
+							Object[] argsValueTwo = { nextGenerationWageValue };
+							Object[] argsValueThree = { nextGenerationPriceValue };
+							if (myMethodTwo != null) {
+								ReflectionUtils.invoke(myMethodTwo, order, argsValueTwo);
+							}
+							if (myMethodThree != null) {
+								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
+							}
 						}
 						break;
 					} else {
@@ -23682,6 +22661,27 @@ public class OrderCoHelper {
 				String keyDetailCode = itemCode + subItemCode + key + resultOne + resultTwo;
 				for (NextGenerationPrice detailNextGenerationPrice : detailNextGenerationPriceList) {
 					if (keyDetailCode.equals(detailNextGenerationPrice.getKeyDetailCode())) {
+						if("DoubleChester".equals(orderCoForm.getCoOptionCoatStandardInfo().getCoatModel()) || "DoublePolo".equals(orderCoForm.getCoOptionCoatStandardInfo().getCoatModel())) {
+							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
+							Method myMethodThree = getMethod(cls, valueThree);
+							Method myMethodFour = getMethod(cls, valueFour);
+							// オプション工賃
+							BigDecimal optionWage = detailNextGenerationPrice.getMowWageT();
+							BigDecimal nextGenerationWageValue = optionWage;
+							// オプション付属 + オプション付属詳細
+							Integer optionPrice = detailNextGenerationPrice.getMoapDoublePriceT();
+							Integer optionDetailPrice = detailNextGenerationPrice.getMoadpDoublePrice();
+							Integer nextGenerationPriceValue = optionPrice + optionDetailPrice;
+							Object[] argsValueThree = { nextGenerationWageValue };
+							Object[] argsValueFour = { nextGenerationPriceValue };
+							if (myMethodThree != null) {
+								ReflectionUtils.invoke(myMethodThree, order, argsValueThree);
+							}
+							if (myMethodFour != null) {
+								ReflectionUtils.invoke(myMethodFour, order, argsValueFour);
+							}
+						}
+						else {
 							cls = Class.forName("co.jp.aoyama.macchinetta.domain.model.Order");
 							Method myMethodThree = getMethod(cls, valueThree);
 							Method myMethodFour = getMethod(cls, valueFour);
@@ -23700,6 +22700,7 @@ public class OrderCoHelper {
 							if (myMethodFour != null) {
 								ReflectionUtils.invoke(myMethodFour, order, argsValueFour);
 							}
+						}
 						break;
 					}
 					 else {
@@ -26575,24 +25576,24 @@ public class OrderCoHelper {
 		
 		if("01".equals(productItem)) {
 			//JACKET
-			optionJacketDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService);
+			coJakcetHelper.optionJacketDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 			//PANTS
-			optionPantsDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService);
+			optionPantsDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderFlag);
 			if("0009902".equals(productIs3piece)) {
 				//GILET
-				optionGiletDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService);
+				coGiletHelper.optionGiletDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 			}
 			
 			if("0009902".equals(productSparePantsClass)) {
 				//2PANTS
-				optionPants2DbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService);
+				optionPants2DbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderFlag);
 			}
 		}else if("02".equals(productItem)) {
-			optionJacketDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService);
+			coJakcetHelper.optionJacketDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 		}else if("03".equals(productItem)) {			
-			optionPantsDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService);	
+			optionPantsDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderFlag);	
 		}else if("04".equals(productItem)) {
-			optionGiletDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService);
+			coGiletHelper.optionGiletDbToOrder(productItem,productCategory,orderCoController,order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 		}else if("05".equals(productItem)) {
 			//SHIRTのオプション情報を取得
 			Order orderSt = orderListService.findOrderStOptionByOrderId(order.getOrderId());
@@ -26601,14 +25602,14 @@ public class OrderCoHelper {
 			CoOptionShirtStandardInfo coOptionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
 			//オプション情報が存在する場合、レコード値を設定
 			if(orderSt !=null ) {
-				this.shirtDefaultValueFromDb(coOptionShirtStandardInfo, orderSt);
+				coShirtHelper.shirtDefaultValueFromDb(coOptionShirtStandardInfo, orderSt);
 			//オプション情報が存在しない場合、初期値を設定
 			}else {
-				this.shirtDefaultValue(orderCoForm);
+				coShirtHelper.shirtDefaultValue(orderCoForm);
 			}
 			
 			//SHIRTの補正情報を取得
-			Order orderStAd = orderListService.findOrderStByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+			Order orderStAd = orderListService.findOrderStByPk(order.getOrderId());
 			
 			//初期化設定
 			CoAdjustShirtStandardInfo coAdjustShirtStandardInfo = orderCoForm.getCoAdjustShirtStandardInfo();
@@ -26617,35 +25618,45 @@ public class OrderCoHelper {
 				orderCoForm.setCoAdjustShirtStandardInfo(coAdjustShirtStandardInfo);
 			}
 			if (orderStAd != null) {
-				this.shirtAdjustFromDb(orderCoForm, orderStAd);
+				coShirtHelper.shirtAdjustFromDb(orderCoForm, orderStAd);
 			}
 			
-			String code = productItem.concat("05").concat(coOptionShirtStandardInfo.getOsShirtModel());
-			orderCoController.getOrderPriceForShirtModel(orderCoForm, code);
+			String osShirtModel = coOptionShirtStandardInfo.getOsShirtModel();
+			if(osShirtModel!=null&&!"".equals(osShirtModel)) {
+				String code = productItem.concat("05").concat(osShirtModel);
+				orderCoController.getOrderPriceForShirtModel(orderCoForm, code);
+			}else {
+				orderCoForm.setStOptionPrice("0");
+			}
 			List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), productItem,
 					"05");
-			this.getShirtModelMap(orderCoForm, modelList);
+			coShirtHelper.getShirtModelMap(orderCoForm, modelList);
 		}else if("06".equals(productItem)) {
 			Order orderCt = orderListService.findOrderCtOptionByOrderId(order.getOrderId());
 			CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
 			if(orderCt !=null ) {
-				this.coatDefaultValueFromDb(orderCoForm, orderCt);
+				coCoatHelper.coatDefaultValueFromDb(orderCoForm, orderCt);
 			}else {
-				this.coatDefaultValue(orderCoForm);
+				coCoatHelper.coatDefaultValue(orderCoForm);
 			}
 			
-			Order orderCtAd = orderListService.findOrderCtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+			Order orderCtAd = orderListService.findOrderCtByPk(order.getOrderId());
 			CoAdjustCoatStandardInfo coAdjustCoatStandardInfo = orderCoForm.getCoAdjustCoatStandardInfo();
 			if(coAdjustCoatStandardInfo == null ) {
 				coAdjustCoatStandardInfo = new CoAdjustCoatStandardInfo();
 				orderCoForm.setCoAdjustCoatStandardInfo(coAdjustCoatStandardInfo);
 			}
 			if (orderCtAd != null) {
-				this.coatAdjustFromDb(orderCoForm, orderCtAd);
+				coCoatHelper.coatAdjustFromDb(orderCoForm, orderCtAd);
 			}
 			
-			String code = productItem.concat("06").concat(coOptionCoatStandardInfo.getCoatModel());
-			orderCoController.getOrderPriceForCoatModel(orderCoForm, code);
+			String coatModel = coOptionCoatStandardInfo.getCoatModel();
+			if(coatModel!=null&&!"".equals(coatModel)) {
+				String code = productItem.concat("06").concat(coatModel);
+				orderCoController.getOrderPriceForCoatModel(orderCoForm, code);
+			}else {
+				orderCoForm.setCtOptionPrice("0");
+			}
 			List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), productItem,
 					"06");
 			this.getCoatModelMap(orderCoForm, modelList);
@@ -26659,6 +25670,11 @@ public class OrderCoHelper {
 				this.findStockModelDoublePrice(orderFindFabric, orderCoForm);
 				this.set3Piece2PantsPrice(orderFindFabric,orderCoForm);
 			}else {
+				orderCoForm.setJkDoubleModelPrice("0");
+				orderCoForm.setGlDoubleModelPrice("0");
+				orderCoForm.setCtDoubleModelPrice("0");
+				orderCoForm.setIs2PantsPrice("0");
+				orderCoForm.setIs3PiecePrice("0");
 				orderCoForm.setProductPrice("0");
 			}
 		}else {
@@ -26666,7 +25682,7 @@ public class OrderCoHelper {
 			orderCoForm.setGlDoubleModelPrice("0");
 			orderCoForm.setCtDoubleModelPrice("0");
 			orderCoForm.setIs2PantsPrice("0");
-			orderCoForm.setIs2PantsPrice("0");
+			orderCoForm.setIs3PiecePrice("0");
 			orderCoForm.setProductPrice("0");
 		}
 		this.getCoAllPrice(orderCoForm);
@@ -26769,28 +25785,48 @@ public class OrderCoHelper {
 	private void setProdectPrice(OrderCoForm orderCoForm, OrderCoController orderCoController) {
 		String productItem = orderCoForm.getProductItem();
 		String productCode = "9999ALL";
-		//LCR縫製
-		String productLcrSewing = orderCoForm.getProductLcrSewing();
-		String productLcrSewingId = "lcrSewing";
-		String productLcrPrice = orderCoController.productPrice(orderCoForm,productCode,productLcrSewing,productLcrSewingId);
-		orderCoForm.setLcrSewingPrice(productLcrPrice);
+		if(!"05".equals(productItem)&&!"06".equals(productItem)) {
+			//LCR縫製
+			String productLcrSewing = orderCoForm.getProductLcrSewing();
+			if(BaseCheckUtil.isNotEmpty(productLcrSewing)) {
+				String productLcrSewingId = "lcrSewing";
+				String productLcrPrice = orderCoController.productPrice(orderCoForm,productCode,productLcrSewing,productLcrSewingId);
+				orderCoForm.setLcrSewingPrice(productLcrPrice);
+			}else {
+				orderCoForm.setLcrSewingPrice("0");
+			}
+		}else {
+			orderCoForm.setLcrSewingPrice("0");
+		}
+		
 		//納期短縮
 		String custIsDeliverShortning = orderCoForm.getCustIsDeliverShortning();
-		String custIsDeliverShortningId = "expediteDelivery";
-		String productDeliveryPrice = orderCoController.productPrice(orderCoForm,productCode,custIsDeliverShortning,custIsDeliverShortningId);
-		orderCoForm.setExpediteDeliveryPrice(productDeliveryPrice);
-//		if("05".equals(productItem)) {
+		if(BaseCheckUtil.isNotEmpty(custIsDeliverShortning)) {
+			String custIsDeliverShortningId = "expediteDelivery";
+			String productDeliveryPrice = orderCoController.productPrice(orderCoForm,productCode,custIsDeliverShortning,custIsDeliverShortningId);
+			orderCoForm.setExpediteDeliveryPrice(productDeliveryPrice);
+		}else {
+			orderCoForm.setExpediteDeliveryPrice("0");
+		}
 		if("05".equals(productItem) && "9000502".equals(orderCoForm.getProductEmbroideryNecessity())) {
 			//刺繍箇所
 			String productEmbroideryNmPos = orderCoForm.getProductEmbroideryNmPos();
-			String productEmbroideryNmPosId = "productEmbroideryNmPos";
-			String productEmbroideryNmPosPrice = orderCoController.productPrice(orderCoForm,productCode,productEmbroideryNmPos,productEmbroideryNmPosId);
-			orderCoForm.setEmbroideryNmPosPrice(productEmbroideryNmPosPrice);
+			if(BaseCheckUtil.isNotEmpty(productEmbroideryNmPos)) {
+				String productEmbroideryNmPosId = "productEmbroideryNmPos";
+				String productEmbroideryNmPosPrice = orderCoController.productPrice(orderCoForm,productCode,productEmbroideryNmPos,productEmbroideryNmPosId);
+				orderCoForm.setEmbroideryNmPosPrice(productEmbroideryNmPosPrice);
+			}else {
+				orderCoForm.setEmbroideryNmPosPrice("0");
+			}
 			//ガゼット刺繍
 			String productEmbroideryGazette = orderCoForm.getProductEmbroideryGazette();
-			String productEmbroideryGazetteId = "gadget";
-			String productEmbroideryGazettePrice = orderCoController.productPrice(orderCoForm,productCode,productEmbroideryGazette,productEmbroideryGazetteId);
-			orderCoForm.setGadgetPrice(productEmbroideryGazettePrice);
+			if(BaseCheckUtil.isNotEmpty(productEmbroideryNmPos)) {
+				String productEmbroideryGazetteId = "gadget";
+				String productEmbroideryGazettePrice = orderCoController.productPrice(orderCoForm,productCode,productEmbroideryGazette,productEmbroideryGazetteId);
+				orderCoForm.setGadgetPrice(productEmbroideryGazettePrice);
+			}else {
+				orderCoForm.setGadgetPrice("0");
+			}
 		}else {
 			orderCoForm.setEmbroideryNmPosPrice("0");
 			orderCoForm.setGadgetPrice("0");
@@ -26853,234 +25889,9 @@ public class OrderCoHelper {
 		}
 	}
 
-	private void optionJacketDbToOrder(String productItem, String productCategory, OrderCoController orderCoController,
-			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
-			OrderService orderService) {
-		Order orderJk = orderListService.findOrderJkOptionByOrderId(order.getOrderId());
-//		if(coOptionJacketStandardInfo == null) {
-//			coOptionJacketStandardInfo = new CoOptionJacketStandardInfo();
-//			orderCoForm.setCoOptionJacketStandardInfo(coOptionJacketStandardInfo);
-//		}
-		if (orderJk != null) {
-			this.jacketDefaultValueFromDb(orderCoForm, orderJk);
-		} else {
-			this.jacketDefaultValue(orderCoForm);
-		}
-
-		Order orderJkAd = orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		CoAdjustJacketStandardInfo coAdjustJacketStandardInfo = orderCoForm.getCoAdjustJacketStandardInfo();
-		if (coAdjustJacketStandardInfo == null) {
-			coAdjustJacketStandardInfo = new CoAdjustJacketStandardInfo();
-			orderCoForm.setCoAdjustJacketStandardInfo(coAdjustJacketStandardInfo);
-		}
-		if (orderJkAd != null) {
-			this.jacketAdjustFromDb(orderCoForm, orderJkAd);
-		}
-
-		if ("9000101".equals(productCategory)) {
-			CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-			String ojJacketModel = coOptionJacketStandardInfo.getOjJacketModel();
-			if (ojJacketModel != null && !"".equals(ojJacketModel)) {
-				String code = productItem.concat("02").concat(ojJacketModel);
-				orderCoController.getOrderPriceForJacketModel(orderCoForm, code);
-				// ステッチ箇所変更
-				String stitchModifyValue = coOptionJacketStandardInfo.getOjStitchModify();
-				if ("0002402".equals(stitchModifyValue)) {
-					String stitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00025");
-					String stitchModifyCountArr = coOptionJacketStandardInfo.getOjStitchModifyPlace();
-					String stitchModifyValueName = "stitchModify_id";
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, stitchModifyCode,
-							stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-				}
-
-				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionJacketStandardInfo.getOjDStitchModify();
-				if ("0002602".equals(stitchModifyValue)) {
-					String dStitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00027");
-					String dSitchModifyCountArr = coOptionJacketStandardInfo.getOjDStitchModifyPlace();
-					String dSitchModifyValueName = "dStitchModify_id";
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, dStitchModifyCode,
-							dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				}
-
-				// AMF色指定
-				String jkAmfColorCd = orderJk.getJkAmfColorCd();
-				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)) {
-					String amfValueName = "amfColor_id";
-					String amfCode = productItem.concat("02").concat(ojJacketModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkAmfColorSplit = jkAmfColorCd.split(",");
-					for (String amfColor : jkAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
-					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00030".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-							amfColorCount, "", "", "");
-				}
-				// ボタンホール色指定
-				String jkBtnholeColorCd = orderJk.getJkBtnholeColorCd();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)) {
-					String bhValueName = "bhColor_id";
-					String bhCode = productItem.concat("02").concat(ojJacketModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(",");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00033".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String jkBtnthreadColorCd = orderJk.getJkBtnthreadColorCd();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
-					String byValueName = "byColor_id";
-					String byCode = productItem.concat("02").concat(ojJacketModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(",");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00036".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
-				}
-			}else {
-				orderCoForm.setJkOptionPrice("0");
-			}
-		} else if ("9000102".equals(productCategory)) {
-			CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-			String tjJacketModel = coOptionJacketTuxedoInfo.getTjJacketModel();
-			if (tjJacketModel != null && !"".equals(tjJacketModel)) {
-				String code = productItem.concat("02").concat(tjJacketModel);
-				orderCoController.getOrderPriceForJacketTuxedoModel(orderCoForm, code);
-				// ボタンホール色指定
-				String jkBtnholeColorCd = orderJk.getJkBtnholeColorCd();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)) {
-					String bhValueName = "tj_bhColor_id";
-					String bhCode = productItem.concat("02").concat(tjJacketModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(",");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00033".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String jkBtnthreadColorCd = orderJk.getJkBtnthreadColorCd();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
-					String byValueName = "tj_byColor_id";
-					String byCode = productItem.concat("02").concat(tjJacketModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(",");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00036".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
-				}
-			}else {
-				orderCoForm.setJkOptionPrice("0");
-			}
-		} else if ("9000103".equals(productCategory)) {
-			CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-			String wjJacketModel = coOptionJacketWashableInfo.getWjJacketModel();
-			if (wjJacketModel != null && !"".equals(wjJacketModel)) {
-				String code = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-				orderCoController.getOrderPriceForJacketWashableModel(orderCoForm, code);
-				
-				// ステッチ箇所変更
-				String stitchModifyValue = coOptionJacketWashableInfo.getWjStitchModify();
-				if ("0002402".equals(stitchModifyValue)) {
-					String stitchModifyCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel())
-							.concat("00025");
-					String stitchModifyCountArr = coOptionJacketWashableInfo.getWjStitchModifyPlace();
-					String stitchModifyValueName = "wj_stitchModify_id";
-					orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, stitchModifyCode,
-							stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-				}
-				
-				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionJacketWashableInfo.getWjDStitchModify();
-				if ("0002602".equals(stitchModifyValue)) {
-					String dStitchModifyCode = productItem.concat("02")
-							.concat(coOptionJacketWashableInfo.getWjJacketModel()).concat("00027");
-					String dSitchModifyValueName = "wj_dStitchModify_id";
-					String dSitchModifyCountArr = coOptionJacketWashableInfo.getWjDStitchModifyPlace();
-					orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, dStitchModifyCode,
-							dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				}
-				// AMF色指定
-				String jkAmfColorCd = orderJk.getJkAmfColorCd();
-				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)) {
-					String amfValueName = "wj_amfColor_id";
-					String amfCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkAmfColorSplit = jkAmfColorCd.split(",");
-					for (String amfColor : jkAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
-					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00030".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, amfCode, amfValueName,
-							amfColorCode, amfColorCount, "", "", "");
-				}
-				// ボタンホール色指定
-				String jkBtnholeColorCd = orderJk.getJkBtnholeColorCd();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)) {
-					String bhValueName = "wj_bhColor_id";
-					String bhCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(",");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00033".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, bhCode, bhValueName,
-							bhColorCode, bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String jkBtnthreadColorCd = orderJk.getJkBtnthreadColorCd();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
-					String byValueName = "wj_byColor_id";
-					String byCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(",");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00036".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, byCode, byValueName,
-							byColorCode, byColorCount, "", "", "");
-				}
-			}else {
-				orderCoForm.setJkOptionPrice("0");
-			}
-		}
-		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(),
-				productItem, "02");
-		this.getJacketModelMap(orderCoForm, modelList);
-	}
+	
 	private void optionPantsDbToOrder(String productItem, String productCategory, OrderCoController orderCoController, Order order, OrderCoForm orderCoForm,
-			OrderListService orderListService, ModelService modelService) {
+			OrderListService orderListService, ModelService modelService, String orderFlag) {
 		Order orderPt = orderListService.findOrderPtOptionByOrderId(order.getOrderId());
 		if(orderPt !=null ) {
 			this.pantsDefaultValueFromDb(orderCoForm, orderPt);
@@ -27088,7 +25899,7 @@ public class OrderCoHelper {
 			this.pantsDefaultValue(orderCoForm);
 		}
 		
-		Order orderPtAd = orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+		Order orderPtAd = orderListService.findOrderPtByPk(order.getOrderId());
 		CoAdjustPantsStandardInfo coAdjustPantsStandardInfo = orderCoForm.getCoAdjustPantsStandardInfo();
 		if(coAdjustPantsStandardInfo == null ) {
 			coAdjustPantsStandardInfo = new CoAdjustPantsStandardInfo();
@@ -27103,63 +25914,81 @@ public class OrderCoHelper {
 			String opPantsModel = coOptionPantsStandardInfo.getOpPantsModel();
 			if(opPantsModel!=null&&!"".equals(opPantsModel)) {
 				String code = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
-				orderCoController.getOrderPriceForPantsModel(orderCoForm, code);
+				orderCoController.getOrderPriceForPantsModel(orderCoForm, code,orderFlag);
 				//ステッチ箇所変更
-				String stitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00021");
-				String stitchModifyValueName = "op_stitchModify_id";
-				String stitchModifyCountArr = coOptionPantsStandardInfo.getOpStitchModifyPlace();
 				String stitchModifyValue = coOptionPantsStandardInfo.getOpStitchModify();
-				orderCoController.getOrderPriceForPantsSProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-				//ダブルステッチ変更
-				String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00023");
-				String dSitchModifyValueName = "op_dStitch_id";
-				String dSitchModifyCountArr = coOptionPantsStandardInfo.getOpDStitchPlace();
-				String dSitchModifyValue = coOptionPantsStandardInfo.getOpDStitch();
-				orderCoController.getOrderPriceForPantsSProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				//AMF色指定
-				String ptAmfColorCd = orderPt.getPtAmfColorCd();
-				if(ptAmfColorCd!=null&&!"".equals(ptAmfColorCd)) {
-					String amfValueName = "op_amfColor_id";
-					String amfCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
-					Map<String,String> colorMap = new HashMap<String,String>();
-					String[] ptAmfColorSplit = ptAmfColorCd.split(",");
-					for (String amfColor : ptAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
+				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)) {
+					String stitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00021");
+					String stitchModifyValueName = "op_stitchModify_id";
+					String stitchModifyCountArr = coOptionPantsStandardInfo.getOpStitchModifyPlace();
+					if(!stitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPantsSProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
 					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00025".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSProject(orderCoForm, amfCode, amfValueName, amfColorCode, amfColorCount, "", "", "");
+				}
+				
+				//ダブルステッチ変更
+				String dSitchModifyValue = coOptionPantsStandardInfo.getOpDStitch();
+				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)) {
+					String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00023");
+					String dSitchModifyValueName = "op_dStitch_id";
+					String dSitchModifyCountArr = coOptionPantsStandardInfo.getOpDStitchPlace();
+					if(!dSitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPantsSProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+					}
+				}
+				
+				//AMF色指定
+				String ptAmfColorCd = coOptionPantsStandardInfo.getOpAmfAllColor();
+				if (ptAmfColorCd != null && !"".equals(ptAmfColorCd)&&!ptAmfColorCd.startsWith("/")) {
+				String amfValueName = "op_amfColor_id";
+				String amfCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
+				Map<String, String> amfColorMap = new HashMap<String, String>();
+				
+					String[] ptAmfColorSplit = ptAmfColorCd.split("/");
+					for (String amfColor : ptAmfColorSplit) {
+						amfColorMap.put(amfColor, amfColor);
+					}
+				
+				String amfColorCount = String.valueOf(amfColorMap.size());
+				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+				String amfColorCode = "00025".concat(amfValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSProject(orderCoForm, amfCode, amfValueName, amfColorCode,
+						amfColorCount, "", "", "");
 				}
 				//ボタンホール色指定
-				String ptBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-				if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd)) {
-					String bhValueName = "op_bhColor_id";
-					String bhCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
-					Map<String,String> colorMap = new HashMap<String,String>();
-					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
+				String ptBtnholeColorCd = coOptionPantsStandardInfo.getOpBhAllColor();
+				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd)&&!ptBtnholeColorCd.startsWith("/")) {
+				String bhValueName = "op_bhColor_id";
+				String bhCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
+				Map<String, String> bhColorMap = new HashMap<String, String>();
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
 					for (String btnholeColor : ptBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
+						bhColorMap.put(btnholeColor, btnholeColor);
 					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00028".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSProject(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
+				
+				String bhColorCount = String.valueOf(bhColorMap.size());
+				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+				String bhColorCode = "00028".concat(bhValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						bhColorCount, "", "", "");
 				}
 				//ボタン付け糸指定
-				String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-				if(ptBtnthreadColorCd!=null&&!"".equals(ptBtnthreadColorCd)) {
-					String byValueName = "op_byColor_id";
-					String byCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
-					Map<String,String> colorMap = new HashMap<String,String>();
-					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
+				String ptBtnthreadColorCd = coOptionPantsStandardInfo.getOpByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd)&&!ptBtnthreadColorCd.startsWith("/")) {
+				String byValueName = "op_byColor_id";
+				String byCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel());
+				Map<String, String> byColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
 					for (String btnthreadColor : ptBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
+						byColorMap.put(btnthreadColor, btnthreadColor);
 					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00031".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSProject(orderCoForm, byCode, byValueName, byColorCode, byColorCount, "", "", "");
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+				String byColorCode = "00031".concat(byValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSProject(orderCoForm, byCode, byValueName, byColorCode,
+						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -27171,36 +26000,42 @@ public class OrderCoHelper {
 			String tpPantsModel = coOptionPantsTuxedoInfo.getTpPantsModel();
 			if(tpPantsModel!=null&&!"".equals(tpPantsModel)) {
 				String code = productItem.concat("03").concat(coOptionPantsTuxedoInfo.getTpPantsModel());
-				orderCoController.getOrderPriceForPantsTuModel(orderCoForm, code);
+				orderCoController.getOrderPriceForPantsTuModel(orderCoForm, code,orderFlag);
 				//ボタンホール色指定
-				String ptBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-				if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd)) {
-					String bhValueName = "tp_bhColor_id";
-					String bhCode = productItem.concat("03").concat(coOptionPantsTuxedoInfo.getTpPantsModel());
-					Map<String,String> colorMap = new HashMap<String,String>();
-					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
+				String ptBtnholeColorCd = coOptionPantsTuxedoInfo.getTpBhAllColor();
+				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd)&&!ptBtnholeColorCd.startsWith("/")) {
+				String bhValueName = "tp_bhColor_id";
+				String bhCode = productItem.concat("03").concat(coOptionPantsTuxedoInfo.getTpPantsModel());
+				Map<String, String> bhColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
 					for (String btnholeColor : ptBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
+						bhColorMap.put(btnholeColor, btnholeColor);
 					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00028".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
+				
+				String bhColorCount = String.valueOf(bhColorMap.size());
+				List<String> bhvaluesList = new ArrayList<String>(bhColorMap.values());
+				String bhColorCode = "00028".concat(bhvaluesList.get(0));
+				orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						bhColorCount, "", "", "");
 				}
-				//ボタン付け糸指定
-				String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-				if(ptBtnthreadColorCd!=null&&!"".equals(ptBtnthreadColorCd)) {
-					String byValueName = "tp_byColor_id";
-					String byCode = productItem.concat("03").concat(coOptionPantsTuxedoInfo.getTpPantsModel());
-					Map<String,String> colorMap = new HashMap<String,String>();
-					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
+				// ボタン付け糸指定
+				String ptBtnthreadColorCd = coOptionPantsTuxedoInfo.getTpByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd)&&!ptBtnthreadColorCd.startsWith("/")) {
+				String byValueName = "tp_byColor_id";
+				String byCode = productItem.concat("03").concat(coOptionPantsTuxedoInfo.getTpPantsModel());
+				Map<String, String> byColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
 					for (String btnthreadColor : ptBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
+						byColorMap.put(btnthreadColor, btnthreadColor);
 					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00031".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, byCode, byValueName, byColorCode, byColorCount, "", "", "");
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+				String byColorCode = "00031".concat(byValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, byCode, byValueName, byColorCode,
+						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -27210,70 +26045,85 @@ public class OrderCoHelper {
 			String wpPantsModel = coOptionPantsWashableInfo.getWpPantsModel();
 			if (wpPantsModel != null && !"".equals(wpPantsModel)) {
 				String code = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
-				orderCoController.getOrderPriceForPantsWPModel(orderCoForm, code);
+				orderCoController.getOrderPriceForPantsWPModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
-				String stitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
-						.concat("00021");
-				String stitchModifyValueName = "wp_stitchModify_id";
-				String stitchModifyCountArr = coOptionPantsWashableInfo.getWpStitchModifyPlace();
 				String stitchModifyValue = coOptionPantsWashableInfo.getWpStitchModify();
-				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, stitchModifyCode, stitchModifyValueName,
-						"", "", stitchModifyCountArr, stitchModifyValue, "");
-				// ダブルステッチ変更
-				String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
-						.concat("00023");
-				String dSitchModifyValueName = "wp_dStitch_id";
-				String dSitchModifyCountArr = coOptionPantsWashableInfo.getWpDStitchPlace();
-				String dSitchModifyValue = coOptionPantsWashableInfo.getWpDStitch();
-				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName,
-						"", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				// AMF色指定
-				String ptAmfColorCd = orderPt.getPtAmfColorCd();
-				if (ptAmfColorCd != null && !"".equals(ptAmfColorCd)) {
-					String amfValueName = "wp_amfColor_id";
-					String amfCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] ptAmfColorSplit = ptAmfColorCd.split(",");
-					for (String amfColor : ptAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
+				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)) {
+					String stitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
+							.concat("00021");
+					String stitchModifyValueName = "wp_stitchModify_id";
+					String stitchModifyCountArr = coOptionPantsWashableInfo.getWpStitchModifyPlace();
+					if(!stitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, stitchModifyCode, stitchModifyValueName,
+								"", "", stitchModifyCountArr, stitchModifyValue, "");
 					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00025".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-							amfColorCount, "", "", "");
+				}
+				
+				// ダブルステッチ変更
+				String dSitchModifyValue = coOptionPantsWashableInfo.getWpDStitch();
+				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)) {
+					String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
+							.concat("00023");
+					String dSitchModifyValueName = "wp_dStitch_id";
+					String dSitchModifyCountArr = coOptionPantsWashableInfo.getWpDStitchPlace();
+					if(!dSitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName,
+								"", "", dSitchModifyCountArr, dSitchModifyValue, "");
+					}
+				}
+				// AMF色指定
+				String ptAmfColorCd = coOptionPantsWashableInfo.getWpAmfAllColor();
+				if (ptAmfColorCd != null && !"".equals(ptAmfColorCd)&&!ptAmfColorCd.startsWith("/")) {
+				String amfValueName = "wp_amfColor_id";
+				String amfCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
+				Map<String, String> amfColorMap = new HashMap<String, String>();
+				
+					String[] ptAmfColorSplit = ptAmfColorCd.split("/");
+					for (String amfColor : ptAmfColorSplit) {
+						amfColorMap.put(amfColor, amfColor);
+					}
+				
+				String amfColorCount = String.valueOf(amfColorMap.size());
+				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+				String amfColorCode = "00025".concat(amfValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, amfCode, amfValueName, amfColorCode,
+						amfColorCount, "", "", "");
 				}
 				// ボタンホール色指定
-				String ptBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd)) {
-					String bhValueName = "wp_bhColor_id";
-					String bhCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
+				String ptBtnholeColorCd = coOptionPantsWashableInfo.getWpBhAllColor();
+				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd)&&!ptBtnholeColorCd.startsWith("/")) {
+				String bhValueName = "wp_bhColor_id";
+				String bhCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
+				Map<String, String> bhColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
 					for (String btnholeColor : ptBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
+						bhColorMap.put(btnholeColor, btnholeColor);
 					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00028".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
+				
+				String bhColorCount = String.valueOf(bhColorMap.size());
+				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+				String bhColorCode = "00028".concat(bhValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
-				String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd)) {
-					String byValueName = "wp_byColor_id";
-					String byCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
+				String ptBtnthreadColorCd = coOptionPantsWashableInfo.getWpByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd)&&!ptBtnthreadColorCd.startsWith("/")) {
+				String byValueName = "wp_byColor_id";
+				String byCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel());
+				Map<String, String> byColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
 					for (String btnthreadColor : ptBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
+						byColorMap.put(btnthreadColor, btnthreadColor);
 					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00031".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+				String byColorCode = "00031".concat(byValuesList.get(0));
+				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, byCode, byValueName, byColorCode,
+						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -27285,15 +26135,15 @@ public class OrderCoHelper {
 	}
 	
 	private void optionPants2DbToOrder(String productItem, String productCategory, OrderCoController orderCoController, Order order, OrderCoForm orderCoForm,
-			OrderListService orderListService, ModelService modelService) {
-		Order orderPt = orderListService.findOrderPtOptionByOrderId(order.getOrderId());
+			OrderListService orderListService, ModelService modelService, String orderFlag) {
+		Order orderPt = orderListService.findOrderPt2OptionByOrderId(order.getOrderId());
 		if(orderPt !=null ) {
 			this.pants2DefaultValueFromDb(orderCoForm, orderPt);
 		}else {
 			this.pants2DefaultValue(orderCoForm);
 		}
 		
-		Order orderPtAd = orderListService.findOrderPt2ByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+		Order orderPtAd = orderListService.findOrderPt2ByPk(order.getOrderId());
 		CoAdjustPants2StandardInfo coAdjustPants2StandardInfo = orderCoForm.getCoAdjustPants2StandardInfo();
 		if(coAdjustPants2StandardInfo == null ) {
 			coAdjustPants2StandardInfo = new CoAdjustPants2StandardInfo();
@@ -27305,618 +26155,225 @@ public class OrderCoHelper {
 		
 		if("9000101".equals(productCategory)) {
 			CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
-			String code = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel());
-			orderCoController.getOrderPriceForPants2Model(orderCoForm, code);
-			//ステッチ箇所変更
-			String stitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00021");
-			String stitchModifyValueName = "op2_stitchModify_id";
-			String stitchModifyCountArr = coOptionPants2StandardInfo.getOp2StitchModifyPlace();
-			String stitchModifyValue = coOptionPants2StandardInfo.getOp2StitchModify();
-			orderCoController.getOrderPriceForPants2Project(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-			//ダブルステッチ変更
-			String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00023");
-			String dSitchModifyValueName = "op2_dStitch_id";
-			String dSitchModifyCountArr = coOptionPants2StandardInfo.getOp2DStitchPlace();
-			String dSitchModifyValue = coOptionPants2StandardInfo.getOp2DStitch();
-			orderCoController.getOrderPriceForPants2Project(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-			//AMF色指定
-			String ptAmfColorCd = orderPt.getPt2AmfColorCd();
-			if(ptAmfColorCd!=null&&!"".equals(ptAmfColorCd)) {
+			String op2PantsModel = coOptionPants2StandardInfo.getOp2PantsModel();
+			if(op2PantsModel!=null&&!"".equals(op2PantsModel)) {
+				String code = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel());
+				orderCoController.getOrderPriceForPants2Model(orderCoForm, code,orderFlag);
+				//ステッチ箇所変更
+				String stitchModifyValue = coOptionPants2StandardInfo.getOp2StitchModify();
+				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)) {
+					String stitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00021");
+					String stitchModifyValueName = "op2_stitchModify_id";
+					String stitchModifyCountArr = coOptionPants2StandardInfo.getOp2StitchModifyPlace();
+					if(!stitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPants2Project(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
+					}
+				}
+				
+				//ダブルステッチ変更
+				String dSitchModifyValue = coOptionPants2StandardInfo.getOp2DStitch();
+				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)) {
+					String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00023");
+					String dSitchModifyValueName = "op2_dStitch_id";
+					String dSitchModifyCountArr = coOptionPants2StandardInfo.getOp2DStitchPlace();
+					if(!dSitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPants2Project(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+					}
+				}
+				
+				//AMF色指定
+				String ptAmfColorCd = coOptionPants2StandardInfo.getOp2AmfAllColor();
+				if (ptAmfColorCd != null && !"".equals(ptAmfColorCd) && !ptAmfColorCd.startsWith("/")) {
 				String amfValueName = "op2_amfColor_id";
 				String amfCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptAmfColorSplit = ptAmfColorCd.split(",");
-				for (String amfColor : ptAmfColorSplit) {
-					colorMap.put(amfColor, amfColor);
+				Map<String, String> amfColorMap = new HashMap<String, String>();
+				
+					String[] ptAmfColorSplit = ptAmfColorCd.split("/");
+					for (String amfColor : ptAmfColorSplit) {
+						amfColorMap.put(amfColor, amfColor);
+					}
+				
+				String amfColorCount = String.valueOf(amfColorMap.size());
+				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+				String amfColorCode = "00025".concat(amfValuesList.get(0));
+				orderCoController.getOrderPriceForPants2Project(orderCoForm, amfCode, amfValueName, amfColorCode,
+						amfColorCount, "", "", "");
 				}
-				String amfColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String amfColorCode = "00025".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2Project(orderCoForm, amfCode, amfValueName, amfColorCode, amfColorCount, "", "", "");
-			}
-			//ボタンホール色指定
-			String ptBtnholeColorCd = orderPt.getPt2BtnholeColorCd();
-			if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd)) {
+				//ボタンホール色指定
+				String ptBtnholeColorCd = coOptionPants2StandardInfo.getOp2BhAllColor();
+				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd) && !ptBtnholeColorCd.startsWith("/")) {
 				String bhValueName = "op2_bhColor_id";
 				String bhCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
-				for (String btnholeColor : ptBtnholeColorSplit) {
-					colorMap.put(btnholeColor, btnholeColor);
+				Map<String, String> bhColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
+					for (String btnholeColor : ptBtnholeColorSplit) {
+						bhColorMap.put(btnholeColor, btnholeColor);
+					}
+				
+				String bhColorCount = String.valueOf(bhColorMap.size());
+				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+				String bhColorCode = "00028".concat(bhValuesList.get(0));
+				orderCoController.getOrderPriceForPants2Project(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount,
+						"", "", "");
 				}
-				String bhColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String bhColorCode = "00028".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2Project(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
-			}
-			//ボタン付け糸指定
-			String ptBtnthreadColorCd = orderPt.getPt2BtnthreadColorCd();
-			if(ptBtnthreadColorCd!=null&&!"".equals(ptBtnthreadColorCd)) {
+				//ボタン付け糸指定
+				String ptBtnthreadColorCd = coOptionPants2StandardInfo.getOp2ByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd) && !ptBtnthreadColorCd.startsWith("/")) {
 				String byValueName = "op2_byColor_id";
 				String byCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
-				for (String btnthreadColor : ptBtnthreadColorSplit) {
-					colorMap.put(btnthreadColor, btnthreadColor);
+				Map<String, String> byColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
+					for (String btnthreadColor : ptBtnthreadColorSplit) {
+						byColorMap.put(btnthreadColor, btnthreadColor);
+					}
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+				String byColorCode = "00031".concat(byValuesList.get(0));
+				orderCoController.getOrderPriceForPants2Project(orderCoForm, byCode, byValueName, byColorCode, byColorCount,
+						"", "", "");
 				}
-				String byColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String byColorCode = "00031".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2Project(orderCoForm, byCode, byValueName, byColorCode, byColorCount, "", "", "");
 			}else {
-				orderCoForm.setPtOptionPrice("0");
+				orderCoForm.setPt2OptionPrice("0");
 			}
 		}else if("9000102".equals(productCategory)) {
 							
 			CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
-			String code = productItem.concat("07").concat(coOptionPants2TuxedoInfo.getTp2PantsModel());
-			orderCoController.getOrderPriceForPants2tModel(orderCoForm, code);
-			
-			//ボタンホール色指定
-			String ptBtnholeColorCd = orderPt.getPt2BtnholeColorCd();
-			if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd)) {
-				String bhValueName = "tp2_bhColor_id";
-				String bhCode = productItem.concat("07").concat(coOptionPants2TuxedoInfo.getTp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
-				for (String btnholeColor : ptBtnholeColorSplit) {
-					colorMap.put(btnholeColor, btnholeColor);
+			String tp2PantsModel = coOptionPants2TuxedoInfo.getTp2PantsModel();
+			if(tp2PantsModel!=null&&!"".equals(tp2PantsModel)) {
+				String code = productItem.concat("07").concat(coOptionPants2TuxedoInfo.getTp2PantsModel());
+				orderCoController.getOrderPriceForPants2tModel(orderCoForm, code,orderFlag);
+				
+				//ボタンホール色指定
+				String ptBtnholeColorCd = coOptionPants2TuxedoInfo.getTp2BhAllColor();
+				if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd) && !ptBtnholeColorCd.startsWith("/")) {
+					String bhValueName = "tp2_bhColor_id";
+					String bhCode = productItem.concat("07").concat(coOptionPants2TuxedoInfo.getTp2PantsModel());
+					Map<String,String> bhColorMap = new HashMap<String,String>();
+					
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
+					for (String btnholeColor : ptBtnholeColorSplit) {
+						bhColorMap.put(btnholeColor, btnholeColor);
+					}
+					
+					String bhColorCount = String.valueOf(bhColorMap.size());
+					List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+					String bhColorCode = "00028".concat(bhValuesList.get(0));
+					orderCoController.getOrderPriceForPants2tProject(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
 				}
-				String bhColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String bhColorCode = "00028".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2tProject(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
-			}
-			//ボタン付け糸指定
-			String ptBtnthreadColorCd = orderPt.getPt2BtnthreadColorCd();
-			if(ptBtnthreadColorCd!=null&&!"".equals(ptBtnthreadColorCd)) {
+				//ボタン付け糸指定
+				String ptBtnthreadColorCd = coOptionPants2TuxedoInfo.getTp2ByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd) && !ptBtnthreadColorCd.startsWith("/")) {
 				String byValueName = "tp2_byColor_id";
 				String byCode = productItem.concat("07").concat(coOptionPants2TuxedoInfo.getTp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
-				for (String btnthreadColor : ptBtnthreadColorSplit) {
-					colorMap.put(btnthreadColor, btnthreadColor);
-				}
-				String byColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String byColorCode = "00031".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2tProject(orderCoForm, byCode, byValueName, byColorCode, byColorCount, "", "", "");
-			}else {
-				orderCoForm.setPtOptionPrice("0");
-			}
-		}else if("9000103".equals(productCategory)) {
+				Map<String, String> byColorMap = new HashMap<String, String>();
 				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
+					for (String btnthreadColor : ptBtnthreadColorSplit) {
+						byColorMap.put(btnthreadColor, btnthreadColor);
+					}
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+				String byColorCode = "00031".concat(byValuesList.get(0));
+				orderCoController.getOrderPriceForPants2tProject(orderCoForm, byCode, byValueName, byColorCode,
+						byColorCount, "", "", "");
+				}
+			}else {
+				orderCoForm.setPt2OptionPrice("0");
+			}
+			
+		}else if("9000103".equals(productCategory)) {
 			CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
-			String code = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel());
-			orderCoController.getOrderPriceForPants2wModel(orderCoForm, code);
-			//ステッチ箇所変更
-			String stitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00021");
-			String stitchModifyValueName = "wp2_stitchModify_id";
-			String stitchModifyCountArr = coOptionPants2WashableInfo.getWp2StitchModifyPlace();
-			String stitchModifyValue = coOptionPants2WashableInfo.getWp2StitchModify();
-			orderCoController.getOrderPriceForPants2wProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-			//ダブルステッチ変更
-			String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00023");
-			String dSitchModifyValueName = "wp2_dStitch_id";
-			String dSitchModifyCountArr = coOptionPants2WashableInfo.getWp2DStitchPlace();
-			String dSitchModifyValue = coOptionPants2WashableInfo.getWp2DStitch();
-			orderCoController.getOrderPriceForPants2wProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-			//AMF色指定
-			String ptAmfColorCd = orderPt.getPt2AmfColorCd();
-			if(ptAmfColorCd!=null&&!"".equals(ptAmfColorCd)) {
+			String wp2PantsModel = coOptionPants2WashableInfo.getWp2PantsModel();
+			if(wp2PantsModel!=null&&!"".equals(wp2PantsModel)) {
+				String code = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel());
+				orderCoController.getOrderPriceForPants2wModel(orderCoForm, code ,orderFlag);
+				
+				String stitchModifyValue = coOptionPants2WashableInfo.getWp2StitchModify();
+				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)) {
+					//ステッチ箇所変更
+					String stitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00021");
+					String stitchModifyValueName = "wp2_stitchModify_id";
+					String stitchModifyCountArr = coOptionPants2WashableInfo.getWp2StitchModifyPlace();
+					if(!stitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPants2wProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
+					}
+				}
+				//ダブルステッチ変更
+				String dSitchModifyValue = coOptionPants2WashableInfo.getWp2DStitch();
+				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)) {
+					String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00023");
+					String dSitchModifyValueName = "wp2_dStitch_id";
+					String dSitchModifyCountArr = coOptionPants2WashableInfo.getWp2DStitchPlace();
+					if(!dSitchModifyCountArr.startsWith("/")) {
+						orderCoController.getOrderPriceForPants2wProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+					}
+				}
+				
+				//AMF色指定
+				String ptAmfColorCd = coOptionPants2WashableInfo.getWp2AmfAllColor();
+				if (ptAmfColorCd != null && !"".equals(ptAmfColorCd) && !ptAmfColorCd.startsWith("/")) {
 				String amfValueName = "wp2_amfColor_id";
 				String amfCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptAmfColorSplit = ptAmfColorCd.split(",");
-				for (String amfColor : ptAmfColorSplit) {
-					colorMap.put(amfColor, amfColor);
+				Map<String, String> amfColorMap = new HashMap<String, String>();
+				
+					String[] ptAmfColorSplit = ptAmfColorCd.split("/");
+					for (String amfColor : ptAmfColorSplit) {
+						amfColorMap.put(amfColor, amfColor);
+					}
+				
+				String amfColorCount = String.valueOf(amfColorMap.size());
+				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+				String amfColorCode = "00025".concat(amfValuesList.get(0));
+				orderCoController.getOrderPriceForPants2wProject(orderCoForm, amfCode, amfValueName, amfColorCode,
+						amfColorCount, "", "", "");
 				}
-				String amfColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String amfColorCode = "00025".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2wProject(orderCoForm, amfCode, amfValueName, amfColorCode, amfColorCount, "", "", "");
-			}
-			//ボタンホール色指定
-			String ptBtnholeColorCd = orderPt.getPt2BtnholeColorCd();
-			if(ptBtnholeColorCd!=null&&!"".equals(ptBtnholeColorCd)) {
+				//ボタンホール色指定
+				String ptBtnholeColorCd = coOptionPants2WashableInfo.getWp2BhAllColor();
+				if (ptBtnholeColorCd != null && !"".equals(ptBtnholeColorCd) && !ptBtnholeColorCd.startsWith("/")) {
 				String bhValueName = "wp2_bhColor_id";
 				String bhCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnholeColorSplit = ptBtnholeColorCd.split(",");
-				for (String btnholeColor : ptBtnholeColorSplit) {
-					colorMap.put(btnholeColor, btnholeColor);
+				Map<String, String> bhColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnholeColorSplit = ptBtnholeColorCd.split("/");
+					for (String btnholeColor : ptBtnholeColorSplit) {
+						bhColorMap.put(btnholeColor, btnholeColor);
+					}
+				
+				String bhColorCount = String.valueOf(bhColorMap.size());
+				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+				String bhColorCode = "00028".concat(bhValuesList.get(0));
+				orderCoController.getOrderPriceForPants2wProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						bhColorCount, "", "", "");
 				}
-				String bhColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
-				String bhColorCode = "00028".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2wProject(orderCoForm, bhCode, bhValueName, bhColorCode, bhColorCount, "", "", "");
-			}
-			//ボタン付け糸指定
-			String ptBtnthreadColorCd = orderPt.getPt2BtnthreadColorCd();
-			if(ptBtnthreadColorCd!=null&&!"".equals(ptBtnthreadColorCd)) {
+				//ボタン付け糸指定
+				String ptBtnthreadColorCd = coOptionPants2WashableInfo.getWp2ByAllColor();
+				if (ptBtnthreadColorCd != null && !"".equals(ptBtnthreadColorCd) && !ptBtnthreadColorCd.startsWith("/")) {
 				String byValueName = "wp2_byColor_id";
 				String byCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel());
-				Map<String,String> colorMap = new HashMap<String,String>();
-				String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(",");
-				for (String btnthreadColor : ptBtnthreadColorSplit) {
-					colorMap.put(btnthreadColor, btnthreadColor);
-				}
-				String byColorCount = String.valueOf(colorMap.size());
-				List<String> valuesList = new ArrayList<String>(colorMap.values());
+				Map<String, String> byColorMap = new HashMap<String, String>();
+				
+					String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split("/");
+					for (String btnthreadColor : ptBtnthreadColorSplit) {
+						byColorMap.put(btnthreadColor, btnthreadColor);
+					}
+				
+				String byColorCount = String.valueOf(byColorMap.size());
+				List<String> valuesList = new ArrayList<String>(byColorMap.values());
 				String byColorCode = "00031".concat(valuesList.get(0));
-				orderCoController.getOrderPriceForPants2wProject(orderCoForm, byCode, byValueName, byColorCode, byColorCount, "", "", "");
+				orderCoController.getOrderPriceForPants2wProject(orderCoForm, byCode, byValueName, byColorCode,
+						byColorCount, "", "", "");
+				}
 			}else {
-				orderCoForm.setPtOptionPrice("0");
+				orderCoForm.setPt2OptionPrice("0");
 			}
 		}
-				
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), productItem,
 				"07");
 		this.getPants2ModelMap(orderCoForm, modelList);	
-	}
-	
-	private void optionGiletDbToOrder(String productItem, String productCategory, OrderCoController orderCoController,
-			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
-			OrderService orderService) {
-		Order orderGl = orderListService.findOrderGlOptionByOrderId(order.getOrderId());
-		if(orderGl !=null ) {
-			this.giletDefaultValueFromDb(orderCoForm, orderGl);
-		}else {
-			this.giletDefaultValue(orderCoForm);
-		}
-		
-		Order orderGlAd = orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		CoAdjustGiletStandardInfo coAdjustGiletStandardInfo = orderCoForm.getCoAdjustGiletStandardInfo();
-		if(coAdjustGiletStandardInfo == null ) {
-			coAdjustGiletStandardInfo = new CoAdjustGiletStandardInfo();
-			orderCoForm.setCoAdjustGiletStandardInfo(coAdjustGiletStandardInfo);
-		}
-		if (orderGlAd != null) {
-			this.giletAdjustFromDb(orderCoForm, orderGlAd);
-		}
-		
-		if ("9000101".equals(productCategory)) {
-			CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-			String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
-			if (ogGiletModel != null && !"".equals(ogGiletModel)) {
-				String code = productItem.concat("04").concat(ogGiletModel);
-				orderCoController.getOrderPriceForGiletStandardModel(orderCoForm, code);
-				// ステッチ箇所変更
-				String stitchModifyValue = coOptionGiletStandardInfo.getOgStitchModify();
-				if ("0000602".equals(stitchModifyValue)) {
-//					String stitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00006");
-					String stitchModifyCode = productItem.concat("04").concat(ogGiletModel);
-					String stitchModifyCountArr = coOptionGiletStandardInfo.getOgStitchModifyPlace();
-					String stitchModifyValueName = "og_stitchModify_id";
-					orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, stitchModifyCode,
-							stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-				}
-				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionGiletStandardInfo.getOgDStitchModify();
-				if ("0002602".equals(dSitchModifyValue)) {
-//					String dStitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00027");
-					String dStitchModifyCode = productItem.concat("04").concat(ogGiletModel);
-					String dSitchModifyCountArr = coOptionGiletStandardInfo.getOgDStitchModifyPlace();
-					String dSitchModifyValueName = "og_dStitchModify_id";
-					orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, dStitchModifyCode,
-							dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				}
-				// AMF色指定
-				String glAmfColorCd = orderGl.getGlAmfColorCd();
-				if (glAmfColorCd != null && !"".equals(glAmfColorCd)) {
-					String amfValueName = "og_amfColor_id";
-					String amfCode = productItem.concat("04").concat(ogGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glAmfColorSplit = glAmfColorCd.split(",");
-					for (String amfColor : glAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
-					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00010".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-							amfColorCount, "", "", "");
-				}
-				// ボタンホール色指定
-				String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-				if (glBtnholeColorCd != null && !"".equals(glBtnholeColorCd)) {
-					String bhValueName = "og_bhColor_id";
-					String bhCode = productItem.concat("04").concat(ogGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnholeColorSplit = glBtnholeColorCd.split(",");
-					for (String btnholeColor : glBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00013".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-				if (glBtnthreadColorCd != null && !"".equals(glBtnthreadColorCd)) {
-					String byValueName = "og_byColor_id";
-					String byCode = productItem.concat("04").concat(ogGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnthreadColorSplit = glBtnthreadColorCd.split(",");
-					for (String btnthreadColor : glBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00016".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
-				}
-			}
-		}else if("9000102".equals(productCategory)) {
-			CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-			String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
-			if (tgGiletModel != null && !"".equals(tgGiletModel)) {
-				String code = productItem.concat("04").concat(tgGiletModel);
-				orderCoController.getOrderPriceForGiletTuxedoModel(orderCoForm, code);
-				// ボタンホール色指定
-				String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-				if (glBtnholeColorCd != null && !"".equals(glBtnholeColorCd)) {
-					String bhValueName = "tg_bhColor_id";
-					String bhCode = productItem.concat("04").concat(tgGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnholeColorSplit = glBtnholeColorCd.split(",");
-					for (String btnholeColor : glBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00013".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-				if (glBtnthreadColorCd != null && !"".equals(glBtnthreadColorCd)) {
-					String byValueName = "tg_byColor_id";
-					String byCode = productItem.concat("04").concat(tgGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnthreadColorSplit = glBtnthreadColorCd.split(",");
-					for (String btnthreadColor : glBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00016".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
-				}
-			}
-		}else if("9000103".equals(productCategory)) {
-			CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-			String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
-			if (wgGiletModel != null && !"".equals(wgGiletModel)) {
-				String code = productItem.concat("04").concat(wgGiletModel);
-				orderCoController.getOrderPriceForGiletWashableModel(orderCoForm, code);
-				// ステッチ箇所変更
-				String stitchModifyValue = coOptionGiletWashableInfo.getWgStitchModify();
-				if ("0000602".equals(stitchModifyValue)) {
-//					String stitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00006");
-					String stitchModifyCode = productItem.concat("04").concat(wgGiletModel);
-					String stitchModifyCountArr = coOptionGiletWashableInfo.getWgStitchModifyPlace();
-					String stitchModifyValueName = "wg_stitchModify_id";
-					orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, stitchModifyCode,
-							stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-				}
-				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionGiletWashableInfo.getWgDStitchModify();
-				if ("0002602".equals(dSitchModifyValue)) {
-//					String dStitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00027");
-					String dStitchModifyCode = productItem.concat("04").concat(wgGiletModel);
-					String dSitchModifyCountArr = coOptionGiletWashableInfo.getWgDStitchModifyPlace();
-					String dSitchModifyValueName = "wg_dStitchModify_id";
-					orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, dStitchModifyCode,
-							dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-				}
-				// AMF色指定
-				String glAmfColorCd = orderGl.getGlAmfColorCd();
-				if (glAmfColorCd != null && !"".equals(glAmfColorCd)) {
-					String amfValueName = "wg_amfColor_id";
-					String amfCode = productItem.concat("04").concat(wgGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glAmfColorSplit = glAmfColorCd.split(",");
-					for (String amfColor : glAmfColorSplit) {
-						colorMap.put(amfColor, amfColor);
-					}
-					String amfColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String amfColorCode = "00010".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-							amfColorCount, "", "", "");
-				}
-				// ボタンホール色指定
-				String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
-				if (glBtnholeColorCd != null && !"".equals(glBtnholeColorCd)) {
-					String bhValueName = "wg_bhColor_id";
-					String bhCode = productItem.concat("04").concat(wgGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnholeColorSplit = glBtnholeColorCd.split(",");
-					for (String btnholeColor : glBtnholeColorSplit) {
-						colorMap.put(btnholeColor, btnholeColor);
-					}
-					String bhColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String bhColorCode = "00013".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
-				}
-				// ボタン付け糸指定
-				String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
-				if (glBtnthreadColorCd != null && !"".equals(glBtnthreadColorCd)) {
-					String byValueName = "wg_byColor_id";
-					String byCode = productItem.concat("04").concat(wgGiletModel);
-					Map<String, String> colorMap = new HashMap<String, String>();
-					String[] glBtnthreadColorSplit = glBtnthreadColorCd.split(",");
-					for (String btnthreadColor : glBtnthreadColorSplit) {
-						colorMap.put(btnthreadColor, btnthreadColor);
-					}
-					String byColorCount = String.valueOf(colorMap.size());
-					List<String> valuesList = new ArrayList<String>(colorMap.values());
-					String byColorCode = "00016".concat(valuesList.get(0));
-					orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, byCode, byValueName, byColorCode,
-							byColorCount, "", "", "");
-				}
-			}
-		}
-		
-		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), 
-				productItem, "04");
-		this.getGiletModelMap(orderCoForm, modelList);
-	}
-	
-	/**
-	 * SHIRTの入力チェック
-	 * @param orderCoForm
-	 * @param messages
-	 * @param coStTypeSizeOptimization 
-	 * @param stAdjustList 
-	 * @return
-	 */
-	public boolean shirtCheck(OrderCoForm orderCoForm, ResultMessages messages, List<Adjust> stAdjustList, List<TypeSizeOptimization> coStTypeSizeOptimization) {
-		
-		boolean shirtFlag = false;
-		
-		//SHIRT モデル未選択の場合
-		String osShirtModel = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();
-		if ("".equals(osShirtModel)  || null == osShirtModel) {
-	        messages.add("E031", "SHIRT モデル");
-	        shirtFlag = true;
-		}
-
-		//襟型未選択の場合
-		String osChainModel = orderCoForm.getCoOptionShirtStandardInfo().getOsChainModel();
-		if ("0000100".equals(osChainModel)  || null == osChainModel || "".equals(osChainModel) ) {
-	        messages.add("E031", "襟型");
-	        shirtFlag = true;
-		}
-
-		//カフス未選択の場合
-		String osCuffs = orderCoForm.getCoOptionShirtStandardInfo().getOsCuffs();
-		if ("0000200".equals(osCuffs)  || null == osCuffs || "".equals(osCuffs) ) {
-	        messages.add("E031", "カフス");
-	        shirtFlag = true;
-		}
-		
-		//ボタン位置変更未選択の場合
-		String osBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getOsBtnPosChg();
-		BigDecimal stNeckbandBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStNeckbandBtnPosChg();
-		BigDecimal stFrtfirstBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStFrtfirstBtnPosChg();
-		BigDecimal stFrtsecondBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getStFrtsecondBtnPosChg();
-		
-		if ("0002102".equals(osBtnPosChg) && (BigDecimal.ZERO.equals(stNeckbandBtnPosChg) || null == stNeckbandBtnPosChg)
-				&& (BigDecimal.ZERO.equals(stFrtfirstBtnPosChg) || null == stFrtfirstBtnPosChg)
-				&& (BigDecimal.ZERO.equals(stFrtsecondBtnPosChg) || null == stFrtsecondBtnPosChg)) {
-			messages.add("E029", "ボタン位置変更値");
-	        shirtFlag = true;
-		}
-		
-		//カジュアルヘムライン値未選択の場合
-		String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
-		BigDecimal stCasualHemlineSize = orderCoForm.getCoOptionShirtStandardInfo().getStCasualHemlineSize();
-		if ("0002002".equals(osCasHemLine) && ((BigDecimal.ZERO).equals(stCasualHemlineSize) || null == stCasualHemlineSize || (new BigDecimal("0.0")).equals(stCasualHemlineSize) )) {
-	        messages.add("E029", "カジュアルヘムライン値");
-	        shirtFlag = true;
-		}
-		
-		//SHIRTサイズ
-		CoAdjustShirtStandardInfo coAdjustShirtStandardInfo = orderCoForm.getCoAdjustShirtStandardInfo();
-		if(coAdjustShirtStandardInfo == null) {
-            messages.add("E031", "SHIRTサイズ");
-            shirtFlag = true;
-		}else {
-			String corStSize = coAdjustShirtStandardInfo.getCorStSize();
-			if("".equals(corStSize) || corStSize == null) {
-	            messages.add("E031", "SHIRTサイズ");
-	            shirtFlag = true;
-			}else {
-				if(!stAdjustList.isEmpty()&&!coStTypeSizeOptimization.isEmpty()) {
-					// SHIRT_カジュアルヘムライン仕様_コード
-					String stCasualHemlineCd = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
-					// SHIRTS_ネック_グロス
-					BigDecimal corStNeckGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStNeckGross());
-					// SHIRTS_着丈_グロス
-					BigDecimal corStBodylengthGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStBodylengthGross());
-					
-					// SHIRTS_袖丈右_グロス
-					BigDecimal corStRightsleeveGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStRightsleeveGross());
-					
-					// SHIRTS_袖丈左_グロス
-					BigDecimal corStLeftsleeveGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStLeftsleeveGross());
-					
-					// SHIRTS_カフス周り右_グロス
-					BigDecimal corStRightcuffsSurroundingGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStRightcuffsSurroundingGross());
-					
-					// SHIRTS_カフス周り左_グロス
-					BigDecimal corStLeftcuffsSurroundingGross = new BigDecimal(coAdjustShirtStandardInfo.getCorStLeftcuffsSurroundingGross());
-				
-					Map<String, String> stStandardValue = this.getStStandardValue(coStTypeSizeOptimization);
-					
-					// SHIRTS_ネック_型サイズ
-					String stringCorStNeckSize = stStandardValue.get("corStNeckSize");
-					BigDecimal corStNeckSize = new BigDecimal(stringCorStNeckSize);
-					
-					// SHIRTS_着丈_型サイズ
-					String stringCorStBodylengthSize = stStandardValue.get("corStBodylengthSize");
-					BigDecimal corStBodylengthSize = new BigDecimal(stringCorStBodylengthSize);
-					
-					// SHIRTS_袖丈右_型サイズ
-					String stringCorStRightsleeveSize = stStandardValue.get("corStRightsleeveSize");
-					BigDecimal corStRightsleeveSize = new BigDecimal(stringCorStRightsleeveSize);
-					
-					// SHIRTS_袖丈左_型サイズ
-					String stringCorStLeftsleeveSize = stStandardValue.get("corStLeftsleeveSize");
-					BigDecimal corStLeftsleeveSize = new BigDecimal(stringCorStLeftsleeveSize);
-					
-					// SHIRTS_カフス周り右_型サイズ
-					String stringCorStRightcuffsSurroundingSize = stStandardValue.get("corStRightcuffsSurroundingSize");
-					BigDecimal corStRightcuffsSurroundingSize = new BigDecimal(stringCorStRightcuffsSurroundingSize);
-					
-					// SHIRTS_カフス周り左_型サイズ
-					String stringCorStLeftcuffsSurroundingSize = stStandardValue.get("corStLeftcuffsSurroundingSize");
-					BigDecimal corStLeftcuffsSurroundingSize = new BigDecimal(stringCorStLeftcuffsSurroundingSize);
-					
-					for(Adjust adjust:stAdjustList) {
-						if("05".equals(adjust.getItemCode())) {
-							if("05".equals(adjust.getSubItemCode())) {
-								// ネック
-								if("11".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corStNeckSize);
-									BigDecimal addMax = adjusteMax.add(corStNeckSize);
-									if(corStNeckGross.compareTo(addMin) == -1 || corStNeckGross.compareTo(addMax) == 1) {
-										messages.add("E035","GILETのネック");
-										 shirtFlag = true;
-									}
-								}
-								if(!"0002002".equals(stCasualHemlineCd)) {
-									// 着丈修正
-									if("01".equals(adjust.getAdjusteClass())) {
-										BigDecimal adjusteMax = adjust.getAdjusteMax();
-										BigDecimal adjusteMin = adjust.getAdjusteMin();
-										BigDecimal addMin = adjusteMin.add(corStBodylengthSize);
-										BigDecimal addMax = adjusteMax.add(corStBodylengthSize);
-										if(corStBodylengthGross.compareTo(addMin) == -1 || corStBodylengthGross.compareTo(addMax) == 1) {
-											messages.add("E035","GILETの着丈修正");
-											shirtFlag = true;
-										}
-									}
-								}
-								// 袖丈右修正
-								if("03".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corStRightsleeveSize);
-									BigDecimal addMax = adjusteMax.add(corStRightsleeveSize);
-									if(corStRightsleeveGross.compareTo(addMin) == -1 || corStRightsleeveGross.compareTo(addMax) == 1) {
-										messages.add("E035","GILETの袖丈右修正");
-										shirtFlag = true;
-									}
-								}
-								// 袖丈左修正
-								if("04".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corStLeftsleeveSize);
-									BigDecimal addMax = adjusteMax.add(corStLeftsleeveSize);
-									if(corStLeftsleeveGross.compareTo(addMin) == -1 || corStLeftsleeveGross.compareTo(addMax) == 1) {
-										messages.add("E035","GILETの袖丈左修正");
-										shirtFlag = true;
-									}
-								}
-								// カフス周り右
-								if("12".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corStRightcuffsSurroundingSize);
-									BigDecimal addMax = adjusteMax.add(corStRightcuffsSurroundingSize);
-									if(corStRightcuffsSurroundingGross.compareTo(addMin) == -1 || corStRightcuffsSurroundingGross.compareTo(addMax) == 1) {
-										messages.add("E035","GILETのカフス周り右");
-										shirtFlag = true;
-									}
-								}
-								// カフス周り左
-								if("13".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corStLeftcuffsSurroundingSize);
-									BigDecimal addMax = adjusteMax.add(corStLeftcuffsSurroundingSize);
-									if(corStLeftcuffsSurroundingGross.compareTo(addMin) == -1 || corStLeftcuffsSurroundingGross.compareTo(addMax) == 1) {
-										messages.add("E035","GILETのカフス周り左");
-										shirtFlag = true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			String corStNeckSize = coAdjustShirtStandardInfo.getCorStNeckSize();
-			if("".equals(corStNeckSize)||"0".equals(corStNeckSize)||corStNeckSize==null) {
-				messages.add("E034", "SHIRTのネック修正");
-				shirtFlag = true;
-			}
-			
-			String corStBodylengthSize = coAdjustShirtStandardInfo.getCorStBodylengthSize();
-			if("".equals(corStBodylengthSize)||"0".equals(corStBodylengthSize)||corStBodylengthSize==null) {
-				messages.add("E034", "SHIRTの着丈修正");
-				shirtFlag = true;
-			}
-			
-			String corStRightsleeveSize = coAdjustShirtStandardInfo.getCorStRightsleeveSize();
-			if("".equals(corStRightsleeveSize)||"0".equals(corStRightsleeveSize)||corStRightsleeveSize==null) {
-				messages.add("E034", "SHIRTの袖丈右修正");
-				shirtFlag = true;
-			}
-			
-			String corStLeftsleeveSize = coAdjustShirtStandardInfo.getCorStLeftsleeveSize();
-			if("".equals(corStLeftsleeveSize)||"0".equals(corStLeftsleeveSize)||corStLeftsleeveSize==null) {
-				messages.add("E034", "SHIRTの袖丈左修正");
-				shirtFlag = true;
-			}
-			
-			String corStRightcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStRightcuffsSurroundingSize();
-			if("".equals(corStRightcuffsSurroundingSize)||"0".equals(corStRightcuffsSurroundingSize)||corStRightcuffsSurroundingSize==null) {
-				messages.add("E034", "SHIRTのカフス周り右修正");
-				shirtFlag = true;
-			}
-			
-			String corStLeftcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStLeftcuffsSurroundingSize();
-			if("".equals(corStLeftcuffsSurroundingSize)||"0".equals(corStLeftcuffsSurroundingSize)||corStLeftcuffsSurroundingSize==null) {
-				messages.add("E034", "SHIRTのカフス周り左修正");
-				shirtFlag = true;
-			}
-		}
-		
-		return shirtFlag;
 	}
 	
 	/**
@@ -28220,32 +26677,32 @@ public class OrderCoHelper {
 		return adjustJkStandardValue;
 	}
 	
-	/**
-	 * GILETの補正標準値
-	 * @param coJkTypeSizeOptimization
-	 * @return
-	 */
-	public Map<String, String> getGlStandardValue(List<TypeSizeOptimization> coGlTypeSizeOptimization) {
-		Map<String,String> adjustGlStandardValue = new HashMap<String,String>();
-		for(TypeSizeOptimization typeSizeOptimization : coGlTypeSizeOptimization) {
-			// 着丈修正
-			if("01".equals(typeSizeOptimization.getAdjustClass())) {
-				String corGlBodylengthSize = typeSizeOptimization.getTypeSize();
-				adjustGlStandardValue.put("corGlBodylengthSize", corGlBodylengthSize);
-			}
-			// バスト修正
-			else if("14".equals(typeSizeOptimization.getAdjustClass())) {
-				String corGlBustSize = typeSizeOptimization.getTypeSize();
-				adjustGlStandardValue.put("corGlBustSize", corGlBustSize);
-			}
-			// ウエスト修正
-			else if("02".equals(typeSizeOptimization.getAdjustClass())) {
-				String corGlWaistSize = typeSizeOptimization.getTypeSize();
-				adjustGlStandardValue.put("corGlWaistSize", corGlWaistSize);
-			}
-		}
-		return adjustGlStandardValue;
-	}
+//	/**
+//	 * GILETの補正標準値
+//	 * @param coJkTypeSizeOptimization
+//	 * @return
+//	 */
+//	public Map<String, String> getGlStandardValue(List<TypeSizeOptimization> coGlTypeSizeOptimization) {
+//		Map<String,String> adjustGlStandardValue = new HashMap<String,String>();
+//		for(TypeSizeOptimization typeSizeOptimization : coGlTypeSizeOptimization) {
+//			// 着丈修正
+//			if("01".equals(typeSizeOptimization.getAdjustClass())) {
+//				String corGlBodylengthSize = typeSizeOptimization.getTypeSize();
+//				adjustGlStandardValue.put("corGlBodylengthSize", corGlBodylengthSize);
+//			}
+//			// バスト修正
+//			else if("14".equals(typeSizeOptimization.getAdjustClass())) {
+//				String corGlBustSize = typeSizeOptimization.getTypeSize();
+//				adjustGlStandardValue.put("corGlBustSize", corGlBustSize);
+//			}
+//			// ウエスト修正
+//			else if("02".equals(typeSizeOptimization.getAdjustClass())) {
+//				String corGlWaistSize = typeSizeOptimization.getTypeSize();
+//				adjustGlStandardValue.put("corGlWaistSize", corGlWaistSize);
+//			}
+//		}
+//		return adjustGlStandardValue;
+//	}
 	
 	/**
 	 * PANTSの補正標準値
@@ -28364,91 +26821,6 @@ public class OrderCoHelper {
 		}
 		return adjustPt2StandardValue;
 	}
-	
-	/**
-	 * SHIRTの補正標準値
-	 * @param coJkTypeSizeOptimization
-	 * @return
-	 */
-	public Map<String, String> getStStandardValue(List<TypeSizeOptimization> coStTypeSizeOptimization) {
-		Map<String,String> adjustStStandardValue = new HashMap<String,String>();
-		for(TypeSizeOptimization typeSizeOptimization : coStTypeSizeOptimization) {
-			// ネック
-			if("11".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStNeckSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStNeckSize", corStNeckSize);
-			}
-			// 着丈修正
-			else if("01".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStBodylengthSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStBodylengthSize", corStBodylengthSize);
-			}
-			// 袖丈右修正
-			else if("03".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStRightsleeveSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStRightsleeveSize", corStRightsleeveSize);
-			}
-			// 袖丈左修正
-			else if("04".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStLeftsleeveSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStLeftsleeveSize", corStLeftsleeveSize);
-			}
-			// カフス周り右
-			else if("12".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStRightcuffsSurroundingSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStRightcuffsSurroundingSize", corStRightcuffsSurroundingSize);
-			}
-			// カフス周り左
-			else if("13".equals(typeSizeOptimization.getAdjustClass())) {
-				String corStLeftcuffsSurroundingSize = typeSizeOptimization.getTypeSize();
-				adjustStStandardValue.put("corStLeftcuffsSurroundingSize", corStLeftcuffsSurroundingSize);
-			}
-		}
-		return adjustStStandardValue;
-	}
-	
-	/**
-	 * COATの補正標準値
-	 * @param coJkTypeSizeOptimization
-	 * @return
-	 */
-	public Map<String, String> getCtStandardValue(List<TypeSizeOptimization> coCtTypeSizeOptimization) {
-		Map<String,String> adjustCtStandardValue = new HashMap<String,String>();
-		for(TypeSizeOptimization typeSizeOptimization : coCtTypeSizeOptimization) {
-			// 着丈修正
-			if("01".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtBodylengthSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtBodylengthSize", corCtBodylengthSize);
-			}
-			// ウエスト修正
-			else if("02".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtWaistSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtWaistSize", corCtWaistSize);
-			}
-			// 袖丈右修正
-			else if("03".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtRightsleeveSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtRightsleeveSize", corCtRightsleeveSize);
-			}
-			// 袖丈左修正
-			else if("04".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtLeftsleeveSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtLeftsleeveSize", corCtLeftsleeveSize);
-			}
-			// ベント修正（高さ）
-			else if("17".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtPktposSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtPktposSize", corCtPktposSize);
-			}
-			// ポケット位置
-			else if("18".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtPktposSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtPktposSize", corCtPktposSize);
-			}
-		}
-		return adjustCtStandardValue;
-	}
-	
 	
 	/**
 	 * 
@@ -28775,7 +27147,7 @@ public class OrderCoHelper {
 						}
 					}
 					if(productYes.equals(productIs3Piece)) {
-						Map<String, String> glStandardValue = this.getGlStandardValue(coGlTypeSizeOptimization);
+						Map<String, String> glStandardValue = coGiletHelper.getGlStandardValue(coGlTypeSizeOptimization);
 						
 						// GILET_着丈_型サイズ
 						String stringCorGlBodylengthSize = glStandardValue.get("corGlBodylengthSize");
@@ -28972,7 +27344,7 @@ public class OrderCoHelper {
 				}
 			}
 			else if("04".equals(productItem)) {
-				Map<String, String> glStandardValue = this.getGlStandardValue(coGlTypeSizeOptimization);
+				Map<String, String> glStandardValue = coGiletHelper.getGlStandardValue(coGlTypeSizeOptimization);
 				
 				// GILET_着丈_型サイズ
 				String stringCorGlBodylengthSize = glStandardValue.get("corGlBodylengthSize");
@@ -29027,7 +27399,7 @@ public class OrderCoHelper {
 				}
 			}
 			else if("05".equals(productItem)) {
-				Map<String, String> stStandardValue = this.getStStandardValue(coStTypeSizeOptimization);
+				Map<String, String> stStandardValue = coShirtHelper.getStStandardValue(coStTypeSizeOptimization);
 				
 				// SHIRTS_ネック_型サイズ
 				String stringCorStNeckSize = stStandardValue.get("corStNeckSize");
@@ -29133,7 +27505,7 @@ public class OrderCoHelper {
 				}
 			}
 			else if("06".equals(productItem)) {
-				Map<String, String> ctStandardValue = this.getCtStandardValue(coCtTypeSizeOptimization);
+				Map<String, String> ctStandardValue = coCoatHelper.getCtStandardValue(coCtTypeSizeOptimization);
 				
 				// COAT_着丈_型サイズ
 				String stringCorCtBodylengthSize = ctStandardValue.get("corCtBodylengthSize");
@@ -29244,10 +27616,10 @@ public class OrderCoHelper {
 	}
 
 	private void pluralPtStandardOptionItem(CoOptionPantsStandardInfo optionPantsStandardInfo, Order orderPt) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String ptBeltloopCd = orderPt.getPtBeltloopCd();
-		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)) {
+		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)&&!ptBeltloopCd.startsWith(regex)) {
 			String[] ptBeltloopSplit = ptBeltloopCd.split(regex);
 			for (String ptBeltloopCode : ptBeltloopSplit) {
 				if("0000801".equals(ptBeltloopCode)) {
@@ -29270,7 +27642,7 @@ public class OrderCoHelper {
 		
 		//ステッチ箇所変更
 		String ptStitchPlcCd = orderPt.getPtStitchPlcCd();
-		if(ptStitchPlcCd != null && !"".equals(ptStitchPlcCd)) {
+		if(ptStitchPlcCd != null && !"".equals(ptStitchPlcCd)&&!ptStitchPlcCd.startsWith(regex)) {
 			String[] ptStitchPlcSplit = ptStitchPlcCd.split(regex);
 			for (String stitchPlcCode : ptStitchPlcSplit) {
 				if("0002101".equals(stitchPlcCode)) {
@@ -29287,7 +27659,7 @@ public class OrderCoHelper {
 		
 		//ダブルステッチ
 		String ptDblstitchPlcCd = orderPt.getPtDblstitchPlcCd();
-		if(ptDblstitchPlcCd != null && !"".equals(ptDblstitchPlcCd)) {
+		if(ptDblstitchPlcCd != null && !"".equals(ptDblstitchPlcCd)&&!ptDblstitchPlcCd.startsWith(regex)) {
 			String[] ptDblstitchPlcSplit = ptDblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : ptDblstitchPlcSplit) {
 				if("0002301".equals(dblstitchPlcCode)) {
@@ -29305,7 +27677,8 @@ public class OrderCoHelper {
 		//AMF色指定
 		String ptAmfColorPlcCd = orderPt.getPtAmfColorPlcCd();
 		String ptAmfColorCd = orderPt.getPtAmfColorCd();
-		if(ptAmfColorPlcCd!=null && !"".equals(ptAmfColorPlcCd) && ptAmfColorCd !=null && !"".equals(ptAmfColorCd)) {
+		if(ptAmfColorPlcCd!=null && !"".equals(ptAmfColorPlcCd) && ptAmfColorCd !=null && !"".equals(ptAmfColorCd)
+				&&!ptAmfColorPlcCd.startsWith(regex)&&!ptAmfColorCd.startsWith(regex)) {
 			String[] ptAmfColorPlcSplit = ptAmfColorPlcCd.split(regex);
 			String[] ptAmfColorSplit = ptAmfColorCd.split(regex);
 			for (int i = 0;i<ptAmfColorPlcSplit.length;i++) {
@@ -29328,7 +27701,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String ptBtnholeColorPlcCd = orderPt.getPtBtnholeColorPlcCd();
 		String PtBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null) {
+		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null
+				&&!ptBtnholeColorPlcCd.startsWith(regex)&&!PtBtnholeColorCd.startsWith(regex)) {
 			String[] ptBtnholeColorPlcSplit = ptBtnholeColorPlcCd.split(regex);
 			String[] PtBtnholeColorSplit = PtBtnholeColorCd.split(regex);
 			for (int i = 0; i < ptBtnholeColorPlcSplit.length; i++) {
@@ -29351,7 +27725,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String ptBtnthreadColorPlcCd = orderPt.getPtBtnthreadColorPlcCd();
 		String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null) {
+		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null
+				&&!ptBtnthreadColorPlcCd.startsWith(regex)&&!ptBtnthreadColorCd.startsWith(regex)) {
 			String[] ptBtnthreadColorPlcSplit = ptBtnthreadColorPlcCd.split(regex);
 			String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(regex);
 			for (int i = 0; i < ptBtnthreadColorPlcSplit.length; i++) {
@@ -29373,10 +27748,10 @@ public class OrderCoHelper {
 	}
 	
 	private void pluralPtTuxedoOptionItem(CoOptionPantsTuxedoInfo optionPantsTuxedoInfo, Order orderPt) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String ptBeltloopCd = orderPt.getPtBeltloopCd();
-		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)) {
+		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)&&!ptBeltloopCd.startsWith(regex)) {
 			String[] ptBeltloopSplit = ptBeltloopCd.split(regex);
 			for (String ptBeltloopCode : ptBeltloopSplit) {
 				if("0000801".equals(ptBeltloopCode)) {
@@ -29400,7 +27775,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String ptBtnholeColorPlcCd = orderPt.getPtBtnholeColorPlcCd();
 		String PtBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null) {
+		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null
+				&&!ptBtnholeColorPlcCd.startsWith(regex)&&!PtBtnholeColorCd.startsWith(regex)) {
 			String[] ptBtnholeColorPlcSplit = ptBtnholeColorPlcCd.split(regex);
 			String[] PtBtnholeColorSplit = PtBtnholeColorCd.split(regex);
 			for (int i = 0; i < ptBtnholeColorPlcSplit.length; i++) {
@@ -29423,7 +27799,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String ptBtnthreadColorPlcCd = orderPt.getPtBtnthreadColorPlcCd();
 		String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null) {
+		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null
+				&&!ptBtnthreadColorPlcCd.startsWith(regex)&&!ptBtnthreadColorCd.startsWith(regex)) {
 			String[] ptBtnthreadColorPlcSplit = ptBtnthreadColorPlcCd.split(regex);
 			String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(regex);
 			for (int i = 0; i < ptBtnthreadColorPlcSplit.length; i++) {
@@ -29445,10 +27822,10 @@ public class OrderCoHelper {
 	}
 
 	private void pluralPtWashableOptionItem(CoOptionPantsWashableInfo optionPantsWashableInfo, Order orderPt) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String ptBeltloopCd = orderPt.getPtBeltloopCd();
-		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)) {
+		if(ptBeltloopCd != null && !"".equals(ptBeltloopCd)&&!ptBeltloopCd.startsWith(regex)) {
 			String[] ptBeltloopSplit = ptBeltloopCd.split(regex);
 			for (String ptBeltloopCode : ptBeltloopSplit) {
 				if("0000801".equals(ptBeltloopCode)) {
@@ -29471,7 +27848,7 @@ public class OrderCoHelper {
 		
 		//ステッチ箇所変更
 		String ptStitchPlcCd = orderPt.getPtStitchPlcCd();
-		if(ptStitchPlcCd != null && !"".equals(ptStitchPlcCd)) {
+		if(ptStitchPlcCd != null && !"".equals(ptStitchPlcCd)&&!ptStitchPlcCd.startsWith(regex)) {
 			String[] ptStitchPlcSplit = ptStitchPlcCd.split(regex);
 			for (String stitchPlcCode : ptStitchPlcSplit) {
 				if("0002101".equals(stitchPlcCode)) {
@@ -29488,7 +27865,7 @@ public class OrderCoHelper {
 		
 		//ダブルステッチ
 		String ptDblstitchPlcCd = orderPt.getPtDblstitchPlcCd();
-		if(ptDblstitchPlcCd != null && !"".equals(ptDblstitchPlcCd)) {
+		if(ptDblstitchPlcCd != null && !"".equals(ptDblstitchPlcCd)&&!ptDblstitchPlcCd.startsWith(regex)) {
 			String[] ptDblstitchPlcSplit = ptDblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : ptDblstitchPlcSplit) {
 				if("0002301".equals(dblstitchPlcCode)) {
@@ -29506,7 +27883,8 @@ public class OrderCoHelper {
 		//AMF色指定
 		String ptAmfColorPlcCd = orderPt.getPtAmfColorPlcCd();
 		String ptAmfColorCd = orderPt.getPtAmfColorCd();
-		if(ptAmfColorPlcCd!=null && !"".equals(ptAmfColorPlcCd) && ptAmfColorCd !=null && !"".equals(ptAmfColorCd)) {
+		if(ptAmfColorPlcCd!=null && !"".equals(ptAmfColorPlcCd) && ptAmfColorCd !=null && !"".equals(ptAmfColorCd)
+				&&!ptAmfColorPlcCd.startsWith(regex)&&!ptAmfColorCd.startsWith(regex)) {
 			String[] ptAmfColorPlcSplit = ptAmfColorPlcCd.split(regex);
 			String[] ptAmfColorSplit = ptAmfColorCd.split(regex);
 			for (int i = 0;i<ptAmfColorPlcSplit.length;i++) {
@@ -29529,7 +27907,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String ptBtnholeColorPlcCd = orderPt.getPtBtnholeColorPlcCd();
 		String PtBtnholeColorCd = orderPt.getPtBtnholeColorCd();
-		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null) {
+		if(!"".equals(ptBtnholeColorPlcCd)&&ptBtnholeColorPlcCd!=null&&!"".equals(PtBtnholeColorCd)&&PtBtnholeColorCd!=null
+				&&!ptBtnholeColorPlcCd.startsWith(regex)&&!PtBtnholeColorCd.startsWith(regex)) {
 			String[] ptBtnholeColorPlcSplit = ptBtnholeColorPlcCd.split(regex);
 			String[] PtBtnholeColorSplit = PtBtnholeColorCd.split(regex);
 			for (int i = 0; i < ptBtnholeColorPlcSplit.length; i++) {
@@ -29552,7 +27931,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String ptBtnthreadColorPlcCd = orderPt.getPtBtnthreadColorPlcCd();
 		String ptBtnthreadColorCd = orderPt.getPtBtnthreadColorCd();
-		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null) {
+		if(!"".equals(ptBtnthreadColorPlcCd)&&ptBtnthreadColorPlcCd!=null&&!"".equals(ptBtnthreadColorCd)&&ptBtnthreadColorCd!=null
+				&&!ptBtnthreadColorPlcCd.startsWith(regex)&&!ptBtnthreadColorCd.startsWith(regex)) {
 			String[] ptBtnthreadColorPlcSplit = ptBtnthreadColorPlcCd.split(regex);
 			String[] ptBtnthreadColorSplit = ptBtnthreadColorCd.split(regex);
 			for (int i = 0; i < ptBtnthreadColorPlcSplit.length; i++) {
@@ -29575,10 +27955,10 @@ public class OrderCoHelper {
 
 	
 	private void pluralPt2StandardOptionItem(CoOptionPants2StandardInfo optionPants2StandardInfo, Order orderPt2) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String pt2BeltloopCd = orderPt2.getPt2BeltloopCd();
-		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)) {
+		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)&&!pt2BeltloopCd.startsWith(regex)) {
 			String[] pt2BeltloopSplit = pt2BeltloopCd.split(regex);
 			for (String pt2BeltloopCode : pt2BeltloopSplit) {
 				if("0000801".equals(pt2BeltloopCode)) {
@@ -29601,7 +27981,7 @@ public class OrderCoHelper {
 		
 		//ステッチ箇所変更
 		String pt2StitchPlcCd = orderPt2.getPt2StitchPlcCd();
-		if(pt2StitchPlcCd != null && !"".equals(pt2StitchPlcCd)) {
+		if(pt2StitchPlcCd != null && !"".equals(pt2StitchPlcCd)&&!pt2StitchPlcCd.startsWith(regex)) {
 			String[] pt2StitchPlcSplit = pt2StitchPlcCd.split(regex);
 			for (String stitchPlcCode : pt2StitchPlcSplit) {
 				if("0002101".equals(stitchPlcCode)) {
@@ -29618,7 +27998,7 @@ public class OrderCoHelper {
 		
 		//ダブルステッチ
 		String pt2DblstitchPlcCd = orderPt2.getPt2DblstitchPlcCd();
-		if(pt2DblstitchPlcCd != null && !"".equals(pt2DblstitchPlcCd)) {
+		if(pt2DblstitchPlcCd != null && !"".equals(pt2DblstitchPlcCd)&&!pt2DblstitchPlcCd.startsWith(regex)) {
 			String[] pt2DblstitchPlcSplit = pt2DblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : pt2DblstitchPlcSplit) {
 				if("0002301".equals(dblstitchPlcCode)) {
@@ -29636,7 +28016,8 @@ public class OrderCoHelper {
 		//AMF色指定
 		String pt2AmfColorPlcCd = orderPt2.getPt2AmfColorPlcCd();
 		String pt2AmfColorCd = orderPt2.getPt2AmfColorCd();
-		if(pt2AmfColorPlcCd!=null && !"".equals(pt2AmfColorPlcCd) && pt2AmfColorCd !=null && !"".equals(pt2AmfColorCd)) {
+		if(pt2AmfColorPlcCd!=null && !"".equals(pt2AmfColorPlcCd) && pt2AmfColorCd !=null && !"".equals(pt2AmfColorCd)&&
+				!pt2AmfColorPlcCd.startsWith(regex)&&!pt2AmfColorCd.startsWith(regex)) {
 			String[] pt2AmfColorPlcSplit = pt2AmfColorPlcCd.split(regex);
 			String[] pt2AmfColorSplit = pt2AmfColorCd.split(regex);
 			for (int i = 0;i<pt2AmfColorPlcSplit.length;i++) {
@@ -29659,7 +28040,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String pt2BtnholeColorPlcCd = orderPt2.getPt2BtnholeColorPlcCd();
 		String Pt2BtnholeColorCd = orderPt2.getPt2BtnholeColorCd();
-		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null) {
+		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null&&
+				!pt2BtnholeColorPlcCd.startsWith(regex)&&!Pt2BtnholeColorCd.startsWith(regex)) {
 			String[] pt2BtnholeColorPlcSplit = pt2BtnholeColorPlcCd.split(regex);
 			String[] Pt2BtnholeColorSplit = Pt2BtnholeColorCd.split(regex);
 			for (int i = 0; i < pt2BtnholeColorPlcSplit.length; i++) {
@@ -29682,7 +28064,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String pt2BtnthreadColorPlcCd = orderPt2.getPt2BtnthreadColorPlcCd();
 		String pt2BtnthreadColorCd = orderPt2.getPt2BtnthreadColorCd();
-		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null) {
+		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null&&
+				!pt2BtnthreadColorPlcCd.startsWith(regex)&&!pt2BtnthreadColorCd.startsWith(regex)) {
 			String[] pt2BtnthreadColorPlcSplit = pt2BtnthreadColorPlcCd.split(regex);
 			String[] pt2BtnthreadColorSplit = pt2BtnthreadColorCd.split(regex);
 			for (int i = 0; i < pt2BtnthreadColorPlcSplit.length; i++) {
@@ -29704,10 +28087,10 @@ public class OrderCoHelper {
 	}
 	
 	private void pluralPt2TuxedoOptionItem(CoOptionPants2TuxedoInfo optionPants2TuxedoInfo, Order orderPt2) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String pt2BeltloopCd = orderPt2.getPt2BeltloopCd();
-		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)) {
+		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)&&!pt2BeltloopCd.startsWith(regex)) {
 			String[] pt2BeltloopSplit = pt2BeltloopCd.split(regex);
 			for (String pt2BeltloopCode : pt2BeltloopSplit) {
 				if("0000801".equals(pt2BeltloopCode)) {
@@ -29731,7 +28114,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String pt2BtnholeColorPlcCd = orderPt2.getPt2BtnholeColorPlcCd();
 		String Pt2BtnholeColorCd = orderPt2.getPt2BtnholeColorCd();
-		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null) {
+		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null&&
+				!pt2BtnholeColorPlcCd.startsWith(regex)&&!Pt2BtnholeColorCd.startsWith(regex)) {
 			String[] pt2BtnholeColorPlcSplit = pt2BtnholeColorPlcCd.split(regex);
 			String[] Pt2BtnholeColorSplit = Pt2BtnholeColorCd.split(regex);
 			for (int i = 0; i < pt2BtnholeColorPlcSplit.length; i++) {
@@ -29754,7 +28138,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String pt2BtnthreadColorPlcCd = orderPt2.getPt2BtnthreadColorPlcCd();
 		String pt2BtnthreadColorCd = orderPt2.getPt2BtnthreadColorCd();
-		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null) {
+		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null&&
+				!pt2BtnthreadColorPlcCd.startsWith(regex)&&!pt2BtnthreadColorCd.startsWith(regex)) {
 			String[] pt2BtnthreadColorPlcSplit = pt2BtnthreadColorPlcCd.split(regex);
 			String[] pt2BtnthreadColorSplit = pt2BtnthreadColorCd.split(regex);
 			for (int i = 0; i < pt2BtnthreadColorPlcSplit.length; i++) {
@@ -29776,10 +28161,10 @@ public class OrderCoHelper {
 	}
 	
 	private void pluralPt2WashableOptionItem(CoOptionPants2WashableInfo optionPants2WashableInfo, Order orderPt2) {
-		String regex = ",";
+		String regex = "/";
 		//ベルトループ
 		String pt2BeltloopCd = orderPt2.getPt2BeltloopCd();
-		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)) {
+		if(pt2BeltloopCd != null && !"".equals(pt2BeltloopCd)&&!pt2BeltloopCd.startsWith(regex)) {
 			String[] pt2BeltloopSplit = pt2BeltloopCd.split(regex);
 			for (String pt2BeltloopCode : pt2BeltloopSplit) {
 				if("0000801".equals(pt2BeltloopCode)) {
@@ -29802,7 +28187,7 @@ public class OrderCoHelper {
 		
 		//ステッチ箇所変更
 		String pt2StitchPlcCd = orderPt2.getPt2StitchPlcCd();
-		if(pt2StitchPlcCd != null && !"".equals(pt2StitchPlcCd)) {
+		if(pt2StitchPlcCd != null && !"".equals(pt2StitchPlcCd)&&!pt2BeltloopCd.startsWith(regex)) {
 			String[] pt2StitchPlcSplit = pt2StitchPlcCd.split(regex);
 			for (String stitchPlcCode : pt2StitchPlcSplit) {
 				if("0002101".equals(stitchPlcCode)) {
@@ -29819,7 +28204,7 @@ public class OrderCoHelper {
 		
 		//ダブルステッチ
 		String pt2DblstitchPlcCd = orderPt2.getPt2DblstitchPlcCd();
-		if(pt2DblstitchPlcCd != null && !"".equals(pt2DblstitchPlcCd)) {
+		if(pt2DblstitchPlcCd != null && !"".equals(pt2DblstitchPlcCd)&&!pt2BeltloopCd.startsWith(regex)) {
 			String[] pt2DblstitchPlcSplit = pt2DblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : pt2DblstitchPlcSplit) {
 				if("0002301".equals(dblstitchPlcCode)) {
@@ -29837,7 +28222,8 @@ public class OrderCoHelper {
 		//AMF色指定
 		String pt2AmfColorPlcCd = orderPt2.getPt2AmfColorPlcCd();
 		String pt2AmfColorCd = orderPt2.getPt2AmfColorCd();
-		if(pt2AmfColorPlcCd!=null && !"".equals(pt2AmfColorPlcCd) && pt2AmfColorCd !=null && !"".equals(pt2AmfColorCd)) {
+		if(pt2AmfColorPlcCd!=null && !"".equals(pt2AmfColorPlcCd) && pt2AmfColorCd !=null && !"".equals(pt2AmfColorCd)
+				&&!pt2AmfColorPlcCd.startsWith(regex)&&!pt2AmfColorCd.startsWith(regex)) {
 			String[] pt2AmfColorPlcSplit = pt2AmfColorPlcCd.split(regex);
 			String[] pt2AmfColorSplit = pt2AmfColorCd.split(regex);
 			for (int i = 0;i<pt2AmfColorPlcSplit.length;i++) {
@@ -29860,7 +28246,8 @@ public class OrderCoHelper {
 		//ボタンホール色指定
 		String pt2BtnholeColorPlcCd = orderPt2.getPt2BtnholeColorPlcCd();
 		String Pt2BtnholeColorCd = orderPt2.getPt2BtnholeColorCd();
-		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null) {
+		if(!"".equals(pt2BtnholeColorPlcCd)&&pt2BtnholeColorPlcCd!=null&&!"".equals(Pt2BtnholeColorCd)&&Pt2BtnholeColorCd!=null
+				&&!pt2BtnholeColorPlcCd.startsWith(regex)&&!Pt2BtnholeColorCd.startsWith(regex)) {
 			String[] pt2BtnholeColorPlcSplit = pt2BtnholeColorPlcCd.split(regex);
 			String[] Pt2BtnholeColorSplit = Pt2BtnholeColorCd.split(regex);
 			for (int i = 0; i < pt2BtnholeColorPlcSplit.length; i++) {
@@ -29883,7 +28270,8 @@ public class OrderCoHelper {
 		//ボタン付け糸指定
 		String pt2BtnthreadColorPlcCd = orderPt2.getPt2BtnthreadColorPlcCd();
 		String pt2BtnthreadColorCd = orderPt2.getPt2BtnthreadColorCd();
-		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null) {
+		if(!"".equals(pt2BtnthreadColorPlcCd)&&pt2BtnthreadColorPlcCd!=null&&!"".equals(pt2BtnthreadColorCd)&&pt2BtnthreadColorCd!=null
+				&&!pt2BtnthreadColorPlcCd.startsWith(regex)&&!pt2BtnthreadColorCd.startsWith(regex)) {
 			String[] pt2BtnthreadColorPlcSplit = pt2BtnthreadColorPlcCd.split(regex);
 			String[] pt2BtnthreadColorSplit = pt2BtnthreadColorCd.split(regex);
 			for (int i = 0; i < pt2BtnthreadColorPlcSplit.length; i++) {
@@ -29929,37 +28317,37 @@ public class OrderCoHelper {
 		String number = orderCoForm.getCoAdjustJacketStandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coJkTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coJkTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coJkTypeSizeOptimization;
 	}
 
-	/**
-	 *GILETの標準値取得
-	 * @param orderCoForm
-	 * @return
-	 */
-	public List<TypeSizeOptimization> getCoGlTypeSizeOptimization(OrderCoForm orderCoForm, TypeSizeService typeSizeService) {
-		String orderPattern = orderCoForm.getOrderPattern();
-		String productCategory = orderCoForm.getProductCategory();
-		String subItemCode = "04";
-		String modelCode = null;
-		if("9000101".equals(productCategory)) {
-			modelCode = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel();	
-		}
-		else if("9000102".equals(productCategory)) {
-			modelCode = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel();
-		}
-		else if("9000103".equals(productCategory)) {
-			modelCode = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel();
-		}
-		 
-		String figure = orderCoForm.getCoAdjustGiletStandardInfo().getSizeFigure();
-		String number = orderCoForm.getCoAdjustGiletStandardInfo().getSizeNumber();
-		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
-				figure, number);
-		List<TypeSizeOptimization> coGlTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
-		return coGlTypeSizeOptimization;
-	}
+//	/**
+//	 *GILETの標準値取得
+//	 * @param orderCoForm
+//	 * @return
+//	 */
+//	public List<TypeSizeOptimization> getCoGlTypeSizeOptimization(OrderCoForm orderCoForm, TypeSizeService typeSizeService) {
+//		String orderPattern = orderCoForm.getOrderPattern();
+//		String productCategory = orderCoForm.getProductCategory();
+//		String subItemCode = "04";
+//		String modelCode = null;
+//		if("9000101".equals(productCategory)) {
+//			modelCode = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel();	
+//		}
+//		else if("9000102".equals(productCategory)) {
+//			modelCode = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel();
+//		}
+//		else if("9000103".equals(productCategory)) {
+//			modelCode = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel();
+//		}
+//		 
+//		String figure = orderCoForm.getCoAdjustGiletStandardInfo().getSizeFigure();
+//		String number = orderCoForm.getCoAdjustGiletStandardInfo().getSizeNumber();
+//		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
+//				figure, number);
+//		List<TypeSizeOptimization> coGlTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
+//		return coGlTypeSizeOptimization;
+//	}
 	
 	/**
 	 *PANTSの標準値取得
@@ -29985,44 +28373,8 @@ public class OrderCoHelper {
 		String number = orderCoForm.getCoAdjustPantsStandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coPtTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coPtTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coPtTypeSizeOptimization;
-	}
-	
-	
-	
-	/**
-	 *SHIRTの標準値取得
-	 * @param orderCoForm
-	 * @return
-	 */
-	public List<TypeSizeOptimization> getCoStTypeSizeOptimization(OrderCoForm orderCoForm, TypeSizeService typeSizeService) {
-		String orderPattern = orderCoForm.getOrderPattern();
-		String subItemCode = "05";
-		String modelCode = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();	
-		String figure = null;
-		String number = orderCoForm.getCoAdjustShirtStandardInfo().getCorStSize();
-		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
-				figure, number);
-		List<TypeSizeOptimization> coStTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
-		return coStTypeSizeOptimization;
-	}
-	
-	/**
-	 *COATの標準値取得
-	 * @param orderCoForm
-	 * @return
-	 */
-	public List<TypeSizeOptimization> getCoCtTypeSizeOptimization(OrderCoForm orderCoForm, TypeSizeService typeSizeService) {
-		String orderPattern = orderCoForm.getOrderPattern();
-		String subItemCode = "06";
-		String modelCode = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();	
-		String figure = null;
-		String number = orderCoForm.getCoAdjustCoatStandardInfo().getCorCtSize();
-		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
-				figure, number);
-		List<TypeSizeOptimization> coCtTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
-		return coCtTypeSizeOptimization;
 	}
 
 	public Map<String, List<Adjust>> getAdjustItemList(List<Adjust> adjustList) {
@@ -30064,8 +28416,9 @@ public class OrderCoHelper {
 		return adjustItemMap;
 	}
 
-	public void getYieldNum(OrderCoForm orderCoForm, YieldService yieldService) {
-		List<Yield> yieldList = yieldService.getYield();
+	public BigDecimal getYieldNum(OrderCoForm orderCoForm, YieldService yieldService) {
+		//List<Yield> yieldList = yieldService.getYield();
+		List<Yield> yieldList = orderCoForm.getYieldList();
 		Map<String,BigDecimal> yieldMap = new HashMap<String,BigDecimal>();
 		for (Yield yield : yieldList) {
 			if("02".equals(yield.getSubItemCode())) {
@@ -30091,15 +28444,132 @@ public class OrderCoHelper {
 		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
 		String productIs3Piece = orderCoForm.getProductIs3Piece();
 		if("01".equals(productItem)) {
-			
+			if("9000101".equals(productCategory)) {
+				CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
+				String ojFrontBtnCnt = coOptionJacketStandardInfo.getOjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(ojFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(ojFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double").add(yieldMap.get("03Single"));
+				}else {
+					yieldNum = yieldMap.get("02Single").add(yieldMap.get("03Single"));
+				}
+				if("0009902".equals(productIs3Piece)) {
+					CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+					String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
+					if("BS01-D".equals(ogGiletModel)||"ET15-D".equals(ogGiletModel)) {
+						yieldNum = yieldNum.add(yieldMap.get("04Double"));
+					}else {
+						yieldNum = yieldNum.add(yieldMap.get("04Single"));
+					}
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					yieldNum = yieldNum.add(yieldMap.get("07Single"));
+				}
+			}else if("9000102".equals(productCategory)) {
+				CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
+				String tjFrontBtnCnt = coOptionJacketTuxedoInfo.getTjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(tjFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(tjFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double").add(yieldMap.get("03Single"));
+				}else {
+					yieldNum = yieldMap.get("02Single").add(yieldMap.get("03Single"));
+				}
+				if("0009902".equals(productIs3Piece)) {
+					CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+					String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
+					if("BS01-D".equals(tgGiletModel)||"ET15-D".equals(tgGiletModel)) {
+						yieldNum = yieldNum.add(yieldMap.get("04Double"));
+					}else {
+						yieldNum = yieldNum.add(yieldMap.get("04Single"));
+					}
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					yieldNum = yieldNum.add(yieldMap.get("07Single"));
+				}
+			}else if("9000103".equals(productCategory)) {
+				CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
+				String wjFrontBtnCnt = coOptionJacketWashableInfo.getWjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(wjFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(wjFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double").add(yieldMap.get("03Single"));
+				}else {
+					yieldNum = yieldMap.get("02Single").add(yieldMap.get("03Single"));
+				}
+				if("0009902".equals(productIs3Piece)) {
+					CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+					String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
+					if("BS01-D".equals(wgGiletModel)||"ET15-D".equals(wgGiletModel)) {
+						yieldNum = yieldNum.add(yieldMap.get("04Double"));
+					}else {
+						yieldNum = yieldNum.add(yieldMap.get("04Single"));
+					}
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					yieldNum = yieldNum.add(yieldMap.get("07Single"));
+				}
+			}
+		}else if("02".equals(productItem)) {
+			if("9000101".equals(productCategory)) {
+				CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
+				String ojFrontBtnCnt = coOptionJacketStandardInfo.getOjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(ojFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(ojFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double");
+				}else {
+					yieldNum = yieldMap.get("02Single");
+				}
+			}else if("9000102".equals(productCategory)) {
+				CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
+				String tjFrontBtnCnt = coOptionJacketTuxedoInfo.getTjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(tjFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(tjFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double");
+				}else {
+					yieldNum = yieldMap.get("02Single");
+				}
+			}else if("9000103".equals(productCategory)) {
+				CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
+				String wjFrontBtnCnt = coOptionJacketWashableInfo.getWjFrontBtnCnt();
+				if(OptionCodeKeys.JK_0000105.equals(wjFrontBtnCnt) || OptionCodeKeys.JK_0000106.equals(wjFrontBtnCnt)) {
+					yieldNum = yieldMap.get("02Double");
+				}else {
+					yieldNum = yieldMap.get("02Single");
+				}
+			}
+		}else if("03".equals(productItem)) {
+			yieldNum = yieldMap.get("03Single");
+		}else if("04".equals(productItem)) {
+			if("9000101".equals(productCategory)) {
+				CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+				String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
+				if("BS01-D".equals(ogGiletModel)||"ET15-D".equals(ogGiletModel)) {
+					yieldNum = yieldMap.get("04Double");
+				}else {
+					yieldNum = yieldMap.get("04Single");
+				}
+			}else if("9000102".equals(productCategory)) {
+				CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+				String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
+				if("BS01-D".equals(tgGiletModel)||"ET15-D".equals(tgGiletModel)) {
+					yieldNum = yieldMap.get("04Double");
+				}else {
+					yieldNum = yieldMap.get("04Single");
+				}
+			}else if("9000103".equals(productCategory)) {
+				CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+				String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
+				if("BS01-D".equals(wgGiletModel)||"ET15-D".equals(wgGiletModel)) {
+					yieldNum = yieldMap.get("04Double");
+				}else {
+					yieldNum = yieldMap.get("04Single");
+				}
+			}
+		}else if("05".equals(productItem)) {
+			yieldNum = yieldMap.get("05Single");
+		}else if("06".equals(productItem)) {
+			CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+			String coatModel = coOptionCoatStandardInfo.getCoatModel();
+			if("DoubleChester".equals(coatModel)||"DoublePolo".equals(coatModel)) {
+				yieldNum = yieldMap.get("06Double");
+			}else {
+				yieldNum = yieldMap.get("06Single");
+			}
 		}
-	}
-	
-	public Boolean isNotBigDecimalNull(BigDecimal args) {
-		if(args != null) {
-			return true;
-		}else {
-			return false;
-		}
+		return yieldNum.divide(new BigDecimal("1000"));
 	}
 }

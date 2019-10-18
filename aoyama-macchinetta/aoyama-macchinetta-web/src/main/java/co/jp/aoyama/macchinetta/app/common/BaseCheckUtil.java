@@ -20,6 +20,14 @@ public class BaseCheckUtil {
 		  return true;
 	}
 	
+	public static Boolean isNotBigDecimalNull(BigDecimal args) {
+		if(args != null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	public static Boolean GrossCompareTo(String gross, ResultMessages messages, String msg) {
 		if (gross == null || gross == "") {
 			messages.add("E036", msg);

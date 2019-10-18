@@ -2,37 +2,40 @@
  * 選択モデル一時保存変数
  ************************************************/
 // JACKET 標準
-var tmpJacketModel = '選択';
+var tmpJacketModel = '';
 // JACKET タキシード
-var tmpTjJacketModel = '選択';
+var tmpTjJacketModel = '';
 // JACKET ウォッシャブル
-var tmpWjJacketModel = '選択';
+var tmpWjJacketModel = '';
 
 // GILET 標準
-var tmpGiletModel = '選択';
+var tmpGiletModel = '';
 // GILET タキシード
-var tmpTgGiletModel = '選択';
+var tmpTgGiletModel = '';
 // GILET ウォッシャブル
-var tmpWgGiletModel = '選択';
+var tmpWgGiletModel = '';
 
 // PANTS 標準
-var tmpOpPantsModel = '選択';
+var tmpOpPantsModel = '';
 // PANTS2本目 標準
-var tmpOp2PantsModel = '選択';
+var tmpOp2PantsModel = '';
 // PANTS3本目 標準
-var tmpOp3PantsModel = '選択';
+var tmpOp3PantsModel = '';
 // PANTS タキシード
-var tmpTpPantsModel = '選択';
+var tmpTpPantsModel = '';
 // PANTS2本目 タキシード
-var tmpTp2PantsModel = '選択';
+var tmpTp2PantsModel = '';
 // PANTS3本目 タキシード
-var tmpTp3PantsModel = '選択';
+var tmpTp3PantsModel = '';
 // PANTS ウォッシャブル
-var tmpWpPantsModel = '選択';
+var tmpWpPantsModel = '';
 // PANTS2本目 ウォッシャブル
-var tmpWp2PantsModel = '選択';
+var tmpWp2PantsModel = '';
 // PANTS3本目 ウォッシャブル
-var tmpWp3PantsModel = '選択';
+var tmpWp3PantsModel = '';
 
 // コート
-var tmpCoatModel = '選択'
+var tmpCoatModel = '';
+
+// SHIRT
+var tmpShirtModel = '';

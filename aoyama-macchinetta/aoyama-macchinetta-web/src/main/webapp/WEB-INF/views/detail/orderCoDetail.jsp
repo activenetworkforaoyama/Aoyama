@@ -234,11 +234,14 @@
 	<c:if test="${authority == '04'}">
 		<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<div class="col col-md-9">
+				<div class="col col-md-7">
 				</div>
-				<div class="col col-md-3">
+				<div class="col col-md-5">
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
+					</button>
+					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
+						工場指示書(中国語)
 					</button>
 				</div>
 			</c:if>
@@ -250,7 +253,7 @@
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
 				<c:choose>
 				<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
-					<div class="col col-md-4">
+					<div class="col col-md-2">
 					</div>
 					
 					<div class="col col-md-5">
@@ -258,21 +261,27 @@
 							注文内容確認書
 						</button>
 					</div>
-					<div class="col col-md-3">
+					<div class="col col-md-5">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
+						</button>
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
+							工場指示書(中国語)
 						</button>
 					</div>
 				</c:when>
 				<c:otherwise>
-					<div class="col col-md-4">
+					<div class="col col-md-2">
 					</div>
 					
 					<div class="col col-md-5">
 					</div>
-					<div class="col col-md-3">
+					<div class="col col-md-5">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
+						</button>
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
+							工場指示書(中国語)
 						</button>
 					</div>
 				</c:otherwise>
@@ -581,11 +590,13 @@
 					<div class="col col-md-3"><label class=" form-control-label">カテゴリ</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value" id="product_category"></label></strong></div>
 				</div>
+				<c:if test="${order.productItem != '05' && order.productItem != '06'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">LCR縫製</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.productLcrSewing}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="product_lcr_sewing_rt_price">${orderFm.productLcrSewingRtPriceFm}</label></strong></div>
 				</div>
+				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ブランドネーム</label></div>
 					<div class="col-12 col-md-6">
@@ -935,25 +946,6 @@
 			</div>
 		</div>
 	</div>
-	<c:if test="${authority != '03' && authority != '04'}">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-						<strong class="card-title">店舗補正入力欄</strong>
-					</div>
-					<div class="card-body">
-						<div class="row">
-							<div class="col col-lg-12">
-								<textarea readonly name="textarea-input" id="textarea-input"
-									rows="3" class="form-control">${f:h(order.corJkStoreCorrectionMemo)}</textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:if>
 </div>
 </div>
 </div>
@@ -984,6 +976,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_waist_pkt_rt_price">${orderFm.glWaistPktRtPriceFm}</label></strong></div>
 				</div>
+				<c:if test="${order.glWaistPktNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">腰ポケット形状</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktShapeNm}</label></strong></div>
@@ -995,6 +988,7 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glWaistPktClothNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_waist_pkt_cloth_rt_price">${orderFm.glWaistPktClothRtPriceFm}</label></strong></div>
 				</div>
+				</c:if>
 				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">ステッチ種類</label></div>
@@ -1102,25 +1096,6 @@
 			</div>
 		</div>
 	</div>
-	<c:if test="${authority != '03' && authority != '04'}">
-	<div class="row">
-	<div class="col-md-12">
-		<div class="card">
-			<div class="card-header">
-				<strong class="card-title">店舗補正入力欄</strong>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col col-lg-12">
-						<textarea readonly name="textarea-input" id="textarea-input"
-							rows="3" class="form-control">${f:h(order.corGlStoreCorrectionMemo)}</textarea>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	</div>
-	</c:if>
 </div>
 </div>
 <!-- GILET End -->
@@ -1368,25 +1343,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-	<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corPtStoreCorrectionMemo)}</textarea>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:if>
 	</div>
 </div>
 </div>
@@ -1636,25 +1592,6 @@
 			</div>
 		</div>
     </div>
-	<div class="row">
-	<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corPt2StoreCorrectionMemo)}</textarea>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:if>
-</div>
 </div>
 </div>
 <!-- PANTS 2 End -->
@@ -1802,25 +1739,6 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
-	<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corCtStoreCorrectionMemo)}</textarea>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</c:if>
-	</div>
 </div>
 </div>
 </div>
@@ -1956,17 +1874,17 @@
 				
 				    <c:if test="${order.stBtnposChgNm == '有り'}">
 				    <div class="col col-md-3"><label class=" form-control-label"></label></div>
-					<div class="col-12 col-md-3"><label class=" form-control-label">台襟釦</label></div>
+					<div class="col-12 col-md-3"><strong><label class=" form-control-label">台襟釦</label></strong></div>
 					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stNeckbandBtnChgNm} ${order.stNeckbandBtnPosChg}</label>cm</strong></div>
 					<div class="col-12 col-md-4"></div>
 					
 					<div class="col col-md-3"><label class=" form-control-label"></label></div>
-					<div class="col-12 col-md-3"><label class=" form-control-label">フロント第１釦</label></div>
+					<div class="col-12 col-md-3"><strong><label class=" form-control-label">フロント第１釦</label></strong></div>
 					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stFrtfirstBtnChgNm} ${order.stFrtfirstBtnPosChg}</label>cm</strong></div>
 					<div class="col-12 col-md-4"></div>
 					
 					<div class="col col-md-3"><label class=" form-control-label"></label></div>
-					<div class="col-12 col-md-3"><label class=" form-control-label">フロント第2釦</label></div>
+					<div class="col-12 col-md-3"><strong><label class=" form-control-label">フロント第2釦</label></strong></div>
 					<div class="col-12 col-md-2"><strong><label class=" form-control-label-value">${order.stFrtsecondBtnChgNm} ${order.stFrtsecondBtnPosChg}</label>cm</strong></div>
 					<div class="col-12 col-md-4"></div>
 					</c:if>
@@ -2043,14 +1961,19 @@
 		</div>
 		
 	</div>
-	<div class="row">
-	<c:if test="${authority != '03' && authority != '04'}">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header">
-					<strong class="card-title">店舗補正入力欄</strong>
-				</div>
-				<div class="card-body">
+</div>
+</div>
+</div>
+<!-- SHIRT End -->
+<c:if test="${authority != '03' && authority != '04'}">
+<div class="col-md-12">
+	<div class="card">
+		<div class="card-header">
+			<strong class="card-title">店舗補正入力欄</strong>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col col-lg-12">
 					<div class="row">
 						<div class="col col-lg-12">
 							<textarea readonly name="textarea-input" id="textarea-input"
@@ -2060,12 +1983,9 @@
 				</div>
 			</div>
 		</div>
-	</c:if>
-     </div>
+	</div>
 </div>
-</div>
-</div>
-<!-- SHIRT End -->
+</c:if>
 <!-- オプション End -->
 <c:if test="${authority == '01' || authority == '02'}">
 <div class="col-md-12">

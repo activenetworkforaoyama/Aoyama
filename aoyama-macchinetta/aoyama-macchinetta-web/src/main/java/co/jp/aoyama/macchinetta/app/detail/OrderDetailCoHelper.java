@@ -2,8 +2,6 @@ package co.jp.aoyama.macchinetta.app.detail;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderDetailFormat;
@@ -14,7 +12,7 @@ public class OrderDetailCoHelper {
 	private static final String zen_space = "　　";
 	
 	//半角コンマの定義
-	private static final String half_conma = ",";
+	private static final String half_slash = "/";
 	
 	//定義：有り
 	private static final String ari = "有り";
@@ -566,6 +564,8 @@ public class OrderDetailCoHelper {
 			orderFm.setOrderKakuninKyakSign("2");
 			//工場指示書
 			orderFm.setFactorySijiSign("3");
+			//工場指示書(中国語)
+			orderFm.setChineseSijiSign("10");
 			
 		//SHIRT（05）の場合
 		} else if ("05".equals(productItem)) {
@@ -575,6 +575,8 @@ public class OrderDetailCoHelper {
 			orderFm.setOrderKakuninKyakSign("8");
 			//工場指示書
 			orderFm.setFactorySijiSign("9");
+			//工場指示書(中国語)
+			orderFm.setChineseSijiSign("11");
 			
 		//COAT（06）の場合
 		}  else if ("06".equals(productItem)) {
@@ -584,6 +586,8 @@ public class OrderDetailCoHelper {
 			orderFm.setOrderKakuninKyakSign("5");
 			//工場指示書
 			orderFm.setFactorySijiSign("6");
+			//工場指示書(中国語)
+			orderFm.setChineseSijiSign("12");
 		}
 		
 	}
@@ -600,7 +604,7 @@ public class OrderDetailCoHelper {
 			sourceString = src;
 			
 		} else {
-			sourceString = src.replace(half_conma, zen_space);
+			sourceString = src.replace(half_slash, zen_space);
 		}
 		
 		return sourceString;
@@ -692,8 +696,8 @@ public class OrderDetailCoHelper {
 			
 		} else {
 			try {
-				String[] strColorNm = colorNm.split(",");
-				String[] strColorPlcNm = colorPlcNm.split(",");
+				String[] strColorNm = colorNm.split("/");
+				String[] strColorPlcNm = colorPlcNm.split("/");
 				
 				for (int i = 0; i < strColorNm.length; i++) {
 					

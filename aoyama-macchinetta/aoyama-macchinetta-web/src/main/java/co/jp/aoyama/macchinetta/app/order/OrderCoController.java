@@ -30,10 +30,13 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
+import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
+import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants1Helper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants2Helper;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoShirtHelper;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo;
@@ -146,6 +149,8 @@ public class OrderCoController {
 	@Inject
 	CashService cashService;
 
+	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
+	
 	OrderCoHelper orderCoHelper = new OrderCoHelper();
 	
 	CoJakcetHelper coJakcetHelper = new CoJakcetHelper();
@@ -157,6 +162,8 @@ public class OrderCoController {
 	CoCoatHelper coCoatHelper = new CoCoatHelper();
 
 	CoGiletHelper coGiletHelper = new CoGiletHelper();
+	
+	CoShirtHelper coShirtHelper = new CoShirtHelper();
 
 	private static final String CO_TYPE = "CO";
 
@@ -242,10 +249,10 @@ public class OrderCoController {
 			orderCoForm.setOrderFlag(orderFlag);
 			orderCoForm.setStatus("");
 			// デフォルト値設定
-			orderCoHelper.customerAndProductDefaultValue(orderCoForm);
-			orderCoHelper.jacketDefaultValue(orderCoForm);
-			orderCoHelper.giletDefaultValue(orderCoForm);
-			orderCoHelper.coatDefaultValue(orderCoForm);
+			orderCoHelper.customerAndProductDefaultValue(orderCoForm,sessionContent);
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
+			coGiletHelper.giletDefaultValue(orderCoForm);
+			coCoatHelper.coatDefaultValue(orderCoForm);
 
 			model.addAttribute("orderCoForm", orderCoForm);
 		} catch (Exception e) {
@@ -403,36 +410,10 @@ public class OrderCoController {
 			ResultMessages messages = ResultMessages.error();
 			boolean shirtFlag = false;
 			List<Adjust> stAdjustList = adjustByItem.get("05");
-			List<TypeSizeOptimization> coStTypeSizeOptimization = orderCoHelper.getCoStTypeSizeOptimization(orderCoForm,typeSizeService);
+			List<TypeSizeOptimization> coStTypeSizeOptimization = coShirtHelper.getCoStTypeSizeOptimization(orderCoForm,typeSizeService);
 			
-			String orderFlag = orderCoForm.getOrderFlag();
-			String osClericSpec = "";
-			String osDblCuff  = "";
-			String osAddCuff  = "";
-			
-			if ("orderLink".equals(orderFlag)) {
-				Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-				//SHIRTチェック
-				shirtFlag = orderCoHelper.shirtCheck(orderCoForm, messages,stAdjustList,coStTypeSizeOptimization);
-				
-				// 受注テーブルにレコードがなし、初期値を設定
-				if (null == orderST) {
-					orderCoHelper.shirtDefaultValue(orderCoForm);
-				}
-			} else {
-				//SHIRTチェック
-				shirtFlag = orderCoHelper.shirtCheck(orderCoForm, messages,stAdjustList,coStTypeSizeOptimization);
-				
-				osClericSpec = orderCoForm.getCoOptionShirtStandardInfo().getOsClericSpec();
-				osDblCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsDblCuff();
-				osAddCuff = orderCoForm.getCoOptionShirtStandardInfo().getOsAddCuff();
-				
-				//オプションデータがなし、初期値を設定
-				if ("".equals(osClericSpec) || "".equals(osDblCuff) || "".equals(osAddCuff) 
-						|| null == osClericSpec || null == osDblCuff || null == osAddCuff) {
-					orderCoHelper.shirtDefaultValue(orderCoForm);
-				}
-			}
+			//SHIRTチェック
+			shirtFlag = coShirtHelper.shirtCheck(orderCoForm, messages,stAdjustList,coStTypeSizeOptimization);
 
 			// エラーがある場合、注文画面へ遷移
 			if (shirtFlag) {
@@ -494,16 +475,18 @@ public class OrderCoController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "stockDecrease", method = RequestMethod.POST)
-	public String stockDecrease(OrderCoForm orderCoForm) {
+	public OrderMessage stockDecrease(OrderCoForm orderCoForm) {
 		Order order = new Order();
 
 		Measuring measuring = new Measuring();
+		
+		OrderMessage orderMessage = new OrderMessage();
 
 		String orderIdImage = orderCoForm.getCoCustomerMessageInfo().getOrderId();
 		
 		String productFabricNo = orderCoForm.getProductFabricNo();
 		
-		if(isEmpty(productFabricNo)) {
+		if(BaseCheckUtil.isEmpty(productFabricNo)) {
 			orderCoForm.setOrderFindFabric(null);
 		}
 
@@ -528,22 +511,37 @@ public class OrderCoController {
 
 			String stockCheck = stockCheck(order, measuring);
 
-			return stockCheck;
+			orderMessage.setOrderId(stockCheck);
+			orderMessage.setOrderMsg("");
+			orderMessage.setOrderMsgFlag(true);
+			return orderMessage;
 		} else {
 			version = orderCoForm.getVersion();
 			Order orderIsExist = orderListService.findOrderByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+			String tscStatus = orderIsExist.getTscStatus();
+			if("T2".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T2ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else if("T3".equals(tscStatus)) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("T3ERROR");
+				orderMessage.setOrderMsgFlag(false);
+			}else {
+				Measuring measuringIsExist = measuringService
+						.selectByPrimaryKey(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 
-			Measuring measuringIsExist = measuringService
-					.selectByPrimaryKey(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+				// オーダーのデーター → orderCoForm
+				orderCoFormToOrder(orderCoForm, order, measuring, orderIsExist, measuringIsExist);
 
-			// オーダーのデーター → orderCoForm
-			orderCoFormToOrder(orderCoForm, order, measuring, orderIsExist, measuringIsExist);
+				order.setVersion(Short.parseShort(version));
 
-			order.setVersion(Short.parseShort(version));
-
-			String stockCheck = stockCheck(order, orderIsExist, measuring);
-
-			return stockCheck;
+				String stockCheck = stockCheck(order, orderIsExist, measuring);
+				orderMessage.setOrderId(stockCheck);
+				orderMessage.setOrderMsg("");
+				orderMessage.setOrderMsgFlag(true);
+			}
+			return orderMessage;
 		}
 
 	}
@@ -555,8 +553,7 @@ public class OrderCoController {
 		// 生地品番が無しの場合
 		if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 			order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-			orderService.deleteOrder(order);
-			orderService.deleteMeasuring(measuring);
+			orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
 		}
 		// 生地品番が有りの場合
 		else {
@@ -627,7 +624,7 @@ public class OrderCoController {
 		if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 			if (productFabricNo.equals(order.getProductFabricNo())) {
 				BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-				return theoryFabricUsedMount.toString();
+				return CoTypeSizeOptimization.numericalToString(theoryFabricUsedMount);
 			} else {
 				return "0";
 			}
@@ -653,7 +650,7 @@ public class OrderCoController {
 		
 		String productFabricNo = orderCoForm.getProductFabricNo();
 		
-		if(isEmpty(productFabricNo)) {
+		if(BaseCheckUtil.isEmpty(productFabricNo)) {
 			orderCoForm.setOrderFindFabric(null);
 		}
 
@@ -710,12 +707,10 @@ public class OrderCoController {
 		if (orderMsgFlag) {
 			String saveFlag = orderCoForm.getSaveFlag();
 			// 保存flag 1：自動保存
-			if ("1".equals(saveFlag)) {
-				orderService.deletOrderWithNotVersion(order);
-				orderService.deleteMeasuring(measuring);
+			if ("1".equals(saveFlag) || "".equals(saveFlag) || saveFlag == null) {
+				orderService.deletOrderWithNotVersionAndMeasuring(order, measuring);
 			} else {
-				orderService.deletOrderisExistence(order);
-				orderService.deleteMeasuring(measuring);
+				orderService.deletOrderisExistence(order, measuring);
 			}
 		} else {
 
@@ -744,12 +739,12 @@ public class OrderCoController {
 		measuring.setCreatedUserId(sessionContent.getUserId());
 		measuring.setCreatedAt(new Date());
 		String saveFlag = orderCoForm.getSaveFlag();
-		if ("0".equals(saveFlag)) {
+		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
 			order.setTscStatus(orderCoForm.getStatus());
-		}
-		// 保存flag 1：自動保存
-		// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		else if ("1".equals(saveFlag)) {
+			// 保存flag 1：自動保存
+			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
+		} 
+		else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
 			String tscStatus = orderCoForm.getStatus();
 			if ("".equals(tscStatus) || tscStatus == null) {
 				order.setTscStatus(TSC_STATUST0);
@@ -1236,24 +1231,14 @@ public class OrderCoController {
 		measuring.setCreatedUserId(measuringIsExist.getUpdatedUserId());
 
 		String saveFlag = orderCoForm.getSaveFlag();
-		if ("0".equals(saveFlag)) {
+		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
 			order.setTscStatus(orderCoForm.getStatus());
 			// 保存flag 1：自動保存
 			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		} else if ("1".equals(saveFlag)) {
+		} else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
 			String tscStatus = orderIsExist.getTscStatus();
 			if ("".equals(tscStatus) || tscStatus == null) {
 				order.setTscStatus(TSC_STATUST0);
-			} else {
-				order.setTscStatus(tscStatus);
-			}
-		}
-		// 保存flag 2：在庫チェク
-		// ステータスなし→ステータスなし、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		else if ("2".equals(saveFlag)) {
-			String tscStatus = orderIsExist.getTscStatus();
-			if ("".equals(tscStatus) || tscStatus == null) {
-				order.setTscStatus("");
 			} else {
 				order.setTscStatus(tscStatus);
 			}
@@ -1270,77 +1255,54 @@ public class OrderCoController {
 	 */
 	private String stockCheck(Order order, Order orderIsExist, Measuring measuring) throws ResourceNotFoundException {
 
-		if (order.getVersion().equals(orderIsExist.getVersion())) {
-			// 商品情報_ITEM(ログ用)
-			String item = LogItemClassEnum.getLogItem(order);
+		// 商品情報_ITEM(ログ用)
+		String item = LogItemClassEnum.getLogItem(order);
 
-			// 在庫を戻る
-			stockRecovery(orderIsExist);
+		// 在庫を戻る
+		// stockRecovery(orderIsExist);
 
-			// 理論在庫チェック値を取得
-			String isCheck = orderIsExist.getTheoreticalStockCheck();
-			// 理論在庫チェック値が0の場合
-			if (IS_NOT_THEORETICAL_STOCKCECK.equals(isCheck)) {
-				// 生地品番が無しの場合
-				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
-					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-					orderService.deleteOrder(order);
-					orderService.deleteMeasuring(measuring);
-				}
-				// 生地品番が有りの場合
-				else {
-					Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deleteOrderAndStock(order, stock, measuring);
-
-					Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
-				}
-				// 理論在庫チェック値が１の場合
-			} else if (IS_THEORETICAL_STOCKCECK.equals(isCheck)) {
-				// 生地品番が無しの場合
-				if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
-					order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-					orderService.deleteOrder(order);
-					orderService.deleteMeasuring(measuring);
-				}
-				// 生地品番が有りの場合
-				else {
-					Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-					orderService.deleteOrderAndStock(order, stock, measuring);
-
-					Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
-				}
-			}
-			return "true";
-		} else {
-			ResultMessages messages = ResultMessages.error();
-			messages.add("E023");
-			logger.error(messages.toString());
-			throw new ResourceNotFoundException(messages);
+		// 理論在庫チェック値を取得
+		String isCheck = orderIsExist.getTheoreticalStockCheck();
+		Short version = orderIsExist.getVersion();
+		if (version == null) {
+			version = 0;
 		}
+		order.setVersion(version);
+		// 理論在庫チェック値が0の場合
+		if (IS_NOT_THEORETICAL_STOCKCECK.equals(isCheck)) {
+			// 生地品番が無しの場合
+			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
+				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+				orderService.deletOrderWithNotVersionAndMeasuring(order, measuring);
+			}
+			// 生地品番が有りの場合
+			else {
+				orderService.deleteOrderAndStock(order, measuring, orderIsExist, item, sessionContent.getUserId());
+
+				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
+			}
+			// 理論在庫チェック値が１の場合
+		} else if (IS_THEORETICAL_STOCKCECK.equals(isCheck)) {
+			// 生地品番が無しの場合
+			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
+				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
+				orderService.deletOrderWithNotVersionAndStock(order, orderIsExist, item, sessionContent.getUserId(),
+						measuring);
+			}
+			// 生地品番が有りの場合
+			else {
+				orderService.deleteOrderAndStock(order, measuring, orderIsExist, item, sessionContent.getUserId());
+
+				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
+				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+						+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
+			}
+		}
+		return "true";
 
 	}
 
@@ -1578,12 +1540,12 @@ public class OrderCoController {
 			orderCoHelper.setGoodsPrice(orderFindFabric,orderCoForm);
 			orderCoHelper.findStockModelDoublePrice(orderFindFabric,orderCoForm);
 			orderCoHelper.set3Piece2PantsPrice(orderFindFabric, orderCoForm);
-			//orderCoHelper.getYieldNum(orderCoForm,yieldService);
+			BigDecimal yieldNum = orderCoHelper.getYieldNum(orderCoForm,yieldService);
 			BigDecimal theoretical = new BigDecimal(orderFindFabric.getTheoreticalStock());
 			BigDecimal reservation = new BigDecimal(orderFindFabric.getReservationStock());
 			BigDecimal result = theoretical.subtract(reservation);
 			orderFindFabric.setStockResult(String.valueOf(result));
-			
+			orderFindFabric.setYieldNum(yieldNum);
 			String factoryCode = orderFindFabric.getFactoryCode();
 			if ("01".equals(itemCode)) {
 				String subItemCode = null;
@@ -1606,7 +1568,7 @@ public class OrderCoController {
 						ptCheckFlag = factories.contains(factoryCode);
 						orderFindFabric.setPtModelCheck(ptCheckFlag);
 					}
-					if("0009902".equals(productIs3Piece)) {
+					if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 						String giletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel();
 						subItemCode = "04";
 						if("".equals(giletModel)||giletModel == null) {
@@ -1619,7 +1581,7 @@ public class OrderCoController {
 					}else {
 						orderFindFabric.setGlModelCheck(glCheckFlag);
 					}
-					if("0009902".equals(productSparePantsClass)) {
+					if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
 						String pants2Model = orderCoForm.getCoOptionPants2StandardInfo().getOp2PantsModel();
 						subItemCode = "07";
 						if("".equals(pants2Model)||pants2Model == null) {
@@ -1652,7 +1614,7 @@ public class OrderCoController {
 						ptCheckFlag = factories.contains(factoryCode);
 						orderFindFabric.setPtModelCheck(ptCheckFlag);
 					}
-					if("0009902".equals(productIs3Piece)) {
+					if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 						String giletModel = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel();
 						subItemCode = "04";
 						if("".equals(giletModel)||giletModel == null) {
@@ -1665,7 +1627,7 @@ public class OrderCoController {
 					}else {
 						orderFindFabric.setGlModelCheck(glCheckFlag);
 					}
-					if("0009902".equals(productSparePantsClass)) {
+					if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
 						String pants2Model = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2PantsModel();
 						subItemCode = "07";
 						if("".equals(pants2Model)||pants2Model == null) {
@@ -1699,7 +1661,7 @@ public class OrderCoController {
 						orderFindFabric.setPtModelCheck(ptCheckFlag);
 					}
 					
-					if("0009902".equals(productIs3Piece)) {
+					if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 						String giletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel();
 						subItemCode = "04";
 						if("".equals(giletModel)||giletModel == null) {
@@ -1712,7 +1674,7 @@ public class OrderCoController {
 					}else {
 						orderFindFabric.setGlModelCheck(glCheckFlag);
 					}
-					if("0009902".equals(productSparePantsClass)) {
+					if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
 						String pants2Model = orderCoForm.getCoOptionPants2WashableInfo().getWp2PantsModel();
 						subItemCode = "07";
 						if("".equals(pants2Model)||pants2Model == null) {
@@ -2074,34 +2036,36 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				JACKET_SUBITEM);
-		orderCoHelper.getJacketModelMap(orderCoForm, modelList);
+		coJakcetHelper.getJacketModelMap(orderCoForm, modelList);
 		
 		if("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getJacketItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.jacketDefaultValue(orderCoForm);
+				coJakcetHelper.jacketDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
 		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getJacketItemFlag();
 			if ("0".equals(itemFlag)) {
-				Order orderJK = orderListService.findOrderJkOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-				if(orderJK == null) {
-//				//フロント釦数
-//				String jkFrtBtnCd = orderJK.getJkFrtBtnCd();
-//				//ラペルデザイン
-//				String jkLapelDesignCd = orderJK.getJkLapelDesignCd();
-//				//裏仕様 
-//				String jkInnerClothCd = orderJK.getJkInnerClothCd();
-//				if((jkFrtBtnCd == null||"".equals(jkFrtBtnCd))&&(jkLapelDesignCd == null||"".equals(jkLapelDesignCd))&&
-//				   (jkInnerClothCd == null||"".equals(jkInnerClothCd))) {
-					orderCoHelper.jacketDefaultValue(orderCoForm);
-				}else {
-					//orderCoHelper.jacketDefaultValueFromDb(orderCoForm,orderJK);
-				}
-			}else {
-				
+//				coJakcetHelper.jacketDefaultValue(orderCoForm);
+//				Order orderJK = orderListService
+//						.findOrderJkOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//				if (orderJK == null) {
+//					// フロント釦数
+//					String jkFrtBtnCd = orderJK.getJkFrtBtnCd();
+//					// ラペルデザイン
+//					String jkLapelDesignCd = orderJK.getJkLapelDesignCd();
+//					// 裏仕様
+//					String jkInnerClothCd = orderJK.getJkInnerClothCd();
+//					if ((jkFrtBtnCd == null || "".equals(jkFrtBtnCd))
+//							&& (jkLapelDesignCd == null || "".equals(jkLapelDesignCd))
+//							&& (jkInnerClothCd == null || "".equals(jkInnerClothCd))) {
+//						orderCoHelper.jacketDefaultValue(orderCoForm);
+//					} else {
+//						orderCoHelper.jacketDefaultValueFromDb(orderCoForm, orderJK);
+//					}
+//				}
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2125,20 +2089,20 @@ public class OrderCoController {
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
-				Order orderPt = orderListService.findOrderPtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-				//タック
-				String ptTackCd = orderPt.getPtTackCd();
-				//膝裏
-				String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
-				//フロント仕様
-				String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
-				if((ptTackCd == null||"".equals(ptTackCd))&&(ptKneeinnerTypeCd == null||"".equals(ptKneeinnerTypeCd))&&
-				   (ptFrtTypeCd == null||"".equals(ptFrtTypeCd))) {
-					orderCoHelper.pantsDefaultValue(orderCoForm);
-				}else {
-					orderCoHelper.pantsDefaultValueFromDb(orderCoForm,orderPt);
-				}
-			}else {
+//				orderCoHelper.pantsDefaultValue(orderCoForm);
+//				Order orderPt = orderListService.findOrderPtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//				//タック
+//				String ptTackCd = orderPt.getPtTackCd();
+//				//膝裏
+//				String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
+//				//フロント仕様
+//				String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
+//				if((ptTackCd == null||"".equals(ptTackCd))&&(ptKneeinnerTypeCd == null||"".equals(ptKneeinnerTypeCd))&&
+//				   (ptFrtTypeCd == null||"".equals(ptFrtTypeCd))) {
+//					orderCoHelper.pantsDefaultValue(orderCoForm);
+//				}else {
+//					orderCoHelper.pantsDefaultValueFromDb(orderCoForm,orderPt);
+//				}
 			}
 		}		
 		m.addObject("orderCoForm", orderCoForm);
@@ -2163,20 +2127,20 @@ public class OrderCoController {
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPants2ItemFlag();
 			if ("0".equals(itemFlag)) {
-				Order orderPt2 = orderListService.findOrderPt2OptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-				//タック
-				String pt2TackCd = orderPt2.getPt2TackCd();
-				//膝裏
-				String pt2KneeinnerTypeCd = orderPt2.getPt2KneeinnerTypeCd();
-				//フロント仕様
-				String pt2FrtTypeCd = orderPt2.getPt2FrtTypeCd();
-				if((pt2TackCd == null||"".equals(pt2TackCd))&&(pt2KneeinnerTypeCd == null||"".equals(pt2KneeinnerTypeCd))&&
-				   (pt2FrtTypeCd == null||"".equals(pt2FrtTypeCd))) {
-					orderCoHelper.pants2DefaultValue(orderCoForm);
-				}else {
-					orderCoHelper.pants2DefaultValueFromDb(orderCoForm,orderPt2);
-				}
-			}else {
+//				orderCoHelper.pants2DefaultValue(orderCoForm);
+//				Order orderPt2 = orderListService.findOrderPt2OptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//				//タック
+//				String pt2TackCd = orderPt2.getPt2TackCd();
+//				//膝裏
+//				String pt2KneeinnerTypeCd = orderPt2.getPt2KneeinnerTypeCd();
+//				//フロント仕様
+//				String pt2FrtTypeCd = orderPt2.getPt2FrtTypeCd();
+//				if((pt2TackCd == null||"".equals(pt2TackCd))&&(pt2KneeinnerTypeCd == null||"".equals(pt2KneeinnerTypeCd))&&
+//				   (pt2FrtTypeCd == null||"".equals(pt2FrtTypeCd))) {
+//					orderCoHelper.pants2DefaultValue(orderCoForm);
+//				}else {
+//					orderCoHelper.pants2DefaultValueFromDb(orderCoForm,orderPt2);
+//				}
 			}
 		}		
 		m.addObject("orderCoForm", orderCoForm);
@@ -2190,19 +2154,20 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				GILET_SUBITEM);
-		orderCoHelper.getGiletModelMap(orderCoForm, modelList);
+		coGiletHelper.getGiletModelMap(orderCoForm, modelList);
 
 		if("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getGiletItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.giletDefaultValue(orderCoForm);
+				coGiletHelper.giletDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getGiletItemFlag();
 			if ("0".equals(itemFlag)) {
-				Order orderGl = orderListService.findOrderGlOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//				orderCoHelper.giletDefaultValue(orderCoForm);
+//				Order orderGl = orderListService.findOrderGlOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 //				//フロント釦数
 //				String glFrtBtnCd = orderGl.getGlFrtBtnCd();
 //				//ラペルデザイン
@@ -2211,12 +2176,11 @@ public class OrderCoController {
 //				String glInnerClothCd = orderGl.getGlInnerClothCd();
 //				if((glFrtBtnCd == null||"".equals(glFrtBtnCd))&&(glLapelDesignCd == null||"".equals(glLapelDesignCd))&&
 //				   (glInnerClothCd == null||"".equals(glInnerClothCd))) {
-				if(orderGl != null) {
-					orderCoHelper.giletDefaultValue(orderCoForm);
-				}else {
-					orderCoHelper.giletDefaultValueFromDb(orderCoForm,orderGl);
-				}
-			}else {
+//				if(orderGl != null) {
+//					orderCoHelper.giletDefaultValue(orderCoForm);
+//				}else {
+//					orderCoHelper.giletDefaultValueFromDb(orderCoForm,orderGl);
+//				}
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2231,48 +2195,49 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				SHIRT_SUBITEM);
-		orderCoHelper.getShirtModelMap(orderCoForm, modelList);
+		coShirtHelper.getShirtModelMap(orderCoForm, modelList);
 		if("orderCo".equals(orderFlag)) {
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.shirtDefaultValue(orderCoForm);
+				coShirtHelper.shirtDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
-		} else if("orderLink".equals(orderFlag)) {
-//			if ("0".equals(itemFlag)) {
-//				Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				if (!(null == orderST || "".equals(orderST))) {
-////					//クレリック仕様
-////					String stClericCd = orderST.getStClericCd();
-////					//ダブルカフス仕様
-////					String stDblCuffsCd = orderST.getStDblCuffsCd();
-////					//カフスボタン追加
-////					String stCuffsBtnCd = orderST.getStCuffsBtnCd();
-////					
-////					if ((stClericCd == null || "".equals(stClericCd))
-////							&& (stDblCuffsCd == null || "".equals(stDblCuffsCd))
-////							&& (stCuffsBtnCd == null || "".equals(stCuffsBtnCd))) {
-////						orderCoHelper.shirtDefaultValue(orderCoForm);
-////					} else {
-//					orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
-////					}
-//				} else {
-//					orderCoHelper.shirtDefaultValue(orderCoForm);
-//				}
-//			}else {
-//				
-//			}
-			
-			Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			//一覧画面から注文画面へ遷移
-			//受注テーブルにレコードがある、一回目オプション画面をクリック場合、レコード値を設定する
-			if (!(null == orderST) && ("".equals(itemFlag) || "0".equals(itemFlag))) {
-				//orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
-				
-			//受注テーブルにレコードがなし、初期値を設定
-			} else if (null == orderST) {
-				orderCoHelper.shirtDefaultValue(orderCoForm);
-			}
+		} else if ("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+		if ("0".equals(itemFlag)) {
+//			coShirtHelper.shirtDefaultValue(orderCoForm);
+////		Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+////		if (!(null == orderST || "".equals(orderST))) {
+//////			//クレリック仕様
+//////			String stClericCd = orderST.getStClericCd();
+//////			//ダブルカフス仕様
+//////			String stDblCuffsCd = orderST.getStDblCuffsCd();
+//////			//カフスボタン追加
+//////			String stCuffsBtnCd = orderST.getStCuffsBtnCd();
+//////			
+//////			if ((stClericCd == null || "".equals(stClericCd))
+//////					&& (stDblCuffsCd == null || "".equals(stDblCuffsCd))
+//////					&& (stCuffsBtnCd == null || "".equals(stCuffsBtnCd))) {
+//////				orderCoHelper.shirtDefaultValue(orderCoForm);
+//////			} else {
+////			orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
+//////			}
+////		} else {
+////			orderCoHelper.shirtDefaultValue(orderCoForm);
+////		}
+	    }
+//
+//		Order orderST = orderListService
+//				.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//		// 一覧画面から注文画面へ遷移
+//		// 受注テーブルにレコードがある、一回目オプション画面をクリック場合、レコード値を設定する
+//		if (!(null == orderST) && ("".equals(itemFlag) || "0".equals(itemFlag))) {
+//			// orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(),
+//			// orderST);
+//
+//			// 受注テーブルにレコードがなし、初期値を設定
+//		} else if (null == orderST) {
+//			orderCoHelper.shirtDefaultValue(orderCoForm);
+//		}
 		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionShirt");
@@ -2291,31 +2256,29 @@ public class OrderCoController {
 		if("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getCoatItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.coatDefaultValue(orderCoForm);
+				coCoatHelper.coatDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
 		}else if("orderLink".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getCoatItemFlag();
 			if ("0".equals(itemFlag)) {
-				Order orderCt = orderListService.findOrderCtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-				//ベント
-				String ctVentCd = orderCt.getCtVentCd();
-				//ラペルデザイン
-				String ctLapelDesignCd = orderCt.getCtLapelDesignCd();
-				//袖仕様
-				String ctSleeveTypeCd = orderCt.getCtSleeveTypeCd();
-				if((ctVentCd == null || "".equals(ctVentCd)) && (ctLapelDesignCd == null || "".equals(ctLapelDesignCd)) &&
-				   (ctSleeveTypeCd == null || "".equals(ctSleeveTypeCd))) {
-					orderCoHelper.coatDefaultValue(orderCoForm);
-				}else {
-					orderCoHelper.coatDefaultValueFromDb(orderCoForm,orderCt);
-				}
-			}else {
-				
+//				coCoatHelper.coatDefaultValue(orderCoForm);
+//				Order orderCt = orderListService.findOrderCtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+//				//ベント
+//				String ctVentCd = orderCt.getCtVentCd();
+//				//ラペルデザイン
+//				String ctLapelDesignCd = orderCt.getCtLapelDesignCd();
+//				//袖仕様
+//				String ctSleeveTypeCd = orderCt.getCtSleeveTypeCd();
+//				if((ctVentCd == null || "".equals(ctVentCd)) && (ctLapelDesignCd == null || "".equals(ctLapelDesignCd)) &&
+//				   (ctSleeveTypeCd == null || "".equals(ctSleeveTypeCd))) {
+//					orderCoHelper.coatDefaultValue(orderCoForm);
+//				}else {
+//					orderCoHelper.coatDefaultValueFromDb(orderCoForm,orderCt);
+//				}
 			}
 		}
-		
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionCoat");
 
@@ -2335,8 +2298,61 @@ public class OrderCoController {
 			String modelCode, String figure, String number) {
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> poTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> poTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return poTypeSizeOptimization;
+	}
+	
+	@RequestMapping(value = "/orderCoAdjust", method = RequestMethod.GET)
+	public @ResponseBody ModelAndView orderCoAdjust(OrderCoForm orderCoForm, ModelAndView m) {
+		
+		/*
+		 * String orderFlag = orderCoForm.getOrderFlag();
+		 * if("orderLink".equals(orderFlag)) { String productItem =
+		 * orderCoForm.getProductItem(); if("01".equals(productItem)) { Order orderJK =
+		 * orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderJK)) {
+		 * orderCoHelper.jacketAdjustFromDb(orderCoForm,orderJK); } Order orderPT =
+		 * orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderPT)) {
+		 * orderCoHelper.pantsAdjustFromDb(orderCoForm,orderPT); } String
+		 * productIs3Piece = orderCoForm.getProductIs3Piece();
+		 * if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) { Order orderGL =
+		 * orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderGL)) {
+		 * orderCoHelper.giletAdjustFromDb(orderCoForm, orderGL); } } String
+		 * productSparePantsClass = orderCoForm.getProductSparePantsClass();
+		 * if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) { Order orderPT2 =
+		 * orderListService.findOrderPt2ByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderPT2)) {
+		 * orderCoHelper.pants2AdjustFromDb(orderCoForm,orderPT2); } } }else
+		 * if("02".equals(productItem)) { Order orderJK =
+		 * orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderJK)) {
+		 * orderCoHelper.jacketAdjustFromDb(orderCoForm,orderJK); } }else
+		 * if("03".equals(productItem)) { Order orderPT =
+		 * orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderPT)) {
+		 * orderCoHelper.pantsAdjustFromDb(orderCoForm,orderPT); } }else
+		 * if("04".equals(productItem)) { Order orderGL =
+		 * orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderGL)) {
+		 * orderCoHelper.giletAdjustFromDb(orderCoForm, orderGL); } }else
+		 * if("05".equals(productItem)) { Order orderST =
+		 * orderListService.findOrderStByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderST)) {
+		 * orderCoHelper.shirtAdjustFromDb(orderCoForm, orderST); } }else
+		 * if("06".equals(productItem)) { Order orderCT =
+		 * orderListService.findOrderCtByPk(orderCoForm.getCoCustomerMessageInfo().
+		 * getOrderId()); if (!(null == orderCT)) {
+		 * orderCoHelper.coatAdjustFromDb(orderCoForm, orderCT); } }
+		 * 
+		 * }
+		 */
+		m.addObject("orderCoForm", orderCoForm);
+		m.setViewName("order/coAdjustJsp/orderCoAdjust");
+
+		return m;
+
 	}
 
 	@RequestMapping(value = "/jacketJsp", method = RequestMethod.GET)
@@ -2346,7 +2362,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderJK = orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderJK)) {
-				orderCoHelper.jacketAdjustFromDb(orderCoForm,orderJK);
+				coJakcetHelper.jacketAdjustFromDb(orderCoForm,orderJK);
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2396,7 +2412,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderGL = orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderGL)) {
-				orderCoHelper.giletAdjustFromDb(orderCoForm, orderGL);
+				coGiletHelper.giletAdjustFromDb(orderCoForm, orderGL);
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2413,7 +2429,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderST = orderListService.findOrderStByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderST)) {
-				orderCoHelper.shirtAdjustFromDb(orderCoForm, orderST);
+				coShirtHelper.shirtAdjustFromDb(orderCoForm, orderST);
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2430,7 +2446,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderCT = orderListService.findOrderCtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderCT)) {
-				orderCoHelper.coatAdjustFromDb(orderCoForm, orderCT);
+				coCoatHelper.coatAdjustFromDb(orderCoForm, orderCT);
 			}
 		}
 
@@ -2529,7 +2545,7 @@ public class OrderCoController {
 	@ResponseBody
 	public void jacketAdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderJkByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.jacketAdjustFromDb(orderCoForm,order);
+		coJakcetHelper.jacketAdjustFromDb(orderCoForm,order);
 	}
 
 	@RequestMapping(value = "/pantsAdjustFormDb", method = RequestMethod.GET)
@@ -2550,21 +2566,21 @@ public class OrderCoController {
 	@ResponseBody
 	public void giletAdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderGlByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.giletAdjustFromDb(orderCoForm,order);
+		coGiletHelper.giletAdjustFromDb(orderCoForm,order);
 	}
 
 	@RequestMapping(value = "/shirtAdjustFormDb", method = RequestMethod.GET)
 	@ResponseBody
 	public void shirtAdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderStByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.shirtAdjustFromDb(orderCoForm,order);
+		coShirtHelper.shirtAdjustFromDb(orderCoForm,order);
 	}
 
 	@RequestMapping(value = "/coatAdjustFormDb", method = RequestMethod.GET)
 	@ResponseBody
 	public void coatAdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderCtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.coatAdjustFromDb(orderCoForm,order);
+		coCoatHelper.coatAdjustFromDb(orderCoForm,order);
 	}
 	
 	@RequestMapping(value = "/productPrice", method = RequestMethod.GET)
@@ -2576,10 +2592,10 @@ public class OrderCoController {
 		for (CoProductPriceEnum coProductPriceEnum : values) {
 			String key = coProductPriceEnum.getKey();
 			String valueTwo = coProductPriceEnum.getValueTwo();
-			if(isEmpty(productCode)) {
+			if(BaseCheckUtil.isEmpty(productCode)) {
 				String osShirtModel = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();
-				if(isNotEmpty(osShirtModel)) {
-					if(isNotEmpty(valueTwo)) {
+				if(BaseCheckUtil.isNotEmpty(osShirtModel)) {
+					if(BaseCheckUtil.isNotEmpty(valueTwo)) {
 						if(valueTwo.equals(valueName)) {
 							proCode = "05".concat("05").concat(osShirtModel).concat(key).concat(valueCode);
 							resultPrice = getOrderPrice(proCode,orderCoForm);
@@ -2589,7 +2605,7 @@ public class OrderCoController {
 					resultPrice = "0";
 				}
 			}else {
-				if(isNotEmpty(valueTwo)) {
+				if(BaseCheckUtil.isNotEmpty(valueTwo)) {
 					if(valueTwo.equals(valueName)) {
 						proCode = productCode.concat(key).concat(valueCode);
 						resultPrice = getOrderPrice(proCode,orderCoForm);
@@ -2624,234 +2640,23 @@ public class OrderCoController {
 
 	@RequestMapping(value = "/getOrderPriceForJacketStandardModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForJacketModel(OrderCoForm orderCoForm, String code) {
-		CoOptionJacketStandardInfo optionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-		
-		JacketOptionCoStandardPriceEnum[] priceEnum = JacketOptionCoStandardPriceEnum.values();
-		
-		String ojFrontBtnCnt = optionJacketStandardInfo.getOjFrontBtnCnt();
-		
-		for (JacketOptionCoStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = optionJacketStandardInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(optionJacketStandardInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = optionJacketStandardInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(optionJacketStandardInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				
-				if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketStandardInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketStandardInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoStandardPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = optionJacketStandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(optionJacketStandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForJacketModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coJakcetHelper.getOrderPriceForJacketModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForJacketTuxedoModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForJacketTuxedoModel(OrderCoForm orderCoForm, String code) {
-		CoOptionJacketTuxedoInfo optionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-		
-		JacketOptionCoTuxedoPriceEnum[] priceEnum = JacketOptionCoTuxedoPriceEnum.values();
-		
-		String tjFrontBtnCnt = optionJacketTuxedoInfo.getTjFrontBtnCnt();
-		
-		for (JacketOptionCoTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = optionJacketTuxedoInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(optionJacketTuxedoInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = optionJacketTuxedoInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(optionJacketTuxedoInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketTuxedoInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketTuxedoInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoTuxedoPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = optionJacketTuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(optionJacketTuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForJacketTuxedoModel(OrderCoForm orderCoForm, String code, String orderFlag ) {
+		Map<String, Object> resultMap = coJakcetHelper.getOrderPriceForJacketTuxedoModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForJacketWashableModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForJacketWashableModel(OrderCoForm orderCoForm, String code) {
-		CoOptionJacketWashableInfo optionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-		
-		JacketOptionCoWashablePriceEnum[] priceEnum = JacketOptionCoWashablePriceEnum.values();
-		
-		String wjFrontBtnCnt = optionJacketWashableInfo.getWjFrontBtnCnt();
-		
-		for (JacketOptionCoWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = optionJacketWashableInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(optionJacketWashableInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = optionJacketWashableInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(optionJacketWashableInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketWashableInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketWashableInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoWashablePriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = optionJacketWashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(optionJacketWashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForJacketWashableModel(OrderCoForm orderCoForm, String code,String orderFlag) {
+		Map<String, Object> resultMap = coJakcetHelper.getOrderPriceForJacketWashableModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	/**
@@ -2866,127 +2671,8 @@ public class OrderCoController {
 	@ResponseBody
 	public Map<String, String> getOrderPriceForJacketProject(OrderCoForm orderCoForm, String code,
 			String idValueName,String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
-		String ojFrontBtnCnt = coOptionJacketStandardInfo.getOjFrontBtnCnt();
-		JacketOptionCoStandardPriceEnum[] priceEnum = JacketOptionCoStandardPriceEnum.values();
-		String orderPrice = "";
-		for (JacketOptionCoStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			boolean hasIdvalueName = false;
-			try {
-				if (idValueName.equals(valueFour)) {
-					Method methodOne = coOptionJacketStandardInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketStandardInfo);
-					Object invokeTwo = null;
-					hasIdvalueName = true;
-					if (!("".equals(valueTwo))) {
-						Method methodTwo = coOptionJacketStandardInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionJacketStandardInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-				} else if (idValueName.equals(valueFive)) {
-					hasIdvalueName = true;
-					Method methodOne = coOptionJacketStandardInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketStandardInfo);
-					Method methodTwo = coOptionJacketStandardInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionJacketStandardInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				if(("stitchModify_id".equals(idValueName) && "stitchModify_id".equals(valueFour))|| ("dStitchModify_id".equals(idValueName) &&"dStitchModify_id".equals(valueFour))) {
-					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
-						splicingCodeForFindUniquePrice = code + thisVal;
-						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}else {
-						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
-						for (int i = 0; i < strArr.length; i++) {
-							String projectPriceCode = code + strArr[i];
-							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-							orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-						}
-						orderPrice = String.valueOf(orderPriceInt);
-					}
-				}
-				if(("amfColor_id".equals(idValueName)&&"amfColor_id".equals(valueFour))||
-					("bhColor_id".equals(idValueName)&&"bhColor_id".equals(valueFour))||
-					("byColor_id".equals(idValueName))&&"byColor_id".equals(valueFour)) {
-					hasIdvalueName = true;
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					if("-1".equals(colorCount)) {
-						orderPrice = orderPriceInner;
-					}else {
-						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-						orderPrice = String.valueOf(colorPrice);
-					}
-				}
-
-				if (hasIdvalueName == true) {
-					if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					Class<?> cls;
-					Object[] args = { orderPrice };
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketStandardInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketStandardInfo(), args);
-					break;
-				}
-
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoStandardPriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionJacketStandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionJacketStandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		 
-		
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+		Map<String, String> resultMap = coJakcetHelper.getOrderPriceForJacketProject(orderCoForm,code,idValueName,jspOptionCodeAndBranchCode,colorCount,countArr,thisVal,thisValStkNo);
 		return resultMap;
-
 	}
 	
 	/**
@@ -3001,114 +2687,11 @@ public class OrderCoController {
 	@ResponseBody
 	public Map<String, String> getOrderPriceForJacketTuxedoProject(OrderCoForm orderCoForm, String code,
 			String idValueName,String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
-		String tjFrontBtnCnt = coOptionJacketTuxedoInfo.getTjFrontBtnCnt();
-		JacketOptionCoTuxedoPriceEnum[] priceEnum = JacketOptionCoTuxedoPriceEnum.values();
-		String orderPrice = "";
-		for (JacketOptionCoTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			boolean hasIdvalueName = false;
-			try {
-				if (idValueName.equals(valueFour)) {
-					Method methodOne = coOptionJacketTuxedoInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketTuxedoInfo);
-					Object invokeTwo = null;
-					hasIdvalueName = true;
-					if (!("".equals(valueTwo))) {
-						Method methodTwo = coOptionJacketTuxedoInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionJacketTuxedoInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-				} else if (idValueName.equals(valueFive)) {
-					hasIdvalueName = true;
-					Method methodOne = coOptionJacketTuxedoInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketTuxedoInfo);
-					Method methodTwo = coOptionJacketTuxedoInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionJacketTuxedoInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				
-				if(("tj_bhColor_id".equals(idValueName)&&"tj_bhColor_id".equals(valueFour))||
-				   ("tj_byColor_id".equals(idValueName))&&"tj_byColor_id".equals(valueFour)) {
-						hasIdvalueName = true;
-						String projectPriceCode = code + jspOptionCodeAndBranchCode;
-						String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-						if("-1".equals(colorCount)) {
-							orderPrice = orderPriceInner;
-						}else {
-							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-							orderPrice = String.valueOf(colorPrice);
-						}
-				}
-
-				if (hasIdvalueName == true) {
-					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					Class<?> cls;
-					Object[] args = { orderPrice };
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketTuxedoInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketTuxedoInfo(), args);
-					break;
-				}
-
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoTuxedoPriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionJacketTuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionJacketTuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		 
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+		Map<String, String> resultMap = coJakcetHelper.getOrderPriceForJacketTuxedoProject(orderCoForm,code,idValueName,jspOptionCodeAndBranchCode,colorCount,countArr,thisVal,thisValStkNo);
 		return resultMap;
-
 	}
 	
 	/**
-	 * 
 	 * @param orderCoForm
 	 * @param code
 	 * @param model
@@ -3119,890 +2702,56 @@ public class OrderCoController {
 	@ResponseBody
 	public Map<String, String> getOrderPriceForJacketWashableProject(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
-		String wjFrontBtnCnt = coOptionJacketWashableInfo.getWjFrontBtnCnt();
-		JacketOptionCoWashablePriceEnum[] priceEnum = JacketOptionCoWashablePriceEnum.values();
-		String orderPrice = "";
-		for (JacketOptionCoWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			boolean hasIdvalueName = false;
-			try {
-				if (idValueName.equals(valueFour)) {
-					Method methodOne = coOptionJacketWashableInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketWashableInfo);
-					Object invokeTwo = null;
-					hasIdvalueName = true;
-					if (!("".equals(valueTwo))) {
-						Method methodTwo = coOptionJacketWashableInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionJacketWashableInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-				} else if (idValueName.equals(valueFive)) {
-					hasIdvalueName = true;
-					Method methodOne = coOptionJacketWashableInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionJacketWashableInfo);
-					Method methodTwo = coOptionJacketWashableInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionJacketWashableInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				
-				if(("wj_stitchModify_id".equals(idValueName) && "wj_stitchModify_id".equals(valueFour))|| ("wj_dStitchModify_id".equals(idValueName) &&"wj_dStitchModify_id".equals(valueFour))) {
-					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
-						splicingCodeForFindUniquePrice = code + thisVal;
-						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}else {
-						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
-						for (int i = 0; i < strArr.length; i++) {
-							String projectPriceCode = code + strArr[i];
-							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-							orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-						}
-						orderPrice = String.valueOf(orderPriceInt);
-					}
-				}
-				
-				if(("wj_amfColor_id".equals(idValueName)&&"wj_amfColor_id".equals(valueFour))||
-				   ("wj_bhColor_id".equals(idValueName)&&"wj_bhColor_id".equals(valueFour))||
-				   ("wj_byColor_id".equals(idValueName))&&"wj_byColor_id".equals(valueFour)) {
-					hasIdvalueName = true;
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					if("-1".equals(colorCount)) {
-						orderPrice = orderPriceInner;
-					}else {
-						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-						orderPrice = String.valueOf(colorPrice);
-					}
-				}
-				
-				if (hasIdvalueName == true) {
-					
-					if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					
-					Class<?> cls;
-					Object[] args = { orderPrice };
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketWashableInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionJacketWashableInfo(), args);
-					break;
-				}
-
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (JacketOptionCoWashablePriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionJacketWashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionJacketWashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		 
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
+		Map<String, String> resultMap = coJakcetHelper.getOrderPriceForJacketWashableProject(orderCoForm,code,idValueName,jspOptionCodeAndBranchCode,colorCount,countArr,thisVal,thisValStkNo);
 		return resultMap;
-
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletStandardModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForGiletStandardModel(OrderCoForm orderCoForm, String code) {
-		CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-		String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
-		
-		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
-		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionGiletStandardInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionGiletStandardInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionGiletStandardInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionGiletStandardInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = "";
-				if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletStandardInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletStandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletStandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForGiletStandardModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coGiletHelper.getOrderPriceForGiletStandardModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletTuxedoModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForGiletTuxedoModel(OrderCoForm orderCoForm, String code) {
-		CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-		String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
-		
-		GiletOptionCoTuxedoPriceEnum[] priceEnum = GiletOptionCoTuxedoPriceEnum.values();
-		for (GiletOptionCoTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionGiletTuxedoInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionGiletTuxedoInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionGiletTuxedoInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionGiletTuxedoInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = "";
-				if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoTuxedoPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletTuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletTuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForGiletTuxedoModel(OrderCoForm orderCoForm, String code,String orderFlag) {
+		Map<String, Object> resultMap = coGiletHelper.getOrderPriceForGiletTuxedoModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletWashableModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForGiletWashableModel(OrderCoForm orderCoForm, String code) {
-		CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-		String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
-		
-		GiletOptionCoWashablePriceEnum[] priceEnum = GiletOptionCoWashablePriceEnum.values();
-		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionGiletWashableInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionGiletWashableInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionGiletWashableInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionGiletWashableInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = "";
-				if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletWashableInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletWashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletWashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForGiletWashableModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coGiletHelper.getOrderPriceForGiletWashableModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletStandardProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForGiletStandardProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
-		String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
-		
-		GiletOptionCoStandardPriceEnum[] priceEnum = GiletOptionCoStandardPriceEnum.values();
-		String orderPrice = "";
-		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			
-			boolean hasIdvalueName = false;
-			try {
-				if("og_stitch_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-				}
-				
-				if("og_breastPkt_id".equals(idValueName) || "og_waistPktSpec_id".equals(idValueName) || "og_watchChain_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-				}
-				
-				if("og_waistPkt_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					
-					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
-						try {
-							Class<?> cls;
-							Object[] args = {"0"};
-							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo");
-							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletStandardInfo(), args);
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				
-				if("og_amfColor_id".equals(idValueName) || "og_bhColor_id".equals(idValueName) || "og_byColor_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = "";
-					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					
-					if("-1".equals(colorCount)) {
-						orderPrice = orderPriceInner;
-					}else {
-						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-						orderPrice = String.valueOf(colorPrice);
-					}
-				}
-				
-				if("og_stitchModify_id".equals(idValueName) || "og_dStitchModify_id".equals(idValueName)) {
-					Integer orderPriceInt = 0;
-					String[] strArr = countArr.split(",");
-					for (int i = 0; i < strArr.length; i++) {
-						String projectPriceCode = code + strArr[i];
-						String orderPriceInner = "";
-						if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-							orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-						}else{
-							orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-						}
-						
-						orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-					}
-					orderPrice = String.valueOf(orderPriceInt);
-					hasIdvalueName = true;
-				}
-				
-				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionGiletStandardInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletStandardInfo);
-					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
-						Method methodTwo = coOptionGiletStandardInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionGiletStandardInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					}
-					hasIdvalueName = true;
-				}else if(idValueName.equals(valueFive)) {
-					Method methodOne = coOptionGiletStandardInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletStandardInfo);
-					Method methodTwo = coOptionGiletStandardInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionGiletStandardInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					hasIdvalueName = true;
-				}
-				
-				if((idValueName.equals(valueFour) || idValueName.equals(valueFive)) 
-						&& ("og_backLiningMate".equals(idValueName) || "og_backLiningMateStkNo".equals(idValueName) 
-						|| "og_insideLiningMate".equals(idValueName) || "og_insideLiningMateStkNo".equals(idValueName) 
-						|| "og_frontBtnMate".equals(idValueName) || "og_frontBtnMateStkNo".equals(idValueName) 
-						|| "og_backBelt".equals(idValueName))) {
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-					hasIdvalueName = true;
-				}
-				
-				if(hasIdvalueName == true) {
-					if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					
-					Class<?> cls;
-					Object[] args = {orderPrice};
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletStandardInfo(), args);
-					
-					break;
-				}
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoStandardPriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletStandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletStandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf))) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, String> getOrderPriceForGiletStandardProject(OrderCoForm orderCoForm, String code, String idValueName, 
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr, String thisVal, String thisValStkNo) {
+		Map<String, String> resultMap = coGiletHelper.getOrderPriceForGiletStandardProject(orderCoForm, code, idValueName,
+				jspOptionCodeAndBranchCode, colorCount, countArr, thisVal, thisValStkNo);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletTuxedoProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForGiletTuxedoProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
-		String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
-		
-		GiletOptionCoTuxedoPriceEnum[] priceEnum = GiletOptionCoTuxedoPriceEnum.values();
-		String orderPrice = "";
-		for (GiletOptionCoTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			
-			boolean hasIdvalueName = false;
-			try {
-				if("tg_breastPkt_id".equals(idValueName) || "tg_waistPktSpec_id".equals(idValueName) 
-						|| "tg_waistPktMate_id".equals(idValueName) || "tg_watchChain_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("tg_waistPkt_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
-						try {
-							Class<?> cls;
-							Object[] args = {"0"};
-							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
-							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("tg_bhColor_id".equals(idValueName) || "tg_byColor_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = "";
-					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					if("-1".equals(colorCount)) {
-						orderPrice = orderPriceInner;
-					}else {
-						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-						orderPrice = String.valueOf(colorPrice);
-					}
-					hasIdvalueName = true;
-				}
-				
-				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionGiletTuxedoInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletTuxedoInfo);
-					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
-						Method methodTwo = coOptionGiletTuxedoInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionGiletTuxedoInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					}
-					hasIdvalueName = true;
-				}else if(idValueName.equals(valueFive)) {
-					Method methodOne = coOptionGiletTuxedoInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletTuxedoInfo);
-					Method methodTwo = coOptionGiletTuxedoInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionGiletTuxedoInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					hasIdvalueName = true;
-				}
-				
-				if((idValueName.equals(valueFour) || idValueName.equals(valueFive)) 
-						&& ("tg_backLiningMate".equals(idValueName) || "tg_backLiningMateStkNo".equals(idValueName) 
-						|| "tg_insideLiningMate".equals(idValueName) || "tg_insideLiningMateStkNo".equals(idValueName) 
-						|| "tg_frontBtnMate".equals(idValueName) || "tg_frontBtnMateStkNo".equals(idValueName) 
-						|| "tg_backBelt".equals(idValueName))) {
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-					hasIdvalueName = true;
-				}
-				
-				if(hasIdvalueName == true) {
-					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					
-					Class<?> cls;
-					Object[] args = {orderPrice};
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
-					
-					break;
-				}
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoTuxedoPriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletTuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletTuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf))) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, String> getOrderPriceForGiletTuxedoProject(OrderCoForm orderCoForm, String code, String idValueName, 
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr, String thisVal, String thisValStkNo) {
+		Map<String, String> resultMap = coGiletHelper.getOrderPriceForGiletTuxedoProject(orderCoForm, code, idValueName,
+				jspOptionCodeAndBranchCode, colorCount, countArr, thisVal, thisValStkNo);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForGiletWashableProject", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, String> getOrderPriceForGiletWashableProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
-		CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
-		String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
-		
-		GiletOptionCoWashablePriceEnum[] priceEnum = GiletOptionCoWashablePriceEnum.values();
-		String orderPrice = ""; 
-		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String valueFour = price.getValueFour();
-			String valueFive = price.getValueFive();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			
-			boolean hasIdvalueName = false;
-			try {
-				if("wg_stitch_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("wg_breastPkt_id".equals(idValueName) || "wg_waistPktSpec_id".equals(idValueName) || "wg_watchChain_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("wg_waistPkt_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-						orderPrice = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					if("000020000202".equals(jspOptionCodeAndBranchCode)) {
-						try {
-							Class<?> cls;
-							Object[] args = {"0"};
-							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo");
-							Method methodThree = getMethod(cls, "setGlWaistPktShapeRtPrice");
-							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletWashableInfo(), args);
-						} catch (ClassNotFoundException e) {
-							e.printStackTrace();
-						}
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("wg_amfColor_id".equals(idValueName) || "wg_bhColor_id".equals(idValueName) || "wg_byColor_id".equals(idValueName)) {
-					String projectPriceCode = code + jspOptionCodeAndBranchCode;
-					String orderPriceInner = "";
-					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-						orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-					}else{
-						orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-					}
-					if("-1".equals(colorCount)) {
-						orderPrice = orderPriceInner;
-					}else {
-						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-						orderPrice = String.valueOf(colorPrice);
-					}
-					hasIdvalueName = true;
-				}
-				
-				if("wg_stitchModify_id".equals(idValueName) || "wg_dStitchModify_id".equals(idValueName)) {
-					Integer orderPriceInt = 0;
-					String[] strArr = countArr.split(",");
-					for (int i = 0; i < strArr.length; i++) {
-						String projectPriceCode = code + strArr[i];
-						String orderPriceInner = "";
-						if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-							orderPriceInner = getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-						}else{
-							orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
-						}
-						
-						orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-					}
-					orderPrice = String.valueOf(orderPriceInt);
-					hasIdvalueName = true;
-				}
-				
-				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionGiletWashableInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletWashableInfo);
-					Object invokeTwo = null;
-					if(!("".equals(thisValStkNo)) && thisValStkNo != null) {
-						Method methodTwo = coOptionGiletWashableInfo.getClass().getMethod(valueTwo);
-						invokeTwo = methodTwo.invoke(coOptionGiletWashableInfo);
-					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					}
-					hasIdvalueName = true;
-				}else if(idValueName.equals(valueFive)) {
-					Method methodOne = coOptionGiletWashableInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionGiletWashableInfo);
-					Method methodTwo = coOptionGiletWashableInfo.getClass().getMethod(valueTwo);
-					Object invokeTwo = methodTwo.invoke(coOptionGiletWashableInfo);
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-					hasIdvalueName = true;
-				}
-				
-				if((idValueName.equals(valueFour) || idValueName.equals(valueFive)) 
-						&& ("wg_backLiningMate".equals(idValueName) || "wg_backLiningMateStkNo".equals(idValueName) 
-						|| "wg_insideLiningMate".equals(idValueName) || "wg_insideLiningMateStkNo".equals(idValueName) 
-						|| "wg_frontBtnMate".equals(idValueName) || "wg_frontBtnMateStkNo".equals(idValueName) 
-						|| "wg_backBelt".equals(idValueName))) {
-					splicingCodeForFindUniquePrice = code + key + thisVal;
-					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
-						splicingCodeDetail = code + key + thisVal + thisValStkNo;
-					}
-					hasIdvalueName = true;
-				}
-				
-				if(hasIdvalueName == true) {
-					if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}else{
-						if("".equals(orderPrice)) {
-							orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-						}
-					}
-					
-					Class<?> cls;
-					Object[] args = {orderPrice};
-					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo");
-					Method methodThree = getMethod(cls, valueThree);
-					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletWashableInfo(), args);
-					
-					break;
-				}
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Integer optionPriceInt = 0;
-		for (GiletOptionCoWashablePriceEnum price : priceEnum) {
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionGiletWashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionGiletWashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf))) {
-					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		if("0".equals(orderPrice)) {
-			orderPrice = "無料";
-		}else {
-			orderPrice = "￥" + formatPrice(orderPrice);
-		}
-		
-		Map<String, String> resultMap = new HashMap<String, String>();
-		resultMap.put("idValuePrice", orderPrice);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
-		orderCoForm.setGlOptionPrice(String.valueOf(optionPriceInt));
+	public Map<String, String> getOrderPriceForGiletWashableProject(OrderCoForm orderCoForm, String code, String idValueName, 
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr, String thisVal, String thisValStkNo) {
+		Map<String, String> resultMap = coGiletHelper.getOrderPriceForGiletWashableProject(orderCoForm, code, idValueName,
+				jspOptionCodeAndBranchCode, colorCount, countArr, thisVal, thisValStkNo);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForShirtModel", method = RequestMethod.GET)
@@ -4171,208 +2920,29 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setStOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPants2Model", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2Model(OrderCoForm orderCoForm, String code) {
-		CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
-		
-		Pants2CoOptionStandardPriceEnum[] priceEnum = Pants2CoOptionStandardPriceEnum.values();
-		for (Pants2CoOptionStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionPants2StandardInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPants2StandardInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPants2StandardInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPants2StandardInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2StandardInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2StandardInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (Pants2CoOptionStandardPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPants2StandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPants2StandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPants2Model(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coPants2Helper.getOrderPriceForPants2Model(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPants2tModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2tModel(OrderCoForm orderCoForm, String code) {
-		CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
-		
-		Pants2CoOptionTuxedoPriceEnum[] priceEnum = Pants2CoOptionTuxedoPriceEnum.values();
-		for (Pants2CoOptionTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionPants2TuxedoInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPants2TuxedoInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPants2TuxedoInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPants2TuxedoInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2TuxedoInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2TuxedoInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (Pants2CoOptionTuxedoPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPants2TuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPants2TuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPants2tModel(OrderCoForm orderCoForm, String code,String orderFlag) {
+		Map<String, Object> resultMap = coPants2Helper.getOrderPriceForPants2TuxedoModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPants2wModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPants2wModel(OrderCoForm orderCoForm, String code) {
-		CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
-		
-		Pants2CoOptionWashablePriceEnum[] priceEnum = Pants2CoOptionWashablePriceEnum.values();
-		for (Pants2CoOptionWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			try {
-				Method methodOne = coOptionPants2WashableInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPants2WashableInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPants2WashableInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPants2WashableInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				String orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2WashableInfo");
-				Method methodThree = getMethod(cls, valueThree);
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2WashableInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (Pants2CoOptionWashablePriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPants2WashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPants2WashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPants2wModel(OrderCoForm orderCoForm, String code,String orderFlag) {
+		Map<String, Object> resultMap = coPants2Helper.getOrderPriceForPants2WashableModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPants2Project", method = RequestMethod.GET)
@@ -4396,18 +2966,16 @@ public class OrderCoController {
 			boolean hasIdvalueName = false;
 			try {
 				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionPants2StandardInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionPants2StandardInfo);
 					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
+					hasIdvalueName = true;
+					if (!("".equals(valueTwo))) {
 						Method methodTwo = coOptionPants2StandardInfo.getClass().getMethod(valueTwo);
 						invokeTwo = methodTwo.invoke(coOptionPants2StandardInfo);
 					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
 					}
-					hasIdvalueName = true;
 				}else if(idValueName.equals(valueFive)) {
 					Method methodOne = coOptionPants2StandardInfo.getClass().getMethod(valueOne);
 					Object invokeOne = methodOne.invoke(coOptionPants2StandardInfo);
@@ -4419,12 +2987,12 @@ public class OrderCoController {
 				}
 				if(("op2_stitchModify_id".equals(idValueName) && "op2_stitchModify_id".equals(valueFour))|| ("op2_dStitch_id".equals(idValueName) &&"op2_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
 						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
+						String[] strArr = countArr.split("/");
 						for (int i = 0; i < strArr.length; i++) {
 							String projectPriceCode = code + strArr[i];
 							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
@@ -4526,18 +3094,16 @@ public class OrderCoController {
 			boolean hasIdvalueName = false;
 			try {
 				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionPants2TuxedoInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionPants2TuxedoInfo);
 					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
+					hasIdvalueName = true;
+					if (!("".equals(valueTwo))) {
 						Method methodTwo = coOptionPants2TuxedoInfo.getClass().getMethod(valueTwo);
 						invokeTwo = methodTwo.invoke(coOptionPants2TuxedoInfo);
 					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
 					}
-					hasIdvalueName = true;
 				}else if(idValueName.equals(valueFive)) {
 					Method methodOne = coOptionPants2TuxedoInfo.getClass().getMethod(valueOne);
 					Object invokeOne = methodOne.invoke(coOptionPants2TuxedoInfo);
@@ -4549,7 +3115,7 @@ public class OrderCoController {
 				}
 				if(("tp2_stitchModify_id".equals(idValueName) && "tp2_stitchModify_id".equals(valueFour))|| ("tp2_dStitch_id".equals(idValueName) &&"tp2_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
@@ -4653,18 +3219,16 @@ public class OrderCoController {
 			boolean hasIdvalueName = false;
 			try {
 				if(idValueName.equals(valueFour)) {
-					Method methodOne = coOptionPants2WashableInfo.getClass().getMethod(valueOne);
-					Object invokeOne = methodOne.invoke(coOptionPants2WashableInfo);
 					Object invokeTwo = null;
-					if(!("".equals(valueTwo))) {
+					hasIdvalueName = true;
+					if (!("".equals(valueTwo))) {
 						Method methodTwo = coOptionPants2WashableInfo.getClass().getMethod(valueTwo);
 						invokeTwo = methodTwo.invoke(coOptionPants2WashableInfo);
 					}
-					splicingCodeForFindUniquePrice = code + key + invokeOne;
-					if(invokeTwo != null) {
-						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
 					}
-					hasIdvalueName = true;
 				}else if(idValueName.equals(valueFive)) {
 					Method methodOne = coOptionPants2WashableInfo.getClass().getMethod(valueOne);
 					Object invokeOne = methodOne.invoke(coOptionPants2WashableInfo);
@@ -4676,12 +3240,12 @@ public class OrderCoController {
 				}
 				if(("wp2_stitchModify_id".equals(idValueName) && "wp2_stitchModify_id".equals(valueFour))|| ("wp2_dStitch_id".equals(idValueName) &&"wp2_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
 						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
+						String[] strArr = countArr.split("/");
 						for (int i = 0; i < strArr.length; i++) {
 							String projectPriceCode = code + strArr[i];
 							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
@@ -4836,6 +3400,7 @@ public class OrderCoController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("priceMap", priceMap);
 		resultMap.put("optionPrice", optionPriceInt);
+		orderCoForm.setCtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -4938,6 +3503,7 @@ public class OrderCoController {
 		Map<String, String> resultMap = new HashMap<String, String>();
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setCtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
 	}
@@ -4951,31 +3517,52 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/optionInit", method = RequestMethod.GET)
 	@ResponseBody
-	public void allOptionInit(OrderCoForm orderCoForm,String oldItem) {
+	public void allOptionInit(OrderCoForm orderCoForm,String item,String oldItem) {
 		// デフォルト値設定
 		if("01".equals(oldItem)) {
-			orderCoHelper.jacketDefaultValue(orderCoForm);
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
 			orderCoHelper.pantsDefaultValue(orderCoForm);
 			String productIs3Piece = orderCoForm.getProductIs3Piece();
 			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
-			if("0009902".equals(productIs3Piece)) {
-				orderCoHelper.giletDefaultValue(orderCoForm);
+			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
+				coGiletHelper.giletDefaultValue(orderCoForm);
 			}
-			if("0009902".equals(productSparePantsClass)) {
+			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
 				orderCoHelper.pants2DefaultValue(orderCoForm);
 			}
 		}else if("02".equals(oldItem)) {
-			orderCoHelper.jacketDefaultValue(orderCoForm);
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
 		}else if("03".equals(oldItem)) {
 			orderCoHelper.pantsDefaultValue(orderCoForm);
 		}else if("04".equals(oldItem)) {
-			orderCoHelper.giletDefaultValue(orderCoForm);
+			coGiletHelper.giletDefaultValue(orderCoForm);
 		}else if("05".equals(oldItem)) {
-			orderCoHelper.shirtDefaultValue(orderCoForm);
+			coShirtHelper.shirtDefaultValue(orderCoForm);
 		}else if("06".equals(oldItem)) {
-			orderCoHelper.coatDefaultValue(orderCoForm);
-		}else if("07".equals(oldItem)) {
-			orderCoHelper.pants2DefaultValue(orderCoForm);
+			coCoatHelper.coatDefaultValue(orderCoForm);
+		}
+		
+		if("01".equals(item)) {
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
+			orderCoHelper.pantsDefaultValue(orderCoForm);
+			String productIs3Piece = orderCoForm.getProductIs3Piece();
+			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
+				coGiletHelper.giletDefaultValue(orderCoForm);
+			}
+			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+				orderCoHelper.pants2DefaultValue(orderCoForm);
+			}
+		}else if("02".equals(item)) {
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
+		}else if("03".equals(item)) {
+			orderCoHelper.pantsDefaultValue(orderCoForm);
+		}else if("04".equals(item)) {
+			coGiletHelper.giletDefaultValue(orderCoForm);
+		}else if("05".equals(item)) {
+			coShirtHelper.shirtDefaultValue(orderCoForm);
+		}else if("06".equals(item)) {
+			coCoatHelper.coatDefaultValue(orderCoForm);
 		}
 	}
 	/**
@@ -5060,77 +3647,9 @@ public class OrderCoController {
 	}
 	@RequestMapping(value = "/getOrderPriceForPantsModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPantsModel(OrderCoForm orderCoForm, String code) {
-		CoOptionPantsStandardInfo coOptionPantsStandardInfo =orderCoForm.getCoOptionPantsStandardInfo();
-		PantsCoOptionStandardPriceEnum[] priceEnum = PantsCoOptionStandardPriceEnum.values();
-		
-		String opTack = coOptionPantsStandardInfo.getOpTack();
-		
-		for (PantsCoOptionStandardPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = coOptionPantsStandardInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPantsStandardInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPantsStandardInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPantsStandardInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				if("0000105".equals(opTack) || "0000106".equals(opTack)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsStandardInfo");
-				Method methodThree = getMethod(cls, valueThree);				
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPantsStandardInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (PantsCoOptionStandardPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPantsStandardInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPantsStandardInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPantsModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = CoPants1Helper.getOrderPriceForPantsModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsSProject", method = RequestMethod.GET)
@@ -5178,12 +3697,12 @@ public class OrderCoController {
 				
 				if(("op_stitchModify_id".equals(idValueName) && "op_stitchModify_id".equals(valueFour))|| ("op_dStitch_id".equals(idValueName) &&"op_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
 						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
+						String[] strArr = countArr.split("/");
 						for (int i = 0; i < strArr.length; i++) {
 							String projectPriceCode = code + strArr[i];
 							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
@@ -5260,78 +3779,9 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/getOrderPriceForPantsTuModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPantsTuModel(OrderCoForm orderCoForm, String code) {
-		CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo =orderCoForm.getCoOptionPantsTuxedoInfo();
-		PantsCoOptionTuxedoPriceEnum[] priceEnum = PantsCoOptionTuxedoPriceEnum.values();
-		
-		String tpTack = coOptionPantsTuxedoInfo.getTpTack();
-		
-		for (PantsCoOptionTuxedoPriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = coOptionPantsTuxedoInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPantsTuxedoInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPantsTuxedoInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPantsTuxedoInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				if("0000105".equals(tpTack) || "0000106".equals(tpTack)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsTuxedoInfo");
-				Method methodThree = getMethod(cls, valueThree);				
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPantsTuxedoInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (PantsCoOptionTuxedoPriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPantsTuxedoInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPantsTuxedoInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPantsTuModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coPants1Helper.getOrderPriceForPantsTuModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsSTuProject", method = RequestMethod.GET)
@@ -5378,7 +3828,7 @@ public class OrderCoController {
 				}
 				if(("tp_stitchModify_id".equals(idValueName) && "tp_stitchModify_id".equals(valueFour))|| ("tp_dStitch_id".equals(idValueName) &&"tp_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
@@ -5457,78 +3907,9 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/getOrderPriceForPantsWPModel", method = RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> getOrderPriceForPantsWPModel(OrderCoForm orderCoForm, String code) {
-		CoOptionPantsWashableInfo coOptionPantsWashableInfo =orderCoForm.getCoOptionPantsWashableInfo();
-		PantsCoOptionWashablePriceEnum[] priceEnum = PantsCoOptionWashablePriceEnum.values();
-		
-		String wpTack = coOptionPantsWashableInfo.getWpTack();
-		
-		for (PantsCoOptionWashablePriceEnum price : priceEnum) {
-			String key = price.getKey();
-			String valueOne = price.getValueOne();
-			String valueTwo = price.getValueTwo();
-			String valueThree = price.getValueThree();
-			String splicingCodeForFindUniquePrice = "";
-			String splicingCodeDetail = "";
-			String orderPrice = "";
-			try {
-				Method methodOne = coOptionPantsWashableInfo.getClass().getMethod(valueOne);
-				Object invokeOne = methodOne.invoke(coOptionPantsWashableInfo);
-				Object invokeTwo = "";
-				if(!("".equals(valueTwo))) {
-					Method methodTwo = coOptionPantsWashableInfo.getClass().getMethod(valueTwo);
-					invokeTwo = methodTwo.invoke(coOptionPantsWashableInfo);
-					splicingCodeDetail = code + key + invokeOne + invokeTwo;
-				}
-				splicingCodeForFindUniquePrice = code + key + invokeOne;
-				
-				if("0000105".equals(wpTack) || "0000106".equals(wpTack)) {
-					orderPrice = getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else{
-					orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}
-				
-				
-				Class<?> cls;
-				Object[] args = {orderPrice};
-				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsWashableInfo");
-				Method methodThree = getMethod(cls, valueThree);				
-				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPantsWashableInfo(), args);
-			} catch (NoSuchMethodException | SecurityException | 
-					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
-					ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, String> priceMap = new HashMap<String, String>();
-		Integer optionPriceInt = 0;
-		for (PantsCoOptionWashablePriceEnum price : priceEnum) {
-			String valueFour = price.getValueFour();
-			String valueSix = price.getValueSix();
-			
-			try {
-				Method methodSix = coOptionPantsWashableInfo.getClass().getMethod(valueSix);
-				Object invokeSix = methodSix.invoke(coOptionPantsWashableInfo);
-				String valueOf = String.valueOf(invokeSix);
-				
-				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
-				if("0".equals(valueOf)) {
-					priceMap.put(valueFour, "無料");
-				}else {
-					priceMap.put(valueFour, "￥" + formatPrice(valueOf));
-				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("priceMap", priceMap);
-		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+	public Map<String, Object> getOrderPriceForPantsWPModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		Map<String, Object> resultMap = coPants1Helper.getOrderPriceForPantsWPModel(orderCoForm,code,orderFlag);
 		return resultMap;
-		
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsSWPProject", method = RequestMethod.GET)
@@ -5576,12 +3957,12 @@ public class OrderCoController {
 				}
 				if(("wp_stitchModify_id".equals(idValueName) && "wp_stitchModify_id".equals(valueFour))|| ("wp_dStitch_id".equals(idValueName) &&"wp_dStitch_id".equals(valueFour))) {
 					hasIdvalueName = true;
-					if(isEmpty(countArr)) {
+					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
 						//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 					}else {
 						Integer orderPriceInt = 0;
-						String[] strArr = countArr.split(",");
+						String[] strArr = countArr.split("/");
 						for (int i = 0; i < strArr.length; i++) {
 							String projectPriceCode = code + strArr[i];
 							String orderPriceInner = getOrderPrice(projectPriceCode, "", orderCoForm);
@@ -5653,20 +4034,5 @@ public class OrderCoController {
 		orderCoForm.setPtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
 
-	}
-	
-	public Boolean isEmpty(String value) {
-		if("".equals(value)||null == value) {
-			return true;
-		}else {
-			return false;
-		}
-	}
-	
-	public Boolean isNotEmpty(String value) {
-		  if (value == "" || value == null) {
-		    return false;
-		  }
-		  return true;
 	}
 }

@@ -1,23 +1,33 @@
 package co.jp.aoyama.macchinetta.app.order.coHelper;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dozer.util.ReflectionUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
 import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
+import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
+import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm;
-import co.jp.aoyama.macchinetta.app.order.OrderCoHelper;
 import co.jp.aoyama.macchinetta.app.order.TypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustPants2StandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2StandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2TuxedoInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2WashableInfo;
+import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionStandardPriceEnum;
+import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionTuxedoPriceEnum;
+import co.jp.aoyama.macchinetta.app.order.enums.pants.Pants2CoOptionWashablePriceEnum;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
@@ -25,8 +35,8 @@ import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
 public class CoPants2Helper {
 	@Inject
 	TypeSizeService typeSizeService;
-	
-	OrderCoHelper orderCoHelper = new OrderCoHelper();
+
+	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
 
 	public boolean pants2Check(ResultMessages messages, OrderCoForm orderCoForm, String productCategory, String item,
 			Map<String, List<Adjust>> adjustByItem, TypeSizeService typeSizeService) {
@@ -437,15 +447,37 @@ public class CoPants2Helper {
 				messages.add("E034", "PANTS（2本目）のワタリ幅修正");
 				pants2Flag = true;
 			}
-
-			String corPt2HemwidthSize = coAdjustPants2StandardInfo.getCorPt2HemwidthSize();
-			if ("".equals(corPt2HemwidthSize) || "0".equals(corPt2HemwidthSize) || corPt2HemwidthSize == null) {
+			String corPt2HemwidthType2 = coAdjustPants2StandardInfo.getCorPt2HemwidthType();
+			if ("".equals(corPt2HemwidthType2) || "0".equals(corPt2HemwidthType2) || corPt2HemwidthType2 == null) {
 				messages.add("E034", "PANTS（2本目）の裾幅");
 				pants2Flag = true;
+			} else {
+				if ("1".equals(corPt2HemwidthType2)) {
+					String corPt2HemwidthSize = coAdjustPants2StandardInfo.getCorPt2HemwidthSize();
+					if ("".equals(corPt2HemwidthSize) || "0".equals(corPt2HemwidthSize) || corPt2HemwidthSize == null) {
+						messages.add("E034", "PANTS（2本目）の裾幅");
+						pants2Flag = true;
+					}
+				} else if ("2".equals(corPt2HemwidthType2)) {
+					String corPt2HemwidthDegignate = coAdjustPants2StandardInfo.getCorPt2HemwidthDegignate();
+					if ("".equals(corPt2HemwidthDegignate) || "0".equals(corPt2HemwidthDegignate)
+							|| corPt2HemwidthDegignate == null) {
+						messages.add("E034", "PANTS（2本目）の裾幅");
+						pants2Flag = true;
+					}
+				}
 			}
+			/*
+			 * String corPt2HemwidthSize =
+			 * coAdjustPants2StandardInfo.getCorPt2HemwidthSize(); if
+			 * ("".equals(corPt2HemwidthSize) || "0".equals(corPt2HemwidthSize) ||
+			 * corPt2HemwidthSize == null) { messages.add("E034", "PANTS（2本目）の裾幅");
+			 * pants2Flag = true; }
+			 */
 
 			if (BaseCheckUtil.isNotEmpty(sizeFigure) && BaseCheckUtil.isNotEmpty(sizeNumber)) {
-				List<TypeSizeOptimization> coPt2TypeSizeOptimization =getCoPt2TypeSizeOptimization(orderCoForm, typeSizeService);
+				List<TypeSizeOptimization> coPt2TypeSizeOptimization = getCoPt2TypeSizeOptimization(orderCoForm,
+						typeSizeService);
 				List<Adjust> pt2AdjustList = adjustByItem.get("07");
 				if (!pt2AdjustList.isEmpty() && !coPt2TypeSizeOptimization.isEmpty()) {
 					for (Adjust adjust : pt2AdjustList) {
@@ -543,88 +575,628 @@ public class CoPants2Helper {
 		}
 		return pants2Flag;
 	}
+
 	/**
 	 * 2PANTSの補正標準値
+	 * 
 	 * @param coJkTypeSizeOptimization
 	 * @return
 	 */
-	private Map<String, String> getPt2StandardValue(OrderCoForm orderCoForm,List<TypeSizeOptimization> coPt2TypeSizeOptimization) {
-		Map<String,String> adjustPt2StandardValue = new HashMap<String,String>();
+	private Map<String, String> getPt2StandardValue(OrderCoForm orderCoForm,
+			List<TypeSizeOptimization> coPt2TypeSizeOptimization) {
+		Map<String, String> adjustPt2StandardValue = new HashMap<String, String>();
 		String productCategory = orderCoForm.getProductCategory();
 		String pt2TackValue = null;
-		if("9000101".equals(productCategory)) {
+		if ("9000101".equals(productCategory)) {
 			pt2TackValue = orderCoForm.getCoOptionPants2StandardInfo().getOp2Tack();
-		}
-		else if("9000102".equals(productCategory)) {
+		} else if ("9000102".equals(productCategory)) {
 			pt2TackValue = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2Tack();
-		}
-		else if("9000103".equals(productCategory)) {
+		} else if ("9000103".equals(productCategory)) {
 			pt2TackValue = orderCoForm.getCoOptionPants2WashableInfo().getWp2Tack();
 		}
-		for(TypeSizeOptimization typeSizeOptimization : coPt2TypeSizeOptimization) {
+		for (TypeSizeOptimization typeSizeOptimization : coPt2TypeSizeOptimization) {
 			// ウエスト修正
-			if("06".equals(typeSizeOptimization.getAdjustClass())) {
+			if ("06".equals(typeSizeOptimization.getAdjustClass())) {
 				String corPt2WaistSize = typeSizeOptimization.getTypeSize();
 				adjustPt2StandardValue.put("corPt2WaistSize", corPt2WaistSize);
 			}
 			// ヒップ
-			else if("05".equals(typeSizeOptimization.getAdjustClass())) {
+			else if ("05".equals(typeSizeOptimization.getAdjustClass())) {
 				String corPt2HipSize = typeSizeOptimization.getTypeSize();
 				adjustPt2StandardValue.put("corPt2HipSize", corPt2HipSize);
 			}
 			// ワタリ修正
-			else if("07".equals(typeSizeOptimization.getAdjustClass())) {
-				String corPt2ThighwidthSize =  null;
-				if("0000101".equals(pt2TackValue)) {
+			else if ("07".equals(typeSizeOptimization.getAdjustClass())) {
+				String corPt2ThighwidthSize = null;
+				if ("0000101".equals(pt2TackValue)) {
 					corPt2ThighwidthSize = typeSizeOptimization.getTypeSize();
-				}
-				else if("0000102".equals(pt2TackValue)) {
+				} else if ("0000102".equals(pt2TackValue)) {
 					corPt2ThighwidthSize = typeSizeOptimization.getTypeSize1Outtack();
-				}
-				else if("0000103".equals(pt2TackValue)) {
+				} else if ("0000103".equals(pt2TackValue)) {
 					corPt2ThighwidthSize = typeSizeOptimization.getTypeSize1Intack();
-				}
-				else if("0000104".equals(pt2TackValue)) {
+				} else if ("0000104".equals(pt2TackValue)) {
 					corPt2ThighwidthSize = typeSizeOptimization.getTypeSize2Outtack();
-				}
-				else if("0000105".equals(pt2TackValue)) {
+				} else if ("0000105".equals(pt2TackValue)) {
 					corPt2ThighwidthSize = typeSizeOptimization.getTypeSize2Intack();
 				}
 				adjustPt2StandardValue.put("corPt2ThighwidthSize", corPt2ThighwidthSize);
 			}
-			//　裾幅修正
-			else if("08".equals(typeSizeOptimization.getAdjustClass())) {
+			// 裾幅修正
+			else if ("08".equals(typeSizeOptimization.getAdjustClass())) {
 				String corPt2HemwidthSize = typeSizeOptimization.getTypeSize();
 				adjustPt2StandardValue.put("corPt2HemwidthSize", corPt2HemwidthSize);
 			}
 		}
 		return adjustPt2StandardValue;
 	}
+
 	/**
-	 *2PANTSの標準値取得
+	 * 2PANTSの標準値取得
+	 * 
 	 * @param orderCoForm
 	 * @return
 	 */
-	private List<TypeSizeOptimization> getCoPt2TypeSizeOptimization(OrderCoForm orderCoForm, TypeSizeService typeSizeService) {
+	private List<TypeSizeOptimization> getCoPt2TypeSizeOptimization(OrderCoForm orderCoForm,
+			TypeSizeService typeSizeService) {
 		String orderPattern = orderCoForm.getOrderPattern();
 		String productCategory = orderCoForm.getProductCategory();
 		String subItemCode = "07";
 		String modelCode = null;
-		if("9000101".equals(productCategory)) {
-			modelCode = orderCoForm.getCoOptionPants2StandardInfo().getOp2PantsModel();	
-		}
-		else if("9000102".equals(productCategory)) {
+		if ("9000101".equals(productCategory)) {
+			modelCode = orderCoForm.getCoOptionPants2StandardInfo().getOp2PantsModel();
+		} else if ("9000102".equals(productCategory)) {
 			modelCode = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2PantsModel();
-		}
-		else if("9000103".equals(productCategory)) {
+		} else if ("9000103".equals(productCategory)) {
 			modelCode = orderCoForm.getCoOptionPants2WashableInfo().getWp2PantsModel();
 		}
-		 
+
 		String figure = orderCoForm.getCoAdjustPants2StandardInfo().getSizeFigure();
 		String number = orderCoForm.getCoAdjustPants2StandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coPt2TypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coPt2TypeSizeOptimization = coTypeSizeOptimization
+				.getCoTypeSizeOptimization(coTypeSizeList);
 		return coPt2TypeSizeOptimization;
+	}
+
+	public Map<String, Object> getOrderPriceForPants2Model(OrderCoForm orderCoForm, String code, String orderFlag) {
+		CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
+
+		Pants2CoOptionStandardPriceEnum[] priceEnum = Pants2CoOptionStandardPriceEnum.values();
+		for (Pants2CoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			String orderPrice = "";
+			try {
+				Method methodOne = coOptionPants2StandardInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(coOptionPants2StandardInfo);
+				Object invokeTwo = "";
+				if (!("".equals(valueTwo))) {
+					Method methodTwo = coOptionPants2StandardInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(coOptionPants2StandardInfo);
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne;
+
+				if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+					
+				}else {
+					if ("op2_stitchModify_id".equals(valueFour)) {
+						List<String> stitchModifyList = new ArrayList<String>();
+						String op2StitchModifyPlace1 = coOptionPants2StandardInfo.getOp2StitchModifyPlace1();
+						stitchModifyList.add(op2StitchModifyPlace1);
+						String op2StitchModifyPlace2 = coOptionPants2StandardInfo.getOp2StitchModifyPlace2();
+						stitchModifyList.add(op2StitchModifyPlace2);
+						String op2StitchModifyPlace3 = coOptionPants2StandardInfo.getOp2StitchModifyPlace3();
+						stitchModifyList.add(op2StitchModifyPlace3);
+						String op2StitchModifyPlace4 = coOptionPants2StandardInfo.getOp2StitchModifyPlace4();
+						stitchModifyList.add(op2StitchModifyPlace4);
+
+						stitchModifyList.removeAll(Collections.singleton(null));
+						if (stitchModifyList.isEmpty() || OptionCodeKeys.PT2_0002001.equals(invokeOne)) {
+							splicingCodeForFindUniquePrice = code + key + invokeOne;
+						} else {
+							Integer orderPriceInt = 0;
+							for (int i = 0; i < stitchModifyList.size(); i++) {
+								String projectPriceCode = code + "00021" + stitchModifyList.get(i);
+								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+										orderCoForm);
+								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+							}
+							orderPrice = String.valueOf(orderPriceInt);
+						}
+					}
+
+					if ("op2_dStitch_id".equals(valueFour)) {
+						List<String> stitchModifyList = new ArrayList<String>();
+						String op2DStitchPlace1 = coOptionPants2StandardInfo.getOp2DStitchPlace1();
+						stitchModifyList.add(op2DStitchPlace1);
+						String op2DStitchPlace2 = coOptionPants2StandardInfo.getOp2DStitchPlace2();
+						stitchModifyList.add(op2DStitchPlace2);
+						String op2DStitchPlace3 = coOptionPants2StandardInfo.getOp2DStitchPlace3();
+						stitchModifyList.add(op2DStitchPlace3);
+						String op2DStitchPlace4 = coOptionPants2StandardInfo.getOp2DStitchPlace4();
+						stitchModifyList.add(op2DStitchPlace4);
+						stitchModifyList.removeAll(Collections.singleton(null));
+						if (stitchModifyList.isEmpty() || OptionCodeKeys.PT2_0002201.equals(invokeOne)) {
+							splicingCodeForFindUniquePrice = code + key + invokeOne;
+						} else {
+							Integer orderPriceInt = 0;
+							for (int i = 0; i < stitchModifyList.size(); i++) {
+								String projectPriceCode = code + "00023" + stitchModifyList.get(i);
+								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+										orderCoForm);
+								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+							}
+							orderPrice = String.valueOf(orderPriceInt);
+						}
+					}
+
+					if ("op2_amfColor_id".equals(valueFour)) {
+						HashSet<String> amfColorSet = new HashSet<String>();
+						String op2AmfColorPlace1 = coOptionPants2StandardInfo.getOp2AmfColorPlace1();
+						amfColorSet.add(op2AmfColorPlace1);
+						String op2AmfColorPlace2 = coOptionPants2StandardInfo.getOp2AmfColorPlace2();
+						amfColorSet.add(op2AmfColorPlace2);
+						String op2AmfColorPlace3 = coOptionPants2StandardInfo.getOp2AmfColorPlace3();
+						amfColorSet.add(op2AmfColorPlace3);
+						String op2AmfColorPlace4 = coOptionPants2StandardInfo.getOp2AmfColorPlace4();
+						amfColorSet.add(op2AmfColorPlace4);
+						amfColorSet.removeAll(Collections.singleton(null));
+						List<String> amfColorList = new ArrayList<String>(amfColorSet);
+						if (OptionCodeKeys.PT2_0002401.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0002402.equals(invokeOne) && amfColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00025" + amfColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(amfColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+
+					if ("op2_bhColor_id".equals(valueFour)) {
+						HashSet<String> bhColorSet = new HashSet<String>();
+						String op2BhColor1 = coOptionPants2StandardInfo.getOp2BhColor1();
+						bhColorSet.add(op2BhColor1);
+						String op2BhColor2 = coOptionPants2StandardInfo.getOp2BhColor2();
+						bhColorSet.add(op2BhColor2);
+						String op2BhColor3 = coOptionPants2StandardInfo.getOp2BhColor3();
+						bhColorSet.add(op2BhColor3);
+						String op2BhColor4 = coOptionPants2StandardInfo.getOp2BhColor4();
+						bhColorSet.add(op2BhColor4);
+						bhColorSet.removeAll(Collections.singleton(null));
+						List<String> bhColorList = new ArrayList<String>(bhColorSet);
+						if (OptionCodeKeys.PT2_0002701.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0002702.equals(invokeOne) && bhColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00028" + bhColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+
+					if ("op2_byColor_id".equals(valueFour)) {
+						HashSet<String> byColorSet = new HashSet<String>();
+						String op2ByColor1 = coOptionPants2StandardInfo.getOp2ByColor1();
+						byColorSet.add(op2ByColor1);
+						String op2ByColor2 = coOptionPants2StandardInfo.getOp2ByColor2();
+						byColorSet.add(op2ByColor2);
+						String op2ByColor3 = coOptionPants2StandardInfo.getOp2ByColor3();
+						byColorSet.add(op2ByColor3);
+						String op2ByColor4 = coOptionPants2StandardInfo.getOp2ByColor4();
+						byColorSet.add(op2ByColor4);
+						byColorSet.removeAll(Collections.singleton(null));
+						List<String> byColorList = new ArrayList<String>(byColorSet);
+						if (OptionCodeKeys.PT2_0003001.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0003002.equals(invokeOne) && byColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00031" + byColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+				}
+				
+
+				if ("".equals(orderPrice)) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice,
+							splicingCodeDetail, orderCoForm);
+				}
+
+				Class<?> cls;
+				Object[] args = { orderPrice };
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2StandardInfo");
+				Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2StandardInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, String> priceMap = new HashMap<String, String>();
+		Integer optionPriceInt = 0;
+		for (Pants2CoOptionStandardPriceEnum price : priceEnum) {
+			String valueFour = price.getValueFour();
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = coOptionPants2StandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(coOptionPants2StandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+
+				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				if ("0".equals(valueOf)) {
+					priceMap.put(valueFour, "無料");
+				} else {
+					priceMap.put(valueFour, "￥" + CoContorllerPublicMethodUtil.formatPrice(valueOf));
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("priceMap", priceMap);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
+	}
+
+	public Map<String, Object> getOrderPriceForPants2TuxedoModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
+
+		Pants2CoOptionTuxedoPriceEnum[] priceEnum = Pants2CoOptionTuxedoPriceEnum.values();
+		for (Pants2CoOptionTuxedoPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			String orderPrice = "";
+			try {
+				Method methodOne = coOptionPants2TuxedoInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(coOptionPants2TuxedoInfo);
+				Object invokeTwo = "";
+				if (!("".equals(valueTwo))) {
+					Method methodTwo = coOptionPants2TuxedoInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(coOptionPants2TuxedoInfo);
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne;
+				
+				if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+					
+				}else {
+					if ("tp2_bhColor_id".equals(valueFour)) {
+						HashSet<String> bhColorSet = new HashSet<String>();
+						String tp2BhColor1 = coOptionPants2TuxedoInfo.getTp2BhColor1();
+						bhColorSet.add(tp2BhColor1);
+						String tp2BhColor2 = coOptionPants2TuxedoInfo.getTp2BhColor2();
+						bhColorSet.add(tp2BhColor2);
+						String tp2BhColor3 = coOptionPants2TuxedoInfo.getTp2BhColor3();
+						bhColorSet.add(tp2BhColor3);
+						String tp2BhColor4 = coOptionPants2TuxedoInfo.getTp2BhColor4();
+						bhColorSet.add(tp2BhColor4);
+						bhColorSet.removeAll(Collections.singleton(null));
+						List<String> bhColorList = new ArrayList<String>(bhColorSet);
+						if (OptionCodeKeys.PT2_0002701.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0002702.equals(invokeOne) && bhColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00028" + bhColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+
+					if ("tp2_byColor_id".equals(valueFour)) {
+						HashSet<String> byColorSet = new HashSet<String>();
+						String tp2ByColor1 = coOptionPants2TuxedoInfo.getTp2ByColor1();
+						byColorSet.add(tp2ByColor1);
+						String tp2ByColor2 = coOptionPants2TuxedoInfo.getTp2ByColor2();
+						byColorSet.add(tp2ByColor2);
+						String tp2ByColor3 = coOptionPants2TuxedoInfo.getTp2ByColor3();
+						byColorSet.add(tp2ByColor3);
+						String tp2ByColor4 = coOptionPants2TuxedoInfo.getTp2ByColor4();
+						byColorSet.add(tp2ByColor4);
+						byColorSet.removeAll(Collections.singleton(null));
+						List<String> byColorList = new ArrayList<String>(byColorSet);
+						if (OptionCodeKeys.PT2_0003001.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0003002.equals(invokeOne) && byColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00031" + byColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+				}
+
+				if ("".equals(orderPrice)) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice,
+							splicingCodeDetail, orderCoForm);
+				}
+
+				Class<?> cls;
+				Object[] args = { orderPrice };
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2TuxedoInfo");
+				Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2TuxedoInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, String> priceMap = new HashMap<String, String>();
+		Integer optionPriceInt = 0;
+		for (Pants2CoOptionTuxedoPriceEnum price : priceEnum) {
+			String valueFour = price.getValueFour();
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = coOptionPants2TuxedoInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(coOptionPants2TuxedoInfo);
+				String valueOf = String.valueOf(invokeSix);
+
+				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				if ("0".equals(valueOf)) {
+					priceMap.put(valueFour, "無料");
+				} else {
+					priceMap.put(valueFour, "￥" + CoContorllerPublicMethodUtil.formatPrice(valueOf));
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("priceMap", priceMap);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
+	}
+
+	public Map<String, Object> getOrderPriceForPants2WashableModel(OrderCoForm orderCoForm, String code, String orderFlag) {
+		CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
+		
+		Pants2CoOptionWashablePriceEnum[] priceEnum = Pants2CoOptionWashablePriceEnum.values();
+		for (Pants2CoOptionWashablePriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			String orderPrice = "";
+			try {
+				Method methodOne = coOptionPants2WashableInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(coOptionPants2WashableInfo);
+				Object invokeTwo = "";
+				if(!("".equals(valueTwo))) {
+					Method methodTwo = coOptionPants2WashableInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(coOptionPants2WashableInfo);
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne;
+				if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+					
+				}else {
+					if ("wp2_stitchModify_id".equals(valueFour)) {
+						List<String> stitchModifyList = new ArrayList<String>();
+						String wp2StitchModifyPlace1 = coOptionPants2WashableInfo.getWp2StitchModifyPlace1();
+						stitchModifyList.add(wp2StitchModifyPlace1);
+						String wp2StitchModifyPlace2 = coOptionPants2WashableInfo.getWp2StitchModifyPlace2();
+						stitchModifyList.add(wp2StitchModifyPlace2);
+						String wp2StitchModifyPlace3 = coOptionPants2WashableInfo.getWp2StitchModifyPlace3();
+						stitchModifyList.add(wp2StitchModifyPlace3);
+						String wp2StitchModifyPlace4 = coOptionPants2WashableInfo.getWp2StitchModifyPlace4();
+						stitchModifyList.add(wp2StitchModifyPlace4);
+
+						stitchModifyList.removeAll(Collections.singleton(null));
+						if (stitchModifyList.isEmpty() || OptionCodeKeys.PT2_0002001.equals(invokeOne)) {
+							splicingCodeForFindUniquePrice = code + key + invokeOne;
+						} else {
+							Integer orderPriceInt = 0;
+							for (int i = 0; i < stitchModifyList.size(); i++) {
+								String projectPriceCode = code + "00021" + stitchModifyList.get(i);
+								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+										orderCoForm);
+								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+							}
+							orderPrice = String.valueOf(orderPriceInt);
+						}
+					}
+
+					if ("wp2_dStitch_id".equals(valueFour)) {
+						List<String> stitchModifyList = new ArrayList<String>();
+						String wp2DStitchPlace1 = coOptionPants2WashableInfo.getWp2DStitchPlace1();
+						stitchModifyList.add(wp2DStitchPlace1);
+						String wp2DStitchPlace2 = coOptionPants2WashableInfo.getWp2DStitchPlace2();
+						stitchModifyList.add(wp2DStitchPlace2);
+						String wp2DStitchPlace3 = coOptionPants2WashableInfo.getWp2DStitchPlace3();
+						stitchModifyList.add(wp2DStitchPlace3);
+						String wp2DStitchPlace4 = coOptionPants2WashableInfo.getWp2DStitchPlace4();
+						stitchModifyList.add(wp2DStitchPlace4);
+						stitchModifyList.removeAll(Collections.singleton(null));
+						if (stitchModifyList.isEmpty() || OptionCodeKeys.PT2_0002201.equals(invokeOne)) {
+							splicingCodeForFindUniquePrice = code + key + invokeOne;
+						} else {
+							Integer orderPriceInt = 0;
+							for (int i = 0; i < stitchModifyList.size(); i++) {
+								String projectPriceCode = code + "00023" + stitchModifyList.get(i);
+								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+										orderCoForm);
+								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+							}
+							orderPrice = String.valueOf(orderPriceInt);
+						}
+					}
+
+					if ("wp2_amfColor_id".equals(valueFour)) {
+						HashSet<String> amfColorSet = new HashSet<String>();
+						String wp2AmfColorPlace1 = coOptionPants2WashableInfo.getWp2AmfColorPlace1();
+						amfColorSet.add(wp2AmfColorPlace1);
+						String wp2AmfColorPlace2 = coOptionPants2WashableInfo.getWp2AmfColorPlace2();
+						amfColorSet.add(wp2AmfColorPlace2);
+						String wp2AmfColorPlace3 = coOptionPants2WashableInfo.getWp2AmfColorPlace3();
+						amfColorSet.add(wp2AmfColorPlace3);
+						String wp2AmfColorPlace4 = coOptionPants2WashableInfo.getWp2AmfColorPlace4();
+						amfColorSet.add(wp2AmfColorPlace4);
+						amfColorSet.removeAll(Collections.singleton(null));
+						List<String> amfColorList = new ArrayList<String>(amfColorSet);
+						if (OptionCodeKeys.PT2_0002401.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0002402.equals(invokeOne) && amfColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00025" + amfColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(amfColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+
+					if ("wp2_bhColor_id".equals(valueFour)) {
+						HashSet<String> bhColorSet = new HashSet<String>();
+						String wp2BhColor1 = coOptionPants2WashableInfo.getWp2BhColor1();
+						bhColorSet.add(wp2BhColor1);
+						String wp2BhColor2 = coOptionPants2WashableInfo.getWp2BhColor2();
+						bhColorSet.add(wp2BhColor2);
+						String wp2BhColor3 = coOptionPants2WashableInfo.getWp2BhColor3();
+						bhColorSet.add(wp2BhColor3);
+						String wp2BhColor4 = coOptionPants2WashableInfo.getWp2BhColor4();
+						bhColorSet.add(wp2BhColor4);
+						bhColorSet.removeAll(Collections.singleton(null));
+						List<String> bhColorList = new ArrayList<String>(bhColorSet);
+						if (OptionCodeKeys.PT2_0002701.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0002702.equals(invokeOne) && bhColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00028" + bhColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+
+					if ("wp2_byColor_id".equals(valueFour)) {
+						HashSet<String> byColorSet = new HashSet<String>();
+						String wp2ByColor1 = coOptionPants2WashableInfo.getWp2ByColor1();
+						byColorSet.add(wp2ByColor1);
+						String wp2ByColor2 = coOptionPants2WashableInfo.getWp2ByColor2();
+						byColorSet.add(wp2ByColor2);
+						String wp2ByColor3 = coOptionPants2WashableInfo.getWp2ByColor3();
+						byColorSet.add(wp2ByColor3);
+						String wp2ByColor4 = coOptionPants2WashableInfo.getWp2ByColor4();
+						byColorSet.add(wp2ByColor4);
+						byColorSet.removeAll(Collections.singleton(null));
+						List<String> byColorList = new ArrayList<String>(byColorSet);
+						if (OptionCodeKeys.PT2_0003001.equals(invokeOne)
+								|| (OptionCodeKeys.PT2_0003002.equals(invokeOne) && byColorSet.isEmpty())) {
+							String projectPriceCode = code + key + invokeOne;
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							orderPrice = orderPriceInner;
+						} else {
+							String projectPriceCode = code + "00031" + byColorList.get(0);
+							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "",
+									orderCoForm);
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
+							orderPrice = String.valueOf(colorPrice);
+						}
+					}
+				}
+
+				if ("".equals(orderPrice)) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice,
+							splicingCodeDetail, orderCoForm);
+				}
+				
+				Class<?> cls;
+				Object[] args = {orderPrice};
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2WashableInfo");
+				Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionPants2WashableInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, String> priceMap = new HashMap<String, String>();
+		Integer optionPriceInt = 0;
+		for (Pants2CoOptionWashablePriceEnum price : priceEnum) {
+			String valueFour = price.getValueFour();
+			String valueSix = price.getValueSix();
+			
+			try {
+				Method methodSix = coOptionPants2WashableInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(coOptionPants2WashableInfo);
+				String valueOf = String.valueOf(invokeSix);
+				
+				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				if("0".equals(valueOf)) {
+					priceMap.put(valueFour, "無料");
+				}else {
+					priceMap.put(valueFour, "￥" + CoContorllerPublicMethodUtil.formatPrice(valueOf));
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("priceMap", priceMap);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setPt2OptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
 	}
 }

@@ -30,8 +30,8 @@ public enum Pants2CoOptionTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTp2ByColor","","setPt2BtnthreadColorRtPrice","tp2_byColor_id","","getPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE33("00033","getTp2Button","getTp2BtnMateStkNo","setPt2BtnMaterialRtPrice","tp2_btnMate","tp2_btnMateStkNo","getPt2BtnMaterialRtPrice"),//釦素材
 	PANTS_TUXEDO_OPTION_CODE35("00035","getTp2SuspenderBtn","","setPt2SuspenderBtnRtPrice","tp2_suspenderBtn_id","","getPt2SuspenderBtnRtPrice"),//サスペンダー釦
-	PANTS_TUXEDO_OPTION_CODE36("00036","getTp2Eight","","setPt2NonSlipRtPrice","tp2_thick_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
-	PANTS_TUXEDO_OPTION_CODE41("00041","getTp2Thick","","setPt2ChicSlipRtPrice","tp2_eight_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
+	PANTS_TUXEDO_OPTION_CODE36("00036","getTp2Eight","","setPt2NonSlipRtPrice","tp2_eight_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
+	PANTS_TUXEDO_OPTION_CODE41("00041","getTp2Thick","","setPt2ChicSlipRtPrice","tp2_thick_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
 	PANTS_TUXEDO_OPTION_CODE37("00037","getTp2ShapeMemory","","setPt2ShapeMemoryRtPrice","tp2_shapeMemory_id","","getPt2ShapeMemoryRtPrice"),//形状記憶
 	PANTS_TUXEDO_OPTION_CODE39("00039","getTp2SideStripe","","setPt2SideStripeRtPrice","tp2_sideStripe_id","","getPt2SideStripeRtPrice"),//側章
 	PANTS_TUXEDO_OPTION_CODE40("00040","getTp2SideStripeWidth","","setPt2SideStripeWidthRtPrice","tp2_sideStripeWidth_id","","getPt2SideStripeWidthRtPrice");//側章幅

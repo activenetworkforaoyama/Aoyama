@@ -250,23 +250,14 @@ var selectIdList = {
 jQuery(document).ready(function() {
 	
 	var coatAdFlag="${orderCoForm.coatAdFlag}";
-	var sessioncoatModel = "${orderCoForm.coOptionCoatStandardInfo.coatModel}";
-	if(orderFlag == "orderCo"){
+	if("orderCo"==orderFlag){
 		if(coatAdFlag=="1"){
 		}else{
 			jQuery("#coatAdFlag").val("0");
 		}
+	}else if("0"==jQuery("#coatItemFlag").val() && "orderCo"!=orderFlag){
+		    jQuery("#coatAdFlag").val("1");
 	}
-	jQuery("#coatModel").click(function(){
-		var coatModel = jQuery("#coatModel").val();
-		if(sessioncoatModel != coatModel){
-			if(orderFlag == "orderBack" || orderFlag == "orderLink"){
-				 jQuery("#coatAdFlag").val("0");
-			}
-		}
-	});
-
-	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -280,10 +271,10 @@ jQuery(document).ready(function() {
 	initOptionCoat();
 	mateInit();
 	mateStkNoReInit();
-	jQuery("#coatItemFlag").val("1");
 	getPrice();
 	showPrice();
 	doubleOptionModelPrice();
+	jQuery("#coatItemFlag").val("1");
 });
 
 function setCoatModelDisable(){
@@ -363,7 +354,7 @@ function getPrice(){
 	//COATの料金を表示
 	var coatModel = "";
 	jQuery("#coatModel").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 		coatModel = jQuery("#coatModel option:selected").val();
 		var itemCode = "06";
 	    var subItemCode = jQuery("#item").val();
@@ -629,9 +620,13 @@ function mateStkNoReInit(){
 }
 jQuery("#coatModel").change(function() {
 	jQuery("#coatFlag").val("1");
-	if(orderFlag == "orderCo"){
-		jQuery("#coatAdFlag").val("0");
-	}
+	if("orderCo"==orderFlag){
+		jQuery("#coatAdFlag").val("0");	
+	}else if("1"==jQuery("#coatItemFlag").val()){
+		if("orderCo"!=orderFlag ){
+			jQuery("#coatAdFlag").val("0");
+		}
+	}	
 });
 if (document.readyState=="complete")  
 {  

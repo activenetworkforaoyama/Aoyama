@@ -1,7 +1,6 @@
 package co.jp.aoyama.macchinetta.app.order.coHelper;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +9,14 @@ import javax.inject.Inject;
 
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
+import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm;
-import co.jp.aoyama.macchinetta.app.order.OrderCoHelper;
 import co.jp.aoyama.macchinetta.app.order.TypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
+import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
 
@@ -23,7 +25,7 @@ public class CoCoatHelper {
 	@Inject
 	TypeSizeService typeSizeService;
 	
-	OrderCoHelper orderCoHelper = new OrderCoHelper();
+	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
 	
 	public boolean coatCheck(ResultMessages messages, OrderCoForm orderCoForm, String item,
 			Map<String, List<Adjust>> adjustByItem, TypeSizeService typeSizeService) {
@@ -233,8 +235,8 @@ public class CoCoatHelper {
 			}
 			// ベント修正（高さ）
 			else if("17".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtPktposSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtPktposSize", corCtPktposSize);
+				String corCtVenthightSize = typeSizeOptimization.getTypeSize();
+				adjustCtStandardValue.put("corCtVenthightSize", corCtVenthightSize);
 			}
 			// ポケット位置
 			else if("18".equals(typeSizeOptimization.getAdjustClass())) {
@@ -253,23 +255,86 @@ public class CoCoatHelper {
 		String number = orderCoForm.getCoAdjustCoatStandardInfo().getCorCtSize();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coCtTypeSizeOptimization = this.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coCtTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coCtTypeSizeOptimization;
 	}
 
-	public List<TypeSizeOptimization> getCoTypeSizeOptimization(List<TypeSize> coTypeSizeList) {
-		List<TypeSizeOptimization> typeSizeList = new ArrayList<TypeSizeOptimization>();
-		for (TypeSize typeSize : coTypeSizeList) {
-			TypeSizeOptimization typeSizeOptimization = new TypeSizeOptimization();
-			typeSizeOptimization.setAdjustClass(typeSize.getAdjustClass());
-			typeSizeOptimization.setTypeSize(typeSize.getTypeSize().toString());
-			typeSizeOptimization.setTypeSize1Intack(typeSize.getTypeSize1Intack().toString());
-			typeSizeOptimization.setTypeSize1Outtack(typeSize.getTypeSize1Outtack().toString());
-			typeSizeOptimization.setTypeSize2Intack(typeSize.getTypeSize2Intack().toString());
-			typeSizeOptimization.setTypeSize2Outtack(typeSize.getTypeSize2Outtack().toString());
-			typeSizeList.add(typeSizeOptimization);
-		}
-		return typeSizeList;
+	public void coatDefaultValueFromDb(OrderCoForm orderCoForm, Order orderCt) {
+		CoOptionCoatStandardInfo optionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+		optionCoatStandardInfo.setCoatModel(orderCt.getCtModelCd());
+		optionCoatStandardInfo.setOcLapelDesign(orderCt.getCtLapelDesignCd());
+		optionCoatStandardInfo.setOcWaistPkt(orderCt.getCtWaistPktCd());
+		optionCoatStandardInfo.setOcChangePkt(orderCt.getCtChgPktCd());
+		optionCoatStandardInfo.setOcSlantedPkt(orderCt.getCtSlantedPktCd());
+		optionCoatStandardInfo.setOcVentSpec(orderCt.getCtVentCd());
+		optionCoatStandardInfo.setOcFrontBtnCnt(orderCt.getCtFrtBtnCd());
+		optionCoatStandardInfo.setOcCuffSpec(orderCt.getCtCuffCd());
+		optionCoatStandardInfo.setOcSleeveBtnType(orderCt.getCtSleeveBtnCd());
+		optionCoatStandardInfo.setOcBackBelt(orderCt.getCtBackBeltCd());
+		optionCoatStandardInfo.setOcChainHange(orderCt.getCtCollarHangCd());
+		optionCoatStandardInfo.setOcBodyBackMate(orderCt.getCtInnerBodyClothType());
+		optionCoatStandardInfo.setOcBodyBackMateStkNo(orderCt.getCtInnerBodyClothCd());
+		optionCoatStandardInfo.setOcCuffBackMate(orderCt.getCtInnerSleeveClothType());
+		optionCoatStandardInfo.setOcCuffBackMateStkNo(orderCt.getCtInnerSleeveClothCd());
+		optionCoatStandardInfo.setOcFrontBtnMate(orderCt.getCtBtnMaterialType());
+		optionCoatStandardInfo.setOcFrontBtnMateStkNo(orderCt.getCtBtnMaterialCd());
+		optionCoatStandardInfo.setOcSleeveSpec(orderCt.getCtSleeveTypeCd());
 	}
+	
+	public void coatDefaultValue(OrderCoForm orderCoForm) {
+		CoOptionCoatStandardInfo optionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+		optionCoatStandardInfo.setCoatModel("");
+		optionCoatStandardInfo.setOcLapelDesign(OptionCodeKeys.CT_0000101);
+		optionCoatStandardInfo.setOcWaistPkt(OptionCodeKeys.CT_0000201);
+		optionCoatStandardInfo.setOcChangePkt(OptionCodeKeys.CT_0000301);
+		optionCoatStandardInfo.setOcSlantedPkt(OptionCodeKeys.CT_0000401);
+		optionCoatStandardInfo.setOcVentSpec(OptionCodeKeys.CT_0000501);
+		optionCoatStandardInfo.setOcFrontBtnCnt(OptionCodeKeys.CT_0000601);
+		optionCoatStandardInfo.setOcCuffSpec(OptionCodeKeys.CT_0000701);
+		optionCoatStandardInfo.setOcSleeveBtnType(OptionCodeKeys.CT_0000801);
+		optionCoatStandardInfo.setOcBackBelt(OptionCodeKeys.CT_0000901);
+		optionCoatStandardInfo.setOcChainHange(OptionCodeKeys.CT_0001001);
+		optionCoatStandardInfo.setOcBodyBackMate(OptionCodeKeys.CT_4000100);
+		optionCoatStandardInfo.setOcBodyBackMateStkNo(null);
+		optionCoatStandardInfo.setOcCuffBackMate(OptionCodeKeys.CT_5000100);
+		optionCoatStandardInfo.setOcCuffBackMateStkNo(null);
+		optionCoatStandardInfo.setOcFrontBtnMate(OptionCodeKeys.CT_6000100);
+		optionCoatStandardInfo.setOcFrontBtnMateStkNo(null);
+		optionCoatStandardInfo.setOcSleeveSpec(OptionCodeKeys.CT_0001401);
+	}
+	
+	public void coatAdjustFromDb(OrderCoForm orderCoForm, Order order) {
+		orderCoForm.getCoOptionCoatStandardInfo().setCoatModel(order.getCtModelCd());
+		
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtSize(order.getCorCtSize());
 
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtBodylengthSize(order.getCorCtBodylengthSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtBodylengthGross(order.getCorCtBodylengthGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo()
+				.setCorCtBodylengthCorrect(order.getCorCtBodylengthCorrect().toString());
+
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistSize(order.getCorCtWaistSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistGross(order.getCorCtWaistGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtWaistCorrect(order.getCorCtWaistCorrect().toString());
+
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtRightsleeveSize(order.getCorCtRightsleeveSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtRightsleeveGross(order.getCorCtRightsleeveGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo()
+				.setCorCtRightsleeveCorrect(order.getCorCtRightsleeveCorrect().toString());
+
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtLeftsleeveSize(order.getCorCtLeftsleeveSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtLeftsleeveGross(order.getCorCtLeftsleeveGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo()
+				.setCorCtLeftsleeveCorrect(order.getCorCtLeftsleeveCorrect().toString());
+
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightSize(order.getCorCtVenthightSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightGross(order.getCorCtVenthightGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightCorrect(order.getCorCtVenthightCorrect().toString());
+
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposSize(order.getCorCtPktposSize().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposGross(order.getCorCtPktposGross().toString());
+		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposCorrect(order.getCorCtPktposCorrect().toString());
+		
+		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
+	}
 }

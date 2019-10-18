@@ -15,6 +15,12 @@ function initProduct() {
 		jQuery('#threePiece_div').hide();
 		jQuery('#sparePants_div').hide();
 	}
+	// LCR縫製
+	if (oldItem == "05" || oldItem == "06") {
+		jQuery('#lcrSewing_div').hide();
+	} else {
+		jQuery('#lcrSewing_div').show();
+	}
 
 	// 刺繍入れ
 	if (oldItem == "01" || oldItem == "02" || oldItem == "06" || oldItem == "05") {
@@ -128,7 +134,7 @@ function initProduct() {
 				    appendAlertDel('errormssage');
 				    defaultGoodsInit();
 				    getAdjustByItem();
-				    jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"oldItem":jQuery('#item').attr("hook")},type: "get",async:false});
+				    jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"item":item,"oldItem":jQuery('#item').attr("hook")},type: "get",async:false});
 				  	jQuery("#jacketItemFlag").val("0");
 				  	jQuery("#pantsItemFlag").val("0");
 				  	jQuery("#giletItemFlag").val("0");
@@ -154,6 +160,8 @@ function initProduct() {
 				  	jQuery("#jkDoubleModelPrice").val("0");
 				  	jQuery("#ctDoubleModelPrice").val("0");
 				  	jQuery("#glDoubleModelPrice").val("0");
+				  	
+				  	jQuery("#itemCoChangeFlag").val("1");
 				  	
 				  	jQuery('input[name="productEmbroideryNecessity"][value="9000501"]').prop("checked",true);
 				  	
@@ -751,7 +759,7 @@ function getAdjustByItem(){
 		jQuery.ajax({
 	        url: contextPath + "/orderCo/getAdjustByItem",
 	        type: 'get',
-	        //async:false,
+	        async:false,
 	        data:{"orderPattern":orderPattern,"itemCode":itemCode},
 	        success: function(data){
 	           jQuery.each(data, function (index, e) {

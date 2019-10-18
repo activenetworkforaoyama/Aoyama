@@ -1,12 +1,15 @@
 package co.jp.aoyama.macchinetta.domain.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class OrderFindFabric implements Serializable {
 
 	private static final long serialVersionUID = 2138047466949116046L;
 
+	private BigDecimal yieldNum;
+	
 	// 生地ネーム有無
 	private String fabricNameExis;
 
@@ -640,5 +643,12 @@ public class OrderFindFabric implements Serializable {
 	public void setIs2PantsPrice(String is2PantsPrice) {
 		this.is2PantsPrice = is2PantsPrice;
 	}
-	
+
+	public BigDecimal getYieldNum() {
+		return yieldNum;
+	}
+
+	public void setYieldNum(BigDecimal yieldNum) {
+		this.yieldNum = yieldNum;
+	}
 }

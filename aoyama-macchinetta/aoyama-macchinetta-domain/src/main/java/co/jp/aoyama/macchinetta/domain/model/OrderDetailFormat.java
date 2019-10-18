@@ -195,6 +195,7 @@ public class OrderDetailFormat implements Serializable{
 	private String orderKakuninSign;
 	private String orderKakuninKyakSign;
 	private String factorySijiSign;
+	private String chineseSijiSign;
 	private String jkModelRtPriceFm;
 	private String glModelRtPriceFm;
 	private String ctModelRtPriceFm;
@@ -1334,6 +1335,12 @@ public class OrderDetailFormat implements Serializable{
 	}
 	public void setFactorySijiSign(String factorySijiSign) {
 		this.factorySijiSign = factorySijiSign;
+	}
+	public String getChineseSijiSign() {
+		return chineseSijiSign;
+	}
+	public void setChineseSijiSign(String chineseSijiSign) {
+		this.chineseSijiSign = chineseSijiSign;
 	}
 	public String getJkModelRtPriceFm() {
 		return jkModelRtPriceFm;

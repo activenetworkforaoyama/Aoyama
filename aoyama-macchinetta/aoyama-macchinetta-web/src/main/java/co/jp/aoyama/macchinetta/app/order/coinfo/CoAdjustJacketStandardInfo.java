@@ -51,10 +51,10 @@ public class CoAdjustJacketStandardInfo implements Serializable {
 	private String corJkLeftsleeveGross;
 	
 	// 肩パット
-	private String corJkShoulderPad;
+	private String corJkShoulderPadCd;
 	
 	// 体型補正
-	private String corJkFigureCorrect;
+	private String corJkFigureCorrectCd;
 	
 	//JK再補正コメント
 	private String corJkStoreCorrectionMemo;
@@ -253,17 +253,18 @@ public class CoAdjustJacketStandardInfo implements Serializable {
 	public void setCorJkLeftsleeveCorrectAgainFlag(String corJkLeftsleeveCorrectAgainFlag) {
 		this.corJkLeftsleeveCorrectAgainFlag = corJkLeftsleeveCorrectAgainFlag;
 	}
-	public String getCorJkShoulderPad() {
-		return corJkShoulderPad;
+	
+	public String getCorJkShoulderPadCd() {
+		return corJkShoulderPadCd;
 	}
-	public void setCorJkShoulderPad(String corJkShoulderPad) {
-		this.corJkShoulderPad = corJkShoulderPad;
+	public void setCorJkShoulderPadCd(String corJkShoulderPadCd) {
+		this.corJkShoulderPadCd = corJkShoulderPadCd;
 	}
-	public String getCorJkFigureCorrect() {
-		return corJkFigureCorrect;
+	public String getCorJkFigureCorrectCd() {
+		return corJkFigureCorrectCd;
 	}
-	public void setCorJkFigureCorrect(String corJkFigureCorrect) {
-		this.corJkFigureCorrect = corJkFigureCorrect;
+	public void setCorJkFigureCorrectCd(String corJkFigureCorrectCd) {
+		this.corJkFigureCorrectCd = corJkFigureCorrectCd;
 	}
 	public String getCorJkStoreCorrectionMemo() {
 		return corJkStoreCorrectionMemo;

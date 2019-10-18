@@ -11,6 +11,13 @@ function initOptionPants1Washable() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
 		var pantsoldModel = jQuery('#wp_pantsModel').attr("oldWpPantsModel");
+		var modelFlag = 0;
+		if(pantsoldModel == '' || pantsoldModel == null){
+			modelFlag = 1;
+		}
+		else {
+			modelFlag = 2;
+		}
 		if (pantsModel != pantsoldModel) {
 			jQuery("#pantsFlag").val("0");
 		}else{
@@ -73,7 +80,8 @@ function initOptionPants1Washable() {
 		// フロント仕様設定
 		var sFrontSpec = defaultFrontSpec[pantsModel];
 		jQuery('input[name="coOptionPantsWashableInfo.wpFrontSpec"]').val([sFrontSpec]);
-
+		jQuery('input[id^="wp_frontSpec_id"]:checked').change();
+		
 		// パンチェリーナ特殊制御
 		wpPancherinaSpecialController();
 
@@ -114,7 +122,7 @@ function initOptionPants1Washable() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]').change();
+		jQuery('input[id^="wp_beltLoop_id"]:checked').change();
 
 		// ベルトループ変更時処理
 		wpChangedBeltLoop();
@@ -122,6 +130,7 @@ function initOptionPants1Washable() {
 		// 選択中の脇ポケット
 		var sidePktElem = jQuery('input[name="coOptionPantsWashableInfo.wpSidePkt"]:checked');
 		var selectedSidePkt = sidePktElem.val();
+		jQuery('input[id^="wp_sidePkt_id"]:checked').change();
 
 		// モデルに基づくデフォルトの脇ポケット
 		var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
@@ -136,7 +145,8 @@ function initOptionPants1Washable() {
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsWashableInfo.wpSinobiPkt"]').val([modelSinobiPkt]);
-
+		jQuery('input[id^="wp_sinobiPkt_id"]:checked').change();
+		
 		// モデルに基づくデフォルトのコインポケット
 		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
 		// デフォルトを選択
@@ -151,7 +161,7 @@ function initOptionPants1Washable() {
 		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktUf"]').change();
+		jQuery('input[id^="wp_pisPktUf_id"]:checked').change();
 
 		// 選択中の下前ピスポケット
 		var pisPktDf = jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]:checked');
@@ -161,7 +171,7 @@ function initOptionPants1Washable() {
 		var modelPisPktDf = pantsModelDefaultList[pantsModel].op_pisPktDf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="coOptionPantsWashableInfo.wpPisPktDf"]').change();
+		jQuery('input[id^="wp_pisPktDf_id"]:checked').change();
 
 		// 選択中のVカット
 		var vCut = jQuery('input[name="coOptionPantsWashableInfo.wpVCut"]:checked');
@@ -182,9 +192,9 @@ function initOptionPants1Washable() {
 
 		// AMF色指定の有効/無効を制御する
 		ctrlWpAmfColor();
-
+		
 		// 別モデルに変更された場合はアラート表示
-		if ((tmpWpPantsModel != '' || tmpWpPantsModel != null ) && pantsModel != tmpWpPantsModel) {
+		if ((tmpWpPantsModel != '' || tmpWpPantsModel != null ) && pantsModel != tmpWpPantsModel && modelFlag == 2) {
 //		    appendAlert('wp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('wp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
@@ -394,10 +404,17 @@ function initOptionPants1Washable() {
 		// 全選択する色を取得
 		var allColor = jQuery('#wp_amfColorPlaceAll').val();
 
-		jQuery('#wp_amfColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
+		jQuery('#wp_amfColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var amfColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+amfColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
 		});
+
 	});
 
 	// AMF色指定箇所
@@ -407,6 +424,14 @@ function initOptionPants1Washable() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
+				
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -458,9 +483,15 @@ function initOptionPants1Washable() {
 		// 全選択する色を取得
 		var allColor = jQuery('#wp_bhColorPlaceAll').val();
 
-		jQuery('#wp_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
+		jQuery('#wp_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var bhColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+bhColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
 		});
 	});
 
@@ -471,6 +502,13 @@ function initOptionPants1Washable() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -525,9 +563,15 @@ function initOptionPants1Washable() {
 		// 全選択する色を取得
 		var allColor = jQuery('#wp_byColorPlaceAll').val();
 
-		jQuery('#wp_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
+		jQuery('#wp_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var byColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+byColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
 		});
 	});
 
@@ -538,6 +582,13 @@ function initOptionPants1Washable() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				})
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -1027,7 +1078,6 @@ function ctrlWpAmfColor() {
 			jQuery(this).prop("disabled", true);
 			jQuery(this).prop("checked", false);
 		}
-		jQuery(this).change();
 	});
 }
 jQuery('#wp_coinPkt').change(function() {

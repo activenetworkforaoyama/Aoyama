@@ -106,8 +106,13 @@ public class PdfFileController {
 		String orderId = request.getParameter("orderId");
 		String productItem = request.getParameter("productItem");
 		
+		Order order= new Order();
 		//orderIdでorderオブジェクトを取得します
-		Order order = orderListService.findOrderByPk(orderId);
+		if("10".equals(sign) || "11".equals(sign) || "12".equals(sign)) {
+			order = orderListService.findOrderByPkChinese(orderId);
+		}else {
+			order = orderListService.findOrderByPk(orderId);
+		}
 		//orderIdでmeasuringオブジェクトを取得します
     	Measuring measuring = measuringService.selectByPrimaryKey(orderId);
     	
@@ -146,6 +151,15 @@ public class PdfFileController {
 			}else if("9".equals(sign)) {
 				//工場指示書（SHIRT）
 				fileNameDefault = "工場指示書（"+orderId+"）.pdf";
+			}else if("10".equals(sign)) {
+				//工場指示書（SUIT）
+				fileNameDefault = "工場指示書(中国語)（"+orderId+"）.pdf";
+			}else if("11".equals(sign)) {
+				//工場指示書（SHIRT）
+				fileNameDefault = "工場指示書(中国語)（"+orderId+"）.pdf";
+			}else if("12".equals(sign)) {
+				//工場指示書（COAT）
+				fileNameDefault = "工場指示書(中国語)（"+orderId+"）.pdf";
 			}else{
 				 logger.info("このスタイルはありません");
 			}

@@ -425,4 +425,10 @@ public class OrderListServiceImpl implements OrderListService {
 		return order;
 	}
 
+	@Override
+	public Order findOrderByPkChinese(String orderId) {
+		Order order = orderListRepository.findOrderByPkChinese(orderId);
+		return order;
+	}
+
 }

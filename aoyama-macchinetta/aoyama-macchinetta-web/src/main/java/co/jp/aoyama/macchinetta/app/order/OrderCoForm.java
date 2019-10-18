@@ -33,6 +33,7 @@ import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoProductInfo;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
+import co.jp.aoyama.macchinetta.domain.model.Yield;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -232,7 +233,7 @@ public class OrderCoForm implements Serializable {
 
 	// 店舗再補正入力欄
 	private String corStoreCorrectionMemoAgain;
-
+	private String corStoreCorrectionMemo;
 	// 消費税
 	private String taxRate;
 
@@ -262,6 +263,8 @@ public class OrderCoForm implements Serializable {
 
 	// 早割
 	private String custIsEarlyDiscount;
+	
+	private List<Yield> yieldList;
 
 	// 保存flag
 	private String saveFlag;
@@ -312,7 +315,18 @@ public class OrderCoForm implements Serializable {
 
 	private String shirtAdFlag;
 	
-	private String ojBtnMateFlag;
+	private String itemCoFlag;
+	
+	private String itemCoChangeFlag;
+	
+	private String ojBtnMatePtFlag;
+	
+	private String ojBtnMatePt2Flag;
+	
+	private String jacketBtnMateGlFlag;
+	
+	
+	private String osCasHemLineIdFlag;
 
 	//
 	private OrderFindFabric orderFindFabric;
@@ -1247,12 +1261,68 @@ public class OrderCoForm implements Serializable {
 		this.is2PantsPrice = is2PantsPrice;
 	}
 
-	public String getOjBtnMateFlag() {
-		return ojBtnMateFlag;
+	public String getOjBtnMatePtFlag() {
+		return ojBtnMatePtFlag;
 	}
 
-	public void setOjBtnMateFlag(String ojBtnMateFlag) {
-		this.ojBtnMateFlag = ojBtnMateFlag;
+	public void setOjBtnMatePtFlag(String ojBtnMatePtFlag) {
+		this.ojBtnMatePtFlag = ojBtnMatePtFlag;
+	}
+
+	public String getJacketBtnMateGlFlag() {
+		return jacketBtnMateGlFlag;
+	}
+
+	public void setJacketBtnMateGlFlag(String jacketBtnMateGlFlag) {
+		this.jacketBtnMateGlFlag = jacketBtnMateGlFlag;
+	}
+
+	public String getOjBtnMatePt2Flag() {
+		return ojBtnMatePt2Flag;
+	}
+
+	public void setOjBtnMatePt2Flag(String ojBtnMatePt2Flag) {
+		this.ojBtnMatePt2Flag = ojBtnMatePt2Flag;
+	}
+
+	public String getCorStoreCorrectionMemo() {
+		return corStoreCorrectionMemo;
+	}
+
+	public void setCorStoreCorrectionMemo(String corStoreCorrectionMemo) {
+		this.corStoreCorrectionMemo = corStoreCorrectionMemo;
+	}
+
+	public List<Yield> getYieldList() {
+		return yieldList;
+	}
+
+	public void setYieldList(List<Yield> yieldList) {
+		this.yieldList = yieldList;
+	}
+
+	public String getOsCasHemLineIdFlag() {
+		return osCasHemLineIdFlag;
+	}
+
+	public void setOsCasHemLineIdFlag(String osCasHemLineIdFlag) {
+		this.osCasHemLineIdFlag = osCasHemLineIdFlag;
+	}
+
+	public String getItemCoFlag() {
+		return itemCoFlag;
+	}
+
+	public void setItemCoFlag(String itemCoFlag) {
+		this.itemCoFlag = itemCoFlag;
+	}
+
+	public String getItemCoChangeFlag() {
+		return itemCoChangeFlag;
+	}
+
+	public void setItemCoChangeFlag(String itemCoChangeFlag) {
+		this.itemCoChangeFlag = itemCoChangeFlag;
 	}
 	
 }

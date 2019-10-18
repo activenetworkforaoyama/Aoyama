@@ -33,8 +33,8 @@ public enum Pants2CoOptionWashablePriceEnum {
 	PANTS_WASHABLE_OPTION_CODE30("00030","getWp2ByColor","","setPt2BtnthreadColorRtPrice","wp2_byColor_id","","getPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_WASHABLE_OPTION_CODE33("00033","getWp2Button","getWp2BtnMateStkNo","setPt2BtnMaterialRtPrice","wp2_btnMate","wp2_btnMateStkNo","getPt2BtnMaterialRtPrice"),//釦素材
 	PANTS_WASHABLE_OPTION_CODE35("00035","getWp2SuspenderBtn","","setPt2SuspenderBtnRtPrice","wp2_suspenderBtn_id","","getPt2SuspenderBtnRtPrice"),//サスペンダー釦
-	PANTS_WASHABLE_OPTION_CODE36("00036","getWp2Eight","","setPt2NonSlipRtPrice","wp2_thick_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
-	PANTS_WASHABLE_OPTION_CODE41("00041","getWp2Thick","","setPt2ChicSlipRtPrice","wp2_eight_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
+	PANTS_WASHABLE_OPTION_CODE36("00036","getWp2Eight","","setPt2NonSlipRtPrice","wp2_eight_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
+	PANTS_WASHABLE_OPTION_CODE41("00041","getWp2Thick","","setPt2ChicSlipRtPrice","wp2_thick_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
 	PANTS_WASHABLE_OPTION_CODE37("00037","getWp2ShapeMemory","","setPt2ShapeMemoryRtPrice","wp2_shapeMemory_id","","getPt2ShapeMemoryRtPrice");//形状記憶
 	
 	private final String key;

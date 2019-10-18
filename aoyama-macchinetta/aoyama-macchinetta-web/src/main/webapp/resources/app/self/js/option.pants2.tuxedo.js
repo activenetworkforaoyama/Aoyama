@@ -154,7 +154,7 @@ function initOptionPants2Tuxedo() {
 		}
 
 		// 別モデルに変更された場合はアラート表示
-		if ((tmpTp2PantsModel != '' || tmpTp2PantsModel != null) && pantsModel != tmpTp2PantsModel) {
+		if ((tmpTp2PantsModel != '') && pantsModel != tmpTp2PantsModel) {
 //		    appendAlert('tp2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('tp2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
@@ -417,10 +417,16 @@ function initOptionPants2Tuxedo() {
 		// 全選択する色を取得
 		var allColor = jQuery('#tp2_bhColorPlaceAll').val();
 
-		jQuery('#tp2_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#tp2_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var bhColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+bhColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
 	});
 
 	// ボタンホール色指定箇所
@@ -430,6 +436,13 @@ function initOptionPants2Tuxedo() {
 				// 選択されているの場合、色指定エリアを表示						
 				jQuery('#'+this.id+'_div').show();
 			} else {			
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -483,10 +496,16 @@ function initOptionPants2Tuxedo() {
 		// 全選択する色を取得
 		var allColor = jQuery('#tp2_byColorPlaceAll').val();
 
-		jQuery('#tp2_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#tp2_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var byColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+byColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
 	});
 
 	// ボタン付け糸指定箇所
@@ -496,6 +515,13 @@ function initOptionPants2Tuxedo() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}

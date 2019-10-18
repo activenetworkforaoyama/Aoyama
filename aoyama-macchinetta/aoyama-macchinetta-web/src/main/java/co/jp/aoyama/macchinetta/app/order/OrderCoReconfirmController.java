@@ -23,6 +23,7 @@ import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
+import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
@@ -93,6 +94,8 @@ public class OrderCoReconfirmController {
 	ShopService shopService;
 	
 	private OrderCoHelper orderCoHelper = new OrderCoHelper();
+	
+	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
 	
 	@ModelAttribute(value = "orderCoForm")
 	public OrderCoForm setUpOrderCoForm() {
@@ -1613,7 +1616,7 @@ public class OrderCoReconfirmController {
 		String number = orderCoForm.getCoAdjustJacketStandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coJkTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coJkTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coJkTypeSizeOptimization;
 	}
 
@@ -1641,7 +1644,7 @@ public class OrderCoReconfirmController {
 		String number = orderCoForm.getCoAdjustGiletStandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coGlTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coGlTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coGlTypeSizeOptimization;
 	}
 	
@@ -1669,7 +1672,7 @@ public class OrderCoReconfirmController {
 		String number = orderCoForm.getCoAdjustPantsStandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coPtTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coPtTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coPtTypeSizeOptimization;
 	}
 	
@@ -1697,7 +1700,7 @@ public class OrderCoReconfirmController {
 		String number = orderCoForm.getCoAdjustPants2StandardInfo().getSizeNumber();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coPt2TypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coPt2TypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coPt2TypeSizeOptimization;
 	}
 	
@@ -1710,11 +1713,11 @@ public class OrderCoReconfirmController {
 		String orderPattern = orderCoForm.getOrderPattern();
 		String subItemCode = "05";
 		String modelCode = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();	
-		String figure = null;
+		String figure = "";
 		String number = orderCoForm.getCoAdjustShirtStandardInfo().getCorStSize();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coStTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coStTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coStTypeSizeOptimization;
 	}
 	
@@ -1727,11 +1730,11 @@ public class OrderCoReconfirmController {
 		String orderPattern = orderCoForm.getOrderPattern();
 		String subItemCode = "06";
 		String modelCode = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();	
-		String figure = null;
+		String figure = "";
 		String number = orderCoForm.getCoAdjustCoatStandardInfo().getCorCtSize();
 		List<TypeSize> coTypeSizeList = typeSizeService.getPoTypeSizeOptimization(orderPattern, subItemCode, modelCode,
 				figure, number);
-		List<TypeSizeOptimization> coCtTypeSizeOptimization = orderCoHelper.getCoTypeSizeOptimization(coTypeSizeList);
+		List<TypeSizeOptimization> coCtTypeSizeOptimization = coTypeSizeOptimization.getCoTypeSizeOptimization(coTypeSizeList);
 		return coCtTypeSizeOptimization;
 	}
 	

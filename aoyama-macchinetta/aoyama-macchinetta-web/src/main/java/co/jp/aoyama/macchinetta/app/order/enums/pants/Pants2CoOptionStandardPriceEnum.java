@@ -33,8 +33,8 @@ public enum Pants2CoOptionStandardPriceEnum {
 	PANTS_STANDARD_OPTION_CODE30("00030","getOp2ByColor","","setPt2BtnthreadColorRtPrice","op2_byColor_id","","getPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_STANDARD_OPTION_CODE33("00033","getOp2Button","getOp2BtnMateStkNo","setPt2BtnMaterialRtPrice","op2_btnMate","op2_btnMateStkNo","getPt2BtnMaterialRtPrice"),//釦素材
 	PANTS_STANDARD_OPTION_CODE35("00035","getOp2SuspenderBtn","","setPt2SuspenderBtnRtPrice","op2_suspenderBtn_id","","getPt2SuspenderBtnRtPrice"),//サスペンダー釦
-	PANTS_STANDARD_OPTION_CODE36("00036","getOp2Eight","","setPt2NonSlipRtPrice","op2_thick_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
-	PANTS_STANDARD_OPTION_CODE41("00041","getOp2Thick","","setPt2ChicSlipRtPrice","op2_eight_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
+	PANTS_STANDARD_OPTION_CODE36("00036","getOp2Eight","","setPt2NonSlipRtPrice","op2_eight_id","","getPt2NonSlipRtPrice"),//エイト（滑り止め）
+	PANTS_STANDARD_OPTION_CODE41("00041","getOp2Thick","","setPt2ChicSlipRtPrice","op2_thick_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
 	PANTS_STANDARD_OPTION_CODE37("00037","getOp2ShapeMemory","","setPt2ShapeMemoryRtPrice","op2_shapeMemory_id","","getPt2ShapeMemoryRtPrice");//形状記憶
 	
 	private final String key;

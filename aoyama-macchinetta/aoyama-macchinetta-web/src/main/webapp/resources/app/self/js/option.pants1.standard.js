@@ -5,13 +5,19 @@
 // 読み込み時
 //--------------------------------------------
 function initOptionPants1Standard() {
-
 	jQuery('#op_pantsModel').attr("oldPantsModel",jQuery('#op_pantsModel').val());
 	// PANTSモデル
 	jQuery('#op_pantsModel').change(function() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
 		var pantsoldModel = jQuery('#op_pantsModel').attr("oldPantsModel");
+		var modelFlag = 0;
+		if(pantsoldModel == '' || pantsoldModel == null){
+			modelFlag = 1;
+		}
+		else {
+			modelFlag = 2;
+		}
 		if (pantsModel != pantsoldModel) {
 			jQuery("#pantsFlag").val("0");
 		}else{
@@ -73,6 +79,7 @@ function initOptionPants1Standard() {
 		// フロント仕様設定
 		var sFrontSpec = defaultFrontSpec[pantsModel];
 		jQuery('input[name="coOptionPantsStandardInfo.opFrontSpec"]').val([sFrontSpec]);
+		jQuery('input[id^="op_frontSpec_id"]:checked').change();
 
 		// パンチェリーナ特殊制御
 		pancherinaSpecialController();
@@ -119,7 +126,7 @@ function initOptionPants1Standard() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]').change();
+		jQuery('input[id^="op_beltLoop_id"]:checked').change();
 
 		// ベルトループ変更時処理
 		changedBeltLoop();
@@ -127,6 +134,7 @@ function initOptionPants1Standard() {
 		// 選択中の脇ポケット
 		var sidePktElem = jQuery('input[name="coOptionPantsStandardInfo.opSidePkt"]:checked');
 		var selectedSidePkt = sidePktElem.val();
+		jQuery('input[id^="op_sidePkt_id"]:checked').change();
 
 		// モデルに基づくデフォルトの脇ポケット
 		var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
@@ -136,6 +144,7 @@ function initOptionPants1Standard() {
 		// 選択中の忍びポケット
 		var sinobiPktElem = jQuery('input[name="coOptionPantsStandardInfo.opSinobiPkt"]:checked');
 		var selectedSinobiPkt = sinobiPktElem.val();
+		jQuery('input[id^="op_sinobiPkt_id"]:checked').change();
 
 		// モデルに基づくデフォルトの忍びポケット
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
@@ -145,7 +154,6 @@ function initOptionPants1Standard() {
 		// モデルに基づくデフォルトのコインポケット
 		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
 		// デフォルトを選択
-//		jQuery('input[name=op_coinPkt]').val([modelCoinPkt]);
 		jQuery('#op_coinPkt').val([modelCoinPkt]);
 		jQuery('#op_coinPkt').change();
 
@@ -157,7 +165,7 @@ function initOptionPants1Standard() {
 		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]').change();
+		jQuery('input[id^="op_pisPktUf_id"]:checked').change();
 
 		// 選択中の下前ピスポケット
 		var pisPktDf = jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]:checked');
@@ -167,7 +175,7 @@ function initOptionPants1Standard() {
 		var modelPisPktDf = pantsModelDefaultList[pantsModel].op_pisPktDf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]').change();
+		jQuery('input[id^="op_pisPktDf_id"]:checked').change();
 
 		// 選択中のVカット
 		var vCut = jQuery('input[name="coOptionPantsStandardInfo.opVCut"]:checked');
@@ -188,9 +196,9 @@ function initOptionPants1Standard() {
 
 		// AMF色指定の有効/無効を制御する
 		ctrlOpAmfColor();
-
+		
 		// 別モデルに変更された場合はアラート表示
-		if ((tmpOpPantsModel != '' || tmpOpPantsModel != null) && pantsModel != tmpOpPantsModel) {
+		if ((tmpOpPantsModel != '' || tmpOpPantsModel != null) && pantsModel != tmpOpPantsModel && modelFlag == 2) {
 //		    appendAlert('op_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('op_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
@@ -229,7 +237,7 @@ function initOptionPants1Standard() {
 			pancherinaSpecialController();
 		});
 	});
-	jQuery('#op_frontSpec_id1').change();
+	jQuery('input[id^="op_frontSpec_id"]:checked').change();
 
 	// ベルトループ
 	jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]').each(function() {
@@ -241,7 +249,7 @@ function initOptionPants1Standard() {
 	changedBeltLoop();
 
 	// フラップ付コインポケット
-	jQuery('input[name="coOptionPantsWashableInfo.wpFlapCoinPkt"]').each(function() {
+	jQuery('input[name="coOptionPantsStandardInfo.opFlapCoinPkt"]').each(function() {
 		jQuery(this).change(function(){
 			// ボタンホール色指定箇所の制御
 			ctrlOpBhColorPlace();
@@ -377,7 +385,7 @@ function initOptionPants1Standard() {
 	jQuery('#op_stitchModify_id1').change();
 
 	// ステッチ箇所変更(選択肢)
-	jQuery('input[id^="op_stitchModifyPlace_"]').each(function() {
+	jQuery('input[id^="op_stitchModifyPlace_id"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のダブルステッチ変更
 			ctrlOpDStitchPlace();
@@ -408,10 +416,17 @@ function initOptionPants1Standard() {
 		// 全選択する色を取得
 		var allColor = jQuery('#op_amfColorPlaceAll').val();
 
-		jQuery('#op_amfColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#op_amfColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var amfColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+amfColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
+
 	});
 
 	// AMF色指定箇所
@@ -421,11 +436,57 @@ function initOptionPants1Standard() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
 		});
 	});
+	
+	// 選択中のボタンホール色指定を取得
+	var op_bhColor = jQuery('input[name="coOptionPantsStandardInfo.opBhColor"]:checked').val();
+
+	if (op_bhColor == '0002701') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="op_bhColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#op_bhColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_op_bhColorPlace').prop("disabled", true);
+
+		jQuery('#op_bhColor_div input[type="radio"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
+		// 無しの場合は2階層目を表示しない
+		jQuery('#op_bhColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+
+		// ボタンホール色指定箇所の制御
+		ctrlOpBhColorPlace();
+		jQuery('input[id^="op_bhColorPlace_"]').each(function() {
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#op_bhColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_op_bhColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#op_bhColor_div').show();
+	}
 
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[id^="op_bhColor_"]').each(function() {
@@ -443,6 +504,12 @@ function initOptionPants1Standard() {
 				jQuery('#op_bhColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_op_bhColorPlace').prop("disabled", true);
 
+				jQuery('#op_bhColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#op_bhColor_div').hide();
 			} else {
@@ -465,17 +532,23 @@ function initOptionPants1Standard() {
 			}
 		});
 	});
-	jQuery('#op_bhColor_id1').change();
 
 	// ボタンホール色指定(全選択)
 	jQuery('#btn_as_op_bhColorPlace').click(function(){
 		// 全選択する色を取得
 		var allColor = jQuery('#op_bhColorPlaceAll').val();
 
-		jQuery('#op_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#op_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var bhColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+bhColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
+
 	});
 
 	// ボタンホール色指定箇所
@@ -485,6 +558,13 @@ function initOptionPants1Standard() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				})
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -493,10 +573,49 @@ function initOptionPants1Standard() {
 	// ボタンホール色指定箇所の制御
 	ctrlOpBhColorPlace();
 
+	// 選択中のボタン付け糸指定(を取得
+	var op_byColor = jQuery('input[name="coOptionPantsStandardInfo.opByColor"]:checked').val();
+
+	if (op_byColor == '0003001') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="op_byColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#op_byColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_op_byColorPlace').prop("disabled", true);
+
+		jQuery('#op_byColor_div input[type="radio"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
+		// 無しの場合は2階層目を表示しない
+		jQuery('#op_byColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+
+		// ボタン付け糸指定箇所の制御
+		ctrlOpByColorPlace();
+		jQuery('input[id^="op_byColorPlace_"]').each(function() {
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#op_byColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_op_byColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#op_byColor_div').show();
+	}
+	
 	// ボタン付け糸指定(有り/無し)
 	jQuery('input[id^="op_byColor_"]').each(function() {
 		jQuery(this).change(function(){
-			// 選択中のボタンホール色指定を取得
+			// 選択中のボタン付け糸指定(を取得
 			var op_byColor = jQuery('input[name="coOptionPantsStandardInfo.opByColor"]:checked').val();
 
 			if (op_byColor == '0003001') {
@@ -509,6 +628,12 @@ function initOptionPants1Standard() {
 				jQuery('#op_byColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_op_byColorPlace').prop("disabled", true);
 
+				jQuery('#op_byColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#op_byColor_div').hide();
 			} else {
@@ -531,17 +656,22 @@ function initOptionPants1Standard() {
 			}
 		});
 	});
-	jQuery('#op_byColor_id1').change();
 
 	// ボタン付け糸指定(全選択)
 	jQuery('#btn_as_op_byColorPlace').click(function(){
 		// 全選択する色を取得
 		var allColor = jQuery('#op_byColorPlaceAll').val();
 
-		jQuery('#op_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#op_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var byColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+byColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
 	});
 
 	// ボタン付け糸指定箇所
@@ -551,6 +681,13 @@ function initOptionPants1Standard() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -696,7 +833,6 @@ function ctrlOpByColorPlace() {
 
 // パンチェリーナの特殊制御
 function pancherinaSpecialController() {
-
 	// 現在選択中のPANTSモデル
 	var selectedPantsModel = jQuery('#op_pantsModel').val();
 
@@ -1005,6 +1141,12 @@ function ctrlOpAmfColor() {
 	if (amfColorValue == "0002402") {
 		jQuery('#op_amfColor_div').show();
 	} else {
+		jQuery('#op_amfColor_div input[type="radio"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		});
 		jQuery('#op_amfColor_div').hide();
 	}
 
@@ -1025,7 +1167,19 @@ function ctrlOpAmfColor() {
 			jQuery(this).prop("disabled", true);
 			jQuery(this).prop("checked", false);
 		}
-		jQuery(this).change();
+		if (jQuery('#'+this.id).prop("checked")) {
+			// 選択されているの場合、色指定エリアを表示
+			jQuery('#'+this.id+'_div').show();
+		} else {
+			jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+				elem = jQuery(elem); 
+				if (elem.prop("checked")) { 
+				elem.removeAttr("checked"); 
+				elem.change(); 
+				} 
+			}) 
+			jQuery('#'+this.id+'_div').hide();
+		}
 	});
 }
 

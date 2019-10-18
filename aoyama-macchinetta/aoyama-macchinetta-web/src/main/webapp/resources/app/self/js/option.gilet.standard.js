@@ -25,6 +25,10 @@ function initOptionGiletStandard() {
 				return;
 			}
 		}
+		//モデルを選択すると、"ステッチ箇所変更"は選択できます
+		if(giletModel != null && giletModel != ""){
+			jQuery('input[id^="og_stitchModifyPlace_id"]').prop("disabled", false);
+		}
 		
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var itemCode = "";
@@ -76,13 +80,24 @@ function initOptionGiletStandard() {
 			// 定義がある場合、モデルに基づくチェック状態にする
 			jQuery('input[id^="og_stitchModifyPlace_id"]').val(ogStitchModifyList[giletModel]);
 			jQuery('input[id^="og_dStitchModifyPlace_id"]').val(ogStitchModifyList[giletModel]);
-		} else {
+		} 
+		
+		if (!ogStitchModifyList[giletModel]) {
 			// 想定外のGiletモデルの場合はすべて変更不可＆チェックなし
 			jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
 				jQuery(this).prop("disabled", true);
 				jQuery(this).prop("checked", false);
 			});
+			return;
 		}
+		
+//		else {
+//			// 想定外のGiletモデルの場合はすべて変更不可＆チェックなし
+//			jQuery('input[id^="og_stitchModifyPlace_id"]').each(function() {
+//				jQuery(this).prop("disabled", true);
+//				jQuery(this).prop("checked", false);
+//			});
+//		}
 		ctrlOgDStitchPlace();
 
 		// バックベルト
@@ -99,9 +114,8 @@ function initOptionGiletStandard() {
 		ctrlOgAmfColor();
 
 		// 別モデルに変更された場合はアラート表示
-		if (tmpGiletModel != '選択' && giletModel != tmpGiletModel) {
-//		    appendAlert('giletModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
-		    setAlert('giletModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
+		if (tmpGiletModel != '' && giletModel != tmpGiletModel) {
+			setAlert('giletModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
 		tmpGiletModel = giletModel;
@@ -177,7 +191,10 @@ function initOptionGiletStandard() {
 				jQuery('#og_stitchModifyPlace').hide();
 			} else {
 				// 有りの場合は全て有効化
-				jQuery('input[id^="og_stitchModifyPlace_id"]').prop("disabled", false);
+				var giletModel = jQuery('#giletModel').val();
+				if(giletModel != null && giletModel != ""){
+					jQuery('input[id^="og_stitchModifyPlace_id"]').prop("disabled", false);
+				}
 				jQuery('#btn_as_og_stitchModifyPlace').prop("disabled", false);
 				jQuery('#btn_ar_og_stitchModifyPlace').prop("disabled", false);
 				jQuery('#og_stitchModifyPlace').show();
@@ -233,26 +250,71 @@ function initOptionGiletStandard() {
 	jQuery('#btn_as_og_amfColorPlace').click(function(){
 		// 全選択する色を取得
 		var allColor = jQuery('#og_amfColorPlaceAll').val();
-
-		jQuery('#og_amfColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
-	});
-
-	// AMF色指定箇所
-	jQuery('input[id^="og_amfColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
-			if (jQuery(this).prop("checked")) {
-				// 選択されているの場合、色指定エリアを表示
-				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
+	
+		jQuery('#og_amfColor_div input[type="checkBox"]').each(function(index, elemCheckBox){
+			elemCheckBox = jQuery(elemCheckBox);
+			if(!elemCheckBox.prop("disabled")){
+				var amfCheckBoxId = elemCheckBox.attr("id");
+				jQuery('#'+amfCheckBoxId+'_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.val() == allColor) elem.prop('checked', true);
+				});
 			}
 		});
 	});
+
+	// AMF色指定箇所 
+	jQuery('input[id^="og_amfColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
+	});
 	
+	// 選択中のボタンホール色指定を取得
+	var bhColor = jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]:checked').val();
+
+	if (bhColor == '0001101') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="og_bhColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#og_bhColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_og_bhColorPlace').prop("disabled", true);
+
+		// 無しの場合は2階層目を表示しない
+		jQuery('#og_bhColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+		ctrlOgBhColorPlace();
+		jQuery('input[id^="og_bhColorPlace_"]').each(function() {
+//			jQuery(this).prop("disabled", false);
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#og_bhColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_og_bhColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#og_bhColor_div').show();
+	}
+
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -275,7 +337,7 @@ function initOptionGiletStandard() {
 				// 有りの場合は操作可能
 				ctrlOgBhColorPlace();
 				jQuery('input[id^="og_bhColorPlace_"]').each(function() {
-					jQuery(this).prop("disabled", false);
+//					jQuery(this).prop("disabled", false);
 					if (jQuery(this).prop("checked")) {
 						// 選択されているの場合、色指定エリアを表示
 						jQuery('#'+this.id+'_div').show();
@@ -290,32 +352,77 @@ function initOptionGiletStandard() {
 		});
 	});
 	jQuery('#og_bhColor_id1').change();
-
+	
 	// ボタンホール色指定(全選択)
-	jQuery('#btn_as_og_bhColorPlace').click(function(){
-		// 全選択する色を取得
-		var allColor = jQuery('#og_bhColorPlaceAll').val();
-
-		jQuery('#og_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
-	});
+	jQuery('#btn_as_og_bhColorPlace').click(function(){ 
+		// 全選択する色を取得 
+		var allColor = jQuery('#og_bhColorPlaceAll').val(); 
+	
+		jQuery('#og_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+				var bhCheckBoxId = elemCheckBox.attr("id"); 
+				jQuery('#'+bhCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.val() == allColor) elem.prop('checked', true); 
+				});
+			} 
+		}); 
+	}); 
 
 	// ボタンホール色指定箇所
-	jQuery('input[id^="og_bhColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
+	jQuery('input[id^="og_bhColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
+	});
+	
+	// ボタンホール色指定箇所の制御
+	ctrlOgBhColorPlace();
+	
+	// 選択中のボタンホール色指定を取得
+	var byColor = jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]:checked').val();
+
+	if (byColor == '0001401') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="og_byColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#og_byColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_og_byColorPlace').prop("disabled", true);
+
+		// 無しの場合は2階層目を表示しない
+		jQuery('#og_byColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+		ctrlOgByColorPlace();
+		jQuery('input[id^="og_byColorPlace_"]').each(function() {
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
 			}
 		});
-	});
-	// ボタンホール色指定箇所の制御
-	ctrlOgBhColorPlace();
+		jQuery('#og_byColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_og_byColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#og_byColor_div').show();
+	}
 	
 	// ボタン付け糸指定(有り/無し)
 	jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]').each(function() {
@@ -355,30 +462,45 @@ function initOptionGiletStandard() {
 	jQuery('#og_byColor_id1').change();
 
 	// ボタン付け糸指定(全選択)
-	jQuery('#btn_as_og_byColorPlace').click(function(){
-		// 全選択する色を取得
-		var allColor = jQuery('#og_byColorPlaceAll').val();
+	jQuery('#btn_as_og_byColorPlace').click(function(){ 
+		// 全選択する色を取得 
+		var allColor = jQuery('#og_byColorPlaceAll').val(); 
+	
+		jQuery('#og_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+				var byCheckBoxId = elemCheckBox.attr("id"); 
+				jQuery('#'+byCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.val() == allColor) elem.prop('checked', true); 
+				});
+			} 
+		}); 
+	}); 
 
-		jQuery('#og_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+	// ボタンホール色指定箇所
+	jQuery('input[id^="og_byColorPlace_"]').each(function() { 
+		jQuery(this).change(function(){ 
+			if (jQuery(this).prop("checked")) { 
+				// 選択されているの場合、色指定エリアを表示 
+				jQuery('#'+this.id+'_div').show(); 
+			} else { 
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+						elem.removeAttr("checked"); 
+						elem.change(); 
+					}
+				}) 
+				// 選択されていない場合、色指定エリアを非表示 
+				jQuery('#'+this.id+'_div').hide(); 
+			} 
+		}); 
 	});
+	
+	
 	// ボタン付け糸指定箇所の有効/無効を制御
 	ctrlOgByColorPlace();
-
-	// ボタン付け糸指定箇所
-	jQuery('input[id^="og_byColorPlace_"]').each(function() {
-		jQuery(this).change(function(){
-			if (jQuery(this).prop("checked")) {
-				// 選択されているの場合、色指定エリアを表示
-				jQuery('#'+this.id+'_div').show();
-			} else {
-				// 選択されていない場合、色指定エリアを非表示
-				jQuery('#'+this.id+'_div').hide();
-			}
-		});
-	});
 	
 	// 背裏地素材
 	jQuery('#og_backLiningMate').change(function (){
@@ -404,7 +526,7 @@ function initOptionGiletStandard() {
 		}
 
 		// バックベルト
-		var backBeltElem = jQuery('#backBelt');
+		var backBeltElem = jQuery('#og_backBelt');
 		var selectedBackBelt = backBeltElem.val();
 
 		// 選択肢をクリア
@@ -415,11 +537,7 @@ function initOptionGiletStandard() {
 			backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
 //			backBeltElem.append(jQuery('<option />').val("0002301").text("537-5K（2×1型）"));
 			backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
-/*
-			if (selectedBackBelt == "546-20") {
-				// 元々「546-20」が選ばれていた場合は「537-5K」を選択状態に
-				backBeltElem.val("537-5K");
-*/
+
 			if (selectedBackBelt == "0002301") {
 				backBeltElem.val("0002302");
 			} else {
@@ -474,18 +592,18 @@ function initOptionGiletStandard() {
 	});
 	jQuery('#og_insideLiningMate').change();
 
-	// 内側裏地素材（背裏地と同じ）
-	jQuery('#btn_og_insideLiningMate').click(function() {
-		// 背裏地素材
-		var backLiningMate = jQuery('#og_backLiningMate').val();
-		// 背裏地品番
-		var backLiningMateStkNo = jQuery('#og_backLiningMateStkNo').val();
-
-		// 背裏地素材への反映
-		jQuery('#og_insideLiningMate').val(backLiningMate);
-		jQuery('#og_insideLiningMate').change();
-		jQuery('#og_insideLiningMateStkNo').val(backLiningMateStkNo);
-	});
+//	// 内側裏地素材（背裏地と同じ）
+//	jQuery('#btn_og_insideLiningMate').click(function() {
+//		// 背裏地素材
+//		var backLiningMate = jQuery('#og_backLiningMate').val();
+//		// 背裏地品番
+//		var backLiningMateStkNo = jQuery('#og_backLiningMateStkNo').val();
+//
+//		// 背裏地素材への反映
+//		jQuery('#og_insideLiningMate').val(backLiningMate);
+//		jQuery('#og_insideLiningMate').change();
+//		jQuery('#og_insideLiningMateStkNo').val(backLiningMateStkNo);
+//	});
 
 	// フロント釦
 	jQuery('#og_frontBtnMate').change(function (){
@@ -506,18 +624,18 @@ function initOptionGiletStandard() {
 	});
 	jQuery('#og_frontBtnMate').change();
 
-	// フロント釦（上着と同じ）
-	jQuery('#btn_og_frontBtnMate').click(function() {
-		// GILET釦素材
-		var btnMate = jQuery('#btnMate').val();
-		// GILET釦品番
-		var btnMateStkNo = jQuery('#btnMateStkNo').val();
-
-		// フロント釦への反映
-		jQuery('#og_frontBtnMate').val(btnMate);
-		jQuery('#og_frontBtnMate').change();
-		jQuery('#og_frontBtnMateStkNo').val(btnMateStkNo);
-	});
+//	// フロント釦（上着と同じ）
+//	jQuery('#btn_og_frontBtnMate').click(function() {
+//		// GILET釦素材
+//		var btnMate = jQuery('#btnMate').val();
+//		// GILET釦品番
+//		var btnMateStkNo = jQuery('#btnMateStkNo').val();
+//
+//		// フロント釦への反映
+//		jQuery('#og_frontBtnMate').val(btnMate);
+//		jQuery('#og_frontBtnMate').change();
+//		jQuery('#og_frontBtnMateStkNo').val(btnMateStkNo);
+//	});
 }
 
 //--------------------------------------------
@@ -634,19 +752,22 @@ function ctrlOgAmfColor() {
 	} else {
 		jQuery('#og_amfColor_div').hide();
 	}
-
+	
+	var stitchModifyValue = jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]:checked').val();
 	
 	// AMF色指定の有効/無効設定
 	jQuery('input[id^="og_amfColorPlace_"]').each(function() {
 		if (amfColorValue == "0000802") {
-			// 有りの場合はステッチ箇所変更に基づく
-			var id = this.id;
-			id = id.replace("og_amfColorPlace_", "og_stitchModifyPlace_id");
-			if (jQuery('#'+id).prop("checked")) {
-				jQuery(this).prop("disabled", false);
-			} else {
-				jQuery(this).prop("disabled", true);
-				jQuery(this).prop("checked", false);
+			if(stitchModifyValue == "0000602"){
+				// 有りの場合はステッチ箇所変更に基づく
+				var id = this.id;
+				id = id.replace("og_amfColorPlace_", "og_stitchModifyPlace_id");
+				if (jQuery('#'+id).prop("checked")) {
+					jQuery(this).prop("disabled", false);
+				} else {
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);
+				}
 			}
 		} else {
 			// 無しの場合は変更不可

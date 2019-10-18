@@ -406,8 +406,10 @@ public class OrderController {
 		// 生地品番が無しの場合
 		if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 			order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-			orderService.deleteOrder(order);
-			orderService.deleteMeasuring(measuring);
+			//orderService.deleteOrder(order);
+			//orderService.deleteMeasuring(measuring);
+			orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+			//orderService.deleteMeasuring(measuring);
 		}
 		// 生地品番が有りの場合
 		else {
@@ -500,12 +502,13 @@ public class OrderController {
 			String saveFlag = orderForm.getSaveFlag();
 
 			// 保存flag 1：自動保存
-			if ("1".equals(saveFlag)) {
-				orderService.deletOrderWithNotVersion(order);
-				orderService.deleteMeasuring(measuring);
+			if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+				//orderService.deletOrderWithNotVersion(order);
+				orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+				//orderService.deleteMeasuring(measuring);
 			} else {
-				orderService.deletOrderisExistence(order);
-				orderService.deleteMeasuring(measuring);
+				orderService.deletOrderisExistence(order,measuring);
+				//orderService.deleteMeasuring(measuring);
 			}
 		}else {
 			
@@ -640,12 +643,12 @@ public class OrderController {
 		measuring.setCreatedAt(new Date());
 		
 		String saveFlag = orderForm.getSaveFlag();
-		if ("0".equals(saveFlag)) {
+		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
 			order.setTscStatus(orderForm.getStatus());
 			// 保存flag 1：自動保存
 			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
 		} 
-		else if ("1".equals(saveFlag)) {
+		else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
 			String tscStatus = orderForm.getStatus();
 			if ("".equals(tscStatus) || tscStatus == null) {
 				order.setTscStatus(TSC_STATUST0);
@@ -731,11 +734,11 @@ public class OrderController {
 		measuring.setCreatedUserId(measuringIsExist.getUpdatedUserId());
 		
 		String saveFlag = orderForm.getSaveFlag();
-		if ("0".equals(saveFlag)) {
+		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
 			order.setTscStatus(orderForm.getStatus());
 			// 保存flag 1：自動保存
 			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		} else if ("1".equals(saveFlag)) {
+		} else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
 			String tscStatus = orderIsExist.getTscStatus();
 			if ("".equals(tscStatus) || tscStatus == null) {
 				order.setTscStatus(TSC_STATUST0);
@@ -759,31 +762,28 @@ public class OrderController {
 		String item = LogItemClassEnum.getLogItem(order);
 
 		// 在庫を戻る
-		stockRecovery(orderIsExist);
+		//stockRecovery(orderIsExist);
 
 		// 理論在庫チェック値を取得
 		String isCheck = orderIsExist.getTheoreticalStockCheck();
+		Short version = orderIsExist.getVersion();
+		if(version == null) {
+			version = 0;
+		}
+		order.setVersion(version);
 		// 理論在庫チェック値が0の場合
 		if (IS_NOT_THEORETICAL_STOCKCECK.equals(isCheck)) {
 			// 生地品番が無しの場合
 			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-				orderService.deleteOrder(order);
-				orderService.deleteMeasuring(measuring);
+				//orderService.deleteOrder(order);
+				orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+				//orderService.deleteMeasuring(measuring);
 			}
 			// 生地品番が有りの場合
 			else {
-				Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-						+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
-				BigDecimal reservationStock = stock.getReservationStock();
-				BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-				stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-				stock.setUpdatedUserId(sessionContent.getUserId());
-				stock.setUpdatedAt(new Date());
-				order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-				orderService.deleteOrderAndStock(order, stock, measuring);
+				
+				orderService.deleteOrderAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
 
 				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
 				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
@@ -795,23 +795,12 @@ public class OrderController {
 			// 生地品番が無しの場合
 			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-				orderService.deleteOrder(order);
-				orderService.deleteMeasuring(measuring);
+				orderService.deletOrderWithNotVersionAndStock(order,orderIsExist,item,sessionContent.getUserId(),measuring);
+				//orderService.deleteMeasuring(measuring);
 			}
 			// 生地品番が有りの場合
 			else {
-				Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-						+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
-				BigDecimal reservationStock = stock.getReservationStock();
-				BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-				stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
-				stock.setUpdatedUserId(sessionContent.getUserId());
-				stock.setUpdatedAt(new Date());
-				order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-				orderService.deleteOrderAndStock(order, stock, measuring);
-
+				orderService.deleteOrderAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
 				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
 				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
 						+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："

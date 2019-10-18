@@ -13,6 +13,7 @@
                                 	<form:options items="${orderCoForm.coOptionShirtStandardInfo.osShirtModelMap}"/>
                                 </form:select>
                             </div>
+                            <div class="col-12 col-md-9 offset-md-3" id="shirtModelMsg" style="margin-top:8px"></div>
                             <div class="col-12 col-md-9 offset-md-3" id="shirtModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
@@ -327,14 +328,17 @@
             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
             <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
             <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
-             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
-             <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+            <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
+            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+            <input type="hidden" id="osCasHemLineIdFlag" name="osCasHemLineIdFlag" value="${orderCoForm.osCasHemLineIdFlag }" />
+            <%-- <input type="hidden" id="corStBodylengthGross" name="coAdjustShirtStandardInfo.corStBodylengthGross" value="${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}" />  --%>
+            <%-- <input type="hidden" id="corStBodylengthSize"  name="coAdjustShirtStandardInfo.corStBodylengthSize"  value="${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthSize}" /> --%>
 </form:form>
 
 <!-- 自作js -->
 <script src="${pageContext.request.contextPath}/resources/app/self/js/option.shirt.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
-
+<script src="${pageContext.request.contextPath}/resources/app/self/js/config.js"></script>
 
 <script>
 var contextPath = jQuery("meta[name='contextPath']").attr("content");
@@ -347,22 +351,16 @@ var orderFlag = "${orderCoForm.orderFlag}";
  // 自作jsに記載
 jQuery(function() {
 
-	var shirtAdFlag="${orderCoForm.shirtAdFlag}";
-if(orderFlag=="orderCo"){
-	if(shirtAdFlag=="1"){
-	}else{
-		jQuery("#shirtAdFlag").val("0");
-	}
-}
-var sessionOsShirtModel = "${orderCoFormcoOptionShirtStandardInfo.osShirtModel}";
-jQuery("#shirtModel").click(function(){
-	var shirtModel = jQuery("#shirtModel").val();
-	if(sessionOsShirtModel != shirtModel){
-		if(orderFlag == "orderBack" || orderFlag == "orderLink"){
-			 jQuery("#shirtAdFlag").val("0");
+var shirtAdFlag="${orderCoForm.shirtAdFlag}";
+	if("orderCo"==orderFlag){
+		if(shirtAdFlag=="1"){
+		}else{
+			jQuery("#shirtAdFlag").val("0");
 		}
+	}else if("0"==jQuery("#shirtItemFlag").val() && "orderCo"!=orderFlag){
+		    jQuery("#shirtAdFlag").val("1");
 	}
-});
+
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -372,7 +370,9 @@ jQuery("#shirtModel").click(function(){
     shirtInitAlter();
     shirtProductPrice();
 	initOptionShirt();
-	if (shirtItemFlag == "1" || orderFlag == "orderLink" || orderFlag == "orderDetail" || orderFlag == "orderBack" || orderFlag == "orderCheck") {
+	if (shirtItemFlag == "1" || orderFlag == "orderLink" 
+		|| orderFlag == "orderDetail" || orderFlag == "orderBack" 
+		|| orderFlag == "orderCheck" || orderFlag == "orderDivert") {
 		optionShirtSession();
 	} else {
 		//カジュアルヘムライン仕様サイズの初期化設定
@@ -386,7 +386,7 @@ jQuery("#shirtModel").click(function(){
 	setShirtModelDisable();
 	
 	jQuery("#shirtModel").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 		var shirtModel = jQuery(this).val();
 		var productFabricNo = jQuery("#productFabricNo").val();
 		var itemCode = jQuery("#item").val();
@@ -414,6 +414,12 @@ jQuery("#shirtModel").click(function(){
 				getAllPrice(itemCode, result.optionPrice);
 			}
 		});
+		// 別モデルに変更された場合はアラート表示
+		if (tmpShirtModel != '' && shirtModel != tmpShirtModel) {
+		    setAlert('shirtModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
+		}
+		// 一時保存のモデルを更新
+		tmpShirtModel = shirtModel;
 		
 		//生地チェクフラッグ
 		var fabricCheckValue = jQuery("#fabricFlag").val();
@@ -439,7 +445,7 @@ jQuery("#shirtModel").click(function(){
 		shirtProductPrice();
 		jQuery("#shirtFlag").val("1");
 	})
-	
+
 	//カジュアルヘムラインサイズ
 	setCasHemLineSize();
 	
@@ -705,9 +711,45 @@ function getAllPrice(subItemCode, optionPrice){
     jQuery("#optionPriceId").val(allPrice);
     jQuery("#optionPrice").html(formatMoney(allPrice,0,""));
 }
+jQuery("#os_casHemLine_id1").click(function(){
+	var sessionoSCasHemLine="${orderCoForm.coOptionShirtStandardInfo.osCasHemLine}";
+	//var sCasHemLine2 = jQuery("#os_casHemLine_id2").val();
+	if(sessionoSCasHemLine=="0002002"){
+		jQuery("#osCasHemLineIdFlag").val("1");
+	}
+	/* var shirtNumber="${orderCoForm.coAdjustShirtStandardInfo.corStSize}";
+	var subItemCode = jQuery("#item").val();
+	var shirtModel = jQuery("#shirtModel option:selected").val();
+	shirtFigure = "";
+	if(isNotEmpty(shirtNumber)){
+		jQuery.ajax({
+	        url: contextPath + "/orderCo/getCoTypeSizeOptimization",
+	        type: 'get',
+	        async:false,
+	        data:{"orderPattern":orderPattern,"subItemCode":subItemCode,"modelCode":shirtModel,"figure":shirtFigure,"number":shirtNumber},
+	        success: function(data){
+	        	for(var i=0; i<data.length; i++){
+					if(data[i].adjustClass == "01"){
+	            		jQuery("#corStBodylengthGross").val(data[i].typeSize);
+	            		//jQuery("#corStBodylengthSize").val(data[i].typeSize);
+	            		alert(jQuery("#corStBodylengthGross").val());
+					}
+		        }
+		    }
+		})
+	}else{
+		jQuery("#corStBodylengthGross").val("");
+		//jQuery("#corStBodylengthSize").val("");
+		} */
+	
+})
 jQuery("#shirtModel").change(function(){
-	if(orderFlag == "orderCo"){
-		jQuery("#shirtAdFlag").val("0");
+	if("orderCo"==orderFlag){
+		jQuery("#shirtAdFlag").val("0");	
+	}else if("1"==jQuery("#shirtItemFlag").val()){
+		if("orderCo"!=orderFlag ){
+			jQuery("#shirtAdFlag").val("0");
+		}
 	}
 })
 

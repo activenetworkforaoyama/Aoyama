@@ -102,10 +102,15 @@ function initOptionCoat() {
 			} else {
 				oc_cuffSpecElem.val("0000701");
 			}
-			if (existBefore) {
-				oc_cuffSpecElem.val(before_oc_cuffSpec);
-			} else {
-				oc_cuffSpecElem.val(oc_cuffSpec_options_code[0]);
+			var coatItemFlag=jQuery('#coatItemFlag').val();
+			if ((coatItemFlag == "0" || coatItemFlag == "") && (orderFlag == "orderLink" 
+				|| orderFlag == "orderDetail" || orderFlag == "orderBack" 
+				|| orderFlag == "orderCheck" || orderFlag == "orderDivert")) {
+				if (existBefore) {
+					oc_cuffSpecElem.val(before_oc_cuffSpec);
+				} else {
+					oc_cuffSpecElem.val(oc_cuffSpec_options_code[0]);
+				}
 			}
 			
 			
@@ -155,14 +160,14 @@ function initOptionCoat() {
 		}
 
 		// 別モデルに変更された場合はアラート表示
-		if (tmpCoatModel != '選択' && coatModel != tmpCoatModel) {
+		if (tmpCoatModel != '' && coatModel != tmpCoatModel) {
 		    setAlert('coatModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
 		tmpCoatModel = coatModel;
 
 	});
-	jQuery('#coatModel').change();
+	//jQuery('#coatModel').change();
 
 	// 腰ポケット
 	jQuery('#oc_waistPkt').change(function(){

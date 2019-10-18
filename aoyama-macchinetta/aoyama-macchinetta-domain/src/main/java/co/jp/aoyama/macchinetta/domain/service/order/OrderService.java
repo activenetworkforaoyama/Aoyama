@@ -83,5 +83,16 @@ public interface OrderService {
 
 	List<OrderPrice> getOrderPriceNotCate(String coType);
 
+	void deletOrderWithNotVersionAndStock(Order order, Order orderIsExist,String item, String userId, Measuring measuring);
+
+	void deleteOrderAndStock(Order order, Stock stock, Measuring measuring, Order orderIsExist, String item,
+			String userId);
+
+	void deleteOrderAndStock(Order order, Measuring measuring, Order orderIsExist, String item, String userId);
+
+	void deletOrderWithNotVersionAndMeasuring(Order order, Measuring measuring);
+
+	void deletOrderisExistence(Order order, Measuring measuring);
+
 
 }

@@ -7,7 +7,7 @@ function initAlter() {
 		var id = elem.prop('id');
 		var step = elem.prop('step') - 0;
 		elem.on('input', function(){
-			
+			checkRange(id, elem.val());
 			jQuery('#'+id+'_out').val(this.value);
 			var idRe = id.replace('Range','_div');
 			var sizeVal = jQuery("#"+idRe+"_Size").val();
@@ -23,53 +23,53 @@ function initAlter() {
 			jQuery("#"+idRe+"_html").html(val+"cm");
 			jQuery('#'+idRe+'_Gross').val(val);
 			setFont(id);
-			checkRange(id, elem.val());
 		});
 		jQuery('#'+id+'_p').click(function(){
+				
 			elem.val(elem.val()-0+step);
 			jQuery('#'+id+'_out').val(elem.val());
+			checkRange(id, elem.val());	
 			var max = document.getElementById(id).max;
 			var idRe = id.replace('Range','_div');	
 			var sizeVal = jQuery("#"+idRe+"_Size").val();
 			var labelVaUplCm = jQuery('#'+idRe+'_html').html();
-			if(typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null){
+			if(typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null&&sizeVal != ""){
 				var idRejQ = jQuery('#'+idRe);
 				var labelValUp = labelVaUplCm.replace('cm','');
 				var maxVal = keepFloatPrecision(parseFloat(max)+parseFloat(sizeVal));
-				var val = keepFloatPrecision(parseFloat(labelValUp)+parseFloat(step));	
-				if(val<=maxVal){
+				var val = keepFloatPrecision(parseFloat(sizeVal)+parseFloat(elem.val()));
+				setFont(id);
+				//if(val<=maxVal){
 					jQuery("#"+idRe+"_html").html(val+"cm");
 					jQuery('#'+idRe+'_Gross').val(val);	
-				}else{
-					return false;
-				}
+				//}else{
+					//return false;
+				//}
 			}
-			setFont(id);	
-			checkRange(id, elem.val());
 			return false;
 		});
 		jQuery('#'+id+'_m').click(function(){
 			elem.val(elem.val()-0-step);
 			jQuery('#'+id+'_out').val(elem.val());
+			checkRange(id, elem.val());
 			var min = document.getElementById(id).min;
 			var idRe = id.replace('Range','_div');
 			var sizeVal = jQuery("#"+idRe+"_Size").val();
 			var labelValDoCm = jQuery('#'+idRe+'_html').html();
-			if(typeof(labelValDoCm)!="undefined"&&labelValDoCm!=null){
+			if(typeof(labelValDoCm)!="undefined"&&labelValDoCm!=null&&sizeVal != ""){
 				
 				var idRejQ = jQuery('#'+idRe);
 				var labelValDo = labelValDoCm.replace('cm','');
 				var minVal = (parseFloat(min)+parseFloat(sizeVal)).toFixed(1);
-				var val = (parseFloat(labelValDo)-parseFloat(step)).toFixed(1);
-				if(val>=minVal){			
+				var val = (parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
+				setFont(id);
+				//if(val>=minVal){			
 					jQuery("#"+idRe+"_html").html(val+"cm");
 					jQuery('#'+idRe+'_Gross').val(val);
-				}else{
-					return false;
-				}
-			}
-			setFont(id);			
-			checkRange(id, elem.val());
+				//}else{
+					//return false;
+				//}
+			}			
 			return false;
 		});
 	});	
@@ -81,10 +81,10 @@ function shirtInitAlter() {
 		var id = elem.prop('id');
 		var step = elem.prop('step') - 0;
 		elem.on('input', function(){
+			checkRange(id, elem.val());
 			jQuery('#'+id+'_out').val(this.value);
 			setFont(id);
 			//規定値超えチェック
-			checkRange(id, elem.val());
 		});
 		jQuery('#'+id+'_p').click(function(){
 			// 無効設定チェック
@@ -119,6 +119,7 @@ function shirtInitAlter() {
 function setFont(id) {
 	var color = "black";
 	var value = jQuery('#'+id).val() - 0;
+	value=keepFloatPrecision(value);
 	if (value < 0) {
 		color = "red";
 	} else if (value > 0) {
@@ -163,11 +164,11 @@ function checkRange(id, val) {
 	try {
 		// 最大値チェック
 		var alertMaxValue = jQuery("#" + id).attr("alert-max") - 0;
-		if (setValue > alertMaxValue) throw new Exception();
+		if (keepFloatPrecision(setValue) > keepFloatPrecision(alertMaxValue)) throw new Exception();
 
 		// 最小値チェック
 		var alerMintValue = jQuery("#" + id).attr("alert-min") - 0;
-		if (setValue < alerMintValue) throw new Exception();
+		if (keepFloatPrecision(setValue) < keepFloatPrecision(alerMintValue)) throw new Exception();
 		
 		resultRange = true;
 	} catch(e) {
@@ -175,7 +176,7 @@ function checkRange(id, val) {
 	}
 	
 	// ヒップの場合のウエストチェック
-	try {
+	/*try {
 		if (id=="ap_hip") {
 			idHip = "ap_hip";
 			checkVal =  jQuery("#ap_waist").val() - 0;
@@ -207,7 +208,7 @@ function checkRange(id, val) {
 		resultHip = true;
 	} catch(e) {
 		// チェック処理から抜けるだけなのでここでの処理は行わない
-	}
+	}*/
 
 	clearAlert(id + "_alert");
 	clearAlert(idHip + "_alert");

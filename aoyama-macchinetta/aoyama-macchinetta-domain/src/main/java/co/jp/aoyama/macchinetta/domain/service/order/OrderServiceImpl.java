@@ -297,7 +297,7 @@ public class OrderServiceImpl  implements OrderService {
 	public void deleteOrderAndStock(Order order, Stock stock,Measuring measuring) {
 		orderRepository.updateStockByPk(stock);
 		orderRepository.deletOrderByOrderId(order.getOrderId());
-		orderRepository.insertOrder(order);
+		orderRepository.insertOrderWithNotVersion(order);
 		this.deleteMeasuring(measuring);
 	}
 
@@ -421,5 +421,105 @@ public class OrderServiceImpl  implements OrderService {
 		return orderList;
 	}
 
+
+	@Override
+	public void deletOrderWithNotVersionAndStock(Order order, Order orderIsExist,String item,String userId,Measuring measuring) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		if (orderDb == null) {
+			orderRepository.insertOrderWithNotVersion(order);
+		} else {
+			stockRecovery(orderIsExist,item,userId);
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrderWithNotVersion(order);
+			this.deleteMeasuring(measuring);
+		}
+	}
+
+
+	private void stockRecovery(Order order,String item,String userId) {
+		if ("1".equals(order.getTheoreticalStockCheck())) {
+			BigDecimal stockNum = order.getTheoryFabricUsedMount();
+			Stock stockDb = this.getStock(order.getProductFabricNo(),order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item 
+			+ "、生地品番："+order.getProductFabricNo() 
+			+ "、理論在庫："+stockDb.getTheoreticalStock() 
+			+ "、予約生地量："+stockDb.getReservationStock() + "」");
+			BigDecimal reservationStock = stockDb.getReservationStock();
+			stockDb.setReservationStock(reservationStock.subtract(stockNum));
+			stockDb.setUpdatedUserId(userId);
+			stockDb.setUpdatedAt(new Date());
+			this.updateStockByPk(stockDb);
+			Stock stockAfter = this.getStock(order.getProductFabricNo(),order.getOrderPattern());
+			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+			+ "、注文ID："+order.getOrderId()  
+			+ "、ITEM："+item
+			+ "、生地品番："+order.getProductFabricNo() 
+			+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+			+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+		}
+	}
+
+
+	@Override
+	public void deleteOrderAndStock(Order order, Stock stock, Measuring measuring, Order orderIsExist, String item,
+			String userId) {
+		stockRecovery(orderIsExist,item,userId);
+		Stock stockDb = this.getStock(order.getProductFabricNo(), order.getOrderPattern());
+		logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+				+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+				+ stockDb.getTheoreticalStock() + "、予約生地量：" + stockDb.getReservationStock() + "」");
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrderWithNotVersion(order);
+		this.deleteMeasuring(measuring);
+	}
+
+
+	@Override
+	public void deleteOrderAndStock(Order order, Measuring measuring, Order orderIsExist, String item, String userId) {
+		stockRecovery(orderIsExist,item,userId);
+		Stock stock = this.getStock(order.getProductFabricNo(), order.getOrderPattern());
+		logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+				+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+				+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
+		BigDecimal reservationStock = stock.getReservationStock();
+		BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+		stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
+		stock.setUpdatedUserId(userId);
+		stock.setUpdatedAt(new Date());
+		order.setTheoreticalStockCheck("1");
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrderWithNotVersion(order);
+		this.deleteMeasuring(measuring);
+	}
+
+
+	@Override
+	public void deletOrderWithNotVersionAndMeasuring(Order order, Measuring measuring) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		if (orderDb == null) {
+			orderRepository.insertOrderWithNotVersion(order);
+		} else {
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrderWithNotVersion(order);
+		}
+		this.deleteMeasuring(measuring);
+	}
+
+
+	@Override
+	public void deletOrderisExistence(Order order, Measuring measuring) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		if (orderDb == null) {
+			orderRepository.insertOrder(order);
+		} else {
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrder(order);
+		}
+		this.deleteMeasuring(measuring);
+	}
 
 }

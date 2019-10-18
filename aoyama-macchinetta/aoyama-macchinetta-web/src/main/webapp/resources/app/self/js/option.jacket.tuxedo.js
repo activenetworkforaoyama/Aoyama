@@ -455,7 +455,7 @@ function initOptionJacketTuxedo() {
 		//if (sleeveBtnType == "無し") return false;
 
 		var value = jQuery('#tj_sleeveBtnCnt').val() - 0;
-		var max = (sleeveBtnType == "並び") ? 4 : 5;
+		var max = (sleeveBtnType == "0001802") ? 4 : 5;
 		if (value >= max) return false;
 		jQuery('#tj_sleeveBtnCnt').val(value + 1);
 
@@ -498,6 +498,46 @@ function initOptionJacketTuxedo() {
 	});*/
 	//ctrlTjDStitchModify();
 	//ctrlTjDStitchModifyPlace();
+	
+	// 選択中のボタンホール色指定を取得
+	var bhColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]:checked').val();
+	
+	//無し:0003101
+	if (bhColor == '0003101') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="tj_bhColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#tj_bhColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_tj_bhColorPlace').prop("disabled", true);
+		
+		jQuery('#tj_bhColor_div input[type="radio"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
+		
+		// 無しの場合は2階層目を表示しない
+		jQuery('#tj_bhColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+		ctrlTjBhColorPlace();
+		jQuery('input[id^="tj_bhColorPlace_"]').each(function() {
+//			jQuery(this).prop("disabled", false);
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#tj_bhColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_tj_bhColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#tj_bhColor_div').show();
+	}
 
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColor"]').each(function() {
@@ -514,7 +554,12 @@ function initOptionJacketTuxedo() {
 				});
 				jQuery('#tj_bhColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_tj_bhColorPlace').prop("disabled", true);
-
+				jQuery('#tj_bhColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#tj_bhColor_div').hide();
 			} else {
@@ -535,17 +580,23 @@ function initOptionJacketTuxedo() {
 			}
 		});
 	});
-	jQuery('#tj_bhColor_id1').change();
 
 	// ボタンホール色指定(全選択)
 	jQuery('#btn_as_tj_bhColorPlace').click(function(){
 		// 全選択する色を取得
 		var allColor = jQuery('#tj_bhColorPlaceAll').val();
 
-		jQuery('#tj_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
+		jQuery('#tj_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){
+			elemCheckBox = jQuery(elemCheckBox);
+			if(!elemCheckBox.prop("disabled")){
+				var bhCheckBoxId = elemCheckBox.attr("id");
+				jQuery('#'+bhCheckBoxId+'_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.val() == allColor) elem.prop('checked', true);
+				});
+			}
 		});
+		
 	});
 
 	// ボタンホール色指定箇所
@@ -555,6 +606,13 @@ function initOptionJacketTuxedo() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+						elem.change();
+					}
+				})
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -563,6 +621,43 @@ function initOptionJacketTuxedo() {
 	// ボタンホール色指定箇所の制御
 	ctrlTjBhColorPlace();
 
+	var byColor = jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]:checked').val();
+	//無し:0003401
+	if (byColor == '0003401') {
+		// 無しの場合は操作不可
+		jQuery('input[id^="tj_byColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+			jQuery('#'+this.id+'_div').hide();
+		});
+		jQuery('#tj_byColorPlaceAll').prop("disabled", true);
+		jQuery('#btn_as_tj_byColorPlace').prop("disabled", true);
+
+		jQuery('#tj_byColor_div input[type="radio"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
+		// 無しの場合は2階層目を表示しない
+		jQuery('#tj_byColor_div').hide();
+	} else {
+		// 有りの場合は操作可能
+		ctrlTjByColorPlace();
+		jQuery('input[id^="tj_byColorPlace_"]').each(function() {
+//			jQuery(this).prop("disabled", false);
+			if (jQuery(this).prop("checked")) {
+				// 選択されているの場合、色指定エリアを表示
+				jQuery('#'+this.id+'_div').show();
+			}
+		});
+		jQuery('#tj_byColorPlaceAll').prop("disabled", false);
+		jQuery('#btn_as_tj_byColorPlace').prop("disabled", false);
+
+		// 有りの場合は2階層目を表示
+		jQuery('#tj_byColor_div').show();
+	}
+	
 	// ボタン付け糸指定(有り/無し)
 	jQuery('input[name="coOptionJacketTuxedoInfo.tjByColor"]').each(function() {
 		jQuery(this).change(function(){
@@ -579,6 +674,12 @@ function initOptionJacketTuxedo() {
 				jQuery('#tj_byColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_tj_byColorPlace').prop("disabled", true);
 
+				jQuery('#tj_byColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#tj_byColor_div').hide();
 			} else {
@@ -599,16 +700,21 @@ function initOptionJacketTuxedo() {
 			}
 		});
 	});
-	jQuery('#tj_byColor_id1').change();
 
 	// ボタン付け糸指定(全選択)
 	jQuery('#btn_as_tj_byColorPlace').click(function(){
 		// 全選択する色を取得
 		var allColor = jQuery('#tj_byColorPlaceAll').val();
 
-		jQuery('#tj_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
+		jQuery('#tj_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){
+			elemCheckBox = jQuery(elemCheckBox);
+			if(!elemCheckBox.prop("disabled")){
+				var byCheckBoxId = elemCheckBox.attr("id");
+				jQuery('#'+byCheckBoxId+'_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.val() == allColor) elem.prop('checked', true);
+				});
+			}
 		});
 	});
 
@@ -619,6 +725,13 @@ function initOptionJacketTuxedo() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+						elem.change();
+					}
+				})
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -996,6 +1109,9 @@ function ctrlTjBhColorPlace() {
 			//フラワーホール(上前1):0003201
 			if (elem.val() == "0003201") {
 				// フラワーホールの指定に関わらず、常に有効
+				if (flowerHole == "0001005") {
+					elem.prop("disabled", true);
+				}
 				//フラワーホール(上前2):0003202
 			} else if (elem.val() == "0003202") {
 				//上前2つ:0001003,両前2つ:0001004
@@ -1030,7 +1146,7 @@ function ctrlTjBhColorPlace() {
 			} else if (elem.val() == "0003207") {
 //				if (frontBtnCnt != "段返り3つボタン") {
 				//1つボタン:0000103
-				if (frontBtnCnt == "0000103") {
+				if (frontBtnCnt == "0000103"||frontBtnCnt == "0000104") {
 					elem.prop("disabled", true);
 				}
 				//上前袖口１:0003208,下前袖口１:0003213
@@ -1112,7 +1228,7 @@ function ctrlTjByColorPlace() {
 				//フロント下前3:0003506
 			} else if (elem.val() == "0003506") {
 				//1つボタン:0000103
-				if (frontBtnCnt == "0000103") {
+				if (frontBtnCnt == "0000103" || frontBtnCnt == "0000104") {
 					elem.prop("disabled", true);
 				}
 				//フロント上前1:0003501

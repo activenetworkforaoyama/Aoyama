@@ -12,6 +12,13 @@ function initOptionPants1Tuxedo() {
 		var pantsModel = jQuery(this).val();
 		
 		var pantsoldModel = jQuery('#tp_pantsModel').attr("oldTpPantsModel");
+		var modelFlag = 0;
+		if(pantsoldModel == '' || pantsoldModel == null){
+			modelFlag = 1;
+		}
+		else {
+			modelFlag = 2;
+		}
 		if (pantsModel != pantsoldModel) {
 			jQuery("#pantsFlag").val("0");
 		}else{
@@ -75,7 +82,8 @@ function initOptionPants1Tuxedo() {
 		// フロント仕様設定
 		var sFrontSpec = defaultFrontSpec[pantsModel];
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpFrontSpec"]').val([sFrontSpec]);
-
+		jQuery('input[id^="tp_frontSpec_id"]:checked').change();
+		
 		// パンチェリーナ特殊制御
 		tpPancherinaSpecialController();
 
@@ -100,7 +108,7 @@ function initOptionPants1Tuxedo() {
 
 		// 選択中のベルトループ
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
-
+		
 		// ベルトループの選択肢制御
 		jQuery('input[id^="tp_beltLotp_"]').each(function() {
 			var tmpTpBeltLoopElem = jQuery(this);
@@ -116,7 +124,7 @@ function initOptionPants1Tuxedo() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').change();
+		jQuery('input[id^="op_beltLoop_id"]:checked').change();
 
 		// ベルトループ変更時処理
 		tpChangedBeltLoop();
@@ -133,6 +141,7 @@ function initOptionPants1Tuxedo() {
 		// 選択中の忍びポケット
 		var sinobiPktElem = jQuery('input[name="coOptionPantsTuxedoInfo.tpSinobiPkt"]:checked');
 		var selectedSinobiPkt = sinobiPktElem.val();
+		jQuery('input[id^="tp_sinobiPkt_id"]:checked').change();
 
 		// モデルに基づくデフォルトの忍びポケット
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
@@ -153,7 +162,7 @@ function initOptionPants1Tuxedo() {
 		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktUf"]').change();
+		jQuery('input[id^="tp_pisPktUf_id"]:checked').change();
 
 		// 選択中の下前ピスポケット
 		var pisPktDf = jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]:checked');
@@ -163,7 +172,7 @@ function initOptionPants1Tuxedo() {
 		var modelPisPktDf = pantsTuxedoModelDefaultList[pantsModel].op_pisPktDf;
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="coOptionPantsTuxedoInfo.tpPisPktDf"]').change();
+		jQuery('input[id^="tp_pisPktDf_id"]:checked').change();
 
 		// 選択中のVカット
 		var vCut = jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]:checked');
@@ -185,9 +194,20 @@ function initOptionPants1Tuxedo() {
 				jQuery(this).prop("checked", false);
 			});
 		}
+		// ボタンホール色指定
+		var tpBhColorVal = jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]').val();
+		if('0002701' == tpBhColorVal && jQuery("#pantsFlag").val() == '0'){
+			jQuery('input[id="tp_bhColor_id1"]').change();
+		}
+		
+		// ボタン付け糸指定
+		var tpByColorVal = jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]').val();
+		if('0003001' == tpByColorVal && jQuery("#pantsFlag").val() == '0'){
+			jQuery('#tp_byColor_id2').change();
+		}
 
 		// 別モデルに変更された場合はアラート表示
-		if ((tmpTpPantsModel != '' || tmpTpPantsModel != null) && pantsModel != tmpTpPantsModel) {
+		if ((tmpTpPantsModel != '' || tmpTpPantsModel != null) && pantsModel != tmpTpPantsModel && modelFlag == 2) {
 //		    appendAlert('tp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('tp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
@@ -227,7 +247,7 @@ function initOptionPants1Tuxedo() {
 			tpPancherinaSpecialController();
 		});
 	});
-	jQuery('#tp_frontSpec_id1').change();
+	jQuery('input[id^="tp_frontSpec_id"]:checked').change();
 
 	// ベルトループ
 	jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]').each(function() {
@@ -451,10 +471,17 @@ function initOptionPants1Tuxedo() {
 		// 全選択する色を取得
 		var allColor = jQuery('#tp_bhColorPlaceAll').val();
 
-		jQuery('#tp_bhColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#tp_bhColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var bhColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+bhColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
+
 	});
 
 	// ボタンホール色指定箇所
@@ -464,6 +491,14 @@ function initOptionPants1Tuxedo() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				}) 
+
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
@@ -517,10 +552,16 @@ function initOptionPants1Tuxedo() {
 		// 全選択する色を取得
 		var allColor = jQuery('#tp_byColorPlaceAll').val();
 
-		jQuery('#tp_byColor_div input[type="radio"]').each(function(index, elem){
-			elem = jQuery(elem);
-			if (elem.val() == allColor) elem.prop('checked', true);
-		});
+		jQuery('#tp_byColor_div input[type="checkBox"]').each(function(index, elemCheckBox){ 
+			elemCheckBox = jQuery(elemCheckBox); 
+			if(!elemCheckBox.prop("disabled")){ 
+			var byColorCheckBoxId = elemCheckBox.attr("id"); 
+			jQuery('#'+byColorCheckBoxId+'_div input[type="radio"]').each(function(index, elem){ 
+			elem = jQuery(elem); 
+			if (elem.val() == allColor) elem.prop('checked', true); 
+			}); 
+			} 
+		}); 
 	});
 
 	// ボタン付け糸指定箇所
@@ -530,6 +571,14 @@ function initOptionPants1Tuxedo() {
 				// 選択されているの場合、色指定エリアを表示
 				jQuery('#'+this.id+'_div').show();
 			} else {
+				jQuery('#'+this.id+'_div input[type="radio"]').each(function(index, elem){ 
+					elem = jQuery(elem); 
+					if (elem.prop("checked")) { 
+					elem.removeAttr("checked"); 
+					elem.change(); 
+					} 
+				})
+				
 				// 選択されていない場合、色指定エリアを非表示
 				jQuery('#'+this.id+'_div').hide();
 			}
