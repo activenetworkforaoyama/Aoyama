@@ -9,6 +9,19 @@ span {
 	margin-right: 16px;
 }
 
+.error-message-list {
+	margin-left:20px ;
+	margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 4px;
+    text-shadow: 0 1px 0 #ffffff;
+    background-color: #fde9f3;
+    color: #b94a48;
+    border-color: rgba(216, 80, 48, 0.3);
+    width:800px;
+}
+
 select.hidedown {
 	-webkit-appearance:none;
 	-moz-appearance:none;
@@ -53,6 +66,9 @@ select.hidedown {
                 </div>
             </div>
         </div>
+        <spring:nestedPath path="orderCoForm">
+    			<form:errors path="*" element="div" class="error-message-list" />
+		</spring:nestedPath>
 		<form:form id="idForm" action="${pageContext.request.contextPath}/orderCo/orderCoReconfirm" method="post" modelAttribute="orderCoForm" class="form-horizontal">
         <div class="content mt-3">
             <div class="animated fadeIn">
@@ -1434,6 +1450,8 @@ select.hidedown {
 			
 			<input type="hidden" id="storeBrandCode"  name="storeBrandCode"   value="${sessionContent.storeBrandCode}" />
 			
+			<input type="hidden" id="storeNm"  name="storeNm"   value="${sessionContent.belongName}" />
+			
 			<input type="hidden" id="saveFlag"  name="saveFlag"   value="" />
 			
 			<input type="hidden" id="fabricFlag"  name="fabricFlag"   value="${orderCoForm.fabricFlag}" />
@@ -1454,15 +1472,26 @@ select.hidedown {
 			<input type="hidden" id="giletFlag" name="giletFlag" value="${orderCoForm.giletFlag}"/>
 			<input type="hidden" id="pantsFlag" name="pantsFlag" value="${orderCoForm.pantsFlag}"/>
 			<input type="hidden" id="pants2Flag" name="pants2Flag" value="${orderCoForm.pants2Flag}"/>
-			<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="0"/>
-			<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
-			<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="0"/>
-			<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="0"/>
-			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="0"/>
-			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="0"/>
+			
+			<c:if test="${orderCoForm.orderFlag == 'orderCo'}">
+				<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="0"/>
+				<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="0"/>
+				<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="0"/>
+				<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="0"/>
+				<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="0"/>
+				<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="0"/>
+			</c:if>
+			<c:if test="${orderCoForm.orderFlag == 'orderLink'|| orderCoForm.orderFlag == 'orderDivert'}">
+				<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="1"/>
+				<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="1"/>
+				<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="1"/>
+				<input type="hidden" id="shirtItemFlag" name="shirtItemFlag" value="1"/>
+				<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="1"/>
+				<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="1"/>
+			</c:if>
 					
 			<input type="hidden" id="itemCoFlag" name="itemCoFlag" value="0"/>
-			<input type="hidden" id="itemCoChangeFlag" name="itemCoChangeFlag" value="${orderCoForm.itemCoChangeFlag }"/>
+			<input type="hidden" id="itemCoChangeFlag" name="itemCoChangeFlag" value="888888"/>
 			
 			<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value=""/>
 			<input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value=""/>
@@ -1722,7 +1751,6 @@ function zenkakuToHankaku(mae){
 	        var str = jQuery(this).val();
 	        jQuery(this).val(zenkakuToHankaku(str));
 	    });
-	    jQuery('#itemCoFlag').val("1");
 	});
 	
 	function isHanKana(str){
@@ -1823,7 +1851,6 @@ jQuery(function() {
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
-
   	//--------------------------------------------
 	// お客様情報
 	//--------------------------------------------
@@ -2631,7 +2658,7 @@ jQuery(function() {
 	if(authority == "02"){
 		
 	}else{
-		/* //30s自動保存
+		//30s自動保存
 	 	//注文のTSCステータス
 		var orderStatus = "${order.tscStatus}";
 		//戻るの場合、orderFormのTSCステータス
@@ -2645,9 +2672,6 @@ jQuery(function() {
 			(orderStatus==""&&orderFormStatus=="")){
 				
 			setInterval(function(){
-
-				//バージョンフラッグ
-				//var versionFlag = "";
 				//保存flag
 				jQuery("#saveFlag").val("1");
 				//TSCステータス  一時保存
@@ -2658,6 +2682,7 @@ jQuery(function() {
 				}else{
 					jQuery("#statusInput").val(jQuery("#statusInput").val());
 				}
+				var stockCheckResult = stockCheck();
 				
 				var result = temporarySaveCheck();
 					
@@ -2665,62 +2690,61 @@ jQuery(function() {
 					jQuery("div.alert-success").hide();
 					return false;
 				}
-				
-				//jQuery('select').removeAttr("disabled");
-				//jQuery('input').not("#lcrSewing_id2").removeAttr("disabled");
-				optionControlNotDisabled();
-				jQuery.ajax({
-		              url : contextPath + "/orderCo/orderCoTemporarySave",
-				      type: "post",
-				      async:false,
-				      data: jQuery('#formId').ghostsf_serialize(),
-					  }).then(function(data) {
-						  if(!data.orderMsgFlag){
-							  if(data.orderMsg == 'T2ERROR'){
-								  swal({
-				        				text: getMsg('msg048'),
-				        				icon: "info"
-				        		  }).then(function(val){
-				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-				        		  });
-							  }else if(data.orderMsg == 'T3ERROR'){
-								  swal({
-				        				text: getMsg('msg048'),
-				        				icon: "info"
-				        		  }).then(function(val){
-				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-				        		  });
-							  }
-						  }else{
-							  if(data.orderId == "true"){
-								  //ステータス設定
-							   	  jQuery("#status").empty();
-							   	  var statusInput = jQuery("#statusInput").val();
-								  if(statusInput=="T0"){
-								 	  jQuery("#status").html("一時保存");
-								  }else{
-									  jQuery("#status").html("取り置き");
+				if(stockCheckResult){
+					optionControlNotDisabled();
+					jQuery.ajax({
+			              url : contextPath + "/orderCo/orderCoTemporarySave",
+					      type: "post",
+					      async:false,
+					      data: jQuery('#idForm').ghostsf_serialize(),
+						  }).then(function(data) {
+							  if(!data.orderMsgFlag){
+								  if(data.orderMsg == 'T2ERROR'){
+									  swal({
+					        				text: getMsg('msg048'),
+					        				icon: "info"
+					        		  }).then(function(val){
+					        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+					        		  });
+								  }else if(data.orderMsg == 'T3ERROR'){
+									  swal({
+					        				text: getMsg('msg048'),
+					        				icon: "info"
+					        		  }).then(function(val){
+					        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+					        		  });
 								  }
-							  }else if(data.orderId.length == 12){
-								  jQuery("#orderId").val(data.orderId);
-							      //ステータス設定
-								  jQuery("#status").empty();
-							   	  var statusInput = jQuery("#statusInput").val();
-								  if(statusInput=="T0"){
-								 	  jQuery("#status").html("一時保存");
-								  }else{
-									  jQuery("#status").html("取り置き");
+							  }else{
+								  if(data.orderId == "true"){
+									  //ステータス設定
+								   	  jQuery("#status").empty();
+								   	  var statusInput = jQuery("#statusInput").val();
+									  if(statusInput=="T0"){
+									 	  jQuery("#status").html("一時保存");
+									  }else{
+										  jQuery("#status").html("取り置き");
+									  }
+								  }else if(data.orderId.length == 12){
+									  jQuery("#orderId").val(data.orderId);
+								      //ステータス設定
+									  jQuery("#status").empty();
+								   	  var statusInput = jQuery("#statusInput").val();
+									  if(statusInput=="T0"){
+									 	  jQuery("#status").html("一時保存");
+									  }else{
+										  jQuery("#status").html("取り置き");
+									  }
+									  var version = jQuery.ajax({url:contextPath + "/orderCo/getOrderVersion",data:{"orderId":data.orderId},async:false});
+									  version = version.responseText;
+									  jQuery("#version").val(version);
 								  }
-								  var version = jQuery.ajax({url:contextPath + "/orderCo/getOrderVersion",data:{"orderId":data.orderId},async:false});
-								  version = version.responseText;
-								  jQuery("#version").val(version);
 							  }
-						  }
-					  })
+						  })
+				}
 				optionControlDisabled();
 				projectControl();
 			  },30000)
-		};*/
+		};
 	}
 	
 	//一時保存ボタンをクリック
@@ -3388,7 +3412,9 @@ jQuery(function() {
 				      jQuery("#ctDoubleModelPrice").val("0");
 				      jQuery("#glDoubleModelPrice").val("0");
 
-				      jQuery("#itemCoChangeFlag").val("1");
+				      if(jQuery('#itemCoFlag').val()=="1"){
+					  		jQuery("#itemCoChangeFlag").val("1");
+					  	}
 				      
 					  if(oldCategory != category){
 						  jQuery('input[name="productCategory"]').attr("hookCate",category);
@@ -3465,7 +3491,7 @@ jQuery(function() {
 			}
 		});
 	});
-
+    jQuery('#itemCoFlag').val("1");
 });
 
 
@@ -3949,9 +3975,9 @@ function fabricView(item,productFabricNo){
 				 }
 				 //LCR縫製有りの場合
 				 else if(lcrSewing == "1"){
-					 jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
-					 jQuery("#lcrSewing_id1").prop("checked","checked");
-					 jQuery("input[name='productLcrSewing']:checked").change();
+					 jQuery("#lcrSewing_id2").removeAttr("disabled",false);
+					 //jQuery("#lcrSewing_id1").prop("checked","checked");
+					 //jQuery("input[name='productLcrSewing']:checked").change();
 				 }
 				  
 				 //商品金額と合計金額を計算する　7
@@ -4063,7 +4089,7 @@ function optionRetailPrice(result){
 			 jQuery("#threePiece_Msg").html("無料");
 		  }
 		  
-		  jQuery('input[name="productIs3Piece"]').unbind("click").click(function(){
+		  jQuery('input[name="productIs3Piece"]:checked').change(function(){
 			  var threePiece = jQuery(this).val();
 			  //3Pieceが有りの場合
 			  if(threePiece == "0009902"){
@@ -4089,7 +4115,7 @@ function optionRetailPrice(result){
 			 jQuery("#sparePants_Msg").html("無料");
  	      }
  	      
-		  jQuery('input[name="productSparePantsClass"]').unbind("click").click(function(){
+		  jQuery('input[name="productSparePantsClass"]:checked').change(function(){
 			  var twoPants = jQuery(this).val();
 			  //2Pantsが有りの場合
 			  if(twoPants == "0009902"){
@@ -4115,7 +4141,6 @@ function optionRetailPrice(result){
 			  jQuery("#ctDoubleModelPrice").val(result.ctDoublePrice);
 		  }
 	}
-
 	 allOptionPrice();
 }
 //--------------------------------------------
@@ -4128,29 +4153,6 @@ function allOptionPrice(){
 	sparePantsPrice = htmlPriceFormat(sparePantsPrice);
 	threePiecePrice = htmlPriceFormat(threePiecePrice);
 	
-	/* var msg;
-	var msgPrice = null;
-	var priceHtmlMsgList = ["sparePants_Msg","threePiece_Msg"];
-	for(msgPrice of priceHtmlMsgList){
-		msg = jQuery("#"+msgPrice).html();
-		if(msg =='無料'){
-			msg = '0';
-		}else if(msg ==''||msg == null){
-			msg = '0';
-		}
-		
-		if(msg.indexOf("￥")!=-1){
-			msg = msg.substr(1,msg.length-1);
-			if(msg.length>3){
-				msg = msg.replace(/,/g,'');
-			}
-		}else{
-			if(msg.length>3){
-				msg = msg.replace(/,/g,'');
-			}
-		}
-		count += Number(msg);
-	} */
 
 	var jkOptionPriceId = jQuery("#jkOptionPriceId").val();
 	var glOptionPriceId = jQuery("#glOptionPriceId").val();
@@ -4195,10 +4197,6 @@ function allOptionPrice(){
 
 	count = Number(count) + Number(expediteDeliveryPrice);
 	
-	/* count = Number(count) + Number(jkOptionPriceId) + Number(pt2OptionPriceId) + Number(glOptionPriceId) + Number(ptOptionPriceId) + 
-	Number(jkDoubleModelPrice) + Number(ctDoubleModelPrice) + Number(ctOptionPriceId) + Number(stOptionPriceId) + 
-	Number(glDoubleModelPrice) + Number(expediteDeliveryPrice) + Number(lcrSewingPrice) + Number(embroideryNmPosPrice) + Number(gadgetPrice); */
-	
 	count = count.toString();
 	jQuery("#optionPriceId").val(count);
 	count = formatMoney(count,0,"");
@@ -4224,37 +4222,6 @@ function allGoodsPrice(result){
 	
 	hasTwoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
 	
-	//threePiece　　　	 0009901： 無し　0009902：有り　　
-	//hasTwoPants　　　　　　0009901： 無し　0009902：有り　　
-	
-	/* //JACKET+PANTS
-	if(itemCode=='01'){
-		goodsPrice = result.retailPrice;
-	}
-	//JACKET単品
-	else if(itemCode == '02'&&frontBtnCnt!='0000105'&&frontBtnCnt!='0000106'){
-		goodsPrice = (Number(result.retailPrice)*(Number(result.singleJacketOnlyRate))/100) + Number(result.jkSingleOnlyPlusAlphaPrice);
-	}
-	//ダブルJACKET単品
-	else if(itemCode == '02'&&(frontBtnCnt=='0000105'||frontBtnCnt=='0000106')){
-		goodsPrice = (Number(result.retailPrice)*(Number(result.singleJacketOnlyRate))/100) + Number(result.jkSingleOnlyPlusAlphaPrice);
-	}
-	//シングルGILET単品
-	else if(itemCode == '04'){
-		goodsPrice = (Number(result.retailPrice)*(Number(result.singleGiletOnlyRate))/100) + Number(result.glSingleOnlyPlusAlphaPrice);
-	}
-	//PANTS単品
-	else if(itemCode == '03'){
-		goodsPrice = (Number(result.retailPrice)*(Number(result.pantOnlyRate))/100) + Number(result.ptOnlyPlusAlphaPrice);
-	}
-	//SHIRT単品
-	else if(itemCode == '05'){
-		goodsPrice = result.retailPrice;
-	}
-	//COAT単品
-	else if(itemCode == '06'){
-		goodsPrice = result.retailPrice;
-	} */
 	goodsPrice = result.productPrice;
   if(isNaN(goodsPrice)){
   	jQuery("#goodsPrice").html('0')
@@ -4646,9 +4613,9 @@ function fabricCheck(item,productFabricNo){
 						 jQuery("input[name='productLcrSewing']:checked").change();
 					  }
 					  else if(lcrSewing == "1"){
-						  jQuery("#lcrSewing_id2").removeAttr("disabled","disabled");
-						  jQuery("#lcrSewing_id1").prop("checked","checked");
-						  jQuery("input[name='productLcrSewing']:checked").change();
+						  jQuery("#lcrSewing_id2").removeAttr("disabled",false);
+						  //jQuery("#lcrSewing_id1").prop("checked","checked");
+						  //jQuery("input[name='productLcrSewing']:checked").change();
 					  }
 					  
 	     			  //商品金額と合計金額を計算する　7
@@ -4776,7 +4743,7 @@ function categoryCheck(washableAvailable,tuxedoAvailable,category){
 
 function htmlPriceFormat(msg){
 	//msg =='' || msg == null
-	if(msg =='無料' || isEmpty(msg) || typeof(msg) == "undefined" || isNaN(msg)){
+	if(msg =='無料' || isEmpty(msg) || typeof(msg) == "undefined"){
 		msg = '0';
 	}
 	
@@ -4820,6 +4787,7 @@ function compositionExpress(){
 		 url: contextPath + "/orderCo/getComposBodyIiner",
 		 data: jQuery('#idForm').ghostsf_serialize(),
 		 async:false,
+		 contentType: 'text/json,charset=utf-8',
 		 success:function(result){
 			 if(isEmpty(result)){
 
@@ -6789,10 +6757,12 @@ function optionControlNotDisabled(){
 		if(productCategory == "9000101"){
 			//JACKET
 			jQuery('#flowerHole').removeAttr("disabled");
+			jQuery('#cuffBackMateStkNo').removeAttr("disabled");
 			//PANTS
 		}else if(productCategory == "9000102"){
 			//JACKET
 			jQuery('#tj_flowerHole').removeAttr("disabled");
+			jQuery('#tj_btnMateStkNo').removeAttr("disabled");
 			//PANTS
 		}else if(productCategory == "9000103"){
 			//JACKET
@@ -6809,8 +6779,10 @@ function optionControlNotDisabled(){
 	}else if(item == "02"){
 		if(productCategory == "9000101"){
 			jQuery('#flowerHole').removeAttr("disabled");
+			jQuery('#cuffBackMateStkNo').removeAttr("disabled");
 		}else if(productCategory == "9000102"){
 			jQuery('#tj_flowerHole').removeAttr("disabled");
+			jQuery('#tj_btnMateStkNo').removeAttr("disabled");
 		}else if(productCategory == "9000103"){
 			jQuery('#wj_flowerHole').removeAttr("disabled");
 		}
@@ -6838,12 +6810,20 @@ function optionControlDisabled(){
 			if(selectedLapelDesign == "0000203"){
 				jQuery("#flowerHole").prop("disabled",true);
 			}
+			var cuffBackMate = jQuery('#cuffBackMate').val();
+			if(cuffBackMate == "2000300"){
+				jQuery("#cuffBackMateStkNo").prop("disabled",true);
+			}
 			//PANTS
 		}else if(productCategory == "9000102"){
 			//JACKET
 			var selectedLapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
 			if(selectedLapelDesign == "0000203"){
 				jQuery("#tj_flowerHole").prop("disabled",true);
+			}
+			var tj_btnMate = jQuery('#tj_btnMate').val();
+			if(tj_btnMate == "3000700"){
+				jQuery("#tj_btnMateStkNo").prop("disabled",true);
 			}
 			//PANTS
 		}else if(productCategory == "9000103"){
@@ -6868,10 +6848,18 @@ function optionControlDisabled(){
 			if(selectedLapelDesign == "0000203"){
 				jQuery("#flowerHole").prop("disabled",true);
 			}
+			var cuffBackMate = jQuery('#cuffBackMate').val();
+			if(cuffBackMate == "2000300"){
+				jQuery("#cuffBackMateStkNo").prop("disabled",true);
+			}
 		}else if(productCategory == "9000102"){
 			var selectedLapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
 			if(selectedLapelDesign == "0000203"){
 				jQuery("#tj_flowerHole").prop("disabled",true);
+			}
+			var tj_btnMate = jQuery('#tj_btnMate').val();
+			if(tj_btnMate == "3000700"){
+				jQuery("#tj_btnMateStkNo").prop("disabled",true);
 			}
 		}else if(productCategory == "9000103"){
 			var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjFlowerHole"]:checked').val();
@@ -6924,12 +6912,12 @@ function orderFormMeasuring(){
 }
 
 if (document.readyState=="complete"){  
-        $.unblockUI();
-}else{  
+    $.unblockUI();
+}else{
     document.onreadystatechange = function(){  
         if (document.readyState == "complete"){  
            $.unblockUI();   
-        }  
-    }  
+        }
+    }
 }
 </script>

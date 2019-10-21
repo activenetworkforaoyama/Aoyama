@@ -5884,14 +5884,16 @@ function imageCheck(){
 			else{
 				appendAlertDel('errormssage');
 			}
-			
-			//PANTS_Drop
-			if(!isEmpty(corPtDrop)){
-				appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
-				return false;
-			}
-			else{
-				appendAlertDel('errormssage');
+
+			if(ptModel != 'RS01' && ptModel != 'JW21' && ptModel != 'AY01'){
+				//PANTS_Drop
+				if(!isEmpty(corPtDrop)){
+					appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+					return false;
+				}
+				else{
+					appendAlertDel('errormssage');
+				}
 			}
 
 			//PANTS_号数
@@ -6187,14 +6189,16 @@ function imageCheck(){
 			else{
 				appendAlertDel('errormssage');
 			}
-			
-			//PANTS_Drop
-			if(!isEmpty(corPtDrop)){
-				appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
-				return false;
-			}
-			else{
-				appendAlertDel('errormssage');
+
+			if(ptModel != 'RS01' && ptModel != 'JW21' && ptModel != 'AY01'){
+				//PANTS_Drop
+				if(!isEmpty(corPtDrop)){
+					appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+					return false;
+				}
+				else{
+					appendAlertDel('errormssage');
+				}
 			}
 
 			//PANTS_号数

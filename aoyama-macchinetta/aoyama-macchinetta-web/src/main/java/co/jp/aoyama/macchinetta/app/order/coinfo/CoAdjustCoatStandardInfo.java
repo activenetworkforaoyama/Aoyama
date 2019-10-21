@@ -3,65 +3,100 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatAdItem;
+
 public class CoAdjustCoatStandardInfo implements Serializable {
 	private static final long serialVersionUID = -8877129976059721540L;
 	// COATサイズ
 	private Map<String, String> corCtSizeMap;
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのサイズを入力して下さい。")
 	private String corCtSize;
-
 	// 着丈修正
 	private Map<String, String> corCtBodylengthMap;
-	// COAT_着丈_型サイズ
+	// 着丈型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの着丈型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの着丈型サイズの範囲が不正です。")
 	private String corCtBodylengthSize;
-	// COAT_着丈_補正値
+	// 着丈補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの着丈補正値を入力して下さい。")
 	private String corCtBodylengthCorrect;
-	// COAT_着丈_グロス
+	// 着丈グロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの着丈グロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの着丈グロスの範囲が不正です。")
 	private String corCtBodylengthGross;
 
 	// ウエスト修正
 	private Map<String, String> corCtWaistMap;
-	// COAT_ウエスト_型サイズ
+	// ウエスト型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのウエスト型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのウエスト型サイズの範囲が不正です。")
 	private String corCtWaistSize;
-	// COAT_ウエスト_補正値
+	// ウエスト補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのウエスト補正値を入力して下さい。")
 	private String corCtWaistCorrect;
-	// COAT_ウエスト_グロス
+	// ウエストグロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのウエストグロスの範囲が不正です。")
 	private String corCtWaistGross;
 
 	// 袖丈右修正
 	private Map<String, String> corCtRightsleeveMap;
-	// COAT_袖丈右_型サイズ
+	// 袖丈右型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈右型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの袖丈右型サイズの範囲が不正です。")
 	private String corCtRightsleeveSize;
-	// COAT_袖丈右_補正値
+	// 袖丈右補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈右補正値を入力して下さい。")
 	private String corCtRightsleeveCorrect;
-	// COAT_袖丈右_グロス
+	// 袖丈右グロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈右グロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの袖丈右グロスの範囲が不正です。")
 	private String corCtRightsleeveGross;
 
 	// 袖丈左修正
 	private Map<String, String> corCtLeftsleeveMap;
-	// COAT_袖丈左_型サイズ
+	// 袖丈左型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈左型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの袖丈左型サイズの範囲が不正です。")
 	private String corCtLeftsleeveSize;
-	// COAT_袖丈左_補正値
+	// 袖丈左補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈左補正値を入力して下さい。")
 	private String corCtLeftsleeveCorrect;
-	// COAT_袖丈左_グロス
+	// 袖丈左グロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATの袖丈左グロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATの袖丈左グロスの範囲が不正です。")
 	private String corCtLeftsleeveGross;
 
 	// ベント修正（高さ）
 	private Map<String, String> corCtVenthightMap;
 
-	// COAT_ベント修正（高さ）_型サイズ
+	// ベント修正（高さ）型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズの範囲が不正です。")
 	private String corCtVenthightSize;
-	// COAT_ベント修正（高さ）_補正値
+	// ベント修正（高さ）補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）補正値を入力して下さい。")
 	private String corCtVenthightCorrect;
-	// COAT_ベント修正（高さ）_グロス
+	// ベント修正（高さ）グロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスの範囲が不正です。")
 	private String corCtVenthightGross;
 
 	// ポケット位置
 	private Map<String, String> corCtPktposMap;
-	// COAT_ポケット位置_型サイズ
+	// ポケット位置型サイズ
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズの範囲が不正です。")
 	private String corCtPktposSize;
-	// COAT_ポケット位置_補正値
+	// ポケット位置補正値
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置補正値を入力して下さい。")
 	private String corCtPktposCorrect;
-	// COAT_ポケット位置_グロス
+	// ポケット位置グロス
+	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置グロスが不正です。")
+	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置グロスの範囲が不正です。")
 	private String corCtPktposGross;
 	
 	//ct再補正コメント

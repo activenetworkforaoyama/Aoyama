@@ -263,6 +263,7 @@
 							<output id="corPtWaist_div_html">000.0cm</output>
 						</div>						
 						<div class="col-12 col-md-9 offset-md-3" id="corPtWaistRange_alert"></div>
+						<div class="col-12 col-md-9 offset-md-3" id="corPtWaistRange2_alert"></div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ヒップ修正</label>
 						</div>
@@ -278,6 +279,7 @@
 							<output id="corPtHip_div_html">000.0cm</output>
 						</div>
 						<div class="col-12 col-md-9 offset-md-3" id="corPtHipRange_alert"></div>
+						<div class="col-12 col-md-9 offset-md-3" id="corPtHipRange2_alert"></div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ワタリ幅修正</label>
 						</div>
@@ -293,7 +295,6 @@
 							<output id="corPtThigh_div_html">000.0cm</output>						
 						</div>
 			<div class="col-12 col-md-9 offset-md-3" id="corPtThighRange_alert"></div>
-			<div class="col-12 col-md-9 offset-md-3" id="corPtThighRange2_alert"></div>
 						<div class="col-12 col-md-2 offset-md-3">
 							<label class=" form-control-label">裾幅</label>
 						</div>
@@ -481,6 +482,7 @@
 
 						</div>
 						<div class="col-12 col-md-9 offset-md-3" id="corPt2WaistRange_alert"></div>
+						<div class="col-12 col-md-9 offset-md-3" id="corPt2WaistRange2_alert"></div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ヒップ修正</label>
 						</div>					
@@ -496,6 +498,7 @@
 							<output id="corPt2Hip_div_html">000.0cm</output>
 						</div>					
 						<div class="col-12 col-md-9 offset-md-3" id="corPt2HipRange_alert"></div>
+						<div class="col-12 col-md-9 offset-md-3" id="corPt2HipRange2_alert"></div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ワタリ修正</label>
 						</div>						
@@ -512,7 +515,6 @@
 							
 						</div>
 						<div class="col-12 col-md-9 offset-md-3" id="corPt2ThighRange_alert"></div>
-						<div class="col-12 col-md-9 offset-md-3" id="corPt2ThighRange2_alert"></div>
 						<div class="col-12 col-md-2 offset-md-3">
 							<label class=" form-control-label">裾幅</label>
 						</div>
@@ -1583,27 +1585,54 @@ jQuery(document).ready(function() {
 jQuery("#shirt_shoulderPat_id2").click(function(){
 	setAlert("shirt_shoulderPat_id_alert", "値が規定値を超えています。");
 })
-jQuery("#corPtThighRange,#corPtThighRange_m,#corPtThighRange_p,#corPt2ThighRange,#corPt2ThighRange_m,#corPt2ThighRange_p").click(function(){
+jQuery("#corPtWaistRange,#corPtWaistRange_m,#corPtWaistRange_p,"+
+	   "#corPt2WaistRange,#corPt2WaistRange_m,#corPt2WaistRange_p,"+
+	   "#corPtHipRange,#corPtHipRange_m,#corPtHipRange_p,"+
+	   "#corPt2HipRange,#corPt2HipRange_m,#corPt2HipRange_p").click(function(){
 	var elem = jQuery(this);
 	var id = elem.prop('id');
-	if(id=="corPtThighRange" || id=="corPtThighRange_m" || id=="corPtThighRange_p"){
-			var corPtHipRange=jQuery("#corPtHipRange").val()-0;
-			var setValue=jQuery('#corPtThighRange').val();
-			if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPtHipRange)>0){
-				jQuery("#corPtThighRange2_alert").show();
-				setAlert("corPtThighRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
+	if(id=="corPtWaistRange" || id=="corPtWaistRange_m" || id=="corPtWaistRange_p"){
+			var corPtWaistRange=jQuery("#corPtWaistRange").val()-0;
+			var setValue=jQuery('#corPtHipRange').val();
+			if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPtWaistRange)>0){
+				jQuery("#corPtWaistRange2_alert").show();
+				setAlert("corPtWaistRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
 			}else{
-				jQuery("#corPtThighRange2_alert").hide();
+				jQuery("#corPtWaistRange2_alert").hide();
+				jQuery("#corPtHipRange2_alert").hide();
+			}
+	}
+	if(id=="corPtHipRange"  || id=="corPtHipRange_m"  || id=="corPtHipRange_p"){
+		var corPtWaistRange=jQuery("#corPtWaistRange").val()-0;
+		var setValue=jQuery('#corPtHipRange').val();
+		if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPtWaistRange)>0){
+			jQuery("#corPtHipRange2_alert").show();
+			setAlert("corPtHipRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
+		}else{
+			jQuery("#corPtWaistRange2_alert").hide();
+			jQuery("#corPtHipRange2_alert").hide();
+		}
+	}
+		if(id=="corPt2WaistRange" || id=="corPt2WaistRange_m" || id=="corPt2WaistRange_p"){
+			var corPt2WaistRange=jQuery("#corPt2WaistRange").val()-0;
+			var setValue=jQuery('#corPt2HipRange').val();
+			if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPt2WaistRange)>0){
+				jQuery("#corPt2WaistRange2_alert").show();
+				setAlert("corPt2WaistRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
+			}else{
+				jQuery("#corPt2WaistRange2_alert").hide();
+				jQuery("#corPt2HipRange2_alert").hide()
 			}
 		}
-		if(id=="corPt2ThighRange" || id=="corPt2ThighRange_m" || id=="corPt2ThighRange_p"){
-			var corPt2HipRange=jQuery("#corPt2HipRange").val()-0;
-			var setValue=jQuery('#corPt2ThighRange').val();
-			if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPt2HipRange)>0){
-				jQuery("#corPt2ThighRange2_alert").show();
-				setAlert("corPt2ThighRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
+		if(id=="corPt2HipRange" || id=="corPt2HipRange_m"  || id=="corPt2HipRange_p"){
+			var corPt2WaistRange=jQuery("#corPt2WaistRange").val()-0;
+			var setValue=jQuery('#corPt2HipRange').val();
+			if(keepFloatPrecision(setValue)<0 && keepFloatPrecision(corPt2WaistRange)>0){
+				jQuery("#corPt2HipRange2_alert").show();
+				setAlert("corPt2HipRange2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
 			}else{
-				jQuery("#corPt2ThighRange2_alert").hide();
+				jQuery("#corPt2WaistRange2_alert").hide();
+				jQuery("#corPt2HipRange2_alert").hide();			
 			}
 		}
 })
@@ -1877,7 +1906,7 @@ function ptAdjust(){
 						if(opTack=="0000101"){
 							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize + 'cm';
 		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize);
-		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize);
+		            		jQuery("#corPtThigh_div_Gross").val(data[i].typeSize);		     
 						}else if(opTack=="0000102"){
 							jQuery("#corPtThigh_div_html")[0].innerHTML=data[i].typeSize1Outtack + 'cm';
 		            		jQuery("#corPtThigh_div_Size").val(data[i].typeSize1Outtack);

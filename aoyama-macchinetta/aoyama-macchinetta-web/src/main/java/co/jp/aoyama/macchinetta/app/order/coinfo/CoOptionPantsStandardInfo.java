@@ -3,6 +3,13 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpStitchItem;
+
 public class CoOptionPantsStandardInfo implements Serializable{
 	private static final long serialVersionUID = -4505963757793347479L;
 	
@@ -10,11 +17,13 @@ public class CoOptionPantsStandardInfo implements Serializable{
 	private Map<String,String> twoPantsMap;
 	
 	//PANTSモデル
+	@NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のモデルを入力して下さい。")
 	private String opPantsModel;
 	
 	private Map<String,String> opPantsModelMap;
 	
 	//タック
+	@NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のタックを入力して下さい。")
     private String opTack;
     
     private Map<String,String> opTackMap;
@@ -22,30 +31,39 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptTackRtPrice;
     
     //膝裏
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の膝裏を入力して下さい。")
     private String opKneeBack;
     
     private Map<String,String> opKneeBackMap;
     
     private String ptKneeinnerTypeRtPrice;
+    
     //膝裏素材
+    @NotBlank(groups = { PtStOpKneeBackItem.class }, message = "PANTS（1本目）の膝裏素材を入力して下さい。")
     private String opKneeBackMate;
 
     private Map<String,String> opKneeBackMateMap;
     
     private String ptKneeinnerClothRtPrice;
+    
     //フロント仕様
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のフロント仕様を入力して下さい。")
   	private String opFrontSpec;
       
     private Map<String,String> opFrontSpecMap;
     
     private String ptFrtTypeRtPrice;
+    
     //パンチェリーナ
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のパンチェリーナを入力して下さい。")
     private String opPancherina;
     
     private Map<String,String> opPancherinaMap;
     
     private String ptPancherinaRtPrice;
+    
     //アジャスター仕様
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のアジャスター仕様を入力して下さい。")
     private String opAdjuster;
     
     private Map<String,String> opAdjusterMap;
@@ -53,6 +71,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptAdjusterRtPrice;
     
     //ベルトループ
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のベルトループを入力して下さい。")
     private String opBeltLoop;
     
     private Map<String,String> opBeltLoopMap;
@@ -79,18 +98,23 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opBeltLoopPlaceMap;
     
     //ピンループ
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のピンループを入力して下さい。")
     private String opPinLoop;
     
     private Map<String,String> opPinLoopMap;
     
     private String ptPinLoopRtPrice;
+    
     //脇ポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の脇ポケットを入力して下さい。")
     private String opSidePkt;
     
     private Map<String,String> opSidePktMap;
     
     private String ptSidePktRtPrice;
+    
     //忍びポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の忍びポケットを入力して下さい。")
     private String opSinobiPkt;
     
     private Map<String,String> opSinobiPktMap;
@@ -98,6 +122,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptShinobiPktRtPrice;
     
     //コインポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のコインポケットを入力して下さい。")
     private String opCoinPkt;
     
     private Map<String,String> opCoinPktMap;
@@ -105,6 +130,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptCoinPktRtPrice;
     
     //フラップ付コインポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のフラップ付コインポケットを入力して下さい。")
     private String opFlapCoinPkt;
     
     private Map<String,String> opFlapCoinPktMap;
@@ -112,6 +138,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptFlapcoinPktRtPrice;
     
     //上前ピスポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の上前ピスポケットを入力して下さい。")
     private String opPisPktUf;
     
     private Map<String,String> opPisPktUfMap;
@@ -119,6 +146,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptLeftPisPktRtPrice;
     
     //下前ピスポケット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の下前ピスポケットを入力して下さい。")
     private String opPisPktDf;
     
     private Map<String,String> opPisPktDfMap;
@@ -126,6 +154,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptRightPisPktRtPrice;
     
     //Vカット
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のVカットを入力して下さい。")
     private String opVCut;
     
     private Map<String,String> opVCutMap;
@@ -133,6 +162,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptVCutRtPrice;
     
     //裾上げ
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の裾上げを入力して下さい。")
     private String opHemUp;
     
     private Map<String,String> opHemUpMap;
@@ -140,6 +170,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptHemUpRtPrice;
     
     //ダブル幅
+    @NotBlank(groups = { PtStOpHemUpItem.class }, message = "PANTS（1本目）のダブル幅を入力して下さい。")
     private String opDoubleWide;
     
     private Map<String,String> opDoubleWideMap;
@@ -147,6 +178,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptDblWidthRtPrice;
     
     //AMFステッチ
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の裾上げを入力して下さい。")
     private String opStitch;
     
     private Map<String,String> opStitchMap;
@@ -154,6 +186,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptAmfStitchRtPrice;
     
     //ステッチ箇所変更
+    @NotBlank(groups = { PtStOpStitchItem.class }, message = "PANTS（1本目）のステッチ箇所変更を入力して下さい。")
     private String opStitchModify;
     
     private Map<String,String> opStitchModifyMap;
@@ -174,6 +207,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opStitchModifyPlaceMap;
     
     //ダブルステッチ
+    @NotBlank(groups = { PtStOpStitchItem.class }, message = "PANTS（1本目）のダブルステッチを入力して下さい。")
     private String opDStitch;
     
     private Map<String,String> opDStitchMap;
@@ -194,6 +228,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opDStitchPlaceMap;
 
 	//AMF色指定
+    @NotBlank(groups = { PtStOpStitchItem.class }, message = "PANTS（1本目）のAMF色指定を入力して下さい。")
     private String opAmfColor;
     
     private Map<String,String> opAmfColorMap;
@@ -235,6 +270,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opAmfColorsMap;
     
     //ボタンホール色指定
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のボタンホール色指定を入力して下さい。")
     private String opBhColor;
     
     private Map<String,String> opBhColorMap;
@@ -276,6 +312,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opBhColorsMap;
     
     //ボタン付け糸指定
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のボタン付け糸指定を入力して下さい。")
     private String opByColor;
     
     private Map<String,String> opByColorMap;
@@ -317,6 +354,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private Map<String,String> opByColorsMap;
     
     //釦素材
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の釦素材を入力して下さい。")
     private String opButton;
     
     private Map<String,String> opButtonMap;
@@ -327,6 +365,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String opBtnMateStkNo;
     
     //サスペンダー釦
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のサスペンダー釦を入力して下さい。")
     private String opSuspenderBtn;
     
     private Map<String,String> opSuspenderBtnMap;
@@ -334,6 +373,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptSuspenderBtnRtPrice;
     
     //エイト（滑り止め）
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のエイト（滑り止め）を入力して下さい。")
     private String opEight;
     
     private Map<String,String> opEightMap;
@@ -341,6 +381,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String PtNonSlipRtPrice;
     
     //形状記憶
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の形状記憶を入力して下さい。")
     private String opShapeMemory; 
     
     private Map<String,String> opShapeMemoryMap;
@@ -354,6 +395,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
  
 
     //シック（股補強）
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のシック（股補強）を入力して下さい。")
     private String opThick;
     
     private Map<String,String> opThickMap;

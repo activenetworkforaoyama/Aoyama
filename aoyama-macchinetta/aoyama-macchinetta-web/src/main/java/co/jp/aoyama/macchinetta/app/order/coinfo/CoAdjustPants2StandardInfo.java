@@ -3,70 +3,107 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthDegignatePt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthPt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2AdItem;
+
 public class CoAdjustPants2StandardInfo implements Serializable {
 	private static final long serialVersionUID = 8082462722647632661L;
 	// 号数
 	private Map<String, String> sizeNumberMap;
-
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の号数を入力して下さい。")
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の体型を入力して下さい。")
 	private String sizeFigure;
 
 	// ウエスト修正2
 	private Map<String, String> corPt2WaistMap;
 	// ウエスト型サイズ2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のウエスト型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のウエスト型サイズの範囲が不正です。")
 	private String corPt2WaistSize;
 	// ウエスト補正値2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のウエスト補正値を入力して下さい。")
 	private String corPt2WaistCorrect;
 	// ウエストグロス2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のウエストグロスの範囲が不正です。")
 	private String corPt2WaistGross;
 
 	// ワタリ修正2
 	private Map<String, String> corPt2ThighMap;
 	// ワタリ型サイズ2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のワタリ型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のワタリ型サイズの範囲が不正です。")
 	private String corPt2ThighSize;
 	// ワタリ補正値2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のワタリ補正値を入力して下さい。")
 	private String corPt2ThighCorrect;
 	// ワタリグロス2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のワタリグロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のワタリグロスの範囲が不正です。")
 	private String corPt2ThighGross;
 	
 	// ヒップ修正
 	private Map<String, String> corPt2HipMap;
-	// ワタリ型サイズ2
+	// ヒップ型サイズ2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のヒップ型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のヒップ型サイズの範囲が不正です。")
 	private String corPt2HipSize;
-	// ワタリ補正値2
+	//ヒップ補正値2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のヒップ補正値を入力して下さい。")
 	private String corPt2HipCorrect;
-	// ワタリグロス2
+	// ヒップグロス2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）のヒップグロスが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）のヒップグロスの範囲が不正です。")
 	private String corPt2HipGross;
 
 	// 裾幅修正2
 	private Map<String, String> corPt2HemwidthMap;
-	// 裾幅修正1指定2区分2
+	// 裾幅修正区分
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の裾幅修正区分が不正です。")
 	private String corPt2HemwidthType;
 	// 裾幅型サイズ2
+	@NotBlank(groups = {HemwidthPt2AdItem.class}, message = "PANTS（2本目）の裾幅型サイズが不正です。")
+	@Range(min=1, max=999, groups = {HemwidthPt2AdItem.class}, message = "PANTS（2本目）の裾幅型サイズの範囲が不正です。")
 	private String corPt2HemwidthSize;
 	// 裾幅補正値2
+	@NotBlank(groups = {HemwidthPt2AdItem.class}, message = "PANTS（2本目）の裾幅補正値を入力して下さい。")
 	private String corPt2HemwidthCorrect;
 	// 裾幅グロス2
+	@NotBlank(groups = {HemwidthPt2AdItem.class}, message = "PANTS（2本目）の裾幅グロスが不正です。")
+	@Range(min=1, max=999, groups = {HemwidthPt2AdItem.class}, message = "PANTS（2本目）の裾幅グロスの範囲が不正です。")
 	private String corPt2HemwidthGross;
 	
-	//裾幅_指定_値
+	//裾幅指定値
+	@NotBlank(groups = {HemwidthDegignatePt2AdItem.class}, message = "PANTS（2本目）の裾幅指定値を入力して下さい。")
 	private String corPt2HemwidthDegignate;
 
 	// 股下右型サイズ2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下右型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下右型サイズの範囲が不正です。")
 	private String corPt2RightinseamSize;
 	// 股下右補正値2
 	private String corPt2RightinseamCorrect;
 	// 股下右グロス2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下右グロスが不正です。")
+	@Range(min=50, max=110, groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下右グロスの範囲が不正です。")
 	private String corPt2RightinseamGross;
 
 	// 股下左型サイズ2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下左型サイズが不正です。")
+	@Range(min=1, max=999, groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下左型サイズの範囲が不正です。")
 	private String corPt2LeftinseamSize;
 	// 股下左補正値2
 	private String corPt2LeftinseamCorrect;
 	// 股下左グロス2
+	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下左グロスが不正です。")
+	@Range(min=50, max=110, groups = {Pt2AdItem.class}, message = "PANTS（2本目）の股下左グロスの範囲が不正です。")
 	private String corPt2LeftinseamGross;
 
 	//Pt2再補正コメント

@@ -160,9 +160,12 @@ function initProduct() {
 				  	jQuery("#jkDoubleModelPrice").val("0");
 				  	jQuery("#ctDoubleModelPrice").val("0");
 				  	jQuery("#glDoubleModelPrice").val("0");
-				  	
-				  	jQuery("#itemCoChangeFlag").val("1");
-				  	
+				  	//jQuery('#itemCoFlag').val("1");
+				  	if(jQuery('#itemCoFlag').val()=="1"){
+				  		jQuery("#itemCoChangeFlag").val("1");
+				  		jQuery('#itemCoFlag').val("0");
+				  	}
+				  				
 				  	jQuery('input[name="productEmbroideryNecessity"][value="9000501"]').prop("checked",true);
 				  	
 				  	//jQuery('#embroidered_no').change();

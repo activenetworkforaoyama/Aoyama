@@ -28,6 +28,7 @@ function initAlter() {
 				
 			elem.val(elem.val()-0+step);
 			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
 			checkRange(id, elem.val());	
 			var max = document.getElementById(id).max;
 			var idRe = id.replace('Range','_div');	
@@ -51,6 +52,7 @@ function initAlter() {
 		jQuery('#'+id+'_m').click(function(){
 			elem.val(elem.val()-0-step);
 			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
 			checkRange(id, elem.val());
 			var min = document.getElementById(id).min;
 			var idRe = id.replace('Range','_div');

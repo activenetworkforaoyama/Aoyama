@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+import javax.validation.groups.Default;
+
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -41,52 +45,239 @@ public class OrderCoForm implements Serializable {
 
 	private static final long serialVersionUID = -5104739132232852696L;
 
+	// グループ:Jacket 標準
+    public static interface JkStItem {
+    };
+
+    // グループ:Jacket 標準ステッチ
+    public static interface JkStStitchItem {
+    };
+    
+    // グループ:Jacket タキシード
+    public static interface JkTuItem {
+    };
+    
+    // グループ:Jacket ウォッシャブル
+    public static interface JkWaItem {
+    };
+    
+    // グループ:Jacket 補正
+    public static interface JkAdItem {
+    };
+    
+    // グループ:Pants 標準
+    public static interface PtStItem {
+    };
+    
+ 	// グループ:Pants 標準膝裏
+    public static interface PtStOpKneeBackItem {
+    };
+    
+    // グループ:Pants 標準裾上げ
+    public static interface PtStOpHemUpItem {
+    };
+    
+    // グループ:Pants 標準AMFステッチ
+    public static interface PtStOpStitchItem {
+    };
+    
+    // グループ:Pants タキシード
+    public static interface PtTuItem {
+    };
+    
+    // グループ:Pants タキシード膝裏
+    public static interface PtTuTpKneeBackItem {
+    };
+    
+    // グループ:Pants タキシード裾上げ
+    public static interface PtTuTpHemUpItem {
+    };
+    
+    // グループ:Pants ウォッシャブル
+    public static interface PtWaItem {
+    };
+    
+    // グループ:Pants ウォッシャブル膝裏
+    public static interface PtWaWpKneeBackItem {
+    };
+
+    // グループ:Pants ウォッシャブル裾上げ
+    public static interface PtWaWpHemUpItem {
+    };
+    
+    // グループ:Pants ウォッシャブルステッチ種類
+    public static interface PtWaWpStitchItem {
+    };
+    
+    // グループ:Pants 補正
+    public static interface PtAdItem {
+    };
+    
+    public static interface HemwidthPtAdItem {
+    };
+    
+    public static interface HemwidthDegignatePtAdItem {
+    };
+    
+    // グループ:Gilet 標準
+    public static interface GlStItem {
+    };
+    
+    // グループ:Gilet 腰ポケット形状
+    public static interface GlStWaistPktSpecItem {
+    };
+    
+    // グループ:Gilet 標準ステッチ
+    public static interface GlStStitchItem {
+    };
+    
+    // グループ:Gilet タキシード
+    public static interface GlTuItem {
+    };
+    
+    // グループ:Gilet 腰ポケット形状
+    public static interface GlTuWaistPktSpecItem {
+    };
+    
+    // グループ:Gilet ウォッシャブル
+    public static interface GlWaItem {
+    };
+    
+    // グループ:Gilet 腰ポケット形状
+    public static interface GlWaWaistPktSpecItem {
+    };
+    
+    // グループ:Gilet 補正
+    public static interface GlAdItem {
+    };
+    
+    // グループ:2Pants 標準
+    public static interface Pt2StItem {
+    };
+    
+    // グループ:2Pants タキシード
+    public static interface Pt2TuItem {
+    };
+    
+    // グループ:2Pants ウォッシャブル
+    public static interface Pt2WaItem {
+    };
+    
+    // グループ:2Pants 補正
+    public static interface Pt2AdItem {
+    };
+    
+    public static interface HemwidthPt2AdItem {
+    };
+    
+    public static interface HemwidthDegignatePt2AdItem {
+    };
+    
+    // グループ:Shirt 標準
+    public static interface ShirtItem {
+    };
+    
+    // グループ:Shirt 補正
+    public static interface ShirtAdItem {
+    };
+    
+    // グループ: 胸ポケット-> 胸ポケット大きさ
+    public static interface StBreastPkSizeItem {
+    };
+    
+	// グループ: カジュアルヘムライン仕様 無し -> 有り
+    public static interface StCasualHemlineSizeItem {
+    };
+    
+    // グループ: ボタン位置変更  無し -> 有り
+    public static interface StBtnPosChgItem {
+    };
+    
+    // グループ:Coat 標準
+    public static interface CoatItem {
+    };
+    
+    // グループ:Coat 補正
+    public static interface CoatAdItem {
+    };
+    
+    // グループ:shippingDestination（出荷先）
+    public static interface ShippingDestinationItem {
+    };
+    
+    // グループ:EmbroideredItem（刺繍入れ）
+    public static interface EmbroideredItem {
+    };
+    
+    // グループ:EmbroideredItem（刺繍入れ）
+    public static interface EmbroideredShirtItem {
+    };
+    
+    // グループ:残布
+    public static interface RemainingClothItem {
+    };
 	// メジャーリング
+    @Valid
 	private CoMeasuringInfo coMeasuringInfo;
 
 	// お客様情報
+    @Valid
 	private CoCustomerMessageInfo coCustomerMessageInfo;
 
 	// PANTS Standard
+    @Valid
 	private CoOptionPantsStandardInfo coOptionPantsStandardInfo;
 
 	// 2PANTS Standard
+    @Valid
 	private CoOptionPants2StandardInfo coOptionPants2StandardInfo;
 
 	// PANTS Tuxedo
+    @Valid
 	private CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo;
 
 	// 2PANTS Tuxedo
+    @Valid
 	private CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo;
 
 	// PANTS Washable
+    @Valid
 	private CoOptionPantsWashableInfo coOptionPantsWashableInfo;
 
 	// 2PANTS Washable
+    @Valid
 	private CoOptionPants2WashableInfo coOptionPants2WashableInfo;
 
 	// JACKET Standard
+    @Valid
 	private CoOptionJacketStandardInfo coOptionJacketStandardInfo;
 
 	// JACKET Tuxedo
+    @Valid
 	private CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo;
 
 	// JACKET Washable
+    @Valid
 	private CoOptionJacketWashableInfo coOptionJacketWashableInfo;
 
 	// GILET Standard
+    @Valid
 	private CoOptionGiletStandardInfo coOptionGiletStandardInfo;
 
 	// GILET Tuxedo
+    @Valid
 	private CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo;
 
 	// GILET Washable
+    @Valid
 	private CoOptionGiletWashableInfo coOptionGiletWashableInfo;
 
 	// SHIRT Standard
+    @Valid
 	private CoOptionShirtStandardInfo coOptionShirtStandardInfo;
 
 	// COAT Standard
+    @Valid
 	private CoOptionCoatStandardInfo coOptionCoatStandardInfo;
 
 	// Product
@@ -96,105 +287,131 @@ public class OrderCoForm implements Serializable {
 	private List<OrderCodePrice> orderCodePriceList;
 
 	// JACKET補正
+	@Valid
 	private CoAdjustJacketStandardInfo coAdjustJacketStandardInfo;
 
 	// PANTS補正
+	@Valid
 	private CoAdjustPantsStandardInfo coAdjustPantsStandardInfo;
 
 	// PANTS2補正
+	@Valid
 	private CoAdjustPants2StandardInfo coAdjustPants2StandardInfo;
 
 	// GILET補正
+	@Valid
 	private CoAdjustGiletStandardInfo coAdjustGiletStandardInfo;
 
 	// Shirt補正
+	@Valid
 	private CoAdjustShirtStandardInfo coAdjustShirtStandardInfo;
 
 	// Coat補正
+	@Valid
 	private CoAdjustCoatStandardInfo coAdjustCoatStandardInfo;
 
 	// 店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
+	@NotBlank(groups = {Default.class},message = "店舗コード が不正です。")
 	private String shopCode;
 
 	// 業態
+	@NotBlank(groups = {Default.class},message = "業態コード が不正です。")
 	private String storeBrandCode;
 
 	// 商品情報_ITEM
+	@NotBlank(groups = {Default.class},message = "アイテムを入力して下さい。")
 	private String productItem;
 
 	private Map<String, String> productItemMap;
 
 	// 商品情報_３Piece
+	@NotBlank(groups = {Default.class},message = "３Pieceを入力して下さい。")
 	private String productIs3Piece;
 
 	// 商品情報_スペアパンツ
+	@NotBlank(groups = {Default.class},message = "スペアパンツを入力して下さい。")
 	private String productSparePantsClass;
 
 	// 商品情報_生地番号
+	@NotBlank(groups = {Default.class},message = "生地番号を入力して下さい。")
 	private String productFabricNo;
 
 	// 商品情報_カテゴリ
+	@NotBlank(groups = {Default.class},message = "カテゴリを入力して下さい。")
 	private String productCategory;
 
 	// 商品情報_ブランド区分
 	private String productBrandType;
 
 	// 商品情報_ブランドネーム
+	@NotBlank(groups = {Default.class},message = "ブランドネームを入力して下さい。")
 	private String productBrandNm;
 
 	// 商品情報_生地ネーム
+	@NotBlank(groups = {Default.class},message = "生地ネームを入力して下さい。")
 	private String productFabricNmNecessity;
 
 	// 商品情報_刺繍入れ
+	@NotBlank(groups = {Default.class},message = "刺繍入れを入力して下さい。")
 	private String productEmbroideryNecessity;
 
 	// 商品情報_刺繍ネーム
+	@NotBlank(groups = {EmbroideredItem.class,EmbroideredShirtItem.class},message = "刺繍ネームを入力して下さい。")
 	private String productEmbroideryNm;
 
 	// 商品情報_刺繍書体
+	@NotBlank(groups = {EmbroideredItem.class,EmbroideredShirtItem.class},message = "刺繍書体を入力して下さい。")
 	private String productEmbroideryFont;
 
 	// 商品情報_刺繍糸色
+	@NotBlank(groups = {EmbroideredItem.class},message = "刺繍糸色を入力して下さい。")
 	private String jkProductEmbroideryThreadColor;
 	
 	// 商品情報_刺繍糸色
+	@NotBlank(groups = {EmbroideredShirtItem.class},message = "刺繍糸色を入力して下さい。")
 	private String stProductEmbroideryThreadColor;
 
 	// 商品情報_ガゼット刺繍
+	@NotBlank(groups = {EmbroideredShirtItem.class},message = "ガゼット刺繍を入力して下さい。")
 	private String productEmbroideryGazette;
 
 	// 商品情報_ネーム刺繍位置
+	@NotBlank(groups = {EmbroideredShirtItem.class},message = "刺繍箇所を入力して下さい。")
 	private String productEmbroideryNmPos;
 
 	// 商品情報_刺繍サイズ（縦）
+	@NotBlank(groups = {EmbroideredShirtItem.class},message = "刺繍サイズ（縦）を入力して下さい。")
 	private String productEmbroideryLength;
 
 	// 商品情報_刺繍サイズ（横）
+	@NotBlank(groups = {EmbroideredShirtItem.class},message = "刺繍サイズ（横）を入力して下さい。")
 	private String productEmbroideryWidth;
 
 	// 商品情報_残布_type
+	@NotBlank(groups = {RemainingClothItem.class},message = "残布を入力して下さい。")
 	private String productRemainingClothType;
 
 	// 商品情報_残布_名
 	private String productRemainingClothNm;
 
 	// 商品情報_生地ブランド
+	@NotBlank(groups = {Default.class},message = "生地ブランドが不正です。")
 	private String productFabricBrandNm;
 
 	// 商品情報_サービスネーム
+	@NotBlank(groups = {Default.class},message = "素材名をが不正です。")
 	private String productServiceNm;
 	
-	private String expediteDeliveryPrice;
-	
-	private String lcrSewingPrice;
-
 	// 商品情報_組成表示_表地
+	@NotBlank(groups = {Default.class},message = "組成表示　表地が不正です。")
 	private String productComposFrtFabric;
 
 	// 商品情報_組成表示_胴裏地
+	@NotBlank(groups = {JkStItem.class,JkTuItem.class,JkWaItem.class,GlStItem.class,GlTuItem.class,GlWaItem.class,CoatItem.class},message = "組成表示　胴裏地が不正です。")
 	private String productComposBodyLiner;
 
 	// 商品情報_組成表示_袖裏地
+	@NotBlank(groups = {JkStItem.class,JkTuItem.class,JkWaItem.class,CoatItem.class},message = "組成表示　袖裏地が不正です。")
 	private String productComposSleeveLiner;
 
 	// 商品情報_取扱注意
@@ -204,18 +421,23 @@ public class OrderCoForm implements Serializable {
 	private String status;
 
 	// ご請求金額
+	@NotBlank(groups = {Default.class},message = "ご請求金額が不正です。")
 	private String billingAmount;
 
 	// 商品金額
+	@NotBlank(groups = {Default.class},message = "商品金額が不正です。")
 	private String productPrice;
 
 	// オプション金額
+	@NotBlank(groups = {Default.class},message = "オプション金額が不正です。")
 	private String optionPrice;
 
 	// 合計金額
+	@NotBlank(groups = {Default.class},message = "合計金額が不正です。")
 	private String totalPrice;
 
 	// 内消費税
+	@NotBlank(groups = {Default.class},message = "内消費税が不正です。")
 	private String consumptionTaxAmount;
 	
 	private String is3PiecePrice;
@@ -223,9 +445,11 @@ public class OrderCoForm implements Serializable {
 	private String is2PantsPrice;
 
 	// オーダーパターン
+	@NotBlank(groups = {Default.class},message = "オーダーパターンが不正です。")
 	private String orderPattern;
 
 	// 理論生地使用量
+	@NotBlank(groups = {Default.class},message = "理論生地使用量が不正です。")
 	private String theoryFabricUsedMount;
 
 	// 権限
@@ -244,27 +468,37 @@ public class OrderCoForm implements Serializable {
 	private String isUpdate;
 
 	// 生地_色
+	@NotBlank(groups = {Default.class},message = "生地品番　色が不正です。")
 	private String fabricColor;
 
 	// 生地_柄
+	@NotBlank(groups = {Default.class},message = "生地品番　柄が不正です。")
 	private String fabricPattern;
 
 	// 商品情報_工場
+	@NotBlank(groups = {Default.class},message = "工場コードが不正です。")
 	private String productFactoryCd;
 
 	// 商品情報_メーカーコード
+	@NotBlank(groups = {Default.class},message = "メーカーコードが不正です。")
 	private String productMakerCode;
 
 	// 商品情報_LCR縫製
 	private String productLcrSewing;
 
 	// 納期短縮
+	@NotBlank(groups = {Default.class},message = "納期短縮を入力して下さい。")
 	private String custIsDeliverShortning;
 
 	// 早割
+	@NotBlank(groups = {Default.class},message = "早割を入力して下さい。")
 	private String custIsEarlyDiscount;
 	
 	private List<Yield> yieldList;
+	
+	private String expediteDeliveryPrice;
+	
+	private String lcrSewingPrice;
 
 	// 保存flag
 	private String saveFlag;
@@ -274,6 +508,7 @@ public class OrderCoForm implements Serializable {
 	private String version;
 
 	// 店舗・担当_店舗名
+	@NotBlank(groups = {Default.class},message = "店舗名が不正です。")
 	private String storeNm;
 
 	private String jacketItemFlag;

@@ -12,10 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.validation.groups.Default;
 
 import org.dozer.util.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.SmartValidator;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
@@ -23,6 +26,34 @@ import com.google.gson.Gson;
 
 import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.RemainingClothItem;
+import co.jp.aoyama.macchinetta.app.order.OrderForm.EmbroideredItem;
+import co.jp.aoyama.macchinetta.app.order.OrderForm.ShippingDestinationItem;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
@@ -3618,7 +3649,7 @@ public class OrderCoHelper {
 		}
 	}
 	
-	public void setCustomerMessageAndProductOrderDivert(Order order, OrderCoForm orderCoForm) {
+	public void setCustomerMessageAndProductOrderDivert(Order order, OrderCoForm orderCoForm, SessionContent sessionContent) {
 		CoCustomerMessageInfo customerMessageInfo = new CoCustomerMessageInfo();
 		customerMessageInfo.setCustCd(order.getCustCd());
 
@@ -3652,8 +3683,14 @@ public class OrderCoHelper {
 		orderCoForm.setProductCategory(order.getProductCategory());
 
 		orderCoForm.setProductLcrSewing("9000201");
-
-		orderCoForm.setProductBrandNm(order.getProductBrandNm());
+		
+		// ブランドネーム
+		String storeBrandCode = sessionContent.getStoreBrandCode();
+		if ("01".equals(storeBrandCode)) {
+			orderCoForm.setProductBrandNm("9000302");
+		} else {
+			orderCoForm.setProductBrandNm("9000301");
+		}
 
 		orderCoForm.setProductFabricNmNecessity(order.getProductFabricNmNecessity());
 		
@@ -3998,17 +4035,29 @@ public class OrderCoHelper {
 					Map<String, String> ojBodyBackMateMap = optionJacketStandardInfo.getOjBodyBackMateMap();
 					String ojBodyBackMate = optionJacketStandardInfo.getOjBodyBackMate();
 					bodyLiner = ojBodyBackMateMap.get(ojBodyBackMate);
-					bodyLiner = "JACKET：" + bodyLiner;
+					if("".equals(bodyLiner)) {
+						bodyLiner = "JACKET：ポリエステル";
+					}else {
+						bodyLiner = "JACKET：" + bodyLiner;
+					}
 				} else if ("9000102".equals(productCategory)) {
 					Map<String, String> tjBodyBackMateMap = optionJacketTuxedoInfo.getTjBodyBackMateMap();
 					String tjBodyBackMate = optionJacketTuxedoInfo.getTjBodyBackMate();
 					bodyLiner = tjBodyBackMateMap.get(tjBodyBackMate);
-					bodyLiner = "JACKET：" + bodyLiner;
+					if("".equals(bodyLiner)) {
+						bodyLiner = "JACKET：ポリエステル";
+					}else {
+						bodyLiner = "JACKET：" + bodyLiner;
+					}
 				} else if ("9000103".equals(productCategory)) {
 					Map<String, String> wjBodyBackMateMap = optionJacketWashableInfo.getWjBodyBackMateMap();
 					String wjBodyBackMate = optionJacketWashableInfo.getWjBodyBackMate();
 					bodyLiner = wjBodyBackMateMap.get(wjBodyBackMate);
-					bodyLiner = "JACKET：" + bodyLiner;
+					if("".equals(bodyLiner)) {
+						bodyLiner = "JACKET：ポリエステル";
+					}else {
+						bodyLiner = "JACKET：" + bodyLiner;
+					}
 				}
 
 			} else if ("0009902".equals(productIs3Piece)) {
@@ -4064,7 +4113,11 @@ public class OrderCoHelper {
 				Map<String, String> ojBodyBackMateMap = optionJacketStandardInfo.getOjBodyBackMateMap();
 				String ojBodyBackMate = optionJacketStandardInfo.getOjBodyBackMate();
 				bodyLiner = ojBodyBackMateMap.get(ojBodyBackMate);
-				bodyLiner = "JACKET：" + bodyLiner;
+				if("".equals(bodyLiner)) {
+					bodyLiner = "JACKET：ポリエステル";
+				}else {
+					bodyLiner = "JACKET：" + bodyLiner;
+				}
 				Map<String, String> ojCuffBackMateMap = optionJacketStandardInfo.getOjCuffBackMateMap();
 				String ojCuffBackMate = optionJacketStandardInfo.getOjCuffBackMate();
 				sleeveLiner = ojCuffBackMateMap.get(ojCuffBackMate);
@@ -4073,7 +4126,11 @@ public class OrderCoHelper {
 				Map<String, String> tjBodyBackMateMap = optionJacketTuxedoInfo.getTjBodyBackMateMap();
 				String tjBodyBackMate = optionJacketTuxedoInfo.getTjBodyBackMate();
 				bodyLiner = tjBodyBackMateMap.get(tjBodyBackMate);
-				bodyLiner = "JACKET：" + bodyLiner;
+				if("".equals(bodyLiner)) {
+					bodyLiner = "JACKET：ポリエステル";
+				}else {
+					bodyLiner = "JACKET：" + bodyLiner;
+				}
 				Map<String, String> tjCuffBackMateMap = optionJacketTuxedoInfo.getTjCuffBackMateMap();
 				String tjCuffBackMate = optionJacketTuxedoInfo.getTjCuffBackMate();
 				sleeveLiner = tjCuffBackMateMap.get(tjCuffBackMate);
@@ -4082,7 +4139,11 @@ public class OrderCoHelper {
 				Map<String, String> wjBodyBackMateMap = optionJacketWashableInfo.getWjBodyBackMateMap();
 				String wjBodyBackMate = optionJacketWashableInfo.getWjBodyBackMate();
 				bodyLiner = wjBodyBackMateMap.get(wjBodyBackMate);
-				bodyLiner = "JACKET：" + bodyLiner;
+				if("".equals(bodyLiner)) {
+					bodyLiner = "JACKET：ポリエステル";
+				}else {
+					bodyLiner = "JACKET：" + bodyLiner;
+				}
 				Map<String, String> wjCuffBackMateMap = optionJacketWashableInfo.getWjCuffBackMateMap();
 				String wjCuffBackMate = optionJacketWashableInfo.getWjCuffBackMate();
 				sleeveLiner = wjCuffBackMateMap.get(wjCuffBackMate);
@@ -6433,37 +6494,41 @@ public class OrderCoHelper {
 			Order order,List<NextGenerationPrice> selectCoComplexItemsWageList) {
 		
 		String productCategory = orderCoForm.getProductCategory();
+		BigDecimal optionBranchWage = new BigDecimal(0);
 		// 0：標準
 		if("9000101".equals(productCategory)) {
 			
-			// 標準JACKETのステッチ箇所変更
-			String ojStitchModifyPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace1();
-			String ojStitchModifyPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace2();
-			String ojStitchModifyPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace3();
-			String ojStitchModifyPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace4();
-			String ojStitchModifyPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace5();
-			String ojStitchModifyPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace6();
-			String ojStitchModifyPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace7();
-			String ojStitchModifyPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace8();
-			String ojStitchModifyPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace9();
+			String ojStitchModify = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModify();
+			if("0002402".equals(ojStitchModify)) {
+				// 標準JACKETのステッチ箇所変更
+				String ojStitchModifyPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace1();
+				String ojStitchModifyPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace2();
+				String ojStitchModifyPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace3();
+				String ojStitchModifyPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace4();
+				String ojStitchModifyPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace5();
+				String ojStitchModifyPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace6();
+				String ojStitchModifyPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace7();
+				String ojStitchModifyPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace8();
+				String ojStitchModifyPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace9();
 
-			List<String> ojStitchModifyPlaceList = new ArrayList<>();
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace1);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace2);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace3);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace4);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace5);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace6);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace7);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace8);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace9);
-			ojStitchModifyPlaceList.removeAll(Collections.singleton(null));
-			BigDecimal optionBranchWage = new BigDecimal(0);
-			for (String ojStitchModifyPlace : ojStitchModifyPlaceList) {
+				List<String> ojStitchModifyPlaceList = new ArrayList<>();
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace1);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace2);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace3);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace4);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace5);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace6);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace7);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace8);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace9);
+				ojStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String ojStitchModifyPlace : ojStitchModifyPlaceList) {
 
-				for (NextGenerationPrice nextGenerationPrice : selectCoComplexItemsWageList) {
-					if (ojStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+					for (NextGenerationPrice nextGenerationPrice : selectCoComplexItemsWageList) {
+						if (ojStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -6472,34 +6537,36 @@ public class OrderCoHelper {
 		// 1：ウォッシャブル
 		else if("9000103".equals(productCategory)) {
 			
-			// タキシードJACKETのステッチ箇所変更
-			String wjStitchModifyPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace1();
-			String wjStitchModifyPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace2();
-			String wjStitchModifyPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace3();
-			String wjStitchModifyPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace4();
-			String wjStitchModifyPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace5();
-			String wjStitchModifyPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace6();
-			String wjStitchModifyPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace7();
-			String wjStitchModifyPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace8();
-			String wjStitchModifyPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace9();
-	
-			List<String> wjStitchModifyPlaceList = new ArrayList<>();
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace1);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace2);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace3);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace4);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace5);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace6);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace7);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace8);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
-			wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
-			BigDecimal optionBranchWage = new BigDecimal(0);
-			for (String wjStitchModifyPlace : wjStitchModifyPlaceList) {
+			String wjStitchModify = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModify();
+			if("0002402".equals(wjStitchModify)) {
+				// タキシードJACKETのステッチ箇所変更
+				String wjStitchModifyPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace1();
+				String wjStitchModifyPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace2();
+				String wjStitchModifyPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace3();
+				String wjStitchModifyPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace4();
+				String wjStitchModifyPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace5();
+				String wjStitchModifyPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace6();
+				String wjStitchModifyPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace7();
+				String wjStitchModifyPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace8();
+				String wjStitchModifyPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace9();
+		
+				List<String> wjStitchModifyPlaceList = new ArrayList<>();
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace1);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace2);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace3);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace4);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace5);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace6);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace7);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace8);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
+				wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				for (String wjStitchModifyPlace : wjStitchModifyPlaceList) {
 
-				for (NextGenerationPrice nextGenerationPrice : selectCoComplexItemsWageList) {
-					if (wjStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+					for (NextGenerationPrice nextGenerationPrice : selectCoComplexItemsWageList) {
+						if (wjStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -6517,46 +6584,51 @@ public class OrderCoHelper {
 			Order order,List<NextGenerationPrice> selectJkOjInsidePktPlaceList) {
 		
 		String productCategory = orderCoForm.getProductCategory();
+		Integer optionBranchDoubleorPrice = 0;
 		// 0：標準
 		if("9000101".equals(productCategory)) {
-			// フロント釦数
-			String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String ojFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String ojFrontBtnCntdoubleFourButton = "0000106";
-			// 標準JACKETのステッチ箇所変更
-			String ojStitchModifyPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace1();
-			String ojStitchModifyPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace2();
-			String ojStitchModifyPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace3();
-			String ojStitchModifyPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace4();
-			String ojStitchModifyPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace5();
-			String ojStitchModifyPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace6();
-			String ojStitchModifyPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace7();
-			String ojStitchModifyPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace8();
-			String ojStitchModifyPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace9();
+			
+			String ojStitchModify = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModify();
+			if("0002402".equals(ojStitchModify)) {
+				// フロント釦数
+				String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String ojFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String ojFrontBtnCntdoubleFourButton = "0000106";
+				// 標準JACKETのステッチ箇所変更
+				String ojStitchModifyPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace1();
+				String ojStitchModifyPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace2();
+				String ojStitchModifyPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace3();
+				String ojStitchModifyPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace4();
+				String ojStitchModifyPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace5();
+				String ojStitchModifyPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace6();
+				String ojStitchModifyPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace7();
+				String ojStitchModifyPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace8();
+				String ojStitchModifyPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjStitchModifyPlace9();
 
-			List<String> ojStitchModifyPlaceList = new ArrayList<>();
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace1);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace2);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace3);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace4);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace5);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace6);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace7);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace8);
-			ojStitchModifyPlaceList.add(ojStitchModifyPlace9);
-			ojStitchModifyPlaceList.removeAll(Collections.singleton(null));
-			Integer optionBranchDoubleorPrice = 0;
-			for (String ojStitchModifyPlace : ojStitchModifyPlaceList) {
+				List<String> ojStitchModifyPlaceList = new ArrayList<>();
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace1);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace2);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace3);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace4);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace5);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace6);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace7);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace8);
+				ojStitchModifyPlaceList.add(ojStitchModifyPlace9);
+				ojStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String ojStitchModifyPlace : ojStitchModifyPlaceList) {
 
-				for (NextGenerationPrice nextGenerationPrice : selectJkOjInsidePktPlaceList) {
-					if (ojStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt)
-								|| ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
-						} else {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+					for (NextGenerationPrice nextGenerationPrice : selectJkOjInsidePktPlaceList) {
+						if (ojStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt)
+									|| ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
+							} else {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+							}
 						}
 					}
 				}
@@ -6565,44 +6637,47 @@ public class OrderCoHelper {
 		}
 		// 1：ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// フロント釦数
-			String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String ojFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String ojFrontBtnCntdoubleFourButton = "0000106";
-			// タキシードJACKETのステッチ箇所変更
-			String wjStitchModifyPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace1();
-			String wjStitchModifyPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace2();
-			String wjStitchModifyPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace3();
-			String wjStitchModifyPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace4();
-			String wjStitchModifyPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace5();
-			String wjStitchModifyPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace6();
-			String wjStitchModifyPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace7();
-			String wjStitchModifyPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace8();
-			String wjStitchModifyPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace9();
-	
-			List<String> wjStitchModifyPlaceList = new ArrayList<>();
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace1);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace2);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace3);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace4);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace5);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace6);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace7);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace8);
-			wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
-			wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
-			Integer optionBranchDoubleorPrice = 0;
-			for (String wjStitchModifyPlace : wjStitchModifyPlaceList) {
-	
-				for (NextGenerationPrice nextGenerationPrice : selectJkOjInsidePktPlaceList) {
-					if (wjStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						if (ojFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt)
-								|| ojFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
-						} else {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			
+			String wjStitchModify = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModify();
+			if("0002402".equals(wjStitchModify)) {
+				// フロント釦数
+				String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String ojFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String ojFrontBtnCntdoubleFourButton = "0000106";
+				// タキシードJACKETのステッチ箇所変更
+				String wjStitchModifyPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace1();
+				String wjStitchModifyPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace2();
+				String wjStitchModifyPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace3();
+				String wjStitchModifyPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace4();
+				String wjStitchModifyPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace5();
+				String wjStitchModifyPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace6();
+				String wjStitchModifyPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace7();
+				String wjStitchModifyPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace8();
+				String wjStitchModifyPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjStitchModifyPlace9();
+		
+				List<String> wjStitchModifyPlaceList = new ArrayList<>();
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace1);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace2);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace3);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace4);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace5);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace6);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace7);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace8);
+				wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
+				wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				for (String wjStitchModifyPlace : wjStitchModifyPlaceList) {
+		
+					for (NextGenerationPrice nextGenerationPrice : selectJkOjInsidePktPlaceList) {
+						if (wjStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							if (ojFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt)
+									|| ojFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
+							} else {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+							}
 						}
 					}
 				}
@@ -6641,88 +6716,94 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0：標準
 		if("9000101".equals(productCategory)) {
-
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのAMF色指定
-			String ojAmfColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace1();
-			String ojAmfColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace2();
-			String ojAmfColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace3();
-			String ojAmfColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace4();
-			String ojAmfColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace5();
-			String ojAmfColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace6();
-			String ojAmfColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace7();
-			String ojAmfColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace8();
-			String ojAmfColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace9();
-
-			String ojAmfColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor1();
-			String ojAmfColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor2();
-			String ojAmfColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor3();
-			String ojAmfColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor4();
-			String ojAmfColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor5();
-			String ojAmfColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor6();
-			String ojAmfColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor7();
-			String ojAmfColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor8();
-			String ojAmfColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor9();
-			List<String> deteleRepeatValue = deteleRepeatValue(ojAmfColorPlace1, ojAmfColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojAmfColorPlace2, ojAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojAmfColorPlace3, ojAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojAmfColorPlace4, ojAmfColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojAmfColorPlace5, ojAmfColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojAmfColorPlace6, ojAmfColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojAmfColorPlace7, ojAmfColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojAmfColorPlace8, ojAmfColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojAmfColorPlace9, ojAmfColor9, deteleRepeatValue8);
-			
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal ojAmfColorSize = new BigDecimal(deteleRepeatValue9.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjAmfColorWageList.isEmpty()) {
-				mowWage = selectJkOjAmfColorWageList.get(0).getMowWage();
+			String ojAmfColor = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor();
+			
+			if("0002802".equals(ojAmfColor)) {
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのAMF色指定
+				String ojAmfColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace1();
+				String ojAmfColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace2();
+				String ojAmfColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace3();
+				String ojAmfColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace4();
+				String ojAmfColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace5();
+				String ojAmfColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace6();
+				String ojAmfColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace7();
+				String ojAmfColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace8();
+				String ojAmfColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace9();
+
+				String ojAmfColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor1();
+				String ojAmfColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor2();
+				String ojAmfColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor3();
+				String ojAmfColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor4();
+				String ojAmfColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor5();
+				String ojAmfColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor6();
+				String ojAmfColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor7();
+				String ojAmfColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor8();
+				String ojAmfColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor9();
+				List<String> deteleRepeatValue = deteleRepeatValue(ojAmfColorPlace1, ojAmfColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojAmfColorPlace2, ojAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojAmfColorPlace3, ojAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojAmfColorPlace4, ojAmfColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojAmfColorPlace5, ojAmfColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojAmfColorPlace6, ojAmfColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojAmfColorPlace7, ojAmfColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojAmfColorPlace8, ojAmfColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojAmfColorPlace9, ojAmfColor9, deteleRepeatValue8);
+				
+				BigDecimal ojAmfColorSize = new BigDecimal(deteleRepeatValue9.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjAmfColorWageList.isEmpty()) {
+					mowWage = selectJkOjAmfColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = ojAmfColorSize.multiply(mowWage);
 			}
-			optionBranchWage = ojAmfColorSize.multiply(mowWage);
 			order.setJkAmfColorWsWage(optionBranchWage);
 		}
 		// 1：ウォッシャブル
 		else if("9000103".equals(productCategory)) {
 
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// 標準JACKETのAMF色指定
-			String wjAmfColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace1();
-			String wjAmfColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace2();
-			String wjAmfColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace3();
-			String wjAmfColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace4();
-			String wjAmfColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace5();
-			String wjAmfColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace6();
-			String wjAmfColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace7();
-			String wjAmfColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace8();
-			String wjAmfColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace9();
-
-			String wjAmfColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor1();
-			String wjAmfColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor2();
-			String wjAmfColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor3();
-			String wjAmfColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor4();
-			String wjAmfColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor5();
-			String wjAmfColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor6();
-			String wjAmfColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor7();
-			String wjAmfColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor8();
-			String wjAmfColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor9();
-			List<String> deteleRepeatValue = deteleRepeatValue(wjAmfColorPlace1, wjAmfColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjAmfColorPlace2, wjAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjAmfColorPlace3, wjAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjAmfColorPlace4, wjAmfColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjAmfColorPlace5, wjAmfColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjAmfColorPlace6, wjAmfColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjAmfColorPlace7, wjAmfColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjAmfColorPlace8, wjAmfColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjAmfColorPlace9, wjAmfColor9, deteleRepeatValue8);
-			
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wjAmfColorSize = new BigDecimal(deteleRepeatValue9.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjAmfColorWageList.isEmpty()) {
-				mowWage = selectJkOjAmfColorWageList.get(0).getMowWage();
+			String wjAmfColor = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor();
+			if("0002802".equals(wjAmfColor)) {
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// 標準JACKETのAMF色指定
+				String wjAmfColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace1();
+				String wjAmfColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace2();
+				String wjAmfColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace3();
+				String wjAmfColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace4();
+				String wjAmfColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace5();
+				String wjAmfColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace6();
+				String wjAmfColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace7();
+				String wjAmfColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace8();
+				String wjAmfColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace9();
+
+				String wjAmfColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor1();
+				String wjAmfColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor2();
+				String wjAmfColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor3();
+				String wjAmfColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor4();
+				String wjAmfColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor5();
+				String wjAmfColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor6();
+				String wjAmfColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor7();
+				String wjAmfColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor8();
+				String wjAmfColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor9();
+				List<String> deteleRepeatValue = deteleRepeatValue(wjAmfColorPlace1, wjAmfColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjAmfColorPlace2, wjAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjAmfColorPlace3, wjAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjAmfColorPlace4, wjAmfColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjAmfColorPlace5, wjAmfColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjAmfColorPlace6, wjAmfColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjAmfColorPlace7, wjAmfColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjAmfColorPlace8, wjAmfColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjAmfColorPlace9, wjAmfColor9, deteleRepeatValue8);
+				
+				BigDecimal wjAmfColorSize = new BigDecimal(deteleRepeatValue9.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjAmfColorWageList.isEmpty()) {
+					mowWage = selectJkOjAmfColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wjAmfColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wjAmfColorSize.multiply(mowWage);
 			order.setJkAmfColorWsWage(wptionBranchWage);
 		}
 	}
@@ -6740,106 +6821,115 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0：標準
 		if("9000101".equals(productCategory)) {
-			// フロント釦数
-			String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String ojFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String ojFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのAMF色指定
-			String ojAmfColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace1();
-			String ojAmfColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace2();
-			String ojAmfColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace3();
-			String ojAmfColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace4();
-			String ojAmfColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace5();
-			String ojAmfColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace6();
-			String ojAmfColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace7();
-			String ojAmfColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace8();
-			String ojAmfColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace9();
-
-			String ojAmfColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor1();
-			String ojAmfColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor2();
-			String ojAmfColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor3();
-			String ojAmfColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor4();
-			String ojAmfColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor5();
-			String ojAmfColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor6();
-			String ojAmfColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor7();
-			String ojAmfColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor8();
-			String ojAmfColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor9();
-			List<String> deteleRepeatValue = deteleRepeatValue(ojAmfColorPlace1, ojAmfColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojAmfColorPlace2, ojAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojAmfColorPlace3, ojAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojAmfColorPlace4, ojAmfColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojAmfColorPlace5, ojAmfColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojAmfColorPlace6, ojAmfColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojAmfColorPlace7, ojAmfColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojAmfColorPlace8, ojAmfColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojAmfColorPlace9, ojAmfColor9, deteleRepeatValue8);
 			Integer optionBranchDoubleorPrice = 0;
-			int ojAmfColorSize = deteleRepeatValue9.size();
-			if(!selectJkOjAmfColorPriceList.isEmpty()) {
-				if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
-					Integer optionBranchDoublePrice = selectJkOjAmfColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ojAmfColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectJkOjAmfColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ojAmfColorSize * optionBranchPrice;
+			String ojAmfColor = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor();
+			if("0002802".equals(ojAmfColor)) {
+				// フロント釦数
+				String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String ojFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String ojFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのAMF色指定
+				String ojAmfColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace1();
+				String ojAmfColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace2();
+				String ojAmfColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace3();
+				String ojAmfColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace4();
+				String ojAmfColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace5();
+				String ojAmfColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace6();
+				String ojAmfColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace7();
+				String ojAmfColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace8();
+				String ojAmfColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColorPlace9();
+
+				String ojAmfColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor1();
+				String ojAmfColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor2();
+				String ojAmfColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor3();
+				String ojAmfColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor4();
+				String ojAmfColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor5();
+				String ojAmfColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor6();
+				String ojAmfColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor7();
+				String ojAmfColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor8();
+				String ojAmfColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor9();
+				List<String> deteleRepeatValue = deteleRepeatValue(ojAmfColorPlace1, ojAmfColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojAmfColorPlace2, ojAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojAmfColorPlace3, ojAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojAmfColorPlace4, ojAmfColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojAmfColorPlace5, ojAmfColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojAmfColorPlace6, ojAmfColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojAmfColorPlace7, ojAmfColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojAmfColorPlace8, ojAmfColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojAmfColorPlace9, ojAmfColor9, deteleRepeatValue8);
+				
+				int ojAmfColorSize = deteleRepeatValue9.size();
+				if(!selectJkOjAmfColorPriceList.isEmpty()) {
+					if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
+						Integer optionBranchDoublePrice = selectJkOjAmfColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ojAmfColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectJkOjAmfColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ojAmfColorSize * optionBranchPrice;
+					}
 				}
 			}
 			order.setJkAmfColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 1：ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// フロント釦数
-			String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String wjFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String wjFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// 標準JACKETのAMF色指定
-			String wjAmfColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace1();
-			String wjAmfColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace2();
-			String wjAmfColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace3();
-			String wjAmfColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace4();
-			String wjAmfColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace5();
-			String wjAmfColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace6();
-			String wjAmfColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace7();
-			String wjAmfColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace8();
-			String wjAmfColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace9();
-
-			String wjAmfColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor1();
-			String wjAmfColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor2();
-			String wjAmfColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor3();
-			String wjAmfColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor4();
-			String wjAmfColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor5();
-			String wjAmfColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor6();
-			String wjAmfColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor7();
-			String wjAmfColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor8();
-			String wjAmfColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor9();
-			List<String> deteleRepeatValue = deteleRepeatValue(wjAmfColorPlace1, wjAmfColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjAmfColorPlace2, wjAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjAmfColorPlace3, wjAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjAmfColorPlace4, wjAmfColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjAmfColorPlace5, wjAmfColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjAmfColorPlace6, wjAmfColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjAmfColorPlace7, wjAmfColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjAmfColorPlace8, wjAmfColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjAmfColorPlace9, wjAmfColor9, deteleRepeatValue8);
 			Integer optionBranchDoubleorPrice = 0;
-			int wjAmfColorSize = deteleRepeatValue9.size();
-			if(!selectJkOjAmfColorPriceList.isEmpty()) {
-				if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
-					Integer optionBranchDoublePrice = selectJkOjAmfColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = wjAmfColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectJkOjAmfColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = wjAmfColorSize * optionBranchPrice;
+			String wjAmfColor = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor();
+			if("0002802".equals(wjAmfColor)) {
+				// フロント釦数
+				String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String wjFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String wjFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// 標準JACKETのAMF色指定
+				String wjAmfColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace1();
+				String wjAmfColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace2();
+				String wjAmfColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace3();
+				String wjAmfColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace4();
+				String wjAmfColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace5();
+				String wjAmfColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace6();
+				String wjAmfColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace7();
+				String wjAmfColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace8();
+				String wjAmfColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColorPlace9();
+
+				String wjAmfColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor1();
+				String wjAmfColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor2();
+				String wjAmfColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor3();
+				String wjAmfColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor4();
+				String wjAmfColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor5();
+				String wjAmfColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor6();
+				String wjAmfColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor7();
+				String wjAmfColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor8();
+				String wjAmfColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor9();
+				List<String> deteleRepeatValue = deteleRepeatValue(wjAmfColorPlace1, wjAmfColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjAmfColorPlace2, wjAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjAmfColorPlace3, wjAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjAmfColorPlace4, wjAmfColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjAmfColorPlace5, wjAmfColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjAmfColorPlace6, wjAmfColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjAmfColorPlace7, wjAmfColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjAmfColorPlace8, wjAmfColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjAmfColorPlace9, wjAmfColor9, deteleRepeatValue8);
+				
+				int wjAmfColorSize = deteleRepeatValue9.size();
+				if(!selectJkOjAmfColorPriceList.isEmpty()) {
+					if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
+						Integer optionBranchDoublePrice = selectJkOjAmfColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = wjAmfColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectJkOjAmfColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = wjAmfColorSize * optionBranchPrice;
+					}
 				}
 			}
+			
 			order.setJkAmfColorWsPrice(optionBranchDoubleorPrice);
 		}
 	}
@@ -6858,205 +6948,213 @@ public class OrderCoHelper {
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
 
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのボタン付け糸指定
-			String ojBhColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace1();
-			String ojBhColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace2();
-			String ojBhColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace3();
-			String ojBhColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace4();
-			String ojBhColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace5();
-			String ojBhColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace6();
-			String ojBhColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace7();
-			String ojBhColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace8();
-			String ojBhColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace9();
-			String ojBhColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace10();
-			String ojBhColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace11();
-			String ojBhColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace12();
-			String ojBhColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace13();
-			String ojBhColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace14();
-			String ojBhColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace15();
-			String ojBhColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace16();
-			String ojBhColorPlace17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace17();
-
-			String ojBhColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor1();
-			String ojBhColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor2();
-			String ojBhColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor3();
-			String ojBhColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor4();
-			String ojBhColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor5();
-			String ojBhColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor6();
-			String ojBhColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor7();
-			String ojBhColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor8();
-			String ojBhColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor9();
-			String ojBhColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor10();
-			String ojBhColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor11();
-			String ojBhColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor12();
-			String ojBhColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor13();
-			String ojBhColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor14();
-			String ojBhColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor15();
-			String ojBhColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor16();
-			String ojBhColor17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(ojBhColorPlace1, ojBhColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojBhColorPlace2, ojBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojBhColorPlace3, ojBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojBhColorPlace4, ojBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojBhColorPlace5, ojBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojBhColorPlace6, ojBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojBhColorPlace7, ojBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojBhColorPlace8, ojBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojBhColorPlace9, ojBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ojBhColorPlace10, ojBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(ojBhColorPlace11, ojBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(ojBhColorPlace12, ojBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(ojBhColorPlace13, ojBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(ojBhColorPlace14, ojBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(ojBhColorPlace15, ojBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(ojBhColorPlace16, ojBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(ojBhColorPlace17, ojBhColor17, deteleRepeatValue16);
-			
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal ojBhColorSize = new BigDecimal(deteleRepeatValue17.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjBhColorWageList.isEmpty()) {
-				mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+			String ojBhColor = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor();
+			if("0003102".equals(ojBhColor)) {
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのボタン付け糸指定
+				String ojBhColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace1();
+				String ojBhColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace2();
+				String ojBhColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace3();
+				String ojBhColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace4();
+				String ojBhColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace5();
+				String ojBhColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace6();
+				String ojBhColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace7();
+				String ojBhColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace8();
+				String ojBhColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace9();
+				String ojBhColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace10();
+				String ojBhColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace11();
+				String ojBhColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace12();
+				String ojBhColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace13();
+				String ojBhColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace14();
+				String ojBhColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace15();
+				String ojBhColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace16();
+				String ojBhColorPlace17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace17();
+
+				String ojBhColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor1();
+				String ojBhColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor2();
+				String ojBhColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor3();
+				String ojBhColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor4();
+				String ojBhColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor5();
+				String ojBhColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor6();
+				String ojBhColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor7();
+				String ojBhColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor8();
+				String ojBhColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor9();
+				String ojBhColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor10();
+				String ojBhColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor11();
+				String ojBhColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor12();
+				String ojBhColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor13();
+				String ojBhColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor14();
+				String ojBhColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor15();
+				String ojBhColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor16();
+				String ojBhColor17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(ojBhColorPlace1, ojBhColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojBhColorPlace2, ojBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojBhColorPlace3, ojBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojBhColorPlace4, ojBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojBhColorPlace5, ojBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojBhColorPlace6, ojBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojBhColorPlace7, ojBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojBhColorPlace8, ojBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojBhColorPlace9, ojBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ojBhColorPlace10, ojBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(ojBhColorPlace11, ojBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(ojBhColorPlace12, ojBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(ojBhColorPlace13, ojBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(ojBhColorPlace14, ojBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(ojBhColorPlace15, ojBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(ojBhColorPlace16, ojBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(ojBhColorPlace17, ojBhColor17, deteleRepeatValue16);
+				
+				BigDecimal ojBhColorSize = new BigDecimal(deteleRepeatValue17.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjBhColorWageList.isEmpty()) {
+					mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = ojBhColorSize.multiply(mowWage);
 			}
-			optionBranchWage = ojBhColorSize.multiply(mowWage);
 			order.setJkBtnholePlcColorWsWage(optionBranchWage);
 		}
 		// 2 : タキシード
 		else if("9000102".equals(productCategory)) {
 
-			List<String> tjAmfColorsList = new ArrayList<>();
-			// タキシードJACKETのボタン付け糸指定
-			String tjBhColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace1();
-			String tjBhColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace2();
-			String tjBhColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace3();
-			String tjBhColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace4();
-			String tjBhColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace5();
-			String tjBhColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace6();
-			String tjBhColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace7();
-			String tjBhColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace8();
-			String tjBhColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace9();
-			String tjBhColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace10();
-			String tjBhColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace11();
-			String tjBhColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace12();
-			String tjBhColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace13();
-			String tjBhColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace14();
-			String tjBhColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace15();
-			String tjBhColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace16();
-			String tjBhColorPlace17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace17();
-
-			String tjBhColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor1();
-			String tjBhColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor2();
-			String tjBhColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor3();
-			String tjBhColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor4();
-			String tjBhColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor5();
-			String tjBhColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor6();
-			String tjBhColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor7();
-			String tjBhColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor8();
-			String tjBhColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor9();
-			String tjBhColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor10();
-			String tjBhColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor11();
-			String tjBhColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor12();
-			String tjBhColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor13();
-			String tjBhColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor14();
-			String tjBhColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor15();
-			String tjBhColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor16();
-			String tjBhColor17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(tjBhColorPlace1, tjBhColor1, tjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tjBhColorPlace2, tjBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tjBhColorPlace3, tjBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tjBhColorPlace4, tjBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tjBhColorPlace5, tjBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tjBhColorPlace6, tjBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tjBhColorPlace7, tjBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tjBhColorPlace8, tjBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tjBhColorPlace9, tjBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tjBhColorPlace10, tjBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(tjBhColorPlace11, tjBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(tjBhColorPlace12, tjBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(tjBhColorPlace13, tjBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(tjBhColorPlace14, tjBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(tjBhColorPlace15, tjBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(tjBhColorPlace16, tjBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(tjBhColorPlace17, tjBhColor17, deteleRepeatValue16);
-			
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tjBhColorSize = new BigDecimal(deteleRepeatValue17.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjBhColorWageList.isEmpty()) {
-				mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+			String tjBhColor = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor();
+			if("0003102".equals(tjBhColor)) {
+				List<String> tjAmfColorsList = new ArrayList<>();
+				// タキシードJACKETのボタン付け糸指定
+				String tjBhColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace1();
+				String tjBhColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace2();
+				String tjBhColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace3();
+				String tjBhColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace4();
+				String tjBhColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace5();
+				String tjBhColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace6();
+				String tjBhColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace7();
+				String tjBhColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace8();
+				String tjBhColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace9();
+				String tjBhColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace10();
+				String tjBhColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace11();
+				String tjBhColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace12();
+				String tjBhColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace13();
+				String tjBhColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace14();
+				String tjBhColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace15();
+				String tjBhColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace16();
+				String tjBhColorPlace17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace17();
+
+				String tjBhColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor1();
+				String tjBhColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor2();
+				String tjBhColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor3();
+				String tjBhColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor4();
+				String tjBhColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor5();
+				String tjBhColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor6();
+				String tjBhColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor7();
+				String tjBhColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor8();
+				String tjBhColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor9();
+				String tjBhColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor10();
+				String tjBhColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor11();
+				String tjBhColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor12();
+				String tjBhColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor13();
+				String tjBhColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor14();
+				String tjBhColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor15();
+				String tjBhColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor16();
+				String tjBhColor17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(tjBhColorPlace1, tjBhColor1, tjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tjBhColorPlace2, tjBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tjBhColorPlace3, tjBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tjBhColorPlace4, tjBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tjBhColorPlace5, tjBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tjBhColorPlace6, tjBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tjBhColorPlace7, tjBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tjBhColorPlace8, tjBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tjBhColorPlace9, tjBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tjBhColorPlace10, tjBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(tjBhColorPlace11, tjBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(tjBhColorPlace12, tjBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(tjBhColorPlace13, tjBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(tjBhColorPlace14, tjBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(tjBhColorPlace15, tjBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(tjBhColorPlace16, tjBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(tjBhColorPlace17, tjBhColor17, deteleRepeatValue16);
+				
+				BigDecimal tjBhColorSize = new BigDecimal(deteleRepeatValue17.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjBhColorWageList.isEmpty()) {
+					mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tjBhColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tjBhColorSize.multiply(mowWage);
 			order.setJkBtnholePlcColorWsWage(tptionBranchWage);
 		}
 		//1 : ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// ウォッシャブルJACKETのボタン付け糸指定
-			String wjBhColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace1();
-			String wjBhColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace2();
-			String wjBhColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace3();
-			String wjBhColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace4();
-			String wjBhColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace5();
-			String wjBhColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace6();
-			String wjBhColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace7();
-			String wjBhColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace8();
-			String wjBhColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace9();
-			String wjBhColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace10();
-			String wjBhColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace11();
-			String wjBhColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace12();
-			String wjBhColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace13();
-			String wjBhColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace14();
-			String wjBhColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace15();
-			String wjBhColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace16();
-			String wjBhColorPlace17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace17();
-
-			String wjBhColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor1();
-			String wjBhColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor2();
-			String wjBhColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor3();
-			String wjBhColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor4();
-			String wjBhColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor5();
-			String wjBhColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor6();
-			String wjBhColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor7();
-			String wjBhColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor8();
-			String wjBhColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor9();
-			String wjBhColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor10();
-			String wjBhColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor11();
-			String wjBhColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor12();
-			String wjBhColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor13();
-			String wjBhColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor14();
-			String wjBhColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor15();
-			String wjBhColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor16();
-			String wjBhColor17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(wjBhColorPlace1, wjBhColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjBhColorPlace2, wjBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjBhColorPlace3, wjBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjBhColorPlace4, wjBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjBhColorPlace5, wjBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjBhColorPlace6, wjBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjBhColorPlace7, wjBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjBhColorPlace8, wjBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjBhColorPlace9, wjBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wjBhColorPlace10, wjBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(wjBhColorPlace11, wjBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(wjBhColorPlace12, wjBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(wjBhColorPlace13, wjBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(wjBhColorPlace14, wjBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(wjBhColorPlace15, wjBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(wjBhColorPlace16, wjBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(wjBhColorPlace17, wjBhColor17, deteleRepeatValue16);
-			
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wjBhColorSize = new BigDecimal(deteleRepeatValue17.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjBhColorWageList.isEmpty()) {
-				mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+			String wjBhColor = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor();
+			if("0003102".equals(wjBhColor)) {
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// ウォッシャブルJACKETのボタン付け糸指定
+				String wjBhColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace1();
+				String wjBhColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace2();
+				String wjBhColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace3();
+				String wjBhColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace4();
+				String wjBhColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace5();
+				String wjBhColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace6();
+				String wjBhColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace7();
+				String wjBhColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace8();
+				String wjBhColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace9();
+				String wjBhColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace10();
+				String wjBhColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace11();
+				String wjBhColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace12();
+				String wjBhColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace13();
+				String wjBhColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace14();
+				String wjBhColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace15();
+				String wjBhColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace16();
+				String wjBhColorPlace17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace17();
+
+				String wjBhColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor1();
+				String wjBhColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor2();
+				String wjBhColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor3();
+				String wjBhColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor4();
+				String wjBhColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor5();
+				String wjBhColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor6();
+				String wjBhColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor7();
+				String wjBhColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor8();
+				String wjBhColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor9();
+				String wjBhColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor10();
+				String wjBhColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor11();
+				String wjBhColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor12();
+				String wjBhColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor13();
+				String wjBhColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor14();
+				String wjBhColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor15();
+				String wjBhColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor16();
+				String wjBhColor17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(wjBhColorPlace1, wjBhColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjBhColorPlace2, wjBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjBhColorPlace3, wjBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjBhColorPlace4, wjBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjBhColorPlace5, wjBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjBhColorPlace6, wjBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjBhColorPlace7, wjBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjBhColorPlace8, wjBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjBhColorPlace9, wjBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wjBhColorPlace10, wjBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(wjBhColorPlace11, wjBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(wjBhColorPlace12, wjBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(wjBhColorPlace13, wjBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(wjBhColorPlace14, wjBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(wjBhColorPlace15, wjBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(wjBhColorPlace16, wjBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(wjBhColorPlace17, wjBhColor17, deteleRepeatValue16);
+				
+				BigDecimal wjBhColorSize = new BigDecimal(deteleRepeatValue17.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjBhColorWageList.isEmpty()) {
+					mowWage = selectJkOjBhColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wjBhColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wjBhColorSize.multiply(mowWage);
 			order.setJkBtnholePlcColorWsWage(wptionBranchWage);
 		}
 	}
@@ -7074,231 +7172,243 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
-			// フロント釦数
-			String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String ojFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String ojFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのボタン付け糸指定
-			String ojBhColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace1();
-			String ojBhColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace2();
-			String ojBhColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace3();
-			String ojBhColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace4();
-			String ojBhColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace5();
-			String ojBhColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace6();
-			String ojBhColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace7();
-			String ojBhColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace8();
-			String ojBhColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace9();
-			String ojBhColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace10();
-			String ojBhColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace11();
-			String ojBhColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace12();
-			String ojBhColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace13();
-			String ojBhColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace14();
-			String ojBhColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace15();
-			String ojBhColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace16();
-			String ojBhColorPlace17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace17();
-
-			String ojBhColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor1();
-			String ojBhColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor2();
-			String ojBhColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor3();
-			String ojBhColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor4();
-			String ojBhColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor5();
-			String ojBhColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor6();
-			String ojBhColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor7();
-			String ojBhColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor8();
-			String ojBhColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor9();
-			String ojBhColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor10();
-			String ojBhColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor11();
-			String ojBhColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor12();
-			String ojBhColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor13();
-			String ojBhColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor14();
-			String ojBhColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor15();
-			String ojBhColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor16();
-			String ojBhColor17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(ojBhColorPlace1, ojBhColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojBhColorPlace2, ojBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojBhColorPlace3, ojBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojBhColorPlace4, ojBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojBhColorPlace5, ojBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojBhColorPlace6, ojBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojBhColorPlace7, ojBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojBhColorPlace8, ojBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojBhColorPlace9, ojBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ojBhColorPlace10, ojBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(ojBhColorPlace11, ojBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(ojBhColorPlace12, ojBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(ojBhColorPlace13, ojBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(ojBhColorPlace14, ojBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(ojBhColorPlace15, ojBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(ojBhColorPlace16, ojBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(ojBhColorPlace17, ojBhColor17, deteleRepeatValue16);
 			Integer optionBranchDoubleorPrice = 0;
-			int ojBhColorSize = deteleRepeatValue17.size();
-			if(!selectJkOjBhColorPriceList.isEmpty()) {
-				if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
-					Integer optionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ojBhColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ojBhColorSize * optionBranchPrice;
+			String ojBhColor = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor();
+			if("0003102".equals(ojBhColor)) {
+				// フロント釦数
+				String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String ojFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String ojFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのボタン付け糸指定
+				String ojBhColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace1();
+				String ojBhColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace2();
+				String ojBhColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace3();
+				String ojBhColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace4();
+				String ojBhColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace5();
+				String ojBhColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace6();
+				String ojBhColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace7();
+				String ojBhColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace8();
+				String ojBhColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace9();
+				String ojBhColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace10();
+				String ojBhColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace11();
+				String ojBhColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace12();
+				String ojBhColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace13();
+				String ojBhColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace14();
+				String ojBhColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace15();
+				String ojBhColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace16();
+				String ojBhColorPlace17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColorPlace17();
+
+				String ojBhColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor1();
+				String ojBhColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor2();
+				String ojBhColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor3();
+				String ojBhColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor4();
+				String ojBhColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor5();
+				String ojBhColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor6();
+				String ojBhColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor7();
+				String ojBhColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor8();
+				String ojBhColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor9();
+				String ojBhColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor10();
+				String ojBhColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor11();
+				String ojBhColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor12();
+				String ojBhColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor13();
+				String ojBhColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor14();
+				String ojBhColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor15();
+				String ojBhColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor16();
+				String ojBhColor17 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(ojBhColorPlace1, ojBhColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojBhColorPlace2, ojBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojBhColorPlace3, ojBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojBhColorPlace4, ojBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojBhColorPlace5, ojBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojBhColorPlace6, ojBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojBhColorPlace7, ojBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojBhColorPlace8, ojBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojBhColorPlace9, ojBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ojBhColorPlace10, ojBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(ojBhColorPlace11, ojBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(ojBhColorPlace12, ojBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(ojBhColorPlace13, ojBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(ojBhColorPlace14, ojBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(ojBhColorPlace15, ojBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(ojBhColorPlace16, ojBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(ojBhColorPlace17, ojBhColor17, deteleRepeatValue16);
+				
+				int ojBhColorSize = deteleRepeatValue17.size();
+				if(!selectJkOjBhColorPriceList.isEmpty()) {
+					if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
+						Integer optionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ojBhColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ojBhColorSize * optionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnholePlcColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2 : タキシード
 		else if("9000102".equals(productCategory)) {
-			// フロント釦数
-			String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String tjFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String tjFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> tjAmfColorsList = new ArrayList<>();
-			// タキシードJACKETのボタン付け糸指定
-			String tjBhColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace1();
-			String tjBhColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace2();
-			String tjBhColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace3();
-			String tjBhColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace4();
-			String tjBhColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace5();
-			String tjBhColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace6();
-			String tjBhColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace7();
-			String tjBhColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace8();
-			String tjBhColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace9();
-			String tjBhColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace10();
-			String tjBhColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace11();
-			String tjBhColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace12();
-			String tjBhColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace13();
-			String tjBhColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace14();
-			String tjBhColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace15();
-			String tjBhColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace16();
-			String tjBhColorPlace17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace17();
-
-			String tjBhColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor1();
-			String tjBhColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor2();
-			String tjBhColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor3();
-			String tjBhColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor4();
-			String tjBhColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor5();
-			String tjBhColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor6();
-			String tjBhColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor7();
-			String tjBhColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor8();
-			String tjBhColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor9();
-			String tjBhColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor10();
-			String tjBhColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor11();
-			String tjBhColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor12();
-			String tjBhColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor13();
-			String tjBhColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor14();
-			String tjBhColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor15();
-			String tjBhColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor16();
-			String tjBhColor17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(tjBhColorPlace1, tjBhColor1, tjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tjBhColorPlace2, tjBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tjBhColorPlace3, tjBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tjBhColorPlace4, tjBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tjBhColorPlace5, tjBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tjBhColorPlace6, tjBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tjBhColorPlace7, tjBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tjBhColorPlace8, tjBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tjBhColorPlace9, tjBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tjBhColorPlace10, tjBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(tjBhColorPlace11, tjBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(tjBhColorPlace12, tjBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(tjBhColorPlace13, tjBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(tjBhColorPlace14, tjBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(tjBhColorPlace15, tjBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(tjBhColorPlace16, tjBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(tjBhColorPlace17, tjBhColor17, deteleRepeatValue16);
 			Integer tptionBranchDoubleorPrice = 0;
-			int tjBhColorSize = deteleRepeatValue17.size();
-			if(!selectJkOjBhColorPriceList.isEmpty()) {
-				if (tjFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt) || tjFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
-					Integer tptionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
-					tptionBranchDoubleorPrice = tjBhColorSize * tptionBranchDoublePrice;
-				} else {
-					Integer tptionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
-					tptionBranchDoubleorPrice = tjBhColorSize * tptionBranchPrice;
+			String tjBhColor = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor();
+			if("0003102".equals(tjBhColor)) {
+				// フロント釦数
+				String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String tjFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String tjFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> tjAmfColorsList = new ArrayList<>();
+				// タキシードJACKETのボタン付け糸指定
+				String tjBhColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace1();
+				String tjBhColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace2();
+				String tjBhColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace3();
+				String tjBhColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace4();
+				String tjBhColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace5();
+				String tjBhColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace6();
+				String tjBhColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace7();
+				String tjBhColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace8();
+				String tjBhColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace9();
+				String tjBhColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace10();
+				String tjBhColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace11();
+				String tjBhColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace12();
+				String tjBhColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace13();
+				String tjBhColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace14();
+				String tjBhColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace15();
+				String tjBhColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace16();
+				String tjBhColorPlace17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColorPlace17();
+
+				String tjBhColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor1();
+				String tjBhColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor2();
+				String tjBhColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor3();
+				String tjBhColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor4();
+				String tjBhColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor5();
+				String tjBhColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor6();
+				String tjBhColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor7();
+				String tjBhColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor8();
+				String tjBhColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor9();
+				String tjBhColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor10();
+				String tjBhColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor11();
+				String tjBhColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor12();
+				String tjBhColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor13();
+				String tjBhColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor14();
+				String tjBhColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor15();
+				String tjBhColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor16();
+				String tjBhColor17 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(tjBhColorPlace1, tjBhColor1, tjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tjBhColorPlace2, tjBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tjBhColorPlace3, tjBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tjBhColorPlace4, tjBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tjBhColorPlace5, tjBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tjBhColorPlace6, tjBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tjBhColorPlace7, tjBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tjBhColorPlace8, tjBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tjBhColorPlace9, tjBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tjBhColorPlace10, tjBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(tjBhColorPlace11, tjBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(tjBhColorPlace12, tjBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(tjBhColorPlace13, tjBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(tjBhColorPlace14, tjBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(tjBhColorPlace15, tjBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(tjBhColorPlace16, tjBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(tjBhColorPlace17, tjBhColor17, deteleRepeatValue16);
+				
+				int tjBhColorSize = deteleRepeatValue17.size();
+				if(!selectJkOjBhColorPriceList.isEmpty()) {
+					if (tjFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt) || tjFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
+						Integer tptionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
+						tptionBranchDoubleorPrice = tjBhColorSize * tptionBranchDoublePrice;
+					} else {
+						Integer tptionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
+						tptionBranchDoubleorPrice = tjBhColorSize * tptionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnholePlcColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		//1 : ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// フロント釦数
-			String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String wjFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String wjFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// ウォッシャブルJACKETのボタン付け糸指定
-			String wjBhColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace1();
-			String wjBhColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace2();
-			String wjBhColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace3();
-			String wjBhColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace4();
-			String wjBhColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace5();
-			String wjBhColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace6();
-			String wjBhColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace7();
-			String wjBhColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace8();
-			String wjBhColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace9();
-			String wjBhColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace10();
-			String wjBhColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace11();
-			String wjBhColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace12();
-			String wjBhColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace13();
-			String wjBhColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace14();
-			String wjBhColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace15();
-			String wjBhColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace16();
-			String wjBhColorPlace17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace17();
-
-			String wjBhColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor1();
-			String wjBhColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor2();
-			String wjBhColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor3();
-			String wjBhColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor4();
-			String wjBhColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor5();
-			String wjBhColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor6();
-			String wjBhColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor7();
-			String wjBhColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor8();
-			String wjBhColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor9();
-			String wjBhColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor10();
-			String wjBhColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor11();
-			String wjBhColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor12();
-			String wjBhColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor13();
-			String wjBhColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor14();
-			String wjBhColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor15();
-			String wjBhColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor16();
-			String wjBhColor17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor17();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(wjBhColorPlace1, wjBhColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjBhColorPlace2, wjBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjBhColorPlace3, wjBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjBhColorPlace4, wjBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjBhColorPlace5, wjBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjBhColorPlace6, wjBhColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjBhColorPlace7, wjBhColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjBhColorPlace8, wjBhColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjBhColorPlace9, wjBhColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wjBhColorPlace10, wjBhColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(wjBhColorPlace11, wjBhColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(wjBhColorPlace12, wjBhColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(wjBhColorPlace13, wjBhColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(wjBhColorPlace14, wjBhColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(wjBhColorPlace15, wjBhColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(wjBhColorPlace16, wjBhColor16, deteleRepeatValue15);
-			List<String> deteleRepeatValue17 = deteleRepeatValue(wjBhColorPlace17, wjBhColor17, deteleRepeatValue16);
 			Integer wptionBranchDoubleorPrice = 0;
-			int wjBhColorSize = deteleRepeatValue17.size();
-			if(!selectJkOjBhColorPriceList.isEmpty()) {
-				if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
-					Integer wptionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
-					wptionBranchDoubleorPrice = wjBhColorSize * wptionBranchDoublePrice;
-				} else {
-					Integer wptionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
-					wptionBranchDoubleorPrice = wjBhColorSize * wptionBranchPrice;
+			String wjBhColor = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor();
+			if("0003102".equals(wjBhColor)) {
+				// フロント釦数
+				String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String wjFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String wjFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// ウォッシャブルJACKETのボタン付け糸指定
+				String wjBhColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace1();
+				String wjBhColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace2();
+				String wjBhColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace3();
+				String wjBhColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace4();
+				String wjBhColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace5();
+				String wjBhColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace6();
+				String wjBhColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace7();
+				String wjBhColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace8();
+				String wjBhColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace9();
+				String wjBhColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace10();
+				String wjBhColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace11();
+				String wjBhColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace12();
+				String wjBhColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace13();
+				String wjBhColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace14();
+				String wjBhColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace15();
+				String wjBhColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace16();
+				String wjBhColorPlace17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColorPlace17();
+
+				String wjBhColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor1();
+				String wjBhColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor2();
+				String wjBhColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor3();
+				String wjBhColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor4();
+				String wjBhColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor5();
+				String wjBhColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor6();
+				String wjBhColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor7();
+				String wjBhColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor8();
+				String wjBhColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor9();
+				String wjBhColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor10();
+				String wjBhColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor11();
+				String wjBhColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor12();
+				String wjBhColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor13();
+				String wjBhColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor14();
+				String wjBhColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor15();
+				String wjBhColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor16();
+				String wjBhColor17 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor17();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(wjBhColorPlace1, wjBhColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjBhColorPlace2, wjBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjBhColorPlace3, wjBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjBhColorPlace4, wjBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjBhColorPlace5, wjBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjBhColorPlace6, wjBhColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjBhColorPlace7, wjBhColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjBhColorPlace8, wjBhColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjBhColorPlace9, wjBhColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wjBhColorPlace10, wjBhColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(wjBhColorPlace11, wjBhColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(wjBhColorPlace12, wjBhColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(wjBhColorPlace13, wjBhColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(wjBhColorPlace14, wjBhColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(wjBhColorPlace15, wjBhColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(wjBhColorPlace16, wjBhColor16, deteleRepeatValue15);
+				List<String> deteleRepeatValue17 = deteleRepeatValue(wjBhColorPlace17, wjBhColor17, deteleRepeatValue16);
+				
+				int wjBhColorSize = deteleRepeatValue17.size();
+				if(!selectJkOjBhColorPriceList.isEmpty()) {
+					if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
+						Integer wptionBranchDoublePrice = selectJkOjBhColorPriceList.get(0).getMoapDoublePrice();
+						wptionBranchDoubleorPrice = wjBhColorSize * wptionBranchDoublePrice;
+					} else {
+						Integer wptionBranchPrice = selectJkOjBhColorPriceList.get(0).getMoapPrice();
+						wptionBranchDoubleorPrice = wjBhColorSize * wptionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnholePlcColorWsPrice(wptionBranchDoubleorPrice);
@@ -7318,197 +7428,204 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 : 標準
 		if("9000101".equals(productCategory)) {
-
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのボタンホール色指定
-			String ojByColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace1();
-			String ojByColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace2();
-			String ojByColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace3();
-			String ojByColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace4();
-			String ojByColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace5();
-			String ojByColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace6();
-			String ojByColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace7();
-			String ojByColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace8();
-			String ojByColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace9();
-			String ojByColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace10();
-			String ojByColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace11();
-			String ojByColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace12();
-			String ojByColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace13();
-			String ojByColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace14();
-			String ojByColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace15();
-			String ojByColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace16();
-
-			String ojByColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor1();
-			String ojByColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor2();
-			String ojByColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor3();
-			String ojByColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor4();
-			String ojByColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor5();
-			String ojByColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor6();
-			String ojByColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor7();
-			String ojByColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor8();
-			String ojByColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor9();
-			String ojByColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor10();
-			String ojByColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor11();
-			String ojByColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor12();
-			String ojByColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor13();
-			String ojByColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor14();
-			String ojByColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor15();
-			String ojByColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor16();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(ojByColorPlace1, ojByColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojByColorPlace2, ojByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojByColorPlace3, ojByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojByColorPlace4, ojByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojByColorPlace5, ojByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojByColorPlace6, ojByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojByColorPlace7, ojByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojByColorPlace8, ojByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojByColorPlace9, ojByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ojByColorPlace10, ojByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(ojByColorPlace11, ojByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(ojByColorPlace12, ojByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(ojByColorPlace13, ojByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(ojByColorPlace14, ojByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(ojByColorPlace15, ojByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(ojByColorPlace16, ojByColor16, deteleRepeatValue15);
-			
 			BigDecimal optionBranchDoubleorPrice = new BigDecimal(0);
-			BigDecimal ojByColorSize = new BigDecimal(deteleRepeatValue16.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjByColorWageList.isEmpty()) {
-				mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+			String ojByColor = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor();
+			if("0003402".equals(ojByColor)) {
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのボタンホール色指定
+				String ojByColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace1();
+				String ojByColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace2();
+				String ojByColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace3();
+				String ojByColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace4();
+				String ojByColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace5();
+				String ojByColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace6();
+				String ojByColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace7();
+				String ojByColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace8();
+				String ojByColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace9();
+				String ojByColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace10();
+				String ojByColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace11();
+				String ojByColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace12();
+				String ojByColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace13();
+				String ojByColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace14();
+				String ojByColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace15();
+				String ojByColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace16();
+
+				String ojByColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor1();
+				String ojByColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor2();
+				String ojByColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor3();
+				String ojByColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor4();
+				String ojByColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor5();
+				String ojByColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor6();
+				String ojByColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor7();
+				String ojByColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor8();
+				String ojByColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor9();
+				String ojByColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor10();
+				String ojByColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor11();
+				String ojByColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor12();
+				String ojByColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor13();
+				String ojByColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor14();
+				String ojByColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor15();
+				String ojByColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor16();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(ojByColorPlace1, ojByColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojByColorPlace2, ojByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojByColorPlace3, ojByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojByColorPlace4, ojByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojByColorPlace5, ojByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojByColorPlace6, ojByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojByColorPlace7, ojByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojByColorPlace8, ojByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojByColorPlace9, ojByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ojByColorPlace10, ojByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(ojByColorPlace11, ojByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(ojByColorPlace12, ojByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(ojByColorPlace13, ojByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(ojByColorPlace14, ojByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(ojByColorPlace15, ojByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(ojByColorPlace16, ojByColor16, deteleRepeatValue15);
+				
+				BigDecimal ojByColorSize = new BigDecimal(deteleRepeatValue16.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjByColorWageList.isEmpty()) {
+					mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+				}
+				optionBranchDoubleorPrice = ojByColorSize.multiply(mowWage);
 			}
-			optionBranchDoubleorPrice = ojByColorSize.multiply(mowWage);
 			order.setJkBtnthreadPlcColorWsWage(optionBranchDoubleorPrice);
 		}
 		// 2 :　タキシード
 		else if("9000102".equals(productCategory)) {
 
-			List<String> tjAmfColorsList = new ArrayList<>();
-			// タキシードJACKETのボタンホール色指定
-			String tjByColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace1();
-			String tjByColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace2();
-			String tjByColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace3();
-			String tjByColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace4();
-			String tjByColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace5();
-			String tjByColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace6();
-			String tjByColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace7();
-			String tjByColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace8();
-			String tjByColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace9();
-			String tjByColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace10();
-			String tjByColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace11();
-			String tjByColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace12();
-			String tjByColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace13();
-			String tjByColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace14();
-			String tjByColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace15();
-			String tjByColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace16();
-
-			String tjByColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor1();
-			String tjByColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor2();
-			String tjByColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor3();
-			String tjByColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor4();
-			String tjByColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor5();
-			String tjByColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor6();
-			String tjByColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor7();
-			String tjByColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor8();
-			String tjByColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor9();
-			String tjByColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor10();
-			String tjByColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor11();
-			String tjByColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor12();
-			String tjByColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor13();
-			String tjByColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor14();
-			String tjByColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor15();
-			String tjByColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor16();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(tjByColorPlace1, tjByColor1, tjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tjByColorPlace2, tjByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tjByColorPlace3, tjByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tjByColorPlace4, tjByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tjByColorPlace5, tjByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tjByColorPlace6, tjByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tjByColorPlace7, tjByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tjByColorPlace8, tjByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tjByColorPlace9, tjByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tjByColorPlace10, tjByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(tjByColorPlace11, tjByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(tjByColorPlace12, tjByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(tjByColorPlace13, tjByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(tjByColorPlace14, tjByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(tjByColorPlace15, tjByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(tjByColorPlace16, tjByColor16, deteleRepeatValue15);
-
 			BigDecimal tptionBranchDoubleorPrice = new BigDecimal(0);
-			BigDecimal tjByColorSize = new BigDecimal(deteleRepeatValue16.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjByColorWageList.isEmpty()) {
-				mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+			String tjByColor = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor();
+			if("0003402".equals(tjByColor)) {
+				List<String> tjAmfColorsList = new ArrayList<>();
+				// タキシードJACKETのボタンホール色指定
+				String tjByColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace1();
+				String tjByColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace2();
+				String tjByColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace3();
+				String tjByColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace4();
+				String tjByColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace5();
+				String tjByColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace6();
+				String tjByColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace7();
+				String tjByColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace8();
+				String tjByColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace9();
+				String tjByColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace10();
+				String tjByColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace11();
+				String tjByColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace12();
+				String tjByColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace13();
+				String tjByColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace14();
+				String tjByColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace15();
+				String tjByColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace16();
+
+				String tjByColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor1();
+				String tjByColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor2();
+				String tjByColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor3();
+				String tjByColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor4();
+				String tjByColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor5();
+				String tjByColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor6();
+				String tjByColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor7();
+				String tjByColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor8();
+				String tjByColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor9();
+				String tjByColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor10();
+				String tjByColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor11();
+				String tjByColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor12();
+				String tjByColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor13();
+				String tjByColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor14();
+				String tjByColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor15();
+				String tjByColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor16();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(tjByColorPlace1, tjByColor1, tjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tjByColorPlace2, tjByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tjByColorPlace3, tjByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tjByColorPlace4, tjByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tjByColorPlace5, tjByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tjByColorPlace6, tjByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tjByColorPlace7, tjByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tjByColorPlace8, tjByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tjByColorPlace9, tjByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tjByColorPlace10, tjByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(tjByColorPlace11, tjByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(tjByColorPlace12, tjByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(tjByColorPlace13, tjByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(tjByColorPlace14, tjByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(tjByColorPlace15, tjByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(tjByColorPlace16, tjByColor16, deteleRepeatValue15);
+
+				BigDecimal tjByColorSize = new BigDecimal(deteleRepeatValue16.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjByColorWageList.isEmpty()) {
+					mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+				}
+				tptionBranchDoubleorPrice = tjByColorSize.multiply(mowWage);
 			}
-			tptionBranchDoubleorPrice = tjByColorSize.multiply(mowWage);
 			order.setJkBtnthreadPlcColorWsWage(tptionBranchDoubleorPrice);
 		}
 		// 1 :ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// ウォッシャブルJACKETのボタンホール色指定
-			String wjByColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace1();
-			String wjByColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace2();
-			String wjByColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace3();
-			String wjByColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace4();
-			String wjByColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace5();
-			String wjByColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace6();
-			String wjByColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace7();
-			String wjByColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace8();
-			String wjByColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace9();
-			String wjByColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace10();
-			String wjByColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace11();
-			String wjByColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace12();
-			String wjByColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace13();
-			String wjByColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace14();
-			String wjByColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace15();
-			String wjByColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace16();
-
-			String wjByColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor1();
-			String wjByColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor2();
-			String wjByColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor3();
-			String wjByColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor4();
-			String wjByColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor5();
-			String wjByColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor6();
-			String wjByColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor7();
-			String wjByColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor8();
-			String wjByColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor9();
-			String wjByColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor10();
-			String wjByColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor11();
-			String wjByColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor12();
-			String wjByColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor13();
-			String wjByColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor14();
-			String wjByColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor15();
-			String wjByColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor16();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(wjByColorPlace1, wjByColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjByColorPlace2, wjByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjByColorPlace3, wjByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjByColorPlace4, wjByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjByColorPlace5, wjByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjByColorPlace6, wjByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjByColorPlace7, wjByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjByColorPlace8, wjByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjByColorPlace9, wjByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wjByColorPlace10, wjByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(wjByColorPlace11, wjByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(wjByColorPlace12, wjByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(wjByColorPlace13, wjByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(wjByColorPlace14, wjByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(wjByColorPlace15, wjByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(wjByColorPlace16, wjByColor16, deteleRepeatValue15);
-			
 			BigDecimal wptionBranchDoubleorPrice = new BigDecimal(0);
-			BigDecimal wjByColorSize = new BigDecimal(deteleRepeatValue16.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectJkOjByColorWageList.isEmpty()) {
-				mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+			String wjByColor = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor();
+			if("0003402".equals(wjByColor)) {
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// ウォッシャブルJACKETのボタンホール色指定
+				String wjByColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace1();
+				String wjByColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace2();
+				String wjByColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace3();
+				String wjByColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace4();
+				String wjByColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace5();
+				String wjByColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace6();
+				String wjByColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace7();
+				String wjByColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace8();
+				String wjByColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace9();
+				String wjByColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace10();
+				String wjByColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace11();
+				String wjByColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace12();
+				String wjByColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace13();
+				String wjByColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace14();
+				String wjByColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace15();
+				String wjByColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace16();
+
+				String wjByColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor1();
+				String wjByColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor2();
+				String wjByColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor3();
+				String wjByColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor4();
+				String wjByColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor5();
+				String wjByColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor6();
+				String wjByColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor7();
+				String wjByColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor8();
+				String wjByColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor9();
+				String wjByColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor10();
+				String wjByColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor11();
+				String wjByColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor12();
+				String wjByColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor13();
+				String wjByColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor14();
+				String wjByColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor15();
+				String wjByColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor16();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(wjByColorPlace1, wjByColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjByColorPlace2, wjByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjByColorPlace3, wjByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjByColorPlace4, wjByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjByColorPlace5, wjByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjByColorPlace6, wjByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjByColorPlace7, wjByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjByColorPlace8, wjByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjByColorPlace9, wjByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wjByColorPlace10, wjByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(wjByColorPlace11, wjByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(wjByColorPlace12, wjByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(wjByColorPlace13, wjByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(wjByColorPlace14, wjByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(wjByColorPlace15, wjByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(wjByColorPlace16, wjByColor16, deteleRepeatValue15);
+				
+				BigDecimal wjByColorSize = new BigDecimal(deteleRepeatValue16.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectJkOjByColorWageList.isEmpty()) {
+					mowWage = selectJkOjByColorWageList.get(0).getMowWage();
+				}
+				wptionBranchDoubleorPrice = wjByColorSize.multiply(mowWage);
 			}
-			wptionBranchDoubleorPrice = wjByColorSize.multiply(mowWage);
 			order.setJkBtnthreadPlcColorWsWage(wptionBranchDoubleorPrice);
 		}
 	}
@@ -7526,222 +7643,234 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 : 標準
 		if("9000101".equals(productCategory)) {
-			// フロント釦数
-			String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String ojFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String ojFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> ojAmfColorsList = new ArrayList<>();
-			// 標準JACKETのボタンホール色指定
-			String ojByColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace1();
-			String ojByColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace2();
-			String ojByColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace3();
-			String ojByColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace4();
-			String ojByColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace5();
-			String ojByColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace6();
-			String ojByColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace7();
-			String ojByColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace8();
-			String ojByColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace9();
-			String ojByColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace10();
-			String ojByColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace11();
-			String ojByColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace12();
-			String ojByColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace13();
-			String ojByColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace14();
-			String ojByColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace15();
-			String ojByColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace16();
-
-			String ojByColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor1();
-			String ojByColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor2();
-			String ojByColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor3();
-			String ojByColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor4();
-			String ojByColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor5();
-			String ojByColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor6();
-			String ojByColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor7();
-			String ojByColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor8();
-			String ojByColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor9();
-			String ojByColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor10();
-			String ojByColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor11();
-			String ojByColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor12();
-			String ojByColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor13();
-			String ojByColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor14();
-			String ojByColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor15();
-			String ojByColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor16();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(ojByColorPlace1, ojByColor1, ojAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ojByColorPlace2, ojByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ojByColorPlace3, ojByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ojByColorPlace4, ojByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ojByColorPlace5, ojByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ojByColorPlace6, ojByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ojByColorPlace7, ojByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ojByColorPlace8, ojByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ojByColorPlace9, ojByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ojByColorPlace10, ojByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(ojByColorPlace11, ojByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(ojByColorPlace12, ojByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(ojByColorPlace13, ojByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(ojByColorPlace14, ojByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(ojByColorPlace15, ojByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(ojByColorPlace16, ojByColor16, deteleRepeatValue15);
 			Integer optionBranchDoubleorPrice = 0;
-			int ojByColorSize = deteleRepeatValue16.size();
-			if(!selectJkOjByColorPriceList.isEmpty()) {
-				if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
-					Integer optionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ojByColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ojByColorSize * optionBranchPrice;
+			String ojByColor = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor();
+			if("0003402".equals(ojByColor)) {
+				// フロント釦数
+				String ojFrontBtnCnt = orderCoForm.getCoOptionJacketStandardInfo().getOjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String ojFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String ojFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> ojAmfColorsList = new ArrayList<>();
+				// 標準JACKETのボタンホール色指定
+				String ojByColorPlace1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace1();
+				String ojByColorPlace2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace2();
+				String ojByColorPlace3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace3();
+				String ojByColorPlace4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace4();
+				String ojByColorPlace5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace5();
+				String ojByColorPlace6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace6();
+				String ojByColorPlace7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace7();
+				String ojByColorPlace8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace8();
+				String ojByColorPlace9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace9();
+				String ojByColorPlace10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace10();
+				String ojByColorPlace11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace11();
+				String ojByColorPlace12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace12();
+				String ojByColorPlace13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace13();
+				String ojByColorPlace14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace14();
+				String ojByColorPlace15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace15();
+				String ojByColorPlace16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColorPlace16();
+
+				String ojByColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor1();
+				String ojByColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor2();
+				String ojByColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor3();
+				String ojByColor4 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor4();
+				String ojByColor5 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor5();
+				String ojByColor6 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor6();
+				String ojByColor7 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor7();
+				String ojByColor8 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor8();
+				String ojByColor9 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor9();
+				String ojByColor10 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor10();
+				String ojByColor11 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor11();
+				String ojByColor12 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor12();
+				String ojByColor13 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor13();
+				String ojByColor14 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor14();
+				String ojByColor15 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor15();
+				String ojByColor16 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor16();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(ojByColorPlace1, ojByColor1, ojAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ojByColorPlace2, ojByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ojByColorPlace3, ojByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ojByColorPlace4, ojByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ojByColorPlace5, ojByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ojByColorPlace6, ojByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ojByColorPlace7, ojByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ojByColorPlace8, ojByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ojByColorPlace9, ojByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ojByColorPlace10, ojByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(ojByColorPlace11, ojByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(ojByColorPlace12, ojByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(ojByColorPlace13, ojByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(ojByColorPlace14, ojByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(ojByColorPlace15, ojByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(ojByColorPlace16, ojByColor16, deteleRepeatValue15);
+				
+				int ojByColorSize = deteleRepeatValue16.size();
+				if(!selectJkOjByColorPriceList.isEmpty()) {
+					if (ojFrontBtnCntdoubleSixButton.equals(ojFrontBtnCnt) || ojFrontBtnCntdoubleFourButton.equals(ojFrontBtnCnt)) {
+						Integer optionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ojByColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ojByColorSize * optionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnthreadPlcColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2 :　タキシード
 		else if("9000102".equals(productCategory)) {
-			// フロント釦数
-			String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String tjFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String tjFrontBtnCntdoubleFourButton = "0000106";
-
-			List<String> tjAmfColorsList = new ArrayList<>();
-			// タキシードJACKETのボタンホール色指定
-			String tjByColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace1();
-			String tjByColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace2();
-			String tjByColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace3();
-			String tjByColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace4();
-			String tjByColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace5();
-			String tjByColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace6();
-			String tjByColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace7();
-			String tjByColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace8();
-			String tjByColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace9();
-			String tjByColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace10();
-			String tjByColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace11();
-			String tjByColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace12();
-			String tjByColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace13();
-			String tjByColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace14();
-			String tjByColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace15();
-			String tjByColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace16();
-
-			String tjByColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor1();
-			String tjByColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor2();
-			String tjByColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor3();
-			String tjByColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor4();
-			String tjByColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor5();
-			String tjByColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor6();
-			String tjByColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor7();
-			String tjByColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor8();
-			String tjByColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor9();
-			String tjByColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor10();
-			String tjByColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor11();
-			String tjByColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor12();
-			String tjByColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor13();
-			String tjByColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor14();
-			String tjByColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor15();
-			String tjByColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor16();
-
-			List<String> deteleRepeatValue = deteleRepeatValue(tjByColorPlace1, tjByColor1, tjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tjByColorPlace2, tjByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tjByColorPlace3, tjByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tjByColorPlace4, tjByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tjByColorPlace5, tjByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tjByColorPlace6, tjByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tjByColorPlace7, tjByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tjByColorPlace8, tjByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tjByColorPlace9, tjByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tjByColorPlace10, tjByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(tjByColorPlace11, tjByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(tjByColorPlace12, tjByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(tjByColorPlace13, tjByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(tjByColorPlace14, tjByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(tjByColorPlace15, tjByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(tjByColorPlace16, tjByColor16, deteleRepeatValue15);
 			Integer tptionBranchDoubleorPrice = 0;
-			int tjByColorSize = deteleRepeatValue16.size();
-			if(!selectJkOjByColorPriceList.isEmpty()) {
-				if (tjFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt) || tjFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
-					Integer optionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
-					tptionBranchDoubleorPrice = tjByColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
-					tptionBranchDoubleorPrice = tjByColorSize * optionBranchPrice;
+			String tjByColor = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor();
+			if("0003402".equals(tjByColor)) {
+				// フロント釦数
+				String tjFrontBtnCnt = orderCoForm.getCoOptionJacketTuxedoInfo().getTjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String tjFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String tjFrontBtnCntdoubleFourButton = "0000106";
+
+				List<String> tjAmfColorsList = new ArrayList<>();
+				// タキシードJACKETのボタンホール色指定
+				String tjByColorPlace1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace1();
+				String tjByColorPlace2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace2();
+				String tjByColorPlace3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace3();
+				String tjByColorPlace4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace4();
+				String tjByColorPlace5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace5();
+				String tjByColorPlace6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace6();
+				String tjByColorPlace7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace7();
+				String tjByColorPlace8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace8();
+				String tjByColorPlace9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace9();
+				String tjByColorPlace10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace10();
+				String tjByColorPlace11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace11();
+				String tjByColorPlace12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace12();
+				String tjByColorPlace13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace13();
+				String tjByColorPlace14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace14();
+				String tjByColorPlace15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace15();
+				String tjByColorPlace16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColorPlace16();
+
+				String tjByColor1 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor1();
+				String tjByColor2 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor2();
+				String tjByColor3 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor3();
+				String tjByColor4 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor4();
+				String tjByColor5 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor5();
+				String tjByColor6 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor6();
+				String tjByColor7 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor7();
+				String tjByColor8 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor8();
+				String tjByColor9 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor9();
+				String tjByColor10 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor10();
+				String tjByColor11 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor11();
+				String tjByColor12 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor12();
+				String tjByColor13 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor13();
+				String tjByColor14 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor14();
+				String tjByColor15 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor15();
+				String tjByColor16 = orderCoForm.getCoOptionJacketTuxedoInfo().getTjByColor16();
+
+				List<String> deteleRepeatValue = deteleRepeatValue(tjByColorPlace1, tjByColor1, tjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tjByColorPlace2, tjByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tjByColorPlace3, tjByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tjByColorPlace4, tjByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tjByColorPlace5, tjByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tjByColorPlace6, tjByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tjByColorPlace7, tjByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tjByColorPlace8, tjByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tjByColorPlace9, tjByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tjByColorPlace10, tjByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(tjByColorPlace11, tjByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(tjByColorPlace12, tjByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(tjByColorPlace13, tjByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(tjByColorPlace14, tjByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(tjByColorPlace15, tjByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(tjByColorPlace16, tjByColor16, deteleRepeatValue15);
+				
+				int tjByColorSize = deteleRepeatValue16.size();
+				if(!selectJkOjByColorPriceList.isEmpty()) {
+					if (tjFrontBtnCntdoubleSixButton.equals(tjFrontBtnCnt) || tjFrontBtnCntdoubleFourButton.equals(tjFrontBtnCnt)) {
+						Integer optionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
+						tptionBranchDoubleorPrice = tjByColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
+						tptionBranchDoubleorPrice = tjByColorSize * optionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnthreadPlcColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1 :ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// フロント釦数
-			String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
-			// 0000105(ダブル6つボタン)
-			String wjFrontBtnCntdoubleSixButton = "0000105";
-			// 0000106(ダブル4つボタン)
-			String wjFrontBtnCntdoubleFourButton = "0000106";
+			Integer wptionBranchDoubleorPrice = 0;			
+			String wjByColor = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor();
+			if("0003402".equals(wjByColor)) {
+				// フロント釦数
+				String wjFrontBtnCnt = orderCoForm.getCoOptionJacketWashableInfo().getWjFrontBtnCnt();
+				// 0000105(ダブル6つボタン)
+				String wjFrontBtnCntdoubleSixButton = "0000105";
+				// 0000106(ダブル4つボタン)
+				String wjFrontBtnCntdoubleFourButton = "0000106";
 
-			List<String> wjAmfColorsList = new ArrayList<>();
-			// ウォッシャブルJACKETのボタンホール色指定
-			String wjByColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace1();
-			String wjByColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace2();
-			String wjByColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace3();
-			String wjByColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace4();
-			String wjByColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace5();
-			String wjByColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace6();
-			String wjByColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace7();
-			String wjByColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace8();
-			String wjByColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace9();
-			String wjByColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace10();
-			String wjByColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace11();
-			String wjByColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace12();
-			String wjByColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace13();
-			String wjByColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace14();
-			String wjByColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace15();
-			String wjByColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace16();
+				List<String> wjAmfColorsList = new ArrayList<>();
+				// ウォッシャブルJACKETのボタンホール色指定
+				String wjByColorPlace1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace1();
+				String wjByColorPlace2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace2();
+				String wjByColorPlace3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace3();
+				String wjByColorPlace4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace4();
+				String wjByColorPlace5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace5();
+				String wjByColorPlace6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace6();
+				String wjByColorPlace7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace7();
+				String wjByColorPlace8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace8();
+				String wjByColorPlace9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace9();
+				String wjByColorPlace10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace10();
+				String wjByColorPlace11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace11();
+				String wjByColorPlace12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace12();
+				String wjByColorPlace13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace13();
+				String wjByColorPlace14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace14();
+				String wjByColorPlace15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace15();
+				String wjByColorPlace16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColorPlace16();
 
-			String wjByColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor1();
-			String wjByColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor2();
-			String wjByColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor3();
-			String wjByColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor4();
-			String wjByColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor5();
-			String wjByColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor6();
-			String wjByColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor7();
-			String wjByColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor8();
-			String wjByColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor9();
-			String wjByColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor10();
-			String wjByColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor11();
-			String wjByColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor12();
-			String wjByColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor13();
-			String wjByColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor14();
-			String wjByColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor15();
-			String wjByColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor16();
+				String wjByColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor1();
+				String wjByColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor2();
+				String wjByColor3 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor3();
+				String wjByColor4 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor4();
+				String wjByColor5 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor5();
+				String wjByColor6 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor6();
+				String wjByColor7 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor7();
+				String wjByColor8 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor8();
+				String wjByColor9 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor9();
+				String wjByColor10 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor10();
+				String wjByColor11 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor11();
+				String wjByColor12 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor12();
+				String wjByColor13 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor13();
+				String wjByColor14 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor14();
+				String wjByColor15 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor15();
+				String wjByColor16 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor16();
 
-			List<String> deteleRepeatValue = deteleRepeatValue(wjByColorPlace1, wjByColor1, wjAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wjByColorPlace2, wjByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wjByColorPlace3, wjByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wjByColorPlace4, wjByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wjByColorPlace5, wjByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wjByColorPlace6, wjByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wjByColorPlace7, wjByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wjByColorPlace8, wjByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wjByColorPlace9, wjByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wjByColorPlace10, wjByColor10, deteleRepeatValue9);
-			List<String> deteleRepeatValue11 = deteleRepeatValue(wjByColorPlace11, wjByColor11, deteleRepeatValue10);
-			List<String> deteleRepeatValue12 = deteleRepeatValue(wjByColorPlace12, wjByColor12, deteleRepeatValue11);
-			List<String> deteleRepeatValue13 = deteleRepeatValue(wjByColorPlace13, wjByColor13, deteleRepeatValue12);
-			List<String> deteleRepeatValue14 = deteleRepeatValue(wjByColorPlace14, wjByColor14, deteleRepeatValue13);
-			List<String> deteleRepeatValue15 = deteleRepeatValue(wjByColorPlace15, wjByColor15, deteleRepeatValue14);
-			List<String> deteleRepeatValue16 = deteleRepeatValue(wjByColorPlace16, wjByColor16, deteleRepeatValue15);
-			Integer wptionBranchDoubleorPrice = 0;
-			int wjByColorSize = deteleRepeatValue16.size();
-			if(!selectJkOjByColorPriceList.isEmpty()) {
-				if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
-					Integer wptionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
-					wptionBranchDoubleorPrice = wjByColorSize * wptionBranchDoublePrice;
-				} else {
-					Integer wptionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
-					wptionBranchDoubleorPrice = wjByColorSize * wptionBranchPrice;
+				List<String> deteleRepeatValue = deteleRepeatValue(wjByColorPlace1, wjByColor1, wjAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wjByColorPlace2, wjByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wjByColorPlace3, wjByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wjByColorPlace4, wjByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wjByColorPlace5, wjByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wjByColorPlace6, wjByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wjByColorPlace7, wjByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wjByColorPlace8, wjByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wjByColorPlace9, wjByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wjByColorPlace10, wjByColor10, deteleRepeatValue9);
+				List<String> deteleRepeatValue11 = deteleRepeatValue(wjByColorPlace11, wjByColor11, deteleRepeatValue10);
+				List<String> deteleRepeatValue12 = deteleRepeatValue(wjByColorPlace12, wjByColor12, deteleRepeatValue11);
+				List<String> deteleRepeatValue13 = deteleRepeatValue(wjByColorPlace13, wjByColor13, deteleRepeatValue12);
+				List<String> deteleRepeatValue14 = deteleRepeatValue(wjByColorPlace14, wjByColor14, deteleRepeatValue13);
+				List<String> deteleRepeatValue15 = deteleRepeatValue(wjByColorPlace15, wjByColor15, deteleRepeatValue14);
+				List<String> deteleRepeatValue16 = deteleRepeatValue(wjByColorPlace16, wjByColor16, deteleRepeatValue15);
+				
+				int wjByColorSize = deteleRepeatValue16.size();
+				if(!selectJkOjByColorPriceList.isEmpty()) {
+					if (wjFrontBtnCntdoubleSixButton.equals(wjFrontBtnCnt) || wjFrontBtnCntdoubleFourButton.equals(wjFrontBtnCnt)) {
+						Integer wptionBranchDoublePrice = selectJkOjByColorPriceList.get(0).getMoapDoublePrice();
+						wptionBranchDoubleorPrice = wjByColorSize * wptionBranchDoublePrice;
+					} else {
+						Integer wptionBranchPrice = selectJkOjByColorPriceList.get(0).getMoapPrice();
+						wptionBranchDoubleorPrice = wjByColorSize * wptionBranchPrice;
+					}
 				}
 			}
 			order.setJkBtnthreadPlcColorWsPrice(wptionBranchDoubleorPrice);
@@ -7761,21 +7890,25 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準JACKETのステッチ箇所変更
-			String ogStitchModifyPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace1();
-			String ogStitchModifyPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace2();
-			String ogStitchModifyPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace3();
-
-			List<String> ogStitchModifyPlaceList = new ArrayList<>();
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
-			ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			for (String ogStitchModifyPlace : ogStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyWageList) {
-					if (ogStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+			String ogStitchModify = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModify();
+			if("0000602".equals(ogStitchModify)) {
+				// 標準JACKETのステッチ箇所変更
+				String ogStitchModifyPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace1();
+				String ogStitchModifyPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace2();
+				String ogStitchModifyPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace3();
+
+				List<String> ogStitchModifyPlaceList = new ArrayList<>();
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
+				ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String ogStitchModifyPlace : ogStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyWageList) {
+						if (ogStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -7783,22 +7916,25 @@ public class OrderCoHelper {
 		}
 		// 1 : ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			
-			// ウォッシャブルJACKETのステッチ箇所変更
-			String wgStitchModifyPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace1();
-			String wgStitchModifyPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace2();
-			String wgStitchModifyPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace3();
-
-			List<String> wgStitchModifyPlaceList = new ArrayList<>();
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace1);
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace2);
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace3);
-			wgStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			for (String wgStitchModifyPlace : wgStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyWageList) {
-					if (wgStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+			String wgStitchModify = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModify();
+			if("0000602".equals(wgStitchModify)) {
+				// ウォッシャブルJACKETのステッチ箇所変更
+				String wgStitchModifyPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace1();
+				String wgStitchModifyPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace2();
+				String wgStitchModifyPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace3();
+
+				List<String> wgStitchModifyPlaceList = new ArrayList<>();
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace1);
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace2);
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace3);
+				wgStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String wgStitchModifyPlace : wgStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyWageList) {
+						if (wgStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -7819,31 +7955,35 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// GILETモデル
-			String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// 標準JACKETのステッチ箇所変更
-			String ogStitchModifyPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace1();
-			String ogStitchModifyPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace2();
-			String ogStitchModifyPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace3();
-
-			List<String> ogStitchModifyPlaceList = new ArrayList<>();
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
-			ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
-			ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer optionBranchDoubleorPrice = 0;
-			for (String ogStitchModifyPlace : ogStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyPriceList) {
-					if (ogStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
-						} else {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String ogStitchModify = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModify();
+			if("0000602".equals(ogStitchModify)) {
+				// GILETモデル
+				String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// 標準JACKETのステッチ箇所変更
+				String ogStitchModifyPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace1();
+				String ogStitchModifyPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace2();
+				String ogStitchModifyPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgStitchModifyPlace3();
+
+				List<String> ogStitchModifyPlaceList = new ArrayList<>();
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
+				ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
+				ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String ogStitchModifyPlace : ogStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyPriceList) {
+						if (ogStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
+							} else {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+							}
 						}
 					}
 				}
@@ -7852,31 +7992,35 @@ public class OrderCoHelper {
 		}
 		// 1 : ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// GILETモデル
-			String wgGiletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// ウォッシャブルJACKETのステッチ箇所変更
-			String wgStitchModifyPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace1();
-			String wgStitchModifyPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace2();
-			String wgStitchModifyPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace3();
-
-			List<String> wgStitchModifyPlaceList = new ArrayList<>();
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace1);
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace2);
-			wgStitchModifyPlaceList.add(wgStitchModifyPlace3);
-			wgStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer optionBranchDoubleorPrice = 0;
-			for (String ogStitchModifyPlace : wgStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyPriceList) {
-					if (ogStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						if (bs01dModel.equals(wgGiletModel) || et15dModel.equals(wgGiletModel)) {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
-						} else {
-							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String wgStitchModify = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModify();
+			if("0000602".equals(wgStitchModify)) {
+				// GILETモデル
+				String wgGiletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// ウォッシャブルJACKETのステッチ箇所変更
+				String wgStitchModifyPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace1();
+				String wgStitchModifyPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace2();
+				String wgStitchModifyPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgStitchModifyPlace3();
+
+				List<String> wgStitchModifyPlaceList = new ArrayList<>();
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace1);
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace2);
+				wgStitchModifyPlaceList.add(wgStitchModifyPlace3);
+				wgStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String ogStitchModifyPlace : wgStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectGlOgStitchModifyPriceList) {
+						if (ogStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							if (bs01dModel.equals(wgGiletModel) || et15dModel.equals(wgGiletModel)) {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapDoublePrice();
+							} else {
+								optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+							}
 						}
 					}
 				}
@@ -7897,52 +8041,58 @@ public class OrderCoHelper {
 
 		String productCategory = orderCoForm.getProductCategory();
 		if("9000101".equals(productCategory)) {
-			// 標準JACKETのAMF色指定
-			String ogAmfColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace1();
-			String ogAmfColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace2();
-			String ogAmfColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace3();
-
-			String ogAmfColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor1();
-			String ogAmfColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor2();
-			String ogAmfColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor3();
-
-			List<String> ogAmfColorPlaceList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogAmfColorPlace1, ogAmfColor1, ogAmfColorPlaceList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogAmfColorPlace2, ogAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogAmfColorPlace3, ogAmfColor3, deteleRepeatValue2);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal ogAmfColorSize = new BigDecimal(deteleRepeatValue3.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjAmfColorWageList.isEmpty()) {
-				mowWage = selectGlOjAmfColorWageList.get(0).getMowWage();
+			String ogAmfColor = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor();
+			if("0000802".equals(ogAmfColor)) {
+				// 標準JACKETのAMF色指定
+				String ogAmfColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace1();
+				String ogAmfColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace2();
+				String ogAmfColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace3();
+
+				String ogAmfColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor1();
+				String ogAmfColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor2();
+				String ogAmfColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor3();
+
+				List<String> ogAmfColorPlaceList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogAmfColorPlace1, ogAmfColor1, ogAmfColorPlaceList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogAmfColorPlace2, ogAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogAmfColorPlace3, ogAmfColor3, deteleRepeatValue2);
+
+				BigDecimal ogAmfColorSize = new BigDecimal(deteleRepeatValue3.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjAmfColorWageList.isEmpty()) {
+					mowWage = selectGlOjAmfColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = ogAmfColorSize.multiply(mowWage);
 			}
-			optionBranchWage = ogAmfColorSize.multiply(mowWage);
 			order.setGlAmfColorWsWage(optionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルJACKETのAMF色指定
-			String wgAmfColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace1();
-			String wgAmfColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace2();
-			String wgAmfColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace3();
-
-			String wgAmfColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor1();
-			String wgAmfColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor2();
-			String wgAmfColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor3();
-
-			List<String> ogAmfColorPlaceList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgAmfColorPlace1, wgAmfColor1, ogAmfColorPlaceList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgAmfColorPlace2, wgAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgAmfColorPlace3, wgAmfColor3, deteleRepeatValue2);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wgAmfColorSize = new BigDecimal(deteleRepeatValue3.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjAmfColorWageList.isEmpty()) {
-				mowWage = selectGlOjAmfColorWageList.get(0).getMowWage();
+			String wgAmfColor = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor();
+			if("0000802".equals(wgAmfColor)) {
+				// ウォッシャブルJACKETのAMF色指定
+				String wgAmfColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace1();
+				String wgAmfColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace2();
+				String wgAmfColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace3();
+
+				String wgAmfColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor1();
+				String wgAmfColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor2();
+				String wgAmfColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor3();
+
+				List<String> ogAmfColorPlaceList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgAmfColorPlace1, wgAmfColor1, ogAmfColorPlaceList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgAmfColorPlace2, wgAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgAmfColorPlace3, wgAmfColor3, deteleRepeatValue2);
+
+				BigDecimal wgAmfColorSize = new BigDecimal(deteleRepeatValue3.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjAmfColorWageList.isEmpty()) {
+					mowWage = selectGlOjAmfColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wgAmfColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wgAmfColorSize.multiply(mowWage);
 			order.setGlAmfColorWsWage(wptionBranchWage);
 		}
 	}
@@ -7959,72 +8109,78 @@ public class OrderCoHelper {
 
 		String productCategory = orderCoForm.getProductCategory();
 		if("9000101".equals(productCategory)) {
-			// GILETモデル
-			String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// 標準JACKETのAMF色指定
-			String ogAmfColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace1();
-			String ogAmfColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace2();
-			String ogAmfColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace3();
-
-			String ogAmfColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor1();
-			String ogAmfColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor2();
-			String ogAmfColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor3();
-
-			List<String> ogAmfColorPlaceList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogAmfColorPlace1, ogAmfColor1, ogAmfColorPlaceList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogAmfColorPlace2, ogAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogAmfColorPlace3, ogAmfColor3, deteleRepeatValue2);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int ogAmfColorSize = deteleRepeatValue3.size();
-			if(!selectGlOjAmfColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
-					Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+			String ogAmfColor = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor();
+			if("0000802".equals(ogAmfColor)) {
+				// GILETモデル
+				String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// 標準JACKETのAMF色指定
+				String ogAmfColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace1();
+				String ogAmfColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace2();
+				String ogAmfColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColorPlace3();
+
+				String ogAmfColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor1();
+				String ogAmfColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor2();
+				String ogAmfColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgAmfColor3();
+
+				List<String> ogAmfColorPlaceList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogAmfColorPlace1, ogAmfColor1, ogAmfColorPlaceList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogAmfColorPlace2, ogAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogAmfColorPlace3, ogAmfColor3, deteleRepeatValue2);
+
+				int ogAmfColorSize = deteleRepeatValue3.size();
+				if(!selectGlOjAmfColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
+						Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+					}
 				}
 			}
 			order.setGlAmfColorWsPrice(optionBranchDoubleorPrice);
 		}
 		//1 :ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// GILETモデル
-			String wgGiletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// ウォッシャブルJACKETのAMF色指定
-			String wgAmfColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace1();
-			String wgAmfColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace2();
-			String wgAmfColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace3();
-
-			String wgAmfColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor1();
-			String wgAmfColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor2();
-			String wgAmfColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor3();
-
-			List<String> ogAmfColorPlaceList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgAmfColorPlace1, wgAmfColor1, ogAmfColorPlaceList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgAmfColorPlace2, wgAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgAmfColorPlace3, wgAmfColor3, deteleRepeatValue2);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int ogAmfColorSize = deteleRepeatValue3.size();
-			if(!selectGlOjAmfColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(wgGiletModel) || et15dModel.equals(wgGiletModel)) {
-					Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+			String wgAmfColor = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor();
+			if("0000802".equals(wgAmfColor)) {
+				// GILETモデル
+				String wgGiletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// ウォッシャブルJACKETのAMF色指定
+				String wgAmfColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace1();
+				String wgAmfColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace2();
+				String wgAmfColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColorPlace3();
+
+				String wgAmfColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor1();
+				String wgAmfColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor2();
+				String wgAmfColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor3();
+
+				List<String> ogAmfColorPlaceList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgAmfColorPlace1, wgAmfColor1, ogAmfColorPlaceList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgAmfColorPlace2, wgAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgAmfColorPlace3, wgAmfColor3, deteleRepeatValue2);
+
+				int ogAmfColorSize = deteleRepeatValue3.size();
+				if(!selectGlOjAmfColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(wgGiletModel) || et15dModel.equals(wgGiletModel)) {
+						Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchDoublePrice = selectGlOjAmfColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ogAmfColorSize * optionBranchDoublePrice;
+					}
 				}
 			}
 			order.setGlAmfColorWsPrice(optionBranchDoubleorPrice);
@@ -8044,104 +8200,113 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準JACKETのボタンホール色指定
-			String ogBhColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace1();
-			String ogBhColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace2();
-			String ogBhColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace3();
-			String ogBhColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace4();
-			String ogBhColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace5();
-			String ogBhColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace6();
-
-			String ogBhColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor1();
-			String ogBhColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor2();
-			String ogBhColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor3();
-			String ogBhColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor4();
-			String ogBhColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor5();
-			String ogBhColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor6();
-
-			List<String> ogBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogBhColorPlace1, ogBhColor1, ogBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogBhColorPlace2, ogBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogBhColorPlace3, ogBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ogBhColorPlace4, ogBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ogBhColorPlace5, ogBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ogBhColorPlace6, ogBhColor6, deteleRepeatValue5);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal ogBhColorSize = new BigDecimal(deteleRepeatValue6.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjBhColorWageList.isEmpty()) {
-				mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+			String ogBhColor = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor();
+			if("0001102".equals(ogBhColor)) {
+				// 標準JACKETのボタンホール色指定
+				String ogBhColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace1();
+				String ogBhColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace2();
+				String ogBhColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace3();
+				String ogBhColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace4();
+				String ogBhColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace5();
+				String ogBhColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace6();
+
+				String ogBhColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor1();
+				String ogBhColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor2();
+				String ogBhColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor3();
+				String ogBhColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor4();
+				String ogBhColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor5();
+				String ogBhColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor6();
+
+				List<String> ogBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogBhColorPlace1, ogBhColor1, ogBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogBhColorPlace2, ogBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogBhColorPlace3, ogBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ogBhColorPlace4, ogBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ogBhColorPlace5, ogBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ogBhColorPlace6, ogBhColor6, deteleRepeatValue5);
+
+				BigDecimal ogBhColorSize = new BigDecimal(deteleRepeatValue6.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjBhColorWageList.isEmpty()) {
+					mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = ogBhColorSize.multiply(mowWage);
 			}
-			optionBranchWage = ogBhColorSize.multiply(mowWage);
 			order.setGlBtnholeColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードJACKETのボタンホール色指定
-			String tgBhColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace1();
-			String tgBhColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace2();
-			String tgBhColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace3();
-			String tgBhColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace4();
-			String tgBhColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace5();
-			String tgBhColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace6();
-
-			String tgBhColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor1();
-			String tgBhColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor2();
-			String tgBhColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor3();
-			String tgBhColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor4();
-			String tgBhColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor5();
-			String tgBhColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor6();
-
-			List<String> tgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tgBhColorPlace1, tgBhColor1, tgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tgBhColorPlace2, tgBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tgBhColorPlace3, tgBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tgBhColorPlace4, tgBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tgBhColorPlace5, tgBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tgBhColorPlace6, tgBhColor6, deteleRepeatValue5);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tgBhColorSize = new BigDecimal(deteleRepeatValue6.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjBhColorWageList.isEmpty()) {
-				mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+			String tgBhColor = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor();
+			if("0001102".equals(tgBhColor)) {
+				// タキシードJACKETのボタンホール色指定
+				String tgBhColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace1();
+				String tgBhColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace2();
+				String tgBhColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace3();
+				String tgBhColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace4();
+				String tgBhColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace5();
+				String tgBhColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace6();
+
+				String tgBhColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor1();
+				String tgBhColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor2();
+				String tgBhColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor3();
+				String tgBhColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor4();
+				String tgBhColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor5();
+				String tgBhColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor6();
+
+				List<String> tgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tgBhColorPlace1, tgBhColor1, tgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tgBhColorPlace2, tgBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tgBhColorPlace3, tgBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tgBhColorPlace4, tgBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tgBhColorPlace5, tgBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tgBhColorPlace6, tgBhColor6, deteleRepeatValue5);
+
+				BigDecimal tgBhColorSize = new BigDecimal(deteleRepeatValue6.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjBhColorWageList.isEmpty()) {
+					mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tgBhColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tgBhColorSize.multiply(mowWage);
 			order.setGlBtnholeColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルJACKETのボタンホール色指定
-			String wgBhColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace1();
-			String wgBhColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace2();
-			String wgBhColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace3();
-			String wgBhColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace4();
-			String wgBhColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace5();
-			String wgBhColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace6();
-
-			String wgBhColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor1();
-			String wgBhColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor2();
-			String wgBhColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor3();
-			String wgBhColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor4();
-			String wgBhColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor5();
-			String wgBhColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor6();
-
-			List<String> wgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgBhColorPlace1, wgBhColor1, wgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgBhColorPlace2, wgBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgBhColorPlace3, wgBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wgBhColorPlace4, wgBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wgBhColorPlace5, wgBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wgBhColorPlace6, wgBhColor6, deteleRepeatValue5);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wgBhColorSize = new BigDecimal(deteleRepeatValue6.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjBhColorWageList.isEmpty()) {
-				mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+			String wgBhColor = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor();
+			if("0001102".equals(wgBhColor)) {
+				// ウォッシャブルJACKETのボタンホール色指定
+				String wgBhColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace1();
+				String wgBhColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace2();
+				String wgBhColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace3();
+				String wgBhColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace4();
+				String wgBhColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace5();
+				String wgBhColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace6();
+
+				String wgBhColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor1();
+				String wgBhColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor2();
+				String wgBhColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor3();
+				String wgBhColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor4();
+				String wgBhColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor5();
+				String wgBhColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor6();
+
+				List<String> wgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgBhColorPlace1, wgBhColor1, wgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgBhColorPlace2, wgBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgBhColorPlace3, wgBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wgBhColorPlace4, wgBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wgBhColorPlace5, wgBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wgBhColorPlace6, wgBhColor6, deteleRepeatValue5);
+
+				BigDecimal wgBhColorSize = new BigDecimal(deteleRepeatValue6.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjBhColorWageList.isEmpty()) {
+					mowWage = selectGlOjBhColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wgBhColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wgBhColorSize.multiply(mowWage);
 			order.setGlBtnholeColorWsWage(wptionBranchWage);
 		}
 		
@@ -8160,133 +8325,142 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// GILETモデル
-			String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// 標準JACKETのボタンホール色指定
-			String ogBhColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace1();
-			String ogBhColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace2();
-			String ogBhColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace3();
-			String ogBhColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace4();
-			String ogBhColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace5();
-			String ogBhColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace6();
-
-			String ogBhColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor1();
-			String ogBhColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor2();
-			String ogBhColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor3();
-			String ogBhColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor4();
-			String ogBhColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor5();
-			String ogBhColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor6();
-
-			List<String> ogBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogBhColorPlace1, ogBhColor1, ogBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogBhColorPlace2, ogBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogBhColorPlace3, ogBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ogBhColorPlace4, ogBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ogBhColorPlace5, ogBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ogBhColorPlace6, ogBhColor6, deteleRepeatValue5);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int ogBhColorSize = deteleRepeatValue6.size();
-			if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
-				Integer optionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
-				optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
-			} else {
-				Integer optionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
-				optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
+			String ogBhColor = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor();
+			if("0001102".equals(ogBhColor)) {
+				// GILETモデル
+				String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// 標準JACKETのボタンホール色指定
+				String ogBhColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace1();
+				String ogBhColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace2();
+				String ogBhColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace3();
+				String ogBhColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace4();
+				String ogBhColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace5();
+				String ogBhColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColorPlace6();
+
+				String ogBhColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor1();
+				String ogBhColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor2();
+				String ogBhColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor3();
+				String ogBhColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor4();
+				String ogBhColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor5();
+				String ogBhColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor6();
+
+				List<String> ogBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogBhColorPlace1, ogBhColor1, ogBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogBhColorPlace2, ogBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogBhColorPlace3, ogBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ogBhColorPlace4, ogBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ogBhColorPlace5, ogBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ogBhColorPlace6, ogBhColor6, deteleRepeatValue5);
+
+				int ogBhColorSize = deteleRepeatValue6.size();
+				if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
+					Integer optionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
+					optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
+				} else {
+					Integer optionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
+					optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
+				}
 			}
 			order.setGlBtnholeColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// GILETモデル
-			String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// タキシードJACKETのボタンホール色指定
-			String tgBhColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace1();
-			String tgBhColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace2();
-			String tgBhColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace3();
-			String tgBhColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace4();
-			String tgBhColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace5();
-			String tgBhColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace6();
-
-			String tgBhColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor1();
-			String tgBhColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor2();
-			String tgBhColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor3();
-			String tgBhColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor4();
-			String tgBhColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor5();
-			String tgBhColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor6();
-
-			List<String> tgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tgBhColorPlace1, tgBhColor1, tgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tgBhColorPlace2, tgBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tgBhColorPlace3, tgBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tgBhColorPlace4, tgBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tgBhColorPlace5, tgBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tgBhColorPlace6, tgBhColor6, deteleRepeatValue5);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tgBhColorSize = deteleRepeatValue6.size();
-			if(!selectGlOjBhColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
-					Integer tptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
-					tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
-				} else {
-					Integer tptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
-					tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
+			String tgBhColor = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor();
+			if("0001102".equals(tgBhColor)) {
+				// GILETモデル
+				String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// タキシードJACKETのボタンホール色指定
+				String tgBhColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace1();
+				String tgBhColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace2();
+				String tgBhColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace3();
+				String tgBhColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace4();
+				String tgBhColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace5();
+				String tgBhColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColorPlace6();
+
+				String tgBhColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor1();
+				String tgBhColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor2();
+				String tgBhColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor3();
+				String tgBhColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor4();
+				String tgBhColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor5();
+				String tgBhColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBhColor6();
+
+				List<String> tgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tgBhColorPlace1, tgBhColor1, tgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tgBhColorPlace2, tgBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tgBhColorPlace3, tgBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tgBhColorPlace4, tgBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tgBhColorPlace5, tgBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tgBhColorPlace6, tgBhColor6, deteleRepeatValue5);
+
+				int tgBhColorSize = deteleRepeatValue6.size();
+				if(!selectGlOjBhColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
+						Integer tptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
+						tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
+					} else {
+						Integer tptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
+						tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
+					}
 				}
 			}
 			order.setGlBtnholeColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// GILETモデル
-			String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// ウォッシャブルJACKETのボタンホール色指定
-			String wgBhColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace1();
-			String wgBhColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace2();
-			String wgBhColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace3();
-			String wgBhColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace4();
-			String wgBhColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace5();
-			String wgBhColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace6();
-
-			String wgBhColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor1();
-			String wgBhColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor2();
-			String wgBhColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor3();
-			String wgBhColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor4();
-			String wgBhColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor5();
-			String wgBhColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor6();
-
-			List<String> wgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgBhColorPlace1, wgBhColor1, wgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgBhColorPlace2, wgBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgBhColorPlace3, wgBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wgBhColorPlace4, wgBhColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wgBhColorPlace5, wgBhColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wgBhColorPlace6, wgBhColor6, deteleRepeatValue5);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wgBhColorSize = deteleRepeatValue6.size();
-			if(!selectGlOjBhColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
-					Integer wptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
-					wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
-				} else {
-					Integer wptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
-					wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
+			String wgBhColor = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor();
+			if("0001102".equals(wgBhColor)) {
+				// GILETモデル
+				String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// ウォッシャブルJACKETのボタンホール色指定
+				String wgBhColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace1();
+				String wgBhColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace2();
+				String wgBhColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace3();
+				String wgBhColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace4();
+				String wgBhColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace5();
+				String wgBhColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColorPlace6();
+
+				String wgBhColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor1();
+				String wgBhColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor2();
+				String wgBhColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor3();
+				String wgBhColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor4();
+				String wgBhColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor5();
+				String wgBhColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor6();
+
+				List<String> wgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgBhColorPlace1, wgBhColor1, wgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgBhColorPlace2, wgBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgBhColorPlace3, wgBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wgBhColorPlace4, wgBhColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wgBhColorPlace5, wgBhColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wgBhColorPlace6, wgBhColor6, deteleRepeatValue5);
+
+				int wgBhColorSize = deteleRepeatValue6.size();
+				if(!selectGlOjBhColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
+						Integer wptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapDoublePrice();
+						wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
+					} else {
+						Integer wptionBranchDoublePrice = selectGlOjBhColorPriceList.get(0).getMoapPrice();
+						wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
+					}
 				}
 			}
 			order.setGlBtnholeColorWsPrice(wptionBranchDoubleorPrice);
@@ -8306,140 +8480,149 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準JACKETのボタン付け糸指定
-			String ogByColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace1();
-			String ogByColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace2();
-			String ogByColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace3();
-			String ogByColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace4();
-			String ogByColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace5();
-			String ogByColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace6();
-			String ogByColorPlace7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace7();
-			String ogByColorPlace8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace8();
-			String ogByColorPlace9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace9();
-			String ogByColorPlace10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace10();
-
-			String ogByColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor1();
-			String ogByColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor2();
-			String ogByColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor3();
-			String ogByColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor4();
-			String ogByColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor5();
-			String ogByColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor6();
-			String ogByColor7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor7();
-			String ogByColor8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor8();
-			String ogByColor9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor9();
-			String ogByColor10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor10();
-
-			List<String> ogBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogByColorPlace1, ogByColor1, ogBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogByColorPlace2, ogByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogByColorPlace3, ogByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ogByColorPlace4, ogByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ogByColorPlace5, ogByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ogByColorPlace6, ogByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ogByColorPlace7, ogByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ogByColorPlace8, ogByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ogByColorPlace9, ogByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ogByColorPlace10, ogByColor10, deteleRepeatValue9);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal ogBhColorSize = new BigDecimal(deteleRepeatValue10.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjByColorWageList.isEmpty()) {
-				mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+			String ogByColor = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor();
+			if("0001402".equals(ogByColor)) {
+				// 標準JACKETのボタン付け糸指定
+				String ogByColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace1();
+				String ogByColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace2();
+				String ogByColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace3();
+				String ogByColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace4();
+				String ogByColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace5();
+				String ogByColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace6();
+				String ogByColorPlace7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace7();
+				String ogByColorPlace8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace8();
+				String ogByColorPlace9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace9();
+				String ogByColorPlace10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace10();
+
+				String ogByColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor1();
+				String ogByColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor2();
+				String ogByColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor3();
+				String ogByColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor4();
+				String ogByColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor5();
+				String ogByColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor6();
+				String ogByColor7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor7();
+				String ogByColor8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor8();
+				String ogByColor9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor9();
+				String ogByColor10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor10();
+
+				List<String> ogBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogByColorPlace1, ogByColor1, ogBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogByColorPlace2, ogByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogByColorPlace3, ogByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ogByColorPlace4, ogByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ogByColorPlace5, ogByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ogByColorPlace6, ogByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ogByColorPlace7, ogByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ogByColorPlace8, ogByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ogByColorPlace9, ogByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ogByColorPlace10, ogByColor10, deteleRepeatValue9);
+
+				BigDecimal ogBhColorSize = new BigDecimal(deteleRepeatValue10.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjByColorWageList.isEmpty()) {
+					mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = ogBhColorSize.multiply(mowWage);
 			}
-			optionBranchWage = ogBhColorSize.multiply(mowWage);
 			order.setGlBtnthreadColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードJACKETのボタン付け糸指定
-			String tgByColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace1();
-			String tgByColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace2();
-			String tgByColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace3();
-			String tgByColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace4();
-			String tgByColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace5();
-			String tgByColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace6();
-			String tgByColorPlace7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace7();
-			String tgByColorPlace8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace8();
-			String tgByColorPlace9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace9();
-			String tgByColorPlace10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace10();
-
-			String tgByColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor1();
-			String tgByColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor2();
-			String tgByColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor3();
-			String tgByColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor4();
-			String tgByColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor5();
-			String tgByColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor6();
-			String tgByColor7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor7();
-			String tgByColor8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor8();
-			String tgByColor9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor9();
-			String tgByColor10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor10();
-
-			List<String> tgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tgByColorPlace1, tgByColor1, tgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tgByColorPlace2, tgByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tgByColorPlace3, tgByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tgByColorPlace4, tgByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tgByColorPlace5, tgByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tgByColorPlace6, tgByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tgByColorPlace7, tgByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tgByColorPlace8, tgByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tgByColorPlace9, tgByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tgByColorPlace10, tgByColor10, deteleRepeatValue9);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tgBhColorSize = new BigDecimal(deteleRepeatValue10.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjByColorWageList.isEmpty()) {
-				mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+			String tgByColor = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor();
+			if("0001402".equals(tgByColor)) {
+				// タキシードJACKETのボタン付け糸指定
+				String tgByColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace1();
+				String tgByColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace2();
+				String tgByColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace3();
+				String tgByColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace4();
+				String tgByColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace5();
+				String tgByColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace6();
+				String tgByColorPlace7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace7();
+				String tgByColorPlace8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace8();
+				String tgByColorPlace9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace9();
+				String tgByColorPlace10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace10();
+
+				String tgByColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor1();
+				String tgByColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor2();
+				String tgByColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor3();
+				String tgByColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor4();
+				String tgByColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor5();
+				String tgByColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor6();
+				String tgByColor7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor7();
+				String tgByColor8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor8();
+				String tgByColor9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor9();
+				String tgByColor10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor10();
+
+				List<String> tgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tgByColorPlace1, tgByColor1, tgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tgByColorPlace2, tgByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tgByColorPlace3, tgByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tgByColorPlace4, tgByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tgByColorPlace5, tgByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tgByColorPlace6, tgByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tgByColorPlace7, tgByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tgByColorPlace8, tgByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tgByColorPlace9, tgByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tgByColorPlace10, tgByColor10, deteleRepeatValue9);
+
+				BigDecimal tgBhColorSize = new BigDecimal(deteleRepeatValue10.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjByColorWageList.isEmpty()) {
+					mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tgBhColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tgBhColorSize.multiply(mowWage);
 			order.setGlBtnthreadColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルJACKETのボタン付け糸指定
-			String wgByColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace1();
-			String wgByColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace2();
-			String wgByColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace3();
-			String wgByColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace4();
-			String wgByColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace5();
-			String wgByColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace6();
-			String wgByColorPlace7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace7();
-			String wgByColorPlace8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace8();
-			String wgByColorPlace9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace9();
-			String wgByColorPlace10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace10();
-
-			String wgByColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor1();
-			String wgByColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor2();
-			String wgByColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor3();
-			String wgByColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor4();
-			String wgByColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor5();
-			String wgByColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor6();
-			String wgByColor7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor7();
-			String wgByColor8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor8();
-			String wgByColor9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor9();
-			String wgByColor10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor10();
-
-			List<String> wgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgByColorPlace1, wgByColor1, wgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgByColorPlace2, wgByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgByColorPlace3, wgByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wgByColorPlace4, wgByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wgByColorPlace5, wgByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wgByColorPlace6, wgByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wgByColorPlace7, wgByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wgByColorPlace8, wgByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wgByColorPlace9, wgByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wgByColorPlace10, wgByColor10, deteleRepeatValue9);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wgBhColorSize = new BigDecimal(deteleRepeatValue10.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectGlOjByColorWageList.isEmpty()) {
-				mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+			String wgByColor = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor();
+			if("0001402".equals(wgByColor)) {
+				// ウォッシャブルJACKETのボタン付け糸指定
+				String wgByColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace1();
+				String wgByColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace2();
+				String wgByColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace3();
+				String wgByColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace4();
+				String wgByColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace5();
+				String wgByColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace6();
+				String wgByColorPlace7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace7();
+				String wgByColorPlace8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace8();
+				String wgByColorPlace9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace9();
+				String wgByColorPlace10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace10();
+
+				String wgByColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor1();
+				String wgByColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor2();
+				String wgByColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor3();
+				String wgByColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor4();
+				String wgByColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor5();
+				String wgByColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor6();
+				String wgByColor7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor7();
+				String wgByColor8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor8();
+				String wgByColor9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor9();
+				String wgByColor10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor10();
+
+				List<String> wgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgByColorPlace1, wgByColor1, wgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgByColorPlace2, wgByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgByColorPlace3, wgByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wgByColorPlace4, wgByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wgByColorPlace5, wgByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wgByColorPlace6, wgByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wgByColorPlace7, wgByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wgByColorPlace8, wgByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wgByColorPlace9, wgByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wgByColorPlace10, wgByColor10, deteleRepeatValue9);
+
+				BigDecimal wgBhColorSize = new BigDecimal(deteleRepeatValue10.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectGlOjByColorWageList.isEmpty()) {
+					mowWage = selectGlOjByColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wgBhColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wgBhColorSize.multiply(mowWage);
 			order.setGlBtnthreadColorWsWage(wptionBranchWage);
 		}
 	}
@@ -8457,171 +8640,180 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// GILETモデル
-			String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// 標準JACKETのボタン付け糸指定
-			String ogByColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace1();
-			String ogByColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace2();
-			String ogByColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace3();
-			String ogByColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace4();
-			String ogByColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace5();
-			String ogByColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace6();
-			String ogByColorPlace7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace7();
-			String ogByColorPlace8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace8();
-			String ogByColorPlace9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace9();
-			String ogByColorPlace10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace10();
-
-			String ogByColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor1();
-			String ogByColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor2();
-			String ogByColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor3();
-			String ogByColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor4();
-			String ogByColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor5();
-			String ogByColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor6();
-			String ogByColor7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor7();
-			String ogByColor8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor8();
-			String ogByColor9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor9();
-			String ogByColor10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor10();
-
-			List<String> ogBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(ogByColorPlace1, ogByColor1, ogBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(ogByColorPlace2, ogByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(ogByColorPlace3, ogByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(ogByColorPlace4, ogByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(ogByColorPlace5, ogByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(ogByColorPlace6, ogByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(ogByColorPlace7, ogByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(ogByColorPlace8, ogByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(ogByColorPlace9, ogByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(ogByColorPlace10, ogByColor10, deteleRepeatValue9);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int ogBhColorSize = deteleRepeatValue10.size();
-			if(!selectGlOjByColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
-					Integer optionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
-					optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
-				} else {
-					Integer optionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
-					optionBranchDoubleorPrice = ogBhColorSize * optionBranchPrice;
+			String ogByColor = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor();
+			if("0001402".equals(ogByColor)) {
+				// GILETモデル
+				String ogGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// 標準JACKETのボタン付け糸指定
+				String ogByColorPlace1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace1();
+				String ogByColorPlace2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace2();
+				String ogByColorPlace3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace3();
+				String ogByColorPlace4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace4();
+				String ogByColorPlace5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace5();
+				String ogByColorPlace6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace6();
+				String ogByColorPlace7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace7();
+				String ogByColorPlace8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace8();
+				String ogByColorPlace9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace9();
+				String ogByColorPlace10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColorPlace10();
+
+				String ogByColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor1();
+				String ogByColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor2();
+				String ogByColor3 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor3();
+				String ogByColor4 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor4();
+				String ogByColor5 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor5();
+				String ogByColor6 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor6();
+				String ogByColor7 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor7();
+				String ogByColor8 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor8();
+				String ogByColor9 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor9();
+				String ogByColor10 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor10();
+
+				List<String> ogBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(ogByColorPlace1, ogByColor1, ogBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(ogByColorPlace2, ogByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(ogByColorPlace3, ogByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(ogByColorPlace4, ogByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(ogByColorPlace5, ogByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(ogByColorPlace6, ogByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(ogByColorPlace7, ogByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(ogByColorPlace8, ogByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(ogByColorPlace9, ogByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(ogByColorPlace10, ogByColor10, deteleRepeatValue9);
+
+				int ogBhColorSize = deteleRepeatValue10.size();
+				if(!selectGlOjByColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(ogGiletModel) || et15dModel.equals(ogGiletModel)) {
+						Integer optionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
+						optionBranchDoubleorPrice = ogBhColorSize * optionBranchDoublePrice;
+					} else {
+						Integer optionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
+						optionBranchDoubleorPrice = ogBhColorSize * optionBranchPrice;
+					}
 				}
 			}
 			order.setGlBtnthreadColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// GILETモデル
-			String tgGiletModel = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// タキシードJACKETのボタン付け糸指定
-			String tgByColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace1();
-			String tgByColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace2();
-			String tgByColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace3();
-			String tgByColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace4();
-			String tgByColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace5();
-			String tgByColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace6();
-			String tgByColorPlace7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace7();
-			String tgByColorPlace8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace8();
-			String tgByColorPlace9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace9();
-			String tgByColorPlace10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace10();
-
-			String tgByColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor1();
-			String tgByColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor2();
-			String tgByColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor3();
-			String tgByColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor4();
-			String tgByColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor5();
-			String tgByColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor6();
-			String tgByColor7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor7();
-			String tgByColor8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor8();
-			String tgByColor9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor9();
-			String tgByColor10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor10();
-
-			List<String> tgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tgByColorPlace1, tgByColor1, tgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tgByColorPlace2, tgByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tgByColorPlace3, tgByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tgByColorPlace4, tgByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(tgByColorPlace5, tgByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(tgByColorPlace6, tgByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(tgByColorPlace7, tgByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(tgByColorPlace8, tgByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(tgByColorPlace9, tgByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(tgByColorPlace10, tgByColor10, deteleRepeatValue9);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tgBhColorSize = deteleRepeatValue10.size();
-			if(!selectGlOjByColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(tgGiletModel) || et15dModel.equals(tgGiletModel)) {
-					Integer tptionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
-					tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
-				} else {
-					Integer tptionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
-					tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchPrice;
+			String tgByColor = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor();
+			if("0001402".equals(tgByColor)) {
+				// GILETモデル
+				String tgGiletModel = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// タキシードJACKETのボタン付け糸指定
+				String tgByColorPlace1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace1();
+				String tgByColorPlace2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace2();
+				String tgByColorPlace3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace3();
+				String tgByColorPlace4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace4();
+				String tgByColorPlace5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace5();
+				String tgByColorPlace6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace6();
+				String tgByColorPlace7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace7();
+				String tgByColorPlace8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace8();
+				String tgByColorPlace9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace9();
+				String tgByColorPlace10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColorPlace10();
+
+				String tgByColor1 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor1();
+				String tgByColor2 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor2();
+				String tgByColor3 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor3();
+				String tgByColor4 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor4();
+				String tgByColor5 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor5();
+				String tgByColor6 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor6();
+				String tgByColor7 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor7();
+				String tgByColor8 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor8();
+				String tgByColor9 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor9();
+				String tgByColor10 = orderCoForm.getCoOptionGiletTuxedoInfo().getTgByColor10();
+
+				List<String> tgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tgByColorPlace1, tgByColor1, tgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tgByColorPlace2, tgByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tgByColorPlace3, tgByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tgByColorPlace4, tgByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(tgByColorPlace5, tgByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(tgByColorPlace6, tgByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(tgByColorPlace7, tgByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(tgByColorPlace8, tgByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(tgByColorPlace9, tgByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(tgByColorPlace10, tgByColor10, deteleRepeatValue9);
+
+				int tgBhColorSize = deteleRepeatValue10.size();
+				if(!selectGlOjByColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(tgGiletModel) || et15dModel.equals(tgGiletModel)) {
+						Integer tptionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
+						tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchDoublePrice;
+					} else {
+						Integer tptionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
+						tptionBranchDoubleorPrice = tgBhColorSize * tptionBranchPrice;
+					}
 				}
 			}
 			order.setGlBtnthreadColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// GILETモデル
-			String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
-					.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
-			// BS01-D
-			String bs01dModel = "BS01-D";
-			// ET15-D
-			String et15dModel = "ET15-D";
-			// ウォッシャブルJACKETのボタン付け糸指定
-			String wgByColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace1();
-			String wgByColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace2();
-			String wgByColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace3();
-			String wgByColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace4();
-			String wgByColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace5();
-			String wgByColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace6();
-			String wgByColorPlace7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace7();
-			String wgByColorPlace8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace8();
-			String wgByColorPlace9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace9();
-			String wgByColorPlace10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace10();
-
-			String wgByColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor1();
-			String wgByColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor2();
-			String wgByColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor3();
-			String wgByColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor4();
-			String wgByColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor5();
-			String wgByColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor6();
-			String wgByColor7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor7();
-			String wgByColor8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor8();
-			String wgByColor9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor9();
-			String wgByColor10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor10();
-
-			List<String> wgBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wgByColorPlace1, wgByColor1, wgBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wgByColorPlace2, wgByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wgByColorPlace3, wgByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wgByColorPlace4, wgByColor4, deteleRepeatValue3);
-			List<String> deteleRepeatValue5 = deteleRepeatValue(wgByColorPlace5, wgByColor5, deteleRepeatValue4);
-			List<String> deteleRepeatValue6 = deteleRepeatValue(wgByColorPlace6, wgByColor6, deteleRepeatValue5);
-			List<String> deteleRepeatValue7 = deteleRepeatValue(wgByColorPlace7, wgByColor7, deteleRepeatValue6);
-			List<String> deteleRepeatValue8 = deteleRepeatValue(wgByColorPlace8, wgByColor8, deteleRepeatValue7);
-			List<String> deteleRepeatValue9 = deteleRepeatValue(wgByColorPlace9, wgByColor9, deteleRepeatValue8);
-			List<String> deteleRepeatValue10 = deteleRepeatValue(wgByColorPlace10, wgByColor10, deteleRepeatValue9);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wgBhColorSize = deteleRepeatValue10.size();
-			if(!selectGlOjByColorPriceList.isEmpty()) {
-				if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
-					Integer wptionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
-					wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
-				} else {
-					Integer wptionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
-					wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchPrice;
+			String wgByColor = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor();
+			if("0001402".equals(wgByColor)) {
+				// GILETモデル
+				String OgGiletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModelMap()
+						.get(orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel());
+				// BS01-D
+				String bs01dModel = "BS01-D";
+				// ET15-D
+				String et15dModel = "ET15-D";
+				// ウォッシャブルJACKETのボタン付け糸指定
+				String wgByColorPlace1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace1();
+				String wgByColorPlace2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace2();
+				String wgByColorPlace3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace3();
+				String wgByColorPlace4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace4();
+				String wgByColorPlace5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace5();
+				String wgByColorPlace6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace6();
+				String wgByColorPlace7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace7();
+				String wgByColorPlace8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace8();
+				String wgByColorPlace9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace9();
+				String wgByColorPlace10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColorPlace10();
+
+				String wgByColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor1();
+				String wgByColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor2();
+				String wgByColor3 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor3();
+				String wgByColor4 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor4();
+				String wgByColor5 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor5();
+				String wgByColor6 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor6();
+				String wgByColor7 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor7();
+				String wgByColor8 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor8();
+				String wgByColor9 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor9();
+				String wgByColor10 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor10();
+
+				List<String> wgBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wgByColorPlace1, wgByColor1, wgBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wgByColorPlace2, wgByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wgByColorPlace3, wgByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wgByColorPlace4, wgByColor4, deteleRepeatValue3);
+				List<String> deteleRepeatValue5 = deteleRepeatValue(wgByColorPlace5, wgByColor5, deteleRepeatValue4);
+				List<String> deteleRepeatValue6 = deteleRepeatValue(wgByColorPlace6, wgByColor6, deteleRepeatValue5);
+				List<String> deteleRepeatValue7 = deteleRepeatValue(wgByColorPlace7, wgByColor7, deteleRepeatValue6);
+				List<String> deteleRepeatValue8 = deteleRepeatValue(wgByColorPlace8, wgByColor8, deteleRepeatValue7);
+				List<String> deteleRepeatValue9 = deteleRepeatValue(wgByColorPlace9, wgByColor9, deteleRepeatValue8);
+				List<String> deteleRepeatValue10 = deteleRepeatValue(wgByColorPlace10, wgByColor10, deteleRepeatValue9);
+
+				int wgBhColorSize = deteleRepeatValue10.size();
+				if(!selectGlOjByColorPriceList.isEmpty()) {
+					if (bs01dModel.equals(OgGiletModel) || et15dModel.equals(OgGiletModel)) {
+						Integer wptionBranchDoublePrice = selectGlOjByColorPriceList.get(0).getMoapDoublePrice();
+						wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchDoublePrice;
+					} else {
+						Integer wptionBranchPrice = selectGlOjByColorPriceList.get(0).getMoapPrice();
+						wptionBranchDoubleorPrice = wgBhColorSize * wptionBranchPrice;
+					}
 				}
 			}
 			order.setGlBtnthreadColorWsPrice(wptionBranchDoubleorPrice);
@@ -8641,23 +8833,27 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのステッチ箇所変更
-			String opStitchModifyPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace1();
-			String opStitchModifyPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace2();
-			String opStitchModifyPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace3();
-			String opStitchModifyPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace4();
-
-			List<String> opStitchModifyPlaceList = new ArrayList<>();
-			opStitchModifyPlaceList.add(opStitchModifyPlace1);
-			opStitchModifyPlaceList.add(opStitchModifyPlace2);
-			opStitchModifyPlaceList.add(opStitchModifyPlace3);
-			opStitchModifyPlaceList.add(opStitchModifyPlace4);
-			opStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			for (String opStitchModifyPlace : opStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyWageList) {
-					if (opStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+			String opStitchModify = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModify();
+			if("0002002".equals(opStitchModify)) {
+				// 標準PANTSのステッチ箇所変更
+				String opStitchModifyPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace1();
+				String opStitchModifyPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace2();
+				String opStitchModifyPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace3();
+				String opStitchModifyPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace4();
+
+				List<String> opStitchModifyPlaceList = new ArrayList<>();
+				opStitchModifyPlaceList.add(opStitchModifyPlace1);
+				opStitchModifyPlaceList.add(opStitchModifyPlace2);
+				opStitchModifyPlaceList.add(opStitchModifyPlace3);
+				opStitchModifyPlaceList.add(opStitchModifyPlace4);
+				opStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String opStitchModifyPlace : opStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyWageList) {
+						if (opStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -8665,23 +8861,27 @@ public class OrderCoHelper {
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのステッチ箇所変更
-			String wpStitchModifyPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace1();
-			String wpStitchModifyPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace2();
-			String wpStitchModifyPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace3();
-			String wpStitchModifyPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace4();
-
-			List<String> wpStitchModifyPlaceList = new ArrayList<>();
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace1);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace2);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace3);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace4);
-			wpStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			for (String wpStitchModifyPlace : wpStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyWageList) {
-					if (wpStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+			String wpStitchModify = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModify();
+			if("0002002".equals(wpStitchModify)) {
+				// ウォッシャブルPANTSのステッチ箇所変更
+				String wpStitchModifyPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace1();
+				String wpStitchModifyPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace2();
+				String wpStitchModifyPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace3();
+				String wpStitchModifyPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace4();
+
+				List<String> wpStitchModifyPlaceList = new ArrayList<>();
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace1);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace2);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace3);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace4);
+				wpStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String wpStitchModifyPlace : wpStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyWageList) {
+						if (wpStitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -8702,23 +8902,27 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのステッチ箇所変更
-			String opStitchModifyPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace1();
-			String opStitchModifyPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace2();
-			String opStitchModifyPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace3();
-			String opStitchModifyPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace4();
-
-			List<String> opStitchModifyPlaceList = new ArrayList<>();
-			opStitchModifyPlaceList.add(opStitchModifyPlace1);
-			opStitchModifyPlaceList.add(opStitchModifyPlace2);
-			opStitchModifyPlaceList.add(opStitchModifyPlace3);
-			opStitchModifyPlaceList.add(opStitchModifyPlace4);
-			opStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer optionBranchDoubleorPrice = 0;
-			for (String opStitchModifyPlace : opStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyPriceList) {
-					if (opStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String opStitchModify = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModify();
+			if("0002002".equals(opStitchModify)) {
+				// 標準PANTSのステッチ箇所変更
+				String opStitchModifyPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace1();
+				String opStitchModifyPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace2();
+				String opStitchModifyPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace3();
+				String opStitchModifyPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpStitchModifyPlace4();
+
+				List<String> opStitchModifyPlaceList = new ArrayList<>();
+				opStitchModifyPlaceList.add(opStitchModifyPlace1);
+				opStitchModifyPlaceList.add(opStitchModifyPlace2);
+				opStitchModifyPlaceList.add(opStitchModifyPlace3);
+				opStitchModifyPlaceList.add(opStitchModifyPlace4);
+				opStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String opStitchModifyPlace : opStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyPriceList) {
+						if (opStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+						}
 					}
 				}
 			}
@@ -8726,23 +8930,27 @@ public class OrderCoHelper {
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのステッチ箇所変更
-			String wpStitchModifyPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace1();
-			String wpStitchModifyPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace2();
-			String wpStitchModifyPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace3();
-			String wpStitchModifyPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace4();
-
-			List<String> wpStitchModifyPlaceList = new ArrayList<>();
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace1);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace2);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace3);
-			wpStitchModifyPlaceList.add(wpStitchModifyPlace4);
-			wpStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer wptionBranchDoubleorPrice = 0;
-			for (String wpStitchModifyPlace : wpStitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyPriceList) {
-					if (wpStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						wptionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String wpStitchModify = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModify();
+			if("0002002".equals(wpStitchModify)) {
+				// ウォッシャブルPANTSのステッチ箇所変更
+				String wpStitchModifyPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace1();
+				String wpStitchModifyPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace2();
+				String wpStitchModifyPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace3();
+				String wpStitchModifyPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpStitchModifyPlace4();
+
+				List<String> wpStitchModifyPlaceList = new ArrayList<>();
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace1);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace2);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace3);
+				wpStitchModifyPlaceList.add(wpStitchModifyPlace4);
+				wpStitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String wpStitchModifyPlace : wpStitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPtOgStitchModifyPriceList) {
+						if (wpStitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							wptionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+						}
 					}
 				}
 			}
@@ -8762,34 +8970,41 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのAMF色指定
-			String opAmfColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace1();
-			String opAmfColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace2();
-			String opAmfColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace3();
-			String opAmfColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace4();
-
-			String opAmfColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor1();
-			String opAmfColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor2();
-			String opAmfColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor3();
-			String opAmfColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor4();
-
-			List<String> opAmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opAmfColorPlace1, opAmfColor1, opAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opAmfColorPlace2, opAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opAmfColorPlace3, opAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opAmfColorPlace4, opAmfColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal opAmfColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjAmfColorWageList.isEmpty()) {
-				mowWage = selectPtOjAmfColorWageList.get(0).getMowWage();
+			String opAmfColor = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor();
+			if("0002402".equals(opAmfColor)) {
+				// 標準PANTSのAMF色指定
+				String opAmfColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace1();
+				String opAmfColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace2();
+				String opAmfColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace3();
+				String opAmfColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace4();
+
+				String opAmfColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor1();
+				String opAmfColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor2();
+				String opAmfColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor3();
+				String opAmfColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor4();
+
+				List<String> opAmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opAmfColorPlace1, opAmfColor1, opAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opAmfColorPlace2, opAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opAmfColorPlace3, opAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opAmfColorPlace4, opAmfColor4, deteleRepeatValue3);
+
+				BigDecimal opAmfColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjAmfColorWageList.isEmpty()) {
+					mowWage = selectPtOjAmfColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = opAmfColorSize.multiply(mowWage);
 			}
-			optionBranchWage = opAmfColorSize.multiply(mowWage);
 			order.setPtAmfColorWsWage(optionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
+			
+			BigDecimal wptionBranchWage = new BigDecimal(0);
+			String wpAmfColor = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColor();
+			if("0002402".equals(wpAmfColor)) {
 				// ウォッシャブルPANTSのAMF色指定
 				String wpAmfColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColorPlace1();
 				String wpAmfColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColorPlace2();
@@ -8807,14 +9022,14 @@ public class OrderCoHelper {
 				List<String> deteleRepeatValue3 = deteleRepeatValue(wpAmfColorPlace3, wpAmfColor3, deteleRepeatValue2);
 				List<String> deteleRepeatValue4 = deteleRepeatValue(wpAmfColorPlace4, wpAmfColor4, deteleRepeatValue3);
 
-				BigDecimal wptionBranchWage = new BigDecimal(0);
 				BigDecimal wpAmfColorSize = new BigDecimal(deteleRepeatValue4.size());
 				BigDecimal mowWage = new BigDecimal(0);
 				if(!selectPtOjAmfColorWageList.isEmpty()) {
 					mowWage = selectPtOjAmfColorWageList.get(0).getMowWage();
 				}
 				wptionBranchWage = wpAmfColorSize.multiply(mowWage);
-				order.setPtAmfColorWsWage(wptionBranchWage);
+			}
+			order.setPtAmfColorWsWage(wptionBranchWage);
 			}
 	}
 
@@ -8830,34 +9045,40 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 :標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのAMF色指定
-			String opAmfColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace1();
-			String opAmfColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace2();
-			String opAmfColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace3();
-			String opAmfColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace4();
-
-			String opAmfColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor1();
-			String opAmfColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor2();
-			String opAmfColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor3();
-			String opAmfColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor4();
-
-			List<String> opAmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opAmfColorPlace1, opAmfColor1, opAmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opAmfColorPlace2, opAmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opAmfColorPlace3, opAmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opAmfColorPlace4, opAmfColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int opAmfColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPtOjAmfColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPtOjAmfColorPriceList.get(0).getMoapPrice();
+			String opAmfColor = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor();
+			if("0002402".equals(opAmfColor)) {
+				// 標準PANTSのAMF色指定
+				String opAmfColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace1();
+				String opAmfColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace2();
+				String opAmfColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace3();
+				String opAmfColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColorPlace4();
+
+				String opAmfColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor1();
+				String opAmfColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor2();
+				String opAmfColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor3();
+				String opAmfColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor4();
+
+				List<String> opAmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opAmfColorPlace1, opAmfColor1, opAmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opAmfColorPlace2, opAmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opAmfColorPlace3, opAmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opAmfColorPlace4, opAmfColor4, deteleRepeatValue3);
+
+				int opAmfColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPtOjAmfColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPtOjAmfColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = opAmfColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = opAmfColorSize * optionBranchDoublePrice;
 			order.setPtAmfColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
+			Integer wptionBranchDoubleorPrice = 0;
+			String wpAmfColor = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColor();
+			if("0002402".equals(wpAmfColor)) {
 				// ウォッシャブルPANTSのAMF色指定
 				String wpAmfColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColorPlace1();
 				String wpAmfColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColorPlace2();
@@ -8875,14 +9096,14 @@ public class OrderCoHelper {
 				List<String> deteleRepeatValue3 = deteleRepeatValue(wpAmfColorPlace3, wpAmfColor3, deteleRepeatValue2);
 				List<String> deteleRepeatValue4 = deteleRepeatValue(wpAmfColorPlace4, wpAmfColor4, deteleRepeatValue3);
 
-				Integer wptionBranchDoubleorPrice = 0;
 				int wpAmfColorSize = deteleRepeatValue4.size();
 				Integer wptionBranchDoublePrice = 0;
 				if(!selectPtOjAmfColorPriceList.isEmpty()) {
 					wptionBranchDoublePrice = selectPtOjAmfColorPriceList.get(0).getMoapPrice();
 				}
 				wptionBranchDoubleorPrice = wpAmfColorSize * wptionBranchDoublePrice;
-				order.setPtAmfColorWsPrice(wptionBranchDoubleorPrice);
+			}
+			order.setPtAmfColorWsPrice(wptionBranchDoubleorPrice);
 			}
 	}
 	
@@ -8899,86 +9120,96 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 : 標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのボタンホール色指定
-			String opBhColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace1();
-			String opBhColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace2();
-			String opBhColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace3();
-			String opBhColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace4();
-
-			String opBhColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor1();
-			String opBhColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor2();
-			String opBhColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor3();
-			String opBhColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor4();
-
-			List<String> opBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opBhColorPlace1, opBhColor1, opBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opBhColorPlace2, opBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opBhColorPlace3, opBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opBhColorPlace4, opBhColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal opBhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage =  new BigDecimal(0);
-			if(!selectPtOjBhColorWageList.isEmpty()) {
-				mowWage = selectPtOjBhColorWageList.get(0).getMowWage();
+			String opBhColor = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor();
+			if("0002702".equals(opBhColor)) {
+				// 標準PANTSのボタンホール色指定
+				String opBhColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace1();
+				String opBhColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace2();
+				String opBhColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace3();
+				String opBhColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace4();
+
+				String opBhColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor1();
+				String opBhColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor2();
+				String opBhColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor3();
+				String opBhColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor4();
+
+				List<String> opBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opBhColorPlace1, opBhColor1, opBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opBhColorPlace2, opBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opBhColorPlace3, opBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opBhColorPlace4, opBhColor4, deteleRepeatValue3);
+
+				BigDecimal opBhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage =  new BigDecimal(0);
+				if(!selectPtOjBhColorWageList.isEmpty()) {
+					mowWage = selectPtOjBhColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = opBhColorSize.multiply(mowWage);
 			}
-			optionBranchWage = opBhColorSize.multiply(mowWage);
 			order.setPtBtnholeColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTSのボタンホール色指定
-			String tpBhColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace1();
-			String tpBhColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace2();
-			String tpBhColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace3();
-			String tpBhColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace4();
-
-			String tpBhColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor1();
-			String tpBhColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor2();
-			String tpBhColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor3();
-			String tpBhColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor4();
-
-			List<String> tpBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tpBhColorPlace1, tpBhColor1, tpBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tpBhColorPlace2, tpBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tpBhColorPlace3, tpBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tpBhColorPlace4, tpBhColor4, deteleRepeatValue3);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tpBhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjBhColorWageList.isEmpty()) {
-				mowWage = selectPtOjBhColorWageList.get(0).getMowWage();	
+			String tpBhColor = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor();
+			if("0002702".equals(tpBhColor)) {
+				// タキシードPANTSのボタンホール色指定
+				String tpBhColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace1();
+				String tpBhColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace2();
+				String tpBhColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace3();
+				String tpBhColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace4();
+
+				String tpBhColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor1();
+				String tpBhColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor2();
+				String tpBhColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor3();
+				String tpBhColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor4();
+
+				List<String> tpBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tpBhColorPlace1, tpBhColor1, tpBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tpBhColorPlace2, tpBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tpBhColorPlace3, tpBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tpBhColorPlace4, tpBhColor4, deteleRepeatValue3);
+
+				
+				BigDecimal tpBhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjBhColorWageList.isEmpty()) {
+					mowWage = selectPtOjBhColorWageList.get(0).getMowWage();	
+				}
+				tptionBranchWage = tpBhColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tpBhColorSize.multiply(mowWage);
 			order.setPtBtnholeColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのボタンホール色指定
-			String wpBhColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace1();
-			String wpBhColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace2();
-			String wpBhColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace3();
-			String wpBhColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace4();
-
-			String wpBhColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor1();
-			String wpBhColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor2();
-			String wpBhColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor3();
-			String wpBhColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor4();
-
-			List<String> wpBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wpBhColorPlace1, wpBhColor1, wpBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wpBhColorPlace2, wpBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wpBhColorPlace3, wpBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wpBhColorPlace4, wpBhColor4, deteleRepeatValue3);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wpBhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjBhColorWageList.isEmpty()) {
-				mowWage = selectPtOjBhColorWageList.get(0).getMowWage();
+			String wpBhColor = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor();
+			if("0002702".equals(wpBhColor)) {
+				// ウォッシャブルPANTSのボタンホール色指定
+				String wpBhColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace1();
+				String wpBhColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace2();
+				String wpBhColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace3();
+				String wpBhColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace4();
+
+				String wpBhColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor1();
+				String wpBhColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor2();
+				String wpBhColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor3();
+				String wpBhColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor4();
+
+				List<String> wpBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wpBhColorPlace1, wpBhColor1, wpBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wpBhColorPlace2, wpBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wpBhColorPlace3, wpBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wpBhColorPlace4, wpBhColor4, deteleRepeatValue3);
+
+				BigDecimal wpBhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjBhColorWageList.isEmpty()) {
+					mowWage = selectPtOjBhColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wpBhColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wpBhColorSize.multiply(mowWage);
 			order.setPtBtnholeColorWsWage(wptionBranchWage);
 		}
 	}
@@ -8996,86 +9227,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0 : 標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのボタンホール色指定
-			String opBhColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace1();
-			String opBhColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace2();
-			String opBhColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace3();
-			String opBhColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace4();
-
-			String opBhColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor1();
-			String opBhColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor2();
-			String opBhColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor3();
-			String opBhColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor4();
-
-			List<String> opBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opBhColorPlace1, opBhColor1, opBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opBhColorPlace2, opBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opBhColorPlace3, opBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opBhColorPlace4, opBhColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int opBhColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPtOjBhColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+			String opBhColor = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor();
+			if("0002702".equals(opBhColor)) {
+				// 標準PANTSのボタンホール色指定
+				String opBhColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace1();
+				String opBhColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace2();
+				String opBhColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace3();
+				String opBhColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColorPlace4();
+
+				String opBhColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor1();
+				String opBhColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor2();
+				String opBhColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor3();
+				String opBhColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor4();
+
+				List<String> opBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opBhColorPlace1, opBhColor1, opBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opBhColorPlace2, opBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opBhColorPlace3, opBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opBhColorPlace4, opBhColor4, deteleRepeatValue3);
+
+				int opBhColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPtOjBhColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = opBhColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = opBhColorSize * optionBranchDoublePrice;
 			order.setPtBtnholeColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTSのボタンホール色指定
-			String tpBhColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace1();
-			String tpBhColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace2();
-			String tpBhColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace3();
-			String tpBhColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace4();
-
-			String tpBhColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor1();
-			String tpBhColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor2();
-			String tpBhColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor3();
-			String tpBhColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor4();
-
-			List<String> tpBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tpBhColorPlace1, tpBhColor1, tpBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tpBhColorPlace2, tpBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tpBhColorPlace3, tpBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tpBhColorPlace4, tpBhColor4, deteleRepeatValue3);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tpBhColorSize = deteleRepeatValue4.size();
-			Integer tptionBranchDoublePrice = 0;
-			if(!selectPtOjBhColorPriceList.isEmpty()) {
-				tptionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+			String tpBhColor = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor();
+			if("0002702".equals(tpBhColor)) {
+				// タキシードPANTSのボタンホール色指定
+				String tpBhColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace1();
+				String tpBhColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace2();
+				String tpBhColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace3();
+				String tpBhColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColorPlace4();
+
+				String tpBhColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor1();
+				String tpBhColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor2();
+				String tpBhColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor3();
+				String tpBhColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBhColor4();
+
+				List<String> tpBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tpBhColorPlace1, tpBhColor1, tpBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tpBhColorPlace2, tpBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tpBhColorPlace3, tpBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tpBhColorPlace4, tpBhColor4, deteleRepeatValue3);
+
+				int tpBhColorSize = deteleRepeatValue4.size();
+				Integer tptionBranchDoublePrice = 0;
+				if(!selectPtOjBhColorPriceList.isEmpty()) {
+					tptionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+				}
+				tptionBranchDoubleorPrice = tpBhColorSize * tptionBranchDoublePrice;
 			}
-			tptionBranchDoubleorPrice = tpBhColorSize * tptionBranchDoublePrice;
 			order.setPtBtnholeColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのボタンホール色指定
-			String wpBhColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace1();
-			String wpBhColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace2();
-			String wpBhColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace3();
-			String wpBhColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace4();
-
-			String wpBhColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor1();
-			String wpBhColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor2();
-			String wpBhColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor3();
-			String wpBhColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor4();
-
-			List<String> wpBhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wpBhColorPlace1, wpBhColor1, wpBhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wpBhColorPlace2, wpBhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wpBhColorPlace3, wpBhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wpBhColorPlace4, wpBhColor4, deteleRepeatValue3);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wpBhColorSize = deteleRepeatValue4.size();
-			Integer wptionBranchDoublePrice = 0;
-			if(!selectPtOjBhColorPriceList.isEmpty()) {
-				wptionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+			String wpBhColor = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor();
+			if("0002702".equals(wpBhColor)) {
+				// ウォッシャブルPANTSのボタンホール色指定
+				String wpBhColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace1();
+				String wpBhColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace2();
+				String wpBhColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace3();
+				String wpBhColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColorPlace4();
+
+				String wpBhColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor1();
+				String wpBhColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor2();
+				String wpBhColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor3();
+				String wpBhColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor4();
+
+				List<String> wpBhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wpBhColorPlace1, wpBhColor1, wpBhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wpBhColorPlace2, wpBhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wpBhColorPlace3, wpBhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wpBhColorPlace4, wpBhColor4, deteleRepeatValue3);
+
+				int wpBhColorSize = deteleRepeatValue4.size();
+				Integer wptionBranchDoublePrice = 0;
+				if(!selectPtOjBhColorPriceList.isEmpty()) {
+					wptionBranchDoublePrice = selectPtOjBhColorPriceList.get(0).getMoapPrice();
+				}
+				wptionBranchDoubleorPrice = wpBhColorSize * wptionBranchDoublePrice;
 			}
-			wptionBranchDoubleorPrice = wpBhColorSize * wptionBranchDoublePrice;
 			order.setPtBtnholeColorWsPrice(wptionBranchDoubleorPrice);
 		}
 	}
@@ -9093,86 +9333,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのボタン付け糸指定
-			String opByColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace1();
-			String opByColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace2();
-			String opByColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace3();
-			String opByColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace4();
-
-			String opByColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor1();
-			String opByColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor2();
-			String opByColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor3();
-			String opByColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor4();
-
-			List<String> opByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opByColorPlace1, opByColor1, opByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opByColorPlace2, opByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opByColorPlace3, opByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opByColorPlace4, opByColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal opByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjByColorWageList.isEmpty()) {
-				mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+			String opByColor = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor();
+			if("0003002".equals(opByColor)) {
+				// 標準PANTSのボタン付け糸指定
+				String opByColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace1();
+				String opByColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace2();
+				String opByColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace3();
+				String opByColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace4();
+
+				String opByColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor1();
+				String opByColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor2();
+				String opByColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor3();
+				String opByColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor4();
+
+				List<String> opByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opByColorPlace1, opByColor1, opByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opByColorPlace2, opByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opByColorPlace3, opByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opByColorPlace4, opByColor4, deteleRepeatValue3);
+
+				BigDecimal opByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjByColorWageList.isEmpty()) {
+					mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = opByColorSize.multiply(mowWage);
 			}
-			optionBranchWage = opByColorSize.multiply(mowWage);
 			order.setPtBtnthreadColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTSのボタン付け糸指定
-			String tpByColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace1();
-			String tpByColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace2();
-			String tpByColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace3();
-			String tpByColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace4();
-
-			String tpByColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor1();
-			String tpByColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor2();
-			String tpByColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor3();
-			String tpByColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor4();
-
-			List<String> tpByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tpByColorPlace1, tpByColor1, tpByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tpByColorPlace2, tpByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tpByColorPlace3, tpByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tpByColorPlace4, tpByColor4, deteleRepeatValue3);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tpByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjByColorWageList.isEmpty()) {
-				mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+			String tpByColor = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor();
+			if("0003002".equals(tpByColor)) {
+				// タキシードPANTSのボタン付け糸指定
+				String tpByColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace1();
+				String tpByColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace2();
+				String tpByColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace3();
+				String tpByColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace4();
+
+				String tpByColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor1();
+				String tpByColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor2();
+				String tpByColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor3();
+				String tpByColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor4();
+
+				List<String> tpByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tpByColorPlace1, tpByColor1, tpByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tpByColorPlace2, tpByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tpByColorPlace3, tpByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tpByColorPlace4, tpByColor4, deteleRepeatValue3);
+
+				BigDecimal tpByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjByColorWageList.isEmpty()) {
+					mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tpByColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tpByColorSize.multiply(mowWage);
 			order.setPtBtnthreadColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのボタン付け糸指定
-			String wpByColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace1();
-			String wpByColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace2();
-			String wpByColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace3();
-			String wpByColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace4();
-
-			String wpByColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor1();
-			String wpByColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor2();
-			String wpByColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor3();
-			String wpByColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor4();
-
-			List<String> wpByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wpByColorPlace1, wpByColor1, wpByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wpByColorPlace2, wpByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wpByColorPlace3, wpByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wpByColorPlace4, wpByColor4, deteleRepeatValue3);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wpByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPtOjByColorWageList.isEmpty()) {
-				mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+			String wpByColor = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor();
+			if("0003002".equals(wpByColor)) {
+				// ウォッシャブルPANTSのボタン付け糸指定
+				String wpByColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace1();
+				String wpByColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace2();
+				String wpByColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace3();
+				String wpByColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace4();
+
+				String wpByColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor1();
+				String wpByColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor2();
+				String wpByColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor3();
+				String wpByColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor4();
+
+				List<String> wpByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wpByColorPlace1, wpByColor1, wpByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wpByColorPlace2, wpByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wpByColorPlace3, wpByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wpByColorPlace4, wpByColor4, deteleRepeatValue3);
+
+				BigDecimal wpByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPtOjByColorWageList.isEmpty()) {
+					mowWage = selectPtOjByColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wpByColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wpByColorSize.multiply(mowWage);
 			order.setPtBtnthreadColorWsWage(wptionBranchWage);
 		}
 	}
@@ -9190,86 +9439,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:
 		if("9000101".equals(productCategory)) {
-			// 標準PANTSのボタン付け糸指定
-			String opByColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace1();
-			String opByColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace2();
-			String opByColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace3();
-			String opByColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace4();
-
-			String opByColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor1();
-			String opByColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor2();
-			String opByColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor3();
-			String opByColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor4();
-
-			List<String> opByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(opByColorPlace1, opByColor1, opByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(opByColorPlace2, opByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(opByColorPlace3, opByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(opByColorPlace4, opByColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int opByColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPtOjByColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+			String opByColor = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor();
+			if("0003002".equals(opByColor)) {
+				// 標準PANTSのボタン付け糸指定
+				String opByColorPlace1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace1();
+				String opByColorPlace2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace2();
+				String opByColorPlace3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace3();
+				String opByColorPlace4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColorPlace4();
+
+				String opByColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor1();
+				String opByColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor2();
+				String opByColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor3();
+				String opByColor4 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor4();
+
+				List<String> opByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(opByColorPlace1, opByColor1, opByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(opByColorPlace2, opByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(opByColorPlace3, opByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(opByColorPlace4, opByColor4, deteleRepeatValue3);
+
+				int opByColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPtOjByColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = opByColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = opByColorSize * optionBranchDoublePrice;
 			order.setPtBtnthreadColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTSのボタン付け糸指定
-			String tpByColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace1();
-			String tpByColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace2();
-			String tpByColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace3();
-			String tpByColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace4();
-
-			String tpByColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor1();
-			String tpByColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor2();
-			String tpByColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor3();
-			String tpByColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor4();
-
-			List<String> tpByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tpByColorPlace1, tpByColor1, tpByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tpByColorPlace2, tpByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tpByColorPlace3, tpByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tpByColorPlace4, tpByColor4, deteleRepeatValue3);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tpByColorSize = deteleRepeatValue4.size();
-			Integer tptionBranchDoublePrice = 0;
-			if(!selectPtOjByColorPriceList.isEmpty()) {
-				tptionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+			String tpByColor = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor();
+			if("0003002".equals(tpByColor)) {
+				// タキシードPANTSのボタン付け糸指定
+				String tpByColorPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace1();
+				String tpByColorPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace2();
+				String tpByColorPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace3();
+				String tpByColorPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColorPlace4();
+
+				String tpByColor1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor1();
+				String tpByColor2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor2();
+				String tpByColor3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor3();
+				String tpByColor4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpByColor4();
+
+				List<String> tpByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tpByColorPlace1, tpByColor1, tpByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tpByColorPlace2, tpByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tpByColorPlace3, tpByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tpByColorPlace4, tpByColor4, deteleRepeatValue3);
+
+				int tpByColorSize = deteleRepeatValue4.size();
+				Integer tptionBranchDoublePrice = 0;
+				if(!selectPtOjByColorPriceList.isEmpty()) {
+					tptionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+				}
+				tptionBranchDoubleorPrice = tpByColorSize * tptionBranchDoublePrice;
 			}
-			tptionBranchDoubleorPrice = tpByColorSize * tptionBranchDoublePrice;
 			order.setPtBtnthreadColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのボタン付け糸指定
-			String wpByColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace1();
-			String wpByColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace2();
-			String wpByColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace3();
-			String wpByColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace4();
-
-			String wpByColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor1();
-			String wpByColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor2();
-			String wpByColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor3();
-			String wpByColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor4();
-
-			List<String> wpByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wpByColorPlace1, wpByColor1, wpByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wpByColorPlace2, wpByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wpByColorPlace3, wpByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wpByColorPlace4, wpByColor4, deteleRepeatValue3);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wpByColorSize = deteleRepeatValue4.size();
-			Integer wptionBranchDoublePrice = 0;
-			if(!selectPtOjByColorPriceList.isEmpty()) {
-				wptionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+			String wpByColor = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor();
+			if("0003002".equals(wpByColor)) {
+				// ウォッシャブルPANTSのボタン付け糸指定
+				String wpByColorPlace1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace1();
+				String wpByColorPlace2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace2();
+				String wpByColorPlace3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace3();
+				String wpByColorPlace4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColorPlace4();
+
+				String wpByColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor1();
+				String wpByColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor2();
+				String wpByColor3 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor3();
+				String wpByColor4 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor4();
+
+				List<String> wpByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wpByColorPlace1, wpByColor1, wpByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wpByColorPlace2, wpByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wpByColorPlace3, wpByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wpByColorPlace4, wpByColor4, deteleRepeatValue3);
+
+				int wpByColorSize = deteleRepeatValue4.size();
+				Integer wptionBranchDoublePrice = 0;
+				if(!selectPtOjByColorPriceList.isEmpty()) {
+					wptionBranchDoublePrice = selectPtOjByColorPriceList.get(0).getMoapPrice();
+				}
+				wptionBranchDoubleorPrice = wpByColorSize * wptionBranchDoublePrice;
 			}
-			wptionBranchDoubleorPrice = wpByColorSize * wptionBranchDoublePrice;
 			order.setPtBtnthreadColorWsPrice(wptionBranchDoubleorPrice);
 		}
 	}
@@ -9287,23 +9545,27 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準JACKETのステッチ箇所変更
-			String op2StitchModifyPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace1();
-			String op2StitchModifyPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace2();
-			String op2StitchModifyPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace3();
-			String op2StitchModifyPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace4();
-
-			List<String> op2StitchModifyPlaceList = new ArrayList<>();
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace1);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace2);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace3);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
-			op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			for (String op2StitchModifyPlace : op2StitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyWageList) {
-					if (op2StitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+			String op2StitchModify = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModify();
+			if("0002002".equals(op2StitchModify)) {
+				// 標準JACKETのステッチ箇所変更
+				String op2StitchModifyPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace1();
+				String op2StitchModifyPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace2();
+				String op2StitchModifyPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace3();
+				String op2StitchModifyPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace4();
+
+				List<String> op2StitchModifyPlaceList = new ArrayList<>();
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace1);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace2);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace3);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
+				op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String op2StitchModifyPlace : op2StitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyWageList) {
+						if (op2StitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							optionBranchWage = optionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -9311,23 +9573,27 @@ public class OrderCoHelper {
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルJACKETのステッチ箇所変更
-			String wp2StitchModifyPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace1();
-			String wp2StitchModifyPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace2();
-			String wp2StitchModifyPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace3();
-			String wp2StitchModifyPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace4();
-
-			List<String> wp2StitchModifyPlaceList = new ArrayList<>();
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace1);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
-			wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			for (String wp2StitchModifyPlace : wp2StitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyWageList) {
-					if (wp2StitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
-						wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+			String wp2StitchModify = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModify();
+			if("0002002".equals(wp2StitchModify)) {
+				// ウォッシャブルJACKETのステッチ箇所変更
+				String wp2StitchModifyPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace1();
+				String wp2StitchModifyPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace2();
+				String wp2StitchModifyPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace3();
+				String wp2StitchModifyPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace4();
+
+				List<String> wp2StitchModifyPlaceList = new ArrayList<>();
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace1);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
+				wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String wp2StitchModifyPlace : wp2StitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyWageList) {
+						if (wp2StitchModifyPlace.equals(nextGenerationPrice.getMowOptionBranchCode())) {
+							wptionBranchWage = wptionBranchWage.add(nextGenerationPrice.getMowWage());
+						}
 					}
 				}
 			}
@@ -9348,23 +9614,27 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のステッチ箇所変更
-			String op2StitchModifyPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace1();
-			String op2StitchModifyPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace2();
-			String op2StitchModifyPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace3();
-			String op2StitchModifyPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace4();
-
-			List<String> op2StitchModifyPlaceList = new ArrayList<>();
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace1);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace2);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace3);
-			op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
-			op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer optionBranchDoubleorPrice = 0;
-			for (String op2StitchModifyPlace : op2StitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyPriceList) {
-					if (op2StitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String op2StitchModify = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModify();
+			if("0002002".equals(op2StitchModify)) {
+				// 標準PANTS2のステッチ箇所変更
+				String op2StitchModifyPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace1();
+				String op2StitchModifyPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace2();
+				String op2StitchModifyPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace3();
+				String op2StitchModifyPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2StitchModifyPlace4();
+
+				List<String> op2StitchModifyPlaceList = new ArrayList<>();
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace1);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace2);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace3);
+				op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
+				op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String op2StitchModifyPlace : op2StitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyPriceList) {
+						if (op2StitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							optionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+						}
 					}
 				}
 			}
@@ -9372,23 +9642,27 @@ public class OrderCoHelper {
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTS2のステッチ箇所変更
-			String wp2StitchModifyPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace1();
-			String wp2StitchModifyPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace2();
-			String wp2StitchModifyPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace3();
-			String wp2StitchModifyPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace4();
-
-			List<String> wp2StitchModifyPlaceList = new ArrayList<>();
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace1);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
-			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
-			wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			Integer wptionBranchDoubleorPrice = 0;
-			for (String wp2StitchModifyPlace : wp2StitchModifyPlaceList) {
-				for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyPriceList) {
-					if (wp2StitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
-						wptionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+			String wp2StitchModify = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModify();
+			if("0002002".equals(wp2StitchModify)) {
+				// ウォッシャブルPANTS2のステッチ箇所変更
+				String wp2StitchModifyPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace1();
+				String wp2StitchModifyPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace2();
+				String wp2StitchModifyPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace3();
+				String wp2StitchModifyPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2StitchModifyPlace4();
+
+				List<String> wp2StitchModifyPlaceList = new ArrayList<>();
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace1);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
+				wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
+				wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
+				
+				for (String wp2StitchModifyPlace : wp2StitchModifyPlaceList) {
+					for (NextGenerationPrice nextGenerationPrice : selectPt2OgStitchModifyPriceList) {
+						if (wp2StitchModifyPlace.equals(nextGenerationPrice.getMoapOptionBranchCode())) {
+							wptionBranchDoubleorPrice += nextGenerationPrice.getMoapPrice();
+						}
 					}
 				}
 			}
@@ -9409,58 +9683,64 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のAMF色指定
-			String op2AmfColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace1();
-			String op2AmfColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace2();
-			String op2AmfColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace3();
-			String op2AmfColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace4();
-
-			String op2AmfColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor1();
-			String op2AmfColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor2();
-			String op2AmfColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor3();
-			String op2AmfColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor4();
-
-			List<String> op2AmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2AmfColorPlace1, op2AmfColor1, op2AmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2AmfColorPlace2, op2AmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2AmfColorPlace3, op2AmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2AmfColorPlace4, op2AmfColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal op2AmfColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjAmfColorWageList.isEmpty()) {
-				mowWage = selectPt2OjAmfColorWageList.get(0).getMowWage();
+			String op2AmfColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor();
+			if("0002402".equals(op2AmfColor)) {
+				// 標準PANTS2のAMF色指定
+				String op2AmfColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace1();
+				String op2AmfColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace2();
+				String op2AmfColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace3();
+				String op2AmfColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace4();
+
+				String op2AmfColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor1();
+				String op2AmfColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor2();
+				String op2AmfColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor3();
+				String op2AmfColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor4();
+
+				List<String> op2AmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2AmfColorPlace1, op2AmfColor1, op2AmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2AmfColorPlace2, op2AmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2AmfColorPlace3, op2AmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2AmfColorPlace4, op2AmfColor4, deteleRepeatValue3);
+
+				BigDecimal op2AmfColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjAmfColorWageList.isEmpty()) {
+					mowWage = selectPt2OjAmfColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = op2AmfColorSize.multiply(mowWage);
 			}
-			optionBranchWage = op2AmfColorSize.multiply(mowWage);
 			order.setPt2AmfColorWsWage(optionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのAMF色指定
-			String wp2AmfColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace1();
-			String wp2AmfColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace2();
-			String wp2AmfColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace3();
-			String wp2AmfColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace4();
-
-			String wp2AmfColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor1();
-			String wp2AmfColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor2();
-			String wp2AmfColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor3();
-			String wp2AmfColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor4();
-
-			List<String> wp2AmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2AmfColorPlace1, wp2AmfColor1, wp2AmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2AmfColorPlace2, wp2AmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2AmfColorPlace3, wp2AmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2AmfColorPlace4, wp2AmfColor4, deteleRepeatValue3);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wp2AmfColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjAmfColorWageList.isEmpty()) {
-				mowWage = selectPt2OjAmfColorWageList.get(0).getMowWage();
+			String wp2AmfColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor();
+			if("0002402".equals(wp2AmfColor)) {
+				// ウォッシャブルPANTSのAMF色指定
+				String wp2AmfColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace1();
+				String wp2AmfColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace2();
+				String wp2AmfColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace3();
+				String wp2AmfColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace4();
+
+				String wp2AmfColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor1();
+				String wp2AmfColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor2();
+				String wp2AmfColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor3();
+				String wp2AmfColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor4();
+
+				List<String> wp2AmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2AmfColorPlace1, wp2AmfColor1, wp2AmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2AmfColorPlace2, wp2AmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2AmfColorPlace3, wp2AmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2AmfColorPlace4, wp2AmfColor4, deteleRepeatValue3);
+
+				BigDecimal wp2AmfColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjAmfColorWageList.isEmpty()) {
+					mowWage = selectPt2OjAmfColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wp2AmfColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wp2AmfColorSize.multiply(mowWage);
 			order.setPt2AmfColorWsWage(wptionBranchWage);
 		}
 	}
@@ -9478,58 +9758,64 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のAMF色指定
-			String op2AmfColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace1();
-			String op2AmfColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace2();
-			String op2AmfColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace3();
-			String op2AmfColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace4();
-
-			String op2AmfColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor1();
-			String op2AmfColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor2();
-			String op2AmfColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor3();
-			String op2AmfColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor4();
-
-			List<String> op2AmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2AmfColorPlace1, op2AmfColor1, op2AmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2AmfColorPlace2, op2AmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2AmfColorPlace3, op2AmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2AmfColorPlace4, op2AmfColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int op2AmfColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPt2OjAmfColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPt2OjAmfColorPriceList.get(0).getMoapPrice();
+			String op2AmfColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor();
+			if("0002402".equals(op2AmfColor)) {
+				// 標準PANTS2のAMF色指定
+				String op2AmfColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace1();
+				String op2AmfColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace2();
+				String op2AmfColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace3();
+				String op2AmfColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColorPlace4();
+
+				String op2AmfColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor1();
+				String op2AmfColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor2();
+				String op2AmfColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor3();
+				String op2AmfColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor4();
+
+				List<String> op2AmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2AmfColorPlace1, op2AmfColor1, op2AmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2AmfColorPlace2, op2AmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2AmfColorPlace3, op2AmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2AmfColorPlace4, op2AmfColor4, deteleRepeatValue3);
+
+				int op2AmfColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPt2OjAmfColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPt2OjAmfColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = op2AmfColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = op2AmfColorSize * optionBranchDoublePrice;
 			order.setPt2AmfColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTSのAMF色指定
-			String wp2AmfColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace1();
-			String wp2AmfColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace2();
-			String wp2AmfColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace3();
-			String wp2AmfColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace4();
-
-			String wp2AmfColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor1();
-			String wp2AmfColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor2();
-			String wp2AmfColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor3();
-			String wp2AmfColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor4();
-
-			List<String> wp2AmfColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2AmfColorPlace1, wp2AmfColor1, wp2AmfColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2AmfColorPlace2, wp2AmfColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2AmfColorPlace3, wp2AmfColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2AmfColorPlace4, wp2AmfColor4, deteleRepeatValue3);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wp2AmfColorSize = deteleRepeatValue4.size();
-			Integer wptionBranchDoublePrice = 0;
-			if(selectPt2OjAmfColorPriceList.isEmpty()) {
-				wptionBranchDoublePrice = selectPt2OjAmfColorPriceList.get(0).getMoapPrice();
+			String wp2AmfColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor();
+			if("0002402".equals(wp2AmfColor)) {
+				// ウォッシャブルPANTSのAMF色指定
+				String wp2AmfColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace1();
+				String wp2AmfColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace2();
+				String wp2AmfColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace3();
+				String wp2AmfColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColorPlace4();
+
+				String wp2AmfColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor1();
+				String wp2AmfColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor2();
+				String wp2AmfColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor3();
+				String wp2AmfColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor4();
+
+				List<String> wp2AmfColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2AmfColorPlace1, wp2AmfColor1, wp2AmfColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2AmfColorPlace2, wp2AmfColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2AmfColorPlace3, wp2AmfColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2AmfColorPlace4, wp2AmfColor4, deteleRepeatValue3);
+
+				int wp2AmfColorSize = deteleRepeatValue4.size();
+				Integer wptionBranchDoublePrice = 0;
+				if(selectPt2OjAmfColorPriceList.isEmpty()) {
+					wptionBranchDoublePrice = selectPt2OjAmfColorPriceList.get(0).getMoapPrice();
+				}
+				wptionBranchDoubleorPrice = wp2AmfColorSize * wptionBranchDoublePrice;
 			}
-			wptionBranchDoubleorPrice = wp2AmfColorSize * wptionBranchDoublePrice;
 			order.setPt2AmfColorWsPrice(wptionBranchDoubleorPrice);
 		}
 	}
@@ -9547,86 +9833,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のボタンホール色指定
-			String op2BhColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace1();
-			String op2BhColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace2();
-			String op2BhColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace3();
-			String op2BhColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace4();
-
-			String op2BhColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor1();
-			String op2BhColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor2();
-			String op2BhColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor3();
-			String op2BhColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor4();
-
-			List<String> op2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2BhColorPlace1, op2BhColor1, op2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2BhColorPlace2, op2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2BhColorPlace3, op2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2BhColorPlace4, op2BhColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal op2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjBhColorWageList.isEmpty()) {
-				mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+			String op2BhColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor();
+			if("0002702".equals(op2BhColor)) {
+				// 標準PANTS2のボタンホール色指定
+				String op2BhColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace1();
+				String op2BhColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace2();
+				String op2BhColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace3();
+				String op2BhColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace4();
+
+				String op2BhColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor1();
+				String op2BhColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor2();
+				String op2BhColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor3();
+				String op2BhColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor4();
+
+				List<String> op2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2BhColorPlace1, op2BhColor1, op2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2BhColorPlace2, op2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2BhColorPlace3, op2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2BhColorPlace4, op2BhColor4, deteleRepeatValue3);
+
+				BigDecimal op2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjBhColorWageList.isEmpty()) {
+					mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = op2BhColorSize.multiply(mowWage);
 			}
-			optionBranchWage = op2BhColorSize.multiply(mowWage);
 			order.setPt2BtnholeColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTS2のボタンホール色指定
-			String tp2BhColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace1();
-			String tp2BhColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace2();
-			String tp2BhColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace3();
-			String tp2BhColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace4();
-
-			String tp2BhColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor1();
-			String tp2BhColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor2();
-			String tp2BhColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor3();
-			String tp2BhColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor4();
-
-			List<String> tp2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tp2BhColorPlace1, tp2BhColor1, tp2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tp2BhColorPlace2, tp2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tp2BhColorPlace3, tp2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tp2BhColorPlace4, tp2BhColor4, deteleRepeatValue3);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tp2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjBhColorWageList.isEmpty()) {
-				mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+			String tp2BhColor = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor();
+			if("0002702".equals(tp2BhColor)) {
+				// タキシードPANTS2のボタンホール色指定
+				String tp2BhColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace1();
+				String tp2BhColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace2();
+				String tp2BhColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace3();
+				String tp2BhColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace4();
+
+				String tp2BhColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor1();
+				String tp2BhColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor2();
+				String tp2BhColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor3();
+				String tp2BhColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor4();
+
+				List<String> tp2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tp2BhColorPlace1, tp2BhColor1, tp2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tp2BhColorPlace2, tp2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tp2BhColorPlace3, tp2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tp2BhColorPlace4, tp2BhColor4, deteleRepeatValue3);
+
+				BigDecimal tp2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjBhColorWageList.isEmpty()) {
+					mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tp2BhColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tp2BhColorSize.multiply(mowWage);
 			order.setPt2BtnholeColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTS2のボタンホール色指定
-			String wp2BhColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace1();
-			String wp2BhColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace2();
-			String wp2BhColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace3();
-			String wp2BhColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace4();
-
-			String wp2BhColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor1();
-			String wp2BhColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor2();
-			String wp2BhColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor3();
-			String wp2BhColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor4();
-
-			List<String> wp2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2BhColorPlace1, wp2BhColor1, wp2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2BhColorPlace2, wp2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2BhColorPlace3, wp2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2BhColorPlace4, wp2BhColor4, deteleRepeatValue3);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wp2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjBhColorWageList.isEmpty()) {
-				mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+			String wp2BhColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor();
+			if("0002702".equals(wp2BhColor)) {
+				// ウォッシャブルPANTS2のボタンホール色指定
+				String wp2BhColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace1();
+				String wp2BhColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace2();
+				String wp2BhColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace3();
+				String wp2BhColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace4();
+
+				String wp2BhColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor1();
+				String wp2BhColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor2();
+				String wp2BhColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor3();
+				String wp2BhColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor4();
+
+				List<String> wp2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2BhColorPlace1, wp2BhColor1, wp2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2BhColorPlace2, wp2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2BhColorPlace3, wp2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2BhColorPlace4, wp2BhColor4, deteleRepeatValue3);
+
+				BigDecimal wp2BhColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjBhColorWageList.isEmpty()) {
+					mowWage = selectPt2OjBhColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wp2BhColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wp2BhColorSize.multiply(mowWage);
 			order.setPt2BtnholeColorWsWage(wptionBranchWage);
 		}
 	}
@@ -9644,86 +9939,96 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のボタンホール色指定
-			String op2BhColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace1();
-			String op2BhColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace2();
-			String op2BhColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace3();
-			String op2BhColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace4();
-
-			String op2BhColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor1();
-			String op2BhColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor2();
-			String op2BhColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor3();
-			String op2BhColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor4();
-
-			List<String> op2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2BhColorPlace1, op2BhColor1, op2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2BhColorPlace2, op2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2BhColorPlace3, op2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2BhColorPlace4, op2BhColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int op2BhColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPt2OjBhColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+			String op2BhColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor();
+			if("0002702".equals(op2BhColor)) {
+				// 標準PANTS2のボタンホール色指定
+				String op2BhColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace1();
+				String op2BhColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace2();
+				String op2BhColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace3();
+				String op2BhColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColorPlace4();
+
+				String op2BhColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor1();
+				String op2BhColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor2();
+				String op2BhColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor3();
+				String op2BhColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor4();
+
+				List<String> op2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2BhColorPlace1, op2BhColor1, op2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2BhColorPlace2, op2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2BhColorPlace3, op2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2BhColorPlace4, op2BhColor4, deteleRepeatValue3);
+
+				int op2BhColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPt2OjBhColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = op2BhColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = op2BhColorSize * optionBranchDoublePrice;
 			order.setPt2BtnholeColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTS2のボタンホール色指定
-			String tp2BhColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace1();
-			String tp2BhColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace2();
-			String tp2BhColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace3();
-			String tp2BhColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace4();
-
-			String tp2BhColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor1();
-			String tp2BhColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor2();
-			String tp2BhColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor3();
-			String tp2BhColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor4();
-
-			List<String> tp2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tp2BhColorPlace1, tp2BhColor1, tp2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tp2BhColorPlace2, tp2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tp2BhColorPlace3, tp2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tp2BhColorPlace4, tp2BhColor4, deteleRepeatValue3);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tp2BhColorSize = deteleRepeatValue4.size();
-			Integer tptionBranchDoublePrice = 0;
-			if(!selectPt2OjBhColorPriceList.isEmpty()) {
-				tptionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+			String tp2BhColor = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor();
+			if("0002702".equals(tp2BhColor)) {
+				// タキシードPANTS2のボタンホール色指定
+				String tp2BhColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace1();
+				String tp2BhColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace2();
+				String tp2BhColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace3();
+				String tp2BhColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColorPlace4();
+
+				String tp2BhColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor1();
+				String tp2BhColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor2();
+				String tp2BhColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor3();
+				String tp2BhColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BhColor4();
+
+				List<String> tp2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tp2BhColorPlace1, tp2BhColor1, tp2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tp2BhColorPlace2, tp2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tp2BhColorPlace3, tp2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tp2BhColorPlace4, tp2BhColor4, deteleRepeatValue3);
+
+				int tp2BhColorSize = deteleRepeatValue4.size();
+				Integer tptionBranchDoublePrice = 0;
+				if(!selectPt2OjBhColorPriceList.isEmpty()) {
+					tptionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+				}
+				tptionBranchDoubleorPrice = tp2BhColorSize * tptionBranchDoublePrice;	
 			}
-			tptionBranchDoubleorPrice = tp2BhColorSize * tptionBranchDoublePrice;
 			order.setPt2BtnholeColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTS2のボタンホール色指定
-			String wp2BhColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace1();
-			String wp2BhColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace2();
-			String wp2BhColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace3();
-			String wp2BhColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace4();
-
-			String wp2BhColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor1();
-			String wp2BhColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor2();
-			String wp2BhColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor3();
-			String wp2BhColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor4();
-
-			List<String> wp2BhColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2BhColorPlace1, wp2BhColor1, wp2BhColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2BhColorPlace2, wp2BhColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2BhColorPlace3, wp2BhColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2BhColorPlace4, wp2BhColor4, deteleRepeatValue3);
-
+			
 			Integer wptionBranchDoubleorPrice = 0;
-			int wp2BhColorSize = deteleRepeatValue4.size();
-			Integer wptionBranchDoublePrice = 0;
-			if(!selectPt2OjBhColorPriceList.isEmpty()) {
-				wptionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+			String wp2BhColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor();
+			if("0002702".equals(wp2BhColor)) {
+				// ウォッシャブルPANTS2のボタンホール色指定
+				String wp2BhColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace1();
+				String wp2BhColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace2();
+				String wp2BhColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace3();
+				String wp2BhColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColorPlace4();
+
+				String wp2BhColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor1();
+				String wp2BhColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor2();
+				String wp2BhColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor3();
+				String wp2BhColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor4();
+
+				List<String> wp2BhColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2BhColorPlace1, wp2BhColor1, wp2BhColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2BhColorPlace2, wp2BhColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2BhColorPlace3, wp2BhColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2BhColorPlace4, wp2BhColor4, deteleRepeatValue3);
+
+				int wp2BhColorSize = deteleRepeatValue4.size();
+				Integer wptionBranchDoublePrice = 0;
+				if(!selectPt2OjBhColorPriceList.isEmpty()) {
+					wptionBranchDoublePrice = selectPt2OjBhColorPriceList.get(0).getMoapPrice();
+				}
+				wptionBranchDoubleorPrice = wp2BhColorSize * wptionBranchDoublePrice;	
 			}
-			wptionBranchDoubleorPrice = wp2BhColorSize * wptionBranchDoublePrice;
 			order.setPt2BtnholeColorWsPrice(wptionBranchDoubleorPrice);
 		}
 	}
@@ -9741,86 +10046,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のボタン付け糸指定
-			String op2ByColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace1();
-			String op2ByColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace2();
-			String op2ByColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace3();
-			String op2ByColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace4();
-
-			String op2ByColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor1();
-			String op2ByColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor2();
-			String op2ByColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor3();
-			String op2ByColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor4();
-
-			List<String> op2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2ByColorPlace1, op2ByColor1, op2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2ByColorPlace2, op2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2ByColorPlace3, op2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2ByColorPlace4, op2ByColor4, deteleRepeatValue3);
-
 			BigDecimal optionBranchWage = new BigDecimal(0);
-			BigDecimal op2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjByColorWageList.isEmpty()) {
-				mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+			String op2ByColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor();
+			if("0003002".equals(op2ByColor)) {
+				// 標準PANTS2のボタン付け糸指定
+				String op2ByColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace1();
+				String op2ByColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace2();
+				String op2ByColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace3();
+				String op2ByColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace4();
+
+				String op2ByColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor1();
+				String op2ByColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor2();
+				String op2ByColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor3();
+				String op2ByColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor4();
+
+				List<String> op2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2ByColorPlace1, op2ByColor1, op2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2ByColorPlace2, op2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2ByColorPlace3, op2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2ByColorPlace4, op2ByColor4, deteleRepeatValue3);
+
+				BigDecimal op2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjByColorWageList.isEmpty()) {
+					mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+				}
+				optionBranchWage = op2ByColorSize.multiply(mowWage);
 			}
-			optionBranchWage = op2ByColorSize.multiply(mowWage);
 			order.setPt2BtnthreadColorWsWage(optionBranchWage);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTS2のボタン付け糸指定
-			String tp2ByColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace1();
-			String tp2ByColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace2();
-			String tp2ByColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace3();
-			String tp2ByColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace4();
-
-			String tp2ByColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor1();
-			String tp2ByColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor2();
-			String tp2ByColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor3();
-			String tp2ByColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor4();
-
-			List<String> tp2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tp2ByColorPlace1, tp2ByColor1, tp2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tp2ByColorPlace2, tp2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tp2ByColorPlace3, tp2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tp2ByColorPlace4, tp2ByColor4, deteleRepeatValue3);
-
 			BigDecimal tptionBranchWage = new BigDecimal(0);
-			BigDecimal tp2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjByColorWageList.isEmpty()) {
-				mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+			String tp2ByColor = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor();
+			if("0003002".equals(tp2ByColor)) {
+				// タキシードPANTS2のボタン付け糸指定
+				String tp2ByColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace1();
+				String tp2ByColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace2();
+				String tp2ByColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace3();
+				String tp2ByColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace4();
+
+				String tp2ByColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor1();
+				String tp2ByColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor2();
+				String tp2ByColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor3();
+				String tp2ByColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor4();
+
+				List<String> tp2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tp2ByColorPlace1, tp2ByColor1, tp2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tp2ByColorPlace2, tp2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tp2ByColorPlace3, tp2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tp2ByColorPlace4, tp2ByColor4, deteleRepeatValue3);
+
+				BigDecimal tp2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjByColorWageList.isEmpty()) {
+					mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+				}
+				tptionBranchWage = tp2ByColorSize.multiply(mowWage);
 			}
-			tptionBranchWage = tp2ByColorSize.multiply(mowWage);
 			order.setPt2BtnthreadColorWsWage(tptionBranchWage);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTS2のボタン付け糸指定
-			String wp2ByColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace1();
-			String wp2ByColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace2();
-			String wp2ByColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace3();
-			String wp2ByColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace4();
-
-			String wp2ByColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor1();
-			String wp2ByColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor2();
-			String wp2ByColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor3();
-			String wp2ByColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor4();
-
-			List<String> wp2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2ByColorPlace1, wp2ByColor1, wp2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2ByColorPlace2, wp2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2ByColorPlace3, wp2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2ByColorPlace4, wp2ByColor4, deteleRepeatValue3);
-
 			BigDecimal wptionBranchWage = new BigDecimal(0);
-			BigDecimal wp2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
-			BigDecimal mowWage = new BigDecimal(0);
-			if(!selectPt2OjByColorWageList.isEmpty()) {
-				mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+			String wp2ByColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor();
+			if("0003002".equals(wp2ByColor)) {
+				// ウォッシャブルPANTS2のボタン付け糸指定
+				String wp2ByColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace1();
+				String wp2ByColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace2();
+				String wp2ByColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace3();
+				String wp2ByColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace4();
+
+				String wp2ByColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor1();
+				String wp2ByColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor2();
+				String wp2ByColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor3();
+				String wp2ByColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor4();
+
+				List<String> wp2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2ByColorPlace1, wp2ByColor1, wp2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2ByColorPlace2, wp2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2ByColorPlace3, wp2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2ByColorPlace4, wp2ByColor4, deteleRepeatValue3);
+
+				BigDecimal wp2ByColorSize = new BigDecimal(deteleRepeatValue4.size());
+				BigDecimal mowWage = new BigDecimal(0);
+				if(!selectPt2OjByColorWageList.isEmpty()) {
+					mowWage = selectPt2OjByColorWageList.get(0).getMowWage();
+				}
+				wptionBranchWage = wp2ByColorSize.multiply(mowWage);
 			}
-			wptionBranchWage = wp2ByColorSize.multiply(mowWage);
 			order.setPt2BtnthreadColorWsWage(wptionBranchWage);
 		}
 	}
@@ -9838,86 +10152,95 @@ public class OrderCoHelper {
 		String productCategory = orderCoForm.getProductCategory();
 		// 0:標準
 		if("9000101".equals(productCategory)) {
-			// 標準PANTS2のボタン付け糸指定
-			String op2ByColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace1();
-			String op2ByColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace2();
-			String op2ByColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace3();
-			String op2ByColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace4();
-
-			String op2ByColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor1();
-			String op2ByColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor2();
-			String op2ByColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor3();
-			String op2ByColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor4();
-
-			List<String> op2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(op2ByColorPlace1, op2ByColor1, op2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(op2ByColorPlace2, op2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(op2ByColorPlace3, op2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(op2ByColorPlace4, op2ByColor4, deteleRepeatValue3);
-
 			Integer optionBranchDoubleorPrice = 0;
-			int op2ByColorSize = deteleRepeatValue4.size();
-			Integer optionBranchDoublePrice = 0;
-			if(!selectPt2OjByColorPriceList.isEmpty()) {
-				optionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+			String op2ByColor = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor();
+			if("0003002".equals(op2ByColor)) {
+				// 標準PANTS2のボタン付け糸指定
+				String op2ByColorPlace1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace1();
+				String op2ByColorPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace2();
+				String op2ByColorPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace3();
+				String op2ByColorPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColorPlace4();
+
+				String op2ByColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor1();
+				String op2ByColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor2();
+				String op2ByColor3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor3();
+				String op2ByColor4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor4();
+
+				List<String> op2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(op2ByColorPlace1, op2ByColor1, op2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(op2ByColorPlace2, op2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(op2ByColorPlace3, op2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(op2ByColorPlace4, op2ByColor4, deteleRepeatValue3);
+
+				int op2ByColorSize = deteleRepeatValue4.size();
+				Integer optionBranchDoublePrice = 0;
+				if(!selectPt2OjByColorPriceList.isEmpty()) {
+					optionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+				}
+				optionBranchDoubleorPrice = op2ByColorSize * optionBranchDoublePrice;
 			}
-			optionBranchDoubleorPrice = op2ByColorSize * optionBranchDoublePrice;
 			order.setPt2BtnthreadColorWsPrice(optionBranchDoubleorPrice);
 		}
 		// 2:タキシード
 		else if("9000102".equals(productCategory)) {
-			// タキシードPANTS2のボタン付け糸指定
-			String tp2ByColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace1();
-			String tp2ByColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace2();
-			String tp2ByColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace3();
-			String tp2ByColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace4();
-
-			String tp2ByColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor1();
-			String tp2ByColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor2();
-			String tp2ByColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor3();
-			String tp2ByColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor4();
-
-			List<String> tp2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(tp2ByColorPlace1, tp2ByColor1, tp2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(tp2ByColorPlace2, tp2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(tp2ByColorPlace3, tp2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(tp2ByColorPlace4, tp2ByColor4, deteleRepeatValue3);
-
 			Integer tptionBranchDoubleorPrice = 0;
-			int tp2ByColorSize = deteleRepeatValue4.size();
-			Integer tptionBranchDoublePrice = 0;
-			if(!selectPt2OjByColorPriceList.isEmpty()) {
-				tptionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+			String tp2ByColor = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor();
+			if("0003002".equals(tp2ByColor)) {
+				// タキシードPANTS2のボタン付け糸指定
+				String tp2ByColorPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace1();
+				String tp2ByColorPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace2();
+				String tp2ByColorPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace3();
+				String tp2ByColorPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColorPlace4();
+
+				String tp2ByColor1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor1();
+				String tp2ByColor2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor2();
+				String tp2ByColor3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor3();
+				String tp2ByColor4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2ByColor4();
+
+				List<String> tp2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(tp2ByColorPlace1, tp2ByColor1, tp2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(tp2ByColorPlace2, tp2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(tp2ByColorPlace3, tp2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(tp2ByColorPlace4, tp2ByColor4, deteleRepeatValue3);
+
+				int tp2ByColorSize = deteleRepeatValue4.size();
+				Integer tptionBranchDoublePrice = 0;
+				if(!selectPt2OjByColorPriceList.isEmpty()) {
+					tptionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+				}
+				tptionBranchDoubleorPrice = tp2ByColorSize * tptionBranchDoublePrice;
 			}
-			tptionBranchDoubleorPrice = tp2ByColorSize * tptionBranchDoublePrice;
 			order.setPt2BtnthreadColorWsPrice(tptionBranchDoubleorPrice);
 		}
 		// 1:ウォッシャブル
 		else if("9000103".equals(productCategory)) {
-			// ウォッシャブルPANTS2のボタン付け糸指定
-			String wp2ByColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace1();
-			String wp2ByColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace2();
-			String wp2ByColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace3();
-			String wp2ByColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace4();
-
-			String wp2ByColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor1();
-			String wp2ByColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor2();
-			String wp2ByColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor3();
-			String wp2ByColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor4();
-
-			List<String> wp2ByColorsList = new ArrayList<>();
-			List<String> deteleRepeatValue = deteleRepeatValue(wp2ByColorPlace1, wp2ByColor1, wp2ByColorsList);
-			List<String> deteleRepeatValue2 = deteleRepeatValue(wp2ByColorPlace2, wp2ByColor2, deteleRepeatValue);
-			List<String> deteleRepeatValue3 = deteleRepeatValue(wp2ByColorPlace3, wp2ByColor3, deteleRepeatValue2);
-			List<String> deteleRepeatValue4 = deteleRepeatValue(wp2ByColorPlace4, wp2ByColor4, deteleRepeatValue3);
-
 			Integer wptionBranchDoubleorPrice = 0;
-			int wp2ByColorSize = deteleRepeatValue4.size();
-			Integer wptionBranchDoublePrice = 0;
-			if(!selectPt2OjByColorPriceList.isEmpty()) {
-				wptionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+			String wp2ByColor = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor();
+			if("0003002".equals(wp2ByColor)) {
+				// ウォッシャブルPANTS2のボタン付け糸指定
+				String wp2ByColorPlace1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace1();
+				String wp2ByColorPlace2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace2();
+				String wp2ByColorPlace3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace3();
+				String wp2ByColorPlace4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColorPlace4();
+
+				String wp2ByColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor1();
+				String wp2ByColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor2();
+				String wp2ByColor3 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor3();
+				String wp2ByColor4 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor4();
+
+				List<String> wp2ByColorsList = new ArrayList<>();
+				List<String> deteleRepeatValue = deteleRepeatValue(wp2ByColorPlace1, wp2ByColor1, wp2ByColorsList);
+				List<String> deteleRepeatValue2 = deteleRepeatValue(wp2ByColorPlace2, wp2ByColor2, deteleRepeatValue);
+				List<String> deteleRepeatValue3 = deteleRepeatValue(wp2ByColorPlace3, wp2ByColor3, deteleRepeatValue2);
+				List<String> deteleRepeatValue4 = deteleRepeatValue(wp2ByColorPlace4, wp2ByColor4, deteleRepeatValue3);
+
+				int wp2ByColorSize = deteleRepeatValue4.size();
+				Integer wptionBranchDoublePrice = 0;
+				if(!selectPt2OjByColorPriceList.isEmpty()) {
+					wptionBranchDoublePrice = selectPt2OjByColorPriceList.get(0).getMoapPrice();
+				}
+				wptionBranchDoubleorPrice = wp2ByColorSize * wptionBranchDoublePrice;	
 			}
-			wptionBranchDoubleorPrice = wp2ByColorSize * wptionBranchDoublePrice;
 			order.setPt2BtnthreadColorWsPrice(wptionBranchDoubleorPrice);
 		}
 	}
@@ -12564,6 +12887,7 @@ public class OrderCoHelper {
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
+			wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ステッチ箇所変更_コード
 			String wp2StitchModifyPlaceCodeInDb = severalCodeInDb(wp2StitchModifyPlaceList);
 			order.setPt2StitchPlcCd(wp2StitchModifyPlaceCodeInDb);
@@ -12596,6 +12920,7 @@ public class OrderCoHelper {
 			wp2DStitchPlaceList.add(wp2DStitchPlace2);
 			wp2DStitchPlaceList.add(wp2DStitchPlace3);
 			wp2DStitchPlaceList.add(wp2DStitchPlace4);
+			wp2DStitchPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ダブルステッチ_コード
 			String wp2DStitchPlaceCodeInDb = severalCodeInDb(wp2DStitchPlaceList);
 			order.setPt2DblstitchPlcCd(wp2DStitchPlaceCodeInDb);
@@ -12628,6 +12953,7 @@ public class OrderCoHelper {
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace2);
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace3);
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace4);
+			wp2AmfColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_AMF色指定_箇所コード
 			String wp2AmfColorPlaceCodeInDb = severalCodeInDb(wp2AmfColorPlaceList);
 			order.setPt2AmfColorPlcCd(wp2AmfColorPlaceCodeInDb);
@@ -12646,6 +12972,7 @@ public class OrderCoHelper {
 			wp2AmfColorsList.add(wp2AmfColor2);
 			wp2AmfColorsList.add(wp2AmfColor3);
 			wp2AmfColorsList.add(wp2AmfColor4);
+			wp2AmfColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_AMF色指定_色コード
 			String wp2AmfColorsCodeInDb = severalColorCodeInDb(wp2AmfColorPlaceList,wp2AmfColorsList);
 			order.setPt2AmfColorCd(wp2AmfColorsCodeInDb);
@@ -12682,6 +13009,7 @@ public class OrderCoHelper {
 			wp2BhColorPlaceList.add(wp2BhColorPlace2);
 			wp2BhColorPlaceList.add(wp2BhColorPlace3);
 			wp2BhColorPlaceList.add(wp2BhColorPlace4);
+			wp2BhColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタンホール色指定_箇所コード
 			String wp2BhColorPlaceCodeInDb = severalCodeInDb(wp2BhColorPlaceList);
 			order.setPt2BtnholeColorPlcCd(wp2BhColorPlaceCodeInDb);
@@ -12700,6 +13028,7 @@ public class OrderCoHelper {
 			wp2BhColorsList.add(wp2BhColor2);
 			wp2BhColorsList.add(wp2BhColor3);
 			wp2BhColorsList.add(wp2BhColor4);
+			wp2BhColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタンホール色指定_色コード
 			String wp2BhColorsCodeInDb = severalColorCodeInDb(wp2BhColorPlaceList,wp2BhColorsList);
 			order.setPt2BtnholeColorCd(wp2BhColorsCodeInDb);
@@ -12736,6 +13065,7 @@ public class OrderCoHelper {
 			wp2ByColorPlaceList.add(wp2ByColorPlace2);
 			wp2ByColorPlaceList.add(wp2ByColorPlace3);
 			wp2ByColorPlaceList.add(wp2ByColorPlace4);
+			wp2ByColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタン付け糸指定_箇所コード
 			String wp2ByColorPlaceCodeInDb = severalCodeInDb(wp2ByColorPlaceList);
 			order.setPt2BtnthreadColorPlcCd(wp2ByColorPlaceCodeInDb);
@@ -12754,6 +13084,7 @@ public class OrderCoHelper {
 			wp2ByColorsList.add(wp2ByColor2);
 			wp2ByColorsList.add(wp2ByColor3);
 			wp2ByColorsList.add(wp2ByColor4);
+			wp2ByColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタン付け糸指定_色コード
 			String wp2ByColorsCodeInDb = severalColorCodeInDb(wp2ByColorPlaceList,wp2ByColorsList);
 			order.setPt2BtnthreadColorCd(wp2ByColorsCodeInDb);
@@ -12811,8 +13142,10 @@ public class OrderCoHelper {
 			wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
 			wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ステッチ箇所変更_コード
-			String wjStitchModifyPlaceCodeInDb = severalCodeInDb(wjStitchModifyPlaceList);
-			order.setJkStitchPlcCd(wjStitchModifyPlaceCodeInDb);
+			if(wjStitchModifyPlaceList.isEmpty()) {
+				String wjStitchModifyPlaceCodeInDb = severalCodeInDb(wjStitchModifyPlaceList);
+				order.setJkStitchPlcCd(wjStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// JACKET_ステッチ箇所変更_コード
@@ -12850,8 +13183,11 @@ public class OrderCoHelper {
 			wjDStitchModifyPlaceList.add(wjDStitchModifyPlace9);
 			wjDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ダブルステッチ_コード
-			String wjDStitchModifyPlaceCodeInDb = severalCodeInDb(wjDStitchModifyPlaceList);
-			order.setJkDblstitchPlcCd(wjDStitchModifyPlaceCodeInDb);
+			if(!wjDStitchModifyPlaceList.isEmpty()) {
+				String wjDStitchModifyPlaceCodeInDb = severalCodeInDb(wjDStitchModifyPlaceList);
+				order.setJkDblstitchPlcCd(wjDStitchModifyPlaceCodeInDb);
+			}
+			
 		}
 		else {
 			// JACKET_ダブルステッチ_コード
@@ -12889,9 +13225,12 @@ public class OrderCoHelper {
 			wjAmfColorPlaceList.add(wjAmfColorPlace8);
 			wjAmfColorPlaceList.add(wjAmfColorPlace9);
 			wjAmfColorPlaceList.add(wjAmfColorPlace10);
+			wjAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_箇所コード
-			String wjAmfColorPlaceCodeInDb = severalCodeInDb(wjAmfColorPlaceList);
-			order.setJkAmfColorPlcCd(wjAmfColorPlaceCodeInDb);
+			if(!wjAmfColorPlaceList.isEmpty()) {
+				String wjAmfColorPlaceCodeInDb = severalCodeInDb(wjAmfColorPlaceList);
+				order.setJkAmfColorPlcCd(wjAmfColorPlaceCodeInDb);
+			}
 
 			String wjAmfColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor1();
 			String wjAmfColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjAmfColor2();
@@ -12915,6 +13254,7 @@ public class OrderCoHelper {
 			wjAmfColorsList.add(wjAmfColor8);
 			wjAmfColorsList.add(wjAmfColor9);
 			wjAmfColorsList.add(wjAmfColor10);
+			wjAmfColorsList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_色コード
 			String wjAmfColorsCodeInDb = severalColorCodeInDb(wjAmfColorPlaceList,wjAmfColorsList);
 			order.setJkAmfColorCd(wjAmfColorsCodeInDb);
@@ -12973,9 +13313,12 @@ public class OrderCoHelper {
 			wjBhColorPlaceList.add(wjBhColorPlace15);
 			wjBhColorPlaceList.add(wjBhColorPlace16);
 			wjBhColorPlaceList.add(wjBhColorPlace17);
+			wjBhColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_箇所コード
-			String wjBhColorPlaceCodeInDb = severalCodeInDb(wjBhColorPlaceList);
-			order.setJkBtnholeColorPlcCd(wjBhColorPlaceCodeInDb);
+			if(!wjBhColorPlaceList.isEmpty()) {
+				String wjBhColorPlaceCodeInDb = severalCodeInDb(wjBhColorPlaceList);
+				order.setJkBtnholeColorPlcCd(wjBhColorPlaceCodeInDb);
+			}
 
 			String wjBhColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor1();
 			String wjBhColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjBhColor2();
@@ -13013,6 +13356,7 @@ public class OrderCoHelper {
 			wjBhColorsList.add(wjBhColor15);
 			wjBhColorsList.add(wjBhColor16);
 			wjBhColorsList.add(wjBhColor17);
+			wjBhColorsList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_色コード
 			String wjBhColorsCodeInDb = severalColorCodeInDb(wjBhColorPlaceList,wjBhColorsList);
 			order.setJkBtnholeColorCd(wjBhColorsCodeInDb);
@@ -13069,9 +13413,12 @@ public class OrderCoHelper {
 			wjByColorPlaceList.add(wjByColorPlace14);
 			wjByColorPlaceList.add(wjByColorPlace15);
 			wjByColorPlaceList.add(wjByColorPlace16);
+			wjByColorPlaceList.removeAll(Collections.singleton(null));
 			//JACKET_ボタン付け糸指定_箇所コード
-			String wjByColorPlaceCodeInDb = severalCodeInDb(wjByColorPlaceList);
-			order.setJkBtnthreadColorPlcCd(wjByColorPlaceCodeInDb);
+			if(!wjByColorPlaceList.isEmpty()) {
+				String wjByColorPlaceCodeInDb = severalCodeInDb(wjByColorPlaceList);
+				order.setJkBtnthreadColorPlcCd(wjByColorPlaceCodeInDb);
+			}
 			
 			String wjByColor1 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor1();
 			String wjByColor2 = orderCoForm.getCoOptionJacketWashableInfo().getWjByColor2();
@@ -13106,6 +13453,7 @@ public class OrderCoHelper {
 			wjByColorsList.add(wjByColor14);
 			wjByColorsList.add(wjByColor15);
 			wjByColorsList.add(wjByColor16);
+			wjByColorsList.removeAll(Collections.singleton(null));
 			//JACKET_ボタン付け糸指定_色コード
 			String wjByColorsCodeInDb = severalColorCodeInDb(wjByColorPlaceList,wjByColorsList);
 			order.setJkBtnthreadColorCd(wjByColorsCodeInDb);
@@ -13145,9 +13493,12 @@ public class OrderCoHelper {
 			wgStitchModifyPlaceList.add(wgStitchModifyPlace1);
 			wgStitchModifyPlaceList.add(wgStitchModifyPlace2);
 			wgStitchModifyPlaceList.add(wgStitchModifyPlace3);
+			wgStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ステッチ箇所変更 _コード
-			String wgStitchModifyPlaceCodeInDb = severalCodeInDb(wgStitchModifyPlaceList);
-			order.setGlStitchPlcCd(wgStitchModifyPlaceCodeInDb);
+			if(!wgStitchModifyPlaceList.isEmpty()) {
+				String wgStitchModifyPlaceCodeInDb = severalCodeInDb(wgStitchModifyPlaceList);
+				order.setGlStitchPlcCd(wgStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// GILET_ステッチ箇所変更 _コード
@@ -13171,9 +13522,12 @@ public class OrderCoHelper {
 			wgDStitchModifyPlaceList.add(wgDStitchModifyPlace1);
 			wgDStitchModifyPlaceList.add(wgDStitchModifyPlace2);
 			wgDStitchModifyPlaceList.add(wgDStitchModifyPlace3);
+			wgDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ダブルステッチ変更_コード
-			String wgDStitchModifyPlaceCodeInDb = severalCodeInDb(wgDStitchModifyPlaceList);
-			order.setGlDblstitchPlcCd(wgDStitchModifyPlaceCodeInDb);
+			if(!wgDStitchModifyPlaceList.isEmpty()) {
+				String wgDStitchModifyPlaceCodeInDb = severalCodeInDb(wgDStitchModifyPlaceList);
+				order.setGlDblstitchPlcCd(wgDStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// GILET_ダブルステッチ変更_コード
@@ -13197,9 +13551,12 @@ public class OrderCoHelper {
 			wgAmfColorPlaceList.add(wgAmfColorPlace1);
 			wgAmfColorPlaceList.add(wgAmfColorPlace2);
 			wgAmfColorPlaceList.add(wgAmfColorPlace3);
+			wgAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_AMF色指定_箇所コード
-			String wgAmfColorPlaceCodeInDb = severalCodeInDb(wgAmfColorPlaceList);
-			order.setGlAmfColorPlcCd(wgAmfColorPlaceCodeInDb);
+			if(!wgAmfColorPlaceList.isEmpty()) {
+				String wgAmfColorPlaceCodeInDb = severalCodeInDb(wgAmfColorPlaceList);
+				order.setGlAmfColorPlcCd(wgAmfColorPlaceCodeInDb);
+			}
 			
 			String wgAmfColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor1();
 			String wgAmfColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgAmfColor2();
@@ -13209,6 +13566,7 @@ public class OrderCoHelper {
 			wgAmfColorsList.add(wgAmfColor1);
 			wgAmfColorsList.add(wgAmfColor2);
 			wgAmfColorsList.add(wgAmfColor3);
+			wgAmfColorsList.removeAll(Collections.singleton(null));
 			// GILET_AMF色指定_色コード
 			String wgAmfColorsCodeInDb = severalColorCodeInDb(wgAmfColorPlaceList,wgAmfColorsList);
 			order.setGlAmfColorCd(wgAmfColorsCodeInDb);
@@ -13245,9 +13603,12 @@ public class OrderCoHelper {
 			wgBhColorPlaceList.add(wgBhColorPlace4);
 			wgBhColorPlaceList.add(wgBhColorPlace5);
 			wgBhColorPlaceList.add(wgBhColorPlace6);
+			wgBhColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタンホール色指定_箇所コード
-			String wgBhColorPlaceCodeInDb = severalCodeInDb(wgBhColorPlaceList);
-			order.setGlBtnholeColorPlcCd(wgBhColorPlaceCodeInDb);
+			if(!wgBhColorPlaceList.isEmpty()) {
+				String wgBhColorPlaceCodeInDb = severalCodeInDb(wgBhColorPlaceList);
+				order.setGlBtnholeColorPlcCd(wgBhColorPlaceCodeInDb);
+			}
 			
 			String wgBhColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor1();
 			String wgBhColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgBhColor2();
@@ -13263,6 +13624,7 @@ public class OrderCoHelper {
 			wgBhColorsList.add(wgBhColor4);
 			wgBhColorsList.add(wgBhColor5);
 			wgBhColorsList.add(wgBhColor6);
+			wgBhColorsList.removeAll(Collections.singleton(null));
 			// GILET_ボタンホール色指定_色コード
 			String wgBhColorsCodeInDb = severalColorCodeInDb(wgBhColorPlaceList,wgBhColorsList);
 			order.setGlBtnholeColorCd(wgBhColorsCodeInDb);
@@ -13307,9 +13669,12 @@ public class OrderCoHelper {
 			wgByColorPlaceList.add(wgByColorPlace8);
 			wgByColorPlaceList.add(wgByColorPlace9);
 			wgByColorPlaceList.add(wgByColorPlace10);
+			wgByColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_箇所コード
-			String wgByColorPlaceCodeInDb = severalCodeInDb(wgByColorPlaceList);
-			order.setGlBtnthreadColorPlcCd(wgByColorPlaceCodeInDb);
+			if(!wgByColorPlaceList.isEmpty()) {
+				String wgByColorPlaceCodeInDb = severalCodeInDb(wgByColorPlaceList);
+				order.setGlBtnthreadColorPlcCd(wgByColorPlaceCodeInDb);
+			}
 			
 			String wgByColor1 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor1();
 			String wgByColor2 = orderCoForm.getCoOptionGiletWashableInfo().getWgByColor2();
@@ -13333,6 +13698,7 @@ public class OrderCoHelper {
 			wgByColorsList.add(wgByColor8);
 			wgByColorsList.add(wgByColor9);
 			wgByColorsList.add(wgByColor10);
+			wgByColorsList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_色コード
 			String wgByColorsCodeInDb = severalColorCodeInDb(wgByColorPlaceList,wgByColorsList);
 			order.setGlBtnthreadColorCd(wgByColorsCodeInDb);
@@ -13380,9 +13746,12 @@ public class OrderCoHelper {
 			wpBeltLoopPlaceList.add(wpBeltLoopPlace5);
 			wpBeltLoopPlaceList.add(wpBeltLoopPlace6);
 			wpBeltLoopPlaceList.add(wpBeltLoopPlace7);
+			wpBeltLoopPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ベルトループ_コード
-			String wpBeltLoopPlaceCodeInDb = severalCodeInDb(wpBeltLoopPlaceList);
-			order.setPtBeltloopCd(wpBeltLoopPlaceCodeInDb);
+			if(!wpBeltLoopPlaceList.isEmpty()) {
+				String wpBeltLoopPlaceCodeInDb = severalCodeInDb(wpBeltLoopPlaceList);
+				order.setPtBeltloopCd(wpBeltLoopPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS_ベルトループ_コード
@@ -13409,8 +13778,12 @@ public class OrderCoHelper {
 			wpStitchModifyPlaceList.add(wpStitchModifyPlace3);
 			wpStitchModifyPlaceList.add(wpStitchModifyPlace4);
 			// PANTS_ステッチ箇所変更_コード
-			String wpStitchModifyPlaceCodeInDb = severalCodeInDb(wpStitchModifyPlaceList);
-			order.setPtStitchPlcCd(wpStitchModifyPlaceCodeInDb);
+			wpStitchModifyPlaceList.removeAll(Collections.singleton(null));
+			if(!wpStitchModifyPlaceList.isEmpty()) {
+				String wpStitchModifyPlaceCodeInDb = severalCodeInDb(wpStitchModifyPlaceList);
+				order.setPtStitchPlcCd(wpStitchModifyPlaceCodeInDb);
+			}
+			
 		}
 		else {
 			// PANTS_ステッチ箇所変更_コード
@@ -13436,9 +13809,12 @@ public class OrderCoHelper {
 			wpDStitchPlaceList.add(wpDStitchPlace2);
 			wpDStitchPlaceList.add(wpDStitchPlace3);
 			wpDStitchPlaceList.add(wpDStitchPlace4);
+			wpDStitchPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ダブルステッチ_コード
-			String wpDStitchPlaceCodeInDb = severalCodeInDb(wpDStitchPlaceList);
-			order.setPtDblstitchPlcCd(wpDStitchPlaceCodeInDb);
+			if(!wpDStitchPlaceList.isEmpty()) {
+				String wpDStitchPlaceCodeInDb = severalCodeInDb(wpDStitchPlaceList);
+				order.setPtDblstitchPlcCd(wpDStitchPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS_ダブルステッチ_コード
@@ -13464,9 +13840,12 @@ public class OrderCoHelper {
 			wpAmfColorPlaceList.add(wpAmfColorPlace2);
 			wpAmfColorPlaceList.add(wpAmfColorPlace3);
 			wpAmfColorPlaceList.add(wpAmfColorPlace4);
+			wpAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_AMF色指定_箇所コード
-			String wpAmfColorPlaceCodeInDb = severalCodeInDb(wpAmfColorPlaceList);
-			order.setPtAmfColorPlcCd(wpAmfColorPlaceCodeInDb);
+			if(!wpAmfColorPlaceList.isEmpty()) {
+				String wpAmfColorPlaceCodeInDb = severalCodeInDb(wpAmfColorPlaceList);
+				order.setPtAmfColorPlcCd(wpAmfColorPlaceCodeInDb);
+			}
 			
 			String wpAmfColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColor1();
 			String wpAmfColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpAmfColor2();
@@ -13478,6 +13857,7 @@ public class OrderCoHelper {
 			wpAmfColorsList.add(wpAmfColor2);
 			wpAmfColorsList.add(wpAmfColor3);
 			wpAmfColorsList.add(wpAmfColor4);
+			wpAmfColorsList.removeAll(Collections.singleton(null));
 			// PANTS_AMF色指定_色コード
 			String wpAmfColorsCodeInDb = severalColorCodeInDb(wpAmfColorPlaceList,wpAmfColorsList);
 			order.setPtAmfColorCd(wpAmfColorsCodeInDb);
@@ -13510,9 +13890,12 @@ public class OrderCoHelper {
 			wpBhColorPlaceList.add(wpBhColorPlace2);
 			wpBhColorPlaceList.add(wpBhColorPlace3);
 			wpBhColorPlaceList.add(wpBhColorPlace4);
+			wpBhColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ボタンホール色指定_箇所コード
-			String wpBhColorPlaceCodeInDb = severalCodeInDb(wpBhColorPlaceList);
-			order.setPtBtnholeColorPlcCd(wpBhColorPlaceCodeInDb);
+			if(!wpBhColorPlaceList.isEmpty()) {
+				String wpBhColorPlaceCodeInDb = severalCodeInDb(wpBhColorPlaceList);
+				order.setPtBtnholeColorPlcCd(wpBhColorPlaceCodeInDb);
+			}
 			
 			String wpBhColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor1();
 			String wpBhColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpBhColor2();
@@ -13524,6 +13907,7 @@ public class OrderCoHelper {
 			wpBhColorsList.add(wpBhColor2);
 			wpBhColorsList.add(wpBhColor3);
 			wpBhColorsList.add(wpBhColor4);
+			wpBhColorsList.removeAll(Collections.singleton(null));
 			// PANTS_ボタンホール色指定_色コード
 			String wpBhColorsCodeInDb = severalColorCodeInDb(wpBhColorPlaceList,wpBhColorsList);
 			order.setPtBtnholeColorCd(wpBhColorsCodeInDb);
@@ -13556,9 +13940,12 @@ public class OrderCoHelper {
 			wpByColorPlaceList.add(wpByColorPlace2);
 			wpByColorPlaceList.add(wpByColorPlace3);
 			wpByColorPlaceList.add(wpByColorPlace4);
+			wpByColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ボタン付け糸指定_箇所コード
-			String wpByColorPlaceCodeInDb = severalCodeInDb(wpByColorPlaceList);
-			order.setPtBtnthreadColorPlcCd(wpByColorPlaceCodeInDb);
+			if(!wpByColorPlaceList.isEmpty()) {
+				String wpByColorPlaceCodeInDb = severalCodeInDb(wpByColorPlaceList);
+				order.setPtBtnthreadColorPlcCd(wpByColorPlaceCodeInDb);
+			}
 			
 			String wpByColor1 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor1();
 			String wpByColor2 = orderCoForm.getCoOptionPantsWashableInfo().getWpByColor2();
@@ -13570,6 +13957,7 @@ public class OrderCoHelper {
 			wpByColorsList.add(wpByColor2);
 			wpByColorsList.add(wpByColor3);
 			wpByColorsList.add(wpByColor4);
+			wpByColorsList.removeAll(Collections.singleton(null));
 			// PANTS_ボタン付け糸指定_色コード
 			String wpByColorsCodeInDb = severalColorCodeInDb(wpByColorPlaceList,wpByColorsList);
 			order.setPtBtnthreadColorCd(wpByColorsCodeInDb);
@@ -13617,9 +14005,12 @@ public class OrderCoHelper {
 			wp2BeltLoopPlaceList.add(wp2BeltLoopPlace5);
 			wp2BeltLoopPlaceList.add(wp2BeltLoopPlace6);
 			wp2BeltLoopPlaceList.add(wp2BeltLoopPlace7);
+			wp2BeltLoopPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ベルトループ_コード
-			String wp2BeltLoopPlaceCodeInDb = severalCodeInDb(wp2BeltLoopPlaceList);
-			order.setPt2BeltloopCd(wp2BeltLoopPlaceCodeInDb);
+			if(!wp2BeltLoopPlaceList.isEmpty()) {
+				String wp2BeltLoopPlaceCodeInDb = severalCodeInDb(wp2BeltLoopPlaceList);
+				order.setPt2BeltloopCd(wp2BeltLoopPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS2_ベルトループ_コード
@@ -13645,9 +14036,12 @@ public class OrderCoHelper {
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace2);
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace3);
 			wp2StitchModifyPlaceList.add(wp2StitchModifyPlace4);
+			wp2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ステッチ箇所変更_コード
-			String wp2StitchModifyPlaceCodeInDb = severalCodeInDb(wp2StitchModifyPlaceList);
-			order.setPt2StitchPlcCd(wp2StitchModifyPlaceCodeInDb);
+			if(!wp2StitchModifyPlaceList.isEmpty()) {
+				String wp2StitchModifyPlaceCodeInDb = severalCodeInDb(wp2StitchModifyPlaceList);
+				order.setPt2StitchPlcCd(wp2StitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS2_ステッチ箇所変更_コード
@@ -13673,9 +14067,12 @@ public class OrderCoHelper {
 			wp2DStitchPlaceList.add(wp2DStitchPlace2);
 			wp2DStitchPlaceList.add(wp2DStitchPlace3);
 			wp2DStitchPlaceList.add(wp2DStitchPlace4);
+			wp2DStitchPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ダブルステッチ_コード
-			String wp2DStitchPlaceCodeInDb = severalCodeInDb(wp2DStitchPlaceList);
-			order.setPt2DblstitchPlcCd(wp2DStitchPlaceCodeInDb);
+			if(wp2DStitchPlaceList.isEmpty()) {
+				String wp2DStitchPlaceCodeInDb = severalCodeInDb(wp2DStitchPlaceList);
+				order.setPt2DblstitchPlcCd(wp2DStitchPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS2_ダブルステッチ_コード
@@ -13701,9 +14098,12 @@ public class OrderCoHelper {
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace2);
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace3);
 			wp2AmfColorPlaceList.add(wp2AmfColorPlace4);
+			wp2AmfColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_AMF色指定_箇所コード
-			String wp2AmfColorPlaceCodeInDb = severalCodeInDb(wp2AmfColorPlaceList);
-			order.setPt2AmfColorPlcCd(wp2AmfColorPlaceCodeInDb);
+			if(!wp2AmfColorPlaceList.isEmpty()) {
+				String wp2AmfColorPlaceCodeInDb = severalCodeInDb(wp2AmfColorPlaceList);
+				order.setPt2AmfColorPlcCd(wp2AmfColorPlaceCodeInDb);
+			}
 			
 			String wp2AmfColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor1();
 			String wp2AmfColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2AmfColor2();
@@ -13715,6 +14115,7 @@ public class OrderCoHelper {
 			wp2AmfColorsList.add(wp2AmfColor2);
 			wp2AmfColorsList.add(wp2AmfColor3);
 			wp2AmfColorsList.add(wp2AmfColor4);
+			wp2AmfColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_AMF色指定_色コード
 			String wp2AmfColorsCodeInDb = severalColorCodeInDb(wp2AmfColorPlaceList,wp2AmfColorsList);
 			order.setPt2AmfColorCd(wp2AmfColorsCodeInDb);
@@ -13747,9 +14148,12 @@ public class OrderCoHelper {
 			wp2BhColorPlaceList.add(wp2BhColorPlace2);
 			wp2BhColorPlaceList.add(wp2BhColorPlace3);
 			wp2BhColorPlaceList.add(wp2BhColorPlace4);
+			wp2BhColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタンホール色指定_箇所コード
-			String wp2BhColorPlaceCodeInDb = severalCodeInDb(wp2BhColorPlaceList);
-			order.setPt2BtnholeColorPlcCd(wp2BhColorPlaceCodeInDb);
+			if(!wp2BhColorPlaceList.isEmpty()) {
+				String wp2BhColorPlaceCodeInDb = severalCodeInDb(wp2BhColorPlaceList);
+				order.setPt2BtnholeColorPlcCd(wp2BhColorPlaceCodeInDb);
+			}
 			
 			String wp2BhColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor1();
 			String wp2BhColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2BhColor2();
@@ -13761,6 +14165,7 @@ public class OrderCoHelper {
 			wp2BhColorsList.add(wp2BhColor2);
 			wp2BhColorsList.add(wp2BhColor3);
 			wp2BhColorsList.add(wp2BhColor4);
+			wp2BhColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタンホール色指定_色コード
 			String wp2BhColorsCodeInDb = severalColorCodeInDb(wp2BhColorPlaceList,wp2BhColorsList);
 			order.setPt2BtnholeColorCd(wp2BhColorsCodeInDb);
@@ -13794,8 +14199,11 @@ public class OrderCoHelper {
 			wp2ByColorPlaceList.add(wp2ByColorPlace3);
 			wp2ByColorPlaceList.add(wp2ByColorPlace4);
 			// PANTS2_ボタン付け糸指定_箇所コード
-			String wp2ByColorPlaceCodeInDb = severalCodeInDb(wp2ByColorPlaceList);
-			order.setPt2BtnthreadColorPlcCd(wp2ByColorPlaceCodeInDb);
+			wp2ByColorPlaceList.removeAll(Collections.singleton(null));
+			if(!wp2ByColorPlaceList.isEmpty()) {
+				String wp2ByColorPlaceCodeInDb = severalCodeInDb(wp2ByColorPlaceList);
+				order.setPt2BtnthreadColorPlcCd(wp2ByColorPlaceCodeInDb);
+			}
 			
 			String wp2ByColor1 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor1();
 			String wp2ByColor2 = orderCoForm.getCoOptionPants2WashableInfo().getWp2ByColor2();
@@ -13807,6 +14215,7 @@ public class OrderCoHelper {
 			wp2ByColorsList.add(wp2ByColor2);
 			wp2ByColorsList.add(wp2ByColor3);
 			wp2ByColorsList.add(wp2ByColor4);
+			wp2ByColorsList.removeAll(Collections.singleton(null));
 			// PANTS2_ボタン付け糸指定_色コード
 			String wp2ByColorsCodeInDb = severalColorCodeInDb(wp2ByColorPlaceList,wp2ByColorsList);
 			order.setPt2BtnthreadColorCd(wp2ByColorsCodeInDb);
@@ -13846,7 +14255,7 @@ public class OrderCoHelper {
 			ojInsidePktPlaceList.add(ojInsidePktPlace2);
 			ojInsidePktPlaceList.add(ojInsidePktPlace3);
 			ojInsidePktPlaceList.add(ojInsidePktPlace4);
-			
+			ojInsidePktPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_内ポケット変更_コード
 			String severalCodeInDb = severalCodeInDb(ojInsidePktPlaceList);
 			order.setJkInnerPktCd(severalCodeInDb);
@@ -13889,7 +14298,7 @@ public class OrderCoHelper {
 			ojStitchModifyPlaceList.add(ojStitchModifyPlace7);
 			ojStitchModifyPlaceList.add(ojStitchModifyPlace8);
 			ojStitchModifyPlaceList.add(ojStitchModifyPlace9);
-
+			ojStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ステッチ箇所変更_コード
 			String ojStitchModifyPlaceCodeInDb = severalCodeInDb(ojStitchModifyPlaceList);
 			order.setJkStitchPlcCd(ojStitchModifyPlaceCodeInDb);
@@ -13933,7 +14342,7 @@ public class OrderCoHelper {
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace7);
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace8);
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace9);
-			
+			ojDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ダブルステッチ_コード
 			String ojDStitchModifyPlaceCodeInDb = severalCodeInDb(ojDStitchModifyPlaceList);
 			order.setJkDblstitchPlcCd(ojDStitchModifyPlaceCodeInDb);
@@ -13977,7 +14386,7 @@ public class OrderCoHelper {
 			ojAmfColorPlaceList.add(ojAmfColorPlace7);
 			ojAmfColorPlaceList.add(ojAmfColorPlace8);
 			ojAmfColorPlaceList.add(ojAmfColorPlace9);
-			
+			ojAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_箇所コード
 			String ojAmfColorPlaceCodeInDb = severalCodeInDb(ojAmfColorPlaceList);
 			order.setJkAmfColorPlcCd(ojAmfColorPlaceCodeInDb);
@@ -14007,7 +14416,7 @@ public class OrderCoHelper {
 			ojAmfColorsList.add(ojAmfColor7);
 			ojAmfColorsList.add(ojAmfColor8);
 			ojAmfColorsList.add(ojAmfColor9);
-			
+			ojAmfColorsList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_色コード
 			String ojAmfColorsCodeInDb = severalColorCodeInDb(ojAmfColorPlaceList,ojAmfColorsList);
 			order.setJkAmfColorCd(ojAmfColorsCodeInDb);
@@ -14070,7 +14479,7 @@ public class OrderCoHelper {
 			ojBhColorPlaceList.add(ojBhColorPlace15);
 			ojBhColorPlaceList.add(ojBhColorPlace16);
 			ojBhColorPlaceList.add(ojBhColorPlace17);
-			
+			ojBhColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_箇所コード
 			String ojBhColorPlaceCodeInDb = severalCodeInDb(ojBhColorPlaceList);
 			order.setJkBtnholeColorPlcCd(ojBhColorPlaceCodeInDb);
@@ -14115,7 +14524,7 @@ public class OrderCoHelper {
 			ojBhColorsList.add(ojBhColor15);
 			ojBhColorsList.add(ojBhColor16);
 			ojBhColorsList.add(ojBhColor17);
-			
+			ojBhColorsList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_色コード
 			String ojBhColorsCodeInDb = severalColorCodeInDb(ojBhColorPlaceList,ojBhColorsList);
 			order.setJkBtnholeColorCd(ojBhColorsCodeInDb);
@@ -14176,7 +14585,7 @@ public class OrderCoHelper {
 			ojByColorPlaceList.add(ojByColorPlace14);
 			ojByColorPlaceList.add(ojByColorPlace15);
 			ojByColorPlaceList.add(ojByColorPlace16);
-			
+			ojByColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ボタン付け糸指定_箇所コード
 			String ojByColorPlaceCodeInDb = severalCodeInDb(ojByColorPlaceList);
 			order.setJkBtnthreadColorPlcCd(ojByColorPlaceCodeInDb);
@@ -14219,7 +14628,7 @@ public class OrderCoHelper {
 			ojByColorsList.add(ojByColor14);
 			ojByColorsList.add(ojByColor15);
 			ojByColorsList.add(ojByColor16);
-			
+			ojByColorsList.removeAll(Collections.singleton(null));
 			// JACKET_ボタン付け糸指定_色コード
 			String ojByColorsCodeInDb = severalColorCodeInDb(ojByColorPlaceList,ojByColorsList);
 			order.setJkBtnthreadColorCd(ojByColorsCodeInDb);
@@ -14263,6 +14672,7 @@ public class OrderCoHelper {
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
+			ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ステッチ箇所変更 _コード
 			String ogStitchModifyPlaceCodeInDb = severalCodeInDb(ogStitchModifyPlaceList);
 			order.setGlStitchPlcCd(ogStitchModifyPlaceCodeInDb);
@@ -14294,6 +14704,7 @@ public class OrderCoHelper {
 			ogDStitchModifyPlaceList.add(ogDStitchModifyPlace1);
 			ogDStitchModifyPlaceList.add(ogDStitchModifyPlace2);
 			ogDStitchModifyPlaceList.add(ogDStitchModifyPlace3);
+			ogDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ダブルステッチ変更_コード
 			String ogDStitchModifyPlaceCodeInDb = severalCodeInDb(ogDStitchModifyPlaceList);
 			order.setGlDblstitchPlcCd(ogDStitchModifyPlaceCodeInDb);
@@ -14325,6 +14736,7 @@ public class OrderCoHelper {
 			ogAmfColorPlaceList.add(ogAmfColorPlace1);
 			ogAmfColorPlaceList.add(ogAmfColorPlace2);
 			ogAmfColorPlaceList.add(ogAmfColorPlace3);
+			ogAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_AMF色指定_箇所コード
 			String ogAmfColorPlaceCodeInDb = severalCodeInDb(ogAmfColorPlaceList);
 			order.setGlAmfColorPlcCd(ogAmfColorPlaceCodeInDb);
@@ -14340,6 +14752,7 @@ public class OrderCoHelper {
 			ogAmfColorList.add(ogAmfColor1);
 			ogAmfColorList.add(ogAmfColor2);
 			ogAmfColorList.add(ogAmfColor3);
+			ogAmfColorList.removeAll(Collections.singleton(null));
 			// GILET_AMF色指定_色コード
 			String ogAmfColorsCodeInDb = severalColorCodeInDb(ogAmfColorPlaceList,ogAmfColorList);
 			order.setGlAmfColorCd(ogAmfColorsCodeInDb);
@@ -14380,6 +14793,7 @@ public class OrderCoHelper {
 			ogBhColorPlaceList.add(ogBhColorPlace4);
 			ogBhColorPlaceList.add(ogBhColorPlace5);
 			ogBhColorPlaceList.add(ogBhColorPlace6);
+			ogBhColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタンホール色指定_箇所コード
 			String ogBhColorPlaceCodeInDb = severalCodeInDb(ogBhColorPlaceList);
 			order.setGlBtnholeColorPlcCd(ogBhColorPlaceCodeInDb);
@@ -14402,6 +14816,7 @@ public class OrderCoHelper {
 			ogBhColorsList.add(ogBhColor4);
 			ogBhColorsList.add(ogBhColor5);
 			ogBhColorsList.add(ogBhColor6);
+			ogBhColorsList.removeAll(Collections.singleton(null));
 			// GILET_ボタンホール色指定_色コード
 			String ogBhColorsCodeInDb = severalColorCodeInDb(ogBhColorPlaceList,ogBhColorsList);
 			order.setGlBtnholeColorCd(ogBhColorsCodeInDb);
@@ -14450,6 +14865,7 @@ public class OrderCoHelper {
 			ogByColorPlaceList.add(ogByColorPlace8);
 			ogByColorPlaceList.add(ogByColorPlace9);
 			ogByColorPlaceList.add(ogByColorPlace10);
+			ogByColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_箇所コード
 			String ogByColorPlaceCodeInDb = severalCodeInDb(ogByColorPlaceList);
 			order.setGlBtnthreadColorPlcCd(ogByColorPlaceCodeInDb);
@@ -14480,6 +14896,7 @@ public class OrderCoHelper {
 			ogByColorsList.add(ogByColor8);
 			ogByColorsList.add(ogByColor9);
 			ogByColorsList.add(ogByColor10);
+			ogByColorsList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_色コード
 			String ogByColorsCodeInDb = severalColorCodeInDb(ogByColorPlaceList,ogByColorsList);
 			order.setGlBtnthreadColorCd(ogByColorsCodeInDb);
@@ -14530,6 +14947,7 @@ public class OrderCoHelper {
 			opBeltLoopPlaceList.add(opBeltLoopPlace5);
 			opBeltLoopPlaceList.add(opBeltLoopPlace6);
 			opBeltLoopPlaceList.add(opBeltLoopPlace7);
+			opBeltLoopPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ベルトループ_コード
 			String opBeltLoopPlaceCodeInDb = severalCodeInDb(opBeltLoopPlaceList);
 			order.setPtBeltloopCd(opBeltLoopPlaceCodeInDb);
@@ -14561,6 +14979,7 @@ public class OrderCoHelper {
 			opStitchModifyPlaceList.add(opStitchModifyPlace2);
 			opStitchModifyPlaceList.add(opStitchModifyPlace3);
 			opStitchModifyPlaceList.add(opStitchModifyPlace4);
+			opStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ステッチ箇所変更_コード
 			String opStitchModifyPlaceCodeInDb = severalCodeInDb(opStitchModifyPlaceList);
 			order.setPtStitchPlcCd(opStitchModifyPlaceCodeInDb);
@@ -14593,6 +15012,7 @@ public class OrderCoHelper {
 			opDStitchPlaceList.add(opDStitchPlace2);
 			opDStitchPlaceList.add(opDStitchPlace3);
 			opDStitchPlaceList.add(opDStitchPlace4);
+			opDStitchPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ダブルステッチ_コード
 			String opDStitchPlaceCodeInDb = severalCodeInDb(opDStitchPlaceList);
 			order.setPtDblstitchPlcCd(opDStitchPlaceCodeInDb);
@@ -14624,6 +15044,7 @@ public class OrderCoHelper {
 			opAmfColorPlaceList.add(opAmfColorPlace2);
 			opAmfColorPlaceList.add(opAmfColorPlace3);
 			opAmfColorPlaceList.add(opAmfColorPlace4);
+			opAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_AMF色指定_箇所コード
 			String opAmfColorPlaceCodeInDb = severalCodeInDb(opAmfColorPlaceList);
 			order.setPtAmfColorPlcCd(opAmfColorPlaceCodeInDb);
@@ -14641,6 +15062,7 @@ public class OrderCoHelper {
 			opAmfColorsList.add(opAmfColor2);
 			opAmfColorsList.add(opAmfColor3);
 			opAmfColorsList.add(opAmfColor4);
+			opAmfColorsList.removeAll(Collections.singleton(null));
 			// PANTS_AMF色指定_色コード
 			String opAmfColorsCodeInDb = severalColorCodeInDb(opAmfColorPlaceList,opAmfColorsList);
 			order.setPtAmfColorCd(opAmfColorsCodeInDb);
@@ -14675,6 +15097,7 @@ public class OrderCoHelper {
 			opBhColorPlaceList.add(opBhColorPlace2);
 			opBhColorPlaceList.add(opBhColorPlace3);
 			opBhColorPlaceList.add(opBhColorPlace4);
+			opBhColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ボタンホール色指定_箇所コード
 			String opBhColorPlaceCodeInDb = severalCodeInDb(opBhColorPlaceList);
 			order.setPtBtnholeColorPlcCd(opBhColorPlaceCodeInDb);
@@ -14692,6 +15115,7 @@ public class OrderCoHelper {
 			opBhColorsList.add(opBhColor2);
 			opBhColorsList.add(opBhColor3);
 			opBhColorsList.add(opBhColor4);
+			opBhColorsList.removeAll(Collections.singleton(null));
 			// PANTS_ボタンホール色指定_色コード
 			String opBhColorsCodeInDb = severalColorCodeInDb(opBhColorPlaceList,opBhColorsList);
 			order.setPtBtnholeColorCd(opBhColorsCodeInDb);
@@ -14727,6 +15151,7 @@ public class OrderCoHelper {
 			opByColorPlaceList.add(opByColorPlace2);
 			opByColorPlaceList.add(opByColorPlace3);
 			opByColorPlaceList.add(opByColorPlace4);
+			opByColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ボタン付け糸指定_箇所コード
 			String opByColorPlaceCodeInDb = severalCodeInDb(opByColorPlaceList);
 			order.setPtBtnthreadColorPlcCd(opByColorPlaceCodeInDb);
@@ -14744,6 +15169,7 @@ public class OrderCoHelper {
 			opByColorsList.add(opByColor2);
 			opByColorsList.add(opByColor3);
 			opByColorsList.add(opByColor4);
+			opByColorsList.removeAll(Collections.singleton(null));
 				// PANTS_ボタン付け糸指定_色コード
 				String opByColorsCodeInDb = severalColorCodeInDb(opByColorPlaceList,opByColorsList);
 				order.setPtBtnthreadColorCd(opByColorsCodeInDb);
@@ -14794,6 +15220,7 @@ public class OrderCoHelper {
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace5);
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace6);
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace7);
+			op2BeltLoopPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ベルトループ_コード
 			String op2BeltLoopPlaceCodeInDb = severalCodeInDb(op2BeltLoopPlaceList);
 			order.setPt2BeltloopCd(op2BeltLoopPlaceCodeInDb);
@@ -14826,6 +15253,7 @@ public class OrderCoHelper {
 			op2StitchModifyPlaceList.add(op2StitchModifyPlace2);
 			op2StitchModifyPlaceList.add(op2StitchModifyPlace3);
 			op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
+			op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ステッチ箇所変更_コード
 			String op2StitchModifyPlaceCodeInDb = severalCodeInDb(op2StitchModifyPlaceList);
 			order.setPt2StitchPlcCd(op2StitchModifyPlaceCodeInDb);
@@ -14858,6 +15286,7 @@ public class OrderCoHelper {
 			p2dStitchPlaceList.add(op2dStitchPlace2);
 			p2dStitchPlaceList.add(op2dStitchPlace3);
 			p2dStitchPlaceList.add(op2dStitchPlace4);
+			p2dStitchPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ダブルステッチ_コード
 			String p2dStitchPlaceCodeInDb = severalCodeInDb(p2dStitchPlaceList);
 			order.setPt2DblstitchPlcCd(p2dStitchPlaceCodeInDb);
@@ -14890,6 +15319,7 @@ public class OrderCoHelper {
 				op2AmfColorPlaceList.add(op2AmfColorPlace2);
 				op2AmfColorPlaceList.add(op2AmfColorPlace3);
 				op2AmfColorPlaceList.add(op2AmfColorPlace4);
+				op2AmfColorPlaceList.removeAll(Collections.singleton(null));
 				// 2PANTS_AMF色指定_箇所コード
 				String op2AmfColorPlaceCodeInDb = severalCodeInDb(op2AmfColorPlaceList);
 				order.setPt2AmfColorPlcCd(op2AmfColorPlaceCodeInDb);
@@ -14908,6 +15338,7 @@ public class OrderCoHelper {
 				op2AmfColorsList.add(op2AmfColor2);
 				op2AmfColorsList.add(op2AmfColor3);
 				op2AmfColorsList.add(op2AmfColor4);
+				op2AmfColorsList.removeAll(Collections.singleton(null));
 				// 2PANTS_AMF色指定_色コード
 				String op2AmfColorsCodeInDb = severalColorCodeInDb(op2AmfColorPlaceList,op2AmfColorsList);
 				order.setPt2AmfColorCd(op2AmfColorsCodeInDb);
@@ -14943,6 +15374,7 @@ public class OrderCoHelper {
 			op2BhColorPlaceList.add(op2BhColorPlace2);
 			op2BhColorPlaceList.add(op2BhColorPlace3);
 			op2BhColorPlaceList.add(op2BhColorPlace4);
+			op2BhColorPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタンホール色指定_箇所コード
 			String op2BhColorPlaceCodeInDb = severalCodeInDb(op2BhColorPlaceList);
 			order.setPt2BtnholeColorPlcCd(op2BhColorPlaceCodeInDb);
@@ -14961,6 +15393,7 @@ public class OrderCoHelper {
 			op2BhColorsList.add(op2BhColor2);
 			op2BhColorsList.add(op2BhColor3);
 			op2BhColorsList.add(op2BhColor4);
+			op2BhColorsList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタンホール色指定_色コード
 			String op2BhColorsCodeInDb = severalColorCodeInDb(op2BhColorPlaceList,op2BhColorsList);
 			order.setPt2BtnholeColorCd(op2BhColorsCodeInDb);
@@ -14996,6 +15429,7 @@ public class OrderCoHelper {
 			op2ByColorPlaceList.add(op2ByColorPlace2);
 			op2ByColorPlaceList.add(op2ByColorPlace3);
 			op2ByColorPlaceList.add(op2ByColorPlace4);
+			op2ByColorPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタン付け糸指定_箇所コード
 			String op2ByColorPlaceCodeInDb = severalCodeInDb(op2ByColorPlaceList);
 			order.setPt2BtnthreadColorPlcCd(op2ByColorPlaceCodeInDb);
@@ -15014,6 +15448,7 @@ public class OrderCoHelper {
 			op2ByColorsList.add(op2ByColor2);
 			op2ByColorsList.add(op2ByColor3);
 			op2ByColorsList.add(op2ByColor4);
+			op2ByColorsList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタン付け糸指定_色コード
 			String op2ByColorsCodeInDb = severalColorCodeInDb(op2ByColorPlaceList,op2ByColorsList);
 			order.setPt2BtnthreadColorCd(op2ByColorsCodeInDb);
@@ -15058,9 +15493,12 @@ public class OrderCoHelper {
 			ojInsidePktPlaceList.add(ojInsidePktPlace2);
 			ojInsidePktPlaceList.add(ojInsidePktPlace3);
 			ojInsidePktPlaceList.add(ojInsidePktPlace4);
+			ojInsidePktPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_内ポケット変更_コード
-			String severalCodeInDb = severalCodeInDb(ojInsidePktPlaceList);
-			order.setJkInnerPktCd(severalCodeInDb);
+			if(!ojInsidePktPlaceList.isEmpty()) {
+				String severalCodeInDb = severalCodeInDb(ojInsidePktPlaceList);
+				order.setJkInnerPktCd(severalCodeInDb);
+			}
 		}
 		else {
 			// JACKET_内ポケット変更_コード
@@ -15135,9 +15573,12 @@ public class OrderCoHelper {
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace7);
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace8);
 			ojDStitchModifyPlaceList.add(ojDStitchModifyPlace9);
+			ojDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ダブルステッチ_コード
-			String ojDStitchModifyPlaceCodeInDb = severalCodeInDb(ojDStitchModifyPlaceList);
-			order.setJkDblstitchPlcCd(ojDStitchModifyPlaceCodeInDb);
+			if(!ojDStitchModifyPlaceList.isEmpty()) {
+				String ojDStitchModifyPlaceCodeInDb = severalCodeInDb(ojDStitchModifyPlaceList);
+				order.setJkDblstitchPlcCd(ojDStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// JACKET_ダブルステッチ_コード
@@ -15173,9 +15614,13 @@ public class OrderCoHelper {
 			ojAmfColorPlaceList.add(ojAmfColorPlace7);
 			ojAmfColorPlaceList.add(ojAmfColorPlace8);
 			ojAmfColorPlaceList.add(ojAmfColorPlace9);
+			ojAmfColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_箇所コード
-			String ojAmfColorPlaceCodeInDb = severalCodeInDb(ojAmfColorPlaceList);
-			order.setJkAmfColorPlcCd(ojAmfColorPlaceCodeInDb);
+			if(!ojAmfColorPlaceList.isEmpty()) {
+				String ojAmfColorPlaceCodeInDb = severalCodeInDb(ojAmfColorPlaceList);
+				order.setJkAmfColorPlcCd(ojAmfColorPlaceCodeInDb);
+			}
+			
 
 			String ojAmfColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor1();
 			String ojAmfColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjAmfColor2();
@@ -15197,6 +15642,7 @@ public class OrderCoHelper {
 			ojAmfColorsList.add(ojAmfColor7);
 			ojAmfColorsList.add(ojAmfColor8);
 			ojAmfColorsList.add(ojAmfColor9);
+			ojAmfColorsList.removeAll(Collections.singleton(null));
 			// JACKET_AMF色指定_色コード
 			String ojAmfColorsCodeInDb = severalColorCodeInDb(ojAmfColorPlaceList,ojAmfColorsList);
 			order.setJkAmfColorCd(ojAmfColorsCodeInDb);
@@ -15255,10 +15701,13 @@ public class OrderCoHelper {
 			ojBhColorPlaceList.add(ojBhColorPlace15);
 			ojBhColorPlaceList.add(ojBhColorPlace16);
 			ojBhColorPlaceList.add(ojBhColorPlace17);
+			ojBhColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_箇所コード
-			String ojBhColorPlaceCodeInDb = severalCodeInDb(ojBhColorPlaceList);
-			order.setJkBtnholeColorPlcCd(ojBhColorPlaceCodeInDb);
-
+			if(!ojBhColorPlaceList.isEmpty()) {
+				String ojBhColorPlaceCodeInDb = severalCodeInDb(ojBhColorPlaceList);
+				order.setJkBtnholeColorPlcCd(ojBhColorPlaceCodeInDb);
+			}
+			
 			String ojBhColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor1();
 			String ojBhColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor2();
 			String ojBhColor3 = orderCoForm.getCoOptionJacketStandardInfo().getOjBhColor3();
@@ -15295,6 +15744,7 @@ public class OrderCoHelper {
 			ojBhColorsList.add(ojBhColor15);
 			ojBhColorsList.add(ojBhColor16);
 			ojBhColorsList.add(ojBhColor17);
+			ojBhColorsList.removeAll(Collections.singleton(null));
 			// JACKET_ボタンホール色指定_色コード
 			String ojBhColorsCodeInDb = severalColorCodeInDb(ojBhColorPlaceList,ojBhColorsList);
 			order.setJkBtnholeColorCd(ojBhColorsCodeInDb);
@@ -15351,9 +15801,13 @@ public class OrderCoHelper {
 			ojByColorPlaceList.add(ojByColorPlace14);
 			ojByColorPlaceList.add(ojByColorPlace15);
 			ojByColorPlaceList.add(ojByColorPlace16);
+			ojByColorPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ボタン付け糸指定_箇所コード
-			String ojByColorPlaceCodeInDb = severalCodeInDb(ojByColorPlaceList);
-			order.setJkBtnthreadColorPlcCd(ojByColorPlaceCodeInDb);
+			if(!ojByColorPlaceList.isEmpty()) {
+				String ojByColorPlaceCodeInDb = severalCodeInDb(ojByColorPlaceList);
+				order.setJkBtnthreadColorPlcCd(ojByColorPlaceCodeInDb);
+			}
+			
 
 			String ojByColor1 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor1();
 			String ojByColor2 = orderCoForm.getCoOptionJacketStandardInfo().getOjByColor2();
@@ -15389,6 +15843,7 @@ public class OrderCoHelper {
 			ojByColorsList.add(ojByColor14);
 			ojByColorsList.add(ojByColor15);
 			ojByColorsList.add(ojByColor16);
+			ojByColorsList.removeAll(Collections.singleton(null));
 			// JACKET_ボタン付け糸指定_色コード
 			String ojByColorsCodeInDb = severalColorCodeInDb(ojByColorPlaceList,ojByColorsList);
 			order.setJkBtnthreadColorCd(ojByColorsCodeInDb);
@@ -15428,9 +15883,13 @@ public class OrderCoHelper {
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace1);
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace2);
 			ogStitchModifyPlaceList.add(ogStitchModifyPlace3);
-			// GILET_ステッチ箇所変更 _コード
-			String ogStitchModifyPlaceCodeInDb = severalCodeInDb(ogStitchModifyPlaceList);
-			order.setGlStitchPlcCd(ogStitchModifyPlaceCodeInDb);
+			ogStitchModifyPlaceList.removeAll(Collections.singleton(null));
+			if(!ogStitchModifyPlaceList.isEmpty()) {
+				// GILET_ステッチ箇所変更 _コード
+				String ogStitchModifyPlaceCodeInDb = severalCodeInDb(ogStitchModifyPlaceList);
+				order.setGlStitchPlcCd(ogStitchModifyPlaceCodeInDb);
+			}
+			
 		}
 		else {
 			// GILET_ステッチ箇所変更 _コード
@@ -15456,8 +15915,10 @@ public class OrderCoHelper {
 			ogDStitchModifyPlaceList.add(ogDStitchModifyPlace3);
 			ogDStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ダブルステッチ変更_コード
-			String ogDStitchModifyPlaceCodeInDb = severalCodeInDb(ogDStitchModifyPlaceList);
-			order.setGlDblstitchPlcCd(ogDStitchModifyPlaceCodeInDb);
+			if(!ogDStitchModifyPlaceList.isEmpty()) {
+				String ogDStitchModifyPlaceCodeInDb = severalCodeInDb(ogDStitchModifyPlaceList);
+				order.setGlDblstitchPlcCd(ogDStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// GILET_ダブルステッチ変更_コード
@@ -15495,9 +15956,12 @@ public class OrderCoHelper {
 			ogAmfColorList.add(ogAmfColor1);
 			ogAmfColorList.add(ogAmfColor2);
 			ogAmfColorList.add(ogAmfColor3);
+			ogAmfColorList.removeAll(Collections.singleton(null));
 			// GILET_AMF色指定_色コード
-			String ogAmfColorsCodeInDb = severalColorCodeInDb(ogAmfColorPlaceList,ogAmfColorList);
-			order.setGlAmfColorCd(ogAmfColorsCodeInDb);
+			if(!ogAmfColorList.isEmpty()) {
+				String ogAmfColorsCodeInDb = severalColorCodeInDb(ogAmfColorPlaceList,ogAmfColorList);
+				order.setGlAmfColorCd(ogAmfColorsCodeInDb);
+			}
 		}
 		else {
 			// GILET_AMF色指定_箇所コード
@@ -15531,9 +15995,12 @@ public class OrderCoHelper {
 			ogBhColorPlaceList.add(ogBhColorPlace4);
 			ogBhColorPlaceList.add(ogBhColorPlace5);
 			ogBhColorPlaceList.add(ogBhColorPlace6);
+			ogBhColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタンホール色指定_箇所コード
-			String ogBhColorPlaceCodeInDb = severalCodeInDb(ogBhColorPlaceList);
-			order.setGlBtnholeColorPlcCd(ogBhColorPlaceCodeInDb);
+			if(ogBhColorPlaceList.isEmpty()) {
+				String ogBhColorPlaceCodeInDb = severalCodeInDb(ogBhColorPlaceList);
+				order.setGlBtnholeColorPlcCd(ogBhColorPlaceCodeInDb);
+			}
 
 			String ogBhColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor1();
 			String ogBhColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgBhColor2();
@@ -15594,9 +16061,12 @@ public class OrderCoHelper {
 			ogByColorPlaceList.add(ogByColorPlace8);
 			ogByColorPlaceList.add(ogByColorPlace9);
 			ogByColorPlaceList.add(ogByColorPlace10);
+			ogByColorPlaceList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_箇所コード
-			String ogByColorPlaceCodeInDb = severalCodeInDb(ogByColorPlaceList);
-			order.setGlBtnthreadColorPlcCd(ogByColorPlaceCodeInDb);
+			if(!ogByColorPlaceList.isEmpty()) {
+				String ogByColorPlaceCodeInDb = severalCodeInDb(ogByColorPlaceList);
+				order.setGlBtnthreadColorPlcCd(ogByColorPlaceCodeInDb);
+			}
 
 			String ogByColor1 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor1();
 			String ogByColor2 = orderCoForm.getCoOptionGiletStandardInfo().getOgByColor2();
@@ -15620,6 +16090,7 @@ public class OrderCoHelper {
 			ogByColorsList.add(ogByColor8);
 			ogByColorsList.add(ogByColor9);
 			ogByColorsList.add(ogByColor10);
+			ogByColorsList.removeAll(Collections.singleton(null));
 			// GILET_ボタン付け糸指定_色コード
 			String ogByColorsCodeInDb = severalColorCodeInDb(ogByColorPlaceList,ogByColorsList);
 			order.setGlBtnthreadColorCd(ogByColorsCodeInDb);
@@ -15666,9 +16137,13 @@ public class OrderCoHelper {
 			opBeltLoopPlaceList.add(opBeltLoopPlace5);
 			opBeltLoopPlaceList.add(opBeltLoopPlace6);
 			opBeltLoopPlaceList.add(opBeltLoopPlace7);
-			// PANTS_ベルトループ_コード
-			String opBeltLoopPlaceCodeInDb = severalCodeInDb(opBeltLoopPlaceList);
-			order.setPtBeltloopCd(opBeltLoopPlaceCodeInDb);
+			opBeltLoopPlaceList.removeAll(Collections.singleton(null));
+			if(!opBeltLoopPlaceList.isEmpty()) {
+				// PANTS_ベルトループ_コード
+				String opBeltLoopPlaceCodeInDb = severalCodeInDb(opBeltLoopPlaceList);
+				order.setPtBeltloopCd(opBeltLoopPlaceCodeInDb);
+			}
+			
 		}
 		else {
 			// PANTS_ベルトループ_コード
@@ -15693,9 +16168,12 @@ public class OrderCoHelper {
 			opStitchModifyPlaceList.add(opStitchModifyPlace2);
 			opStitchModifyPlaceList.add(opStitchModifyPlace3);
 			opStitchModifyPlaceList.add(opStitchModifyPlace4);
+			opStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ステッチ箇所変更_コード
-			String opStitchModifyPlaceCodeInDb = severalCodeInDb(opStitchModifyPlaceList);
-			order.setPtStitchPlcCd(opStitchModifyPlaceCodeInDb);
+			if(!opStitchModifyPlaceList.isEmpty()) {
+				String opStitchModifyPlaceCodeInDb = severalCodeInDb(opStitchModifyPlaceList);
+				order.setPtStitchPlcCd(opStitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS_ステッチ箇所変更_コード
@@ -15720,9 +16198,12 @@ public class OrderCoHelper {
 			opDStitchPlaceList.add(opDStitchPlace2);
 			opDStitchPlaceList.add(opDStitchPlace3);
 			opDStitchPlaceList.add(opDStitchPlace4);
+			opDStitchPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ダブルステッチ_コード
-			String opDStitchPlaceCodeInDb = severalCodeInDb(opDStitchPlaceList);
-			order.setPtDblstitchPlcCd(opDStitchPlaceCodeInDb);
+			if(!opDStitchPlaceList.isEmpty()) {
+				String opDStitchPlaceCodeInDb = severalCodeInDb(opDStitchPlaceList);
+				order.setPtDblstitchPlcCd(opDStitchPlaceCodeInDb);
+			}
 		}
 		else {
 			// PANTS_ダブルステッチ_コード
@@ -15748,9 +16229,13 @@ public class OrderCoHelper {
 			opAmfColorPlaceList.add(opAmfColorPlace3);
 			opAmfColorPlaceList.add(opAmfColorPlace4);
 			// PANTS_AMF色指定_箇所コード
-			String opAmfColorPlaceCodeInDb = severalCodeInDb(opAmfColorPlaceList);
-			order.setPtAmfColorPlcCd(opAmfColorPlaceCodeInDb);
-
+			opAmfColorPlaceList.removeAll(Collections.singleton(null));
+			// PANTS_ダブルステッチ_コード
+			if(!opAmfColorPlaceList.isEmpty()) {
+				String opAmfColorPlaceCodeInDb = severalCodeInDb(opAmfColorPlaceList);
+				order.setPtAmfColorPlcCd(opAmfColorPlaceCodeInDb);
+			}
+			
 			String opAmfColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor1();
 			String opAmfColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor2();
 			String opAmfColor3 = orderCoForm.getCoOptionPantsStandardInfo().getOpAmfColor3();
@@ -15760,6 +16245,7 @@ public class OrderCoHelper {
 			opAmfColorsList.add(opAmfColor2);
 			opAmfColorsList.add(opAmfColor3);
 			opAmfColorsList.add(opAmfColor4);
+			opAmfColorsList.removeAll(Collections.singleton(null));
 			// PANTS_AMF色指定_色コード
 			String opAmfColorsCodeInDb = severalColorCodeInDb(opAmfColorPlaceList,opAmfColorsList);
 			order.setPtAmfColorCd(opAmfColorsCodeInDb);
@@ -15791,8 +16277,11 @@ public class OrderCoHelper {
 			opBhColorPlaceList.add(opBhColorPlace3);
 			opBhColorPlaceList.add(opBhColorPlace4);
 			// PANTS_ボタンホール色指定_箇所コード
-			String opBhColorPlaceCodeInDb = severalCodeInDb(opBhColorPlaceList);
-			order.setPtBtnholeColorPlcCd(opBhColorPlaceCodeInDb);
+			opBhColorPlaceList.removeAll(Collections.singleton(null));
+			if(!opBhColorPlaceList.isEmpty()) {
+				String opBhColorPlaceCodeInDb = severalCodeInDb(opBhColorPlaceList);
+				order.setPtBtnholeColorPlcCd(opBhColorPlaceCodeInDb);
+			}
 
 			String opBhColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor1();
 			String opBhColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpBhColor2();
@@ -15804,6 +16293,11 @@ public class OrderCoHelper {
 			opBhColorsList.add(opBhColor3);
 			opBhColorsList.add(opBhColor4);
 			// PANTS_ボタンホール色指定_色コード
+			opBhColorsList.removeAll(Collections.singleton(null));
+			if(!opBhColorsList.isEmpty()) {
+				String opBhColorPlaceCodeInDb = severalCodeInDb(opBhColorPlaceList);
+				order.setPtBtnholeColorPlcCd(opBhColorPlaceCodeInDb);
+			}
 			String opBhColorsCodeInDb = severalColorCodeInDb(opBhColorPlaceList,opBhColorsList);
 			order.setPtBtnholeColorCd(opBhColorsCodeInDb);
 		}
@@ -15834,9 +16328,12 @@ public class OrderCoHelper {
 			opByColorPlaceList.add(opByColorPlace2);
 			opByColorPlaceList.add(opByColorPlace3);
 			opByColorPlaceList.add(opByColorPlace4);
+			opByColorPlaceList.removeAll(Collections.singleton(null));
 			// PANTS_ボタン付け糸指定_箇所コード
-			String opByColorPlaceCodeInDb = severalCodeInDb(opByColorPlaceList);
-			order.setPtBtnthreadColorPlcNm(opByColorPlaceCodeInDb);
+			if(!opByColorPlaceList.isEmpty()) {
+				String opByColorPlaceCodeInDb = severalCodeInDb(opByColorPlaceList);
+				order.setPtBtnthreadColorPlcCd(opByColorPlaceCodeInDb);
+			}
 
 			String opByColor1 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor1();
 			String opByColor2 = orderCoForm.getCoOptionPantsStandardInfo().getOpByColor2();
@@ -15847,13 +16344,14 @@ public class OrderCoHelper {
 			opByColorsList.add(opByColor2);
 			opByColorsList.add(opByColor3);
 			opByColorsList.add(opByColor4);
+			opByColorsList.removeAll(Collections.singleton(null));
 			// PANTS_ボタン付け糸指定_色コード
 			String opByColorsCodeInDb = severalColorCodeInDb(opByColorPlaceList,opByColorsList);
 			order.setPtBtnthreadColorCd(opByColorsCodeInDb);
 		}
 		else {
 			// PANTS_ボタン付け糸指定_箇所コード
-			order.setPtBtnthreadColorPlcNm(null);
+			order.setPtBtnthreadColorPlcCd(null);
 			// PANTS_ボタン付け糸指定_箇所名
 			order.setPtBtnthreadColorPlcNm(null);
 			// PANTS_ボタン付け糸指定_色コード
@@ -15882,14 +16380,23 @@ public class OrderCoHelper {
 			String op2BeltLoopPlace2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace2();
 			String op2BeltLoopPlace3 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace3();
 			String op2BeltLoopPlace4 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace4();
+			String op2BeltLoopPlace5 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace5();
+			String op2BeltLoopPlace6 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace6();
+			String op2BeltLoopPlace7 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BeltLoopPlace7();
 			List<String> op2BeltLoopPlaceList = new ArrayList<>();
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace1);
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace2);
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace3);
 			op2BeltLoopPlaceList.add(op2BeltLoopPlace4);
+			op2BeltLoopPlaceList.add(op2BeltLoopPlace5);
+			op2BeltLoopPlaceList.add(op2BeltLoopPlace6);
+			op2BeltLoopPlaceList.add(op2BeltLoopPlace7);
 			// 2PANTS_ベルトループ_コード
-			String op2BeltLoopPlaceCodeInDb = severalCodeInDb(op2BeltLoopPlaceList);
-			order.setPt2BeltloopCd(op2BeltLoopPlaceCodeInDb);
+			op2BeltLoopPlaceList.removeAll(Collections.singleton(null));
+			if(!op2BeltLoopPlaceList.isEmpty()) {
+				String op2BeltLoopPlaceCodeInDb = severalCodeInDb(op2BeltLoopPlaceList);
+				order.setPt2BeltloopCd(op2BeltLoopPlaceCodeInDb);
+			}
 		}
 		else {
 			// 2PANTS_ベルトループ_コード
@@ -15916,8 +16423,10 @@ public class OrderCoHelper {
 			op2StitchModifyPlaceList.add(op2StitchModifyPlace4);
 			op2StitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ステッチ箇所変更_コード
-			String op2StitchModifyPlaceCodeInDb = severalCodeInDb(op2StitchModifyPlaceList);
-			order.setPt2StitchPlcCd(op2StitchModifyPlaceCodeInDb);
+			if(!op2StitchModifyPlaceList.isEmpty()) {
+				String op2StitchModifyPlaceCodeInDb = severalCodeInDb(op2StitchModifyPlaceList);
+				order.setPt2StitchPlcCd(op2StitchModifyPlaceCodeInDb);
+			}
 		}
 		else {
 			// 2PANTS_ステッチ箇所変更_コード
@@ -15943,9 +16452,11 @@ public class OrderCoHelper {
 			p2dStitchPlaceList.add(op2dStitchPlace3);
 			p2dStitchPlaceList.add(op2dStitchPlace4);
 			p2dStitchPlaceList.removeAll(Collections.singleton(null));
-			// 2PANTS_ダブルステッチ_コード
-			String p2dStitchPlaceCodeInDb = severalCodeInDb(p2dStitchPlaceList);
-			order.setPt2DblstitchPlcCd(p2dStitchPlaceCodeInDb);
+			if(!p2dStitchPlaceList.isEmpty()) {
+				// 2PANTS_ダブルステッチ_コード
+				String p2dStitchPlaceCodeInDb = severalCodeInDb(p2dStitchPlaceList);
+				order.setPt2DblstitchPlcCd(p2dStitchPlaceCodeInDb);
+			}
 		}
 		else {
 			// 2PANTS_ダブルステッチ_コード
@@ -15972,8 +16483,10 @@ public class OrderCoHelper {
 				op2AmfColorPlaceList.add(op2AmfColorPlace4);
 				op2AmfColorPlaceList.removeAll(Collections.singleton(null));
 				// 2PANTS_AMF色指定_箇所コード
-				String op2AmfColorPlaceCodeInDb = severalCodeInDb(op2AmfColorPlaceList);
-				order.setPt2AmfColorPlcCd(op2AmfColorPlaceCodeInDb);
+				if(!op2AmfColorPlaceList.isEmpty()) {
+					String op2AmfColorPlaceCodeInDb = severalCodeInDb(op2AmfColorPlaceList);
+					order.setPt2AmfColorPlcCd(op2AmfColorPlaceCodeInDb);
+				}
 
 				String op2AmfColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor1();
 				String op2AmfColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2AmfColor2();
@@ -15984,6 +16497,7 @@ public class OrderCoHelper {
 				op2AmfColorsList.add(op2AmfColor2);
 				op2AmfColorsList.add(op2AmfColor3);
 				op2AmfColorsList.add(op2AmfColor4);
+				op2AmfColorsList.removeAll(Collections.singleton(null));
 				// 2PANTS_AMF色指定_色コード
 				String op2AmfColorsCodeInDb = severalColorCodeInDb(op2AmfColorPlaceList,op2AmfColorsList);
 				order.setPt2AmfColorCd(op2AmfColorsCodeInDb);
@@ -16015,9 +16529,12 @@ public class OrderCoHelper {
 			op2BhColorPlaceList.add(op2BhColorPlace2);
 			op2BhColorPlaceList.add(op2BhColorPlace3);
 			op2BhColorPlaceList.add(op2BhColorPlace4);
+			op2BhColorPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタンホール色指定_箇所コード
-			String op2BhColorPlaceCodeInDb = severalCodeInDb(op2BhColorPlaceList);
-			order.setPt2BtnholeColorPlcCd(op2BhColorPlaceCodeInDb);
+			if(!op2BhColorPlaceList.isEmpty()) {
+				String op2BhColorPlaceCodeInDb = severalCodeInDb(op2BhColorPlaceList);
+				order.setPt2BtnholeColorPlcCd(op2BhColorPlaceCodeInDb);
+			}
 
 			String op2BhColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor1();
 			String op2BhColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2BhColor2();
@@ -16028,9 +16545,12 @@ public class OrderCoHelper {
 			op2BhColorsList.add(op2BhColor2);
 			op2BhColorsList.add(op2BhColor3);
 			op2BhColorsList.add(op2BhColor4);
+			op2BhColorsList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタンホール色指定_色コード
-			String op2BhColorsCodeInDb = severalColorCodeInDb(op2BhColorPlaceList,op2BhColorsList);
-			order.setPt2BtnholeColorCd(op2BhColorsCodeInDb);
+			if(!op2BhColorsList.isEmpty()) {
+				String op2BhColorsCodeInDb = severalColorCodeInDb(op2BhColorPlaceList,op2BhColorsList);
+				order.setPt2BtnholeColorCd(op2BhColorsCodeInDb);
+			}
 		}
 		else {
 			// 2PANTS_ボタンホール色指定_箇所コード
@@ -16059,9 +16579,12 @@ public class OrderCoHelper {
 			op2ByColorPlaceList.add(op2ByColorPlace2);
 			op2ByColorPlaceList.add(op2ByColorPlace3);
 			op2ByColorPlaceList.add(op2ByColorPlace4);
+			op2ByColorPlaceList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタン付け糸指定_箇所コード
-			String op2ByColorPlaceCodeInDb = severalCodeInDb(op2ByColorPlaceList);
-			order.setPt2BtnthreadColorPlcCd(op2ByColorPlaceCodeInDb);
+			if(!op2ByColorPlaceList.isEmpty()) {
+				String op2ByColorPlaceCodeInDb = severalCodeInDb(op2ByColorPlaceList);
+				order.setPt2BtnthreadColorPlcCd(op2ByColorPlaceCodeInDb);
+			}
 
 			String op2ByColor1 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor1();
 			String op2ByColor2 = orderCoForm.getCoOptionPants2StandardInfo().getOp2ByColor2();
@@ -16072,6 +16595,7 @@ public class OrderCoHelper {
 			op2ByColorsList.add(op2ByColor2);
 			op2ByColorsList.add(op2ByColor3);
 			op2ByColorsList.add(op2ByColor4);
+			op2ByColorsList.removeAll(Collections.singleton(null));
 			// 2PANTS_ボタン付け糸指定_色コード
 			String op2ByColorsCodeInDb = severalColorCodeInDb(op2ByColorPlaceList,op2ByColorsList);
 			order.setPt2BtnthreadColorCd(op2ByColorsCodeInDb);
@@ -17113,6 +17637,7 @@ public class OrderCoHelper {
 		String ojCuffBackMateStkNo = orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMateStkNo();
 		String ojCuffBackMateName = orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMateMap()
 				.get(orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMate());
+		String ojCuffBackMate = orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMate();
 		// JK釦素材
 		String ojBtnMateStkNo = orderCoForm.getCoOptionJacketStandardInfo().getOjBtnMateStkNo();
 		String ojBtnMateName = orderCoForm.getCoOptionJacketStandardInfo().getOjBtnMateMap()
@@ -17122,9 +17647,14 @@ public class OrderCoHelper {
 			String optionBranchDetailName = mate.getOptionBranchDetailName();
 			if (ojBodyBackMateStkNo != null && ojBodyBackMateStkNo.equals(optionBranchDetailCode)) {
 				standardJkMaterialMap.put("ojBodyBackMateStkNo", ojBodyBackMateName + "　　" + optionBranchDetailName);
-			} else if (ojCuffBackMateStkNo != null && ojCuffBackMateStkNo.equals(optionBranchDetailCode)) {
+			} 
+			if (!"2000300".equals(ojCuffBackMate) && ojCuffBackMateStkNo != null && ojCuffBackMateStkNo.equals(optionBranchDetailCode)) {
 				standardJkMaterialMap.put("ojCuffBackMateStkNo", ojCuffBackMateName + "　　" + optionBranchDetailName);
-			} else if (ojBtnMateStkNo != null && ojBtnMateStkNo.equals(optionBranchDetailCode)) {
+			}
+			else if ("2000300".equals(ojCuffBackMate) || ojCuffBackMateStkNo == null || ojCuffBackMateStkNo.isEmpty()) {
+				standardJkMaterialMap.put("ojCuffBackMateStkNo", ojCuffBackMateName);
+			}
+			if (ojBtnMateStkNo != null && ojBtnMateStkNo.equals(optionBranchDetailCode)) {
 				standardJkMaterialMap.put("ojBtnMateStkNo", ojBtnMateName + "　　" + optionBranchDetailName);
 			}
 		}
@@ -17284,16 +17814,22 @@ public class OrderCoHelper {
 		String tjBtnMateStkNo = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMateStkNo();
 		String tjBtnMateName = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMateMap()
 				.get(orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMate());
+		String tjBtnMate = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMate();
 
 		for (OptionBranchDetail mate : mateList) {
 			String optionBranchDetailCode = mate.getOptionBranchDetailCode();
 			String optionBranchDetailName = mate.getOptionBranchDetailName();
 			if (tjBodyBackMateStkNo != null && tjBodyBackMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoJkMaterialMap.put("tjBodyBackMateStkNo", tjBodyBackMateName + "　　" + optionBranchDetailName);
-			} else if (tjCuffBackMateStkNo != null && tjCuffBackMateStkNo.equals(optionBranchDetailCode)) {
+			}
+			if (tjCuffBackMateStkNo != null && tjCuffBackMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoJkMaterialMap.put("tjCuffBackMateStkNo", tjCuffBackMateName + "　　" + optionBranchDetailName);
-			} else if (tjBtnMateStkNo != null && tjBtnMateStkNo.equals(optionBranchDetailCode)) {
+			}
+			if (!"3000700".equals(tjBtnMate) && tjBtnMateStkNo != null && tjBtnMateStkNo.equals(optionBranchDetailCode)) {
 				tuxedoJkMaterialMap.put("tjBtnMateStkNo", tjBtnMateName + "　　" + optionBranchDetailName);
+			}
+			else if ("3000700".equals(tjBtnMate) || tjBtnMateStkNo == null || tjBtnMateStkNo.isEmpty()) {
+				tuxedoJkMaterialMap.put("tjBtnMateStkNo", tjBtnMateName);
 			}
 		}
 		return tuxedoJkMaterialMap;
@@ -18688,7 +19224,9 @@ public class OrderCoHelper {
 		String productYes = "0009902";
 		
 		//　店舗補正入力欄
-		order.setCorStoreCorrectionMemo(orderCoForm.getCorStoreCorrectionMemo().replaceAll("\\n", ""));
+		if(orderCoForm.getCorStoreCorrectionMemo() != null) {
+			order.setCorStoreCorrectionMemo(orderCoForm.getCorStoreCorrectionMemo().replaceAll("\\n", ""));
+		}
 		
 		//胸ポケット大きさ
 		String osBreastPk = orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPkMap().get(orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPk());
@@ -18753,6 +19291,7 @@ public class OrderCoHelper {
 		String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
 		if("05".equals(productItem) && "0002002".equals(osCasHemLine)) {
 			order.setCorStBodylengthCorrect(new BigDecimal(0));
+			order.setCorStBodylengthGross(new BigDecimal(0));
 		}
 		
 		// SHIRT_ボタン位置変更_コード
@@ -21123,9 +21662,14 @@ public class OrderCoHelper {
 		optionPants2StandardInfo.setOp2ByColorPlace4(null);
 		optionPants2StandardInfo.setOp2ByAllColor(null);
 		// 釦素材
-		optionPants2StandardInfo.setOp2Button(OptionCodeKeys.PT2_3000800);
+        if("1".equals(orderCoForm.getOjBtnMatePt2Flag())) {
+			
+		}else {
+			optionPants2StandardInfo.setOp2Button(OptionCodeKeys.PT2_3000800);
+			
+			optionPants2StandardInfo.setOp2BtnMateStkNo(null);
+		}
 		
-		optionPants2StandardInfo.setOp2BtnMateStkNo(null);
 		// サスペンダー釦
 		optionPants2StandardInfo.setOp2SuspenderBtn(OptionCodeKeys.PT2_0003501);
 		// シック大（股補強）
@@ -21208,9 +21752,13 @@ public class OrderCoHelper {
 		optionPants2TuxedoInfo.setTp2ByColorPlace4(null);
 		optionPants2TuxedoInfo.setTp2ByAllColor(null);
 		// 釦素材
-		optionPants2TuxedoInfo.setTp2Button(OptionCodeKeys.PT2_3000800);
-		
-		optionPants2TuxedoInfo.setTp2BtnMateStkNo(null);
+		if("1".equals(orderCoForm.getOjBtnMatePt2Flag())) {
+				
+		}else {
+			optionPants2TuxedoInfo.setTp2Button(OptionCodeKeys.PT2_3000800);
+				
+			optionPants2TuxedoInfo.setTp2BtnMateStkNo(null);
+		}	
 		// サスペンダー釦
 		optionPants2TuxedoInfo.setTp2SuspenderBtn(OptionCodeKeys.PT2_0003501);
 		// シック大（股補強）
@@ -21319,9 +21867,13 @@ public class OrderCoHelper {
 		optionPants2WashableInfo.setWp2ByColorPlace4(null);
 		optionPants2WashableInfo.setWp2ByAllColor(null);
 		// 釦素材
-		optionPants2WashableInfo.setWp2Button(OptionCodeKeys.PT2_3000800);
+		if("1".equals(orderCoForm.getOjBtnMatePt2Flag())) {
+			
+		}else {
+		  optionPants2WashableInfo.setWp2Button(OptionCodeKeys.PT2_3000800);
 		
-		optionPants2WashableInfo.setWp2BtnMateStkNo(null);
+		  optionPants2WashableInfo.setWp2BtnMateStkNo(null);
+		}
 		// サスペンダー釦
 		optionPants2WashableInfo.setWp2SuspenderBtn(OptionCodeKeys.PT2_0003501);
 		// シック大（股補強）
@@ -21372,6 +21924,7 @@ public class OrderCoHelper {
 			optionPants2StandardInfo.setOp2ByColorPlace(orderPt2.getPt2BtnthreadColorPlcCd());
 			optionPants2StandardInfo.setOp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
 			optionPants2StandardInfo.setOp2Button(orderPt2.getPt2BtnMaterialType());
+			optionPants2StandardInfo.setOp2BtnMateStkNo(orderPt2.getPt2BtnMaterialCd());
 			optionPants2StandardInfo.setOp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2StandardInfo.setOp2Eight(orderPt2.getPt2NonSlipCd());
 			optionPants2StandardInfo.setOp2ShapeMemory(orderPt2.getPt2ShapeMemoryCd());
@@ -21415,6 +21968,7 @@ public class OrderCoHelper {
 			optionPants2TuxedoInfo.setTp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
 			optionPants2TuxedoInfo.setTp2Button(orderPt2.getPt2BtnMaterialType());
 			// optionPantsTuxedoInfo.setTpBtnMateStkNo(tpBtnMateStkNo);
+			optionPants2TuxedoInfo.setTp2BtnMateStkNo(orderPt2.getPt2BtnMaterialCd());
 			optionPants2TuxedoInfo.setTp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2TuxedoInfo.setTp2Eight(orderPt2.getPt2NonSlipCd());
 			optionPants2TuxedoInfo.setTp2Thick(orderPt2.getPt2ChicSlipCd());
@@ -21460,6 +22014,7 @@ public class OrderCoHelper {
 			optionPants2WashableInfo.setWp2ByColorPlace(orderPt2.getPt2BtnthreadColorPlcCd());
 			optionPants2WashableInfo.setWp2ByAllColor(orderPt2.getPt2BtnthreadColorCd());
 			optionPants2WashableInfo.setWp2Button(orderPt2.getPt2BtnMaterialType());
+			optionPants2WashableInfo.setWp2BtnMateStkNo(orderPt2.getPt2BtnMaterialCd());
 			optionPants2WashableInfo.setWp2SuspenderBtn(orderPt2.getPt2SuspenderBtnCd());
 			optionPants2WashableInfo.setWp2Eight(orderPt2.getPt2NonSlipCd());
 			optionPants2WashableInfo.setWp2Thick(orderPt2.getPt2ChicSlipCd());
@@ -25894,7 +26449,19 @@ public class OrderCoHelper {
 			OrderListService orderListService, ModelService modelService, String orderFlag) {
 		Order orderPt = orderListService.findOrderPtOptionByOrderId(order.getOrderId());
 		if(orderPt !=null ) {
-			this.pantsDefaultValueFromDb(orderCoForm, orderPt);
+			// PANTS_膝裏_コード
+			String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
+			// PANTS_フロント仕様_コード
+			String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
+			// PANTS_パンチェリーナ_コード
+			String ptPancherinaCd = orderPt.getPtPancherinaCd();
+			if(ptKneeinnerTypeCd != null && !"".equals(ptKneeinnerTypeCd) && ptFrtTypeCd != null
+					&& !"".equals(ptFrtTypeCd) && ptPancherinaCd != null && !"".equals(ptPancherinaCd)) {
+				this.pantsDefaultValueFromDb(orderCoForm, orderPt);
+			}
+			else {
+				this.pantsDefaultValue(orderCoForm);
+			}
 		}else {
 			this.pantsDefaultValue(orderCoForm);
 		}
@@ -25917,23 +26484,23 @@ public class OrderCoHelper {
 				orderCoController.getOrderPriceForPantsModel(orderCoForm, code,orderFlag);
 				//ステッチ箇所変更
 				String stitchModifyValue = coOptionPantsStandardInfo.getOpStitchModify();
-				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionPantsStandardInfo.getOpStitchModifyPlace();
+				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00021");
 					String stitchModifyValueName = "op_stitchModify_id";
-					String stitchModifyCountArr = coOptionPantsStandardInfo.getOpStitchModifyPlace();
 					if(!stitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForPantsSProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
+						orderCoController.getOrderPriceForPantsSProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "","");
 					}
 				}
 				
 				//ダブルステッチ変更
 				String dSitchModifyValue = coOptionPantsStandardInfo.getOpDStitch();
-				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionPantsStandardInfo.getOpDStitchPlace();
+				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsStandardInfo.getOpPantsModel()).concat("00023");
 					String dSitchModifyValueName = "op_dStitch_id";
-					String dSitchModifyCountArr = coOptionPantsStandardInfo.getOpDStitchPlace();
 					if(!dSitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForPantsSProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+						orderCoController.getOrderPriceForPantsSProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "","");
 					}
 				}
 				
@@ -25953,7 +26520,7 @@ public class OrderCoHelper {
 				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
 				String amfColorCode = "00025".concat(amfValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-						amfColorCount, "", "", "");
+						amfColorCount, "", "", "","");
 				}
 				//ボタンホール色指定
 				String ptBtnholeColorCd = coOptionPantsStandardInfo.getOpBhAllColor();
@@ -25970,7 +26537,7 @@ public class OrderCoHelper {
 				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
 				String bhColorCode = "00028".concat(bhValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-						bhColorCount, "", "", "");
+						bhColorCount, "", "", "","");
 				}
 				//ボタン付け糸指定
 				String ptBtnthreadColorCd = coOptionPantsStandardInfo.getOpByAllColor();
@@ -25988,7 +26555,7 @@ public class OrderCoHelper {
 				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
 				String byColorCode = "00031".concat(byValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
+						byColorCount, "", "", "","");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -26017,7 +26584,7 @@ public class OrderCoHelper {
 				List<String> bhvaluesList = new ArrayList<String>(bhColorMap.values());
 				String bhColorCode = "00028".concat(bhvaluesList.get(0));
 				orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-						bhColorCount, "", "", "");
+						bhColorCount, "", "", "","");
 				}
 				// ボタン付け糸指定
 				String ptBtnthreadColorCd = coOptionPantsTuxedoInfo.getTpByAllColor();
@@ -26035,7 +26602,7 @@ public class OrderCoHelper {
 				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
 				String byColorCode = "00031".concat(byValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSTuProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
+						byColorCount, "", "","","");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -26048,27 +26615,27 @@ public class OrderCoHelper {
 				orderCoController.getOrderPriceForPantsWPModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionPantsWashableInfo.getWpStitchModify();
-				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionPantsWashableInfo.getWpStitchModifyPlace();
+				if(OptionCodeKeys.PT_0002002.equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
 							.concat("00021");
 					String stitchModifyValueName = "wp_stitchModify_id";
-					String stitchModifyCountArr = coOptionPantsWashableInfo.getWpStitchModifyPlace();
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, stitchModifyCode, stitchModifyValueName,
-								"", "", stitchModifyCountArr, stitchModifyValue, "");
+								"", "", stitchModifyCountArr, stitchModifyValue, "","");
 					}
 				}
 				
 				// ダブルステッチ変更
 				String dSitchModifyValue = coOptionPantsWashableInfo.getWpDStitch();
-				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionPantsWashableInfo.getWpDStitchPlace();
+				if(OptionCodeKeys.PT_0002202.equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("03").concat(coOptionPantsWashableInfo.getWpPantsModel())
 							.concat("00023");
 					String dSitchModifyValueName = "wp_dStitch_id";
-					String dSitchModifyCountArr = coOptionPantsWashableInfo.getWpDStitchPlace();
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName,
-								"", "", dSitchModifyCountArr, dSitchModifyValue, "");
+								"", "", dSitchModifyCountArr, dSitchModifyValue, "","");
 					}
 				}
 				// AMF色指定
@@ -26087,7 +26654,7 @@ public class OrderCoHelper {
 				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
 				String amfColorCode = "00025".concat(amfValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-						amfColorCount, "", "", "");
+						amfColorCount, "", "", "","");
 				}
 				// ボタンホール色指定
 				String ptBtnholeColorCd = coOptionPantsWashableInfo.getWpBhAllColor();
@@ -26105,7 +26672,7 @@ public class OrderCoHelper {
 				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
 				String bhColorCode = "00028".concat(bhValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-						bhColorCount, "", "", "");
+						bhColorCount, "", "", "","");
 				}
 				// ボタン付け糸指定
 				String ptBtnthreadColorCd = coOptionPantsWashableInfo.getWpByAllColor();
@@ -26123,7 +26690,7 @@ public class OrderCoHelper {
 				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
 				String byColorCode = "00031".concat(byValuesList.get(0));
 				orderCoController.getOrderPriceForPantsSWPProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
+						byColorCount, "", "", "","");
 				}
 			}else {
 				orderCoForm.setPtOptionPrice("0");
@@ -26161,10 +26728,10 @@ public class OrderCoHelper {
 				orderCoController.getOrderPriceForPants2Model(orderCoForm, code,orderFlag);
 				//ステッチ箇所変更
 				String stitchModifyValue = coOptionPants2StandardInfo.getOp2StitchModify();
-				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionPants2StandardInfo.getOp2StitchModifyPlace();
+				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00021");
 					String stitchModifyValueName = "op2_stitchModify_id";
-					String stitchModifyCountArr = coOptionPants2StandardInfo.getOp2StitchModifyPlace();
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPants2Project(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
 					}
@@ -26172,10 +26739,10 @@ public class OrderCoHelper {
 				
 				//ダブルステッチ変更
 				String dSitchModifyValue = coOptionPants2StandardInfo.getOp2DStitch();
-				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionPants2StandardInfo.getOp2DStitchPlace();
+				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2StandardInfo.getOp2PantsModel()).concat("00023");
 					String dSitchModifyValueName = "op2_dStitch_id";
-					String dSitchModifyCountArr = coOptionPants2StandardInfo.getOp2DStitchPlace();
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPants2Project(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
 					}
@@ -26293,21 +26860,21 @@ public class OrderCoHelper {
 				orderCoController.getOrderPriceForPants2wModel(orderCoForm, code ,orderFlag);
 				
 				String stitchModifyValue = coOptionPants2WashableInfo.getWp2StitchModify();
-				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionPants2WashableInfo.getWp2StitchModifyPlace();
+				if(OptionCodeKeys.PT2_0002002.equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					//ステッチ箇所変更
 					String stitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00021");
 					String stitchModifyValueName = "wp2_stitchModify_id";
-					String stitchModifyCountArr = coOptionPants2WashableInfo.getWp2StitchModifyPlace();
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPants2wProject(orderCoForm, stitchModifyCode, stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
 					}
 				}
 				//ダブルステッチ変更
 				String dSitchModifyValue = coOptionPants2WashableInfo.getWp2DStitch();
-				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionPants2WashableInfo.getWp2DStitchPlace();
+				if(OptionCodeKeys.PT2_0002202.equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("07").concat(coOptionPants2WashableInfo.getWp2PantsModel()).concat("00023");
 					String dSitchModifyValueName = "wp2_dStitch_id";
-					String dSitchModifyCountArr = coOptionPants2WashableInfo.getWp2DStitchPlace();
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForPants2wProject(orderCoForm, dStitchModifyCode, dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
 					}
@@ -28571,5 +29138,226 @@ public class OrderCoHelper {
 			}
 		}
 		return yieldNum.divide(new BigDecimal("1000"));
+	}
+
+	public void extractedItem(OrderCoForm orderCoForm, BindingResult result, SmartValidator smartValidator) {
+		List<Class<?>> validationGroup = new ArrayList<Class<?>>();
+		// ITEM
+		String productItem = orderCoForm.getProductItem();
+		// カテゴリ
+		String productCategory = orderCoForm.getProductCategory();
+		// ３Piece
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		// スペアパンツ
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+		// 刺繍入れ
+		String productEmbroideryNecessity = orderCoForm.getProductEmbroideryNecessity();
+		// 出荷先
+		String custShippingDestination = orderCoForm.getCoCustomerMessageInfo().getCustShippingDestination();
+		
+		// SUIT
+		if ("01".equals(productItem)) {
+			validationGroup.add(Default.class);
+			// 刺繍入れが有りの場合
+			if ("9000502".equals(productEmbroideryNecessity)) {
+				validationGroup.add(EmbroideredItem.class);
+			}
+			
+			if(OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
+				validationGroup.add(JkStItem.class);
+				String ojStitch = orderCoForm.getCoOptionJacketStandardInfo().getOjStitch();
+				if(!OptionCodeKeys.JK_0002302.equals(ojStitch)) {
+					validationGroup.add(JkStStitchItem.class);
+				}
+				validationGroup.add(JkAdItem.class);
+				
+				//3Piece
+				if("0009902".equals(productIs3Piece)) {
+					validationGroup.add(GlStItem.class);
+					String ogWaistPkt = orderCoForm.getCoOptionGiletStandardInfo().getOgWaistPkt();
+					if(OptionCodeKeys.GL_0000201.equals(ogWaistPkt)) {
+						validationGroup.add(GlStWaistPktSpecItem.class);
+					}
+					String ogStitch = orderCoForm.getCoOptionGiletStandardInfo().getOgStitch();
+					if(!OptionCodeKeys.GL_0000503.equals(ogStitch)) {
+						validationGroup.add(GlStStitchItem.class);
+					}
+					validationGroup.add(GlAdItem.class);
+				}
+				//スペアパンツが有りの場合
+				if("0009902".equals(productSparePantsClass)) {
+				}
+			}else if(OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
+				validationGroup.add(JkTuItem.class);
+				validationGroup.add(JkAdItem.class);
+				//3Piece
+				if("0009902".equals(productIs3Piece)) {
+					validationGroup.add(GlTuItem.class);
+					String tgWaistPkt = orderCoForm.getCoOptionGiletTuxedoInfo().getTgWaistPkt();
+					if(OptionCodeKeys.GL_0000201.equals(tgWaistPkt)) {
+						validationGroup.add(GlTuWaistPktSpecItem.class);
+					}
+					validationGroup.add(GlAdItem.class);
+				}
+				//スペアパンツが有りの場合
+				if("0009902".equals(productSparePantsClass)) {
+				}
+			}else if(OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
+				validationGroup.add(JkWaItem.class);
+				validationGroup.add(JkAdItem.class);
+				//3Piece
+				if("0009902".equals(productIs3Piece)) {
+					validationGroup.add(GlWaItem.class);
+					String wgWaistPkt = orderCoForm.getCoOptionGiletWashableInfo().getWgWaistPkt();
+					if(OptionCodeKeys.GL_0000201.equals(wgWaistPkt)) {
+						validationGroup.add(GlWaWaistPktSpecItem.class);
+					}
+					validationGroup.add(GlAdItem.class);
+				}
+				//スペアパンツが有りの場合
+				if("0009902".equals(productSparePantsClass)) {
+				}
+			}
+			
+			//残布
+			validationGroup.add(RemainingClothItem.class);
+		}
+		// JACKET
+		else if ("02".equals(productItem)) {
+			validationGroup.add(Default.class);
+			// 刺繍入れが有りの場合
+			if ("9000502".equals(productEmbroideryNecessity)) {
+				validationGroup.add(EmbroideredItem.class);
+			}
+			
+			if(OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
+				validationGroup.add(JkStItem.class);
+				String ojStitch = orderCoForm.getCoOptionJacketStandardInfo().getOjStitch();
+				if(!OptionCodeKeys.JK_0002302.equals(ojStitch)) {
+					validationGroup.add(JkStStitchItem.class);
+				}
+				validationGroup.add(JkAdItem.class);
+			}else if(OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
+				validationGroup.add(JkTuItem.class);
+				validationGroup.add(JkAdItem.class);
+			}else if(OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
+				validationGroup.add(JkWaItem.class);
+				validationGroup.add(JkAdItem.class);
+			}
+			
+			//残布
+			validationGroup.add(RemainingClothItem.class);
+		}
+		// PANTS
+		else if ("03".equals(productItem)) {
+			validationGroup.add(Default.class);
+			if (OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
+				validationGroup.add(PtStItem.class);
+				// 膝裏
+				String opKneeBack = orderCoForm.getCoOptionPantsStandardInfo().getOpKneeBack();
+				// 裾上げ
+				String opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
+				// AMFステッチ
+				String opStitch = orderCoForm.getCoOptionPantsStandardInfo().getOpStitch();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(opKneeBack)) {
+					validationGroup.add(PtStOpKneeBackItem.class);
+				}
+				
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if("0001702".equals(opHemUp) || "0001703".equals(opHemUp)) {
+					validationGroup.add(PtStOpHemUpItem.class);
+				}
+				
+				// AMFステッチ：無しの場合ではない
+				if(!"0001903".equals(opStitch)) {
+					validationGroup.add(PtStOpStitchItem.class);
+				}
+			} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
+				validationGroup.add(PtTuItem.class);
+				// 膝裏
+				String tpKneeBack = orderCoForm.getCoOptionPantsTuxedoInfo().getTpKneeBack();
+				// 裾上げ
+				String tpHemUp = orderCoForm.getCoOptionPantsTuxedoInfo().getTpHemUp();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(tpKneeBack)) {
+					validationGroup.add(PtTuTpKneeBackItem.class);
+				}
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if("0001702".equals(tpHemUp) || "0001703".equals(tpHemUp)) {
+					validationGroup.add(PtTuTpHemUpItem.class);
+				}
+				
+			} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
+				validationGroup.add(PtWaItem.class);
+				// 膝裏
+				String wpKneeBack = orderCoForm.getCoOptionPantsWashableInfo().getWpKneeBack();
+				// 裾上げ
+				String wpHemUp = orderCoForm.getCoOptionPantsWashableInfo().getWpHemUp();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(wpKneeBack)) {
+					validationGroup.add(PtWaWpKneeBackItem.class);
+				}
+				
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if("0001702".equals(wpHemUp) || "0001703".equals(wpHemUp)) {
+					validationGroup.add(PtWaWpHemUpItem.class);
+				}
+			}
+		}
+		// GILET
+		else if ("04".equals(productItem)) {
+			validationGroup.add(Default.class);
+			if (OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
+				validationGroup.add(GlStItem.class);
+				String ogWaistPkt = orderCoForm.getCoOptionGiletStandardInfo().getOgWaistPkt();
+				if(OptionCodeKeys.GL_0000201.equals(ogWaistPkt)) {
+					validationGroup.add(GlStWaistPktSpecItem.class);
+				}
+				String ogStitch = orderCoForm.getCoOptionGiletStandardInfo().getOgStitch();
+				if(!OptionCodeKeys.GL_0000503.equals(ogStitch)) {
+					validationGroup.add(GlStStitchItem.class);
+				}
+				validationGroup.add(GlAdItem.class);
+			} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
+				validationGroup.add(GlTuItem.class);
+				String tgWaistPkt = orderCoForm.getCoOptionGiletTuxedoInfo().getTgWaistPkt();
+				if(OptionCodeKeys.GL_0000201.equals(tgWaistPkt)) {
+					validationGroup.add(GlTuWaistPktSpecItem.class);
+				}
+				validationGroup.add(GlAdItem.class);
+			} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
+				validationGroup.add(GlWaItem.class);
+				String wgWaistPkt = orderCoForm.getCoOptionGiletWashableInfo().getWgWaistPkt();
+				if(OptionCodeKeys.GL_0000201.equals(wgWaistPkt)) {
+					validationGroup.add(GlWaWaistPktSpecItem.class);
+				}
+				validationGroup.add(GlAdItem.class);
+			}
+			//残布
+			validationGroup.add(RemainingClothItem.class);
+		}
+		// SHIRT
+		else if("05".equals(productItem)) {
+			
+		}
+		// COAT
+		else if("06".equals(productItem)) {
+			validationGroup.add(Default.class);
+			validationGroup.add(CoatItem.class);
+			validationGroup.add(CoatAdItem.class);
+			//残布
+			validationGroup.add(RemainingClothItem.class);
+		}
+		
+		// 出荷先れが他店舗の場合
+		if ("05".equals(custShippingDestination)) {
+			validationGroup.add(ShippingDestinationItem.class);
+		}
+		
+		smartValidator.validate(orderCoForm, result, validationGroup.toArray());
 	}
 }

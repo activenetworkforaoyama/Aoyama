@@ -3,57 +3,84 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkAdItem;
+
 public class CoAdjustJacketStandardInfo implements Serializable {
 	private static final long serialVersionUID = 8096233544839181551L;
 
 	// 号数 体型
 	private Map<String, String> sizeNumberMap;
-	
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの号数を入力して下さい。")
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの体型を入力して下さい。")
 	private String sizeFigure;
 	// 着丈修正
 	private Map<String, String> corJkBodyMap;
 	// 着丈型サイズ
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの着丈型サイズが不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの着丈型サイズの範囲が不正です。")
 	private String corJkBodySize;
 	// 着丈補正値
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの着丈補正値を入力して下さい。")
 	private String corJkBodyCorrect;
 	// 着丈グロス
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの着丈グロスが不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの着丈グロスの範囲が不正です。")
 	private String corJkBodyGross;
 
 	// ウエスト修正
 	private Map<String, String> corJkWaistMap;
 	// ウエスト型サイズ
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETのウエスト型サイズ不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETのウエスト型サイズの範囲が不正です。")
 	private String corJkWaistSize;
 	// ウエスト補正値
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETのウエスト補正値を入力して下さい。")
 	private String corJkWaistCorrect;
 	// ウエストグロス
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETのウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETのウエストグロスの範囲が不正です。")
 	private String corJkWaistGross;
 
 	// 袖丈右修正
 	private Map<String, String> corJkRightsleeveMap;
 	// 袖丈右型サイズ
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈右型サイズ不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの袖丈右型サイズの範囲が不正です。")
 	private String corJkRightsleeveSize;
 	// 袖丈右補正値
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈右補正値を入力して下さい。")
 	private String corJkRightsleeveCorrect;
 	// 袖丈右グロス
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈右グロスが不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの袖丈右グロスの範囲が不正です。")
 	private String corJkRightsleeveGross;
 
 	// 袖丈左修正
 	private Map<String, String> corJkLeftsleeveMap;
 	// 袖丈左型サイズ
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈左型サイズ不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの袖丈左型サイズの範囲が不正です。")
 	private String corJkLeftsleeveSize;
 	// 袖丈左補正値
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈左補正値を入力して下さい。")
 	private String corJkLeftsleeveCorrect;
 	// 袖丈左グロス
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの袖丈左グロスが不正です。")
+	@Range(min=1, max=999, groups = {JkAdItem.class}, message = "JACKETの袖丈左グロスの範囲が不正です。")
 	private String corJkLeftsleeveGross;
 	
 	// 肩パット
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの肩パットを入力して下さい。")
 	private String corJkShoulderPadCd;
 	
 	// 体型補正
+	@NotBlank(groups = {JkAdItem.class}, message = "JACKETの体型補正を入力して下さい。")
 	private String corJkFigureCorrectCd;
 	
 	//JK再補正コメント

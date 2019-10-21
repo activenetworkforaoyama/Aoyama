@@ -2,6 +2,13 @@ package co.jp.aoyama.macchinetta.app.order;
 
 public class OptionCodeKeys {
 	
+	// カテゴリ
+	public static final String CATEGORY_STANDARD = "9000101";
+	
+	public static final String CATEGORY_TUXEDO = "9000102";
+	
+	public static final String CATEGORY_WASHABLE = "9000103";
+	
 	public static final String TWO_PANTS = "0009902";
 	
 	public static final String THREE_PIECE = "0009902";
@@ -306,8 +313,12 @@ public class OptionCodeKeys {
 	public static final String sht_0001801 = "0001801";
 	// カジュアルヘムライン仕様
 	public static final String sht_0002001 = "0002001";
+	
+	public static final String sht_0002002 = "0002002";
 	// ボタン位置変更
 	public static final String sht_0002101 = "0002101";
+	
+	public static final String sht_0002102 = "0002102";
 
 	// PANTS2
 	// タック:ノータック
@@ -396,4 +407,6 @@ public class OptionCodeKeys {
 	public static final String PT2_0003902 = "0003902";
 	// 側章幅:1.5cm
 	public static final String PT2_0004001 = "0004001";
+
+
 }

@@ -1,19 +1,24 @@
 package co.jp.aoyama.macchinetta.app.order.coHelper;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dozer.util.ReflectionUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm;
 import co.jp.aoyama.macchinetta.app.order.TypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustShirtStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.enums.shirt.ShirtCoOptionStandardPriceEnum;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Model;
 import co.jp.aoyama.macchinetta.domain.model.Order;
@@ -485,5 +490,170 @@ public class CoShirtHelper {
 		
 		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
 		
+	}
+
+	public Map<String, Object> getOrderPriceForShirtModel(OrderCoForm orderCoForm, String code) {
+CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
+		
+		ShirtCoOptionStandardPriceEnum[] priceEnum = ShirtCoOptionStandardPriceEnum.values();
+		for (ShirtCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			try {
+				Method methodOne = optionShirtStandardInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(optionShirtStandardInfo);
+				Object invokeTwo = "";
+				if(!("".equals(valueTwo))) {
+					Method methodTwo = optionShirtStandardInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(optionShirtStandardInfo);
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne + invokeTwo;
+				String orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				
+				Class<?> cls;
+				Object[] args = {orderPrice};
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo");
+				Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionShirtStandardInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, String> priceMap = new HashMap<String, String>();
+		Integer optionPriceInt = 0;
+		for (ShirtCoOptionStandardPriceEnum price : priceEnum) {
+			String valueFour = price.getValueFour();
+			String valueSix = price.getValueSix();
+			
+			try {
+				Method methodSix = optionShirtStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionShirtStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				
+				optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				if("0".equals(valueOf)) {
+					priceMap.put(valueFour, "無料");
+				}else {
+					priceMap.put(valueFour, "￥" + CoContorllerPublicMethodUtil.formatPrice(valueOf));
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("priceMap", priceMap);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setStOptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
+	}
+
+	public Map<String, String> getOrderPriceForShirtProject(OrderCoForm orderCoForm, String code,
+			org.springframework.ui.Model model, String idValueName, String colorCount, String thisVal) {
+CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
+		
+		ShirtCoOptionStandardPriceEnum[] priceEnum = ShirtCoOptionStandardPriceEnum.values();
+		String orderPrice = "";
+		for (ShirtCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String valueFive = price.getValueFive();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			
+			boolean hasIdvalueName = false;
+			try {
+				if(idValueName.equals(valueFour)) {
+//					Method methodOne = optionShirtStandardInfo.getClass().getMethod(valueOne);
+//					Object invokeOne = methodOne.invoke(optionShirtStandardInfo);
+//					Object invokeTwo = null;
+//					if(!("".equals(valueTwo))) {
+//						Method methodTwo = optionShirtStandardInfo.getClass().getMethod(valueTwo);
+//						invokeTwo = methodTwo.invoke(optionShirtStandardInfo);
+//					}
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+//					if(invokeTwo != null) {
+//						splicingCodeDetail = code + key + thisVal + invokeTwo;
+//					}
+					hasIdvalueName = true;
+				}else if(idValueName.equals(valueFive)) {
+					Method methodOne = optionShirtStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(optionShirtStandardInfo);
+					Method methodTwo = optionShirtStandardInfo.getClass().getMethod(valueTwo);
+					Object invokeTwo = methodTwo.invoke(optionShirtStandardInfo);
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+					hasIdvalueName = true;
+				}
+				
+				if(hasIdvalueName == true) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					if("0".equals(orderPrice)) {
+						//orderPrice = "無料";
+					}
+					
+					Class<?> cls;
+					Object[] args = {orderPrice};
+					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo");
+					Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionShirtStandardInfo(), args);
+					
+					break;
+				}
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Integer optionPriceInt = 0;
+		for (ShirtCoOptionStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+			
+			try {
+				Method methodSix = optionShirtStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(optionShirtStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+//				if(!("0".equals(valueOf))) {
+				if(!("0".equals(valueOf) || "null".equals(valueOf))) {
+					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		
+//		if("og_amfColor_id".equals(idValueName)) {
+//			Integer colorPrice = 0;
+//			for (int i = 0; i < Integer.valueOf(colorCount); i++) {
+//				colorPrice = colorPrice + 100;
+//			}
+//			orderPrice = String.valueOf(colorPrice);
+//		}
+		
+		if("0".equals(orderPrice)) {
+			orderPrice = "無料";
+		}else {
+			orderPrice = "￥" + CoContorllerPublicMethodUtil.formatPrice(orderPrice);
+		}
+		
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("idValuePrice", orderPrice);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setStOptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
 	}
 }

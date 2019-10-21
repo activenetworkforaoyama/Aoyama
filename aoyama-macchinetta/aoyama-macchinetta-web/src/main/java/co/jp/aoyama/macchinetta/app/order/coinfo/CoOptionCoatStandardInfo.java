@@ -3,10 +3,16 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatItem;
+
+
 public class CoOptionCoatStandardInfo implements Serializable {
 	private static final long serialVersionUID = 8096233544839181551L;
 	
 	//COATモデル
+	@NotBlank(groups = { CoatItem.class }, message = "COATのモデルを入力して下さい。")
 	private String coatModel;
 	
 	private Map<String, String> coatModelMap;
@@ -14,6 +20,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String coatModelRtPrice;
 
 	// ラペルデザイン
+	@NotBlank(groups = { CoatItem.class }, message = "COATのラペルデザインを入力して下さい。")
 	private String ocLapelDesign;
 
 	private Map<String, String> ocLapelDesignMap;
@@ -21,6 +28,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctLapelDesignRtPrice;
 	
 	// 袖仕様
+	@NotBlank(groups = { CoatItem.class }, message = "COATの袖仕様を入力して下さい。")
 	private String ocSleeveSpec;
 
 	private Map<String, String> ocSleeveSpecMap;
@@ -28,6 +36,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctSleeveTypeRtPrice;
 
 	// 腰ポケット
+	@NotBlank(groups = { CoatItem.class }, message = "COATの腰ポケットを入力して下さい。")
 	private String ocWaistPkt;
 
 	private Map<String, String> ocWaistPktMap;
@@ -35,6 +44,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctWaistPktRtPrice;
 
 	// チェンジポケット
+	@NotBlank(groups = { CoatItem.class }, message = "COATのチェンジポケットを入力して下さい。")
 	private String ocChangePkt;
 
 	private Map<String, String> ocChangePktMap;
@@ -42,6 +52,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctChgPktRtPrice;
 
 	// スランテッドポケット
+	@NotBlank(groups = { CoatItem.class }, message = "COATのスランテッドポケットを入力して下さい。")
 	private String ocSlantedPkt;
 
 	private Map<String, String> ocSlantedPktMap;
@@ -49,6 +60,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctSlantedPktRtPrice;
 
 	// ベント
+	@NotBlank(groups = { CoatItem.class }, message = "COATのベントを入力して下さい。")
 	private String ocVentSpec;
 
 	private Map<String, String> ocVentSpecMap;
@@ -56,6 +68,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctVentRtPrice;
 
 	// フロント釦数
+	@NotBlank(groups = { CoatItem.class }, message = "COATのフロント釦数を入力して下さい。")
 	private String ocFrontBtnCnt;
 
 	private Map<String, String> ocFrontBtnCntMap;
@@ -63,6 +76,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctFrtBtnRtPrice;
 
 	// 袖口
+	@NotBlank(groups = { CoatItem.class }, message = "COATの袖口を入力して下さい。")
 	private String ocCuffSpec;
 
 	private Map<String, String> ocCuffSpecMap;
@@ -70,6 +84,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctCuffRtPrice;
 
 	// 袖釦
+	@NotBlank(groups = { CoatItem.class }, message = "COATの袖釦を入力して下さい。")
 	private String ocSleeveBtnType;
 
 	private Map<String, String> ocSleeveBtnTypeMap;
@@ -77,6 +92,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctSleeveBtnRtPrice;
 
 	// バックベルト
+	@NotBlank(groups = { CoatItem.class }, message = "COATのバックベルトを入力して下さい。")
 	private String ocBackBelt;
 
 	private Map<String, String> ocBackBeltMap;
@@ -84,6 +100,7 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctBackBeltRtPrice;
 
 	// 襟吊
+	@NotBlank(groups = { CoatItem.class }, message = "COATの襟吊を入力して下さい。")
 	private String ocChainHange;
 
 	private Map<String, String> ocChainHangeMap;
@@ -91,31 +108,37 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctCollarHangRtPrice;
 
 	// 胴裏素材
+	@NotBlank(groups = { CoatItem.class }, message = "COATの胴裏素材を入力して下さい。")
 	private String ocBodyBackMate;
 
 	private Map<String, String> ocBodyBackMateMap;
 	
 	//胴裏素材品番
+	@NotBlank(groups = { CoatItem.class }, message = "COATの胴裏素材品番を入力して下さい。")
 	private String ocBodyBackMateStkNo;
 	
 	private String ctInnerBodyClothRtPrice;
 
 	// 袖裏素材
+	@NotBlank(groups = { CoatItem.class }, message = "COATの袖裏素材を入力して下さい。")
 	private String ocCuffBackMate;
 
 	private Map<String, String> ocCuffBackMateMap;
 	
 	//袖裏素材品番
+	@NotBlank(groups = { CoatItem.class }, message = "COATの袖裏素材品番を入力して下さい。")
 	private String ocCuffBackMateStkNo;
 	
 	private String ctInnerSleeveClothRtPrice;
 
 	// 釦素材
+	@NotBlank(groups = { CoatItem.class }, message = "COATの釦素材を入力して下さい。")
 	private String ocFrontBtnMate;
 
 	private Map<String, String> ocFrontBtnMateMap;
 	
 	//釦素材品番
+	@NotBlank(groups = { CoatItem.class }, message = "COATの釦素材品番を入力して下さい。")
 	private String ocFrontBtnMateStkNo;
 	
 	private String ctBtnMaterialRtPrice;

@@ -565,10 +565,10 @@ public class CoGiletHelper {
 				orderCoController.getOrderPriceForGiletStandardModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionGiletStandardInfo.getOgStitchModify();
-				if ("0000602".equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionGiletStandardInfo.getOgStitchModifyPlace();
+				if ("0000602".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 //					String stitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00006");
 					String stitchModifyCode = productItem.concat("04").concat(ogGiletModel);
-					String stitchModifyCountArr = coOptionGiletStandardInfo.getOgStitchModifyPlace();
 					String stitchModifyValueName = "og_stitchModify_id";
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, stitchModifyCode,
@@ -577,10 +577,10 @@ public class CoGiletHelper {
 				}
 				// ダブルステッチ変更
 				String dSitchModifyValue = coOptionGiletStandardInfo.getOgDStitchModify();
-				if ("0002602".equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionGiletStandardInfo.getOgDStitchModifyPlace();
+				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 //					String dStitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00027");
 					String dStitchModifyCode = productItem.concat("04").concat(ogGiletModel);
-					String dSitchModifyCountArr = coOptionGiletStandardInfo.getOgDStitchModifyPlace();
 					String dSitchModifyValueName = "og_dStitchModify_id";
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, dStitchModifyCode,
@@ -651,7 +651,7 @@ public class CoGiletHelper {
 				String code = productItem.concat("04").concat(tgGiletModel);
 				orderCoController.getOrderPriceForGiletTuxedoModel(orderCoForm, code,orderFlag);
 				// ボタンホール色指定
-				String glBtnholeColorCd = coOptionGiletTuxedoInfo.getTgAllBhColor();
+				String glBtnholeColorCd = coOptionGiletTuxedoInfo.getTgBhAllColor();
 				if (glBtnholeColorCd != null && !"".equals(glBtnholeColorCd)&&!glBtnholeColorCd.startsWith("/")) {
 				String bhValueName = "tg_bhColor_id";
 				String bhCode = productItem.concat("04").concat(tgGiletModel);
@@ -669,7 +669,7 @@ public class CoGiletHelper {
 						bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
-				String glBtnthreadColorCd = coOptionGiletTuxedoInfo.getTgAllByColor();
+				String glBtnthreadColorCd = coOptionGiletTuxedoInfo.getTgByAllColor();
 				if (glBtnthreadColorCd != null && !"".equals(glBtnthreadColorCd)&&!glBtnthreadColorCd.startsWith("/")) {
 				String byValueName = "tg_byColor_id";
 				String byCode = productItem.concat("04").concat(tgGiletModel);
@@ -697,10 +697,10 @@ public class CoGiletHelper {
 				orderCoController.getOrderPriceForGiletWashableModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionGiletWashableInfo.getWgStitchModify();
-				if ("0000602".equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionGiletWashableInfo.getWgStitchModifyPlace();
+				if ("0000602".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 //					String stitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00006");
 					String stitchModifyCode = productItem.concat("04").concat(wgGiletModel);
-					String stitchModifyCountArr = coOptionGiletWashableInfo.getWgStitchModifyPlace();
 					String stitchModifyValueName = "wg_stitchModify_id";
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, stitchModifyCode,
@@ -709,10 +709,10 @@ public class CoGiletHelper {
 				}
 				// ダブルステッチ変更
 				String dSitchModifyValue = coOptionGiletWashableInfo.getWgDStitchModify();
-				if ("0002602".equals(dSitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionGiletWashableInfo.getWgDStitchModifyPlace();
+				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 //					String dStitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00027");
 					String dStitchModifyCode = productItem.concat("04").concat(wgGiletModel);
-					String dSitchModifyCountArr = coOptionGiletWashableInfo.getWgDStitchModifyPlace();
 					String dSitchModifyValueName = "wg_dStitchModify_id";
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletWashableProject(orderCoForm, dStitchModifyCode,
@@ -720,7 +720,7 @@ public class CoGiletHelper {
 					}
 				}
 				// AMF色指定
-				String glAmfColorCd = coOptionGiletWashableInfo.getWgAllAmfColor();
+				String glAmfColorCd = coOptionGiletWashableInfo.getWgAmfAllColor();
 				if (glAmfColorCd != null && !"".equals(glAmfColorCd)&&!glAmfColorCd.startsWith("/")) {
 				String amfValueName = "wg_amfColor_id";
 				String amfCode = productItem.concat("04").concat(wgGiletModel);
@@ -738,7 +738,7 @@ public class CoGiletHelper {
 						amfColorCount, "", "", "");
 				}
 				// ボタンホール色指定
-				String glBtnholeColorCd = coOptionGiletWashableInfo.getWgAllBhColor();
+				String glBtnholeColorCd = coOptionGiletWashableInfo.getWgBhAllColor();
 				if (glBtnholeColorCd != null && !"".equals(glBtnholeColorCd)&&!glBtnholeColorCd.startsWith("/")) {
 				String bhValueName = "wg_bhColor_id";
 				String bhCode = productItem.concat("04").concat(wgGiletModel);
@@ -756,7 +756,7 @@ public class CoGiletHelper {
 						bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
-				String glBtnthreadColorCd = coOptionGiletWashableInfo.getWgAllByColor();
+				String glBtnthreadColorCd = coOptionGiletWashableInfo.getWgByAllColor();
 				if (glBtnthreadColorCd != null && !"".equals(glBtnthreadColorCd)&&!glBtnthreadColorCd.startsWith("/")) {
 				String byValueName = "wg_byColor_id";
 				String byCode = productItem.concat("04").concat(wgGiletModel);
@@ -882,13 +882,13 @@ public class CoGiletHelper {
 			coOptionGiletStandardInfo.setOgDStitchModifyPlace(orderGl.getGlDblstitchPlcCd());
 			coOptionGiletStandardInfo.setOgAmfColor(orderGl.getGlAmfColorType());
 			coOptionGiletStandardInfo.setOgAmfColorPlace(orderGl.getGlAmfColorPlcCd());
-			//coOptionGiletStandardInfo.setOgAmfColorPlaceAll();
+			coOptionGiletStandardInfo.setOgAmfAllColor(orderGl.getGlAmfColorCd());
 			coOptionGiletStandardInfo.setOgBhColor(orderGl.getGlBtnholeColorType());
 			coOptionGiletStandardInfo.setOgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletStandardInfo.setOgBhColorPlaceAll();
+			coOptionGiletStandardInfo.setOgBhAllColor(orderGl.getGlBtnholeColorCd());
 			coOptionGiletStandardInfo.setOgByColor(orderGl.getGlBtnthreadColorType());
 			coOptionGiletStandardInfo.setOgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletStandardInfo.setOgByColorPlaceAll();
+			coOptionGiletStandardInfo.setOgByAllColor(orderGl.getGlBtnthreadColorCd());
 			coOptionGiletStandardInfo.setOgBackLiningMate(orderGl.getGlBackClothType());
 			coOptionGiletStandardInfo.setOgBackLiningMateStkNo(orderGl.getGlBackClothCd());
 			coOptionGiletStandardInfo.setOgInsideLiningMate(orderGl.getGlInnnerClothType());
@@ -911,10 +911,10 @@ public class CoGiletHelper {
 			coOptionGiletTuxedoInfo.setTgDblstitchPlc(orderGl.getGlDblstitchPlcType());
 			coOptionGiletTuxedoInfo.setTgBhColor(orderGl.getGlBtnholeColorType());
 			coOptionGiletTuxedoInfo.setTgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletTuxedoInfo.setTgBhColorPlaceAll();
+			coOptionGiletTuxedoInfo.setTgBhAllColor(orderGl.getGlBtnholeColorCd());
 			coOptionGiletTuxedoInfo.setTgByColor(orderGl.getGlBtnthreadColorType());
 			coOptionGiletTuxedoInfo.setTgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletTuxedoInfo.setTgByColorPlaceAll();
+			coOptionGiletTuxedoInfo.setTgByAllColor(orderGl.getGlBtnthreadColorCd());
 			coOptionGiletTuxedoInfo.setTgBackLiningMate(orderGl.getGlBackClothType());
 			coOptionGiletTuxedoInfo.setTgBackLiningMateStkNo(orderGl.getGlBackClothCd());
 			coOptionGiletTuxedoInfo.setTgInsideLiningMate(orderGl.getGlInnnerClothType());
@@ -939,13 +939,13 @@ public class CoGiletHelper {
 			coOptionGiletWashableInfo.setWgDStitchModifyPlace(orderGl.getGlDblstitchPlcCd());
 			coOptionGiletWashableInfo.setWgAmfColor(orderGl.getGlAmfColorType());
 			coOptionGiletWashableInfo.setWgAmfColorPlace(orderGl.getGlAmfColorPlcCd());
-			//coOptionGiletWashableInfo.setWgAmfColorPlaceAll();
+			coOptionGiletWashableInfo.setWgAmfAllColor(orderGl.getGlAmfColorCd());
 			coOptionGiletWashableInfo.setWgBhColor(orderGl.getGlBtnholeColorType());
 			coOptionGiletWashableInfo.setWgBhColorPlace(orderGl.getGlBtnholeColorPlcCd());
-			//coOptionGiletWashableInfo.setWgBhColorPlaceAll();
+			coOptionGiletWashableInfo.setWgBhAllColor(orderGl.getGlBtnholeColorCd());
 			coOptionGiletWashableInfo.setWgByColor(orderGl.getGlBtnthreadColorType());
 			coOptionGiletWashableInfo.setWgByColorPlace(orderGl.getGlBtnthreadColorPlcCd());
-			//coOptionGiletWashableInfo.setWgByColorPlaceAll();
+			coOptionGiletWashableInfo.setWgByAllColor(orderGl.getGlBtnthreadColorCd());
 			coOptionGiletWashableInfo.setWgBackLiningMate(orderGl.getGlBackClothType());
 			coOptionGiletWashableInfo.setWgBackLiningMateStkNo(orderGl.getGlBackClothCd());
 			coOptionGiletWashableInfo.setWgInsideLiningMate(orderGl.getGlInnnerClothType());
@@ -960,7 +960,7 @@ public class CoGiletHelper {
 	}
 	
 	private void pluralGlStandardOptionItem(CoOptionGiletStandardInfo coOptionGiletStandardInfo, Order orderGl) {
-		String regex = ",";
+		String regex = "/";
 		//ステッチ箇所変更
 		String glStitchPlcCd = orderGl.getGlStitchPlcCd();
 		if(glStitchPlcCd != null && !"".equals(glStitchPlcCd)&&!glStitchPlcCd.startsWith(regex)) {
@@ -1092,7 +1092,7 @@ public class CoGiletHelper {
 	}
 	
 	private void pluralGlTuxedoOptionItem(CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo, Order orderGl) {
-		String regex = ",";
+		String regex = "/";
 		//ボタンホール色指定
 		String glBtnholeColorPlcCd = orderGl.getGlBtnholeColorPlcCd();
 		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
@@ -1169,7 +1169,7 @@ public class CoGiletHelper {
 	}
 	
 	private void pluralGlWashableOptionItem(CoOptionGiletWashableInfo coOptionGiletWashableInfo, Order orderGl) {
-		String regex = ",";
+		String regex = "/";
 		//ステッチ箇所変更
 		String glStitchPlcCd = orderGl.getGlStitchPlcCd();
 		if(glStitchPlcCd != null && !"".equals(glStitchPlcCd)&&!glStitchPlcCd.startsWith(regex)) {
@@ -2116,6 +2116,7 @@ public class CoGiletHelper {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public Map<String, String> getOrderPriceForGiletTuxedoProject(OrderCoForm orderCoForm, String code,String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
 		CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
@@ -2184,6 +2185,11 @@ public class CoGiletHelper {
 							cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
 							Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, "setGlWaistPktShapeRtPrice");
 							ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
+							
+							Class<?> clsTwo;
+							clsTwo = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo");
+							Method methodThreeIsTwo = CoContorllerPublicMethodUtil.getMethod(cls, "setGlWaistPktClothRtPrice");
+							ReflectionUtils.invoke(methodThreeIsTwo, orderCoForm.getCoOptionGiletTuxedoInfo(), args);
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}

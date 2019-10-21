@@ -28,7 +28,7 @@ function initOptionPants2Tuxedo() {
 
 		// 選択中のタック
 		var tackElem = jQuery('#tp2_tack');
-		var selectedTack = tackElem.val();
+		//var selectedTack = tackElem.val();
 
 		// タックの選択肢更新
 		tackElem.empty();
@@ -705,7 +705,7 @@ function tp2PancherinaSpecialController() {
 		jQuery('#tp2_pancherina_id1').prop("disabled", true);
 		jQuery('#tp2_pancherina_id1').prop("checked", true);
 		jQuery('#tp2_pancherina_id1').change();
-		jQuery('#tp2_pancherina_id2').prop("disabled", true);
+		jQuery('#tp2_pancherina_id2').prop("disabled", false);
 
 	} else {
 
@@ -717,9 +717,10 @@ function tp2PancherinaSpecialController() {
 		var selectedFrontSpec = jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]:checked').val();
 
 		// フロント仕様がホック留めの場合はパンチェリーナは無し固定
-		if (selectedFrontSpec == '0000401') {
+		if (selectedFrontSpec == '0000402') {
 			jQuery('#tp2_pancherina_id2').prop('disabled', true);
 			jQuery('#tp2_pancherina_id1').prop('checked', true);
+			jQuery('#tp2_pancherina_id1').prop('disabled', false);
 		}
 	}
 

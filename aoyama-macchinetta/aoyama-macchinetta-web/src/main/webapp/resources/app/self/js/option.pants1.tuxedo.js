@@ -822,10 +822,10 @@ function tpChangedBeltLoop() {
 		}
 	});*/
 
-	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
+	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に有りに設定する
 	if (selectedBeltLoop == '0000701') {
 		if (jQuery('input[name="tp_adjuster"]:checked').val() == '0000603') {
-			jQuery('#tp_pinLoop_id2').prop('checked', 'true');
+			jQuery('#tp_pinLoop_id1').prop('checked', 'true');
 		}
 	}	
 

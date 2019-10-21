@@ -3,15 +3,23 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpKneeBackItem;
+
 public class CoOptionPantsWashableInfo implements Serializable{
 	private static final long serialVersionUID = -4505963757793347479L;
 	
 	//PANTSモデル
+	@NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のモデルを入力して下さい。")
 	private String wpPantsModel;
 	
 	private Map<String,String> wpPantsModelMap;
 	
 	//タック
+	@NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のタックを入力して下さい。")
     private String wpTack;
     
     private Map<String,String> wpTackMap;
@@ -19,6 +27,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptTackRtPrice;
     
     //膝裏
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の膝裏を入力して下さい。")
     private String wpKneeBack;
     
     private Map<String,String> wpKneeBackMap;
@@ -26,6 +35,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptKneeinnerTypeRtPrice;
     
     //膝裏素材
+    @NotBlank(groups = { PtWaWpKneeBackItem.class }, message = "PANTS（1本目）の膝裏素材を入力して下さい。")
     private String wpKneeBackMate;
 
     private Map<String,String> wpKneeBackMateMap;
@@ -33,12 +43,15 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptKneeinnerClothRtPrice;
     
     //フロント仕様
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のフロント仕様を入力して下さい。")
   	private String wpFrontSpec;
       
     private Map<String,String> wpFrontSpecMap;
     
     private String ptFrtTypeRtPrice;
+    
     //パンチェリーナ
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のパンチェリーナを入力して下さい。")
     private String wpPancherina;
     
     private Map<String,String> wpPancherinaMap;
@@ -46,6 +59,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptPancherinaRtPrice;
     
     //アジャスター仕様
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のアジャスター仕様を入力して下さい。")
     private String wpAdjuster;
     
     private Map<String,String> wpAdjusterMap;
@@ -53,6 +67,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptAdjusterRtPrice;
     
     //ベルトループ
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のベルトループを入力して下さい。")
     private String wpBeltLoop;
     
     private Map<String,String> wpBeltLoopMap;
@@ -79,6 +94,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpBeltLoopPlaceMap;
     
     //ピンループ
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のピンループを入力して下さい。")
     private String wpPinLoop;
     
     private Map<String,String> wpPinLoopMap;
@@ -86,6 +102,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptPinLoopRtPrice;
     
     //脇ポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の脇ポケットを入力して下さい。")
     private String wpSidePkt;
     
     private Map<String,String> wpSidePktMap;
@@ -93,6 +110,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptSidePktRtPrice;
     
     //忍びポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の忍びポケットを入力して下さい。")
     private String wpSinobiPkt;
     
     private Map<String,String> wpSinobiPktMap;
@@ -100,6 +118,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptShinobiPktRtPrice;
     
     //コインポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のコインポケットを入力して下さい。")
     private String wpCoinPkt;
     
     private Map<String,String> wpCoinPktMap;
@@ -107,12 +126,15 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptCoinPktRtPrice;
     
     //フラップ付コインポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のフラップ付コインポケットを入力して下さい。")
     private String wpFlapCoinPkt;
     
     private Map<String,String> wpFlapCoinPktMap;
     
     private String ptFlapcoinPktRtPrice;
+    
     //上前ピスポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の上前ピスポケットを入力して下さい。")
     private String wpPisPktUf;
     
     private Map<String,String> wpPisPktUfMap;
@@ -120,12 +142,15 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptLeftPisPktRtPrice;
     
     //下前ピスポケット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の下前ピスポケットを入力して下さい。")
     private String wpPisPktDf;
     
     private Map<String,String> wpPisPktDfMap;
     
     private String ptRightPisPktRtPrice;
+    
     //Vカット
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のVカットを入力して下さい。")
     private String wpVCut;
     
     private Map<String,String> wpVCutMap;
@@ -133,6 +158,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptVCutRtPrice;
     
     //裾上げ
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の裾上げを入力して下さい。")
     private String wpHemUp;
     
     private Map<String,String> wpHemUpMap;
@@ -140,6 +166,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptHemUpRtPrice;
     
     //ダブル幅
+    @NotBlank(groups = { PtWaWpHemUpItem.class }, message = "PANTS（1本目）のダブル幅を入力して下さい。")
     private String wpDoubleWide;
     
     private Map<String,String> wpDoubleWideMap;
@@ -147,6 +174,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptDblWidthRtPrice;
     
     //ステッチ種類
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のステッチ種類を入力して下さい。")
     private String wpStitch;
     
     private Map<String,String> wpStitchMap;
@@ -154,6 +182,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptAmfStitchRtPrice;
     
     //ステッチ箇所変更
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のステッチ箇所変更を入力して下さい。")
     private String wpStitchModify;
     
     private Map<String,String> wpStitchModifyMap;
@@ -174,6 +203,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpStitchModifyPlaceMap;
     
     //ダブルステッチ
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のダブルステッチを入力して下さい。")
     private String wpDStitch;
     
     private Map<String,String> wpDStitchMap;
@@ -194,6 +224,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpDStitchPlaceMap;
     
     //AMF色指定
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のAMF色指定を入力して下さい。")
     private String wpAmfColor;
     
     private Map<String,String> wpAmfColorMap;
@@ -235,6 +266,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpAmfColorsMap;
     
     //ボタンホール色指定
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のボタンホール色指定を入力して下さい。")
     private String wpBhColor;
     
     private Map<String,String> wpBhColorMap;
@@ -276,6 +308,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpBhColorsMap;
     
     //ボタン付け糸指定
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のボタン付け糸指定を入力して下さい。")
     private String wpByColor;
     
     private Map<String,String> wpByColorMap;
@@ -317,6 +350,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private Map<String,String> wpByColorsMap;
     
     //釦素材
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の釦素材を入力して下さい。")
     private String wpButton;
     
     private Map<String,String> wpButtonMap;
@@ -324,9 +358,11 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptBtnMaterialRtPrice;
     
     //釦素材品番
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の釦素材品番を入力して下さい。")
     private String wpBtnMateStkNo;
     
     //サスペンダー釦
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のサスペンダー釦を入力して下さい。")
     private String wpSuspenderBtn;
     
     private Map<String,String> wpSuspenderBtnMap;
@@ -334,6 +370,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptSuspenderBtnRtPrice;
     
     //エイト（滑り止め）
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のエイト（滑り止め）を入力して下さい。")
     private String wpEight;
     
     private Map<String,String> wpEightMap;
@@ -341,6 +378,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String PtNonSlipRtPrice;
     
     //シック（股補強）
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）のシック（股補強）を入力して下さい。")
     private String wpThick;
     
     private Map<String,String> wpThickMap;
@@ -348,6 +386,7 @@ public class CoOptionPantsWashableInfo implements Serializable{
     private String ptChicSlipRtPrice;
     
     //形状記憶
+    @NotBlank(groups = { PtWaItem.class }, message = "PANTS（1本目）の形状記憶を入力して下さい。")
     private String wpShapeMemory; 
     
     private Map<String,String> wpShapeMemoryMap;

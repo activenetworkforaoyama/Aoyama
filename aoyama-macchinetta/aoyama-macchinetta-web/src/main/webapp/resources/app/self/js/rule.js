@@ -622,6 +622,63 @@ var opStitchModifyList = {
 };
 
 /*
+ * ルール３－１
+ * PANTSモデルに基づくステッチ箇所変更のデフォルト値を保持するマップ
+ * opPantsModifyList
+ *     PANTSモデル:ステッチ箇所変更のデフォルト値配列
+ */
+var opAmfColorList = {
+	"TR02":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:false}
+	},
+	"NR04":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:true}
+	},
+	"CH14":{
+		"1":{default:true},
+		"2":{default:true},
+		"3":{default:false},
+		"4":{default:false}
+	},
+	"BS03":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:false}
+	},
+	"NZ01":{
+		"1":{default:true},
+		"2":{default:true},
+		"3":{default:true},
+		"4":{default:false}
+	},
+	"RS01":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:false}
+	},
+	"JW21":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:false}
+	},
+	"AY01":{
+		"1":{default:true},
+		"2":{default:false},
+		"3":{default:false},
+		"4":{default:false}
+	}
+};
+
+/*
  * ルール４
  * 腰ポケットとチェンジポケットの組み合わせ毎の有効なスランテッドポケットを保持するマップ
  * slantedPktList
@@ -1000,7 +1057,7 @@ var tackList = {
 		activeList : [{val:"0000101",text:"ノータック"},
 			{val:"0000104",text:"2アウトタック"},
 			{val:"0000105",text:"2インタック"}],
-		defaultValue : "0000104"
+		defaultValue : "0000101"
 	}
 }
 

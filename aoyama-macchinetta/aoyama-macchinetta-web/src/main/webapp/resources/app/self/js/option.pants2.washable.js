@@ -27,7 +27,7 @@ function initOptionPants2Washable() {
 			}
 		// 選択中のタック
 		var tackElem = jQuery('#wp2_tack');
-		var selectedTack = tackElem.val();
+		//var selectedTack = tackElem.val();
 
 		// タックの選択肢更新
 		tackElem.empty();
@@ -712,7 +712,7 @@ function wp2PancherinaSpecialController() {
 		jQuery('#wp2_pancherina_id1').prop("disabled", true);
 		jQuery('#wp2_pancherina_id1').prop("checked", true);
 		jQuery('#wp2_pancherina_id1').change();
-		jQuery('#wp2_pancherina_id2').prop("disabled", true);
+		jQuery('#wp2_pancherina_id1').prop("disabled", false);
 
 	} else {
 
@@ -724,8 +724,9 @@ function wp2PancherinaSpecialController() {
 		var selectedFrontSpec = jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]:checked').val();
 
 		// フロント仕様がホック留めの場合はパンチェリーナは無し固定
-		if (selectedFrontSpec == '0000401') {}else{
+		if (selectedFrontSpec == '0000402') {
 			jQuery('#wp2_pancherina_id2').prop('disabled', true);
+			jQuery('#wp2_pancherina_id1').prop('disabled', false);
 			jQuery('#wp2_pancherina_id1').prop('checked', true);
 		}
 	}
@@ -773,7 +774,7 @@ function wp2ChangedBeltLoop() {
 
 	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
 	if (selectedBeltLoop == '0000701') {
-		if (jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]:checked').val() == 'サイドアジャスター小') {
+		if (jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]:checked').val() == '0000603') {
 			jQuery('#wp2_pinLoop_id2').prop('checked', 'true');
 		}
 	}	
@@ -809,10 +810,11 @@ function wp2PinLoopSpecialController() {
 	} else {
 		jQuery('input[id="wp2_pinLoop_id1"]').prop("disabled", false);
 		jQuery('input[id="wp2_pinLoop_id2"]').prop("disabled", false);
+		jQuery(':radio[name="coOptionPants2WashableInfo.wp2PinLoop"]').prop('checked', true);
 	}
 
-	// 処理後のピンループ
-	var changedPinLoop = jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]:checked').val();
+//	// 処理後のピンループ
+//	var changedPinLoop = jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]:checked').val();
 }
 
 //ダブルステッチの特殊制御を行う

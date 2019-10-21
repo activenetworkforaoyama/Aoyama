@@ -3,15 +3,23 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaWaistPktSpecItem;
+
+
 public class CoOptionGiletWashableInfo implements Serializable {
 	private static final long serialVersionUID = -4719132036199041997L;
 	
 	//GILETモデル
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのモデルを入力して下さい。")
 	private String wgGiletModel;
 	
 	private Map<String, String> wgGiletModelMap;
 	
 	// 胸ポケット
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの胸ポケットを入力して下さい。")
 	private String wgBreastPkt;
 
 	private Map<String, String> wgBreastPktMap;
@@ -19,6 +27,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glBreastPktRtPrice;
 
 	// 腰ポケット
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの腰ポケットを入力して下さい。")
 	private String wgWaistPkt;
 
 	private Map<String, String> wgWaistPktMap;
@@ -26,6 +35,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glWaistPktRtPrice;
 
 	// 腰ポケット形状
+	@NotBlank(groups = { GlWaWaistPktSpecItem.class }, message = "Giletの腰ポケット形状を入力して下さい。")
 	private String wgWaistPktSpec;
 
 	private Map<String, String> wgWaistPktSpecMap;
@@ -33,6 +43,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glWaistPktShapeRtPrice;
 
 	// ステッチ種類
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String wgStitch;
 
 	private Map<String, String> wgStitchMap;
@@ -40,6 +51,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glAmfStitchRtPrice;
 
 	// ステッチ箇所変更
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String wgStitchModify;
 
 	private Map<String, String> wgStitchModifyMap;
@@ -55,6 +67,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgStitchModifyPlaceMap;
 	
 	//ダブルステッチ変更
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのダブルステッチ変更を入力して下さい。")
 	private String wgDStitchModify;
 	
 	private Map<String, String> wgDStitchModifyMap;
@@ -70,6 +83,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgDStitchModifyPlaceMap;
 
 	// AMF色指定
+	@NotBlank(groups = { GlWaItem.class }, message = "GiletのAMF色指定を入力して下さい。")
 	private String wgAmfColor;
 
 	private Map<String, String> wgAmfColorMap;
@@ -89,7 +103,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	
 	private Map<String, String> wgAmfColorPlaceMap;
 
-	private String wgAllAmfColor;
+	private String wgAmfAllColor;
 	// AMF糸色 襟・ラペル・フロント
 	private String wgAmfColor1;
 	// AMF糸色 胸ポケット
@@ -101,6 +115,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgAmfColorsMap;
 
 	// ボタンホール色指定
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのボタンホール色指定を入力して下さい。")
 	private String wgBhColor;
 
 	private Map<String, String> wgBhColorMap;
@@ -123,7 +138,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgBhColorPlaceMap;
 
-	private String wgAllBhColor;
+	private String wgBhAllColor;
 	// ボタンホール色指定 フロント1
 	private String wgBhColor1;
 	// ボタンホール色指定 フロント2
@@ -141,6 +156,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgBhColorsMap;
 
 	// ボタン付け糸指定
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのボタン付け糸指定を入力して下さい。")
 	private String wgByColor;
 
 	private Map<String, String> wgByColorMap;
@@ -167,7 +183,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 
 	private Map<String, String> wgByColorPlaceMap;
 
-	private String wgAllByColor;
+	private String wgByAllColor;
 	// ボタンホール色指定 フロント下前1
 	private String wgByColor1;
 	// ボタンホール色指定 フロント下前2
@@ -193,6 +209,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private Map<String, String> wgByColorsMap;
 
 	// 背裏地素材
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの背裏地素材を入力して下さい。")
 	private String wgBackLiningMate;
 
 	private Map<String, String> wgBackLiningMateMap;
@@ -200,9 +217,11 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glBackClothRtPrice;
 	
 	// 背裏地素材品番
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String wgBackLiningMateStkNo;
 
 	// 内側裏地素材
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの内側裏地素材を入力して下さい。")
 	private String wgInsideLiningMate;
 
 	private Map<String, String> wgInsideLiningMateMap;
@@ -210,9 +229,11 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glInnnerClothRtPrice;
 	
 	// 内側裏地素材品番
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの内側裏地素材品番を入力して下さい。")
 	private String wgInsideLiningMateStkNo;
 
 	// 釦素材
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの釦素材を入力して下さい。")
 	private String wgFrontBtnMate;
 
 	private Map<String, String> wgFrontBtnMateMap;
@@ -220,9 +241,11 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glFrtBtnRtPrice;
 	
 	//釦素材品番
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletの釦素材品番を入力して下さい。")
 	private String wgFrontBtnMateStkNo;
 
 	// バックベルト
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのバックベルトを入力して下さい。")
 	private String wgBackBelt;
 
 	private Map<String, String> wgBackBeltMap;
@@ -230,6 +253,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glBackBeltRtPrice;
 
 	// ウォッチチェーン
+	@NotBlank(groups = { GlWaItem.class }, message = "Giletのウォッチチェーンを入力して下さい。")
 	private String wgWatchChain;
 
 	private Map<String, String> wgWatchChainMap;
@@ -1116,28 +1140,28 @@ public class CoOptionGiletWashableInfo implements Serializable {
 		this.wgByColorPlace = wgByColorPlace;
 	}
 
-	public String getWgAllAmfColor() {
-		return wgAllAmfColor;
+	public String getWgAmfAllColor() {
+		return wgAmfAllColor;
 	}
 
-	public void setWgAllAmfColor(String wgAllAmfColor) {
-		this.wgAllAmfColor = wgAllAmfColor;
+	public void setWgAmfAllColor(String wgAmfAllColor) {
+		this.wgAmfAllColor = wgAmfAllColor;
 	}
 
-	public String getWgAllBhColor() {
-		return wgAllBhColor;
+	public String getWgBhAllColor() {
+		return wgBhAllColor;
 	}
 
-	public void setWgAllBhColor(String wgAllBhColor) {
-		this.wgAllBhColor = wgAllBhColor;
+	public void setWgBhAllColor(String wgBhAllColor) {
+		this.wgBhAllColor = wgBhAllColor;
 	}
 
-	public String getWgAllByColor() {
-		return wgAllByColor;
+	public String getWgByAllColor() {
+		return wgByAllColor;
 	}
 
-	public void setWgAllByColor(String wgAllByColor) {
-		this.wgAllByColor = wgAllByColor;
+	public void setWgByAllColor(String wgByAllColor) {
+		this.wgByAllColor = wgByAllColor;
 	}
 	
 }

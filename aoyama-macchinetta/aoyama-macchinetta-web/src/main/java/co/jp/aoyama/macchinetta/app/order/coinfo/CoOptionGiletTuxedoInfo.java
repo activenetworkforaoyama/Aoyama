@@ -3,16 +3,24 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuWaistPktSpecItem;
+
+
 public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	private static final long serialVersionUID = -4934283279616821245L;
 
 	// GILETモデル
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのモデルを入力して下さい。")
 	private String tgGiletModel;
 
 	private Map<String, String> tgGiletModelMap;
 
 	// 胸ポケット
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの胸ポケットを入力して下さい。")
 	private String tgBreastPkt;
 
 	private Map<String, String> tgBreastPktMap;
@@ -20,6 +28,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glBreastPktRtPrice;
 
 	// 腰ポケット
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの腰ポケットを入力して下さい。")
 	private String tgWaistPkt;
 
 	private Map<String, String> tgWaistPktMap;
@@ -27,6 +36,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glWaistPktRtPrice;
 
 	// 腰ポケット形状
+	@NotBlank(groups = { GlTuWaistPktSpecItem.class }, message = "Giletの腰ポケット形状を入力して下さい。")
 	private String tgWaistPktSpec;
 
 	private Map<String, String> tgWaistPktSpecMap;
@@ -34,6 +44,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glWaistPktShapeRtPrice;
 
 	// 腰ポケット素材
+	@NotBlank(groups = { GlTuWaistPktSpecItem.class }, message = "Giletの腰ポケット素材を入力して下さい。")
 	private String tgWaistPktMate;
 
 	private Map<String, String> tgWaistPktMateMap;
@@ -41,6 +52,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glWaistPktClothRtPrice;
 
 	// ステッチ種類
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String tgStitch;
 
 	private Map<String, String> tgStitchMap;
@@ -57,6 +69,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String tgAmfColor = "0000801";
 
 	// ボタンホール色指定
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのボタンホール色指定を入力して下さい。")
 	private String tgBhColor;
 
 	private Map<String, String> tgBhColorMap;
@@ -79,7 +92,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgBhColorPlaceMap;
 
-	private String tgAllBhColor;
+	private String tgBhAllColor;
 	// ボタンホール色指定 フロント1
 	private String tgBhColor1;
 	// ボタンホール色指定 フロント2
@@ -97,6 +110,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private Map<String, String> tgBhColorsMap;
 
 	// ボタン付け糸指定
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのボタン付け糸指定を入力して下さい。")
 	private String tgByColor;
 
 	private Map<String, String> tgByColorMap;
@@ -123,7 +137,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 
 	private Map<String, String> tgByColorPlaceMap;
 
-	private String tgAllByColor;
+	private String tgByAllColor;
 	// ボタンホール色指定 フロント下前1
 	private String tgByColor1;
 	// ボタンホール色指定 フロント下前2
@@ -149,6 +163,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private Map<String, String> tgByColorsMap;
 
 	// 背裏地素材
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの背裏地素材を入力して下さい。")
 	private String tgBackLiningMate;
 
 	private Map<String, String> tgBackLiningMateMap;
@@ -156,9 +171,11 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glBackClothRtPrice;
 	
 	// 背裏地素材品番
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String tgBackLiningMateStkNo;
 
 	// 内側裏地素材
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの内側裏地素材を入力して下さい。")
 	private String tgInsideLiningMate;
 
 	private Map<String, String> tgInsideLiningMateMap;
@@ -166,9 +183,11 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glInnnerClothRtPrice;
 	
 	// 内側裏地素材品番
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの内側裏地素材品番を入力して下さい。")
 	private String tgInsideLiningMateStkNo;
 
 	// 釦素材
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの釦素材を入力して下さい。")
 	private String tgFrontBtnMate;
 
 	private Map<String, String> tgFrontBtnMateMap;
@@ -176,9 +195,11 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glFrtBtnRtPrice;
 	
 	// 釦素材品番
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの釦素材品番を入力して下さい。")
 	private String tgFrontBtnMateStkNo;
 
 	// バックベルト
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのバックベルトを入力して下さい。")
 	private String tgBackBelt;
 
 	private Map<String, String> tgBackBeltMap;
@@ -186,6 +207,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glBackBeltRtPrice;
 
 	// ウォッチチェーン
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletのウォッチチェーンを入力して下さい。")
 	private String tgWatchChain;
 
 	private Map<String, String> tgWatchChainMap;
@@ -880,20 +902,20 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 		this.tgByColorPlace = tgByColorPlace;
 	}
 
-	public String getTgAllBhColor() {
-		return tgAllBhColor;
+	public String getTgBhAllColor() {
+		return tgBhAllColor;
 	}
 
-	public void setTgAllBhColor(String tgAllBhColor) {
-		this.tgAllBhColor = tgAllBhColor;
+	public void setTgBhAllColor(String tgBhAllColor) {
+		this.tgBhAllColor = tgBhAllColor;
 	}
 
-	public String getTgAllByColor() {
-		return tgAllByColor;
+	public String getTgByAllColor() {
+		return tgByAllColor;
 	}
 
-	public void setTgAllByColor(String tgAllByColor) {
-		this.tgAllByColor = tgAllByColor;
+	public void setTgByAllColor(String tgByAllColor) {
+		this.tgByAllColor = tgByAllColor;
 	}
 	
 }

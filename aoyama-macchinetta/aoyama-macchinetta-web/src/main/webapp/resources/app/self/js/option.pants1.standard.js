@@ -909,10 +909,10 @@ function changedBeltLoop() {
 		}
 	});*/
 
-	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
+	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に有りに設定する
 	if (selectedBeltLoop == '0000701') {
 		if (jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]:checked').val() == '0000603') {
-			jQuery('#op_pinLoop_id2').prop('checked', 'true');
+			jQuery('#op_pinLoop_id1').prop('checked', 'true');
 		}
 	}	
 
@@ -1120,21 +1120,53 @@ function ctrlOpDStitchPlace() {
 		tmpStitchModify = jQuery('#op_dStitchPlace_'+tmpStitchModifyPlace);
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#op_stitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
+		// ステッチ箇所取得
+		var stitchModifyValue = jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]:checked').val();
 
-		// 有効無効設定
-		if (dStitchValue == '0002202' && stichModifyChecked) {
-			// 有りの場合、定義に基づいて設定変更
-			tmpStitchModify.prop("disabled", false);
-		} else {
-			// 無しの場合、無効にする
-			tmpStitchModify.prop("disabled", true);
-			tmpStitchModify.prop("checked", false);
+		// ピスフラップの要素取得
+		stitchModifyPisFlap = jQuery('#op_dStitchPlace_id4');
+
+		// 選択中の上前ピスポケット
+		var pisPktUf = jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]:checked').val();
+		// 選択中の下前ピスポケット
+		var pisPktDf = jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]:checked').val();
+
+		if(stitchModifyValue == '0002002'){
+			// 有効無効設定
+			if (dStitchValue == '0002202' && stichModifyChecked) {
+				// 有りの場合、定義に基づいて設定変更
+				tmpStitchModify.prop("disabled", false);
+			} else {
+				// 無しの場合、無効にする
+				tmpStitchModify.prop("disabled", true);
+				tmpStitchModify.prop("checked", false);
+			}
+		}
+		else {
+			// 有効無効設定
+			if (dStitchValue == '0002202') {
+				// 有りの場合、定義に基づいて設定変更
+				tmpStitchModify.prop("disabled", false);
+				// 上前ピスポケットと下前ピスポケットのどちらかがフラップ/ボタン有の場合は選択可
+				if (pisPktUf == '0001403' || pisPktDf == '0001503') {
+					stitchModifyPisFlap.prop("disabled", false);
+				} else {
+					stitchModifyPisFlap.prop("disabled", true);
+					stitchModifyPisFlap.prop("checked", false);
+				}
+			} else {
+				// 無しの場合、無効にする
+				tmpStitchModify.prop("disabled", true);
+				tmpStitchModify.prop("checked", false);
+			}
 		}
 	}
 }
 
 // AMF色指定の有効/無効を制御する
 function ctrlOpAmfColor() {
+	// 選択中のPantsモデルを取得
+	var pantsModel = jQuery('#op_pantsModel').val();
 	// 選択中のステッチ箇所変更
 	var amfColorValue = jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]:checked').val();
 
@@ -1149,24 +1181,68 @@ function ctrlOpAmfColor() {
 		});
 		jQuery('#op_amfColor_div').hide();
 	}
+	
+	// ステッチ箇所取得
+	var stitchModifyValue = jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]:checked').val();
+	
+	// ピスフラップの要素取得
+	stitchModifyPisFlap = jQuery('#op_amfColorPlace_4');
+
+	// 選択中の上前ピスポケット
+	var pisPktUf = jQuery('input[name="coOptionPantsStandardInfo.opPisPktUf"]:checked').val();
+	// 選択中の下前ピスポケット
+	var pisPktDf = jQuery('input[name="coOptionPantsStandardInfo.opPisPktDf"]:checked').val();
 
 	// AMF色指定の有効/無効設定
 	jQuery('input[id^="op_amfColorPlace_"]').each(function() {
-		if (amfColorValue == "0002402") {
-			// 有りの場合はステッチ箇所変更に基づく
-			var id = this.id;
-			id = id.replace("op_amfColorPlace_", "op_stitchModifyPlace_id");
-			if (jQuery('#'+id).prop("checked")) {
-				jQuery(this).prop("disabled", false);
+		if(stitchModifyValue == '0002002'){
+			if (amfColorValue == "0002402") {
+				// 有りの場合はステッチ箇所変更に基づく
+				var id = this.id;
+				id = id.replace("op_amfColorPlace_", "op_stitchModifyPlace_id");
+				if (jQuery('#'+id).prop("checked")) {
+					jQuery(this).prop("disabled", false);
+				} else {
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);
+				}
 			} else {
+				// 無しの場合は変更不可
 				jQuery(this).prop("disabled", true);
 				jQuery(this).prop("checked", false);
 			}
-		} else {
-			// 無しの場合は変更不可
-			jQuery(this).prop("disabled", true);
-			jQuery(this).prop("checked", false);
 		}
+		else {
+			var tmpStitchModifyPlace = null;
+			var tmpStitchModify = null;
+			var stichModifyChecked = false;
+
+			for (tmpStitchModifyPlace in opAmfColorList[pantsModel]) {
+				// 定義取得
+				stitchModifyDef = opAmfColorList[pantsModel][tmpStitchModifyPlace];
+				// ダブルステッチ要素取得
+				tmpStitchModify = jQuery('#op_amfColorPlace_'+tmpStitchModifyPlace);
+
+				if (amfColorValue == '0002402') {
+					// 有りの場合、定義に基づいて設定変更
+					tmpStitchModify.prop("disabled", false);
+					// チェック状態の設定
+					tmpStitchModify.prop("checked", stitchModifyDef.default);
+					
+					// 上前ピスポケットと下前ピスポケットのどちらかがフラップ/ボタン有の場合は選択可
+					if (pisPktUf == '0001403' || pisPktDf == '0001503') {
+						stitchModifyPisFlap.prop("disabled", false);
+					} else {
+						stitchModifyPisFlap.prop("disabled", true);
+						stitchModifyPisFlap.prop("checked", false);
+					}
+				} else {
+					// 無しの場合、無効にする
+					tmpStitchModify.prop("disabled", true);
+				}
+			}
+		}
+		
 		if (jQuery('#'+this.id).prop("checked")) {
 			// 選択されているの場合、色指定エリアを表示
 			jQuery('#'+this.id+'_div').show();
@@ -1208,17 +1284,17 @@ jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').change(function(ind
 	var oPLoopElemN = jQuery('#op_pinLoop_id2');
 	
 	switch(selected) {
-		case "0000601"                : oBLoopElemY.prop("checked", true); break;
+		case "0000601": oBLoopElemY.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;
 		case "0000603": oBLoopElemN.prop("checked", true); break;
-		case "0000604"        : oBLoopElemY.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
 		default:oBLoopElemN.prop("checked", true);
 	}
 	switch(selected) {
-		case "0000601"                : oPLoopElemY.prop("checked", true); break;
+		case "0000601": oPLoopElemY.prop("checked", true); break;
 		case "0000602": oPLoopElemN.prop("checked", true); break;
 		case "0000603": oPLoopElemN.prop("checked", true); break;
-		case "0000604"        : oPLoopElemY.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
 	}
 	changedBeltLoop();

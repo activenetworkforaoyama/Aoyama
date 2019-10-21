@@ -3,6 +3,12 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStWaistPktSpecItem;
+
 public class CoOptionGiletStandardInfo implements Serializable {
 	private static final long serialVersionUID = -6022359138897696244L;
 
@@ -10,11 +16,13 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private Map<String, String> threePieceMap;
 
 	// GILETモデル
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのモデルを入力して下さい。")
 	private String ogGiletModel;
 
 	private Map<String, String> ogGiletModelMap;
 
 	// 胸ポケット
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの胸ポケットを入力して下さい。")
 	private String ogBreastPkt;
 
 	private Map<String, String> ogBreastPktMap;
@@ -22,6 +30,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glBreastPktRtPrice;
 	
 	// 腰ポケット
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの腰ポケットを入力して下さい。")
 	private String ogWaistPkt;
 
 	private Map<String, String> ogWaistPktMap;
@@ -29,6 +38,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glWaistPktRtPrice;
 
 	// 腰ポケット形状
+	@NotBlank(groups = { GlStWaistPktSpecItem.class }, message = "Giletの腰ポケットを入力して下さい。")
 	private String ogWaistPktSpec;
 
 	private Map<String, String> ogWaistPktSpecMap;
@@ -36,6 +46,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glWaistPktShapeRtPrice;
 
 	// AMFステッチ
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String ogStitch;
 
 	private Map<String, String> ogStitchMap;
@@ -43,6 +54,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glAmfStitchRtPrice;
 
 	// ステッチ箇所変更
+	@NotBlank(groups = { GlStStitchItem.class }, message = "Giletのステッチ箇所変更を入力して下さい。")
 	private String ogStitchModify;
 
 	private Map<String, String> ogStitchModifyMap;
@@ -58,6 +70,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glStitchPlcRtPrice;
 
 	// ダブルステッチ変更
+	@NotBlank(groups = { GlStStitchItem.class }, message = "Giletのダブルステッチ変更を入力して下さい。")
 	private String ogDStitchModify;
 
 	private Map<String, String> ogDStitchModifyMap;
@@ -73,6 +86,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glDblstitchPlcRtPrice;
 
 	// AMF色指定
+	@NotBlank(groups = { GlStStitchItem.class }, message = "GiletのAMF色指定を入力して下さい。")
 	private String ogAmfColor;
 
 	private Map<String, String> ogAmfColorMap;
@@ -104,6 +118,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private Map<String, String> ogAmfColorsMap;
 
 	// ボタンホール色指定
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのボタンホール色指定を入力して下さい。")
 	private String ogBhColor;
 
 	private Map<String, String> ogBhColorMap;
@@ -144,6 +159,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private Map<String, String> ogBhColorsMap;
 
 	// ボタン付け糸指定
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのボタン付け糸指定を入力して下さい。")
 	private String ogByColor;
 
 	private Map<String, String> ogByColorMap;
@@ -196,36 +212,43 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private Map<String, String> ogByColorsMap;
 
 	// 背裏地素材
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの背裏地素材を入力して下さい。")
 	private String ogBackLiningMate;
 
 	private Map<String, String> ogBackLiningMateMap;
 	
 	// 背裏地素材品番
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String ogBackLiningMateStkNo;
 	
 	private String glBackClothRtPrice;
 
 	// 内側裏地素材
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの内側裏地素材を入力して下さい。")
 	private String ogInsideLiningMate;
 
 	private Map<String, String> ogInsideLiningMateMap;
 
 	// 内側裏地素材品番
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの内側裏地素材品番を入力して下さい。")
 	private String ogInsideLiningMateStkNo;
 	
 	private String glInnnerClothRtPrice;
 
-	// フロント釦
+	// 釦素材
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの釦素材を入力して下さい。")
 	private String ogFrontBtnMate;
 
 	private Map<String, String> ogFrontBtnMateMap;
 
-	// フロント釦品番
+	// 釦素材品番
+	@NotBlank(groups = { GlStItem.class }, message = "Giletの釦素材品番を入力して下さい。")
 	private String ogFrontBtnMateStkNo;
 	
 	private String glFrtBtnRtPrice;
 
 	// バックベルト
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのバックベルトを入力して下さい。")
 	private String ogBackBelt;
 
 	private Map<String, String> ogBackBeltMap;
@@ -233,6 +256,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private String glBackBeltRtPrice;
 	
 	// ウォッチチェーン
+	@NotBlank(groups = { GlStItem.class }, message = "Giletのウォッチチェーンを入力して下さい。")
 	private String ogWatchChain;
 
 	private Map<String, String> ogWatchChainMap;

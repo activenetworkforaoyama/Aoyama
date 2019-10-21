@@ -1971,7 +1971,16 @@ public class CoJakcetHelper {
 			OrderService orderService, String orderFlag) {
 		Order orderJk = orderListService.findOrderJkOptionByOrderId(order.getOrderId());
 		if (orderJk != null) {
-			this.jacketDefaultValueFromDb(orderCoForm, orderJk);
+			String jkFrtBtnCd = orderJk.getJkFrtBtnCd();
+			String jkFlowerHoleCd = orderJk.getJkFlowerHoleCd();
+			String jkBreastPktCd = orderJk.getJkBreastPktCd();
+			if((jkFrtBtnCd == null||"".equals(jkFrtBtnCd))&&
+					(jkFlowerHoleCd == null||"".equals(jkFlowerHoleCd))&&
+					(jkBreastPktCd == null||"".equals(jkFrtBtnCd))) {
+				this.jacketDefaultValue(orderCoForm);
+			}else {
+				this.jacketDefaultValueFromDb(orderCoForm, orderJk);
+			}
 		} else {
 			this.jacketDefaultValue(orderCoForm);
 		}
@@ -1994,22 +2003,21 @@ public class CoJakcetHelper {
 				orderCoController.getOrderPriceForJacketModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionJacketStandardInfo.getOjStitchModify();
-				if ("0002402".equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionJacketStandardInfo.getOjStitchModifyPlace();
+				if ("0002402".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00025");
-					String stitchModifyCountArr = coOptionJacketStandardInfo.getOjStitchModifyPlace();
 					String stitchModifyValueName = "stitchModify_id";
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketProject(orderCoForm, stitchModifyCode,
 								stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
 					}
-					
 				}
 
 				// ダブルステッチ変更
 				String dSitchModifyValue = coOptionJacketStandardInfo.getOjDStitchModify();
-				if ("0002602".equals(stitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionJacketStandardInfo.getOjDStitchModifyPlace();
+				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00027");
-					String dSitchModifyCountArr = coOptionJacketStandardInfo.getOjDStitchModifyPlace();
 					String dSitchModifyValueName = "dStitchModify_id";
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketProject(orderCoForm, dStitchModifyCode,
@@ -2128,10 +2136,10 @@ public class CoJakcetHelper {
 				
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionJacketWashableInfo.getWjStitchModify();
-				if ("0002402".equals(stitchModifyValue)) {
+				String stitchModifyCountArr = coOptionJacketWashableInfo.getWjStitchModifyPlace();
+				if ("0002402".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel())
 							.concat("00025");
-					String stitchModifyCountArr = coOptionJacketWashableInfo.getWjStitchModifyPlace();
 					String stitchModifyValueName = "wj_stitchModify_id";
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, stitchModifyCode,
@@ -2141,11 +2149,11 @@ public class CoJakcetHelper {
 				
 				// ダブルステッチ変更
 				String dSitchModifyValue = coOptionJacketWashableInfo.getWjDStitchModify();
-				if ("0002602".equals(stitchModifyValue)) {
+				String dSitchModifyCountArr = coOptionJacketWashableInfo.getWjDStitchModifyPlace();
+				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("02")
 							.concat(coOptionJacketWashableInfo.getWjJacketModel()).concat("00027");
 					String dSitchModifyValueName = "wj_dStitchModify_id";
-					String dSitchModifyCountArr = coOptionJacketWashableInfo.getWjDStitchModifyPlace();
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, dStitchModifyCode,
 								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");

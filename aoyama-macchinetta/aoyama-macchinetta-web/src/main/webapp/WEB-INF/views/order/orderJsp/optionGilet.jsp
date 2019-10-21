@@ -1197,12 +1197,6 @@ jQuery(function() {
 
 	showPrice();
 
-	doubleOptionModelPrice();
-
-	optionGiletChangeModel(productCategory);
-
-	jQuery("#giletItemFlag").val("1");
-
 	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderCo"){
 	}else if(orderFlag == "orderLink" || orderFlag == "orderDivert"){
@@ -1243,20 +1237,32 @@ jQuery(function() {
 			
 			var ogAmfColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogAmfColorPlace}";
 			var ogAmfAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogAmfAllColor}";
-			if(isNotEmpty(ogAmfColorPlace)&&isNotEmpty(ogAmfAllColor)){
+// 			if(isNotEmpty(ogAmfColorPlace)&&isNotEmpty(ogAmfAllColor)){
+			if(isNotEmpty(ogAmfColorPlace)){
 				var ogAmfColorPlaceStr = ogAmfColorPlace.split("/");
 				var ogAmfAllColorStr = ogAmfAllColor.split("/");
 				for(var i=0;i<ogAmfColorPlaceStr.length;i++){
-					for(var i=0;i<ogAmfAllColorStr.length;i++){
+					if(ogAmfColorPlaceStr[i] == "0000901"){
+						jQuery("#og_amfColorPlace_1").prop("checked",true);
+//						jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor1'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+					}else if(ogAmfColorPlaceStr[i] == "0000902"){
+						jQuery("#og_amfColorPlace_2").prop("checked",true);
+//						jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor2'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+					}else if(ogAmfColorPlaceStr[i] == "0000903"){
+						jQuery("#og_amfColorPlace_3").prop("checked",true);
+//						jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor3'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+					}
+					
+					for(var j=0;j<ogAmfAllColorStr.length;i++){
 						if(ogAmfColorPlaceStr[i] == "0000901"){
-							jQuery("#og_amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor1'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_amfColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor1'][value='" + ogAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ogAmfColorPlaceStr[i] == "0000902"){
-							jQuery("#og_amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor2'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_amfColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor2'][value='" + ogAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ogAmfColorPlaceStr[i] == "0000903"){
-							jQuery("#og_amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor3'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_amfColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor3'][value='" + ogAmfAllColor[j] + "']").prop("checked", true);
 						}
 					}
 				}
@@ -1266,148 +1272,257 @@ jQuery(function() {
 
 			var ogBhColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogBhColorPlace}";
 			var ogBhAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogBhAllColor}";
-			if(isNotEmpty(ogBhColorPlace)&&isNotEmpty(ogBhAllColor)){
+// 			if(isNotEmpty(ogBhColorPlace)&&isNotEmpty(ogBhAllColor)){
+			if(isNotEmpty(ogBhColorPlace)){
 				var ogBhColorPlaceStr = ogBhAllColor.split("/");
 				var ogBhAllColorStr = ogBhColorPlace.split("/");
 				for(var i=0;i<ogBhColorPlaceStr.length;i++){
-					//for(var i=0;i<ogBhAllColorStr.length;i++){
+					if(ogBhColorPlaceStr[i] == "0001201"){
+						jQuery("#og_bhColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor1'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}else if(ogBhColorPlaceStr[i] == "0001202"){
+						jQuery("#og_bhColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor2'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}else if(ogBhColorPlaceStr[i] == "0001203"){
+						jQuery("#og_bhColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor3'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}else if(ogBhColorPlaceStr[i] == "0001204"){
+						jQuery("#og_bhColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor4'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}else if(ogBhColorPlaceStr[i] == "0001205"){
+						jQuery("#og_bhColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor5'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}else if(ogBhColorPlaceStr[i] == "0001206"){
+						jQuery("#og_bhColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor6'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+					}
+					
+					for(var j=0;j<ogBhAllColorStr.length;i++){
 						if(ogBhColorPlaceStr[i] == "0001201"){
-							jQuery("#og_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor1'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_1").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor1'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}else if(ogBhColorPlaceStr[i] == "0001202"){
-							jQuery("#og_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor2'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_2").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor2'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}else if(ogBhColorPlaceStr[i] == "0001203"){
-							jQuery("#og_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor3'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_3").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor3'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}else if(ogBhColorPlaceStr[i] == "0001204"){
-							jQuery("#og_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor4'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_4").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor4'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}else if(ogBhColorPlaceStr[i] == "0001205"){
-							jQuery("#og_bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor5'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_5").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor5'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}else if(ogBhColorPlaceStr[i] == "0001206"){
-							jQuery("#og_bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor6'][value='" + ogBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_bhColorPlace_6").prop("checked",true);
+	 						jQuery(":radio[name='coOptionGiletStandardInfo.ogBhColor6'][value='" + ogBhAllColor[j] + "']").prop("checked", true);
 						}
-// 					}
+					}
 				}
 				jQuery('input[id^="og_bhColorPlace_"]').change();
 			}
 			
 			var ogByColorPlace = "${orderCoForm.coOptionGiletStandardInfo.ogByColorPlace}";
 			var ogByAllColor = "${orderCoForm.coOptionGiletStandardInfo.ogByAllColor}";
-			if(isNotEmpty(ogByAllColor)&&isNotEmpty(ogByColorPlace)){
+// 			if(isNotEmpty(ogByAllColor)&&isNotEmpty(ogByColorPlace)){
+			if(isNotEmpty(ogByAllColor)){
 				var ogByColorPlaceStr = ogByColorPlace.split("/");
 				var ogByAllColorStr = ogByAllColor.split("/");
 				for(var i=0;i<ogByColorPlaceStr.length;i++){
-					//for(var i=0;i<ogByAllColorStr.length;i++){
+					if(ogByColorPlaceStr[i] == "0001501"){
+						jQuery("#og_byColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor1'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001502"){
+						jQuery("#og_byColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor2'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001503"){
+						jQuery("#og_byColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor3'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001504"){
+						jQuery("#og_byColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor4'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001505"){
+						jQuery("#og_byColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor5'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001506"){
+						jQuery("#og_byColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor6'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001507"){
+						jQuery("#og_byColorPlace_7").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor7'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001508"){
+						jQuery("#og_byColorPlace_8").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor8'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001509"){
+						jQuery("#og_byColorPlace_9").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor9'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}else if(ogByColorPlaceStr[i] == "0001510"){
+						jQuery("#og_byColorPlace_10").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor10'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+					}
+					
+					for(var j=0;j<ogByAllColorStr.length;i++){
 						if(ogByColorPlaceStr[i] == "0001501"){
-							jQuery("#og_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor1'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor1'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001502"){
-							jQuery("#og_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor2'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor2'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001503"){
-							jQuery("#og_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor3'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor3'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001504"){
-							jQuery("#og_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor4'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor4'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001505"){
-							jQuery("#og_byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor5'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor5'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001506"){
-							jQuery("#og_byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor6'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor6'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001507"){
-							jQuery("#og_byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor7'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor7'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001508"){
-							jQuery("#og_byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor8'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor8'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001509"){
-							jQuery("#og_byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor9'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor9'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}else if(ogByColorPlaceStr[i] == "0001510"){
-							jQuery("#og_byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor10'][value='" + ogByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#og_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor10'][value='" + ogByAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="og_byColorPlace_"]').change();
 			}
 			
 		}else if(productCategory == "9000102"){
-			var tgAllBhColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgAllBhColor}";
+			var tgAllBhColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgBhAllColor}";
 			var tgBhColorPlace = "${orderCoForm.coOptionGiletTuxedoInfo.tgBhColorPlace}";
-			if(isNotEmpty(tgAllBhColor)&&isNotEmpty(tgBhColorPlace)){
+// 			if(isNotEmpty(tgAllBhColor)&&isNotEmpty(tgBhColorPlace)){
+			if(isNotEmpty(tgAllBhColor)){
 				var tgBhColorPlaceStr = tgBhColorPlace.split("/");
 				var tgAllBhColorStr = tgAllBhColor.split("/");
 				for(var i=0;i<tgBhColorPlaceStr.length;i++){
-					//for(var i=0;i<tgAllBhColorStr.length;i++){
+					if(tgBhColorPlaceStr[i] == "0001201"){
+						jQuery("#tg_bhColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor1'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}else if(tgBhColorPlaceStr[i] == "0001202"){
+						jQuery("#tg_bhColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor2'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}else if(tgBhColorPlaceStr[i] == "0001203"){
+						jQuery("#tg_bhColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor3'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}else if(tgBhColorPlaceStr[i] == "0001204"){
+						jQuery("#tg_bhColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor4'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}else if(tgBhColorPlaceStr[i] == "0001205"){
+						jQuery("#tg_bhColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor5'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}else if(tgBhColorPlaceStr[i] == "0001206"){
+						jQuery("#tg_bhColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor6'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+					}
+					
+					for(var j=0;j<tgAllBhColorStr.length;i++){
 						if(tgBhColorPlaceStr[i] == "0001201"){
-							jQuery("#tg_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor1'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor1'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}else if(tgBhColorPlaceStr[i] == "0001202"){
-							jQuery("#tg_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor2'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor2'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}else if(tgBhColorPlaceStr[i] == "0001203"){
-							jQuery("#tg_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor3'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor3'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}else if(tgBhColorPlaceStr[i] == "0001204"){
-							jQuery("#tg_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor4'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor4'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}else if(tgBhColorPlaceStr[i] == "0001205"){
-							jQuery("#tg_bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor5'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor5'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}else if(tgBhColorPlaceStr[i] == "0001206"){
-							jQuery("#tg_bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor6'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_bhColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor6'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="tg_bhColorPlace_"]').change();
 			}
 			
 			var tgByColorPlace = "${orderCoForm.coOptionGiletTuxedoInfo.tgByColorPlace}";
-			var tgAllByColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgAllByColor}";
-			if(isNotEmpty(tgAllByColor)&&isNotEmpty(tgByColorPlace)){
+			var tgAllByColor = "${orderCoForm.coOptionGiletTuxedoInfo.tgByAllColor}";
+// 			if(isNotEmpty(tgAllByColor)&&isNotEmpty(tgByColorPlace)){
+			if(isNotEmpty(tgAllByColor)){
 				var tgByColorPlaceStr = tgByColorPlace.split("/");
 				var tgAllByColorStr = tgAllByColor.split("/");
 				for(var i=0;i<tgByColorPlaceStr.length;i++){
-					//for(var i=0;i<tgAllByColorStr.length;i++){
+					if(tgByColorPlaceStr[i] == "0001501"){
+						jQuery("#tg_byColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor1'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001502"){
+						jQuery("#tg_byColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor2'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001503"){
+						jQuery("#tg_byColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor3'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001504"){
+						jQuery("#tg_byColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor4'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001505"){
+						jQuery("#tg_byColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor5'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001506"){
+						jQuery("#tg_byColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor6'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001507"){
+						jQuery("#tg_byColorPlace_7").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor7'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001508"){
+						jQuery("#tg_byColorPlace_8").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor8'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001509"){
+						jQuery("#tg_byColorPlace_9").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor9'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}else if(tgByColorPlaceStr[i] == "0001510"){
+						jQuery("#tg_byColorPlace_10").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor10'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+					}
+					
+					for(var j=0;j<tgAllByColorStr.length;i++){
 						if(tgByColorPlaceStr[i] == "0001501"){
-							jQuery("#tg_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor1'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor1'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001502"){
-							jQuery("#tg_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor2'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor2'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001503"){
-							jQuery("#tg_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor3'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor3'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001504"){
-							jQuery("#tg_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor4'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor4'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001505"){
-							jQuery("#tg_byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor5'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor5'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001506"){
-							jQuery("#tg_byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor6'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor6'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001507"){
-							jQuery("#tg_byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor7'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor7'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001508"){
-							jQuery("#tg_byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor8'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor8'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001509"){
-							jQuery("#tg_byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor9'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor9'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}else if(tgByColorPlaceStr[i] == "0001510"){
-							jQuery("#tg_byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor10'][value='" + tgAllByColor[i] + "']").prop("checked", true);
+// 							jQuery("#tg_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor10'][value='" + tgAllByColor[j] + "']").prop("checked", true);
 						}
+					}
 				}
 				jQuery('input[id^="tg_byColorPlace_"]').change();
 			}
@@ -1447,97 +1562,163 @@ jQuery(function() {
 			}
 			
 			var wgAmfColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgAmfColorPlace}";
-			var wgAmfAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllAmfColor}";
-			if(isNotEmpty(wgAmfAllColor)&&isNotEmpty(wgAmfColorPlace)){
+			var wgAmfAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgAmfAllColor}";
+// 			if(isNotEmpty(wgAmfAllColor)&&isNotEmpty(wgAmfColorPlace)){
+			if(isNotEmpty(wgAmfAllColor)){
 				var wgAmfColorPlaceStr = wgAmfColorPlace.split("/");
 				var wgAmfAllColorStr = wgAmfAllColor.split("/");
 				for(var i=0;i<wgAmfColorPlaceStr.length;i++){
-					//for(var i=0;i<wgAmfAllColorStr.length;i++){
+					if(wgAmfColorPlaceStr[i] == "0000901"){
+						jQuery("#wg_amfColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor1'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+					}else if(wgAmfColorPlaceStr[i] == "0000902"){
+						jQuery("#wg_amfColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor2'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+					}else if(wgAmfColorPlaceStr[i] == "0000903"){
+						jQuery("#wg_amfColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor3'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+					}
+
+					for(var j=0;j<wgAmfAllColorStr.length;i++){
 						if(wgAmfColorPlaceStr[i] == "0000901"){
-							jQuery("#wg_amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor1'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_amfColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor1'][value='" + wgAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wgAmfColorPlaceStr[i] == "0000902"){
-							jQuery("#wg_amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor2'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_amfColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor2'][value='" + wgAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wgAmfColorPlaceStr[i] == "0000903"){
-							jQuery("#wg_amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor3'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_amfColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor3'][value='" + wgAmfAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="wg_amfColorPlace_"]').change();
 			}
 			
 			var wgBhColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgBhColorPlace}";
-			var wgBhAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllBhColor}";
-			if(isNotEmpty(wgBhAllColor)&&isNotEmpty(wgBhColorPlace)){
+			var wgBhAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgBhAllColor}";
+// 			if(isNotEmpty(wgBhAllColor)&&isNotEmpty(wgBhColorPlace)){
+			if(isNotEmpty(wgBhColorPlace)){
 				var wgBhColorPlaceStr = wgBhColorPlace.split("/");
 				var wgBhAllColorStr = wgBhAllColor.split("/");
 				for(var i=0;i<wgBhColorPlaceStr.length;i++){
-					//for(var i=0;i<wgBhAllColorStr.length;i++){
+					if(wgBhColorPlaceStr[i] == "0001201"){
+						jQuery("#wg_bhColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor1'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}else if(wgBhColorPlaceStr[i] == "0001202"){
+						jQuery("#wg_bhColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor2'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}else if(wgBhColorPlaceStr[i] == "0001203"){
+						jQuery("#wg_bhColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor3'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}else if(wgBhColorPlaceStr[i] == "0001204"){
+						jQuery("#wg_bhColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor4'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}else if(wgBhColorPlaceStr[i] == "0001205"){
+						jQuery("#wg_bhColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor5'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}else if(wgBhColorPlaceStr[i] == "0001206"){
+						jQuery("#wg_bhColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor6'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+					}
+
+					for(var j=0;j<wgBhAllColorStr.length;j++){
 						if(wgBhColorPlaceStr[i] == "0001201"){
-							jQuery("#wg_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor1'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor1'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}else if(wgBhColorPlaceStr[i] == "0001202"){
-							jQuery("#wg_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor2'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor2'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}else if(wgBhColorPlaceStr[i] == "0001203"){
-							jQuery("#wg_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor3'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor3'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}else if(wgBhColorPlaceStr[i] == "0001204"){
-							jQuery("#wg_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor4'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor4'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}else if(wgBhColorPlaceStr[i] == "0001205"){
-							jQuery("#wg_bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor5'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor5'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}else if(wgBhColorPlaceStr[i] == "0001206"){
-							jQuery("#wg_bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor6'][value='" + wgBhAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_bhColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgBhColor6'][value='" + wgBhAllColorStr[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="wg_bhColorPlace_"]').change();
 			}
 			
 			var wgByColorPlace = "${orderCoForm.coOptionGiletWashableInfo.wgByColorPlace}";
-			var wgAllByColor = "${orderCoForm.coOptionGiletWashableInfo.wgAllByColor}";
-			if(isNotEmpty(wgByColorPlace)&&isNotEmpty(wjByAllColor)){
+			var wgByAllColor = "${orderCoForm.coOptionGiletWashableInfo.wgByAllColor}";
+// 			if(isNotEmpty(wgByColorPlace)&&isNotEmpty(wgByAllColor)){
+			if(isNotEmpty(wgByColorPlace)){
 				var wgByColorPlaceStr = wgByColorPlace.split("/");
-				var wgAllByColorStr = wgAllByColor.split("/");
+				var wgAllByColorStr = wgByAllColor.split("/");
 				for(var i=0;i<wgByColorPlaceStr.length;i++){
-					//for(var i=0;i<wgAllByColorStr.length;i++){
+					if(wgByColorPlaceStr[i] == "0001501"){
+						jQuery("#wg_byColorPlace_1").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor1'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001502"){
+						jQuery("#wg_byColorPlace_2").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor2'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001503"){
+						jQuery("#wg_byColorPlace_3").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor3'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001504"){
+						jQuery("#wg_byColorPlace_4").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor4'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001505"){
+						jQuery("#wg_byColorPlace_5").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor5'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001506"){
+						jQuery("#wg_byColorPlace_6").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor6'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001507"){
+						jQuery("#wg_byColorPlace_7").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor7'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001508"){
+						jQuery("#wg_byColorPlace_8").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor8'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001509"){
+						jQuery("#wg_byColorPlace_9").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor9'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}else if(wgByColorPlaceStr[i] == "0001510"){
+						jQuery("#wg_byColorPlace_10").prop("checked",true);
+// 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor10'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+					}
+
+					for(var j=0;j<wgAllByColorStr.length;i++){
 						if(wgByColorPlaceStr[i] == "0001501"){
-							jQuery("#wg_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor1'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_1").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor1'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001502"){
-							jQuery("#wg_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor2'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_2").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor2'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001503"){
-							jQuery("#wg_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor3'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_3").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor3'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001504"){
-							jQuery("#wg_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor4'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_4").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor4'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001505"){
-							jQuery("#wg_byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor5'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_5").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor5'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001506"){
-							jQuery("#wg_byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor6'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_6").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor6'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001507"){
-							jQuery("#wg_byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor7'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_7").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor7'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001508"){
-							jQuery("#wg_byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor8'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_8").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor8'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001509"){
-							jQuery("#wg_byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor9'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_9").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor9'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}else if(wgByColorPlaceStr[i] == "0001510"){
-							jQuery("#wg_byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor10'][value='" + wgByAllColor[i] + "']").prop("checked", true);
+// 							jQuery("#wg_byColorPlace_10").prop("checked",true);
+							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor10'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="wg_byColorPlace_"]').change();
 			}
@@ -1565,7 +1746,14 @@ jQuery(function() {
 		
 	}
 
+	optionGiletChangeModel(productCategory);
+// 	alert("${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace1}");
+	
 	optionColorReSave(productCategory);
+
+	doubleOptionModelPrice();
+
+	jQuery("#giletItemFlag").val("1");
 
 })	
 
@@ -1871,40 +2059,16 @@ function getPrice(){
 			giletModel = jQuery("#giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletStandardModel";
 			backBeltElem = jQuery('#og_backBelt');
-			jQuery('#og_stitchModify_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletStandardInfo.ogStitchModify"]:checked').change();
-			jQuery('#og_dStitchModify_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModify"]:checked').change();
-			jQuery('#og_amfColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletStandardInfo.ogAmfColor"]:checked').change();
-			jQuery('#og_bhColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletStandardInfo.ogBhColor"]:checked').change();
-			jQuery('#og_byColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletStandardInfo.ogByColor"]:checked').change();
 			
 		}else if(productCategory == "9000102"){
 			giletModel = jQuery("#tg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletTuxedoModel";
 			backBeltElem = jQuery('#tg_backBelt');
-			jQuery('#tg_bhColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]:checked').change();
-			jQuery('#tg_byColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]:checked').change();
 			
 		}else if(productCategory == "9000103"){
 			giletModel = jQuery("#wg_giletModel option:selected").val();
 			ajaxUrl = "getOrderPriceForGiletWashableModel";
 			backBeltElem = jQuery('#wg_backBelt');
-			jQuery('#wg_stitchModify_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletWashableInfo.wgStitchModify"]:checked').change();
-			jQuery('#wg_dStitchModify_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletWashableInfo.wgDStitchModify"]:checked').change();
-			jQuery('#wg_amfColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletWashableInfo.wgAmfColor"]:checked').change();
-			jQuery('#wg_bhColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletWashableInfo.wgBhColor"]:checked').change();
-			jQuery('#wg_byColor_id1').prop("checked", true);
-			jQuery('input[name="coOptionGiletWashableInfo.wgByColor"]:checked').change();
 			
 		}
 
@@ -2097,10 +2261,13 @@ function getPrice(){
 			
 			waistPktValue = jQuery('input[name="coOptionGiletStandardInfo.ogWaistPkt"]:checked').val();
 			if (waistPktValue == "0000201") {
-				// 腰ポケット形状の設定
+				//腰ポケットは有りです
+				//腰ポケット形状の設定
 				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
 				jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]:checked').change();
 			}else if (waistPktValue == "0000202") {
+				//腰ポケットは無しです
+				//腰ポケット形状の設定
 				for(var i=0; i<jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').length; i++){
 					jQuery('input[name="coOptionGiletStandardInfo.ogWaistPktSpec"]').get(i).checked = false;
 				}
@@ -2112,12 +2279,22 @@ function getPrice(){
 
 			waistPktValue = jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPkt"]:checked').val();
 			if (waistPktValue == "0000201") {
-				// 腰ポケット形状の設定
-				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+				//腰ポケットは有りです
+				//腰ポケット形状の設定
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["tg_waistPktSpec"]]);
 				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]:checked').change();
+				//腰ポケット素材の設定
+				jQuery('#tg_waistPktMate_id1').prop("checked", true);
+				jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktMate"]:checked').change();
 			}else if (waistPktValue == "0000202") {
+				//腰ポケットは無しです
+				//腰ポケット形状の設定
 				for(var i=0; i<jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').length; i++){
 					jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktSpec"]').get(i).checked = false;
+				}
+				//腰ポケット素材の設定
+				for(var i=0; i<jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktMate"]').length; i++){
+					jQuery('input[name="coOptionGiletTuxedoInfo.tgWaistPktMate"]').get(i).checked = false;
 				}
 			}
 			
@@ -2127,10 +2304,13 @@ function getPrice(){
 			
 			waistPktValue = jQuery('input[name="coOptionGiletWashableInfo.wgWaistPkt"]:checked').val();
 			if (waistPktValue == "0000201") {
-				// 腰ポケット形状の設定
-				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["og_waistPktSpec"]]);
+				//腰ポケットは有りです
+				//腰ポケット形状の設定
+				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').val([giletModelDefaultList[giletModel]["wg_waistPktSpec"]]);
 				jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]:checked').change();
 			}else if (waistPktValue == "0000202") {
+				//腰ポケットは無しです
+				//腰ポケット形状の設定
 				for(var i=0; i<jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').length; i++){
 					jQuery('input[name="coOptionGiletWashableInfo.wgWaistPktSpec"]').get(i).checked = false;
 				}
@@ -2902,6 +3082,11 @@ function ogSession(){
 	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace2}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogStitchModifyPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogStitchModifyPlace3}"]);
 
+	// 選択中のダブルステッチ変更
+	ctrlOgDStitchPlace();
+ 	// AMF色指定の有効/無効を制御
+	ctrlOgAmfColor();
+	
 	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace1"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace1}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace2"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace2}"]);
 	jQuery('input[name="coOptionGiletStandardInfo.ogDStitchModifyPlace3"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogDStitchModifyPlace3}"]);
@@ -2950,10 +3135,6 @@ function ogSession(){
 	jQuery('input[name="coOptionGiletStandardInfo.ogByColor10"]').val(["${orderCoForm.coOptionGiletStandardInfo.ogByColor10}"]);
 	jQuery('input[id^="og_byColorPlace_"]').change();
 
- 	// 選択中のダブルステッチ変更
-	ctrlOgDStitchPlace();
- 	// AMF色指定の有効/無効を制御
-	ctrlOgAmfColor();
 }
 
 function tgSession(){

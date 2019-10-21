@@ -1531,6 +1531,14 @@
             <input type="hidden" id="tpBtnMateStkNo" name="coOptionPantsTuxedoInfo.tpBtnMateStkNo" value="${orderCoForm.coOptionPantsTuxedoInfo.tpBtnMateStkNo }" /> 
             <input type="hidden" id="wpBtnMateStkNo" name="coOptionPantsWashableInfo.wpBtnMateStkNo" value="${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo }" /> 
             
+            <input type="hidden" id="op2BtnMate" name="coOptionPants2StandardInfo.op2Button" value="${orderCoForm.coOptionPants2StandardInfo.op2Button }" /> 
+            <input type="hidden" id="tp2BtnMate" name="coOptionPants2TuxedoInfo.tp2Button" value="${orderCoForm.coOptionPants2TuxedoInfo.tp2Button }" /> 
+            <input type="hidden" id="wp2BtnMate" name="coOptionPants2WashableInfo.wp2Button" value="${orderCoForm.coOptionPants2WashableInfo.wp2Button }" />  
+            
+            <input type="hidden" id="op2BtnMateStkNo" name="coOptionPants2StandardInfo.op2BtnMateStkNo" value="${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo }" /> 
+            <input type="hidden" id="tp2BtnMateStkNo" name="coOptionPants2TuxedoInfo.tp2BtnMateStkNo" value="${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo }" /> 
+            <input type="hidden" id="wp2BtnMateStkNo" name="coOptionPants2WashableInfo.wp2BtnMateStkNo" value="${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo }" /> 
+            
             <input type="hidden" id="ogFrontBtnMate" name="coOptionGiletStandardInfo.ogFrontBtnMate" value="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMate }" /> 
             <input type="hidden" id="tgFrontBtnMate" name="coOptionGiletTuxedoInfo.tgFrontBtnMate" value="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMate }" /> 
             <input type="hidden" id="wgFrontBtnMate" name="coOptionGiletWashableInfo.wgFrontBtnMate" value="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMate }" />  
@@ -2285,6 +2293,8 @@ jQuery(function() {
 
 	changeJkOptionByStock(productCategory);
 
+	optionColorReSave(productCategory);
+
 	var orderFlag = "${orderCoForm.orderFlag}";
 	if(orderFlag == "orderCo"){
 		
@@ -2367,38 +2377,49 @@ jQuery(function() {
 			
 			var ojAmfColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojAmfColorPlace}";
 			var ojAmfAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojAmfAllColor}";
-			if(isNotEmpty(ojAmfColorPlace)&&isNotEmpty(ojAmfAllColor)){
+			if(isNotEmpty(ojAmfColorPlace)){
 				ojAmfColorPlace = ojAmfColorPlace.split("/");
 				ojAmfAllColor = ojAmfAllColor.split("/");
 				for(var i=0;i<ojAmfColorPlace.length;i++){
-					for(var i=0;i<ojAmfAllColor.length;i++){
+					if(ojAmfColorPlace[i] == "0002901"){
+						jQuery("#amfColorPlace_1").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002902"){
+						jQuery("#amfColorPlace_2").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002903"){
+						jQuery("#amfColorPlace_3").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002904"){
+						jQuery("#amfColorPlace_4").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002905"){
+						jQuery("#amfColorPlace_5").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002907"){
+						jQuery("#amfColorPlace_6").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002908"){
+						jQuery("#amfColorPlace_7").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002909"){
+						jQuery("#amfColorPlace_8").prop("checked",true);
+					}else if(ojAmfColorPlace[i] == "0002910"){
+						jQuery("#amfColorPlace_9").prop("checked",true);
+					}
+
+					for(var j=0;j<ojAmfAllColor.length;i++){
 						if(ojAmfColorPlace[i] == "0002901"){
-							jQuery("#amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor1'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor1'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002902"){
-							jQuery("#amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor2'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor2'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002903"){
-							jQuery("#amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor3'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor3'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002904"){
-							jQuery("#amfColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor4'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor4'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002905"){
-							jQuery("#amfColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor5'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor5'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002907"){
-							jQuery("#amfColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor6'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor6'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002908"){
-							jQuery("#amfColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor7'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor7'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002909"){
-							jQuery("#amfColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor8'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor8'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}else if(ojAmfColorPlace[i] == "0002910"){
-							jQuery("#amfColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor9'][value='" + ojAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojAmfColor9'][value='" + ojAmfAllColor[j] + "']").prop("checked", true);
 						}
 					}
 				}
@@ -2408,125 +2429,164 @@ jQuery(function() {
 
 			var ojBhColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojBhColorPlace}";
 			var ojBhAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojBhAllColor}";
-			if(isNotEmpty(ojBhColorPlace)&&isNotEmpty(ojBhAllColor)){
+			if(isNotEmpty(ojBhColorPlace)){
 				ojBhAllColor = ojBhAllColor.split("/");
 				ojBhColorPlace = ojBhColorPlace.split("/");
 				for(var i=0;i<ojBhColorPlace.length;i++){
-					//for(var i=0;i<ojBhAllColor.length;i++){
+					if(ojBhColorPlace[i] == "0003201"){
+						jQuery("#bhColorPlace_1").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003202"){
+						jQuery("#bhColorPlace_2").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003203"){
+						jQuery("#bhColorPlace_3").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003204"){
+						jQuery("#bhColorPlace_4").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003205"){
+						jQuery("#bhColorPlace_5").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003206"){
+						jQuery("#bhColorPlace_6").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003207"){
+						jQuery("#bhColorPlace_7").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003208"){
+						jQuery("#bhColorPlace_8").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003209"){
+						jQuery("#bhColorPlace_9").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003210"){
+						jQuery("#bhColorPlace_10").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003211"){
+						jQuery("#bhColorPlace_11").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003212"){
+						jQuery("#bhColorPlace_12").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003213"){
+						jQuery("#bhColorPlace_13").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003214"){
+						jQuery("#bhColorPlace_14").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003215"){
+						jQuery("#bhColorPlace_15").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003216"){
+						jQuery("#bhColorPlace_16").prop("checked",true);
+					}else if(ojBhColorPlace[i] == "0003217"){
+						jQuery("#bhColorPlace_17").prop("checked",true);
+					}
+
+					for(var j=0;j<ojBhAllColor.length;i++){
 						if(ojBhColorPlace[i] == "0003201"){
-							jQuery("#bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor1'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor1'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003202"){
-							jQuery("#bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor2'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor2'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003203"){
-							jQuery("#bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor3'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor3'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003204"){
-							jQuery("#bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor4'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor4'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003205"){
-							jQuery("#bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor5'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor5'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003206"){
-							jQuery("#bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor6'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor6'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003207"){
-							jQuery("#bhColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor7'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor7'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003208"){
-							jQuery("#bhColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor8'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor8'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003209"){
-							jQuery("#bhColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor9'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor9'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003210"){
-							jQuery("#bhColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor10'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor10'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003211"){
-							jQuery("#bhColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor11'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor11'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003212"){
-							jQuery("#bhColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor12'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor12'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003213"){
-							jQuery("#bhColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor13'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor13'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003214"){
-							jQuery("#bhColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor14'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor14'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003215"){
-							jQuery("#bhColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor15'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor15'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003216"){
-							jQuery("#bhColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor16'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor16'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}else if(ojBhColorPlace[i] == "0003217"){
-							jQuery("#bhColorPlace_17").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor17'][value='" + ojBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojBhColor17'][value='" + ojBhAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
+				
+				
 				jQuery('input[id^="bhColorPlace_"]').change();
 			}
 			
 			var ojByColorPlace = "${orderCoForm.coOptionJacketStandardInfo.ojByColorPlace}";
 			var ojByAllColor = "${orderCoForm.coOptionJacketStandardInfo.ojByAllColor}";
-			if(isNotEmpty(ojByAllColor)&&isNotEmpty(ojByColorPlace)){
+			if(isNotEmpty(ojByColorPlace)){
 				ojByAllColor = ojByAllColor.split("/");
 				ojByColorPlace = ojByColorPlace.split("/");
 				for(var i=0;i<ojByColorPlace.length;i++){
-					//for(var i=0;i<ojByAllColor.length;i++){
+					if(ojByColorPlace[i] == "0003501"){
+						jQuery("#byColorPlace_1").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003502"){
+						jQuery("#byColorPlace_2").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003503"){
+						jQuery("#byColorPlace_3").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003504"){
+						jQuery("#byColorPlace_4").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003505"){
+						jQuery("#byColorPlace_5").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003506"){
+						jQuery("#byColorPlace_6").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003507"){
+						jQuery("#byColorPlace_7").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003508"){
+						jQuery("#byColorPlace_8").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003509"){
+						jQuery("#byColorPlace_9").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003510"){
+						jQuery("#byColorPlace_10").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003511"){
+						jQuery("#byColorPlace_11").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003512"){
+						jQuery("#byColorPlace_12").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003513"){
+						jQuery("#byColorPlace_13").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003514"){
+						jQuery("#byColorPlace_14").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003515"){
+						jQuery("#byColorPlace_15").prop("checked",true);
+					}else if(ojByColorPlace[i] == "0003516"){
+						jQuery("#byColorPlace_16").prop("checked",true);
+					}
+					
+					for(var j=0;j<ojByAllColor.length;i++){
 						if(ojByColorPlace[i] == "0003501"){
-							jQuery("#byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor1'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor1'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003502"){
-							jQuery("#byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor2'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor2'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003503"){
-							jQuery("#byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor3'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor3'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003504"){
-							jQuery("#byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor4'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor4'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003505"){
-							jQuery("#byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor5'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor5'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003506"){
-							jQuery("#byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor6'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor6'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003507"){
-							jQuery("#byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor7'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor7'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003508"){
-							jQuery("#byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor8'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor8'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003509"){
-							jQuery("#byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor9'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor9'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003510"){
-							jQuery("#byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor10'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor10'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003511"){
-							jQuery("#byColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor11'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor11'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003512"){
-							jQuery("#byColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor12'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor12'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003513"){
-							jQuery("#byColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor13'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor13'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003514"){
-							jQuery("#byColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor14'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor14'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003515"){
-							jQuery("#byColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor15'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor15'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}else if(ojByColorPlace[i] == "0003516"){
-							jQuery("#byColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor16'][value='" + ojByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketStandardInfo.ojByColor16'][value='" + ojByAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="byColorPlace_"]').change();
 			}
@@ -2534,124 +2594,162 @@ jQuery(function() {
 		}else if(productCategory == "9000102"){
 			var tjAllBhColor = "${orderCoForm.coOptionJacketTuxedoInfo.tjAllBhColor}";
 			var tjBhColorPlace = "${orderCoForm.coOptionJacketTuxedoInfo.tjBhColorPlace}";
-			if(isNotEmpty(tjAllBhColor)&&isNotEmpty(tjBhColorPlace)){
+			if(isNotEmpty(tjBhColorPlace)){
 				tjBhColorPlace = tjBhColorPlace.split("/");
 				tjAllBhColor = tjAllBhColor.split("/");
 				for(var i=0;i<tjBhColorPlace.length;i++){
-					//for(var i=0;i<ojBhAllColor.length;i++){
+					if(tjBhColorPlace[i] == "0003201"){
+						jQuery("#tj_bhColorPlace_1").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003202"){
+						jQuery("#tj_bhColorPlace_2").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003203"){
+						jQuery("#tj_bhColorPlace_3").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003204"){
+						jQuery("#tj_bhColorPlace_4").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003205"){
+						jQuery("#tj_bhColorPlace_5").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003206"){
+						jQuery("#tj_bhColorPlace_6").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003207"){
+						jQuery("#tj_bhColorPlace_7").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003208"){
+						jQuery("#tj_bhColorPlace_8").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003209"){
+						jQuery("#tj_bhColorPlace_9").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003210"){
+						jQuery("#tj_bhColorPlace_10").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003211"){
+						jQuery("#tj_bhColorPlace_11").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003212"){
+						jQuery("#tj_bhColorPlace_12").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003213"){
+						jQuery("#tj_bhColorPlace_13").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003214"){
+						jQuery("#tj_bhColorPlace_14").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003215"){
+						jQuery("#tj_bhColorPlace_15").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003216"){
+						jQuery("#tj_bhColorPlace_16").prop("checked",true);
+					}else if(tjBhColorPlace[i] == "0003217"){
+						jQuery("#tj_bhColorPlace_17").prop("checked",true);
+					}
+
+					for(var j=0;j<ojBhAllColor.length;i++){
 						if(tjBhColorPlace[i] == "0003201"){
-							jQuery("#tj_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor1'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor1'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003202"){
-							jQuery("#tj_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor2'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor2'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003203"){
-							jQuery("#tj_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor3'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor3'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003204"){
-							jQuery("#tj_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor4'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor4'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003205"){
-							jQuery("#tj_bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor5'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor5'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003206"){
-							jQuery("#tj_bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor6'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor6'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003207"){
-							jQuery("#tj_bhColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor7'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor7'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003208"){
-							jQuery("#tj_bhColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor8'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor8'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003209"){
-							jQuery("#tj_bhColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor9'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor9'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003210"){
-							jQuery("#tj_bhColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor10'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor10'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003211"){
-							jQuery("#tj_bhColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor11'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor11'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003212"){
-							jQuery("#tj_bhColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor12'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor12'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003213"){
-							jQuery("#tj_bhColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor13'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor13'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003214"){
-							jQuery("#tj_bhColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor14'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor14'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003215"){
-							jQuery("#tj_bhColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor15'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor15'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003216"){
-							jQuery("#tj_bhColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor16'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor16'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}else if(tjBhColorPlace[i] == "0003217"){
-							jQuery("#tj_bhColorPlace_17").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor17'][value='" + tjAllBhColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjBhColor17'][value='" + tjAllBhColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="tj_bhColorPlace_"]').change();
 			}
 			
 			var tjByColorPlace = "${orderCoForm.coOptionJacketTuxedoInfo.tjByColorPlace}";
 			var tjAllByColor = "${orderCoForm.coOptionJacketTuxedoInfo.tjAllByColor}";
-			if(isNotEmpty(tjByColorPlace)&&isNotEmpty(tjAllByColor)){
+			if(isNotEmpty(tjByColorPlace)){
 				tjByColorPlace = tjByColorPlace.split("/");
 				tjAllByColor = tjAllByColor.split("/");
 				for(var i=0;i<tjByColorPlace.length;i++){
-					//for(var i=0;i<ojByAllColor.length;i++){
+					if(tjByColorPlace[i] == "0003501"){
+						jQuery("#tj_byColorPlace_1").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003502"){
+						jQuery("#tj_byColorPlace_2").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003503"){
+						jQuery("#tj_byColorPlace_3").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003504"){
+						jQuery("#tj_byColorPlace_4").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003505"){
+						jQuery("#tj_byColorPlace_5").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003506"){
+						jQuery("#tj_byColorPlace_6").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003507"){
+						jQuery("#tj_byColorPlace_7").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003508"){
+						jQuery("#tj_byColorPlace_8").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003509"){
+						jQuery("#tj_byColorPlace_9").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003510"){
+						jQuery("#tj_byColorPlace_10").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003511"){
+						jQuery("#tj_byColorPlace_11").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003512"){
+						jQuery("#tj_byColorPlace_12").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003513"){
+						jQuery("#tj_byColorPlace_13").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003514"){
+						jQuery("#tj_byColorPlace_14").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003515"){
+						jQuery("#tj_byColorPlace_15").prop("checked",true);
+					}else if(tjByColorPlace[i] == "0003516"){
+						jQuery("#tj_byColorPlace_16").prop("checked",true);
+					}
+						
+					for(var j=0;j<tjByAllColor.length;i++){
 						if(tjByColorPlace[i] == "0003501"){
-							jQuery("#tj_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor1'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor1'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003502"){
-							jQuery("#tj_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor2'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor2'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003503"){
-							jQuery("#tj_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor3'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor3'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003504"){
-							jQuery("#tj_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor4'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor4'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003505"){
-							jQuery("#tj_byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor5'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor5'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003506"){
-							jQuery("#tj_byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor6'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor6'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003507"){
-							jQuery("#tj_byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor7'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor7'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003508"){
-							jQuery("#tj_byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor8'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor8'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003509"){
-							jQuery("#tj_byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor9'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor9'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003510"){
-							jQuery("#tj_byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor10'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor10'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003511"){
-							jQuery("#tj_byColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor11'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor11'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003512"){
-							jQuery("#tj_byColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor12'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor12'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003513"){
-							jQuery("#tj_byColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor13'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor13'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003514"){
-							jQuery("#tj_byColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor14'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor14'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003515"){
-							jQuery("#tj_byColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor15'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor15'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}else if(tjByColorPlace[i] == "0003516"){
-							jQuery("#tj_byColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor16'][value='" + tjAllByColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketTuxedoInfo.tjByColor16'][value='" + tjAllByColor[j] + "']").prop("checked", true);
 						}
+					}
 				}
 				jQuery('input[id^="tj_byColorPlace_"]').change();
 			}
@@ -2716,165 +2814,213 @@ jQuery(function() {
 			
 			var wjAmfColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjAmfColorPlace}";
 			var wjAmfAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllAmfColor}";
-			if(isNotEmpty(wjAmfAllColor)&&isNotEmpty(wjAmfColorPlace)){
+			if(isNotEmpty(wjAmfColorPlace)){
 				wjAmfAllColor = wjAmfAllColor.split("/");
 				wjAmfColorPlace = wjAmfColorPlace.split("/");
 				for(var i=0;i<wjAmfColorPlace.length;i++){
-					//for(var i=0;i<wjamfAllColor.length;i++){
+					if(wjAmfColorPlace[i] == "0002901"){
+						jQuery("#amfColorPlace_1").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002902"){
+						jQuery("#amfColorPlace_2").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002903"){
+						jQuery("#amfColorPlace_3").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002904"){
+						jQuery("#amfColorPlace_4").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002905"){
+						jQuery("#amfColorPlace_5").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002907"){
+						jQuery("#amfColorPlace_6").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002908"){
+						jQuery("#amfColorPlace_7").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002909"){
+						jQuery("#amfColorPlace_8").prop("checked",true);
+					}else if(wjAmfColorPlace[i] == "0002910"){
+						jQuery("#amfColorPlace_9").prop("checked",true);
+					}
+						
+					for(var j=0;j<wjAmfAllColor.length;i++){
 						if(wjAmfColorPlace[i] == "0002901"){
-							jQuery("#amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor1'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor1'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002902"){
-							jQuery("#amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor2'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor2'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002903"){
-							jQuery("#amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor3'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor3'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002904"){
-							jQuery("#amfColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor4'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor4'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002905"){
-							jQuery("#amfColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor5'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor5'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002907"){
-							jQuery("#amfColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor6'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor6'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002908"){
-							jQuery("#amfColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor7'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor7'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002909"){
-							jQuery("#amfColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor8'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor8'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}else if(wjAmfColorPlace[i] == "0002910"){
-							jQuery("#amfColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor9'][value='" + wjAmfAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjAmfColor9'][value='" + wjAmfAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="wj_amfColorPlace_"]').change();
 			}
 			
 			var wjBhColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjBhColorPlace}";
 			var wjBhAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllBhColor}";
-			if(isNotEmpty(wjBhAllColor)&&isNotEmpty(wjBhColorPlace)){
+			if(isNotEmpty(wjBhColorPlace)){
 				wjBhAllColor = wjBhAllColor.split("/");
 				wjBhColorPlace = wjBhColorPlace.split("/");
 				for(var i=0;i<wjBhColorPlace.length;i++){
-					//for(var i=0;i<wjBhAllColor.length;i++){
+					if(wjBhColorPlace[i] == "0003201"){
+						jQuery("#wj_bhColorPlace_1").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003202"){
+						jQuery("#wj_bhColorPlace_2").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003203"){
+						jQuery("#wj_bhColorPlace_3").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003204"){
+						jQuery("#wj_bhColorPlace_4").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003205"){
+						jQuery("#wj_bhColorPlace_5").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003206"){
+						jQuery("#wj_bhColorPlace_6").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003207"){
+						jQuery("#wj_bhColorPlace_7").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003208"){
+						jQuery("#wj_bhColorPlace_8").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003209"){
+						jQuery("#wj_bhColorPlace_9").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003210"){
+						jQuery("#wj_bhColorPlace_10").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003211"){
+						jQuery("#wj_bhColorPlace_11").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003212"){
+						jQuery("#wj_bhColorPlace_12").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003213"){
+						jQuery("#wj_bhColorPlace_13").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003214"){
+						jQuery("#wj_bhColorPlace_14").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003215"){
+						jQuery("#wj_bhColorPlace_15").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003216"){
+						jQuery("#wj_bhColorPlace_16").prop("checked",true);
+					}else if(wjBhColorPlace[i] == "0003217"){
+						jQuery("#wj_bhColorPlace_17").prop("checked",true);
+					}
+						
+					for(var j=0;j<wjBhAllColor.length;i++){
 						if(wjBhColorPlace[i] == "0003201"){
-							jQuery("#wj_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor1'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor1'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003202"){
-							jQuery("#wj_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor2'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor2'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003203"){
-							jQuery("#wj_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor3'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor3'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003204"){
-							jQuery("#wj_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor4'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor4'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003205"){
-							jQuery("#wj_bhColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor5'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor5'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003206"){
-							jQuery("#wj_bhColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor6'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor6'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003207"){
-							jQuery("#wj_bhColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor7'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor7'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003208"){
-							jQuery("#wj_bhColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor8'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor8'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003209"){
-							jQuery("#wj_bhColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor9'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor9'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003210"){
-							jQuery("#wj_bhColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor10'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor10'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003211"){
-							jQuery("#wj_bhColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor11'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor11'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003212"){
-							jQuery("#wj_bhColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor12'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor12'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003213"){
-							jQuery("#wj_bhColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor13'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor13'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003214"){
-							jQuery("#wj_bhColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor14'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor14'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003215"){
-							jQuery("#wj_bhColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor15'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor15'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003216"){
-							jQuery("#wj_bhColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor16'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor16'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}else if(wjBhColorPlace[i] == "0003217"){
-							jQuery("#wj_bhColorPlace_17").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor17'][value='" + wjBhAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjBhColor17'][value='" + wjBhAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="wj_bhColorPlace_"]').change();
 			}
 			
 			var wjByColorPlace = "${orderCoForm.coOptionJacketWashableInfo.wjByColorPlace}";
 			var wjByAllColor = "${orderCoForm.coOptionJacketWashableInfo.wjAllByColor}";
-			if(isNotEmpty(wjByColorPlace)&&isNotEmpty(wjByAllColor)){
+			if(isNotEmpty(wjByColorPlace)){
 				wjByAllColor = wjByAllColor.split("/");
 				wjByColorPlace = wjByColorPlace.split("/");
 				for(var i=0;i<wjByColorPlace.length;i++){
-					//for(var i=0;i<wjByAllColor.length;i++){
+					if(wjByColorPlace[i] == "0003501"){
+						jQuery("#wj_byColorPlace_1").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003502"){
+						jQuery("#wj_byColorPlace_2").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003503"){
+						jQuery("#wj_byColorPlace_3").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003504"){
+						jQuery("#wj_byColorPlace_4").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003505"){
+						jQuery("#wj_byColorPlace_5").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003506"){
+						jQuery("#wj_byColorPlace_6").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003507"){
+						jQuery("#wj_byColorPlace_7").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003508"){
+						jQuery("#wj_byColorPlace_8").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003509"){
+						jQuery("#wj_byColorPlace_9").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003510"){
+						jQuery("#wj_byColorPlace_10").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003511"){
+						jQuery("#wj_byColorPlace_11").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003512"){
+						jQuery("#wj_byColorPlace_12").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003513"){
+						jQuery("#wj_byColorPlace_13").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003514"){
+						jQuery("#wj_byColorPlace_14").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003515"){
+						jQuery("#wj_byColorPlace_15").prop("checked",true);
+					}else if(wjByColorPlace[i] == "0003516"){
+						jQuery("#wj_byColorPlace_16").prop("checked",true);
+					}
+						
+					for(var j=0;j<wjByAllColor.length;i++){
 						if(wjByColorPlace[i] == "0003501"){
-							jQuery("#wj_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor1'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor1'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003502"){
-							jQuery("#wj_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor2'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor2'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003503"){
-							jQuery("#wj_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor3'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor3'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003504"){
-							jQuery("#wj_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor4'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor4'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003505"){
-							jQuery("#wj_byColorPlace_5").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor5'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor5'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003506"){
-							jQuery("#wj_byColorPlace_6").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor6'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor6'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003507"){
-							jQuery("#wj_byColorPlace_7").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor7'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor7'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003508"){
-							jQuery("#wj_byColorPlace_8").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor8'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor8'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003509"){
-							jQuery("#wj_byColorPlace_9").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor9'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor9'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003510"){
-							jQuery("#wj_byColorPlace_10").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor10'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor10'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003511"){
-							jQuery("#wj_byColorPlace_11").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor11'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor11'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003512"){
-							jQuery("#wj_byColorPlace_12").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor12'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor12'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003513"){
-							jQuery("#wj_byColorPlace_13").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor13'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor13'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003514"){
-							jQuery("#wj_byColorPlace_14").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor14'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor14'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003515"){
-							jQuery("#wj_byColorPlace_15").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor15'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor15'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}else if(wjByColorPlace[i] == "0003516"){
-							jQuery("#wj_byColorPlace_16").prop("checked",true);
-							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor16'][value='" + wjByAllColor[i] + "']").prop("checked", true);
+							jQuery(":radio[name='coOptionJacketWashableInfo.wjByColor16'][value='" + wjByAllColor[j] + "']").prop("checked", true);
 						}
-					//}
+					}
 				}
 				jQuery('input[id^="byColorPlace_"]').change();
 			}
@@ -2891,7 +3037,6 @@ jQuery(function() {
 	showPrice();
 	
 	optionJacketChangeModel(productCategory);
-	optionColorReSave(productCategory);
 	
 	doubleOptionModelPrice();
 	jQuery("#jacketItemFlag").val("1");
@@ -2903,10 +3048,6 @@ jQuery("#btnMateStkNo,#btnMate,#tj_btnMate,#tj_btnMateStkNo,#wj_btnMate,#wj_btnM
     	jQuery("#ojBtnMatePt2Flag").val("1"); 
     	jQuery("#jacketBtnMateGlFlag").val("1"); 
     	var jkBtnMateStkNo="";
-    	var wpButtonMap="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap}";
-    	var opButtonMap="${orderCoForm.coOptionPantsStandardInfo.opButtonMap }";
-    	var tpButtonMap="${orderCoForm.coOptionPantsTuxedoInfo.tpButtonMap }"
-    		
     		if(productCategory == "9000101"){
     			var jkBtnMate =jQuery("#btnMate").val(); 
     			var opButtonMap="${orderCoForm.coOptionPantsStandardInfo.opButtonMap }";
@@ -2916,6 +3057,12 @@ jQuery("#btnMateStkNo,#btnMate,#tj_btnMate,#tj_btnMateStkNo,#wj_btnMate,#wj_btnM
     			var opBtnMateStkNo ="opBtnMateStkNo";
     			jkBtnMateStkNo=jQuery("#btnMateStkNo").val();			
     			jkBtnMatecompareOtherBtnMate(jkBtnMate,opButtonMap,ptBtnMate,subItemCode,optionCode,1,opBtnMateStkNo,jkBtnMateStkNo);
+
+    			var op2ButtonMap="${orderCoForm.coOptionPants2StandardInfo.op2ButtonMap }";
+    			var pt2BtnMate="op2BtnMate";
+    			var subItemCodePants2="07";
+    			var op2BtnMateStkNo ="op2BtnMateStkNo";
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,op2ButtonMap,pt2BtnMate,subItemCodePants2,optionCode,1,op2BtnMateStkNo,jkBtnMateStkNo);
 
     			var ogFrontBtnMateMap="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateMap }";
     			var ogFrontBtnMate="ogFrontBtnMate";
@@ -2934,6 +3081,12 @@ jQuery("#btnMateStkNo,#btnMate,#tj_btnMate,#tj_btnMateStkNo,#wj_btnMate,#wj_btnM
     			jkBtnMateStkNo=jQuery("#tj_btnMateStkNo").val();			
     			jkBtnMatecompareOtherBtnMate(jkBtnMate,tpButtonMap,ptBtnMate,subItemCode,optionCode,2,tpBtnMateStkNo,jkBtnMateStkNo);
 
+    			var tp2ButtonMap="${orderCoForm.coOptionPants2TuxedoInfo.tp2ButtonMap }";
+    			var pt2BtnMate="tp2BtnMate";
+    			var subItemCodePants2="07";
+    			var tp2BtnMateStkNo ="tp2BtnMateStkNo";			
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,tp2ButtonMap,pt2BtnMate,subItemCodePants2,optionCode,2,tp2BtnMateStkNo,jkBtnMateStkNo);
+
     	        var tgFrontBtnMateMap="${orderCoForm.coOptionGiletTuxedoInfo.tgFrontBtnMateMap }";
     			var tgFrontBtnMate="tgFrontBtnMate";
     			var subItemCodeGilet="04";
@@ -2943,13 +3096,19 @@ jQuery("#btnMateStkNo,#btnMate,#tj_btnMate,#tj_btnMateStkNo,#wj_btnMate,#wj_btnM
             
         	}else if(productCategory == "9000103"){
     			var jkBtnMate =jQuery("#wj_btnMate").val(); 
-    			var tpButtonMap="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap }";
+    			var wpButtonMap="${orderCoForm.coOptionPantsWashableInfo.wpButtonMap }";
     			var ptBtnMate="wpBtnMate";
     			var subItemCode="03";
     			var optionCode="00033"; 
     			var wpBtnMateStkNo ="wpBtnMateStkNo";
     			jkBtnMateStkNo=jQuery("#wj_btnMateStkNo").val();			
     			jkBtnMatecompareOtherBtnMate(jkBtnMate,wpButtonMap,ptBtnMate,subItemCode,optionCode,3,wpBtnMateStkNo,jkBtnMateStkNo);
+
+    			var wp2ButtonMap="${orderCoForm.coOptionPants2WashableInfo.wp2ButtonMap }";
+    			var pt2BtnMate="wp2BtnMate";
+    			var subItemCodePants2="07";
+    			var wp2BtnMateStkNo ="wp2BtnMateStkNo";		
+    			jkBtnMatecompareOtherBtnMate(jkBtnMate,wp2ButtonMap,pt2BtnMate,subItemCodePants2,optionCode,3,wp2BtnMateStkNo,jkBtnMateStkNo);
 
     			var wgFrontBtnMateMap="${orderCoForm.coOptionGiletWashableInfo.wgFrontBtnMateMap }";
     			var wgFrontBtnMate="wgFrontBtnMate";

@@ -900,7 +900,8 @@ function changeLapelDesign() {
 	//shawl:0000203
 	if (lapelDesign == "0000203") {
 		// 「ショール」選択時、「通常」のみ
-		jQuery('#flowerHole').val("0001005");
+		//jQuery('#flowerHole').val("0001005");
+		jQuery("#flowerHole option[value='0001005']").prop("selected", true);  
 		jQuery('#flowerHole').prop("disabled",true);
 		jQuery('#flowerHole').change();
 	} else {

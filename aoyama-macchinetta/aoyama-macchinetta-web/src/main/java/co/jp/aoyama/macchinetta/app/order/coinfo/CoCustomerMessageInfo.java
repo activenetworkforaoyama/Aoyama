@@ -2,6 +2,12 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 
 import java.io.Serializable;
 
+import javax.validation.groups.Default;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShippingDestinationItem;
+
 public class CoCustomerMessageInfo implements Serializable{
 	
 	private static final long serialVersionUID = 424631093056161171L;
@@ -10,6 +16,7 @@ public class CoCustomerMessageInfo implements Serializable{
 	private String orderId;
 	
 	//会員番号
+	@NotBlank(groups = {Default.class},message = "会員番号を入力して下さい。")
 	private String custCd;
 	
 	//お客様氏名
@@ -19,6 +26,7 @@ public class CoCustomerMessageInfo implements Serializable{
 	private String custKanaNm;
 	
 	//名簿納期
+	@NotBlank(groups = {Default.class},message = "名簿納期を入力して下さい。")
 	private String custDeliverDate;
 	
 //	//納期短縮
@@ -28,18 +36,23 @@ public class CoCustomerMessageInfo implements Serializable{
 //	private String custIsEarlyDiscount;
 	
 	//お渡し日
+	@NotBlank(groups = {Default.class},message = "お渡し日を入力して下さい。")
 	private String custShopDeliveryDate;
 	
 	//スタッフ
+	@NotBlank(groups = {Default.class},message = "スタッフを入力して下さい。")
 	private String custStaff;
 	
 	//区分
+	@NotBlank(groups = {Default.class},message = "区分を入力して下さい。")
 	private String custType;
 	
 	//出荷先
+	@NotBlank(groups = {Default.class},message = "出荷先を入力して下さい。")
 	private String custShippingDestination;
 	
 	//出荷先_他店舗コード
+	@NotBlank(groups = {ShippingDestinationItem.class},message = "出荷先他店舗コードを入力して下さい。")
 	private String custShippingDestnationOtherstore;
 	
 	//お客様備考

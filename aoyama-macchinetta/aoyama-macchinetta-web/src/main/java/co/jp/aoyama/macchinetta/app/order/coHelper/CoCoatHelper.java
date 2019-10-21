@@ -1,5 +1,7 @@
 package co.jp.aoyama.macchinetta.app.order.coHelper;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -7,14 +9,18 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.dozer.util.ReflectionUtils;
+import org.springframework.ui.Model;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm;
 import co.jp.aoyama.macchinetta.app.order.TypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.enums.coat.CoatCoOptionStandardPriceEnum;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
@@ -336,5 +342,165 @@ public class CoCoatHelper {
 		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposCorrect(order.getCorCtPktposCorrect().toString());
 		
 		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
+	}
+
+	public Map<String, String> getOrderPriceForCoatProject(OrderCoForm orderCoForm, String code, Model model,
+			String idValue, String thisVal, String thisValStkNo) {
+		String coatModel = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();
+		CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+		CoatCoOptionStandardPriceEnum[] priceEnum = CoatCoOptionStandardPriceEnum.values();
+		String orderPrice = "";
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String valueFour = price.getValueFour();
+			String valueFive = price.getValueFive();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			boolean hasIdvalueName = false;
+			try {
+				if (idValue.equals(valueFour)) {
+					Method methodOne = coOptionCoatStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(coOptionCoatStandardInfo);
+					Object invokeTwo = null;
+					hasIdvalueName = true;
+//					if (!("".equals(valueTwo))) {
+//						Method methodTwo = coOptionCoatStandardInfo.getClass().getMethod(valueTwo);
+//						invokeTwo = methodTwo.invoke(coOptionCoatStandardInfo);
+//					}
+//					splicingCodeForFindUniquePrice = code + key + invokeOne;
+//					if (invokeTwo != null) {
+//						splicingCodeDetail = code + key + invokeOne + invokeTwo;
+//					}
+					if (!("".equals(valueTwo))) {
+						Method methodTwo = coOptionCoatStandardInfo.getClass().getMethod(valueTwo);
+						invokeTwo = methodTwo.invoke(coOptionCoatStandardInfo);
+					}
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+				} else if (idValue.equals(valueFive)) {
+					hasIdvalueName = true;
+					Method methodOne = coOptionCoatStandardInfo.getClass().getMethod(valueOne);
+					Object invokeOne = methodOne.invoke(coOptionCoatStandardInfo);
+					Method methodTwo = coOptionCoatStandardInfo.getClass().getMethod(valueTwo);
+					Object invokeTwo = methodTwo.invoke(coOptionCoatStandardInfo);
+					splicingCodeForFindUniquePrice = code + key + invokeOne;
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+
+				if (hasIdvalueName == true) {
+					if("DoubleChester".equals(coatModel) || "DoublePolo".equals(coatModel)) {
+						orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+						orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+					}
+					
+					Class<?> cls;
+					Object[] args = { orderPrice };
+					cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo");
+					Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+					ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionCoatStandardInfo(), args);
+					break;
+				}
+
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		Integer optionPriceInt = 0;
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = coOptionCoatStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(coOptionCoatStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)))  {
+					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+
+		Map<String, String> resultMap = new HashMap<String, String>();
+		resultMap.put("idValuePrice", orderPrice);
+		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
+		orderCoForm.setCtOptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
+	}
+
+	public Map<String, Object> getOrderPriceForCoatModel(OrderCoForm orderCoForm, String code) {
+		String coatModel = orderCoForm.getCoOptionCoatStandardInfo().getCoatModel();
+		CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+		CoatCoOptionStandardPriceEnum[] priceEnum = CoatCoOptionStandardPriceEnum.values();
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String key = price.getKey();
+			String valueOne = price.getValueOne();
+			String valueTwo = price.getValueTwo();
+			String valueThree = price.getValueThree();
+			String splicingCodeForFindUniquePrice = "";
+			String splicingCodeDetail = "";
+			String orderPrice = "";
+			try {
+				Method methodOne = coOptionCoatStandardInfo.getClass().getMethod(valueOne);
+				Object invokeOne = methodOne.invoke(coOptionCoatStandardInfo);
+				Object invokeTwo = "";
+				if(!("".equals(valueTwo))) {
+					Method methodTwo = coOptionCoatStandardInfo.getClass().getMethod(valueTwo);
+					invokeTwo = methodTwo.invoke(coOptionCoatStandardInfo);
+					splicingCodeDetail = code + key + invokeOne + invokeTwo;
+				}
+				splicingCodeForFindUniquePrice = code + key + invokeOne;
+				//orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				if("DoubleChester".equals(coatModel) || "DoublePolo".equals(coatModel)) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}
+				Class<?> cls;
+				Object[] args = {orderPrice};
+				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionCoatStandardInfo");
+				Method methodThree = CoContorllerPublicMethodUtil.getMethod(cls, valueThree);
+				ReflectionUtils.invoke(methodThree, orderCoForm.getCoOptionCoatStandardInfo(), args);
+			} catch (NoSuchMethodException | SecurityException | 
+					IllegalAccessException | IllegalArgumentException | InvocationTargetException | 
+					ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String, String> priceMap = new HashMap<String, String>();
+		Integer optionPriceInt = 0;
+		for (CoatCoOptionStandardPriceEnum price : priceEnum) {
+			String valueFour = price.getValueFour();
+			String valueSix = price.getValueSix();
+
+			try {
+				Method methodSix = coOptionCoatStandardInfo.getClass().getMethod(valueSix);
+				Object invokeSix = methodSix.invoke(coOptionCoatStandardInfo);
+				String valueOf = String.valueOf(invokeSix);
+				optionPriceInt = optionPriceInt + Integer.parseInt(valueOf);
+				if("0".equals(valueOf)) {
+		            priceMap.put(valueFour, "無料");
+		         }else {
+		            priceMap.put(valueFour, "￥" + CoContorllerPublicMethodUtil.formatPrice(valueOf));
+		         }
+
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("priceMap", priceMap);
+		resultMap.put("optionPrice", optionPriceInt);
+		orderCoForm.setCtOptionPrice(String.valueOf(optionPriceInt));
+		return resultMap;
 	}
 }

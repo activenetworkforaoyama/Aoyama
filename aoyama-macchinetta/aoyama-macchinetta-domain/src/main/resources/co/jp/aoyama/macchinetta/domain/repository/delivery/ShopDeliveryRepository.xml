@@ -57,10 +57,10 @@
 			shop_delivery_class = #{shopDeliveryClass,jdbcType=VARCHAR} and 
 		</if>
 		<if test="orderOnStartDate!=null">
-    		order_on_start_date &lt;= #{orderOnStartDate,jdbcType=DATE} and 
+    		order_on_start_date &gt;= #{orderOnStartDate,jdbcType=DATE} and 
 		</if>
 		<if test="orderOnEndDate!=null">
-	    	order_on_end_date &gt;= #{orderOnEndDate,jdbcType=DATE}  and 
+	    	order_on_end_date &lt;= #{orderOnEndDate,jdbcType=DATE}  and 
 		</if>
 		1 = 1 
 	ORDER BY

@@ -1456,6 +1456,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 	}
 	
 	private void insertSuitDataCoChinese(CrForm form, Order order) {
+		//残布
+		form.getField("product_remaining_cloth_data").setData(stringChange(order.getProductRemainingClothNm()));
+		
 		//JACKET
 		//サイズ
 		form.getField("Cor_jk_size_data").setData(stringChange(order.getCorJkDrop())+" - "+stringChange(order.getCorJkSize()));
@@ -1498,6 +1501,13 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//サイズ
 		form.getField("Cor_pt_size_data1").setData(stringChange(order.getCorPtDrop())+" - "+stringChange(order.getCorPtSize()));
 		
+		//裾幅name
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_size_name").setData("庫口修正");
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_size_name").setData("庫口指定");
+		}
+		
 		//型サイズ
 		//ウエスト
 		form.getField("Cor_pt_waist_size_data1").setData(bigDecimalChange(order.getCorPtWaistSize()));
@@ -1506,7 +1516,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt_thighwidth_size_data1").setData(bigDecimalChange(order.getCorPtThighwidthSize()));
 		//裾幅
-		form.getField("Cor_pt_hemwidth_size_data1").setData(bigDecimalChange(order.getCorPtHemwidthSize()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_size_data1").setData(bigDecimalChange(order.getCorPtHemwidthSize()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_size_data1").setData("");
+		}
 		//股下右
 		form.getField("Cor_pt_rightinseam_size_data1").setData(bigDecimalChange(order.getCorPtRightinseamSize()));
 		//股下左
@@ -1520,7 +1534,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt_thighwidth_correct_data1").setData(bigDecimalChange(order.getCorPtThighwidthCorrect()));
 		//裾幅
-		form.getField("Cor_pt_hemwidth_correct_data1").setData(bigDecimalChange(order.getCorPtHemwidthCorrect()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_correct_data1").setData(bigDecimalChange(order.getCorPtHemwidthCorrect()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_correct_data1").setData("");
+		}
 		//股下右
 		form.getField("Cor_pt_rightinseam_correct_data1").setData("");
 		//股下左
@@ -1534,7 +1552,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt_thighwidth_gross_data1").setData(bigDecimalChange(order.getCorPtThighwidthGross()));
 		//裾幅
-		form.getField("Cor_pt_hemwidth_gross_data1").setData(bigDecimalChange(order.getCorPtHemwidthGross()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_gross_data1").setData(bigDecimalChange(order.getCorPtHemwidthGross()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt_hemwidth_gross_data1").setData(bigDecimalChange(order.getCorPtHemwidthDegignate()));
+		}
 		//股下右
 		form.getField("Cor_pt_rightinseam_gross_data1").setData(bigDecimalChange(order.getCorPtRightinseamGross()));
 		//股下左
@@ -1544,6 +1566,13 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//サイズ
 		form.getField("Cor_pt2_size_data").setData(stringChange(order.getCorPt2Drop())+" - "+stringChange(order.getCorPt2Size()));
 		
+		//裾幅name
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_size_name").setData("庫口修正");
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_size_name").setData("庫口指定");
+		}
+		
 		//型サイズ
 		//ウエスト
 		form.getField("Cor_pt2_waist_size_data").setData(bigDecimalChange(order.getCorPt2WaistSize()));
@@ -1552,7 +1581,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt2_thighwidth_size_data").setData(bigDecimalChange(order.getCorPt2ThighwidthSize()));
 		//裾幅
-		form.getField("Cor_pt2_hemwidth_size_data").setData(bigDecimalChange(order.getCorPt2HemwidthSize()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_size_data").setData(bigDecimalChange(order.getCorPt2HemwidthSize()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_size_data").setData("");
+		}
 		//股下右
 		form.getField("Cor_pt2_rightinseam_size_data").setData(bigDecimalChange(order.getCorPt2RightinseamSize()));
 		//股下左
@@ -1566,7 +1599,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt2_thighwidth_correct_data").setData(bigDecimalChange(order.getCorPt2ThighwidthCorrect()));
 		//裾幅
-		form.getField("Cor_pt2_hemwidth_correct_data").setData(bigDecimalChange(order.getCorPt2HemwidthCorrect()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_correct_data").setData(bigDecimalChange(order.getCorPt2HemwidthCorrect()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_correct_data").setData("");
+		}
 		//股下右
 		form.getField("Cor_pt2_rightinseam_correct_data").setData("");
 		//股下左
@@ -1580,7 +1617,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ワタリ
 		form.getField("Cor_pt2_thighwidth_gross_data").setData(bigDecimalChange(order.getCorPt2ThighwidthGross()));
 		//裾幅
-		form.getField("Cor_pt2_hemwidth_gross_data").setData(bigDecimalChange(order.getCorPt2HemwidthGross()));
+		if("1".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_gross_data").setData(bigDecimalChange(order.getCorPt2HemwidthGross()));
+		}else if("2".equals(order.getCorPtHemwidthType())) {
+			form.getField("Cor_pt2_hemwidth_gross_data").setData(bigDecimalChange(order.getCorPt2HemwidthDegignate()));
+		}
 		//股下右
 		form.getField("Cor_pt2_rightinseam_gross_data").setData(bigDecimalChange(order.getCorPt2RightinseamGross()));
 		//股下左
@@ -1652,7 +1693,12 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//マニカ
 		form.getField("Jk_manica_data").setData(stringChange(order.getJkManicaNm()));
 		//袖釦
-		form.getField("Jk_sleeve_btn_data").setData(stringChange(order.getJkSleeveBtnNm()) + order.getJkSleeveBtnNumber());
+		Short jkSleeveBtnNumber = order.getJkSleeveBtnNumber();
+		if(jkSleeveBtnNumber == null) {
+			form.getField("Jk_sleeve_btn_data").setData("");
+		}else {
+			form.getField("Jk_sleeve_btn_data").setData(stringChange(order.getJkSleeveBtnNm()) + shortChange(jkSleeveBtnNumber));
+		}
 		//袖口
 		form.getField("Jk_cuff_data").setData(stringChange(order.getJkCuffNm()));
 		//内ポケット変更
@@ -1836,7 +1882,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ダブル幅
 		form.getField("Pt_dbl_width_data2").setData(stringChange(order.getPt2DblWidthNm()));
 		//ステッチ種類
-		form.getField("Pt_stitch_type_data2").setData(order.getPtAmfStitchNm());
+		form.getField("Pt_stitch_type_data2").setData(stringChange(order.getPt2AmfStitchNm()));
 		//ステッチ箇所変更
 		if("0002001".equals(stringChange(order.getPt2StitchPlcType()))) {
 			form.getField("Pt_stitch_plc_data2").setData("无");
@@ -1934,7 +1980,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//バックベルト
 		form.getField("Gl_back_belt_data").setData(stringChange(order.getGlBackBeltNm()));
 		//ウォッチチェーン
-		form.getField("Gl_watch_chain_data").setData(stringChange(order.getGlWatchChainNm()));			
+		form.getField("Gl_watch_chain_data").setData(stringChange(order.getGlWatchChainNm()));		
 	}
 	
 	private void insertCoatDataCo(CrForm form, Order order) {
@@ -2139,7 +2185,13 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ボタン付け糸色変更
 		form.getField("St_btnthread_color_data").setData(order.getStBtnthreadColorNm());
 		//カジュアルヘムライン仕様
-		form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm());
+		System.out.println(order.getStCasualHemlineNm());
+		if("有り".equals(order.getStCasualHemlineNm())) {
+			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm() 
+					+ "  " + order.getStCasualHemlineSize() + "cm");
+		}else if("無し".equals(order.getStCasualHemlineNm())) {
+			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm());
+		}
 		//ボタン位置変更
 		form.getField("St_btnpos_chg_data").setData(order.getStBtnposChgNm());
 		//ボタン位置変更,詳細

@@ -28,7 +28,7 @@ function initOptionPants2Standard() {
 
 		// 選択中のタック
 		var tackElem = jQuery('#op2_tack');
-		var selectedTack = tackElem.val();
+		//var selectedTack = tackElem.val();
 
 		// タックの選択肢更新
 		tackElem.empty();
@@ -714,7 +714,7 @@ function pancherinaSpecialController2() {
 		jQuery('#op2_pancherina_id1').prop("disabled", true);
 		jQuery('#op2_pancherina_id1').prop("checked", true);
 		jQuery('#op2_pancherina_id1').change();
-		jQuery('#op2_pancherina_id1').prop("disabled", true);
+		jQuery('#op2_pancherina_id1').prop("disabled", false);
 
 	} else {
 
@@ -728,6 +728,7 @@ function pancherinaSpecialController2() {
 		// フロント仕様がボタン留めの場合はパンチェリーナは無し固定
 		if (selectedFrontSpec == '0000402') {
 			jQuery('#op2_pancherina_id2').prop('disabled', true);
+			jQuery('#op2_pancherina_id1').prop('disabled', false);
 			jQuery('#op2_pancherina_id1').prop('checked', true);
 		}
 	}

@@ -3,15 +3,21 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuItem;
+
 public class CoOptionJacketTuxedoInfo implements Serializable{
 	private static final long serialVersionUID = -7241990558389021265L;
 	
 	//JACKETモデル
+	@NotBlank(groups = { JkTuItem.class }, message = "JACKETのモデルを入力して下さい。")
 	private String tjJacketModel;
 	
 	private Map<String,String> tjJacketModelMap;
 
 	//フロント釦数
+	@NotBlank(groups = { JkTuItem.class }, message = "JACKETのフロント釦数を入力して下さい。")
     private String tjFrontBtnCnt;
     
     private Map<String,String> tjFrontBtnCntMap;
@@ -19,6 +25,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkFrtBtnRtPrice;
     
     //ラペルデザイン
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのラペルデザインを入力して下さい。")
     private String tjLapelDesign;
     
     private Map<String,String> tjLapelDesignMap;
@@ -29,6 +36,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String tjJacketLapelModel;
     
     //グレード
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのグレードを入力して下さい。")
     private String tjGrade;
 
     private Map<String,String> tjGradeMap;
@@ -36,6 +44,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkGradeRtPrice;
     
     //裏仕様
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの裏仕様を入力して下さい。")
   	private String tjBackSpec;
       
     private Map<String,String> tjBackSpecMap;
@@ -43,13 +52,15 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkInnerClothRtPrice;
     
     //台場
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの台場を入力して下さい。")
     private String tjFort;
     
     private Map<String,String> tjFortMap;
     
     private String jkDaibaRtPrice;
     
-    //拝見地
+    //拝絹地
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの拝絹地を入力して下さい。")
     private String tjGlossFablic;
     
     private Map<String,String> tjGlossFablicMap;
@@ -57,6 +68,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkLookClothRtPrice;
     
     //襟裏（ヒゲ）
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの襟裏（ヒゲ）を入力して下さい。")
     private String tjBackCollar;
     
     private Map<String,String> tjBackCollarMap;
@@ -64,6 +76,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkCollarInnerRtPrice;
     
     //襟吊
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの襟吊を入力して下さい。")
     private String tjChainHange;
     
     private Map<String,String> tjChainHangeMap;
@@ -71,6 +84,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkCollarHangRtPrice;
     
     //ラペル幅
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのラペル幅を入力して下さい。")
     private String tjLapelWidth;
     
     private Map<String,String> tjLapelWidthMap;
@@ -78,6 +92,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkLapelWidthRtPrice;
     
     //フラワーホール
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのフラワーホールを入力して下さい。")
     private String tjFlowerHole;
     
     private Map<String,String> tjFlowerHoleMap;
@@ -85,6 +100,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkFlowerHoleRtPrice;
     
     //胸ポケット
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの胸ポケットを入力して下さい。")
     private String tjBreastPkt;
     
     private Map<String,String> tjBreastPktMap;
@@ -92,6 +108,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkBreastPktRtPrice;
     
     //腰ポケット
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの腰ポケットを入力して下さい。")
     private String tjWaistPkt;
     
     private Map<String,String> tjWaistPktMap;
@@ -99,6 +116,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkWaistPktRtPrice;
     
     //チェンジポケット
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのチェンジポケットを入力して下さい。")
     private String tjChangePkt;
     
     private Map<String,String> tjChangePktMap;
@@ -106,6 +124,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkChgPktRtPrice;
     
     //スランテッドポケット
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのスランテッドポケットを入力して下さい。")
     private String tjSlantedPkt;
     
     private Map<String,String> tjSlantedPktMap;
@@ -113,6 +132,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkSlantedPktRtPrice;
     
     //忍びポケット
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの忍びポケットを入力して下さい。")
     private String tjCoinPkt;
     
     private Map<String,String> tjCoinPktMap;
@@ -120,6 +140,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkShinobiPktRtPrice;
     
     //袖仕様
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖仕様を入力して下さい。")
     private String tjSleeveSpec;
     
     private Map<String,String> tjSleeveSpecMap;
@@ -127,6 +148,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkSleeveTypeRtPrice;
     
     //マニカ
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのマニカを入力して下さい。")
     private String tjManica;
     
     private Map<String,String> tjManicaMap;
@@ -134,6 +156,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkManicaRtPrice;
     
     //袖釦
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖釦を入力して下さい。")
     private String tjSleeveBtnType;
     
     private Map<String,String> tjSleeveBtnTypeMap;
@@ -141,9 +164,11 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkSleeveBtnRtPrice;
     
     //袖釦数
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖釦数を入力して下さい。")
     private String tjSleeveBtnCnt;
     
     //袖口
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖口を入力して下さい。")
     private String tjCuffSpec;
     
     private Map<String,String> tjCuffSpecMap;
@@ -151,6 +176,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkCuffRtPrice;
     
     //内ポケット変更
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの内ポケット変更を入力して下さい。")
     private String tjInsidePktChange;
     
     private Map<String,String> tjInsidePktChangeMap;
@@ -158,6 +184,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkInnerPktRtPrice;
     
     //下前胸内ポケット仕様
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの下前胸内ポケット仕様を入力して下さい。")
     private String tjBreastInnerPkt;
     
     private Map<String,String> tjBreastInnerPktMap;
@@ -165,6 +192,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkRightInnerPktTypeRtPrice;
     
     //ステッチ種類
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのステッチ種類を入力して下さい。")
     private String tjStitch;
     
     private Map<String,String> tjStitchMap;
@@ -187,6 +215,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkAmfColorRtPrice;
     
     //ボタンホール色指定
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのボタンホール色指定を入力して下さい。")
     private String tjBhColor;
     
     private Map<String,String> tjBhColorMap;
@@ -294,6 +323,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private Map<String,String> tjBhColorsMap;
     
     //ボタン付け糸指定
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのボタン付け糸指定を入力して下さい。")
     private String tjByColor;
     
     private Map<String,String> tjByColorMap;
@@ -398,6 +428,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private Map<String,String> tjByColorsMap;
     
     //ベント
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETのベントを入力して下さい。")
     private String tjVentSpec;
     
     private Map<String,String> tjVentSpecMap;
@@ -405,6 +436,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkVentRtPrice;
     
     //胴裏素材
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの胴裏素材を入力して下さい。")
     private String tjBodyBackMate;
     
     private Map<String,String> tjBodyBackMateMap;
@@ -412,9 +444,11 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkInnerBodyClothRtPrice;
     
     //胴裏素材品番
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの胴裏素材品番を入力して下さい。")
     private String tjBodyBackMateStkNo;
     
     //袖裏素材
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖裏素材を入力して下さい。")
     private String tjCuffBackMate;
     
     private Map<String,String> tjCuffBackMateMap;
@@ -422,9 +456,11 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkInnerSleeveClothRtPrice;
     
     //袖裏素材品番
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの袖裏素材品番を入力して下さい。")
     private String tjCuffBackMateStkNo;
     
     //釦素材
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの釦素材を入力して下さい。")
     private String tjBtnMate;
     
     private Map<String,String> tjBtnMateMap;
@@ -432,9 +468,11 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkBtnMaterialRtPrice;
     
     //釦素材品番
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの釦素材品番を入力して下さい。")
     private String tjBtnMateStkNo;
     
     //形状記憶
+    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの形状記憶を入力して下さい。")
     private String tjShapeMemory; 
     
     private Map<String,String> tjShapeMemoryMap;

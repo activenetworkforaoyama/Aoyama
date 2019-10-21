@@ -3,83 +3,118 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtAdItem;
+
 public class CoAdjustShirtStandardInfo implements Serializable {
 	
 	private static final long serialVersionUID = -211706423019474210L;
 		// SHIRTサイズ
 		private Map<String, String> corStSizeMap;
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのサイズを入力して下さい。")
 		private String corStSize;
-
 		// ネック
 		private Map<String, String> corStNeckMap;
-		// SHIRTS_ネック_型サイズ
+		// ネック型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのネック型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのネック型サイズの範囲が不正です。")
 		private String corStNeckSize;
-		// SHIRTS_ネック_補正値
+		// ネック補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのネック補正値を入力して下さい。")
 		private String corStNeckCorrect;
-		// SHIRTS_ネック_グロス
+		// ネックグロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのネックグロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのネックグロスの範囲が不正です。")
 		private String corStNeckGross;
 
 		// 着丈修正
 		private Map<String, String> corStBodylengthMap;
-		// SHIRTS_着丈_型サイズ
+		// 着丈型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの着丈型サイズの範囲が不正です。")
 		private String corStBodylengthSize;
-		// SHIRTS_着丈_補正値
+		// 着丈補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈補正値を入力して下さい。")
 		private String corStBodylengthCorrect;
-		// SHIRTS_着丈_グロス
+		// 着丈グロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの着丈グロスの範囲が不正です。")
 		private String corStBodylengthGross;
 
 		// 袖丈右修正
 		private Map<String, String> corStRightsleeveMap;
-		// SHIRTS_袖丈右_型サイズ
+		// 袖丈右型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈右型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの袖丈右型サイズの範囲が不正です。")
 		private String corStRightsleeveSize;
-		// SHIRTS_袖丈右_補正値
+		// 袖丈右補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈右補正値を入力して下さい。")
 		private String corStRightsleeveCorrect;
-		// SHIRTS_袖丈右_グロス
+		// 袖丈右グロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈右グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの袖丈右グロスの範囲が不正です。")
 		private String corStRightsleeveGross;
 
 		// 袖丈左修正
 		private Map<String, String> corStLeftsleeveMap;
-		// SHIRTS_袖丈左_型サイズ
+		// 袖丈左型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈左型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの袖丈左型サイズの範囲が不正です。")
 		private String corStLeftsleeveSize;
-	    //SHIRTS_袖丈左_補正値
+	    //袖丈左補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈左補正値を入力して下さい。")
 		private String corStLeftsleeveCorrect;
-	    //SHIRTS_袖丈左_グロス
+	    //袖丈左グロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの袖丈左グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの袖丈左グロスの範囲が不正です。")
 		private String corStLeftsleeveGross;
 
 		// 背ダーツ詰め
 		private Map<String, String> corStBackdartsPackMap;
-		// SHIRTS_背ダーツ詰め_型サイズ
+		// 背ダーツ詰め型サイズ
 		private String corStBackdartsPackSize;
-	    //SHIRTS_背ダーツ詰め_補正値
+	    //背ダーツ詰め補正値
 		private String corStBackdartsPackCorrect;
-	    //SHIRTS_背ダーツ詰め_グロス
+	    //背ダーツ詰めグロス
 		private String corStBackdartsPackGross;
 
 		// 背ダーツ出し
 		private Map<String, String> corStBackdartsUnpackMap;
-		// SHIRTS_背ダーツ出し_型サイズ
+		// 背ダーツ出し型サイズ
 		private String corStBackdartsUnpackSize;
-	    //SHIRTS_背ダーツ出し_補正値
+	    //背ダーツ出し補正値
 		private String corStBackdartsUnpackCorrect;
-	    //SHIRTS_背ダーツ出し_グロス
+	    //背ダーツ出しグロス
 		private String corStBackdartsUnpackGross;
 
 		// カフス周り右
 		private Map<String, String> corStRightcuffsSurroundingMap;
-		// SHIRTS_カフス周り右_型サイズ
+		// カフス周り右型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り右型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り右型サイズの範囲が不正です。")
 		private String corStRightcuffsSurroundingSize;
-	    //SHIRTS_カフス周り右_補正値
+	    //カフス周り右補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り右補正値を入力して下さい。")
 		private String corStRightcuffsSurroundingCorrect;
-	    //SHIRTS_カフス周り右_グロス
+	    //カフス周り右グロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り右グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り右グロスの範囲が不正です。")
 		private String corStRightcuffsSurroundingGross;
 
 		// カフス周り左
 		private Map<String, String> corStLeftcuffsSurroundingMap;
-		// SHIRTS_カフス周り左_型サイズ
+		// カフス周り左型サイズ
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り左型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り左型サイズの範囲が不正です。")
 		private String corStLeftcuffsSurroundingSize;
-	    //SHIRTS_カフス周り左_補正値
+	    //カフス周り左補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り左補正値を入力して下さい。")
 		private String corStLeftcuffsSurroundingCorrect;
-	    //SHIRTS_カフス周り左_グロス
+	    //カフス周り左グロス
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り左グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTのカフス周り左グロスの範囲が不正です。")
 		private String corStLeftcuffsSurroundingGross;
 		// 店舗補正入力欄
 		private String corStoreCorrectionMemo;

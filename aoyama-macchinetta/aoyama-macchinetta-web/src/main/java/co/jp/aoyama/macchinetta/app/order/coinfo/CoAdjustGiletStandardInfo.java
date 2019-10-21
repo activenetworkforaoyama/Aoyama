@@ -3,42 +3,62 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlAdItem;
+
 public class CoAdjustGiletStandardInfo implements Serializable {
 	private static final long serialVersionUID = -4015395935551145245L;
 	// 号数
 	private Map<String, String> sizeNumberMap;
-
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETの号数を入力して下さい。")
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETの体型を入力して下さい。")
 	private String sizeFigure;
 
 	// 着丈修正
 	private Map<String, String> corGlBodyMap;
 	// 着丈型サイズ
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETの着丈型サイズが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETの着丈型サイズの範囲が不正です。")
 	private String corGlBodySize;
 	// 着丈補正値
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETの着丈補正値を入力して下さい。")
 	private String corGlBodyCorrect;
 	// 着丈グロス
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETの着丈グロスが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETの着丈グロスの範囲が不正です。")
 	private String corGlBodyGross;
 
 	// バスト修正
 	private Map<String, String> corGlBustMap;
 	// バストサイズ
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのバストサイズが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETのバストサイズの範囲が不正です。")
 	private String corGlBustSize;
 	// バスト補正値
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのバスト補正値を入力して下さい。")
 	private String corGlBustCorrect;
 	// バストグロス
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのバストグロスが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETのバストグロスの範囲が不正です。")
 	private String corGlBustGross;
 	
 	// ウエスト修正
 	private Map<String, String> corGlWaistMap;
 	// ウエスト型サイズ
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのウエスト型サイズが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETのウエスト型サイズの範囲が不正です。")
 	private String corGlWaistSize;
 	// ウエスト補正値
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのウエスト補正値を入力して下さい。")
 	private String corGlWaistCorrect;
 	// ウエストグロス
+	@NotBlank(groups = {GlAdItem.class}, message = "GILETのウエストグロスが不正です。")
+	@Range(min=1, max=999, groups = {GlAdItem.class}, message = "GILETのウエストグロスの範囲が不正です。")
 	private String corGlWaistGross;
 
 	//再補正コメント
