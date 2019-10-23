@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import co.jp.aoyama.macchinetta.app.order.OrderForm.ShopItem;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustCoatStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustGiletStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustJacketStandardInfo;
@@ -53,8 +54,16 @@ public class OrderCoForm implements Serializable {
     public static interface JkStStitchItem {
     };
     
+    // グループ:Jacket 標準袖裏素材
+    public static interface JkStCuffBackMateItem {
+    };
+    
     // グループ:Jacket タキシード
     public static interface JkTuItem {
+    };
+    
+    // グループ:Jacket タキシード 釦素材
+    public static interface JkTuBtnMateItem {
     };
     
     // グループ:Jacket ウォッシャブル
@@ -105,12 +114,12 @@ public class OrderCoForm implements Serializable {
     public static interface PtWaWpHemUpItem {
     };
     
-    // グループ:Pants ウォッシャブルステッチ種類
-    public static interface PtWaWpStitchItem {
-    };
-    
     // グループ:Pants 補正
     public static interface PtAdItem {
+    };
+    
+    // グループ:Pants モデル
+    public static interface PtThreeModelItem {
     };
     
     public static interface HemwidthPtAdItem {
@@ -131,8 +140,20 @@ public class OrderCoForm implements Serializable {
     public static interface GlStStitchItem {
     };
     
+    // グループ:Gilet 標準背裏地素材
+    public static interface GlBackLiningMateItem {
+    };
+    
     // グループ:Gilet タキシード
     public static interface GlTuItem {
+    };
+    
+    // グループ:Gilet タキシード背裏地素材
+    public static interface GlTuBackLiningMateItem {
+    };
+    
+    // グループ:Gilet タキシード釦素材
+    public static interface GlTuFrontBtnMateItem {
     };
     
     // グループ:Gilet 腰ポケット形状
@@ -147,6 +168,10 @@ public class OrderCoForm implements Serializable {
     public static interface GlWaWaistPktSpecItem {
     };
     
+    // グループ:Gilet 背裏地素材
+    public static interface GlWaBackLiningMateItem {
+    };
+    
     // グループ:Gilet 補正
     public static interface GlAdItem {
     };
@@ -155,16 +180,48 @@ public class OrderCoForm implements Serializable {
     public static interface Pt2StItem {
     };
     
+    // グループ:2Pants 標準膝裏
+    public static interface Pt2StOpKneeBackItem {
+    };
+    
+    // グループ:2Pants 標準裾上げ
+    public static interface Pt2StOpHemUpItem {
+    };
+    
+    // グループ:2Pants 標準AMFステッチ
+    public static interface Pt2StOpStitchItem {
+    };
+    
     // グループ:2Pants タキシード
     public static interface Pt2TuItem {
+    };
+    
+    // グループ:2Pants タキシード膝裏
+    public static interface Pt2TuTpKneeBackItem {
+    };
+    
+    // グループ:2Pants タキシード裾上げ
+    public static interface Pt2TuTpHemUpItem {
     };
     
     // グループ:2Pants ウォッシャブル
     public static interface Pt2WaItem {
     };
     
+    // グループ:2Pants ウォッシャブル膝裏
+    public static interface Pt2WaWpKneeBackItem {
+    };
+
+    // グループ:2Pants ウォッシャブル裾上げ
+    public static interface Pt2WaWpHemUpItem {
+    };
+    
     // グループ:2Pants 補正
     public static interface Pt2AdItem {
+    };
+    
+    // グループ:2Pants モデル
+    public static interface Pt2ThreeModelItem {
     };
     
     public static interface HemwidthPt2AdItem {
@@ -215,6 +272,10 @@ public class OrderCoForm implements Serializable {
     
     // グループ:残布
     public static interface RemainingClothItem {
+    };
+    
+    // グループ:店舗コード 業態  店舗名
+    public static interface ShopItem {
     };
 	// メジャーリング
     @Valid
@@ -310,13 +371,17 @@ public class OrderCoForm implements Serializable {
 	@Valid
 	private CoAdjustCoatStandardInfo coAdjustCoatStandardInfo;
 
-	// 店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
-	@NotBlank(groups = {Default.class},message = "店舗コード が不正です。")
+	//店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
+	@NotBlank(groups = {ShopItem.class},message = "店舗コード が不正です。")
 	private String shopCode;
-
-	// 業態
-	@NotBlank(groups = {Default.class},message = "業態コード が不正です。")
+		
+	//業態
+	@NotBlank(groups = {ShopItem.class},message = "業態コード が不正です。")
 	private String storeBrandCode;
+		
+	//店舗・担当_店舗名
+	@NotBlank(groups = {ShopItem.class},message = "店舗名が不正です。")
+	private String storeNm;
 
 	// 商品情報_ITEM
 	@NotBlank(groups = {Default.class},message = "アイテムを入力して下さい。")
@@ -507,10 +572,6 @@ public class OrderCoForm implements Serializable {
 
 	private String version;
 
-	// 店舗・担当_店舗名
-	@NotBlank(groups = {Default.class},message = "店舗名が不正です。")
-	private String storeNm;
-
 	private String jacketItemFlag;
 
 	private String pantsItemFlag;
@@ -562,6 +623,8 @@ public class OrderCoForm implements Serializable {
 	
 	
 	private String osCasHemLineIdFlag;
+	
+	private String orderTscStatus;
 
 	//
 	private OrderFindFabric orderFindFabric;
@@ -1559,5 +1622,12 @@ public class OrderCoForm implements Serializable {
 	public void setItemCoChangeFlag(String itemCoChangeFlag) {
 		this.itemCoChangeFlag = itemCoChangeFlag;
 	}
-	
+
+	public String getOrderTscStatus() {
+		return orderTscStatus;
+	}
+
+	public void setOrderTscStatus(String orderTscStatus) {
+		this.orderTscStatus = orderTscStatus;
+	}
 }

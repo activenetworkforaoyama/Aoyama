@@ -152,6 +152,17 @@ function initOptionPants2Standard() {
 		// AMF色指定の有効/無効を制御する
 		ctrlOp2AmfColor();
 
+		//AY01の場合、ベルトループ仕様とピンループの制御。
+		if (pantsModel == "AY01") {
+			jQuery('#op2_beltLoop_id1').prop('disabled', true);
+			jQuery('#op2_beltLoop_id2').prop('disabled', false);
+			jQuery('#op2_beltLoop_id2').prop('checked', true);
+			
+			jQuery('#op2_pinLoop_id1').prop('disabled', true);
+			jQuery('#op2_pinLoop_id2').prop('disabled', false);
+			jQuery('#op2_pinLoop_id2').prop('checked', true);
+		}
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpOp2PantsModel != '') && pantsModel != tmpOp2PantsModel) {
 		    setAlert('op2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
@@ -727,14 +738,13 @@ function pancherinaSpecialController2() {
 
 		// フロント仕様がボタン留めの場合はパンチェリーナは無し固定
 		if (selectedFrontSpec == '0000402') {
+//		if (selectedFrontSpec == '0000401') {
 			jQuery('#op2_pancherina_id2').prop('disabled', true);
 			jQuery('#op2_pancherina_id1').prop('disabled', false);
 			jQuery('#op2_pancherina_id1').prop('checked', true);
 		}
 	}
 
-//	// 処理後のパンチェリーナ
-//	var changedPancherina = jQuery('input[name="coOptionPants2StandardInfo.op2Pancherina"]:checked').val();
 }
 
 //ベルトループ変更時処理
@@ -776,7 +786,7 @@ function changedBeltLoop2() {
 	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
 	if (selectedBeltLoop == '0000701') {
 		if (jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]:checked').val() == '0000603') {
-			jQuery('#op2_pinLoop_id2').prop('checked', 'true');
+			jQuery('#op2_pinLoop_id1').prop('checked', 'true');
 		}
 	}	
 
@@ -809,9 +819,7 @@ function pinLoopSpecialController2() {
 		jQuery('input[id="op2_pinLoop_id2"]').prop("checked", true);
 	} else {
 		jQuery('input[id="op2_pinLoop_id1"]').prop("disabled", false);
-//		jQuery('input[id="op2_pinLoop_id1"]').prop("checked", true);
 		jQuery('input[id="op2_pinLoop_id2"]').prop("disabled", false);
-		jQuery(':radio[name="coOptionPants2StandardInfo.op2PinLoop"]').prop('checked', true);
 	}
 
 //	// 処理後のピンループ
@@ -1033,12 +1041,11 @@ jQuery('#op2_coinPkt').change(function() {
 
 	var selectedValue = jQuery('#op2_coinPkt').val();
 
-		jQuery('#op2_flapCoinPkt_id2').prop('disabled', false);
+	jQuery('#op2_flapCoinPkt_id2').prop('disabled', false);
 	if (selectedValue == "0001201") {
 		jQuery('#op2_flapCoinPkt_id1').prop('checked', true);
 		jQuery('#op2_flapCoinPkt_id2').prop('disabled', true);
 	}
-	
 	
 });
 jQuery('#op2_coinPkt').change();
@@ -1054,68 +1061,42 @@ jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').change(function(i
 	var oPLoopElemN = jQuery('#op2_pinLoop_id2');
 	
 	switch(selected) {
-//		case "0000601": oBLoopElemY.prop("checked", true); break;
-//		case "0000602": oBLoopElemN.prop("checked", true); break;
-//		case "0000603": oBLoopElemN.prop("checked", true); break;
-//		case "0000604": oBLoopElemY.prop("checked", true); break;
-//		default:oBLoopElemN.prop("checked", true);
-	
-		case "0000601": 
-			oBLoopElemY.prop("checked", true);
-			oBLoopElemY.prop("disabled", false);
-			oBLoopElemN.prop("disabled", false);
-		break;
-		case "0000602": 
-			oBLoopElemN.prop("checked", true);
-			oBLoopElemY.prop("disabled", true);
-			oBLoopElemN.prop("disabled", false);
-			break;
-		case "0000603": 
-			oBLoopElemN.prop("checked", true); 
-			oBLoopElemY.prop("disabled", false);
-			oBLoopElemN.prop("disabled", false);
-			break;
-		case "0000604": 
-			oBLoopElemY.prop("checked", true);
-			oBLoopElemY.prop("disabled", false);
-			oBLoopElemN.prop("disabled", false);
-		break;
-		default:
-			oBLoopElemN.prop("checked", true);
-			oBLoopElemY.prop("disabled", false);
-			oBLoopElemN.prop("disabled", false);
+		case "0000601": oBLoopElemY.prop("checked", true); break;
+		case "0000602": oBLoopElemN.prop("checked", true); break;
+		case "0000603": oBLoopElemN.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
+		default:oBLoopElemN.prop("checked", true);
 	}
 	
-//	switch(selected) {
-//		case "0000601":
-//			oPLoopElemY.prop("checked", true);
-//			break;
-//		case "0000602": 
-//			oPLoopElemN.prop("checked", true); 
-//			break;
-//		case "0000603": 
-//			oPLoopElemN.prop("checked", true); 
-//			break;
-//		case "0000604": 
-//			oPLoopElemY.prop("checked", true); 
-//			break;
-//		default:
-//			oPLoopElemN.prop("checked", true);
-//	}
-	var op2BeltLoopSelected = jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]:checked').val();
-	switch(op2BeltLoopSelected) {
-		case "0000701":
-			oPLoopElemY.prop("checked", true);
-			break;
-		case "0000702": 
-			oPLoopElemN.prop("checked", true); 
-			break;
-		default:
-			oPLoopElemN.prop("checked", true);
-    }
+	switch(selected) {
+		case "0000601": oPLoopElemY.prop("checked", true); break;
+		case "0000602": oPLoopElemN.prop("checked", true); break;
+		case "0000603": oPLoopElemN.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
+		default:oPLoopElemN.prop("checked", true);
+	}
 
+	//AY01の場合、ベルトループ仕様とピンループの制御。
+	var op2PantsModel = jQuery('#op2_pantsModel').val();
+	if (op2PantsModel == "AY01") {
+		jQuery('#op2_beltLoop_id1').prop('disabled', true);
+		jQuery('#op2_beltLoop_id2').prop('disabled', false);
+		jQuery('#op2_beltLoop_id2').prop('checked', true);
+		
+		jQuery('#op2_pinLoop_id1').prop('disabled', true);
+		jQuery('#op2_pinLoop_id2').prop('disabled', false);
+		jQuery('#op2_pinLoop_id2').prop('checked', true);
+	}
+	
 	changedBeltLoop2();
 
 });
-//jQuery('#op2_adjuster_id1').change();
-
+jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').change(function(index, elem) {
+	var op2BeltLoop = jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]:checked').val();
+	if (op2BeltLoop == "0000701") {
+		jQuery('#op2_pinLoop_id1').prop('disabled', false);
+		jQuery('#op2_pinLoop_id1').prop('checked', true);
+		jQuery('#op2_pinLoop_id2').prop('disabled', false);
+	}
+});
+jQuery('#op2_adjuster_id1').change();

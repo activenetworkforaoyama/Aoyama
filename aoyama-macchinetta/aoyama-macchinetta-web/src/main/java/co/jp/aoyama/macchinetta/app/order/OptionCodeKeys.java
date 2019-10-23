@@ -106,8 +106,12 @@ public class OptionCodeKeys {
 	public static final String JK_1000100 = "1000100";
 	// 袖裏素材
 	public static final String JK_2000100 = "2000100";
+	
+	public static final String JK_2000300 = "2000300";
 	// 釦素材
 	public static final String JK_3000800 = "3000800";
+	
+	public static final String JK_3000700 = "3000700";
 	// 形状記憶
 	public static final String JK_0004401 = "0004401";
 
@@ -157,6 +161,10 @@ public class OptionCodeKeys {
 	public static final String PT_0001602 = "0001602";
 	// 裾上げ:シングル
 	public static final String PT_0001701 = "0001701";
+	
+	public static final String PT_0001702 = "0001702";
+	
+	public static final String PT_0001703 = "0001703";
 	// ダブル幅:4
 	public static final String PT_4 = "4";
 	// ステッチ種類:AMFステッチ
@@ -365,6 +373,10 @@ public class OptionCodeKeys {
 	public static final String PT2_0001602 = "0001602";
 	// 裾上げ:シングル
 	public static final String PT2_0001701 = "0001701";
+	
+	public static final String PT2_0001702 = "0001702";
+	
+	public static final String PT2_0001703 = "0001703";
 	// ダブル幅:4
 	public static final String PT2_4 = "4";
 	// ステッチ種類:AMFステッチ
@@ -407,6 +419,5 @@ public class OptionCodeKeys {
 	public static final String PT2_0003902 = "0003902";
 	// 側章幅:1.5cm
 	public static final String PT2_0004001 = "0004001";
-
 
 }

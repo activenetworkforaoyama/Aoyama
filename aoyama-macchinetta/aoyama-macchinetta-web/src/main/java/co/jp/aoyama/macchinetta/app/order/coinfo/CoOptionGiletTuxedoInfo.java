@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuBackLiningMateItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuFrontBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuWaistPktSpecItem;
 
@@ -171,7 +173,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glBackClothRtPrice;
 	
 	// 背裏地素材品番
-	@NotBlank(groups = { GlTuItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
+	@NotBlank(groups = { GlTuBackLiningMateItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String tgBackLiningMateStkNo;
 
 	// 内側裏地素材
@@ -195,7 +197,7 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private String glFrtBtnRtPrice;
 	
 	// 釦素材品番
-	@NotBlank(groups = { GlTuItem.class }, message = "Giletの釦素材品番を入力して下さい。")
+	@NotBlank(groups = { GlTuFrontBtnMateItem.class }, message = "Giletの釦素材品番を入力して下さい。")
 	private String tgFrontBtnMateStkNo;
 
 	// バックベルト

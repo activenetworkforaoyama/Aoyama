@@ -316,7 +316,6 @@ function initOptionGiletWashable() {
 //			jQuery(this).prop("disabled", false);
 			if (jQuery(this).prop("checked")) {
 				// 選択されているの場合、色指定エリアを表示
-				alert('#'+this.id+'_div')
 				jQuery('#'+this.id+'_div').show();
 			}
 		});
@@ -350,10 +349,8 @@ function initOptionGiletWashable() {
 				ctrlWgBhColorPlace();
 				jQuery('input[id^="wg_bhColorPlace_"]').each(function() {
 //					jQuery(this).prop("disabled", false);
-					alert(this.id)
 					if (jQuery(this).prop("checked")) {
 						// 選択されているの場合、色指定エリアを表示
-						alert('#'+this.id+'_div')
 						jQuery('#'+this.id+'_div').show();
 					}
 				});

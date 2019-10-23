@@ -30,6 +30,7 @@ import co.jp.aoyama.macchinetta.app.order.OrderForm.OpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderForm.Pt2Item;
 import co.jp.aoyama.macchinetta.app.order.OrderForm.PtItem;
 import co.jp.aoyama.macchinetta.app.order.OrderForm.ShippingDestinationItem;
+import co.jp.aoyama.macchinetta.app.order.OrderForm.ShopItem;
 import co.jp.aoyama.macchinetta.app.order.enums.AdjustClassEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.ItemClassStandardEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.ItemTypeEnum;
@@ -101,8 +102,9 @@ public class OrderHelper {
 	 * @param form
 	 * @param result
 	 * @param smartValidator 
+	 * @param sessionContent 
 	 */
-	public void extractedItem(OrderForm orderForm, BindingResult result, SmartValidator smartValidator) {
+	public void extractedItem(OrderForm orderForm, BindingResult result, SmartValidator smartValidator, SessionContent sessionContent) {
 		List<Class<?>> validationGroup = new ArrayList<Class<?>>();
 		// ITEM
 		String productItem = orderForm.getProductItem();
@@ -114,6 +116,11 @@ public class OrderHelper {
 		String productEmbroideryNecessity = orderForm.getProductEmbroideryNecessity();
 		// 出荷先
 		String custShippingDestination = orderForm.getCustomerMessageInfo().getCustShippingDestination();
+		
+		String authority = sessionContent.getAuthority();
+		if(!"02".equals(authority)) {
+			validationGroup.add(ShopItem.class);
+		}
 		
 		//SUIT
 		if ("01".equals(productItem)) {

@@ -197,9 +197,28 @@ function initOptionPants1Standard() {
 		// AMF色指定の有効/無効を制御する
 		ctrlOpAmfColor();
 		
+		//ステッチ箇所変更
+		jQuery('#op_stitchModify_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsStandardInfo.opStitchModify"]:checked').change();
+		
+		//ダブルステッチ
+		jQuery('#op_dStitch_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]:checked').change();
+		
+		//AMF色指定
+		jQuery('#op_amfColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsStandardInfo.opAmfColor"]:checked').change();
+		
+		//ボタンホール色指定
+		jQuery('#op_bhColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsStandardInfo.opBhColor"]:checked').change();
+		
+		//ボタン付け糸指定
+		jQuery('#op_byColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsStandardInfo.opByColor"]:checked').change();
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpOpPantsModel != '' || tmpOpPantsModel != null) && pantsModel != tmpOpPantsModel && modelFlag == 2) {
-//		    appendAlert('op_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('op_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
@@ -898,22 +917,10 @@ function changedBeltLoop() {
 		//disabledFlg = true;
 	}
 
-	// ベルトループ項目の活性/非活性
-	/*jQuery('input[id^="op_beltLoopPlace_"]').each(function() {
-		var tmpBeltLoopElem = jQuery(this);
-		tmpBeltLoopElem.prop("checked", false);
-		
-		if (disabledFlg=="false") {
-			alert(disabledFlg);
-			tmpBeltLoopElem.prop("checked", 'true');
-		}
-	});*/
-
-	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に有りに設定する
+	// ピンループ設定でベルトループ有の場合に有りに設定する
 	if (selectedBeltLoop == '0000701') {
-		if (jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]:checked').val() == '0000603') {
-			jQuery('#op_pinLoop_id1').prop('checked', 'true');
-		}
+		jQuery('#op_pinLoop_id1').prop('checked', 'true');
+		jQuery('#op_pinLoop_id1').change();
 	}	
 
 	// フラシループ設定
@@ -944,6 +951,7 @@ function pinLoopSpecialController() {
 		jQuery('input[id="op_pinLoop_id1"]').prop("disabled", true);
 		jQuery('input[id="op_pinLoop_id2"]').prop("disabled", false);
 		jQuery('input[id="op_pinLoop_id2"]').prop("checked", true);
+		jQuery('input[id="op_pinLoop_id2"]').change();
 	} else {
 		jQuery('input[id="op_pinLoop_id1"]').prop("disabled", false);
 		jQuery('input[id="op_pinLoop_id2"]').prop("disabled", false);
@@ -1275,6 +1283,8 @@ jQuery('#op_coinPkt').change();
 
 // アジャスター仕様変更時
 jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').change(function(index, elem) {
+	// 選択中のPantsモデルを取得
+	var pantsModel = jQuery('#op_pantsModel').val();
 	var selected = jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]:checked').val();
 
 	var oBLoopElemY = jQuery('#op_beltLoop_id1');
@@ -1283,20 +1293,41 @@ jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').change(function(ind
 	var oPLoopElemY = jQuery('#op_pinLoop_id1');
 	var oPLoopElemN = jQuery('#op_pinLoop_id2');
 	
-	switch(selected) {
+	
+	if(pantsModel == 'AY01'){
+		switch(selected) {
+		case "0000601": oBLoopElemN.prop("checked", true); break;
+		case "0000602": oBLoopElemN.prop("checked", true); break;
+		case "0000603": oBLoopElemN.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
+		default:oBLoopElemN.prop("checked", true);
+		}
+		switch(selected) {
+		case "0000601": oPLoopElemN.prop("checked", true); break;
+		case "0000602": oPLoopElemN.prop("checked", true); break;
+		case "0000603": oPLoopElemN.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
+		default:oPLoopElemN.prop("checked", true);
+		}
+	}
+	else {
+		switch(selected) {
 		case "0000601": oBLoopElemY.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;
 		case "0000603": oBLoopElemN.prop("checked", true); break;
 		case "0000604": oBLoopElemY.prop("checked", true); break;
 		default:oBLoopElemN.prop("checked", true);
-	}
-	switch(selected) {
+		}
+		switch(selected) {
 		case "0000601": oPLoopElemY.prop("checked", true); break;
 		case "0000602": oPLoopElemN.prop("checked", true); break;
 		case "0000603": oPLoopElemN.prop("checked", true); break;
 		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
+		}
 	}
+	
+	jQuery('input[id^="op_beltLoop_id"]:checked').change();
 	changedBeltLoop();
 
 });

@@ -1909,7 +1909,8 @@
 		    send2factory_status, is_cancelled, theoretical_stock_check,schedule_data_transmit_status,shipping_transmit_status, dtb_order.version,
 		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at,product_lcr_sewing,product_lcr_sewing_rt_price,
 		    product_lcr_sewing_ws_wage,product_lcr_sewing_ws_price,ct_inner_body_cloth_type,ct_inner_sleeve_cloth_type,ct_btn_material_type,fabric_price,
-		    ws_price_adjust,cor_st_backdarts_unpack_cd,cor_st_backdarts_unpack_nm
+		    ws_price_adjust,cor_st_backdarts_unpack_cd,GET_CHINESE_NAME(order_pattern,product_factory_cd,'05',cor_st_backdarts_unpack_cd)as cor_st_backdarts_unpack_nm,cor_jk_store_correction_memo, cor_pt_store_correction_memo,cor_pt2_store_correction_memo,
+		    cor_gl_store_correction_memo,cor_ct_store_correction_memo
     </sql>
 
     <select id="findOrderByPk" parameterType="string" resultMap="OrderResultMap">

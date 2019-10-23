@@ -220,6 +220,7 @@ public class OrderCoController {
 			String orderFlag = "orderCo";
 			orderCoForm.setOrderFlag(orderFlag);
 			orderCoForm.setStatus("");
+			orderCoForm.setOrderTscStatus("");
 			// デフォルト値設定
 			orderCoHelper.customerAndProductDefaultValue(orderCoForm,sessionContent);
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
@@ -244,7 +245,7 @@ public class OrderCoController {
 			
 			OrderCoForm orderCoForm = new OrderCoForm();
 			orderCoForm.setAuthority(sessionContent.getAuthority());
-			
+			orderCoForm.setOrderTscStatus(order.getTscStatus());
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(CO_TYPE);
 			List<OptionBranch> tuxedoOptionList = optionBranchService.getTuxedoOption(CO_TYPE);
@@ -308,12 +309,11 @@ public class OrderCoController {
 	 */
 	@RequestMapping(value = "orderCoReconfirm")
 	public String toOrderCoReconfirm(HttpServletRequest request,OrderCoForm orderCoForm, final BindingResult result,Model model) {
-		orderCoHelper.extractedItem(orderCoForm, result,smartValidator);
+		orderCoHelper.extractedItem(orderCoForm, result,smartValidator,sessionContent);
 		
 		if (result.hasErrors()) {
 			orderCoForm.setOrderFlag("orderCheck");
 			model.addAttribute("orderCoForm",orderCoForm);
-			model.addAttribute("orderFlag", "");
 			return "order/orderCoForm";
 		}
 		

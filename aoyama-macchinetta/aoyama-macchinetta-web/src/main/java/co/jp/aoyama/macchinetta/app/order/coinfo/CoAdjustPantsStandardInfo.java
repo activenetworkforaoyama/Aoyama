@@ -6,10 +6,10 @@ import java.util.Map;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
-
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthDegignatePtAdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthPtAdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtThreeModelItem;
 
 
 public class CoAdjustPantsStandardInfo implements Serializable {
@@ -20,7 +20,7 @@ public class CoAdjustPantsStandardInfo implements Serializable {
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-	@NotBlank(groups = {PtAdItem.class}, message = "PANTS（1本目）の体型を入力して下さい。")
+	@NotBlank(groups = {PtThreeModelItem.class}, message = "PANTS（1本目）の体型を入力して下さい。")
 	private String sizeFigure;
 	// ウエスト修正
 	private Map<String, String> corPtWaistMap;

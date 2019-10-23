@@ -1456,6 +1456,8 @@ select.hidedown {
 			
 			<input type="hidden" id="fabricFlag"  name="fabricFlag"   value="${orderCoForm.fabricFlag}" />
 			
+			<input type="hidden" id="orderTscStatus"  name="orderTscStatus"   value="${orderCoForm.orderTscStatus}" />
+			
 			<input type="hidden" id="jkModelFlag"  name="jkModelFlag"   value="0" />
 			<input type="hidden" id="glModelFlag"  name="glModelFlag"   value="0" />
 			<input type="hidden" id="ptModelFlag"  name="ptModelFlag"   value="0" />
@@ -1729,6 +1731,10 @@ select.hidedown {
 <script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
+var jacketTwiceflag = '0';
+var pantsTwiceflag = '0';
+var pants2Twiceflag = '0';
+var	giletTwiceflag = '0';
 var orderFlag = "${orderCoForm.orderFlag}";
 function zenkakuToHankaku(mae){
 	  let zen = new Array('ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ヰ','ユ','ヱ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','゛','°','、','。','「','」','ー','・');
@@ -2660,7 +2666,8 @@ jQuery(function() {
 	}else{
 		//30s自動保存
 	 	//注文のTSCステータス
-		var orderStatus = "${order.tscStatus}";
+		//var orderStatus = "${order.tscStatus}";
+		var orderStatus = jQuery("#orderTscStatus").val();
 		//戻るの場合、orderFormのTSCステータス
 		var orderFormStatus = "${orderCoForm.status}";
 		//T0 ：一時保存、T1 ：取り置き、""：ステータス無し
@@ -3438,7 +3445,15 @@ jQuery(function() {
 					  }
 					  jQuery("#fabricMsg").empty();
 					  compositionExpress();
-					  stockCheck();
+					  //stockCheck();
+					  var productFabricNo = jQuery("#productFabricNo").val();
+					  if(isNotEmpty(productFabricNo)){
+						  var checkResult = fabricCheck(item,productFabricNo);
+							//生地によって、商品を表示
+						  if(checkResult == "0"||checkResult == "2"){
+							  fabricView(item,productFabricNo);
+						  }
+					  }
 					  changeViewArea();
 					  projectControl();
 				  }else{
@@ -3498,14 +3513,22 @@ jQuery(function() {
 //メジャーリングの制御
 function measuringSetting(){
 	//メジャーリング 
+	//メジャーリング 
 	var fullLengthText="";
 	var fullLengthSelect="";
 	jQuery("#fullLengthTe").on('input', function(){
+		var makeUpVal = null
 		fullLengthText = jQuery("#fullLengthTe").val();
-		var makeUpVal = fullLengthText+".0";
+		var fullLengthSe = jQuery("#fullLengthSe").val();
+		if(isNotEmpty(fullLengthSe)){
+			makeUpVal = fullLengthText+"."+fullLengthSe;
+		}else{
+			makeUpVal = fullLengthText+".0";
+		}
 		jQuery("#fullLength").val(makeUpVal);
 	})
 	jQuery("#fullLengthSe").change(function(){
+		fullLengthText = jQuery("#fullLengthTe").val();
 		fullLengthSelect = jQuery("#fullLengthSe").val();
 		var makeUpVal = fullLengthText+"."+fullLengthSelect;
 		jQuery("#fullLength").val(makeUpVal);
@@ -3514,12 +3537,19 @@ function measuringSetting(){
 	var shoulderText="";
 	var shoulderSelect="";
 	jQuery("#shoulderTe").on('input', function(){
+		var makeUpVal = null;
 		shoulderText = jQuery("#shoulderTe").val();
-		var makeUpVal = shoulderText+".0";
+		var shoulderSe = jQuery("#shoulderSe").val();
+		if(isNotEmpty(shoulderSe)){
+			makeUpVal = shoulderText+"."+shoulderSe;
+		}else{
+			makeUpVal = shoulderText+".0";
+		}
 		jQuery("#shoulder").val(makeUpVal);
 	})
 	jQuery("#shoulderSe").change(function(){
 		shoulderSelect = jQuery("#shoulderSe").val();
+		shoulderText = jQuery("#shoulderTe").val();
 		var makeUpVal = shoulderText+"."+shoulderSelect;
 		jQuery("#shoulder").val(makeUpVal);
 	})
@@ -3527,11 +3557,18 @@ function measuringSetting(){
 	var reachRightText="";
 	var reachRightSelect="";
 	jQuery("#reachRightTe").on('input', function(){
+		var makeUpVal = null;
 		reachRightText = jQuery("#reachRightTe").val();
-		var makeUpVal = reachRightText+".0";
+		var reachRightSe = jQuery("#reachRightSe").val();
+		if(isNotEmpty(reachRightSe)){
+			makeUpVal = reachRightText+"."+reachRightSe;
+		}else{
+			makeUpVal = reachRightText+".0";
+		}
 		jQuery("#reachRight").val(makeUpVal);
 	})
 	jQuery("#reachRightSe").change(function(){
+		reachRightText = jQuery("#reachRightTe").val();
 		reachRightSelect = jQuery("#reachRightSe").val();
 		var makeUpVal = reachRightText+"."+reachRightSelect;
 		jQuery("#reachRight").val(makeUpVal);
@@ -3540,12 +3577,19 @@ function measuringSetting(){
 	var reachLeftText="";
 	var reachLeftSelect="";
 	jQuery("#reachLeftTe").on('input', function(){
+		var makeUpVal = null;
 		reachLeftText = jQuery("#reachLeftTe").val();
-		var makeUpVal = reachLeftText+".0";
+		var reachLeftSe = jQuery("#reachLeftSe").val();
+		if(isNotEmpty(reachLeftSe)){
+			makeUpVal = reachLeftText+"."+reachLeftSe;
+		}else{
+			makeUpVal = reachLeftText+".0";
+		}
 		jQuery("#reachLeft").val(makeUpVal);
 	})
 	jQuery("#reachLeftSe").change(function(){
 		reachLeftSelect = jQuery("#reachLeftSe").val();
+		reachLeftText = jQuery("#reachLeftTe").val();
 		var makeUpVal = reachLeftText+"."+reachLeftSelect;
 		jQuery("#reachLeft").val(makeUpVal);
 	})
@@ -3553,11 +3597,18 @@ function measuringSetting(){
 	var outBustText="";
 	var outBustSelect="";
 	jQuery("#outBustTe").on('input', function(){
+		var makeUpVal = null;
 		outBustText = jQuery("#outBustTe").val();
-		var makeUpVal = outBustText+".0";
+		var outBustSe = jQuery("#outBustSe").val();
+		if(isNotEmpty(outBustSe)){
+			makeUpVal = outBustText+"."+outBustSe;
+		}else{
+			makeUpVal = outBustText+".0";
+		}
 		jQuery("#outBust").val(makeUpVal);
 	})
 	jQuery("#outBustSe").change(function(){
+		outBustText = jQuery("#outBustTe").val();
 		outBustSelect = jQuery("#outBustSe").val();
 		var makeUpVal = outBustText+"."+outBustSelect;
 		jQuery("#outBust").val(makeUpVal);
@@ -3566,12 +3617,19 @@ function measuringSetting(){
 	var bustText="";
 	var bustSelect="";
 	jQuery("#bustTe").on('input', function(){
+		var makeUpVal = null;
 		bustText = jQuery("#bustTe").val();
-		var makeUpVal = bustText+".0";
+		var bustSe = jQuery("#bustSe").val();
+		if(isNotEmpty(bustSe)){
+			makeUpVal = bustText+"."+bustSe;
+		}else{
+			makeUpVal = bustText+".0";
+		}
 		jQuery("#bust").val(makeUpVal);
 	})
 	jQuery("#bustSe").change(function(){
 		bustSelect = jQuery("#bustSe").val();
+		bustText = jQuery("#bustTe").val();
 		var makeUpVal = bustText+"."+bustSelect;
 		jQuery("#bust").val(makeUpVal);
 	})
@@ -3579,11 +3637,18 @@ function measuringSetting(){
 	var jacketWaistText="";
 	var jacketWaistSelect="";
 	jQuery("#jacketWaistTe").on('input', function(){
+		var makeUpVal = null;
 		jacketWaistText = jQuery("#jacketWaistTe").val();
-		var makeUpVal = jacketWaistText+".0";
+		var jacketWaistSe = jQuery("#jacketWaistSe").val();
+		if(isNotEmpty(jacketWaistSe)){
+			makeUpVal = jacketWaistText+"."+jacketWaistSe;
+		}else{
+			makeUpVal = jacketWaistText+".0";
+		}
 		jQuery("#jacketWaist").val(makeUpVal);
 	})
 	jQuery("#jacketWaistSe").change(function(){
+		jacketWaistText = jQuery("#jacketWaistTe").val();
 		jacketWaistSelect = jQuery("#jacketWaistSe").val();
 		var makeUpVal = jacketWaistText+"."+jacketWaistSelect;
 		jQuery("#jacketWaist").val(makeUpVal);
@@ -3592,11 +3657,18 @@ function measuringSetting(){
 	var pantsWaistText="";
 	var pantsWaistSelect="";
 	jQuery("#pantsWaistTe").on('input', function(){
+		var makeUpVal = null;
 		pantsWaistText = jQuery("#pantsWaistTe").val();
-		var makeUpVal = pantsWaistText+".0";
+		var pantsWaistSe = jQuery("#pantsWaistSe").val();
+		if(isNotEmpty(pantsWaistSe)){
+			makeUpVal = pantsWaistText+"."+pantsWaistSe;
+		}else{
+			makeUpVal = pantsWaistText+".0";
+		}
 		jQuery("#pantsWaist").val(makeUpVal);
 	})
 	jQuery("#pantsWaistSe").change(function(){
+		pantsWaistText = jQuery("#pantsWaistTe").val();
 		pantsWaistSelect = jQuery("#pantsWaistSe").val();
 		var makeUpVal = pantsWaistText+"."+pantsWaistSelect;
 		jQuery("#pantsWaist").val(makeUpVal);
@@ -3605,12 +3677,19 @@ function measuringSetting(){
 	var hipText="";
 	var hipSelect="";
 	jQuery("#hipTe").on('input', function(){
+		var makeUpVal = null;
 		hipText = jQuery("#hipTe").val();
-		var makeUpVal = hipText+".0";
+		var hipSe = jQuery("#hipSe").val();
+		if(isNotEmpty(hipSe)){
+			makeUpVal = hipText+"."+hipSe;
+		}else{
+			makeUpVal = hipText+".0";
+		}
 		jQuery("#hip").val(makeUpVal);
 	})
 	jQuery("#hipSe").change(function(){
 		hipSelect = jQuery("#hipSe").val();
+		hipText = jQuery("#hipTe").val();
 		var makeUpVal = hipText+"."+hipSelect;
 		jQuery("#hip").val(makeUpVal);
 	})
@@ -3618,12 +3697,19 @@ function measuringSetting(){
 	var spanRightText="";
 	var spanRightSelect="";
 	jQuery("#spanRightTe").on('input', function(){
+		var makeUpVal = null;
 		spanRightText = jQuery("#spanRightTe").val();
-		var makeUpVal = spanRightText+".0";
+		var spanRightSe = jQuery("#spanRightSe").val();
+		if(isNotEmpty(spanRightSe)){
+			makeUpVal = spanRightText+"."+spanRightSe;
+		}else{
+			makeUpVal = spanRightText+".0";
+		}
 		jQuery("#spanRight").val(makeUpVal);
 	})
 	jQuery("#spanRightSe").change(function(){
 		spanRightSelect = jQuery("#spanRightSe").val();
+		spanRightText = jQuery("#spanRightTe").val();
 		var makeUpVal = spanRightText+"."+spanRightSelect;
 		jQuery("#spanRight").val(makeUpVal);
 	})
@@ -3631,12 +3717,19 @@ function measuringSetting(){
 	var spanLeftText="";
 	var spanLeftSelect="";
 	jQuery("#spanLeftTe").on('input', function(){
+		var makeUpVal = null;
 		spanLeftText = jQuery("#spanLeftTe").val();
-		var makeUpVal = spanLeftText+".0";
+		var spanLeftSe = jQuery("#spanLeftSe").val();
+		if(isNotEmpty(spanLeftSe)){
+			makeUpVal = spanLeftText+"."+spanLeftSe;
+		}else{
+			makeUpVal = spanLeftText+".0";
+		}
 		jQuery("#spanLeft").val(makeUpVal);
 	})
 	jQuery("#spanLeftSe").change(function(){
 		spanLeftSelect = jQuery("#spanLeftSe").val();
+		spanLeftText = jQuery("#spanLeftTe").val();
 		var makeUpVal = spanLeftText+"."+spanLeftSelect;
 		jQuery("#spanLeft").val(makeUpVal);
 	})
@@ -3644,11 +3737,18 @@ function measuringSetting(){
 	var calfRightText="";
 	var calfRightSelect="";
 	jQuery("#calfRightTe").on('input', function(){
+		var makeUpVal = null;
+		var calfRightSe = jQuery("#calfRightSe").val();
 		calfRightText = jQuery("#calfRightTe").val();
-		var makeUpVal = calfRightText+".0";
+		if(isNotEmpty(calfRightSe)){
+			makeUpVal = calfRightText+"."+calfRightSe;
+		}else{
+			makeUpVal = calfRightText+".0";
+		}
 		jQuery("#calfRight").val(makeUpVal);
 	})
 	jQuery("#calfRightSe").change(function(){
+		calfRightText = jQuery("#calfRightTe").val();
 		calfRightSelect = jQuery("#calfRightSe").val();
 		var makeUpVal = calfRightText+"."+calfRightSelect;
 		jQuery("#calfRight").val(makeUpVal);
@@ -3657,11 +3757,18 @@ function measuringSetting(){
 	var calfLeftText="";
 	var calfLeftSelect="";
 	jQuery("#calfLeftTe").on('input', function(){
+		var makeUpVal = null;
 		calfLeftText = jQuery("#calfLeftTe").val();
-		var makeUpVal = calfLeftText+".0";
+		var calfLeftSe = jQuery("#calfLeftSe").val();
+		if(isNotEmpty(calfLeftSe)){
+			makeUpVal = calfLeftText+"."+calfLeftSe;
+		}else{
+			makeUpVal = calfLeftText+".0";
+		}
 		jQuery("#calfLeft").val(makeUpVal);
 	})
 	jQuery("#calfLeftSe").change(function(){
+		calfLeftText = jQuery("#calfLeftTe").val();
 		calfLeftSelect = jQuery("#calfLeftSe").val();
 		var makeUpVal = calfLeftText+"."+calfLeftSelect;
 		jQuery("#calfLeft").val(makeUpVal);
@@ -3670,11 +3777,18 @@ function measuringSetting(){
 	var neckText="";
 	var neckSelect="";
 	jQuery("#neckTe").on('input', function(){
+		var makeUpVal = null;
 		neckText = jQuery("#neckTe").val();
-		var makeUpVal = neckText+".0";
+		var neckSe = jQuery("#neckSe").val();
+		if(isNotEmpty(neckSe)){
+			makeUpVal = neckText+"."+neckSe;
+		}else{
+			makeUpVal = neckText+".0";
+		}
 		jQuery("#neck").val(makeUpVal);
 	})
 	jQuery("#neckSe").change(function(){
+		neckText = jQuery("#neckTe").val();
 		neckSelect = jQuery("#neckSe").val();
 		var makeUpVal = neckText+"."+neckSelect;
 		jQuery("#neck").val(makeUpVal);
@@ -3767,7 +3881,8 @@ function stockCheck(){
 	var productFabricNo = jQuery("#productFabricNo").val();
 	jQuery("div.error-message-list").hide();
 	//注文のTSCステータス
-	var orderStatus = "${order.tscStatus}";
+	//var orderStatus = "${order.tscStatus}";
+	var orderStatus = jQuery("#orderTscStatus").val();
 	//戻るの場合、orderFormのTSCステータス
 	var orderFormStatus = "${orderForm.status}";
 	//T0 ：一時保存、T1 ：取り置き、""：ステータス無し

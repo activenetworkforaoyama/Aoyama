@@ -865,8 +865,6 @@ function initOptionJacketStandard() {
 //--------------------------------------------
 // ラペルデザイン変更時
 function changeLapelDesign() {
-	// ステッチ箇所変更の制御
-	ctrlStitchModify();
 	// AMF色指定の有効/無効を制御
 	ctrlAmfColor();
 
@@ -987,10 +985,7 @@ function ctrlStitchModify() {
 	// 選択中のJacketモデルを取得
 	var jacketModel = jQuery('#jacketModel').val();
 
-	// 選択中のラペルデザインを取得
-	var selectedLapelDesign = jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').val();
-
-	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
+	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
 		jQuery('input[id^="stitchModifyPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -1002,9 +997,9 @@ function ctrlStitchModify() {
 	var tmpStitchModifyPlace = null;
 	var stitchModifyDef = null;
 	var tmpStitchModify = null;
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		// 要素取得
 		tmpStitchModify = jQuery('#stitchModifyPlace_'+tmpStitchModifyPlace);
 
@@ -1061,7 +1056,7 @@ function ctrlDStitchModify() {
 	// 選択中のラペルデザインを取得
 	var selectedLapelDesign = jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').val();
 
-	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
+	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
 		jQuery('input[id^="dStitchModifyPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -1074,9 +1069,9 @@ function ctrlDStitchModify() {
 	var stitchModifyDef = null;
 	var tmpStitchModify = null;
 	var stichModifyChecked = false;
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		// 要素取得
 		tmpStitchModify = jQuery('#dStitchModifyPlace_'+tmpStitchModifyPlace);
 		
@@ -1141,9 +1136,9 @@ function ctrlDStitchModifyPlace() {
 	var tmpStitchModify = null;
 	var stichModifyChecked = false;
 
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#stitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
@@ -1230,7 +1225,7 @@ function ctrlAmfColor() {
 	// 選択中のラペルデザインを取得
 	var selectedLapelDesign = jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').val();
 
-	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
+	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
 		jQuery('input[id^="amfColorPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -1243,9 +1238,9 @@ function ctrlAmfColor() {
 	var stitchModifyDef = null;
 	var tmpAmfColorPlace = null;
 	var stichModifyChecked = false;
-	for (tmpAmfColorPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpAmfColorPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpAmfColorPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpAmfColorPlace];
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#stitchModifyPlace_'+tmpAmfColorPlace).prop("checked");
 		// 要素取得

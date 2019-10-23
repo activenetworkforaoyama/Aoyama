@@ -153,6 +153,17 @@ function initOptionPants2Tuxedo() {
 			});
 		}
 
+		//AY01の場合、ベルトループ仕様とピンループの制御。
+		if (pantsModel == "AY01") {
+			jQuery('#tp2_beltLoop_id1').prop('disabled', true);
+			jQuery('#tp2_beltLoop_id2').prop('disabled', false);
+			jQuery('#tp2_beltLoop_id2').prop('checked', true);
+			
+			jQuery('#tp2_pinLoop_id1').prop('disabled', true);
+			jQuery('#tp2_pinLoop_id2').prop('disabled', false);
+			jQuery('#tp2_pinLoop_id2').prop('checked', true);
+		}
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpTp2PantsModel != '') && pantsModel != tmpTp2PantsModel) {
 //		    appendAlert('tp2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
@@ -768,7 +779,7 @@ function tp2ChangedBeltLoop() {
 	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
 	if (selectedBeltLoop == '0000701') {
 		if (jQuery('input[name="tp2_adjuster"]:checked').val() == '0000603') {
-			jQuery('#tp2_pinLoop_id2').prop('checked', 'true');
+			jQuery('#tp2_pinLoop_id1').prop('checked', 'true');
 		}
 	}	
 
@@ -844,27 +855,48 @@ jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]').change(function(ind
 
 	var oBLoopElemY = jQuery('#tp2_beltLoop_id1');
 	var oBLoopElemN = jQuery('#tp2_beltLoop_id2');
-
+	
 	var oPLoopElemY = jQuery('#tp2_pinLoop_id1');
 	var oPLoopElemN = jQuery('#tp2_pinLoop_id2');
 	
 	switch(selected) {
-		case "0000601"                : oBLoopElemY.prop("checked", true); break;
+		case "0000601": oBLoopElemY.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;
 		case "0000603": oBLoopElemN.prop("checked", true); break;
-		case "0000604"        : oBLoopElemY.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
 		default:oBLoopElemN.prop("checked", true);
 	}
+
 	switch(selected) {
-		case "0000601"                : oPLoopElemY.prop("checked", true); break;
+		case "0000601": oPLoopElemY.prop("checked", true); break;
 		case "0000602": oPLoopElemN.prop("checked", true); break;
 		case "0000603": oPLoopElemN.prop("checked", true); break;
-		case "0000604"        : oPLoopElemY.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
 	}
 
+	//AY01の場合、ベルトループ仕様とピンループの制御。
+	var tp2PantsModel = jQuery('#tp2_pantsModel').val();
+	if (tp2PantsModel == "AY01") {
+		jQuery('#tp2_beltLoop_id1').prop('disabled', true);
+		jQuery('#tp2_beltLoop_id2').prop('disabled', false);
+		jQuery('#tp2_beltLoop_id2').prop('checked', true);
+		
+		jQuery('#tp2_pinLoop_id1').prop('disabled', true);
+		jQuery('#tp2_pinLoop_id2').prop('disabled', false);
+		jQuery('#tp2_pinLoop_id2').prop('checked', true);
+	}
+	
 	tp2ChangedBeltLoop();
 
+});
+jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').change(function(index, elem) {
+	var tp2BeltLoop = jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]:checked').val();
+	if (tp2BeltLoop == "0000701") {
+		jQuery('#tp2_pinLoop_id1').prop('disabled', false);
+		jQuery('#tp2_pinLoop_id1').prop('checked', true);
+		jQuery('#tp2_pinLoop_id2').prop('disabled', false);
+	}
 });
 jQuery('#tp2_adjuster_id1').change();
 

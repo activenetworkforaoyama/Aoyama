@@ -1277,7 +1277,7 @@ public class CoJakcetHelper {
 			optionJacketWashableInfo.setWjCoinPkt(orderJK.getJkShinobiPktCd());
 			optionJacketWashableInfo.setWjSleeveSpec(orderJK.getJkSleeveTypeCd());
 			optionJacketWashableInfo.setWjManica(orderJK.getJkManicaCd());
-			optionJacketWashableInfo.setWjSleeveBtnType(orderJK.getJkSleeveBtnType());
+			optionJacketWashableInfo.setWjSleeveBtnType(orderJK.getJkSleeveBtnCd());
 			optionJacketWashableInfo.setWjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
 			optionJacketWashableInfo.setWjCuffSpec(orderJK.getJkCuffCd());
 			optionJacketWashableInfo.setWjInsidePktChange(orderJK.getJkInnerPktType());

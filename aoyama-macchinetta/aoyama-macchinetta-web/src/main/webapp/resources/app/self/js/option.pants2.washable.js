@@ -38,9 +38,9 @@ function initOptionPants2Washable() {
 		// デフォルトを選択
 		tackElem.val(tackList[pantsModel].defaultValue);
 
-		// フロント仕様設定
-		var sFrontSpec = defaultFrontSpec[pantsModel];
-		jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').val([sFrontSpec]);
+//		// フロント仕様設定
+//		var sFrontSpec = defaultFrontSpec[pantsModel];
+//		jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').val([sFrontSpec]);
 
 		// パンチェリーナ特殊制御
 		wp2PancherinaSpecialController();
@@ -103,7 +103,7 @@ function initOptionPants2Washable() {
 		// モデルに基づくデフォルトの忍びポケット
 		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
 		// デフォルトを選択
-		jQuery('input[name=""coOptionPants2WashableInfo.wp2SinobiPkt""]').val([modelSinobiPkt]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]').val([modelSinobiPkt]);
 
 		// モデルに基づくデフォルトのコインポケット
 		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
@@ -151,6 +151,17 @@ function initOptionPants2Washable() {
 		// AMF色指定の有効/無効を制御する
 		ctrlWp2AmfColor();
 
+		//AY01の場合、ベルトループ仕様とピンループの制御。
+		if (pantsModel == "AY01") {
+			jQuery('#wp2_beltLoop_id1').prop('disabled', true);
+			jQuery('#wp2_beltLoop_id2').prop('disabled', false);
+			jQuery('#wp2_beltLoop_id2').prop('checked', true);
+			
+			jQuery('#wp2_pinLoop_id1').prop('disabled', true);
+			jQuery('#wp2_pinLoop_id2').prop('disabled', false);
+			jQuery('#wp2_pinLoop_id2').prop('checked', true);
+		}
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpWp2PantsModel != '') && pantsModel != tmpWp2PantsModel) {
 //		    appendAlert('wp2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
@@ -775,7 +786,7 @@ function wp2ChangedBeltLoop() {
 	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に無しに設定する
 	if (selectedBeltLoop == '0000701') {
 		if (jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]:checked').val() == '0000603') {
-			jQuery('#wp2_pinLoop_id2').prop('checked', 'true');
+			jQuery('#wp2_pinLoop_id1').prop('checked', 'true');
 		}
 	}	
 
@@ -810,7 +821,7 @@ function wp2PinLoopSpecialController() {
 	} else {
 		jQuery('input[id="wp2_pinLoop_id1"]').prop("disabled", false);
 		jQuery('input[id="wp2_pinLoop_id2"]').prop("disabled", false);
-		jQuery(':radio[name="coOptionPants2WashableInfo.wp2PinLoop"]').prop('checked', true);
+		//jQuery(':radio[name="coOptionPants2WashableInfo.wp2PinLoop"]').prop('checked', true);
 	}
 
 //	// 処理後のピンループ
@@ -965,7 +976,7 @@ function ctrlWp2DStitchPlace() {
 
 	// 選択中のPantsモデルを取得
 	var pantsModel = jQuery('#wp2_pantsModel').val();
-	if (pantsModel == '選択') {
+	if (pantsModel == '' || pantsModel == null) {
 		// 未選択時は何もしない
 		return;
 	}
@@ -1049,27 +1060,48 @@ jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]').change(function(i
 
 	var oBLoopElemY = jQuery('#wp2_beltLoop_id1');
 	var oBLoopElemN = jQuery('#wp2_beltLoop_id2');
-
+	
 	var oPLoopElemY = jQuery('#wp2_pinLoop_id1');
 	var oPLoopElemN = jQuery('#wp2_pinLoop_id2');
 	
 	switch(selected) {
-		case "0000601"                : oBLoopElemY.prop("checked", true); break;
+		case "0000601": oBLoopElemY.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;
 		case "0000603": oBLoopElemN.prop("checked", true); break;
-		case "0000604"        : oBLoopElemY.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
 		default:oBLoopElemN.prop("checked", true);
 	}
+	
 	switch(selected) {
-		case "0000601"                : oPLoopElemY.prop("checked", true); break;
+		case "0000601": oPLoopElemY.prop("checked", true); break;
 		case "0000602": oPLoopElemN.prop("checked", true); break;
 		case "0000603": oPLoopElemN.prop("checked", true); break;
-		case "0000604"        : oPLoopElemY.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
+	}
+	
+	//AY01の場合、ベルトループ仕様とピンループの制御。
+	var wp2PantsModel = jQuery('#wp2_pantsModel').val();
+	if (wp2PantsModel == "AY01") {
+		jQuery('#wp2_beltLoop_id1').prop('disabled', true);
+		jQuery('#wp2_beltLoop_id2').prop('disabled', false);
+		jQuery('#wp2_beltLoop_id2').prop('checked', true);
+		
+		jQuery('#wp2_pinLoop_id1').prop('disabled', true);
+		jQuery('#wp2_pinLoop_id2').prop('disabled', false);
+		jQuery('#wp2_pinLoop_id2').prop('checked', true);
 	}
 
 	wp2ChangedBeltLoop();
 
+});
+jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').change(function(index, elem) {
+	var wp2BeltLoop = jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]:checked').val();
+	if (wp2BeltLoop == "0000701") {
+		jQuery('#wp2_pinLoop_id1').prop('disabled', false);
+		jQuery('#wp2_pinLoop_id1').prop('checked', true);
+		jQuery('#wp2_pinLoop_id2').prop('disabled', false);
+	}
 });
 jQuery('#wp2_adjuster_id1').change();
 

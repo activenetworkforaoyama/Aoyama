@@ -71,7 +71,10 @@ public class CoPants1Helper {
 					messages.add("E033", "PANTS ベルトループ");
 					pantsFlag = true;
 				}
-				if (BaseCheckUtil.isEmpty(opBeltLoopPlace7) && "NZ01".equals(opPantsModel)) {
+				if ((BaseCheckUtil.isEmpty(opBeltLoopPlace1) && BaseCheckUtil.isEmpty(opBeltLoopPlace2)
+						&& BaseCheckUtil.isEmpty(opBeltLoopPlace3) && BaseCheckUtil.isEmpty(opBeltLoopPlace4)
+						&& BaseCheckUtil.isEmpty(opBeltLoopPlace5) && BaseCheckUtil.isEmpty(opBeltLoopPlace6)
+						&& BaseCheckUtil.isEmpty(opBeltLoopPlace7) && "NZ01".equals(opPantsModel))) {
 					messages.add("E033", "PANTS ベルトループ");
 					pantsFlag = true;
 				}
@@ -820,7 +823,11 @@ public class CoPants1Helper {
 				}
 				
 				if("".equals(orderPrice)) {
-					String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					String subOptionBranchCode = null;
+					int length = splicingCodeForFindUniquePrice.length();
+					if(length >= 14) {
+						subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					}
 					String opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
 					if("00018".equals(subOptionBranchCode) && !"0001702".equals(opHemUp) && !"0001703".equals(opHemUp)) {
 						orderPrice = "0";
@@ -950,7 +957,11 @@ public class CoPants1Helper {
 				
 				
 				if("".equals(orderPrice)) {
-					String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					String subOptionBranchCode = null;
+					int length = splicingCodeForFindUniquePrice.length();
+					if(length >= 14) {
+						subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					}
 					String tpHemUp = orderCoForm.getCoOptionPantsTuxedoInfo().getTpHemUp();
 					if("00018".equals(subOptionBranchCode) && !"0001702".equals(tpHemUp) && !"0001703".equals(tpHemUp)) {
 						orderPrice = "0";
@@ -1152,7 +1163,11 @@ public class CoPants1Helper {
 				}
 				
 				if("".equals(orderPrice)) {
-					String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					String subOptionBranchCode = null;
+					int length = splicingCodeForFindUniquePrice.length();
+					if(length >= 14) {
+						subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+					}
 					String wpHemUp = orderCoForm.getCoOptionPantsWashableInfo().getWpHemUp();
 					if("00018".equals(subOptionBranchCode) && !"0001702".equals(wpHemUp) && !"0001703".equals(wpHemUp)) {
 						orderPrice = "0";
@@ -1273,7 +1288,11 @@ public class CoPants1Helper {
 				}
 				if (hasIdvalueName == true) {
 				    if("".equals(orderPrice)) {
-				    	String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+				    	String subOptionBranchCode = null;
+						int length = splicingCodeForFindUniquePrice.length();
+						if(length >= 14) {
+							subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+						}
 						if("00018".equals(subOptionBranchCode) && !"0001702".equals(valueHemUpId) && !"0001703".equals(valueHemUpId)) {
 							orderPrice = "0";
 						}
@@ -1393,7 +1412,11 @@ public class CoPants1Helper {
 
 				if (hasIdvalueName == true) {
 					if("".equals(orderPrice)) {
-						String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+						String subOptionBranchCode = null;
+						int length = splicingCodeForFindUniquePrice.length();
+						if(length >= 14) {
+							subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+						}
 						if("00018".equals(subOptionBranchCode) && !"0001702".equals(valueHemUpId) && !"0001703".equals(valueHemUpId)) {
 							orderPrice = "0";
 						}
@@ -1514,7 +1537,11 @@ public class CoPants1Helper {
 
 				if (hasIdvalueName == true) {
 					if("".equals(orderPrice)) {
-						String subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+						String subOptionBranchCode = null;
+						int length = splicingCodeForFindUniquePrice.length();
+						if(length >= 14) {
+							subOptionBranchCode = splicingCodeForFindUniquePrice.substring(8, 13);
+						}
 						if("00018".equals(subOptionBranchCode) && !"0001702".equals(valueHemUpId) && !"0001703".equals(valueHemUpId)) {
 							orderPrice = "0";
 						}

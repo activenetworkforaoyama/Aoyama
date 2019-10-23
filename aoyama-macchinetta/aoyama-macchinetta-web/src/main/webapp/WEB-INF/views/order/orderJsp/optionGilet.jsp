@@ -1253,7 +1253,7 @@ jQuery(function() {
 //						jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor3'][value='" + ogAmfAllColor[i] + "']").prop("checked", true);
 					}
 					
-					for(var j=0;j<ogAmfAllColorStr.length;i++){
+					for(var j=0;j<ogAmfAllColorStr.length;j++){
 						if(ogAmfColorPlaceStr[i] == "0000901"){
 // 							jQuery("#og_amfColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletStandardInfo.ogAmfColor1'][value='" + ogAmfAllColor[j] + "']").prop("checked", true);
@@ -1361,7 +1361,7 @@ jQuery(function() {
 // 						jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor10'][value='" + ogByAllColor[i] + "']").prop("checked", true);
 					}
 					
-					for(var j=0;j<ogByAllColorStr.length;i++){
+					for(var j=0;j<ogByAllColorStr.length;j++){
 						if(ogByColorPlaceStr[i] == "0001501"){
 // 							jQuery("#og_byColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletStandardInfo.ogByColor1'][value='" + ogByAllColor[j] + "']").prop("checked", true);
@@ -1426,7 +1426,7 @@ jQuery(function() {
 // 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor6'][value='" + tgAllBhColor[i] + "']").prop("checked", true);
 					}
 					
-					for(var j=0;j<tgAllBhColorStr.length;i++){
+					for(var j=0;j<tgAllBhColorStr.length;j++){
 						if(tgBhColorPlaceStr[i] == "0001201"){
 // 							jQuery("#tg_bhColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgBhColor1'][value='" + tgAllBhColor[j] + "']").prop("checked", true);
@@ -1490,7 +1490,7 @@ jQuery(function() {
 // 						jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor10'][value='" + tgAllByColor[i] + "']").prop("checked", true);
 					}
 					
-					for(var j=0;j<tgAllByColorStr.length;i++){
+					for(var j=0;j<tgAllByColorStr.length;j++){
 						if(tgByColorPlaceStr[i] == "0001501"){
 // 							jQuery("#tg_byColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletTuxedoInfo.tgByColor1'][value='" + tgAllByColor[j] + "']").prop("checked", true);
@@ -1579,7 +1579,7 @@ jQuery(function() {
 // 						jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor3'][value='" + wgAmfAllColor[i] + "']").prop("checked", true);
 					}
 
-					for(var j=0;j<wgAmfAllColorStr.length;i++){
+					for(var j=0;j<wgAmfAllColorStr.length;j++){
 						if(wgAmfColorPlaceStr[i] == "0000901"){
 // 							jQuery("#wg_amfColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletWashableInfo.wgAmfColor1'][value='" + wgAmfAllColor[j] + "']").prop("checked", true);
@@ -1686,7 +1686,7 @@ jQuery(function() {
 // 						jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor10'][value='" + wgByAllColor[i] + "']").prop("checked", true);
 					}
 
-					for(var j=0;j<wgAllByColorStr.length;i++){
+					for(var j=0;j<wgAllByColorStr.length;j++){
 						if(wgByColorPlaceStr[i] == "0001501"){
 // 							jQuery("#wg_byColorPlace_1").prop("checked",true);
 							jQuery(":radio[name='coOptionGiletWashableInfo.wgByColor1'][value='" + wgAllByColorStr[j] + "']").prop("checked", true);

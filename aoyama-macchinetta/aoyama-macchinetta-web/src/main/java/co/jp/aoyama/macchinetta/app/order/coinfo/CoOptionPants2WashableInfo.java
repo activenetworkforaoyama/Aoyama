@@ -3,45 +3,59 @@ package co.jp.aoyama.macchinetta.app.order.coinfo;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaWpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaWpKneeBackItem;
+
 public class CoOptionPants2WashableInfo implements Serializable{
 	private static final long serialVersionUID = -4505963757793347479L;
 	
 	//PANTSモデル
+	@NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のモデルを入力して下さい。")
 	private String wp2PantsModel;
 	
 	private Map<String,String> wp2PantsModelMap;
 	
 	//タック
+	@NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のタックを入力して下さい。")
     private String wp2Tack;
     
     private Map<String,String> wp2TackMap;
     
     //膝裏
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の膝裏を入力して下さい。")
     private String wp2KneeBack;
     
     private Map<String,String> wp2KneeBackMap;
     
     //膝裏素材
+    @NotBlank(groups = { Pt2WaWpKneeBackItem.class }, message = "PANTS（2本目）の膝裏素材を入力して下さい。")
     private String wp2KneeBackMate;
 
     private Map<String,String> wp2KneeBackMateMap;
     
     //フロント仕様
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のフロント仕様を入力して下さい。")
   	private String wp2FrontSpec;
       
     private Map<String,String> wp2FrontSpecMap;
     
     //パンチェリーナ
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のパンチェリーナを入力して下さい。")
     private String wp2Pancherina;
     
     private Map<String,String> wp2PancherinaMap;
     
     //アジャスター仕様
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のアジャスター仕様を入力して下さい。")
     private String wp2Adjuster;
     
     private Map<String,String> wp2AdjusterMap;
     
     //ベルトループ
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のベルトループを入力して下さい。")
     private String wp2BeltLoop;
     
     private Map<String,String> wp2BeltLoopMap;
@@ -66,61 +80,73 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2BeltLoopPlaceMap;
     
     //ピンループ
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のピンループを入力して下さい。")
     private String wp2PinLoop;
     
     private Map<String,String> wp2PinLoopMap;
     
     //脇ポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の脇ポケットを入力して下さい。")
     private String wp2SidePkt;
     
     private Map<String,String> wp2SidePktMap;
     
     //忍びポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の忍びポケットを入力して下さい。")
     private String wp2SinobiPkt;
     
     private Map<String,String> wp2SinobiPktMap;
     
     //コインポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のコインポケットを入力して下さい。")
     private String wp2CoinPkt;
     
     private Map<String,String> wp2CoinPktMap;
     
     //フラップ付コインポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のフラップ付コインポケットを入力して下さい。")
     private String wp2FlapCoinPkt;
     
     private Map<String,String> wp2FlapCoinPktMap;
     
     //上前ピスポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の上前ピスポケットを入力して下さい。")
     private String wp2PisPktUf;
     
     private Map<String,String> wp2PisPktUfMap;
     
     //下前ピスポケット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の下前ピスポケットを入力して下さい。")
     private String wp2PisPktDf;
     
     private Map<String,String> wp2PisPktDfMap;
     
     //Vカット
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のVカットを入力して下さい。")
     private String wp2VCut;
     
     private Map<String,String> wp2VCutMap;
     
     //裾上げ
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の裾上げを入力して下さい。")
     private String wp2HemUp;
     
     private Map<String,String> wp2HemUpMap;
     
     //ダブル幅
+    @NotBlank(groups = { Pt2WaWpHemUpItem.class }, message = "PANTS（2本目）のダブル幅を入力して下さい。")
     private String wp2DoubleWide;
     
     private Map<String,String> wp2DoubleWideMap;
     
     //ステッチ種類
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のステッチ種類を入力して下さい。")
     private String wp2Stitch;
     
     private Map<String,String> wp2StitchMap;
     
     //ステッチ箇所変更
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のステッチ箇所変更を入力して下さい。")
     private String wp2StitchModify;
     
     private Map<String,String> wp2StitchModifyMap;
@@ -139,6 +165,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2StitchModifyPlaceMap;
     
     //ダブルステッチ
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のダブルステッチを入力して下さい。")
     private String wp2DStitch;
     
     private Map<String,String> wp2DStitchMap;
@@ -157,6 +184,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2DStitchPlaceMap;
     
     //AMF色指定
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のAMF色指定を入力して下さい。")
     private String wp2AmfColor;
     
     private Map<String,String> wp2AmfColorMap;
@@ -196,6 +224,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2AmfColorsMap;
     
     //ボタンホール色指定
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のボタンホール色指定を入力して下さい。")
     private String wp2BhColor;
     
     private Map<String,String> wp2BhColorMap;
@@ -235,6 +264,7 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2BhColorsMap;
     
     //ボタン付け糸指定
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のボタン付け糸指定を入力して下さい。")
     private String wp2ByColor;
     
     private Map<String,String> wp2ByColorMap;
@@ -274,29 +304,35 @@ public class CoOptionPants2WashableInfo implements Serializable{
     private Map<String,String> wp2ByColorsMap;
     
     //釦素材
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の釦素材を入力して下さい。")
     private String wp2Button;
     
     private Map<String,String> wp2ButtonMap;
     
     //釦素材品番
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の釦素材品番を入力して下さい。")
     private String wp2BtnMateStkNo;
     
     //サスペンダー釦
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のサスペンダー釦を入力して下さい。")
     private String wp2SuspenderBtn;
     
     private Map<String,String> wp2SuspenderBtnMap;
     
     //エイト（滑り止め）
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のエイト（滑り止め）を入力して下さい。")
     private String wp2Eight;
     
     private Map<String,String> wp2EightMap;
     
     //シック（股補強）
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）のシック（股補強）を入力して下さい。")
     private String wp2Thick;
     
     private Map<String,String> wp2ThickMap;
     
     //形状記憶
+    @NotBlank(groups = { Pt2WaItem.class }, message = "PANTS（2本目）の形状記憶を入力して下さい。")
     private String wp2ShapeMemory; 
     
     private Map<String,String> wp2ShapeMemoryMap;

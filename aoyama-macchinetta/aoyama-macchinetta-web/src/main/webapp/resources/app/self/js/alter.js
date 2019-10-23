@@ -37,8 +37,8 @@ function initAlter() {
 			if(typeof(labelVaUplCm)!="undefined"&&labelVaUplCm!=null&&sizeVal != ""){
 				var idRejQ = jQuery('#'+idRe);
 				var labelValUp = labelVaUplCm.replace('cm','');
-				var maxVal = keepFloatPrecision(parseFloat(max)+parseFloat(sizeVal));
-				var val = keepFloatPrecision(parseFloat(sizeVal)+parseFloat(elem.val()));
+				var maxVal = keepFloatPrecision(parseFloat(max)+parseFloat(sizeVal)).toFixed(1);
+				var val = keepFloatPrecision(parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
 				setFont(id);
 				//if(val<=maxVal){
 					jQuery("#"+idRe+"_html").html(val+"cm");
@@ -62,8 +62,8 @@ function initAlter() {
 				
 				var idRejQ = jQuery('#'+idRe);
 				var labelValDo = labelValDoCm.replace('cm','');
-				var minVal = (parseFloat(min)+parseFloat(sizeVal)).toFixed(1);
-				var val = (parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
+				var minVal = keepFloatPrecision(parseFloat(min)+parseFloat(sizeVal)).toFixed(1);
+				var val = keepFloatPrecision(parseFloat(sizeVal)+parseFloat(elem.val())).toFixed(1);
 				setFont(id);
 				//if(val>=minVal){			
 					jQuery("#"+idRe+"_html").html(val+"cm");

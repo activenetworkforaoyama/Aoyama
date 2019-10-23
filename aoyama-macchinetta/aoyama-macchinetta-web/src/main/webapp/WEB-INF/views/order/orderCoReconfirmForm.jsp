@@ -3046,7 +3046,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2EightMap[orderCoForm.coOptionPants2StandardInfo.op2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2Eight_appear">${standardFramePt2DisplayUpperPrice["op2_thick_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2Eight_appear">${standardFramePt2DisplayUpperPrice["op2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3055,7 +3055,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2StandardInfo.op2ThickMap[orderCoForm.coOptionPants2StandardInfo.op2Thick]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="op2Thick_appear">${standardFramePt2DisplayUpperPrice["op2_eight_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="op2Thick_appear">${standardFramePt2DisplayUpperPrice["op2_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3286,7 +3286,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2EightMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tp2Eight_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_thick_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="tp2Eight_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3295,7 +3295,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2TuxedoInfo.tp2ThickMap[orderCoForm.coOptionPants2TuxedoInfo.tp2Thick]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="tp2Thick_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_eight_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="tp2Thick_appear">${tuxedoFramePt2DisplayUpperPrice["tp2_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3573,7 +3573,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2EightMap[orderCoForm.coOptionPants2WashableInfo.wp2Eight]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2Eight_appear">${washableFramePt2DisplayUpperPrice["wp2_thick_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="wp2Eight_appear">${washableFramePt2DisplayUpperPrice["wp2_eight_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -3582,7 +3582,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2ThickMap[orderCoForm.coOptionPants2WashableInfo.wp2Thick]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2Thick_appear">${washableFramePt2DisplayUpperPrice["wp2_eight_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="wp2Thick_appear">${washableFramePt2DisplayUpperPrice["wp2_thick_id"]}</label></strong>
 							</div>
 						</div>
 						<div class="row">
@@ -4209,17 +4209,11 @@ select.hidedown {
 						<div class="col-12 col-md-2">
 							<strong><label class=" form-control-label-value" id="corCtVenthightCorrect"></label>cm</strong>
 						</div>
-						<div class="col-12 col-md-4">
-							<strong><label class=" form-control-label-value">${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}</label>cm</strong>
-						</div>
 						<div class="col-12 col-md-3 offset-md-3">
 							<label class=" form-control-label">ポケット位置</label>
 						</div>
 						<div class="col-12 col-md-2">
 							<strong><label class=" form-control-label-value" id="corCtPktposCorrect"></label>cm</strong>
-						</div>
-						<div class="col-12 col-md-4">
-							<strong><label class=" form-control-label-value">${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}</label>cm</strong>
 						</div>
 					</div>
 				</div>
@@ -5719,9 +5713,11 @@ function imageCheck(){
 			}
 			
 			//PANTS_Drop
-			if(!isEmpty(corPtDrop)){
-				appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
-				return false;
+			if(ptModel != 'RS01' && ptModel != 'JW21' && ptModel != 'AY01'){
+				if(!isEmpty(corPtDrop)){
+					appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+					return false;
+				}
 			}
 			else{
 				appendAlertDel('errormssage');
@@ -5775,9 +5771,11 @@ function imageCheck(){
 				}
 				
 				//2PANTS_Drop
-				if(!isEmpty(corPt2Drop)){
-					appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS体型'));
-					return false;
+				if(pt2Model != 'RS01' && pt2Model != 'JW21' && pt2Model != 'AY01'){
+					if(!isEmpty(corPt2Drop)){
+						appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS体型'));
+						return false;
+					}
 				}
 				else{
 					appendAlertDel('errormssage');
@@ -5831,9 +5829,11 @@ function imageCheck(){
 				}
 				
 				//2PANTS_Drop
-				if(!isEmpty(corPt2Drop)){
-					appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTS体型'));
-					return false;
+				if(pt2Model != 'RS01' && pt2Model != 'JW21' && pt2Model != 'AY01'){
+					if(!isEmpty(corPt2Drop)){
+						appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTS体型'));
+						return false;
+					}
 				}
 				else{
 					appendAlertDel('errormssage');
@@ -6024,9 +6024,11 @@ function imageCheck(){
 			}
 			
 			//PANTS_Drop
-			if(!isEmpty(corPtDrop)){
-				appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
-				return false;
+			if(ptModel != 'RS01' && ptModel != 'JW21' && ptModel != 'AY01'){
+				if(!isEmpty(corPtDrop)){
+					appendAlert('errormssage', getMsgByOneArg('msg114', 'PANTS体型'));
+					return false;
+				}
 			}
 			else{
 				appendAlertDel('errormssage');
@@ -6080,9 +6082,11 @@ function imageCheck(){
 				}
 				
 				//2PANTS_Drop
-				if(!isEmpty(corPt2Drop)){
-					appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS体型'));
-					return false;
+				if(pt2Model != 'RS01' && pt2Model != 'JW21' && pt2Model != 'AY01'){
+					if(!isEmpty(corPt2Drop)){
+						appendAlert('errormssage', getMsgByOneArg('msg114', '2PANTS体型'));
+						return false;
+					}
 				}
 				else{
 					appendAlertDel('errormssage');
@@ -6136,9 +6140,11 @@ function imageCheck(){
 				}
 				
 				//2PANTS_Drop
-				if(!isEmpty(corPt2Drop)){
-					appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTS体型'));
-					return false;
+				if(pt2Model != 'RS01' && pt2Model != 'JW21' && pt2Model != 'AY01'){
+					if(!isEmpty(corPt2Drop)){
+						appendAlert('errormssage', getMsgByOneArg('msg001', '2PANTS体型'));
+						return false;
+					}
 				}
 				else{
 					appendAlertDel('errormssage');

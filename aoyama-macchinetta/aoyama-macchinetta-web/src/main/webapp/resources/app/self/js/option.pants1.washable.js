@@ -193,6 +193,26 @@ function initOptionPants1Washable() {
 		// AMF色指定の有効/無効を制御する
 		ctrlWpAmfColor();
 		
+		//ステッチ箇所変更
+		jQuery('#wp_stitchModify_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]:checked').change();
+		
+		//ダブルステッチ
+		jQuery('#wp_dStitch_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]:checked').change();
+		
+		//AMF色指定
+		jQuery('#wp_amfColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpAmfColor"]:checked').change();
+		
+		//ボタンホール色指定
+		jQuery('#wp_bhColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpBhColor"]:checked').change();
+		
+		//ボタン付け糸指定
+		jQuery('#wp_byColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsWashableInfo.wpByColor"]:checked').change();
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpWpPantsModel != '' || tmpWpPantsModel != null ) && pantsModel != tmpWpPantsModel && modelFlag == 2) {
 //		    appendAlert('wp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
@@ -803,22 +823,10 @@ function wpChangedBeltLoop() {
 		//disabledFlg = true;
 	}
 
-	// ベルトループ項目の活性/非活性
-	/*jQuery('input[id^="wp_beltLoopPlace_"]').each(function() {
-		var tmpBeltLoopElem = jQuery(this);
-		tmpBeltLoopElem.prop("disabled", disabledFlg);
-		if (!disabledFlg) {
-			tmpBeltLoopElem.prop("checked", true);
-		}
-	});*/
-
-	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に有りに設定する
 	//0000701(有り)
 	if (selectedBeltLoop == '0000701') {
-		//0000603(サイドアジャスター小)
-		if (jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').val() == '0000603') {
-			jQuery('#wp_pinLoop_id1').prop('checked', 'true');
-		}
+		jQuery('#wp_pinLoop_id1').prop('checked', 'true');
+		jQuery('#wp_pinLoop_id1').change();
 	}
 	
 	// フラシループ設定
@@ -849,6 +857,7 @@ function wpPinLoopSpecialController() {
 		jQuery('input[id="wp_pinLoop_id1"]').prop("disabled", true);
 		jQuery('input[id="wp_pinLoop_id2"]').prop("disabled", false);
 		jQuery('input[id="wp_pinLoop_id2"]').prop("checked", true);
+		jQuery('input[id="wp_pinLoop_id2"]').change();
 	} else {
 		jQuery('input[id="wp_pinLoop_id1"]').prop("disabled", false);
 		jQuery('input[id="wp_pinLoop_id2"]').prop("disabled", false);
@@ -1194,6 +1203,8 @@ jQuery('#wp_coinPkt').change();
 
 // アジャスター仕様変更時
 jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').change(function(index, elem) {
+	// 選択中のPantsモデルを取得
+	var pantsModel = jQuery('#wp_pantsModel').val()
 	var selected = jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]:checked').val();
 
 	var oBLoopElemY = jQuery('#wp_beltLoop_id1');
@@ -1202,21 +1213,40 @@ jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').change(function(ind
 	var oPLoopElemY = jQuery('#wp_pinLoop_id1');
 	var oPLoopElemN = jQuery('#wp_pinLoop_id2');
 	
-	switch(selected) {
-		case "0000601"                : oBLoopElemY.prop("checked", true); break;// 0000601(無し)
+	if(pantsModel == 'AY01'){
+		switch(selected) {
+		case "0000601": oBLoopElemN.prop("checked", true); break;// 0000601(無し)
 		case "0000602": oBLoopElemN.prop("checked", true); break;// 0000602(サイドアジャスター大)
 		case "0000603": oBLoopElemN.prop("checked", true); break;// 0000603(サイドアジャスター小)
-		case "0000604"        : oBLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
+		case "0000604": oBLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
 		default:oBLoopElemN.prop("checked", true);
-	}
-	switch(selected) {
-		case "0000601"                : oPLoopElemY.prop("checked", true); break;// 0000601(無し)
+		}
+		switch(selected) {
+		case "0000601": oPLoopElemN.prop("checked", true); break;// 0000601(無し)
 		case "0000602": oPLoopElemN.prop("checked", true); break;// 0000602(サイドアジャスター大)
 		case "0000603": oPLoopElemN.prop("checked", true); break;// 0000603(サイドアジャスター小)
-		case "0000604"        : oPLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
+		case "0000604": oPLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
 		default:oPLoopElemN.prop("checked", true);
+		}
 	}
-
+	else {
+		switch(selected) {
+		case "0000601": oBLoopElemY.prop("checked", true); break;// 0000601(無し)
+		case "0000602": oBLoopElemN.prop("checked", true); break;// 0000602(サイドアジャスター大)
+		case "0000603": oBLoopElemN.prop("checked", true); break;// 0000603(サイドアジャスター小)
+		case "0000604": oBLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
+		default:oBLoopElemN.prop("checked", true);
+		}
+		switch(selected) {
+		case "0000601": oPLoopElemY.prop("checked", true); break;// 0000601(無し)
+		case "0000602": oPLoopElemN.prop("checked", true); break;// 0000602(サイドアジャスター大)
+		case "0000603": oPLoopElemN.prop("checked", true); break;// 0000603(サイドアジャスター小)
+		case "0000604": oPLoopElemY.prop("checked", true); break;// 0000604(アジャスター)
+		default:oPLoopElemN.prop("checked", true);
+		}
+	}
+	
+	jQuery('input[id^="wp_beltLoop_id"]:checked').change();
 	wpChangedBeltLoop();
 
 });

@@ -3651,9 +3651,8 @@ jQuery(function() {
 	    	jQuery("#ojBtnMatePtFlag").val("0");
 		}	
 	}
-	
-	
-	if(orderFlag == "orderLink" || orderFlag == "orderDivert"){
+
+	if((orderFlag == "orderLink" || orderFlag == "orderDivert") && pantsTwiceflag == '0'){
 		if(productCategory == "9000101"){
 			
 			var opBeltLoopPlace = "${orderCoForm.coOptionPantsStandardInfo.opBeltLoopPlace}";
@@ -4045,6 +4044,7 @@ jQuery(function() {
 				jQuery('input[id^="wp_byColorPlace_"]:checked').change();
 			}    
          }	
+		pantsTwiceflag = '1';
 	} 
 	jQuery("#pantsItemFlag").val("1");
 })	
@@ -4241,7 +4241,8 @@ function mateInit(){
 					 StkNoSelect.removeAttr("disabled");
 					 for (var key in result) {
 						 StkNoSelect.append(jQuery('<option />').val(key).text(result[key]));	
-					 }	
+					 }
+					 jQuery(StkNo).change();	
 				 }
 			 }
 		});
@@ -4269,7 +4270,7 @@ function getPrice(){
 	//PANTSの料金を表示
 	var pantsModel = "";
 	var priceUrl = "";
-	jQuery("#op_pantsModel,#op_tack,#tp_pantsModel,#tp_tack,#wp_pantsModel,#wp_tack").change(function(){
+	jQuery("#op_pantsModel,#tp_pantsModel,#wp_pantsModel").change(function(){
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "03";
@@ -4906,7 +4907,6 @@ function getAllPrice(subItemCode, optionPrice){
 }
 
 function  opSession(){
-
 	//コインポケット
 	jQuery("#op_coinPkt").val("${orderCoForm.coOptionPantsStandardInfo.opCoinPkt}");
 
@@ -5393,7 +5393,7 @@ function optionPants1ChangeModel(productCategory){
 		}
 	} 
 }
-jQuery("#op_pantsModel,#tp_pantsModel,#wp_pantsModel").change(function(){
+jQuery("#op_pantsModel,#tp_pantsModel,#wp_pantsModel,#op_tack,#tp_tack,#wp_tack").change(function(){
 	if("orderCo"==orderFlag){
 		jQuery("#pantsAdFlag").val("0");	
 	}else if("1"==jQuery("#pantsItemFlag").val()){

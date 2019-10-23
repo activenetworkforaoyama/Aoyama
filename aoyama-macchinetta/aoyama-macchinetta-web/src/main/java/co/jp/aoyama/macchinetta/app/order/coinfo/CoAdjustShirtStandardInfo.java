@@ -76,6 +76,7 @@ public class CoAdjustShirtStandardInfo implements Serializable {
 		// 背ダーツ詰め型サイズ
 		private String corStBackdartsPackSize;
 	    //背ダーツ詰め補正値
+		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの背ダーツ詰め補正値を入力して下さい。")
 		private String corStBackdartsPackCorrect;
 	    //背ダーツ詰めグロス
 		private String corStBackdartsPackGross;

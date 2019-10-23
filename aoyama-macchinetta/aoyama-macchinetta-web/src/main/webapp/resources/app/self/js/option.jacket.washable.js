@@ -750,8 +750,6 @@ function initOptionJacketWashable() {
 //--------------------------------------------
 //ラペルデザイン変更時
 function changeWjLapelDesign() {
-	// ステッチ箇所変更の制御
-	ctrlWjStitchModify();
 
 	var lapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').val();
 
@@ -870,7 +868,7 @@ function ctrlWjStitchModify() {
 	// 選択中のラペルデザインを取得
 	var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').val();
 
-	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
+	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
 		jQuery('input[id^="wj_stitchModifyPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -882,9 +880,9 @@ function ctrlWjStitchModify() {
 	var tmpStitchModifyPlace = null;
 	var stitchModifyDef = null;
 	var tmpStitchModify = null;
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		// 要素取得
 		tmpStitchModify = jQuery('#wj_stitchModifyPlace_'+tmpStitchModifyPlace);
 
@@ -939,7 +937,7 @@ function ctrlWjDStitchModify() {
 	// 選択中のラペルデザインを取得
 	var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').val();
 
-	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel][selectedLapelDesign]) {
+	if (!stitchModifyList[jacketModel] || !stitchModifyList[jacketModel]) {
 		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
 		jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -951,9 +949,9 @@ function ctrlWjDStitchModify() {
 	var tmpStitchModifyPlace = null;
 	var stitchModifyDef = null;
 	var tmpStitchModify = null;
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		// 要素取得
 		tmpStitchModify = jQuery('#wj_dStitchModifyPlace_'+tmpStitchModifyPlace);
 
@@ -1036,9 +1034,9 @@ function ctrlWjDStitchPlace() {
 	var tmpStitchModify = null;
 	var stichModifyChecked = false;
 
-	for (tmpStitchModifyPlace in stitchModifyList[jacketModel][selectedLapelDesign]) {
+	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
-		stitchModifyDef = stitchModifyList[jacketModel][selectedLapelDesign][tmpStitchModifyPlace];
+		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
 		
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#wj_stitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");

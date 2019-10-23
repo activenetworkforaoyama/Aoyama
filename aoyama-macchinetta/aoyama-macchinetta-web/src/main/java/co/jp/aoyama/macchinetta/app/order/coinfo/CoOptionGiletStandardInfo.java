@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlBackLiningMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStStitchItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStWaistPktSpecItem;
@@ -218,7 +219,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	private Map<String, String> ogBackLiningMateMap;
 	
 	// 背裏地素材品番
-	@NotBlank(groups = { GlStItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
+	@NotBlank(groups = { GlBackLiningMateItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String ogBackLiningMateStkNo;
 	
 	private String glBackClothRtPrice;

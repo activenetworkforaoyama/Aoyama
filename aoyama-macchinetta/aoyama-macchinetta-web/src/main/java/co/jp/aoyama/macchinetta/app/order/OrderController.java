@@ -270,7 +270,7 @@ public class OrderController {
 	@RequestMapping(value = "orderPoReconfirm")
 	public String toOrderPoReconfirm(HttpServletRequest request, OrderForm orderForm,  final BindingResult result,Model model) {
 		
-		orderHelper.extractedItem(orderForm, result,smartValidator);
+		orderHelper.extractedItem(orderForm, result,smartValidator,sessionContent);
 		
 		if (result.hasErrors()) {
 			String orderFlag = "orderBack";

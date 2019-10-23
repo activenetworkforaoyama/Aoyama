@@ -29,22 +29,46 @@ import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatAdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.CoatItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlBackLiningMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStStitchItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlStWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuBackLiningMateItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuFrontBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlTuWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaBackLiningMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaWaistPktSpecItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthDegignatePt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthDegignatePtAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthPt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthPtAdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStCuffBackMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkWaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2StItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2StOpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2StOpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2StOpStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2ThreeModelItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuTpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuTpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaWpHemUpItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2WaWpKneeBackItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtAdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpKneeBackItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtStOpStitchItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtThreeModelItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpKneeBackItem;
@@ -52,8 +76,14 @@ import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtWaWpKneeBackItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.RemainingClothItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StBreastPkSizeItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StBtnPosChgItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StCasualHemlineSizeItem;
 import co.jp.aoyama.macchinetta.app.order.OrderForm.EmbroideredItem;
 import co.jp.aoyama.macchinetta.app.order.OrderForm.ShippingDestinationItem;
+import co.jp.aoyama.macchinetta.app.order.OrderForm.ShopItem;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
@@ -13142,7 +13172,7 @@ public class OrderCoHelper {
 			wjStitchModifyPlaceList.add(wjStitchModifyPlace9);
 			wjStitchModifyPlaceList.removeAll(Collections.singleton(null));
 			// JACKET_ステッチ箇所変更_コード
-			if(wjStitchModifyPlaceList.isEmpty()) {
+			if(!wjStitchModifyPlaceList.isEmpty()) {
 				String wjStitchModifyPlaceCodeInDb = severalCodeInDb(wjStitchModifyPlaceList);
 				order.setJkStitchPlcCd(wjStitchModifyPlaceCodeInDb);
 			}
@@ -18003,7 +18033,7 @@ public class OrderCoHelper {
 				washableGlMaterialMap.put("wgInsideLiningMateStkNo",
 						wgInsideLiningMateName + "　　" + optionBranchDetailName);
 			}
-			if (wgFrontBtnMateName != null && wgFrontBtnMateStkNo.equals(optionBranchDetailCode)) {
+			if (wgFrontBtnMateStkNo != null && wgFrontBtnMateStkNo.equals(optionBranchDetailCode)) {
 				washableGlMaterialMap.put("wgFrontBtnMateStkNo", wgFrontBtnMateName + "　　" + optionBranchDetailName);
 			}
 		}
@@ -26704,7 +26734,7 @@ public class OrderCoHelper {
 	private void optionPants2DbToOrder(String productItem, String productCategory, OrderCoController orderCoController, Order order, OrderCoForm orderCoForm,
 			OrderListService orderListService, ModelService modelService, String orderFlag) {
 		Order orderPt = orderListService.findOrderPt2OptionByOrderId(order.getOrderId());
-		if(orderPt !=null ) {
+		if(orderPt !=null && !"".equals(orderPt.getPt2TackCd()) && null != orderPt.getPt2TackCd() && !"".equals(orderPt.getPt2KneeinnerTypeCd()) && null != orderPt.getPt2KneeinnerTypeCd()) {
 			this.pants2DefaultValueFromDb(orderCoForm, orderPt);
 		}else {
 			this.pants2DefaultValue(orderCoForm);
@@ -29140,7 +29170,7 @@ public class OrderCoHelper {
 		return yieldNum.divide(new BigDecimal("1000"));
 	}
 
-	public void extractedItem(OrderCoForm orderCoForm, BindingResult result, SmartValidator smartValidator) {
+	public void extractedItem(OrderCoForm orderCoForm, BindingResult result, SmartValidator smartValidator, SessionContent sessionContent) {
 		List<Class<?>> validationGroup = new ArrayList<Class<?>>();
 		// ITEM
 		String productItem = orderCoForm.getProductItem();
@@ -29154,9 +29184,16 @@ public class OrderCoHelper {
 		String productEmbroideryNecessity = orderCoForm.getProductEmbroideryNecessity();
 		// 出荷先
 		String custShippingDestination = orderCoForm.getCoCustomerMessageInfo().getCustShippingDestination();
-		
+		String authority = sessionContent.getAuthority();
+		if(!"02".equals(authority)) {
+			validationGroup.add(ShopItem.class);
+		}
 		// SUIT
 		if ("01".equals(productItem)) {
+			//PANTSのフラグ
+			int threePatternFlag = 0;
+			//2PANTSのフラグ
+			int threePatternFlag2 = 0;
 			validationGroup.add(Default.class);
 			// 刺繍入れが有りの場合
 			if ("9000502".equals(productEmbroideryNecessity)) {
@@ -29164,15 +29201,63 @@ public class OrderCoHelper {
 			}
 			
 			if(OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
+				//JACKET
 				validationGroup.add(JkStItem.class);
+				validationGroup.add(JkAdItem.class);
 				String ojStitch = orderCoForm.getCoOptionJacketStandardInfo().getOjStitch();
 				if(!OptionCodeKeys.JK_0002302.equals(ojStitch)) {
 					validationGroup.add(JkStStitchItem.class);
 				}
-				validationGroup.add(JkAdItem.class);
+				String ojCuffBackMate = orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMate();
+				if(!OptionCodeKeys.JK_2000300.equals(ojCuffBackMate)) {
+					validationGroup.add(JkStCuffBackMateItem.class);
+				}
+				
+				//PANTS
+				validationGroup.add(PtStItem.class);
+				// PANTSモデル
+				String opPantsModel = orderCoForm.getCoOptionPantsStandardInfo().getOpPantsModel();
+				// 膝裏
+				String opKneeBack = orderCoForm.getCoOptionPantsStandardInfo().getOpKneeBack();
+				// 裾上げ
+				String opHemUp = orderCoForm.getCoOptionPantsStandardInfo().getOpHemUp();
+				// AMFステッチ
+				String opStitch = orderCoForm.getCoOptionPantsStandardInfo().getOpStitch();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(opKneeBack)) {
+					validationGroup.add(PtStOpKneeBackItem.class);
+				}
+				
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if(OptionCodeKeys.PT_0001702.equals(opHemUp) || OptionCodeKeys.PT_0001703.equals(opHemUp)) {
+					validationGroup.add(PtStOpHemUpItem.class);
+				}
+				
+				// AMFステッチ：無しの場合ではない
+				if(!"0001903".equals(opStitch)) {
+					validationGroup.add(PtStOpStitchItem.class);
+				}
+				
+				validationGroup.add(PtAdItem.class);
+				
+				// PANTSモデルがRS01 JW21 AY01以外の場合
+				if(!"RS01".equals(opPantsModel) && !"JW21".equals(opPantsModel) && !"AY01".equals(opPantsModel)) {
+					threePatternFlag = threePatternFlag + 1;
+				}
+				
+				//修正
+				String corPtHemwidthType = orderCoForm.getCoAdjustPantsStandardInfo().getCorPtHemwidthType();
+				if("1".equals(corPtHemwidthType)) {
+					validationGroup.add(HemwidthPtAdItem.class);
+				}
+				//指定
+				else if("2".equals(corPtHemwidthType)) {
+					validationGroup.add(HemwidthDegignatePtAdItem.class);
+				}
 				
 				//3Piece
-				if("0009902".equals(productIs3Piece)) {
+				if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 					validationGroup.add(GlStItem.class);
 					String ogWaistPkt = orderCoForm.getCoOptionGiletStandardInfo().getOgWaistPkt();
 					if(OptionCodeKeys.GL_0000201.equals(ogWaistPkt)) {
@@ -29182,49 +29267,217 @@ public class OrderCoHelper {
 					if(!OptionCodeKeys.GL_0000503.equals(ogStitch)) {
 						validationGroup.add(GlStStitchItem.class);
 					}
+					String ogBackLiningMate = orderCoForm.getCoOptionGiletStandardInfo().getOgBackLiningMate();
+					if(!"1000400".equals(ogBackLiningMate)) {
+						validationGroup.add(GlBackLiningMateItem.class);
+					}
 					validationGroup.add(GlAdItem.class);
 				}
 				//スペアパンツが有りの場合
-				if("0009902".equals(productSparePantsClass)) {
+				if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+					validationGroup.add(Pt2StItem.class);
+					validationGroup.add(Pt2AdItem.class);
+					//修正
+					String corPt2HemwidthType = orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2HemwidthType();
+					if("1".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthPt2AdItem.class);
+					}
+					//指定
+					else if("2".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthDegignatePt2AdItem.class);
+					}
+					// モデル
+					String op2PantsModel = orderCoForm.getCoOptionPants2StandardInfo().getOp2PantsModel();
+					// 膝裏
+					String op2KneeBack = orderCoForm.getCoOptionPants2StandardInfo().getOp2KneeBack();
+					// 裾上げ
+					String op2HemUp = orderCoForm.getCoOptionPants2StandardInfo().getOp2HemUp();
+					// ステッチ種類
+					String op2Stitch = orderCoForm.getCoOptionPants2StandardInfo().getOp2Stitch();
+					// 膝裏：有りの場合
+					if(OptionCodeKeys.PT2_0000201.equals(op2KneeBack)) {
+						validationGroup.add(Pt2StOpKneeBackItem.class);
+					}
+					// 裾上げ:ダブル糸とダブルスナップの場合
+					if(OptionCodeKeys.PT2_0001702.equals(op2HemUp) || OptionCodeKeys.PT2_0001703.equals(op2HemUp)) {
+						validationGroup.add(Pt2StOpHemUpItem.class);
+					}
+					// AMFステッチ：無しの場合ではない
+					if(!OptionCodeKeys.PT2_0001903.equals(op2Stitch)) {
+						validationGroup.add(Pt2StOpStitchItem.class);
+					}
+					
+					// 2PANTSモデルがRS01 JW21 AY01以外の場合
+					if(!"RS01".equals(op2PantsModel) && !"JW21".equals(op2PantsModel) && !"AY01".equals(op2PantsModel)) {
+						threePatternFlag2 = threePatternFlag2 + 1;
+					}
 				}
 			}else if(OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
+				//JACKET
 				validationGroup.add(JkTuItem.class);
 				validationGroup.add(JkAdItem.class);
+				
+				String tjBtnMate = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMate();
+				if(!OptionCodeKeys.JK_3000700.equals(tjBtnMate)) {
+					validationGroup.add(JkTuBtnMateItem.class);
+				}
+				
+				//PANTS
+				validationGroup.add(PtTuItem.class);
+				// モデル
+				String tpPantsModel = orderCoForm.getCoOptionPantsTuxedoInfo().getTpPantsModel();
+				// 膝裏
+				String tpKneeBack = orderCoForm.getCoOptionPantsTuxedoInfo().getTpKneeBack();
+				// 裾上げ
+				String tpHemUp = orderCoForm.getCoOptionPantsTuxedoInfo().getTpHemUp();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(tpKneeBack)) {
+					validationGroup.add(PtTuTpKneeBackItem.class);
+				}
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if(OptionCodeKeys.PT_0001702.equals(tpHemUp) || OptionCodeKeys.PT_0001703.equals(tpHemUp)) {
+					validationGroup.add(PtTuTpHemUpItem.class);
+				}
+				
+				validationGroup.add(PtAdItem.class);
+				
+				// PANTSモデルがRS01 JW21 AY01以外の場合
+				if(!"RS01".equals(tpPantsModel) && !"JW21".equals(tpPantsModel) && !"AY01".equals(tpPantsModel)) {
+					threePatternFlag = threePatternFlag + 1;
+				}
+				
 				//3Piece
-				if("0009902".equals(productIs3Piece)) {
+				if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 					validationGroup.add(GlTuItem.class);
 					String tgWaistPkt = orderCoForm.getCoOptionGiletTuxedoInfo().getTgWaistPkt();
 					if(OptionCodeKeys.GL_0000201.equals(tgWaistPkt)) {
 						validationGroup.add(GlTuWaistPktSpecItem.class);
 					}
+					String tgBackLiningMate = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBackLiningMate();
+					if(!"1000400".equals(tgBackLiningMate)) {
+						validationGroup.add(GlTuBackLiningMateItem.class);
+					}
+					String tgFrontBtnMate = orderCoForm.getCoOptionGiletTuxedoInfo().getTgFrontBtnMate();
+					if(!"3000700".equals(tgFrontBtnMate)) {
+						validationGroup.add(GlTuFrontBtnMateItem.class);
+					}
 					validationGroup.add(GlAdItem.class);
 				}
 				//スペアパンツが有りの場合
-				if("0009902".equals(productSparePantsClass)) {
+				if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+					validationGroup.add(Pt2TuItem.class);
+					validationGroup.add(Pt2AdItem.class);
+					//修正
+					String corPt2HemwidthType = orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2HemwidthType();
+					if("1".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthPt2AdItem.class);
+					}
+					//指定
+					else if("2".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthDegignatePt2AdItem.class);
+					}
+					// モデル
+					String tp2PantsModel = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2PantsModel();
+					// 膝裏
+					String tp2KneeBack = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2KneeBack();
+					// 裾上げ
+					String tp2HemUp = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2HemUp();
+					// 膝裏：有りの場合
+					if(OptionCodeKeys.PT2_0000201.equals(tp2KneeBack)) {
+						validationGroup.add(Pt2TuTpKneeBackItem.class);
+					}
+					// 裾上げ:ダブル糸とダブルスナップの場合
+					if(OptionCodeKeys.PT2_0001702.equals(tp2HemUp) || OptionCodeKeys.PT2_0001703.equals(tp2HemUp)) {
+						validationGroup.add(Pt2TuTpHemUpItem.class);
+					}
+					
+					// 2PANTSモデルがRS01 JW21 AY01以外の場合
+					if(!"RS01".equals(tp2PantsModel) && !"JW21".equals(tp2PantsModel) && !"AY01".equals(tp2PantsModel)) {
+						threePatternFlag2 = threePatternFlag2 + 1;
+					}
 				}
 			}else if(OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
+				//JACKET
 				validationGroup.add(JkWaItem.class);
 				validationGroup.add(JkAdItem.class);
+				//PANTS
+				validationGroup.add(PtWaItem.class);
+				// 膝裏
+				String wpKneeBack = orderCoForm.getCoOptionPantsWashableInfo().getWpKneeBack();
+				// 裾上げ
+				String wpHemUp = orderCoForm.getCoOptionPantsWashableInfo().getWpHemUp();
+				
+				// 膝裏：有りの場合
+				if(OptionCodeKeys.PT_0000201.equals(wpKneeBack)) {
+					validationGroup.add(PtWaWpKneeBackItem.class);
+				}
+				
+				// 裾上げ:ダブル糸とダブルスナップの場合
+				if("0001702".equals(wpHemUp) || "0001703".equals(wpHemUp)) {
+					validationGroup.add(PtWaWpHemUpItem.class);
+				}
+				
+				validationGroup.add(PtAdItem.class);
+				
+				threePatternFlag = threePatternFlag + 1;
+				
 				//3Piece
-				if("0009902".equals(productIs3Piece)) {
+				if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 					validationGroup.add(GlWaItem.class);
 					String wgWaistPkt = orderCoForm.getCoOptionGiletWashableInfo().getWgWaistPkt();
 					if(OptionCodeKeys.GL_0000201.equals(wgWaistPkt)) {
 						validationGroup.add(GlWaWaistPktSpecItem.class);
 					}
+					String wgBackLiningMate = orderCoForm.getCoOptionGiletWashableInfo().getWgBackLiningMate();
+					if(!"1000400".equals(wgBackLiningMate)) {
+						validationGroup.add(GlWaBackLiningMateItem.class);
+					}
 					validationGroup.add(GlAdItem.class);
 				}
 				//スペアパンツが有りの場合
-				if("0009902".equals(productSparePantsClass)) {
+				if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
+					validationGroup.add(Pt2WaItem.class);
+					validationGroup.add(Pt2AdItem.class);
+					//修正
+					String corPt2HemwidthType = orderCoForm.getCoAdjustPants2StandardInfo().getCorPt2HemwidthType();
+					if("1".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthPt2AdItem.class);
+					}
+					//指定
+					else if("2".equals(corPt2HemwidthType)) {
+						validationGroup.add(HemwidthDegignatePt2AdItem.class);
+					}
+					// 膝裏
+					String wp2KneeBack = orderCoForm.getCoOptionPants2WashableInfo().getWp2KneeBack();
+					// 裾上げ
+					String wp2HemUp = orderCoForm.getCoOptionPants2WashableInfo().getWp2HemUp();
+					// 膝裏：有りの場合
+					if(OptionCodeKeys.PT2_0000201.equals(wp2KneeBack)) {
+						validationGroup.add(Pt2WaWpKneeBackItem.class);
+					}
+					// 裾上げ:ダブル糸とダブルスナップの場合
+					if(OptionCodeKeys.PT2_0001702.equals(wp2HemUp) || OptionCodeKeys.PT2_0001703.equals(wp2HemUp)) {
+						validationGroup.add(Pt2WaWpHemUpItem.class);
+					}
+					threePatternFlag2 = threePatternFlag2 + 1;
 				}
 			}
-			
+			if(threePatternFlag != 0) {
+				validationGroup.add(PtThreeModelItem.class);
+			}
+			if(threePatternFlag2 != 0) {
+				validationGroup.add(Pt2ThreeModelItem.class);
+			}
 			//残布
 			validationGroup.add(RemainingClothItem.class);
 		}
 		// JACKET
 		else if ("02".equals(productItem)) {
+			//残布
+			validationGroup.add(RemainingClothItem.class);
 			validationGroup.add(Default.class);
+			validationGroup.add(JkAdItem.class);
 			// 刺繍入れが有りの場合
 			if ("9000502".equals(productEmbroideryNecessity)) {
 				validationGroup.add(EmbroideredItem.class);
@@ -29236,23 +29489,40 @@ public class OrderCoHelper {
 				if(!OptionCodeKeys.JK_0002302.equals(ojStitch)) {
 					validationGroup.add(JkStStitchItem.class);
 				}
-				validationGroup.add(JkAdItem.class);
+				String ojCuffBackMate = orderCoForm.getCoOptionJacketStandardInfo().getOjCuffBackMate();
+				if(!OptionCodeKeys.JK_2000300.equals(ojCuffBackMate)) {
+					validationGroup.add(JkStCuffBackMateItem.class);
+				}
 			}else if(OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
 				validationGroup.add(JkTuItem.class);
-				validationGroup.add(JkAdItem.class);
+				String tjBtnMate = orderCoForm.getCoOptionJacketTuxedoInfo().getTjBtnMate();
+				if(!OptionCodeKeys.JK_3000700.equals(tjBtnMate)) {
+					validationGroup.add(JkTuBtnMateItem.class);
+				}
 			}else if(OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
 				validationGroup.add(JkWaItem.class);
-				validationGroup.add(JkAdItem.class);
 			}
-			
-			//残布
-			validationGroup.add(RemainingClothItem.class);
 		}
 		// PANTS
 		else if ("03".equals(productItem)) {
+			int threePatternFlag = 0;
 			validationGroup.add(Default.class);
+			validationGroup.add(PtAdItem.class);
+			//修正
+			String corPtHemwidthType = orderCoForm.getCoAdjustPantsStandardInfo().getCorPtHemwidthType();
+			if("1".equals(corPtHemwidthType)) {
+				validationGroup.add(HemwidthPtAdItem.class);
+			}
+			//指定
+			else if("2".equals(corPtHemwidthType)) {
+				validationGroup.add(HemwidthDegignatePtAdItem.class);
+			}
+			//残布
+			validationGroup.add(RemainingClothItem.class);
 			if (OptionCodeKeys.CATEGORY_STANDARD.equals(productCategory)) {
 				validationGroup.add(PtStItem.class);
+				// PANTSモデル
+				String opPantsModel = orderCoForm.getCoOptionPantsStandardInfo().getOpPantsModel();
 				// 膝裏
 				String opKneeBack = orderCoForm.getCoOptionPantsStandardInfo().getOpKneeBack();
 				// 裾上げ
@@ -29274,8 +29544,18 @@ public class OrderCoHelper {
 				if(!"0001903".equals(opStitch)) {
 					validationGroup.add(PtStOpStitchItem.class);
 				}
+				
+				validationGroup.add(PtAdItem.class);
+				
+				// PANTSモデルがRS01 JW21 AY01以外の場合
+				if(!"RS01".equals(opPantsModel) && !"JW21".equals(opPantsModel) && !"AY01".equals(opPantsModel)) {
+					threePatternFlag = threePatternFlag + 1;
+				}
+				
 			} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
 				validationGroup.add(PtTuItem.class);
+				// モデル
+				String tpPantsModel = orderCoForm.getCoOptionPantsTuxedoInfo().getTpPantsModel();
 				// 膝裏
 				String tpKneeBack = orderCoForm.getCoOptionPantsTuxedoInfo().getTpKneeBack();
 				// 裾上げ
@@ -29290,6 +29570,13 @@ public class OrderCoHelper {
 					validationGroup.add(PtTuTpHemUpItem.class);
 				}
 				
+				validationGroup.add(PtAdItem.class);
+				
+				// PANTSモデルがRS01 JW21 AY01以外の場合
+				if(!"RS01".equals(tpPantsModel) && !"JW21".equals(tpPantsModel) && !"AY01".equals(tpPantsModel)) {
+					threePatternFlag = threePatternFlag + 1;
+				}
+				
 			} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
 				validationGroup.add(PtWaItem.class);
 				// 膝裏
@@ -29301,11 +29588,16 @@ public class OrderCoHelper {
 				if(OptionCodeKeys.PT_0000201.equals(wpKneeBack)) {
 					validationGroup.add(PtWaWpKneeBackItem.class);
 				}
-				
 				// 裾上げ:ダブル糸とダブルスナップの場合
 				if("0001702".equals(wpHemUp) || "0001703".equals(wpHemUp)) {
 					validationGroup.add(PtWaWpHemUpItem.class);
 				}
+				
+				validationGroup.add(PtAdItem.class);
+				threePatternFlag = threePatternFlag + 1;
+			}
+			if(threePatternFlag != 0) {
+				validationGroup.add(PtThreeModelItem.class);
 			}
 		}
 		// GILET
@@ -29321,12 +29613,24 @@ public class OrderCoHelper {
 				if(!OptionCodeKeys.GL_0000503.equals(ogStitch)) {
 					validationGroup.add(GlStStitchItem.class);
 				}
+				String ogBackLiningMate = orderCoForm.getCoOptionGiletStandardInfo().getOgBackLiningMate();
+				if(!"1000400".equals(ogBackLiningMate)) {
+					validationGroup.add(GlBackLiningMateItem.class);
+				}
 				validationGroup.add(GlAdItem.class);
 			} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(productCategory)) {
 				validationGroup.add(GlTuItem.class);
 				String tgWaistPkt = orderCoForm.getCoOptionGiletTuxedoInfo().getTgWaistPkt();
 				if(OptionCodeKeys.GL_0000201.equals(tgWaistPkt)) {
 					validationGroup.add(GlTuWaistPktSpecItem.class);
+				}
+				String tgBackLiningMate = orderCoForm.getCoOptionGiletTuxedoInfo().getTgBackLiningMate();
+				if(!"1000400".equals(tgBackLiningMate)) {
+					validationGroup.add(GlTuBackLiningMateItem.class);
+				}
+				String tgFrontBtnMate = orderCoForm.getCoOptionGiletTuxedoInfo().getTgFrontBtnMate();
+				if(!"3000700".equals(tgFrontBtnMate)) {
+					validationGroup.add(GlTuFrontBtnMateItem.class);
 				}
 				validationGroup.add(GlAdItem.class);
 			} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(productCategory)) {
@@ -29335,6 +29639,10 @@ public class OrderCoHelper {
 				if(OptionCodeKeys.GL_0000201.equals(wgWaistPkt)) {
 					validationGroup.add(GlWaWaistPktSpecItem.class);
 				}
+				String wgBackLiningMate = orderCoForm.getCoOptionGiletWashableInfo().getWgBackLiningMate();
+				if(!"1000400".equals(wgBackLiningMate)) {
+					validationGroup.add(GlWaBackLiningMateItem.class);
+				}
 				validationGroup.add(GlAdItem.class);
 			}
 			//残布
@@ -29342,7 +29650,24 @@ public class OrderCoHelper {
 		}
 		// SHIRT
 		else if("05".equals(productItem)) {
-			
+			validationGroup.add(Default.class);
+			validationGroup.add(ShirtItem.class);
+			validationGroup.add(ShirtAdItem.class);
+			//胸ポケット
+			String osBreastPk = orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPk();
+			if(OptionCodeKeys.sht_0001201.equals(osBreastPk)) {
+				validationGroup.add(StBreastPkSizeItem.class);
+			}
+			//カジュアルヘムライン仕様
+			String osCasHemLine = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
+			if(OptionCodeKeys.sht_0002002.equals(osCasHemLine)) {
+				validationGroup.add(StCasualHemlineSizeItem.class);
+			}
+			//ボタン位置変更
+			String osBtnPosChg = orderCoForm.getCoOptionShirtStandardInfo().getOsBtnPosChg();
+			if(OptionCodeKeys.sht_0002102.equals(osBtnPosChg)) {
+				validationGroup.add(StBtnPosChgItem.class);
+			}
 		}
 		// COAT
 		else if("06".equals(productItem)) {

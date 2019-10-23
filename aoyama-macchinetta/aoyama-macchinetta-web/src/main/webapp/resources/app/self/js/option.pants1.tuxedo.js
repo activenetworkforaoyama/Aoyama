@@ -183,32 +183,16 @@ function initOptionPants1Tuxedo() {
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpVCut"]').val([modelVCut]);
 
-		// ステッチ箇所変更
-		if (opStitchModifyList[pantsModel]) {
-			// 定義がある場合、モデルに基づくチェック状態にする
-			jQuery('input[name="tp_stitchModifyPlace"]').val(opStitchModifyList[pantsModel]);
-		} else {
-			// 想定外のPANTSモデルの場合はすべて変更不可＆チェックなし
-			jQuery('input[name="tp_stitchModifyPlace"]').each(function() {
-				jQuery(this).prop("disabled", true);
-				jQuery(this).prop("checked", false);
-			});
-		}
-		// ボタンホール色指定
-		var tpBhColorVal = jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]').val();
-		if('0002701' == tpBhColorVal && jQuery("#pantsFlag").val() == '0'){
-			jQuery('input[id="tp_bhColor_id1"]').change();
-		}
+		//ボタンホール色指定
+		jQuery('#tp_bhColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]:checked').change();
 		
-		// ボタン付け糸指定
-		var tpByColorVal = jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]').val();
-		if('0003001' == tpByColorVal && jQuery("#pantsFlag").val() == '0'){
-			jQuery('#tp_byColor_id2').change();
-		}
-
+		//ボタン付け糸指定
+		jQuery('#tp_byColor_id1').prop("checked",true);
+		jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]:checked').change();
+		
 		// 別モデルに変更された場合はアラート表示
 		if ((tmpTpPantsModel != '' || tmpTpPantsModel != null) && pantsModel != tmpTpPantsModel && modelFlag == 2) {
-//		    appendAlert('tp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		    setAlert('tp_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 		}
 		// 一時保存のモデルを更新
@@ -813,20 +797,10 @@ function tpChangedBeltLoop() {
 		//disabledFlg = true;
 	}
 
-	// ベルトループ項目の活性/非活性
-	/*jQuery('input[id^="tp_beltLoopPlace_"]').each(function() {
-		var tmpBeltLoopElem = jQuery(this);
-		tmpBeltLoopElem.prop("disabled", disabledFlg);
-		if (!disabledFlg) {
-			tmpBeltLoopElem.prop("checked", true);
-		}
-	});*/
-
-	// ピンループ設定 ※アジャスター仕様が小でベルトループ有の場合に有りに設定する
+	// ピンループ設定でベルトループ有の場合に有りに設定する
 	if (selectedBeltLoop == '0000701') {
-		if (jQuery('input[name="tp_adjuster"]:checked').val() == '0000603') {
-			jQuery('#tp_pinLoop_id1').prop('checked', 'true');
-		}
+		jQuery('#tp_pinLoop_id1').prop('checked', 'true');
+		jQuery('#tp_pinLoop_id1').change();
 	}	
 
 	// フラシループ設定
@@ -857,6 +831,7 @@ function tpPinLoopSpecialController() {
 		jQuery('input[id="tp_pinLoop_id1"]').prop("disabled", true);
 		jQuery('input[id="tp_pinLoop_id2"]').prop("disabled", false);
 		jQuery('input[id="tp_pinLoop_id2"]').prop("checked", true);
+		jQuery('input[id="tp_pinLoop_id2"]').change();
 	} else {
 		jQuery('input[id="tp_pinLoop_id1"]').prop("disabled", false);
 		jQuery('input[id="tp_pinLoop_id2"]').prop("disabled", false);
@@ -866,20 +841,6 @@ function tpPinLoopSpecialController() {
 	var changedPinLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpPinLoop"]:checked').val();
 }
 
-//ダブルステッチの特殊制御を行う
-//function tpDStichSpecialController() {
-//
-//	// 選択中のAMFステッチ
-//	var selectedStich = jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]:checked').val();
-//
-//	// AMFステッチが有りの場合はダブルステッチを有効化する
-//	if (selectedStich == '0001904') {
-//		jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').prop("disabled", false);
-//	} else {
-//		jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').prop("disabled", true);
-////		jQuery('input[id="tp_dStitch_no"]').prop("checked", true);
-//	}
-//}
 
 jQuery('#tp_coinPkt').change(function() {
 
@@ -897,6 +858,8 @@ jQuery('#tp_coinPkt').change();
 
 // アジャスター仕様変更時
 jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index, elem) {
+	// 現在選択中のPANTSモデル
+	var selectedPantsModel = jQuery('#tp_pantsModel').val();
 	var selected = jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]:checked').val();
 
 	var oBLoopElemY = jQuery('#tp_beltLoop_id1');
@@ -905,21 +868,40 @@ jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index
 	var oPLoopElemY = jQuery('#tp_pinLoop_id1');
 	var oPLoopElemN = jQuery('#tp_pinLoop_id2');
 	
-	switch(selected) {
-		case "0000601"                : oBLoopElemY.prop("checked", true); break;
+	if(selectedPantsModel == 'AY01'){
+		switch(selected) {
+		case "0000601": oBLoopElemN.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;
 		case "0000603": oBLoopElemN.prop("checked", true); break;
-		case "0000604"        : oBLoopElemY.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
 		default:oBLoopElemN.prop("checked", true);
-	}
-	switch(selected) {
-		case "0000601"                : oPLoopElemY.prop("checked", true); break;
+		}
+		switch(selected) {
+		case "0000601": oPLoopElemN.prop("checked", true); break;
 		case "0000602": oPLoopElemN.prop("checked", true); break;
 		case "0000603": oPLoopElemN.prop("checked", true); break;
-		case "0000604"        : oPLoopElemY.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
+		}
 	}
-
+	else {
+		switch(selected) {
+		case "0000601": oBLoopElemY.prop("checked", true); break;
+		case "0000602": oBLoopElemN.prop("checked", true); break;
+		case "0000603": oBLoopElemN.prop("checked", true); break;
+		case "0000604": oBLoopElemY.prop("checked", true); break;
+		default:oBLoopElemN.prop("checked", true);
+		}
+		switch(selected) {
+		case "0000601": oPLoopElemY.prop("checked", true); break;
+		case "0000602": oPLoopElemN.prop("checked", true); break;
+		case "0000603": oPLoopElemN.prop("checked", true); break;
+		case "0000604": oPLoopElemY.prop("checked", true); break;
+		default:oPLoopElemN.prop("checked", true);
+		}
+	}
+	
+	jQuery('input[id^="tp_beltLoop_id"]:checked').change();
 	tpChangedBeltLoop();
 
 });

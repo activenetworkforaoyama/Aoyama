@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Range;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthDegignatePt2AdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.HemwidthPt2AdItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2AdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2ThreeModelItem;
 
 public class CoAdjustPants2StandardInfo implements Serializable {
 	private static final long serialVersionUID = 8082462722647632661L;
@@ -18,7 +19,7 @@ public class CoAdjustPants2StandardInfo implements Serializable {
 	private String sizeNumber;
 	// 体型
 	private Map<String, String> sizeFigureMap;
-	@NotBlank(groups = {Pt2AdItem.class}, message = "PANTS（2本目）の体型を入力して下さい。")
+	@NotBlank(groups = {Pt2ThreeModelItem.class}, message = "PANTS（2本目）の体型を入力して下さい。")
 	private String sizeFigure;
 
 	// ウエスト修正2

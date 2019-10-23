@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkTuItem;
 
 public class CoOptionJacketTuxedoInfo implements Serializable{
@@ -468,7 +469,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     private String jkBtnMaterialRtPrice;
     
     //釦素材品番
-    @NotBlank(groups = { JkTuItem.class }, message = "JACKETの釦素材品番を入力して下さい。")
+    @NotBlank(groups = { JkTuBtnMateItem.class }, message = "JACKETの釦素材品番を入力して下さい。")
     private String tjBtnMateStkNo;
     
     //形状記憶

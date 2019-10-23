@@ -240,9 +240,11 @@
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
 					</button>
+					<c:if test="${order.productFactoryCd == 'F00001'}">
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 						工場指示書(中国語)
 					</button>
+					</c:if>
 				</div>
 			</c:if>
 		</c:if>
@@ -265,9 +267,11 @@
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
+						<c:if test="${order.productFactoryCd == 'F00001'}">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 							工場指示書(中国語)
 						</button>
+						</c:if>
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -280,9 +284,11 @@
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
+						<c:if test="${order.productFactoryCd == 'F00001'}">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 							工場指示書(中国語)
 						</button>
+						</c:if>
 					</div>
 				</c:otherwise>
 				</c:choose>
@@ -1727,14 +1733,14 @@
 					<div class="col-12 col-md-2">
 						<strong><label class=" form-control-label-value">${orderFm.corCtVenthightCorrectFm}</label></strong>
 					</div>
-					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corCtVenthightGross}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
 					<div class="col-12 col-md-3 offset-md-3">
 						<label class=" form-control-label">ポケット位置</label>
 					</div>
 					<div class="col-12 col-md-2">
 						<strong><label class=" form-control-label-value">${orderFm.corCtPktposCorrectFm}</label></strong>
 					</div>
-					<div class="col-12 col-md-4"><strong><label class=" form-control-label-value">${order.corCtPktposGross}</label>cm</strong></div>
+					<div class="col-12 col-md-4"></div>
 				</div>
 			</div>
 		</div>

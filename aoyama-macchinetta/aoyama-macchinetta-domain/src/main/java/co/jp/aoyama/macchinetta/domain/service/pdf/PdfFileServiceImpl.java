@@ -381,7 +381,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     				insertCommonProject(form, order, productItem);
     				insertfactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
-    				insertShirtDataCo(form, order);
+    				insertShirtDataCoChinese(form, order);
     				
     			}else if("12".equals(sign)) {
     				//工場指示書(COAT)中国語
@@ -2215,6 +2215,154 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 	}
 
+	@SuppressWarnings("unlikely-arg-type")
+	private void insertShirtDataCoChinese(CrForm form, Order order) {
+		//刺繍箇所
+		form.getField("product_embroidery_nm_pos_data").setData(stringChange(order.getProductEmbroideryNmPos()));
+		//刺繍サイズ:縦+横
+		String productEmbroiderySize = "";
+		if(!("".equals(bigDecimalChange(order.getProductEmbroideryLength())))) {
+			productEmbroiderySize = "縦：" + bigDecimalChange(order.getProductEmbroideryLength());
+		}
+		if(!("".equals(bigDecimalChange(order.getProductEmbroideryWidth()))) 
+				&& !("".equals(productEmbroiderySize))) {
+			productEmbroiderySize = productEmbroiderySize + "  横：" + bigDecimalChange(order.getProductEmbroideryWidth());
+		}else if(!("".equals(bigDecimalChange(order.getProductEmbroideryWidth())))) {
+			productEmbroiderySize = "横：" + bigDecimalChange(order.getProductEmbroideryWidth());
+		}
+		form.getField("product_embroidery_size_data").setData(productEmbroiderySize);
+		//ガゼット刺繍
+		form.getField("product_embroidery_gazette_data").setData(stringChange(order.getProductEmbroideryGazette()));
+				
+		//SHIRT
+		//サイズ
+		form.getField("Cor_st_size_data").setData(order.getCorStSize());
+		
+		//型サイズ
+		//ネック
+		form.getField("Cor_st_neck_size_data").setData(bigDecimalChange(order.getCorStNeckSize()));
+		//着丈
+		form.getField("Cor_st_bodylength_size_data").setData(bigDecimalChange(order.getCorStBodylengthSize()));
+		//袖丈右
+		form.getField("Cor_st_rightsleeve_size_data").setData(bigDecimalChange(order.getCorStRightsleeveSize()));
+		//袖丈左
+		form.getField("Cor_st_leftsleeve_size_data").setData(bigDecimalChange(order.getCorStLeftsleeveSize()));
+		//背ダーツ詰め
+		form.getField("Cor_st_backdarts_pack_size_data").setData(bigDecimalChange(order.getCorStBackdartsPackSize()));
+		//カフス周り右
+		form.getField("Cor_st_rightcuffs_surrounding_size_data").setData(bigDecimalChange(order.getCorStRightcuffsSurroundingSize()));
+		//カフス周り左
+		form.getField("Cor_st_leftcuffs_surrounding_size_data").setData(bigDecimalChange(order.getCorStLeftcuffsSurroundingSize()));
+		//背ダーツ出し
+		form.getField("Cor_st_backdarts_unpack_size_data").setData(stringChange(order.getCorStBackdartsUnpackNm()));
+			
+		//補正値
+		//ネック
+		form.getField("Cor_st_neck_correct_data").setData(bigDecimalChange(order.getCorStNeckCorrect()));
+		//着丈
+		form.getField("Cor_st_bodylength_correct_data").setData(bigDecimalChange(order.getCorStBodylengthCorrect()));
+		//袖丈右
+		form.getField("Cor_st_rightsleeve_correct_data").setData(bigDecimalChange(order.getCorStRightsleeveCorrect()));
+		//袖丈左
+		form.getField("Cor_st_leftsleeve_correct_data").setData(bigDecimalChange(order.getCorStLeftsleeveCorrect()));
+		//背ダーツ詰め
+		form.getField("Cor_st_backdarts_pack_correct_data").setData(bigDecimalChange(order.getCorStBackdartsPackCorrect()));
+		//カフス周り右
+		form.getField("Cor_st_rightcuffs_surrounding_correct_data").setData(bigDecimalChange(order.getCorStRightcuffsSurroundingCorrect()));
+		//カフス周り左
+		form.getField("Cor_st_leftcuffs_surrounding_correct_data").setData(bigDecimalChange(order.getCorStLeftcuffsSurroundingCorrect()));
+		//背ダーツ出し
+//		form.getField("Cor_st_backdarts_unpack_correct_data").setData(bigDecimalChange(order.getCorStBackdartsUnpackCorrect()));
+		
+		//グロス
+		//ネック
+		form.getField("Cor_st_neck_gross_data").setData(bigDecimalChange(order.getCorStNeckGross()));
+		//着丈
+		form.getField("Cor_st_bodylength_gross_data").setData(bigDecimalChange(order.getCorStBodylengthGross()));
+		//袖丈右
+		form.getField("Cor_st_rightsleeve_gross_data").setData(bigDecimalChange(order.getCorStRightsleeveGross()));
+		//袖丈左
+		form.getField("Cor_st_leftsleeve_gross_data").setData(bigDecimalChange(order.getCorStLeftsleeveGross()));
+		//背ダーツ詰め
+		form.getField("Cor_st_backdarts_pack_gross_data").setData(bigDecimalChange(order.getCorStBackdartsPackGross()));
+		//カフス周り右
+		form.getField("Cor_st_rightcuffs_surrounding_gross_data").setData(bigDecimalChange(order.getCorStRightcuffsSurroundingGross()));
+		//カフス周り左
+		form.getField("Cor_st_leftcuffs_surrounding_gross_data").setData(bigDecimalChange(order.getCorStLeftcuffsSurroundingGross()));
+		//背ダーツ出し
+//		form.getField("Cor_st_backdarts_unpack_gross_data").setData(bigDecimalChange(order.getCorStBackdartsUnpackGross()));
+		
+		//SHIRT
+		//SHIRTモデル
+		form.getField("St_model_data").setData(order.getStModelNm());
+		//襟型
+		form.getField("St_collar_type_data").setData(order.getStCollarTypeNm());
+		//カフス
+		form.getField("St_cuffs_data").setData(order.getStCuffsNm());
+		//コンバーチブル
+		form.getField("St_convertible_data").setData(order.getStConvertibleNm());
+		//アジャスト釦
+		form.getField("St_adjuster_btn_data").setData(order.getStAdjusterBtnNm());
+		//クレリック仕様
+		form.getField("St_cleric_data").setData(order.getStClericNm());
+		//ダブルカフス仕様
+		form.getField("St_dbl_cuffs_data").setData(order.getStDblCuffsNm());
+		//カフスボタン追加
+		form.getField("St_cuffs_btn_data").setData(order.getStCuffsBtnNm());
+		//釦
+		form.getField("St_btn_material_data").setData(order.getStBtnMaterialNm());
+		//タブ釦
+		form.getField("St_dbl_btn_data").setData(order.getStDblBtnNm());
+		//ガントレットボタン位置
+		form.getField("St_gauntlet_btn_pos_data").setData(order.getStGauntletBtnPosNm());
+		//ピンホールピン
+		form.getField("St_pinhole_pin_data").setData(order.getStPinholePinNm());
+		//胸ポケット
+		form.getField("St_breast_pkt_data").setData(order.getStBreastPktNm());
+		//胸ポケット大きさ
+		form.getField("St_breast_size_data").setData(order.getStBreastSizeNm());
+		//フロントデザイン
+		form.getField("St_frt_design_data").setData(order.getStFrtDesignNm());
+		//ピンタックブザム
+		form.getField("St_pintuck_bosom_data").setData(order.getStPintuckBosomNm());
+		//ステッチ
+		form.getField("St_stitch_data").setData(order.getStStitchNm());
+		//カラーキーパー
+		form.getField("St_colar_keeper_data").setData(order.getStColarKeeperNm());
+		//ボタンホール色変更
+		form.getField("St_btnhole_color_cd_data").setData(order.getStBtnholeColorNm());
+		//ボタン付け糸色変更
+		form.getField("St_btnthread_color_data").setData(order.getStBtnthreadColorNm());
+		//カジュアルヘムライン仕様
+		System.out.println(order.getStCasualHemlineNm());
+		if("有".equals(order.getStCasualHemlineNm())) {
+			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm() 
+					+ "  " + order.getStCasualHemlineSize() + "cm");
+		}else if("无".equals(order.getStCasualHemlineNm())) {
+			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm());
+		}
+		//ボタン位置変更
+		form.getField("St_btnpos_chg_data").setData(order.getStBtnposChgNm());
+		//ボタン位置変更,詳細
+		String stNeckbandBtnPosChg = "";
+		if(!("".equals(order.getStNeckbandBtnPosChg()) || order.getStNeckbandBtnPosChg() == null)) {
+			stNeckbandBtnPosChg = "【台領釦】"+order.getStNeckbandBtnPosChg();
+		}
+		if(!("".equals(order.getStFrtfirstBtnPosChg()) || order.getStFrtfirstBtnPosChg() == null) 
+				&& !("".equals(stNeckbandBtnPosChg))) {
+			stNeckbandBtnPosChg = stNeckbandBtnPosChg + "  【前牌第1釦】"+order.getStFrtfirstBtnPosChg();
+		}else if(!("".equals(order.getStFrtfirstBtnPosChg()) || order.getStFrtfirstBtnPosChg() == null)) {
+			stNeckbandBtnPosChg = "【前牌第1釦】"+order.getStFrtfirstBtnPosChg();
+		}
+		if(!("".equals(order.getStFrtsecondBtnPosChg()) || order.getStFrtsecondBtnPosChg() == null) 
+				&& !("".equals(stNeckbandBtnPosChg))) {
+			stNeckbandBtnPosChg = stNeckbandBtnPosChg + "  【前牌第2釦】"+order.getStFrtsecondBtnPosChg();
+		}else if(!("".equals(order.getStFrtsecondBtnPosChg()) || order.getStFrtsecondBtnPosChg() == null)) {
+			stNeckbandBtnPosChg = "【前牌第2釦】"+order.getStFrtsecondBtnPosChg();
+		}
+		form.getField("St_btnpos_chg_syousai").setData(stringChange(stNeckbandBtnPosChg));
+		
+	}
 	/**
 	 * 変換bigDecimal型
 	 * @param 

@@ -178,7 +178,7 @@ public class CoOptionPantsStandardInfo implements Serializable{
     private String ptDblWidthRtPrice;
     
     //AMFステッチ
-    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）の裾上げを入力して下さい。")
+    @NotBlank(groups = { PtStItem.class }, message = "PANTS（1本目）のステッチ種類を入力して下さい。")
     private String opStitch;
     
     private Map<String,String> opStitchMap;

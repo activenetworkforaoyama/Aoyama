@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaBackLiningMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.GlWaWaistPktSpecItem;
 
@@ -217,7 +218,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	private String glBackClothRtPrice;
 	
 	// 背裏地素材品番
-	@NotBlank(groups = { GlWaItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
+	@NotBlank(groups = { GlWaBackLiningMateItem.class }, message = "Giletの背裏地素材品番を入力して下さい。")
 	private String wgBackLiningMateStkNo;
 
 	// 内側裏地素材

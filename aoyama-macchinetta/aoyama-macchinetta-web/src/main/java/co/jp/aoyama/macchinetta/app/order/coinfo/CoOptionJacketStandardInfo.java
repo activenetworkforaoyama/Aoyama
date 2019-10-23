@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStCuffBackMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStStitchItem;
 
@@ -585,7 +586,7 @@ public class CoOptionJacketStandardInfo implements Serializable {
 	private String jkInnerSleeveClothRtPrice;
 
 	// 袖裏素材品番
-	@NotBlank(groups = { JkStItem.class }, message = "JACKETの袖裏素材品番を入力して下さい。")
+	@NotBlank(groups = { JkStCuffBackMateItem.class }, message = "JACKETの袖裏素材品番を入力して下さい。")
 	private String ojCuffBackMateStkNo;
 
 	// 釦素材

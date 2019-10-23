@@ -4,15 +4,26 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
+
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StBreastPkSizeItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StBtnPosChgItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.StCasualHemlineSizeItem;
+
+
 public class CoOptionShirtStandardInfo implements Serializable {
 	private static final long serialVersionUID = -3593141126900298826L;
 
 	// SHIRTモデル
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのモデルを入力して下さい。")
 	private String osShirtModel;
 
 	private Map<String, String> osShirtModelMap;
 
 	// 襟型
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTの襟型を入力して下さい。")
 	private String osChainModel;
 
 	private Map<String, String> osChainModelMap;
@@ -20,6 +31,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stCollarTypeRtPrice;
 
 	// カフス
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのカフスを入力して下さい。")
 	private String osCuffs;
 
 	private Map<String, String> osCuffsMap;
@@ -27,6 +39,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stCuffsRtPrice;
 
 	// コンバーチブル
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのコンバーチブルを入力して下さい。")
 	private String osConvertible;
 
 	private Map<String, String> osConvertibleMap;
@@ -34,6 +47,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stConvertibleRtPrice;
 
 	// アジャスト釦
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのアジャスト釦を入力して下さい。")
 	private String osAdjustBtn;
 
 	private Map<String, String> osAdjustBtnMap;
@@ -41,6 +55,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stAdjusterBtnRtPrice;
 
 	// クレリック仕様
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのクレリック仕様を入力して下さい。")
 	private String osClericSpec;
 
 	private Map<String, String> osClericSpecMap;
@@ -48,6 +63,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stClericRtPrice;
 
 	// ダブルカフス仕様
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのダブルカフス仕様を入力して下さい。")
 	private String osDblCuff;
 
 	private Map<String, String> osDblCuffMap;
@@ -55,13 +71,15 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stDblCuffsRtPrice;
 
 	// カフスボタン追加
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのカフスボタン追加を入力して下さい。")
 	private String osAddCuff;
 
 	private Map<String, String> osAddCuffMap;
 
 	private String stCuffsBtnRtPrice;
 
-	// 釦素材
+	// 釦
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTの釦を入力して下さい。")
 	private String osBtnMate;
 
 	private Map<String, String> osBtnMateMap;
@@ -69,6 +87,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stBtnMaterialRtPrice;
 
 	// タブ釦
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのタブ釦を入力して下さい。")
 	private String osTabBtn;
 
 	private Map<String, String> osTabBtnMap;
@@ -76,6 +95,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stDblBtnRtPrice;
 
 	// ガントレットボタン位置
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのガントレットボタン位置を入力して下さい。")
 	private String osGaletteBtnPos;
 
 	private Map<String, String> osGaletteBtnPosMap;
@@ -83,6 +103,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stGauntletBtnPosRtPrice;
 
 	// ピンホールピン
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのピンホールピンを入力して下さい。")
 	private String osPinHolePin;
 
 	private Map<String, String> osPinHolePinMap;
@@ -90,6 +111,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stPinholePinRtPrice;
 
 	// 胸ポケット
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTの胸ポケットを入力して下さい。")
 	private String osBreastPk;
 
 	private Map<String, String> osBreastPkMap;
@@ -97,6 +119,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stBreastPktRtPrice;
 
 	// 胸ポケット大きさ
+	@NotBlank(groups = { StBreastPkSizeItem.class }, message = "SHIRTの胸ポケット大きさを入力して下さい。")
 	private String osBreastPkSize;
 
 	private Map<String, String> osBreastPkSizeMap;
@@ -104,6 +127,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stBreastSizeRtPrice;
 
 	// フロントデザイン
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのフロントデザインを入力して下さい。")
 	private String osFrontDesign;
 
 	private Map<String, String> osFrontDesignMap;
@@ -111,6 +135,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stFrtDesignRtPrice;
 
 	// ピンタックブザム
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのピンタックブザムを入力して下さい。")
 	private String osPinTack;
 
 	private Map<String, String> osPinTackMap;
@@ -118,6 +143,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stPintuckBosomRtPrice;
 
 	// ステッチ
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのピンタックブザムを入力して下さい。")
 	private String osStitch;
 
 	private Map<String, String> osStitchMap;
@@ -125,6 +151,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stStitchRtPrice;
 
 	// カラーキーパー
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのカラーキーパーを入力して下さい。")
 	private String osColorKeeper;
 
 	private Map<String, String> osColorKeeperMap;
@@ -132,6 +159,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stColarKeeperRtPrice;
 
 	// ボタン付け糸色変更
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのボタン付け糸色変更を入力して下さい。")
 	private String osByColor;
 
 	private Map<String, String> osByColorMap;
@@ -139,6 +167,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stBtnthreadColorRtPrice;
 
 	// ボタンホール色変更
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのボタンホール色変更を入力して下さい。")
 	private String osBhColor;
 
 	private Map<String, String> osBhColorMap;
@@ -146,6 +175,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stBtnholeColorRtPrice;
 
 	// カジュアルヘムライン仕様
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのカジュアルヘムライン仕様を入力して下さい。")
 	private String osCasHemLine;
 
 	private Map<String, String> osCasHemLineMap;
@@ -153,6 +183,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String stCasualHemlineRtPrice;
 
 	// ボタン位置変更
+	@NotBlank(groups = { ShirtItem.class }, message = "SHIRTのボタン位置変更を入力して下さい。")
 	private String osBtnPosChg;
 
 	private Map<String, String> osBtnPosChgMap;
@@ -169,15 +200,20 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String osBtnPosChgFront2;
 
 	// カジュアルヘムライン値
+	@NotBlank(groups = { StCasualHemlineSizeItem.class }, message = "SHIRTのカジュアルヘムライン値を入力して下さい。")
+	@Range(min=0, max=(long) 199.5, groups = {StCasualHemlineSizeItem.class}, message = "SHIRTのカジュアルヘムライン値の範囲が不正です。")
 	private BigDecimal stCasualHemlineSize;
 
 	// ボタン位置変更 台襟釦値
+	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTの台襟釦値を入力して下さい。")
 	private BigDecimal stNeckbandBtnPosChg;
 
 	// ボタン位置変更 フロント第1釦値
+	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第1釦値を入力して下さい。")
 	private BigDecimal stFrtfirstBtnPosChg;
 
 	// ボタン位置変更 フロント第2釦値
+	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第2釦値を入力して下さい。")
 	private BigDecimal stFrtsecondBtnPosChg;
 	
 	//刺繍箇所

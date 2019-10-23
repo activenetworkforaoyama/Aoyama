@@ -46,6 +46,10 @@ public class OrderForm implements Serializable {
     public static interface Pt2Item {
     };
     
+    // グループ:店舗コード 業態  店舗名
+    public static interface ShopItem {
+    };
+    
     // グループ:EmbroideredItem（刺繍入れ）
     public static interface EmbroideredItem {
     };
@@ -105,12 +109,16 @@ public class OrderForm implements Serializable {
 	private List<OrderCodePrice> orderCodePriceList;
 	
 	//店舗コード TSC/UMLと青山で異なる店舗ｺｰﾄを登録
-	@NotBlank(groups = {Default.class},message = "店舗コード が不正です。")
+	@NotBlank(groups = {ShopItem.class},message = "店舗コード が不正です。")
 	private String shopCode;
 	
 	//業態
-	@NotBlank(groups = {Default.class},message = "業態コード が不正です。")
+	@NotBlank(groups = {ShopItem.class},message = "業態コード が不正です。")
 	private String storeBrandCode;
+	
+	//店舗・担当_店舗名
+	@NotBlank(groups = {ShopItem.class},message = "店舗名が不正です。")
+	private String storeNm;
 
 	//商品情報_ITEM
 	@NotBlank(groups = {Default.class},message = "アイテムを入力して下さい。")
@@ -253,10 +261,6 @@ public class OrderForm implements Serializable {
 	
 	private String version;
 	
-	//店舗・担当_店舗名
-	@NotBlank(groups = {Default.class},message = "店舗名が不正です。")
-	private String storeNm;
-
 	public String getVersion() {
 		return version;
 	}
