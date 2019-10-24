@@ -3479,7 +3479,7 @@ select.hidedown {
 								<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2HemUpMap[orderCoForm.coOptionPants2WashableInfo.wp2HemUp]}</label></strong>
 							</div>
 							<div class="col-12 col-md-3 text-right">
-								<strong><label class=" form-control-label-value" id="wp2HemUp_appear">${washableFramePt2DisplayUpperPrice["wp2_hemUp_id"]}</label></strong>
+								<strong><label class=" form-control-label-value" id="wp2HemUp_appear">${washableFramePt2DisplayUpperPrice["wp2_hemUp"]}</label></strong>
 							</div>
 						</div>
 						<c:if test="${orderCoForm.coOptionPants2WashableInfo.wp2HemUp == '0001702' || orderCoForm.coOptionPants2WashableInfo.wp2HemUp == '0001703'}">
@@ -3489,7 +3489,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">${orderCoForm.coOptionPants2WashableInfo.wp2DoubleWideMap[orderCoForm.coOptionPants2WashableInfo.wp2DoubleWide]}</label></strong>
 								</div>
 								<div class="col-12 col-md-3 text-right">
-									<strong><label class=" form-control-label-value" id="wp2DoubleWide_appear">${washableFramePt2DisplayUpperPrice["wp2_doubleWide_id"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="wp2DoubleWide_appear">${washableFramePt2DisplayUpperPrice["wp2_doubleWide"]}</label></strong>
 								</div>
 							</div>
 						</c:if>
@@ -3518,7 +3518,7 @@ select.hidedown {
 									<strong><label class=" form-control-label-value">${washablePt2ServelItemShow["wp2DStitchPlace"]}</label></strong>
 								</div>
 								<div class="col-12 col-md-1 text-right">
-									<strong><label class=" form-control-label-value" id="wp2DStitch_appear">${washableFramePt2DisplayUpperPrice["wp2_dStitch_id"]}</label></strong>
+									<strong><label class=" form-control-label-value" id="wp2DStitch_appear">${washableFramePt2DisplayUpperPrice["wp2_dStitchModify_id"]}</label></strong>
 								</div>
 							</div>
 							<div class="row">

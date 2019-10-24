@@ -143,12 +143,12 @@ function initProduct() {
 				  	jQuery("#pants2ItemFlag").val("0");
 				  	
 				  	
-				    jQuery("#jacketAdFlag").val("0");
-				  	jQuery("#pantsAdFlag").val("0");
-				  	jQuery("#pants2AdFlag").val("0");
-				  	jQuery("#giletAdFlag").val("0");
-				  	jQuery("#coatAdFlag").val("0");
-				  	jQuery("#shirtAdFlag").val("0");
+				    jacketAdFlag="0";
+				  	pantsAdFlag="0";
+				  	pants2AdFlag="0";
+				  	giletAdFlag="0";
+				  	coatAdFlag="0";
+				  	shirtAdFlag="0";
 				  	
 			        jQuery("#jkOptionPriceId").val("0");
 				  	jQuery("#ptOptionPriceId").val("0");
@@ -160,10 +160,9 @@ function initProduct() {
 				  	jQuery("#jkDoubleModelPrice").val("0");
 				  	jQuery("#ctDoubleModelPrice").val("0");
 				  	jQuery("#glDoubleModelPrice").val("0");
-				  	//jQuery('#itemCoFlag').val("1");
+				  	
 				  	if(jQuery('#itemCoFlag').val()=="1"){
-				  		jQuery("#itemCoChangeFlag").val("1");
-				  		jQuery('#itemCoFlag').val("0");
+				  		itemCoChangeFlag="1";
 				  	}
 				  				
 				  	jQuery('input[name="productEmbroideryNecessity"][value="9000501"]').prop("checked",true);

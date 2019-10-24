@@ -30,6 +30,7 @@ import org.terasoluna.gfw.common.message.ResultMessages;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoGiletHelper;
 import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
+import co.jp.aoyama.macchinetta.app.order.coHelper.CoAdjustHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoCoatHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants1Helper;
@@ -136,6 +137,8 @@ public class OrderCoController {
 	CoGiletHelper coGiletHelper = new CoGiletHelper();
 	
 	CoShirtHelper coShirtHelper = new CoShirtHelper();
+
+	CoAdjustHelper coAdjustHelper =new CoAdjustHelper();
 
 	private static final String CO_TYPE = "CO";
 
@@ -245,7 +248,6 @@ public class OrderCoController {
 			
 			OrderCoForm orderCoForm = new OrderCoForm();
 			orderCoForm.setAuthority(sessionContent.getAuthority());
-			orderCoForm.setOrderTscStatus(order.getTscStatus());
 			// オプションデーターを取得
 			List<OptionBranch> standardOptionList = optionBranchService.getStandardOption(CO_TYPE);
 			List<OptionBranch> tuxedoOptionList = optionBranchService.getTuxedoOption(CO_TYPE);
@@ -274,10 +276,12 @@ public class OrderCoController {
 				orderCoHelper.setCustomerMessageAndProductOrderLink(order,orderCoForm);
 				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 				orderCoForm.setFabricFlag("0");
+				orderCoForm.setOrderTscStatus(order.getTscStatus());
 			}else if("orderDivert".equals(orderFlag)) {
 				orderCoHelper.setCustomerMessageAndProductOrderDivert(order,orderCoForm,sessionContent);
 				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
 				orderCoForm.setFabricFlag("");
+				orderCoForm.setOrderTscStatus("");
 			}
 			orderCoForm.setOrderFlag(orderFlag);
 			orderCoForm.setStatus("");
@@ -309,19 +313,14 @@ public class OrderCoController {
 	 */
 	@RequestMapping(value = "orderCoReconfirm")
 	public String toOrderCoReconfirm(HttpServletRequest request,OrderCoForm orderCoForm, final BindingResult result,Model model) {
-		orderCoHelper.extractedItem(orderCoForm, result,smartValidator,sessionContent);
-		
-		if (result.hasErrors()) {
-			orderCoForm.setOrderFlag("orderCheck");
-			model.addAttribute("orderCoForm",orderCoForm);
-			return "order/orderCoForm";
-		}
+		allAdjustInit(orderCoForm);
 		
 		String item = orderCoForm.getProductItem();
 		String productCategory = orderCoForm.getProductCategory();
 		String threePiece = orderCoForm.getProductIs3Piece();
 		String twoPants = orderCoForm.getProductSparePantsClass();
 		Map<String, List<Adjust>> adjustByItem = this.getAdjustByItem(orderCoForm);
+		
 		// SUITチェック
 		if ("01".equals(item)) {
 			ResultMessages messages = ResultMessages.error();
@@ -415,6 +414,13 @@ public class OrderCoController {
 		        return "order/orderCoForm";
 			}
 		}
+		orderCoHelper.extractedItem(orderCoForm, result,smartValidator,sessionContent);
+		if (result.hasErrors()) {
+			orderCoForm.setOrderFlag("orderCheck");
+			model.addAttribute("orderCoForm",orderCoForm);
+			return "order/orderCoForm";
+		}
+		
 		return "forward:/orderCoConfirm/orderCoReForm";
 	}
 
@@ -623,6 +629,8 @@ public class OrderCoController {
 	@ResponseBody
 	@RequestMapping(value = "orderCoTemporarySave", method = RequestMethod.POST)
 	public OrderMessage orderPoTemporarySave(OrderCoForm orderCoForm, Model model) {
+		allAdjustInit(orderCoForm);
+		
 		Order order = new Order();
 
 		Measuring measuring = new Measuring();
@@ -2030,24 +2038,6 @@ public class OrderCoController {
 			String itemFlag = orderCoForm.getJacketItemFlag();
 			if ("0".equals(itemFlag)) {
 				coJakcetHelper.jacketDefaultValue(orderCoForm);
-//				coJakcetHelper.jacketDefaultValue(orderCoForm);
-//				Order orderJK = orderListService
-//						.findOrderJkOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				if (orderJK == null) {
-//					// フロント釦数
-//					String jkFrtBtnCd = orderJK.getJkFrtBtnCd();
-//					// ラペルデザイン
-//					String jkLapelDesignCd = orderJK.getJkLapelDesignCd();
-//					// 裏仕様
-//					String jkInnerClothCd = orderJK.getJkInnerClothCd();
-//					if ((jkFrtBtnCd == null || "".equals(jkFrtBtnCd))
-//							&& (jkLapelDesignCd == null || "".equals(jkLapelDesignCd))
-//							&& (jkInnerClothCd == null || "".equals(jkInnerClothCd))) {
-//						orderCoHelper.jacketDefaultValue(orderCoForm);
-//					} else {
-//						orderCoHelper.jacketDefaultValueFromDb(orderCoForm, orderJK);
-//					}
-//				}
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2061,31 +2051,17 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS_SUBITEM);
-		orderCoHelper.getPantsModelMap(orderCoForm, modelList);
+		coPants1Helper.getPantsModelMap(orderCoForm, modelList);
 		if ("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.pantsDefaultValue(orderCoForm);
+				coPants1Helper.pantsDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 			}
 		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.pantsDefaultValue(orderCoForm);
-//				orderCoHelper.pantsDefaultValue(orderCoForm);
-//				Order orderPt = orderListService.findOrderPtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				//タック
-//				String ptTackCd = orderPt.getPtTackCd();
-//				//膝裏
-//				String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
-//				//フロント仕様
-//				String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
-//				if((ptTackCd == null||"".equals(ptTackCd))&&(ptKneeinnerTypeCd == null||"".equals(ptKneeinnerTypeCd))&&
-//				   (ptFrtTypeCd == null||"".equals(ptFrtTypeCd))) {
-//					orderCoHelper.pantsDefaultValue(orderCoForm);
-//				}else {
-//					orderCoHelper.pantsDefaultValueFromDb(orderCoForm,orderPt);
-//				}
+				coPants1Helper.pantsDefaultValue(orderCoForm);
 			}
 		}		
 		m.addObject("orderCoForm", orderCoForm);
@@ -2099,32 +2075,18 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS2_SUBITEM);
-		orderCoHelper.getPants2ModelMap(orderCoForm, modelList);
+		coPants2Helper.getPants2ModelMap(orderCoForm, modelList);
 		if("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPants2ItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.pants2DefaultValue(orderCoForm);
+				coPants2Helper.pants2DefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
 		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPants2ItemFlag();
 			if ("0".equals(itemFlag)) {
-				orderCoHelper.pants2DefaultValue(orderCoForm);
-//				orderCoHelper.pants2DefaultValue(orderCoForm);
-//				Order orderPt2 = orderListService.findOrderPt2OptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				//タック
-//				String pt2TackCd = orderPt2.getPt2TackCd();
-//				//膝裏
-//				String pt2KneeinnerTypeCd = orderPt2.getPt2KneeinnerTypeCd();
-//				//フロント仕様
-//				String pt2FrtTypeCd = orderPt2.getPt2FrtTypeCd();
-//				if((pt2TackCd == null||"".equals(pt2TackCd))&&(pt2KneeinnerTypeCd == null||"".equals(pt2KneeinnerTypeCd))&&
-//				   (pt2FrtTypeCd == null||"".equals(pt2FrtTypeCd))) {
-//					orderCoHelper.pants2DefaultValue(orderCoForm);
-//				}else {
-//					orderCoHelper.pants2DefaultValueFromDb(orderCoForm,orderPt2);
-//				}
+				coPants2Helper.pants2DefaultValue(orderCoForm);
 			}
 		}		
 		m.addObject("orderCoForm", orderCoForm);
@@ -2151,21 +2113,6 @@ public class OrderCoController {
 			String itemFlag = orderCoForm.getGiletItemFlag();
 			if ("0".equals(itemFlag)) {
 				coGiletHelper.giletDefaultValue(orderCoForm);
-//				orderCoHelper.giletDefaultValue(orderCoForm);
-//				Order orderGl = orderListService.findOrderGlOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				//フロント釦数
-//				String glFrtBtnCd = orderGl.getGlFrtBtnCd();
-//				//ラペルデザイン
-//				String glLapelDesignCd = orderGl.getGlLapelDesignCd();
-//				//裏仕様
-//				String glInnerClothCd = orderGl.getGlInnerClothCd();
-//				if((glFrtBtnCd == null||"".equals(glFrtBtnCd))&&(glLapelDesignCd == null||"".equals(glLapelDesignCd))&&
-//				   (glInnerClothCd == null||"".equals(glInnerClothCd))) {
-//				if(orderGl != null) {
-//					orderCoHelper.giletDefaultValue(orderCoForm);
-//				}else {
-//					orderCoHelper.giletDefaultValueFromDb(orderCoForm,orderGl);
-//				}
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2181,48 +2128,16 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				SHIRT_SUBITEM);
 		coShirtHelper.getShirtModelMap(orderCoForm, modelList);
-		if("orderCo".equals(orderFlag)) {
+		if ("orderCo".equals(orderFlag)) {
 			if ("0".equals(itemFlag)) {
 				coShirtHelper.shirtDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
 		} else if ("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
-		if ("0".equals(itemFlag)) {
-			coShirtHelper.shirtDefaultValue(orderCoForm);
-////		Order orderST = orderListService.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-////		if (!(null == orderST || "".equals(orderST))) {
-//////			//クレリック仕様
-//////			String stClericCd = orderST.getStClericCd();
-//////			//ダブルカフス仕様
-//////			String stDblCuffsCd = orderST.getStDblCuffsCd();
-//////			//カフスボタン追加
-//////			String stCuffsBtnCd = orderST.getStCuffsBtnCd();
-//////			
-//////			if ((stClericCd == null || "".equals(stClericCd))
-//////					&& (stDblCuffsCd == null || "".equals(stDblCuffsCd))
-//////					&& (stCuffsBtnCd == null || "".equals(stCuffsBtnCd))) {
-//////				orderCoHelper.shirtDefaultValue(orderCoForm);
-//////			} else {
-////			orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(), orderST);
-//////			}
-////		} else {
-////			orderCoHelper.shirtDefaultValue(orderCoForm);
-////		}
-	    }
-//
-//		Order orderST = orderListService
-//				.findOrderStOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//		// 一覧画面から注文画面へ遷移
-//		// 受注テーブルにレコードがある、一回目オプション画面をクリック場合、レコード値を設定する
-//		if (!(null == orderST) && ("".equals(itemFlag) || "0".equals(itemFlag))) {
-//			// orderCoHelper.shirtDefaultValueFromDb(orderCoForm.getCoOptionShirtStandardInfo(),
-//			// orderST);
-//
-//			// 受注テーブルにレコードがなし、初期値を設定
-//		} else if (null == orderST) {
-//			orderCoHelper.shirtDefaultValue(orderCoForm);
-//		}
+			if ("0".equals(itemFlag)) {
+				coShirtHelper.shirtDefaultValue(orderCoForm);
+			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionShirt");
@@ -2249,19 +2164,6 @@ public class OrderCoController {
 			String itemFlag = orderCoForm.getCoatItemFlag();
 			if ("0".equals(itemFlag)) {
 				coCoatHelper.coatDefaultValue(orderCoForm);
-//				Order orderCt = orderListService.findOrderCtOptionByOrderId(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-//				//ベント
-//				String ctVentCd = orderCt.getCtVentCd();
-//				//ラペルデザイン
-//				String ctLapelDesignCd = orderCt.getCtLapelDesignCd();
-//				//袖仕様
-//				String ctSleeveTypeCd = orderCt.getCtSleeveTypeCd();
-//				if((ctVentCd == null || "".equals(ctVentCd)) && (ctLapelDesignCd == null || "".equals(ctLapelDesignCd)) &&
-//				   (ctSleeveTypeCd == null || "".equals(ctSleeveTypeCd))) {
-//					orderCoHelper.coatDefaultValue(orderCoForm);
-//				}else {
-//					orderCoHelper.coatDefaultValueFromDb(orderCoForm,orderCt);
-//				}
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2363,7 +2265,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderPT = orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderPT)) {
-				orderCoHelper.pantsAdjustFromDb(orderCoForm,orderPT);
+				coPants1Helper.pantsAdjustFromDb(orderCoForm,orderPT);
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2380,7 +2282,7 @@ public class OrderCoController {
 		if("orderLink".equals(orderFlag)) {	
 			Order orderPT2 = orderListService.findOrderPt2ByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			if (!(null == orderPT2)) {
-				orderCoHelper.pants2AdjustFromDb(orderCoForm,orderPT2);
+				coPants2Helper.pants2AdjustFromDb(orderCoForm,orderPT2);
 			}
 		}
 		m.addObject("orderCoForm", orderCoForm);
@@ -2537,14 +2439,14 @@ public class OrderCoController {
 	@ResponseBody
 	public void pantsAdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderPtByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.pantsAdjustFromDb(orderCoForm,order);
+		coPants1Helper.pantsAdjustFromDb(orderCoForm,order);
 	}
 
 	@RequestMapping(value = "/pants2AdjustFormDb", method = RequestMethod.GET)
 	@ResponseBody
 	public void pants2AdjustFormDb(OrderCoForm orderCoForm) {
 		Order order = orderListService.findOrderPt2ByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-		orderCoHelper.pants2AdjustFromDb(orderCoForm,order);
+		coPants2Helper.pants2AdjustFromDb(orderCoForm,order);
 	}
 
 	@RequestMapping(value = "/giletAdjustFormDb", method = RequestMethod.GET)
@@ -2846,19 +2748,19 @@ public class OrderCoController {
 		// デフォルト値設定
 		if("01".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
-			orderCoHelper.pantsDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
 			String productIs3Piece = orderCoForm.getProductIs3Piece();
 			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
 			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 				coGiletHelper.giletDefaultValue(orderCoForm);
 			}
 			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
-				orderCoHelper.pants2DefaultValue(orderCoForm);
+				coPants2Helper.pants2DefaultValue(orderCoForm);
 			}
 		}else if("02".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 		}else if("03".equals(oldItem)) {
-			orderCoHelper.pantsDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
 		}else if("04".equals(oldItem)) {
 			coGiletHelper.giletDefaultValue(orderCoForm);
 		}else if("05".equals(oldItem)) {
@@ -2869,19 +2771,19 @@ public class OrderCoController {
 		
 		if("01".equals(item)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
-			orderCoHelper.pantsDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
 			String productIs3Piece = orderCoForm.getProductIs3Piece();
 			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
 			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
 				coGiletHelper.giletDefaultValue(orderCoForm);
 			}
 			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
-				orderCoHelper.pants2DefaultValue(orderCoForm);
+				coPants2Helper.pants2DefaultValue(orderCoForm);
 			}
 		}else if("02".equals(item)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 		}else if("03".equals(item)) {
-			orderCoHelper.pantsDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
 		}else if("04".equals(item)) {
 			coGiletHelper.giletDefaultValue(orderCoForm);
 		}else if("05".equals(item)) {
@@ -2890,6 +2792,37 @@ public class OrderCoController {
 			coCoatHelper.coatDefaultValue(orderCoForm);
 		}
 	}
+	
+	public void allAdjustInit(OrderCoForm orderCoForm) {
+		if("1".equals(orderCoForm.getItemCoChangeFlag())) {
+			coAdjustHelper.coAdjustJacketDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustPantsDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustShirtDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustCoatDefaultValue(orderCoForm);
+		}else {
+			if("0".equals(orderCoForm.getJacketAdFlag())) {
+				coAdjustHelper.coAdjustJacketDefaultValue(orderCoForm);
+			}
+			if("0".equals(orderCoForm.getPantsAdFlag())) {
+				coAdjustHelper.coAdjustPantsDefaultValue(orderCoForm);
+			}
+			if("0".equals(orderCoForm.getPants2AdFlag())) {
+				coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
+			}
+			if("0".equals(orderCoForm.getGiletAdFlag())) {
+				coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
+			}
+			if("0".equals(orderCoForm.getShirtAdFlag())) {
+				coAdjustHelper.coAdjustShirtDefaultValue(orderCoForm);
+			}
+			if("0".equals(orderCoForm.getCoatAdFlag())) {
+				coAdjustHelper.coAdjustCoatDefaultValue(orderCoForm);
+			}
+		}
+	}
+	
 	/**
 	 * 
 	 * @param price

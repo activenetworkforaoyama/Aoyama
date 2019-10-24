@@ -23,11 +23,11 @@ public enum Pants2CoOptionWashablePriceEnum {
 	PANTS_WASHABLE_OPTION_CODE14("00014","getWp2PisPktUf","","setPt2LeftPisPktRtPrice","wp2_pisPktUf_id","","getPt2LeftPisPktRtPrice"),//上前ピスポケット
 	PANTS_WASHABLE_OPTION_CODE15("00015","getWp2PisPktDf","","setPt2RightPisPktRtPrice","wp2_pisPktDf_id","","getPt2RightPisPktRtPrice"),//下前ピスポケット
 	PANTS_WASHABLE_OPTION_CODE16("00016","getWp2VCut","","setPt2VCutRtPrice","wp2_vCut_id","","getPt2VCutRtPrice"),//Vカット
-	PANTS_WASHABLE_OPTION_CODE17("00017","getWp2HemUp","","setPt2HemUpRtPrice","wp2_hemUp_id","","getPt2HemUpRtPrice"),//裾上げ
-	PANTS_WASHABLE_OPTION_CODE18("00018","getWp2DoubleWide","","setPt2DblWidthRtPrice","wp2_doubleWide_id","","getPt2DblWidthRtPrice"),//ダブル幅
+	PANTS_WASHABLE_OPTION_CODE17("00017","getWp2HemUp","","setPt2HemUpRtPrice","wp2_hemUp","","getPt2HemUpRtPrice"),//裾上げ
+	PANTS_WASHABLE_OPTION_CODE18("00018","getWp2DoubleWide","","setPt2DblWidthRtPrice","wp2_doubleWide","","getPt2DblWidthRtPrice"),//ダブル幅
 	PANTS_WASHABLE_OPTION_CODE19("00019","getWp2Stitch","","setPt2AmfStitchRtPrice","wp2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
 	PANTS_WASHABLE_OPTION_CODE20("00020","getWp2StitchModify","","setPt2StitchPlcRtPrice","wp2_stitchModify_id","","getPt2StitchPlcRtPrice"),//ステッチ箇所変更
-	PANTS_WASHABLE_OPTION_CODE22("00022","getWp2DStitch","","setPt2DblstitchPlcRtPrice","wp2_dStitch_id","","getPt2DblstitchPlcRtPrice"),//ダブルステッチ
+	PANTS_WASHABLE_OPTION_CODE22("00022","getWp2DStitch","","setPt2DblstitchPlcRtPrice","wp2_dStitchModify_id","","getPt2DblstitchPlcRtPrice"),//ダブルステッチ
 	PANTS_WASHABLE_OPTION_CODE24("00024","getWp2AmfColor","","setPt2AmfColorRtPrice","wp2_amfColor_id","","getPt2AmfColorRtPrice"),//AMF色指定
 	PANTS_WASHABLE_OPTION_CODE27("00027","getWp2BhColor","","setPt2BtnholeColorRtPrice","wp2_bhColor_id","","getPt2BtnholeColorRtPrice"),//ボタンホール色指定
 	PANTS_WASHABLE_OPTION_CODE30("00030","getWp2ByColor","","setPt2BtnthreadColorRtPrice","wp2_byColor_id","","getPt2BtnthreadColorRtPrice"),//ボタン付け糸指定

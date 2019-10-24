@@ -358,6 +358,7 @@ function initOptionPants1Washable() {
 			wpDStichSpecialController();
 		});
 	});
+	jQuery('input[id^="wp_stitch_id"]:checked').change();
 
 	// ステッチ箇所変更
 	jQuery('input[name="coOptionPantsWashableInfo.wpStitchModify"]').each(function() {
@@ -767,7 +768,7 @@ function wpPancherinaSpecialController() {
 			&& selectedPantsModel != 'JW21'
 			&& selectedPantsModel != 'AY01') {
 
-		jQuery('#wp_pancherina_id1').prop("disabled", true);
+		jQuery('#wp_pancherina_id1').prop("disabled", false);
 		jQuery('#wp_pancherina_id1').prop("checked", true);
 		jQuery('#wp_pancherina_id1').change();
 		jQuery('#wp_pancherina_id2').prop("disabled", true);
@@ -871,15 +872,17 @@ function wpPinLoopSpecialController() {
 function wpDStichSpecialController() {
 
 	// 選択中のAMFステッチ
-	var selectedStich = jQuery('input[name="coOptionPantsStandardInfo.opStitch"]:checked').val();
+	var selectedStich = jQuery('input[name="coOptionPantsWashableInfo.wpStitch"]:checked').val();
 
 	// AMFステッチが有りの場合はダブルステッチを有効化する
 	// 0001904(AMFステッチ)
 	if (selectedStich == '0001904') {
 		jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", false);
 	} else {
-		jQuery('input[name="coOptionPantsWashableInfo.wpDStitch"]').prop("disabled", true);
+		jQuery('input[id="wp_dStitch_id1"]').prop("disabled", false);
+		jQuery('input[id="wp_dStitch_id2"]').prop("disabled", true);
 		jQuery('input[id="wp_dStitch_id1"]').prop("checked", true);
+		jQuery('input[id="wp_dStitch_id1"]').change();
 	}
 }
 

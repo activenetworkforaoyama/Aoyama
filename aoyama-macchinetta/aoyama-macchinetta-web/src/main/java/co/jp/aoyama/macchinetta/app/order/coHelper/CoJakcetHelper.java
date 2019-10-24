@@ -1315,7 +1315,7 @@ public class CoJakcetHelper {
 		
 		//ステッチ箇所変更
 		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if(jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)&&!jkStitchPlcCd.startsWith(regex)) {
+		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)/* &&!jkStitchPlcCd.startsWith(regex) */) {
 			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
 			for (String stitchPlcCode : jkStitchPlcSplit) {
 				if("0002501".equals(stitchPlcCode)) {
@@ -1342,7 +1342,7 @@ public class CoJakcetHelper {
 		
 		//ダブルステッチ変更
 		String jkDblstitchPlcCd = orderJK.getJkDblstitchPlcCd();
-		if(jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)&&!jkDblstitchPlcCd.startsWith(regex)) {
+		if (jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)/* &&!jkDblstitchPlcCd.startsWith(regex) */) {
 			String[] jkDblstitchPlcSplit = jkDblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : jkDblstitchPlcSplit) {
 				if("0002701".equals(dblstitchPlcCode)) {
@@ -1369,9 +1369,10 @@ public class CoJakcetHelper {
 		String jkAmfColorPlcCd = orderJK.getJkAmfColorPlcCd();
 		String jkAmfColorCd = orderJK.getJkAmfColorCd();
 		if(jkAmfColorPlcCd!=null && !"".equals(jkAmfColorPlcCd) && jkAmfColorCd !=null && !"".equals(jkAmfColorCd)
-				&&!jkAmfColorPlcCd.startsWith(regex)&&!jkAmfColorCd.startsWith(regex)) {
+		/* &&!jkAmfColorPlcCd.startsWith(regex)&&!jkAmfColorCd.startsWith(regex) */) {
 			String[] jkAmfColorPlcSplit = jkAmfColorPlcCd.split(regex);
 			String[] jkAmfColorSplit = jkAmfColorCd.split(regex);
+			jkAmfColorSplit = BaseCheckUtil.placeColorMethod(jkAmfColorPlcSplit.length,jkAmfColorSplit);
 			for (int i = 0;i<jkAmfColorPlcSplit.length;i++) {
 				if("0002901".equals(jkAmfColorPlcSplit[i])) {
 					optionJacketWashableInfo.setWjAmfColorPlace1(jkAmfColorPlcSplit[i]);
@@ -1408,9 +1409,12 @@ public class CoJakcetHelper {
 		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
 		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
 		if(!"".equals(jkBtnholeColorPlcCd)&&jkBtnholeColorPlcCd!=null&&!"".equals(jkBtnholeColorCd)&&jkBtnholeColorCd!=null
-				&&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(regex)) {
+		/*
+		 * &&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(regex)
+		 */) {
 			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
 			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
+			jkBtnholeColorSplit = BaseCheckUtil.placeColorMethod(jkBtnholeColorPlcSplit.length,jkBtnholeColorSplit);
 			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
 				if("0003201".equals(jkBtnholeColorPlcSplit[i])) {
 					optionJacketWashableInfo.setWjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
@@ -1471,9 +1475,13 @@ public class CoJakcetHelper {
 		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
 		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
 		if(!"".equals(jkBtnthreadColorPlcCd)&&jkBtnthreadColorPlcCd!=null&&!"".equals(jkBtnthreadColorCd)&&jkBtnthreadColorCd!=null
-				&&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.startsWith(regex)) {
+		/*
+		 * &&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.startsWith(
+		 * regex)
+		 */) {
 			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
 			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
+			jkBtnthreadColorSplit = BaseCheckUtil.placeColorMethod(jkBtnthreadColorPlcSplit.length,jkBtnthreadColorSplit);
 			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
 				if("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
 					optionJacketWashableInfo.setWjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
@@ -1534,9 +1542,13 @@ public class CoJakcetHelper {
 		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
 		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
 		if (!"".equals(jkBtnholeColorPlcCd) && jkBtnholeColorPlcCd != null && !"".equals(jkBtnholeColorCd)
-				&& jkBtnholeColorCd != null&&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(regex)) {
+				&& jkBtnholeColorCd != null/*
+											 * &&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(
+											 * regex)
+											 */) {
 			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
 			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
+			jkBtnholeColorSplit = BaseCheckUtil.placeColorMethod(jkBtnholeColorPlcSplit.length,jkBtnholeColorSplit);
 			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
 				if ("0003201".equals(jkBtnholeColorPlcSplit[i])) {
 					optionJacketTuxedoInfo.setTjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
@@ -1597,9 +1609,13 @@ public class CoJakcetHelper {
 		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
 		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
 		if (!"".equals(jkBtnthreadColorPlcCd) && jkBtnthreadColorPlcCd != null && !"".equals(jkBtnthreadColorCd)
-				&& jkBtnthreadColorCd != null&&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.startsWith(regex)) {
+				&& jkBtnthreadColorCd != null/*
+												 * &&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.
+												 * startsWith(regex)
+												 */) {
 			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
 			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
+			jkBtnthreadColorSplit = BaseCheckUtil.placeColorMethod(jkBtnthreadColorPlcSplit.length,jkBtnthreadColorSplit);
 			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
 				if ("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
 					optionJacketTuxedoInfo.setTjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
@@ -1658,7 +1674,7 @@ public class CoJakcetHelper {
 		String regex = "/";
 		//内ポケット変更
 		String jkInnerPktCd = orderJK.getJkInnerPktCd();
-		if(jkInnerPktCd != null && !"".equals(jkInnerPktCd)&&!jkInnerPktCd.startsWith(regex)) {
+		if (jkInnerPktCd != null && !"".equals(jkInnerPktCd)/* &&!jkInnerPktCd.startsWith(regex) */) {
 			String[] jkInnerPktSplit = jkInnerPktCd.split(regex);
 			for (String innerPktCode : jkInnerPktSplit) {
 				if("0002101".equals(innerPktCode)) {
@@ -1675,7 +1691,7 @@ public class CoJakcetHelper {
 		
 		//ステッチ箇所変更
 		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if(jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)&&!jkStitchPlcCd.startsWith(regex)) {
+		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)/* &&!jkStitchPlcCd.startsWith(regex) */) {
 			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
 			for (String stitchPlcCode : jkStitchPlcSplit) {
 				if("0002501".equals(stitchPlcCode)) {
@@ -1702,7 +1718,7 @@ public class CoJakcetHelper {
 		
 		//ダブルステッチ変更
 		String jkDblstitchPlcCd = orderJK.getJkDblstitchPlcCd();
-		if(jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)&&!jkDblstitchPlcCd.startsWith(regex)) {
+		if (jkDblstitchPlcCd != null && !"".equals(jkDblstitchPlcCd)/* &&!jkDblstitchPlcCd.startsWith(regex) */) {
 			String[] jkDblstitchPlcSplit = jkDblstitchPlcCd.split(regex);
 			for (String dblstitchPlcCode : jkDblstitchPlcSplit) {
 				if("0002701".equals(dblstitchPlcCode)) {
@@ -1729,9 +1745,10 @@ public class CoJakcetHelper {
 		String jkAmfColorPlcCd = orderJK.getJkAmfColorPlcCd();
 		String jkAmfColorCd = orderJK.getJkAmfColorCd();
 		if(jkAmfColorPlcCd!=null && !"".equals(jkAmfColorPlcCd) && jkAmfColorCd !=null && !"".equals(jkAmfColorCd)
-				&&!jkAmfColorPlcCd.startsWith(regex)&&!jkAmfColorCd.startsWith(regex)) {
+		/* &&!jkAmfColorPlcCd.startsWith(regex)&&!jkAmfColorCd.startsWith(regex) */) {
 			String[] jkAmfColorPlcSplit = jkAmfColorPlcCd.split(regex);
 			String[] jkAmfColorSplit = jkAmfColorCd.split(regex);
+			jkAmfColorSplit = BaseCheckUtil.placeColorMethod(jkAmfColorPlcSplit.length,jkAmfColorSplit);
 			for (int i = 0;i<jkAmfColorPlcSplit.length;i++) {
 				if("0002901".equals(jkAmfColorPlcSplit[i])) {
 					optionJacketStandardInfo.setOjAmfColorPlace1(jkAmfColorPlcSplit[i]);
@@ -1768,9 +1785,12 @@ public class CoJakcetHelper {
 		String jkBtnholeColorPlcCd = orderJK.getJkBtnholeColorPlcCd();
 		String jkBtnholeColorCd = orderJK.getJkBtnholeColorCd();
 		if(!"".equals(jkBtnholeColorPlcCd)&&jkBtnholeColorPlcCd!=null&&!"".equals(jkBtnholeColorCd)&&jkBtnholeColorCd!=null
-				&&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(regex)) {
+		/*
+		 * &&!jkBtnholeColorPlcCd.startsWith(regex)&&!jkBtnholeColorCd.startsWith(regex)
+		 */) {
 			String[] jkBtnholeColorPlcSplit = jkBtnholeColorPlcCd.split(regex);
 			String[] jkBtnholeColorSplit = jkBtnholeColorCd.split(regex);
+			jkBtnholeColorSplit = BaseCheckUtil.placeColorMethod(jkBtnholeColorPlcSplit.length,jkBtnholeColorSplit);
 			for (int i = 0; i < jkBtnholeColorPlcSplit.length; i++) {
 				if("0003201".equals(jkBtnholeColorPlcSplit[i])) {
 					optionJacketStandardInfo.setOjBhColorPlace1(jkBtnholeColorPlcSplit[i]);
@@ -1831,9 +1851,13 @@ public class CoJakcetHelper {
 		String jkBtnthreadColorPlcCd = orderJK.getJkBtnthreadColorPlcCd();
 		String jkBtnthreadColorCd = orderJK.getJkBtnthreadColorCd();
 		if(!"".equals(jkBtnthreadColorPlcCd)&&jkBtnthreadColorPlcCd!=null&&!"".equals(jkBtnthreadColorCd)&&jkBtnthreadColorCd!=null
-				&&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.startsWith(regex)) {
+		/*
+		 * &&!jkBtnthreadColorPlcCd.startsWith(regex)&&!jkBtnthreadColorCd.startsWith(
+		 * regex)
+		 */) {
 			String[] jkBtnthreadColorPlcSplit = jkBtnthreadColorPlcCd.split(regex);
 			String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split(regex);
+			jkBtnthreadColorSplit = BaseCheckUtil.placeColorMethod(jkBtnthreadColorPlcSplit.length,jkBtnthreadColorSplit);
 			for (int i = 0; i < jkBtnthreadColorPlcSplit.length; i++) {
 				if("0003501".equals(jkBtnthreadColorPlcSplit[i])) {
 					optionJacketStandardInfo.setOjByColorPlace1(jkBtnthreadColorPlcSplit[i]);
@@ -2007,10 +2031,10 @@ public class CoJakcetHelper {
 				if ("0002402".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
 					String stitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00025");
 					String stitchModifyValueName = "stitchModify_id";
-					if(!stitchModifyCountArr.startsWith("/")) {
+					//if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketProject(orderCoForm, stitchModifyCode,
 								stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-					}
+					//}
 				}
 
 				// ダブルステッチ変更
@@ -2019,65 +2043,86 @@ public class CoJakcetHelper {
 				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
 					String dStitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00027");
 					String dSitchModifyValueName = "dStitchModify_id";
-					if(!dSitchModifyCountArr.startsWith("/")) {
+					//if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForJacketProject(orderCoForm, dStitchModifyCode,
 								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-					}
+					//}
 					
 				}
 
 				// AMF色指定
 				String jkAmfColorCd = coOptionJacketStandardInfo.getOjAmfAllColor();
-				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)&&!jkAmfColorCd.startsWith("/")) {
-					String amfValueName = "amfColor_id";
-					String amfCode = productItem.concat("02").concat(ojJacketModel);
-					Map<String, String> amfColorMap = new HashMap<String, String>();
+				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)){
+					String amfTemp = jkAmfColorCd.replaceAll("/", "");
+					if(!"".equals(amfTemp)) {
+						String amfValueName = "amfColor_id";
+						String amfCode = productItem.concat("02").concat(ojJacketModel);
+						Map<String, String> amfColorMap = new HashMap<String, String>();
 
-					String[] jkAmfColorSplit = jkAmfColorCd.split("/");
-					for (String amfColor : jkAmfColorSplit) {
-						amfColorMap.put(amfColor, amfColor);
+						String[] jkAmfColorSplit = jkAmfColorCd.split("/");
+						for (String amfColor : jkAmfColorSplit) {
+							amfColorMap.put(amfColor, amfColor);
+						}
+						//String amfColorCount = String.valueOf(amfColorMap.size());
+						List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+						amfValuesList.removeAll(Collections.singleton(null));
+						amfValuesList.removeAll(Collections.singleton(""));
+						String amfColorCount = String.valueOf(amfValuesList.size());
+						String amfColorCode = "00030".concat(amfValuesList.get(0));
+						orderCoController.getOrderPriceForJacketProject(orderCoForm, amfCode, amfValueName, amfColorCode,
+								amfColorCount, "", "", "");
 					}
-					String amfColorCount = String.valueOf(amfColorMap.size());
-					List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
-					String amfColorCode = "00030".concat(amfValuesList.get(0));
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, amfCode, amfValueName, amfColorCode,
-							amfColorCount, "", "", "");
 				}
+				
+//				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)&&!"".equals(amfTemp)/* &&!jkAmfColorCd.startsWith("/") */) {
+//					
+//				}
 				// ボタンホール色指定
 				String jkBtnholeColorCd = coOptionJacketStandardInfo.getOjBhAllColor();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)&&!jkBtnholeColorCd.startsWith("/")) {
-					String bhValueName = "bhColor_id";
-					String bhCode = productItem.concat("02").concat(ojJacketModel);
-					Map<String, String> bhColorMap = new HashMap<String, String>();
+				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)/* &&!jkBtnholeColorCd.startsWith("/") */) {
+					String bhTemp = jkBtnholeColorCd.replaceAll("/", "");
+					if(!"".equals(bhTemp)) {
+						String bhValueName = "bhColor_id";
+						String bhCode = productItem.concat("02").concat(ojJacketModel);
+						Map<String, String> bhColorMap = new HashMap<String, String>();
 
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						bhColorMap.put(btnholeColor, btnholeColor);
+						String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
+						for (String btnholeColor : jkBtnholeColorSplit) {
+							bhColorMap.put(btnholeColor, btnholeColor);
+						}
+
+						//String bhColorCount = String.valueOf(bhColorMap.size());
+						List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+						bhValuesList.removeAll(Collections.singleton(null));
+						bhValuesList.removeAll(Collections.singleton(""));
+						String bhColorCount = String.valueOf(bhValuesList.size());
+						String bhColorCode = "00033".concat(bhValuesList.get(0));
+						orderCoController.getOrderPriceForJacketProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+								bhColorCount, "", "", "");
 					}
-
-					String bhColorCount = String.valueOf(bhColorMap.size());
-					List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
-					String bhColorCode = "00033".concat(bhValuesList.get(0));
-					orderCoController.getOrderPriceForJacketProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-							bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
 				String jkBtnthreadColorCd = coOptionJacketStandardInfo.getOjByAllColor();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)&&!jkBtnthreadColorCd.startsWith("/")) {
-				String byValueName = "byColor_id";
-				String byCode = productItem.concat("02").concat(ojJacketModel);
-				Map<String, String> byColorMap = new HashMap<String, String>();
-				
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						byColorMap.put(btnthreadColor, btnthreadColor);
+				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)/* &&!jkBtnthreadColorCd.startsWith("/") */){
+					String byTemp = jkBtnthreadColorCd.replaceAll("/", "");
+					if(!"".equals(byTemp)) {
+						String byValueName = "byColor_id";
+						String byCode = productItem.concat("02").concat(ojJacketModel);
+						Map<String, String> byColorMap = new HashMap<String, String>();
+						
+						String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
+						for (String btnthreadColor : jkBtnthreadColorSplit) {
+							byColorMap.put(btnthreadColor, btnthreadColor);
+						}
+						//String byColorCount = String.valueOf(byColorMap.size());
+						List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+						byValuesList.removeAll(Collections.singleton(null));
+						byValuesList.removeAll(Collections.singleton(""));
+						String byColorCount = String.valueOf(byValuesList.size());
+						String byColorCode = "00036".concat(byValuesList.get(0));
+						orderCoController.getOrderPriceForJacketProject(orderCoForm, byCode, byValueName, byColorCode,
+								byColorCount, "", "", "");
 					}
-				
-				String byColorCount = String.valueOf(byColorMap.size());
-				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
-				String byColorCode = "00036".concat(byValuesList.get(0));
-				orderCoController.getOrderPriceForJacketProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setJkOptionPrice("0");
@@ -2090,39 +2135,51 @@ public class CoJakcetHelper {
 				orderCoController.getOrderPriceForJacketTuxedoModel(orderCoForm, code,orderFlag);
 				// ボタンホール色指定
 				String jkBtnholeColorCd = coOptionJacketTuxedoInfo.getTjAllBhColor();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)&&!jkBtnholeColorCd.startsWith("/")) {
-				String bhValueName = "tj_bhColor_id";
-				String bhCode = productItem.concat("02").concat(tjJacketModel);
-				Map<String, String> bhColorMap = new HashMap<String, String>();
-				
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						bhColorMap.put(btnholeColor, btnholeColor);
+				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)/* &&!jkBtnholeColorCd.startsWith("/") */) {
+					String bhTemp = jkBtnholeColorCd.replaceAll("/", "");
+					if(!"".equals(bhTemp)) {
+						String bhValueName = "tj_bhColor_id";
+						String bhCode = productItem.concat("02").concat(tjJacketModel);
+						Map<String, String> bhColorMap = new HashMap<String, String>();
+						
+						String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
+						for (String btnholeColor : jkBtnholeColorSplit) {
+							bhColorMap.put(btnholeColor, btnholeColor);
+						}
+						
+						//String bhColorCount = String.valueOf(bhColorMap.size());
+						List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+						bhValuesList.removeAll(Collections.singleton(null));
+						bhValuesList.removeAll(Collections.singleton(""));
+						String bhColorCount = String.valueOf(bhValuesList.size());
+						String bhColorCode = "00033".concat(bhValuesList.get(0));
+						orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+								bhColorCount, "", "", "");
 					}
-				
-				String bhColorCount = String.valueOf(bhColorMap.size());
-				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
-				String bhColorCode = "00033".concat(bhValuesList.get(0));
-				orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-						bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
 				String jkBtnthreadColorCd = coOptionJacketTuxedoInfo.getTjAllByColor();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)&&!jkBtnthreadColorCd.startsWith("/")) {
-				String byValueName = "tj_byColor_id";
-				String byCode = productItem.concat("02").concat(tjJacketModel);
-				Map<String, String> byColorMap = new HashMap<String, String>();
-				
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						byColorMap.put(btnthreadColor, btnthreadColor);
+				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
+					String byTemp = jkBtnthreadColorCd.replaceAll("/", "");
+					if(!"".equals(byTemp)) {
+						String byValueName = "tj_byColor_id";
+						String byCode = productItem.concat("02").concat(tjJacketModel);
+						Map<String, String> byColorMap = new HashMap<String, String>();
+						
+						String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
+						for (String btnthreadColor : jkBtnthreadColorSplit) {
+							byColorMap.put(btnthreadColor, btnthreadColor);
+						}
+						
+						//String byColorCount = String.valueOf(byColorMap.size());
+						List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+						byValuesList.removeAll(Collections.singleton(null));
+						byValuesList.removeAll(Collections.singleton(""));
+						String byColorCount = String.valueOf(byValuesList.size());
+						String byColorCode = "00036".concat(byValuesList.get(0));
+						orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
+								byColorCount, "", "", "");
 					}
-				
-				String byColorCount = String.valueOf(byColorMap.size());
-				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
-				String byColorCode = "00036".concat(byValuesList.get(0));
-				orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setJkOptionPrice("0");
@@ -2161,57 +2218,75 @@ public class CoJakcetHelper {
 				}
 				// AMF色指定
 				String jkAmfColorCd = coOptionJacketWashableInfo.getWjAllAmfColor();
-				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)&&!jkAmfColorCd.startsWith("/")) {
-				String amfValueName = "wj_amfColor_id";
-				String amfCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-				Map<String, String> amfColorMap = new HashMap<String, String>();
-				
-					String[] jkAmfColorSplit = jkAmfColorCd.split("/");
-					for (String amfColor : jkAmfColorSplit) {
-						amfColorMap.put(amfColor, amfColor);
+				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)) {
+					String amfTemp = jkAmfColorCd.replaceAll("/", "");
+					if(!"".equals(amfTemp)) {
+						String amfValueName = "wj_amfColor_id";
+						String amfCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
+						Map<String, String> amfColorMap = new HashMap<String, String>();
+						
+						String[] jkAmfColorSplit = jkAmfColorCd.split("/");
+						for (String amfColor : jkAmfColorSplit) {
+							amfColorMap.put(amfColor, amfColor);
+						}
+						
+						//String amfColorCount = String.valueOf(amfColorMap.size());
+						List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
+						amfValuesList.removeAll(Collections.singleton(null));
+						amfValuesList.removeAll(Collections.singleton(""));
+						String amfColorCount = String.valueOf(amfValuesList.size());
+						String amfColorCode = "00030".concat(amfValuesList.get(0));
+						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, amfCode, amfValueName,
+								amfColorCode, amfColorCount, "", "", "");
 					}
-				
-				String amfColorCount = String.valueOf(amfColorMap.size());
-				List<String> amfValuesList = new ArrayList<String>(amfColorMap.values());
-				String amfColorCode = "00030".concat(amfValuesList.get(0));
-				orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, amfCode, amfValueName,
-						amfColorCode, amfColorCount, "", "", "");
 				}
 				// ボタンホール色指定
 				String jkBtnholeColorCd = coOptionJacketWashableInfo.getWjAllBhColor();
-				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)&&!jkBtnholeColorCd.startsWith("/")) {
-				String bhValueName = "wj_bhColor_id";
-				String bhCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-				Map<String, String> bhColorMap = new HashMap<String, String>();
-				
-					String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
-					for (String btnholeColor : jkBtnholeColorSplit) {
-						bhColorMap.put(btnholeColor, btnholeColor);
+				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)) {
+					String bhTemp = jkBtnholeColorCd.replaceAll("/", "");
+					if(!"".equals(bhTemp)) {
+						String bhValueName = "wj_bhColor_id";
+						String bhCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
+						Map<String, String> bhColorMap = new HashMap<String, String>();
+						
+						String[] jkBtnholeColorSplit = jkBtnholeColorCd.split("/");
+						for (String btnholeColor : jkBtnholeColorSplit) {
+							bhColorMap.put(btnholeColor, btnholeColor);
+						}
+						
+						//String bhColorCount = String.valueOf(bhColorMap.size());
+						List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
+						bhValuesList.removeAll(Collections.singleton(null));
+						bhValuesList.removeAll(Collections.singleton(""));
+						String bhColorCount = String.valueOf(bhValuesList.size());
+						String bhColorCode = "00033".concat(bhValuesList.get(0));
+						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+								bhColorCount, "", "", "");
 					}
-				
-				String bhColorCount = String.valueOf(bhColorMap.size());
-				List<String> bhValuesList = new ArrayList<String>(bhColorMap.values());
-				String bhColorCode = "00033".concat(bhValuesList.get(0));
-				orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, bhCode, bhValueName, bhColorCode,
-						bhColorCount, "", "", "");
 				}
 				// ボタン付け糸指定
 				String jkBtnthreadColorCd = coOptionJacketWashableInfo.getWjAllByColor();
-				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)&&!jkBtnthreadColorCd.startsWith("/")) {
-				String byValueName = "wj_byColor_id";
-				String byCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-				Map<String, String> byColorMap = new HashMap<String, String>();
-				
-					String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
-					for (String btnthreadColor : jkBtnthreadColorSplit) {
-						byColorMap.put(btnthreadColor, btnthreadColor);
+				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
+					String bhTemp = jkBtnholeColorCd.replaceAll("/", "");
+					if(!"".equals(bhTemp)) {
+						String byValueName = "wj_byColor_id";
+						String byCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
+						Map<String, String> byColorMap = new HashMap<String, String>();
+						
+							String[] jkBtnthreadColorSplit = jkBtnthreadColorCd.split("/");
+							for (String btnthreadColor : jkBtnthreadColorSplit) {
+								byColorMap.put(btnthreadColor, btnthreadColor);
+							}
+						
+						//String byColorCount = String.valueOf(byColorMap.size());
+						List<String> byValuesList = new ArrayList<String>(byColorMap.values());
+						String byColorCount = String.valueOf(byValuesList.size());
+						String byColorCode = "00036".concat(byValuesList.get(0));
+						byValuesList.removeAll(Collections.singleton(null));
+						byValuesList.removeAll(Collections.singleton(""));
+						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, byCode, byValueName, byColorCode,
+								byColorCount, "", "", "");
 					}
-				
-				String byColorCount = String.valueOf(byColorMap.size());
-				List<String> byValuesList = new ArrayList<String>(byColorMap.values());
-				String byColorCode = "00036".concat(byValuesList.get(0));
-				orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, byCode, byValueName, byColorCode,
-						byColorCount, "", "", "");
 				}
 			}else {
 				orderCoForm.setJkOptionPrice("0");
@@ -2249,6 +2324,10 @@ public class CoJakcetHelper {
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
 				
+				if("cuffBackMate".equals(valueFour)&&"2000300".equals(invokeOne)) {
+					splicingCodeDetail = "";
+				}
+				
 				if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
 					
 				}else {
@@ -2277,6 +2356,7 @@ public class CoJakcetHelper {
 						stitchModifyList.add(ojStitchModifyPlace9);
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
+						stitchModifyList.removeAll(Collections.singleton(""));
 //						Iterator<String> iterator = stitchModifyList.iterator();
 //						while (iterator.hasNext()) {
 //							if (iterator.next() == null || "".equals(iterator.next())) {
@@ -2321,6 +2401,7 @@ public class CoJakcetHelper {
 						stitchModifyList.add(ojStitchModifyPlace9);
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
+						stitchModifyList.removeAll(Collections.singleton(""));
 //						Iterator<String> iterator = stitchModifyList.iterator();
 //						while (iterator.hasNext()) {
 //							if (iterator.next() == null || "".equals(iterator.next())) {
@@ -2365,6 +2446,7 @@ public class CoJakcetHelper {
 						amfColorSet.add(ojAmfColor9);
 						
 						amfColorSet.removeAll(Collections.singleton(null));
+						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
 						if (OptionCodeKeys.JK_0002801.equals(invokeOne)||(OptionCodeKeys.JK_0002802.equals(invokeOne)&&amfColorSet.isEmpty())) {
@@ -2417,6 +2499,7 @@ public class CoJakcetHelper {
 						bhColorSet.add(ojBhColor17);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -2467,6 +2550,7 @@ public class CoJakcetHelper {
 						byColorSet.add(ojByColor16);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {
@@ -2562,6 +2646,10 @@ public class CoJakcetHelper {
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
 				
+				if("tj_btnMate".equals(valueFour)&&"3000700".equals(invokeOne)) {
+					splicingCodeDetail = "";
+				}
+				
 				if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
 					
 				}else {
@@ -2603,6 +2691,7 @@ public class CoJakcetHelper {
 						bhColorSet.add(tjBhColor17);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -2653,6 +2742,7 @@ public class CoJakcetHelper {
 						byColorSet.add(tjByColor16);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {
@@ -2774,6 +2864,7 @@ public class CoJakcetHelper {
 						stitchModifyList.add(wjStitchModifyPlace9);
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
+						stitchModifyList.removeAll(Collections.singleton(""));
 						
 						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne)) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
@@ -2810,7 +2901,7 @@ public class CoJakcetHelper {
 						stitchModifyList.add(wjStitchModifyPlace9);
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
-						
+						stitchModifyList.removeAll(Collections.singleton(""));
 						if(stitchModifyList.isEmpty() || OptionCodeKeys.JK_0002601.equals(invokeOne)) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
 						}else {
@@ -2846,6 +2937,7 @@ public class CoJakcetHelper {
 						amfColorSet.add(wjAmfColor9);
 						
 						amfColorSet.removeAll(Collections.singleton(null));
+						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
 						if (OptionCodeKeys.JK_0002801.equals(invokeOne)||(OptionCodeKeys.JK_0002802.equals(invokeOne)&&amfColorSet.isEmpty())) {
@@ -2898,6 +2990,7 @@ public class CoJakcetHelper {
 						bhColorSet.add(wjBhColor17);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -2948,6 +3041,7 @@ public class CoJakcetHelper {
 						byColorSet.add(wjByColor16);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {

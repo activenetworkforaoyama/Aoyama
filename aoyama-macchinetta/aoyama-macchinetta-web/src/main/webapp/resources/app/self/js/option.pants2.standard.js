@@ -12,6 +12,13 @@ function initOptionPants2Standard() {
 		// 選択されたPantsモデルを取得
 		var pantsModel = jQuery(this).val();
 		var pantsoldModel = jQuery('#op2_pantsModel').attr("oldPants2Model");
+		var modelFlag = 0;
+		if(pantsoldModel == '' || pantsoldModel == null){
+			modelFlag = 1;
+		}
+		else {
+			modelFlag = 2;
+		}
 		if (pantsModel != pantsoldModel) {
 			jQuery("#pants2Flag").val("0");
 		}else{
@@ -26,149 +33,151 @@ function initOptionPants2Standard() {
 				return;
 			}
 
-		// 選択中のタック
-		var tackElem = jQuery('#op2_tack');
-		//var selectedTack = tackElem.val();
-
-		// タックの選択肢更新
-		tackElem.empty();
-		var tmpTack = null;
-		for (tmpTack of tackList[pantsModel].activeList) {
-			tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
-		}
-		// デフォルトを選択
-		tackElem.val(tackList[pantsModel].defaultValue);
-		
-//		// フロント仕様設定
-//		var sFrontSpec = defaultFrontSpec[pantsModel];
-//		jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').val([sFrontSpec]);
-
-		// パンチェリーナ特殊制御
-		pancherinaSpecialController2();
-
-		// 選択中のアジャスター仕様
-		var selectedAdjuster = jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]:checked').val();
-
-		// アジャスター仕様の選択肢制御
-		jQuery('input[id^="op2_adjuster_"]').each(function() {
-			var tmpOp2AdjusterElem = jQuery(this);
-			var value = tmpOp2AdjusterElem.val();
-
-			if (adjusterList[pantsModel].activeList.indexOf(value) != -1) {
-				// 有効なアジャスター仕様の場合、有効化
-				tmpOp2AdjusterElem.prop("disabled", false);
-			} else {
-				// 有効なアジャスター仕様ではない場合、無効化
-				tmpOp2AdjusterElem.prop("disabled", true);
+			// 選択中のタック
+			var tackElem = jQuery('#op2_tack');
+			//var selectedTack = tackElem.val();
+	
+			// タックの選択肢更新
+			tackElem.empty();
+			var tmpTack = null;
+			for (tmpTack of tackList[pantsModel].activeList) {
+				tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
 			}
-		});
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').val([adjusterList[pantsModel].defaultValue]);
-
-		// 選択中のベルトループ
-		var selectedBeltLoop = jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]:checked').val();
-
-		// ベルトループの選択肢制御
-		jQuery('input[id^="op2_beltLoop_"]').each(function() {
-			var tmpOp2BeltLoopElem = jQuery(this);
-			var value = tmpOp2BeltLoopElem.val();
-
-			if (beltLoopList[pantsModel].activeList.indexOf(value) != -1) {
-				// 有効なベルトループの場合、有効化
-				tmpOp2BeltLoopElem.prop("disabled", false);
-			} else {
-				// 有効なベルトループではない場合、無効化
-				tmpOp2BeltLoopElem.prop("disabled", true);
-			}
-		});
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
-		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').change();
-
-		// ベルトループ変更時処理
-		changedBeltLoop2();
-
-		// 選択中の脇ポケット
-		var sidePktElem = jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]:checked');
-		var selectedSidePkt = sidePktElem.val();
-
-		// モデルに基づくデフォルトの脇ポケット
-		var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').val([modelSidePkt]);
-
-		// 選択中の忍びポケット
-		var sinobiPktElem = jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]:checked');
-		var selectedSinobiPkt = sinobiPktElem.val();
-
-		// モデルに基づくデフォルトの忍びポケット
-		var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').val([modelSinobiPkt]);
-
-		// モデルに基づくデフォルトのコインポケット
-		var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
-		// デフォルトを選択
-		jQuery('#op2_coinPkt').val([modelCoinPkt]);
-		jQuery('#op2_coinPkt').change();
-
-		// 選択中の上前ピスポケット
-		var pisPktUf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]:checked');
-		var selectedPisPktUf = pisPktUf.val();
-
-		// モデルに基づくデフォルトの上前ピスポケット
-		var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').val([modelPisPktUf]);
-		jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').change();
-
-		// 選択中の下前ピスポケット
-		var pisPktDf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]:checked');
-		var selectedPisPktDf = pisPktDf.val();
-
-		// モデルに基づくデフォルトの下前ピスポケット
-		var modelPisPktDf = pantsModelDefaultList[pantsModel].op_pisPktDf;
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').val([modelPisPktDf]);
-		jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').change();
-
-		// 選択中のVカット
-		var vCut = jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]:checked');
-		var selectedVCut = vCut.val();
-
-		// モデルに基づくデフォルトのVカット
-		var modelVCut = pantsModelDefaultList[pantsModel].op_vCut;
-		// デフォルトを選択
-		jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').val([modelVCut]);
-
-		// ステッチ箇所変更
-		ctrlOp2StitchModify();
-		ctrlOp2StitchModifyPisFlap();
-
-		// ダブルステッチ
-		ctrlOp2DStitch();
-		ctrlOp2DStitchPlace();
-
-		// AMF色指定の有効/無効を制御する
-		ctrlOp2AmfColor();
-
-		//AY01の場合、ベルトループ仕様とピンループの制御。
-		if (pantsModel == "AY01") {
-			jQuery('#op2_beltLoop_id1').prop('disabled', true);
-			jQuery('#op2_beltLoop_id2').prop('disabled', false);
-			jQuery('#op2_beltLoop_id2').prop('checked', true);
+			// デフォルトを選択
+			tackElem.val(tackList[pantsModel].defaultValue);
 			
-			jQuery('#op2_pinLoop_id1').prop('disabled', true);
-			jQuery('#op2_pinLoop_id2').prop('disabled', false);
-			jQuery('#op2_pinLoop_id2').prop('checked', true);
-		}
-		
-		// 別モデルに変更された場合はアラート表示
-		if ((tmpOp2PantsModel != '') && pantsModel != tmpOp2PantsModel) {
-		    setAlert('op2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
-		}
-		// 一時保存のモデルを更新
-		tmpOp2PantsModel = pantsModel;
+	//		// フロント仕様設定
+	//		var sFrontSpec = defaultFrontSpec[pantsModel];
+	//		jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').val([sFrontSpec]);
+	
+			// パンチェリーナ特殊制御
+			pancherinaSpecialController2();
+	
+			// 選択中のアジャスター仕様
+			var selectedAdjuster = jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]:checked').val();
+	
+			// アジャスター仕様の選択肢制御
+			jQuery('input[id^="op2_adjuster_"]').each(function() {
+				var tmpOp2AdjusterElem = jQuery(this);
+				var value = tmpOp2AdjusterElem.val();
+	
+				if (adjusterList[pantsModel].activeList.indexOf(value) != -1) {
+					// 有効なアジャスター仕様の場合、有効化
+					tmpOp2AdjusterElem.prop("disabled", false);
+				} else {
+					// 有効なアジャスター仕様ではない場合、無効化
+					tmpOp2AdjusterElem.prop("disabled", true);
+				}
+			});
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').val([adjusterList[pantsModel].defaultValue]);
+	
+			// 選択中のベルトループ
+			var selectedBeltLoop = jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]:checked').val();
+	
+			// ベルトループの選択肢制御
+			jQuery('input[id^="op2_beltLoop_"]').each(function() {
+				var tmpOp2BeltLoopElem = jQuery(this);
+				var value = tmpOp2BeltLoopElem.val();
+	
+				if (beltLoopList[pantsModel].activeList.indexOf(value) != -1) {
+					// 有効なベルトループの場合、有効化
+					tmpOp2BeltLoopElem.prop("disabled", false);
+				} else {
+					// 有効なベルトループではない場合、無効化
+					tmpOp2BeltLoopElem.prop("disabled", true);
+				}
+			});
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').val([beltLoopList[pantsModel].defaultValue]);
+			jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').change();
+	
+			// ベルトループ変更時処理
+			changedBeltLoop2();
+	
+			// 選択中の脇ポケット
+			var sidePktElem = jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]:checked');
+			var selectedSidePkt = sidePktElem.val();
+	
+			// モデルに基づくデフォルトの脇ポケット
+			var modelSidePkt = pantsModelDefaultList[pantsModel].op_sidePkt;
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').val([modelSidePkt]);
+	
+			// 選択中の忍びポケット
+			var sinobiPktElem = jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]:checked');
+			var selectedSinobiPkt = sinobiPktElem.val();
+	
+			// モデルに基づくデフォルトの忍びポケット
+			var modelSinobiPkt = pantsModelDefaultList[pantsModel].op_sinobiPkt;
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').val([modelSinobiPkt]);
+	
+			// モデルに基づくデフォルトのコインポケット
+			var modelCoinPkt = pantsModelDefaultList[pantsModel].op_coinPkt;
+			// デフォルトを選択
+			jQuery('#op2_coinPkt').val([modelCoinPkt]);
+			jQuery('#op2_coinPkt').change();
+	
+			// 選択中の上前ピスポケット
+			var pisPktUf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]:checked');
+			var selectedPisPktUf = pisPktUf.val();
+	
+			// モデルに基づくデフォルトの上前ピスポケット
+			var modelPisPktUf = pantsModelDefaultList[pantsModel].op_pisPktUf;
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').val([modelPisPktUf]);
+			//jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').change();
+			jQuery('input[id^="op2_pisPktUf_id"]:checked').change();
+	
+			// 選択中の下前ピスポケット
+			var pisPktDf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]:checked');
+			var selectedPisPktDf = pisPktDf.val();
+			// モデルに基づくデフォルトの下前ピスポケット
+			var modelPisPktDf = pantsModelDefaultList[pantsModel].op_pisPktDf;
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').val([modelPisPktDf]);
+			//jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').change();
+			jQuery('input[id^="op2_pisPktDf_id"]:checked').change();
+	
+			// 選択中のVカット
+			var vCut = jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]:checked');
+			var selectedVCut = vCut.val();
+	
+			// モデルに基づくデフォルトのVカット
+			var modelVCut = pantsModelDefaultList[pantsModel].op_vCut;
+			// デフォルトを選択
+			jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').val([modelVCut]);
+	
+			// ステッチ箇所変更
+			ctrlOp2StitchModify();
+			ctrlOp2StitchModifyPisFlap();
+	
+			// ダブルステッチ
+			ctrlOp2DStitch();
+			ctrlOp2DStitchPlace();
+	
+			// AMF色指定の有効/無効を制御する
+			ctrlOp2AmfColor();
+	
+			//AY01の場合、ベルトループ仕様とピンループの制御。
+			if (pantsModel == "AY01") {
+				jQuery('#op2_beltLoop_id1').prop('disabled', true);
+				jQuery('#op2_beltLoop_id2').prop('disabled', false);
+				jQuery('#op2_beltLoop_id2').prop('checked', true);
+				
+				jQuery('#op2_pinLoop_id1').prop('disabled', true);
+				jQuery('#op2_pinLoop_id2').prop('disabled', false);
+				jQuery('#op2_pinLoop_id2').prop('checked', true);
+			}
+			
+			// 別モデルに変更された場合はアラート表示
+			//if ((tmpOp2PantsModel != '') && pantsModel != tmpOp2PantsModel) {
+			if ((tmpOp2PantsModel != '' || tmpOp2PantsModel != null) && pantsModel != tmpOp2PantsModel && modelFlag == 2) {
+			    setAlert('op2_pantsModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
+			}
+			// 一時保存のモデルを更新
+			tmpOp2PantsModel = pantsModel;
 		}
 	});
 
@@ -911,7 +920,7 @@ function ctrlOp2StitchModifyPisFlap() {
 	stitchModifyPisFlap = jQuery('#op2_stitchModifyPlace_id4');
 
 	// 選択中の上前ピスポケット
-	var pisPktUf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktU"]:checked').val();
+	var pisPktUf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
 	var pisPktDf = jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]:checked').val();
 

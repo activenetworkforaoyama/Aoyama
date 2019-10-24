@@ -324,12 +324,12 @@
 			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
 			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
             <input type="hidden" id="stCasualHemlineSize" name="coOptionShirtStandardInfo.stCasualHemlineSize"  value="" />
-            <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
+            <%-- <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
             <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
             <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
             <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
             <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
-            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
+            <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" /> --%>
             <input type="hidden" id="osCasHemLineIdFlag" name="osCasHemLineIdFlag" value="${orderCoForm.osCasHemLineIdFlag }" />
             <%-- <input type="hidden" id="corStBodylengthGross" name="coAdjustShirtStandardInfo.corStBodylengthGross" value="${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthGross}" />  --%>
             <%-- <input type="hidden" id="corStBodylengthSize"  name="coAdjustShirtStandardInfo.corStBodylengthSize"  value="${orderCoForm.coAdjustShirtStandardInfo.corStBodylengthSize}" /> --%>
@@ -351,14 +351,13 @@ var orderFlag = "${orderCoForm.orderFlag}";
  // 自作jsに記載
 jQuery(function() {
 
-var shirtAdFlag="${orderCoForm.shirtAdFlag}";
 	if("orderCo"==orderFlag){
 		if(shirtAdFlag=="1"){
 		}else{
-			jQuery("#shirtAdFlag").val("0");
+			shirtAdFlag="0";
 		}
 	}else if("0"==jQuery("#shirtItemFlag").val() && "orderCo"!=orderFlag){
-		    jQuery("#shirtAdFlag").val("1");
+		    shirtAdFlag="1";
 	}
 
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
@@ -745,10 +744,10 @@ jQuery("#os_casHemLine_id1").click(function(){
 })
 jQuery("#shirtModel").change(function(){
 	if("orderCo"==orderFlag){
-		jQuery("#shirtAdFlag").val("0");	
+		shirtAdFlag="0";	
 	}else if("1"==jQuery("#shirtItemFlag").val()){
 		if("orderCo"!=orderFlag ){
-			jQuery("#shirtAdFlag").val("0");
+			shirtAdFlag="0";
 		}
 	}
 })

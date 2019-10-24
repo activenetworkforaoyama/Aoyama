@@ -647,6 +647,7 @@ function searchOrder(){
 					&& time > 366){
 				appendAlert('errorMassageIno', getMsgByOneArg('msg096'));
 				$("#areaResult").hide();
+				$.unblockUI();
 				// (4) SlickGridテーブルを作成
 				dataView = new Slick.Data.DataView();
 				grid = new Slick.Grid("#myGrid", dataView,columns, options);

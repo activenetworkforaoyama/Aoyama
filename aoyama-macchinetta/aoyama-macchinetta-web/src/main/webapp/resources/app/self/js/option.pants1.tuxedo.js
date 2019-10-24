@@ -743,7 +743,7 @@ function tpPancherinaSpecialController() {
 			&& selectedPantsModel != 'JW21'
 			&& selectedPantsModel != 'AY01') {
 
-		jQuery('#tp_pancherina_id1').prop("disabled", true);
+		jQuery('#tp_pancherina_id1').prop("disabled", false);
 		jQuery('#tp_pancherina_id1').prop("checked", true);
 		jQuery('#tp_pancherina_id1').change();
 		jQuery('#tp_pancherina_id2').prop("disabled", true);

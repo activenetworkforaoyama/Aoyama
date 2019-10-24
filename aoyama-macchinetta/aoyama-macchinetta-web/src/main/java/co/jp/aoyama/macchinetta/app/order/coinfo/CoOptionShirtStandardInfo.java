@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -200,20 +202,20 @@ public class CoOptionShirtStandardInfo implements Serializable {
 	private String osBtnPosChgFront2;
 
 	// カジュアルヘムライン値
-	@NotBlank(groups = { StCasualHemlineSizeItem.class }, message = "SHIRTのカジュアルヘムライン値を入力して下さい。")
+	@NotNull(groups = { StCasualHemlineSizeItem.class }, message = "SHIRTのカジュアルヘムライン値を入力して下さい。")
 	@Range(min=0, max=(long) 199.5, groups = {StCasualHemlineSizeItem.class}, message = "SHIRTのカジュアルヘムライン値の範囲が不正です。")
 	private BigDecimal stCasualHemlineSize;
 
 	// ボタン位置変更 台襟釦値
-	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTの台襟釦値を入力して下さい。")
+	@NotNull(groups = { StBtnPosChgItem.class }, message = "SHIRTの台襟釦値を入力して下さい。")
 	private BigDecimal stNeckbandBtnPosChg;
 
 	// ボタン位置変更 フロント第1釦値
-	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第1釦値を入力して下さい。")
+	@NotNull(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第1釦値を入力して下さい。")
 	private BigDecimal stFrtfirstBtnPosChg;
 
 	// ボタン位置変更 フロント第2釦値
-	@NotBlank(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第2釦値を入力して下さい。")
+	@NotNull(groups = { StBtnPosChgItem.class }, message = "SHIRTのフロント第2釦値を入力して下さい。")
 	private BigDecimal stFrtsecondBtnPosChg;
 	
 	//刺繍箇所

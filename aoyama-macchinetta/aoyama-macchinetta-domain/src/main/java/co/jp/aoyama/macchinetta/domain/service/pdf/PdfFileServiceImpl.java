@@ -1503,9 +1503,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//裾幅name
 		if("1".equals(order.getCorPtHemwidthType())) {
-			form.getField("Cor_pt_hemwidth_size_name").setData("庫口修正");
+			form.getField("Cor_pt_hemwidth_size_name").setData("褲口修正");
 		}else if("2".equals(order.getCorPtHemwidthType())) {
-			form.getField("Cor_pt_hemwidth_size_name").setData("庫口指定");
+			form.getField("Cor_pt_hemwidth_size_name").setData("褲口指定");
 		}
 		
 		//型サイズ
@@ -1568,9 +1568,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//裾幅name
 		if("1".equals(order.getCorPtHemwidthType())) {
-			form.getField("Cor_pt2_hemwidth_size_name").setData("庫口修正");
+			form.getField("Cor_pt2_hemwidth_size_name").setData("褲口修正");
 		}else if("2".equals(order.getCorPtHemwidthType())) {
-			form.getField("Cor_pt2_hemwidth_size_name").setData("庫口指定");
+			form.getField("Cor_pt2_hemwidth_size_name").setData("褲口指定");
 		}
 		
 		//型サイズ
@@ -2294,7 +2294,22 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//SHIRT
 		//SHIRTモデル
-		form.getField("St_model_data").setData(order.getStModelNm());
+		if("スリム（BS27）darts".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LBW27-141");
+		}else if ("スリム（BS27）pleats".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LBW27-SIDE-141");
+		}else if ("スリム（BS27）box".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LBW27-BOX-141");
+		}else if ("スタンダード（BS35）darts".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LAT-64");
+		}else if ("スタンダード（BS35）pleats".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LAT-SIDE-64");
+		}else if ("スタンダード（BS35）box".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LAT-BOX-64");
+		}else if ("スーパースリム（BS23）darts".equals(order.getStModelNm())) {
+			form.getField("St_model_data").setData("PO-LBW23-39");
+		}
+
 		//襟型
 		form.getField("St_collar_type_data").setData(order.getStCollarTypeNm());
 		//カフス
@@ -2324,7 +2339,11 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//フロントデザイン
 		form.getField("St_frt_design_data").setData(order.getStFrtDesignNm());
 		//ピンタックブザム
-		form.getField("St_pintuck_bosom_data").setData(order.getStPintuckBosomNm());
+		if("无".equals(order.getStPintuckBosomNm())) {
+			form.getField("St_pintuck_bosom_data").setData(order.getStPintuckBosomNm());
+		}else {
+			form.getField("St_pintuck_bosom_data").setData("有");
+		}
 		//ステッチ
 		form.getField("St_stitch_data").setData(order.getStStitchNm());
 		//カラーキーパー

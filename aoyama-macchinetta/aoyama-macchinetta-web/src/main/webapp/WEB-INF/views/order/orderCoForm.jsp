@@ -1493,7 +1493,7 @@ select.hidedown {
 			</c:if>
 					
 			<input type="hidden" id="itemCoFlag" name="itemCoFlag" value="0"/>
-			<input type="hidden" id="itemCoChangeFlag" name="itemCoChangeFlag" value="888888"/>
+			<input type="hidden" id="itemCoChangeFlag" name="itemCoChangeFlag" value=""/>
 			
 			<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value=""/>
 			<input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value=""/>
@@ -1731,11 +1731,28 @@ select.hidedown {
 <script src="${pageContext.request.contextPath}/resources/app/self/js/product.js"></script>
 <script src="${pageContext.request.contextPath}/resources/app/self/js/alter.js"></script>
 <script>
+jQuery(document).bind("ajaxError", function(){
+    // ajax失敗
+	swal({
+		text: "データが取得できません。時間をおいて改めて作業してください。",
+		icon: "warning"
+	}).then(function(val){
+	});
+});
+var itemCoChangeFlag="";
+
+var jacketAdFlag="";		
+var pantsAdFlag="";
+var pants2AdFlag="";
+var giletAdFlag="";
+var coatAdFlag="";
+var shirtAdFlag="";
 var jacketTwiceflag = '0';
 var pantsTwiceflag = '0';
 var pants2Twiceflag = '0';
 var	giletTwiceflag = '0';
 var orderFlag = "${orderCoForm.orderFlag}";
+jQuery('#productFabricNo').attr("oldProductFabricNo",jQuery("#productFabricNo").val());
 function zenkakuToHankaku(mae){
 	  let zen = new Array('ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ヰ','ユ','ヱ','ヨ','ラ','リ','ル','レ','ロ','ワ','ヲ','ン','ガ','ギ','グ','ゲ','ゴ','ザ','ジ','ズ','ゼ','ゾ','ダ','ヂ','ヅ','デ','ド','バ','ビ','ブ','ベ','ボ','パ','ピ','プ','ペ','ポ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','゛','°','、','。','「','」','ー','・');
 	  let han = new Array('ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ｲ','ﾕ','ｴ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ｦ','ﾝ','ｶﾞ','ｷﾞ','ｸﾞ','ｹﾞ','ｺﾞ','ｻﾞ','ｼﾞ','ｽﾞ','ｾﾞ','ｿﾞ','ﾀﾞ','ﾁﾞ','ﾂﾞ','ﾃﾞ','ﾄﾞ','ﾊﾞ','ﾋﾞ','ﾌﾞ','ﾍﾞ','ﾎﾞ','ﾊﾟ','ﾋﾟ','ﾌﾟ','ﾍﾟ','ﾎﾟ','ｧ','ｨ','ｩ','ｪ','ｫ','ｬ','ｭ','ｮ','ｯ','ﾞ','ﾟ','､','｡','｢','｣','ｰ','･');
@@ -1852,6 +1869,7 @@ jQuery('#earlyDiscount').change(function(){
  ************************************************/
  // 自作jsに記載
 jQuery(function() {
+	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -2602,12 +2620,12 @@ jQuery(function() {
 	
 	jQuery("#nav2_product").click(function(){
 		optionControlNotDisabled();
+		compositionExpress();
 		jQuery(".tabbox").removeClass("activebk");
 		jQuery(".alertbox").removeClass("activebk");
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').ghostsf_serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
-		compositionExpress();
 		jQuery("#nav3_div_choose").hide();
 		jQuery("#option_div_adjust").hide();
 		jQuery("#option_div").hide();
@@ -2679,6 +2697,13 @@ jQuery(function() {
 			(orderStatus==""&&orderFormStatus=="")){
 				
 			setInterval(function(){
+				jQuery("#itemCoChangeFlag").val(itemCoChangeFlag);
+				jQuery("#jacketAdFlag").val(jacketAdFlag);
+				jQuery("#pantsAdFlag").val(pantsAdFlag);
+				jQuery("#pants2AdFlag").val(pants2AdFlag);
+				jQuery("#giletAdFlag").val(giletAdFlag);
+				jQuery("#coatAdFlag").val(coatAdFlag);
+				jQuery("#shirtAdFlag").val(shirtAdFlag);
 				//保存flag
 				jQuery("#saveFlag").val("1");
 				//TSCステータス  一時保存
@@ -2756,6 +2781,13 @@ jQuery(function() {
 	
 	//一時保存ボタンをクリック
 	jQuery("#temporarySave").click(function(){
+		jQuery("#itemCoChangeFlag").val(itemCoChangeFlag);
+		jQuery("#jacketAdFlag").val(jacketAdFlag);
+		jQuery("#pantsAdFlag").val(pantsAdFlag);
+		jQuery("#pants2AdFlag").val(pants2AdFlag);
+		jQuery("#giletAdFlag").val(giletAdFlag);
+		jQuery("#coatAdFlag").val(coatAdFlag);
+		jQuery("#shirtAdFlag").val(shirtAdFlag);
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 
@@ -2825,6 +2857,14 @@ jQuery(function() {
 	
 	//取り置きボタンをクリック
 	jQuery("#layUpSave").click(function(){
+		
+		jQuery("#itemCoChangeFlag").val(itemCoChangeFlag);
+		jQuery("#jacketAdFlag").val(jacketAdFlag);
+		jQuery("#pantsAdFlag").val(pantsAdFlag);
+		jQuery("#pants2AdFlag").val(pants2AdFlag);
+		jQuery("#giletAdFlag").val(giletAdFlag);
+		jQuery("#coatAdFlag").val(coatAdFlag);
+		jQuery("#shirtAdFlag").val(shirtAdFlag);
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 
@@ -3369,8 +3409,8 @@ jQuery(function() {
 				jQuery("#glOptionPriceId").val("0");
 				jQuery("#glDoubleModelPrice").val("0");
 			}
-			compositionExpress();
 			stockCheck();
+			compositionExpress();
 			changeViewArea();
 			projectControl();
 		});
@@ -3420,7 +3460,7 @@ jQuery(function() {
 				      jQuery("#glDoubleModelPrice").val("0");
 
 				      if(jQuery('#itemCoFlag').val()=="1"){
-					  		jQuery("#itemCoChangeFlag").val("1");
+					  		itemCoChangeFlag="1";
 					  	}
 				      
 					  if(oldCategory != category){
@@ -3875,6 +3915,14 @@ function dateFormat(time){
 }
 
 function stockCheck(){
+	jQuery("#itemCoChangeFlag").val(itemCoChangeFlag);
+	jQuery("#jacketAdFlag").val(jacketAdFlag);
+	jQuery("#pantsAdFlag").val(pantsAdFlag);
+	jQuery("#pants2AdFlag").val(pants2AdFlag);
+	jQuery("#giletAdFlag").val(giletAdFlag);
+	jQuery("#coatAdFlag").val(coatAdFlag);
+	jQuery("#shirtAdFlag").val(shirtAdFlag);
+	
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').ghostsf_serialize(),type: "post",async:false});
 	var checkFlag = true;
 	var item = jQuery("#item option:selected").val();
@@ -4054,13 +4102,14 @@ function stockCheck(){
 	    //在庫チェック
 	    var checkResult = fabricCheck(item,productFabricNo);
 	    //在庫成功の場合
-		if(checkResult){
+		if(checkResult == "0"||checkResult == "2"){
 			//生地によって、商品を表示
 			fabricView(item,productFabricNo);
 		}
 	}
 	optionControlDisabled();
 	projectControl();
+	jQuery('#productFabricNo').attr("oldProductFabricNo",jQuery("#productFabricNo").val());
 	return checkFlag;
 }
 
@@ -4821,7 +4870,11 @@ function isShopDeliveryEmpty(result,item){
 					var nowDate = new Date();
             		var minDate = new Date(nowDate.getTime() + 24*60*60*1000);
             		var resultDate = dateFormat(result);
-					jQuery("#custShopDeliveryDate").datepicker("update",result);
+            		var oldProductFabricNo = jQuery('#productFabricNo').attr("oldProductFabricNo");
+            		var productFabricNo = jQuery('#productFabricNo').val();
+            		if(oldProductFabricNo!=productFabricNo){
+            			jQuery("#custShopDeliveryDate").datepicker("update",result);
+                	}
 					jQuery("#custShopDeliveryDate").attr("minDate",dateFormat(minDate));
 				}else{
 					var resultDate = dateFormat(result);
@@ -6232,12 +6285,12 @@ function imageCheck(){
    }else{
    	   jQuery("#statusInput").val(statusInput);
    }
-  	
+   
+    jQuery('select').removeAttr("disabled");
+	jQuery('input').removeAttr("disabled");
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').ghostsf_serialize(),type: "post",async:false});
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
-	jQuery('select').removeAttr("disabled");
-	jQuery('input').removeAttr("disabled");
 	document.getElementById('idForm').submit();
 	return true;
   

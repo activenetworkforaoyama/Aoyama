@@ -1218,7 +1218,11 @@ function ctrlTjByColorPlace() {
 			if (elem.val() == "0003504") {
 				//段返り3つボタン:0000101
 				if (frontBtnCnt != "0000101") {
-					elem.prop("disabled", true);
+					if (frontBtnCnt == "0000105") {
+						elem.prop("disabled", false);
+					}else{
+						elem.prop("disabled", true);
+					}
 				}
 				//フロント下前2:0003505
 			} else if (elem.val() == "0003505") {
@@ -1233,9 +1237,9 @@ function ctrlTjByColorPlace() {
 				}
 				//フロント上前1:0003501
 			} else if (elem.val() == "0003501") {
-//				if (frontBtnCnt != "ダブル６つボタン") {
+				if (frontBtnCnt != "0000105") {
 					elem.prop("disabled", true);
-//				}
+				}
 				//フロント上前2:0003502	
 			} else if (elem.val() == "0003502") {
 				//ダブル４つボタン:0000106,ダブル６つボタン:0000105

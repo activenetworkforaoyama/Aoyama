@@ -238,6 +238,10 @@ public class OrderCoForm implements Serializable {
     public static interface ShirtAdItem {
     };
     
+    // グループ:カジュアルヘムライン仕様 無し -> 有り
+    public static interface ShirtBodylengthAdItem {
+    };
+    
     // グループ: 胸ポケット-> 胸ポケット大きさ
     public static interface StBreastPkSizeItem {
     };

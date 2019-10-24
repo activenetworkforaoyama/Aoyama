@@ -50,4 +50,21 @@ public class BaseCheckUtil {
 		return false;
 
 	}
+	
+	public static String[] placeColorMethod(int length, String[] colorSplit) {
+		String[] colorSplitTemp = new String[length];
+		if(length > colorSplit.length) {
+			for(int i=0;i<length;i++) {
+				if(i >= colorSplit.length) {
+					colorSplitTemp[i] = "";
+				}else {
+					colorSplitTemp[i] = colorSplit[i];
+				}
+			}
+			return colorSplitTemp;
+		}else {
+			return colorSplit;
+		}
+		
+	}
 }

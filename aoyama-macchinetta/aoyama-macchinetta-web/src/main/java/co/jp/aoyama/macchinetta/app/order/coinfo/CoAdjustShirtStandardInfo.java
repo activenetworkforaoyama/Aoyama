@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtAdItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.ShirtBodylengthAdItem;
 
 public class CoAdjustShirtStandardInfo implements Serializable {
 	
@@ -32,15 +33,15 @@ public class CoAdjustShirtStandardInfo implements Serializable {
 		// 着丈修正
 		private Map<String, String> corStBodylengthMap;
 		// 着丈型サイズ
-		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈型サイズが不正です。")
-		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの着丈型サイズの範囲が不正です。")
+		@NotBlank(groups = {ShirtBodylengthAdItem.class}, message = "SHIRTの着丈型サイズが不正です。")
+		@Range(min=1, max=999, groups = {ShirtBodylengthAdItem.class}, message = "SHIRTの着丈型サイズの範囲が不正です。")
 		private String corStBodylengthSize;
 		// 着丈補正値
-		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈補正値を入力して下さい。")
+		@NotBlank(groups = {ShirtBodylengthAdItem.class}, message = "SHIRTの着丈補正値を入力して下さい。")
 		private String corStBodylengthCorrect;
 		// 着丈グロス
-		@NotBlank(groups = {ShirtAdItem.class}, message = "SHIRTの着丈グロスが不正です。")
-		@Range(min=1, max=999, groups = {ShirtAdItem.class}, message = "SHIRTの着丈グロスの範囲が不正です。")
+		@NotBlank(groups = {ShirtBodylengthAdItem.class}, message = "SHIRTの着丈グロスが不正です。")
+		@Range(min=1, max=999, groups = {ShirtBodylengthAdItem.class}, message = "SHIRTの着丈グロスの範囲が不正です。")
 		private String corStBodylengthGross;
 
 		// 袖丈右修正

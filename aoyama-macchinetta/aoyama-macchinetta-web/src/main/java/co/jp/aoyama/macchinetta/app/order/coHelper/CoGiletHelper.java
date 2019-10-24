@@ -567,8 +567,7 @@ public class CoGiletHelper {
 				String stitchModifyValue = coOptionGiletStandardInfo.getOgStitchModify();
 				String stitchModifyCountArr = coOptionGiletStandardInfo.getOgStitchModifyPlace();
 				if ("0000602".equals(stitchModifyValue)&&BaseCheckUtil.isNotEmpty(stitchModifyCountArr)) {
-//					String stitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00006");
-					String stitchModifyCode = productItem.concat("04").concat(ogGiletModel);
+					String stitchModifyCode = productItem.concat("04").concat(ogGiletModel).concat("00007");
 					String stitchModifyValueName = "og_stitchModify_id";
 					if(!stitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, stitchModifyCode,
@@ -579,8 +578,7 @@ public class CoGiletHelper {
 				String dSitchModifyValue = coOptionGiletStandardInfo.getOgDStitchModify();
 				String dSitchModifyCountArr = coOptionGiletStandardInfo.getOgDStitchModifyPlace();
 				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
-//					String dStitchModifyCode = productItem.concat("02").concat(ogGiletModel).concat("00027");
-					String dStitchModifyCode = productItem.concat("04").concat(ogGiletModel);
+					String dStitchModifyCode = productItem.concat("04").concat(ogGiletModel).concat("00027");
 					String dSitchModifyValueName = "og_dStitchModify_id";
 					if(!dSitchModifyCountArr.startsWith("/")) {
 						orderCoController.getOrderPriceForGiletStandardProject(orderCoForm, dStitchModifyCode,
@@ -996,10 +994,12 @@ public class CoGiletHelper {
 		String glAmfColorCd = orderGl.getGlAmfColorCd();
 		if(glAmfColorPlcCd!=null && !"".equals(glAmfColorPlcCd) 
 				&& glAmfColorCd !=null && !"".equals(glAmfColorCd)
-				&&!glAmfColorPlcCd.startsWith(regex)
-				&&!glAmfColorCd.startsWith(regex)) {
+//				&&!glAmfColorPlcCd.startsWith(regex)
+//				&&!glAmfColorCd.startsWith(regex)
+				) {
 			String[] glAmfColorPlcCdStr = glAmfColorPlcCd.split(regex);
 			String[] glAmfColorCdStr = glAmfColorCd.split(regex);
+			glAmfColorCdStr = BaseCheckUtil.placeColorMethod(glAmfColorPlcCdStr.length,glAmfColorCdStr);
 			for (int i = 0;i<glAmfColorPlcCdStr.length;i++) {
 				if("0000901".equals(glAmfColorPlcCdStr[i])) {
 					coOptionGiletStandardInfo.setOgAmfColorPlace1(glAmfColorPlcCdStr[i]);
@@ -1019,10 +1019,12 @@ public class CoGiletHelper {
 		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
 		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
 				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null
-				&&!glBtnholeColorPlcCd.startsWith(regex)
-				&&!glBtnholeColorCd.startsWith(regex)) {
+//				&&!glBtnholeColorPlcCd.startsWith(regex)
+//				&&!glBtnholeColorCd.startsWith(regex)
+				) {
 			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
 			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
+			glBtnholeColorCdStr = BaseCheckUtil.placeColorMethod(glBtnholeColorPlcCdStr.length,glBtnholeColorCdStr);
 			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
 				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
 					coOptionGiletStandardInfo.setOgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
@@ -1051,10 +1053,12 @@ public class CoGiletHelper {
 		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
 		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
 				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null
-				&&!glBtnthreadColorPlcCd.startsWith(regex)
-				&&!glBtnthreadColorCd.startsWith(regex)) {
+//				&&!glBtnthreadColorPlcCd.startsWith(regex)
+//				&&!glBtnthreadColorCd.startsWith(regex)
+				) {
 			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
 			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
+			glBtnthreadColorCdStr = BaseCheckUtil.placeColorMethod(glBtnthreadColorPlcCdStr.length,glBtnthreadColorCdStr);
 			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
 				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
 					coOptionGiletStandardInfo.setOgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
@@ -1098,9 +1102,11 @@ public class CoGiletHelper {
 		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
 		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
 				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null
-				&&!glBtnholeColorPlcCd.startsWith(regex)&&!glBtnholeColorCd.startsWith(regex)) {
+//				&&!glBtnholeColorPlcCd.startsWith(regex)&&!glBtnholeColorCd.startsWith(regex)
+				) {
 			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
 			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
+			glBtnholeColorCdStr = BaseCheckUtil.placeColorMethod(glBtnholeColorPlcCdStr.length,glBtnholeColorCdStr);
 			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
 				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
 					coOptionGiletTuxedoInfo.setTgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
@@ -1129,9 +1135,11 @@ public class CoGiletHelper {
 		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
 		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
 				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null
-				&&!glBtnthreadColorPlcCd.startsWith(regex)&&!glBtnthreadColorCd.startsWith(regex)) {
+//				&&!glBtnthreadColorPlcCd.startsWith(regex)&&!glBtnthreadColorCd.startsWith(regex)
+				) {
 			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
 			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
+			glBtnthreadColorCdStr = BaseCheckUtil.placeColorMethod(glBtnthreadColorPlcCdStr.length,glBtnthreadColorCdStr);
 			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
 				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
 					coOptionGiletTuxedoInfo.setTgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
@@ -1205,10 +1213,12 @@ public class CoGiletHelper {
 		String glAmfColorCd = orderGl.getGlAmfColorCd();
 		if(glAmfColorPlcCd!=null && !"".equals(glAmfColorPlcCd) 
 				&& glAmfColorCd !=null && !"".equals(glAmfColorCd)
-				&&!glAmfColorPlcCd.startsWith(regex)
-				&&!glAmfColorCd.startsWith(regex)) {
+//				&&!glAmfColorPlcCd.startsWith(regex)
+//				&&!glAmfColorCd.startsWith(regex)
+				) {
 			String[] glAmfColorPlcCdStr = glAmfColorPlcCd.split(regex);
 			String[] glAmfColorCdStr = glAmfColorCd.split(regex);
+			glAmfColorCdStr = BaseCheckUtil.placeColorMethod(glAmfColorPlcCdStr.length,glAmfColorCdStr);
 			for (int i = 0;i<glAmfColorPlcCdStr.length;i++) {
 				if("0000901".equals(glAmfColorPlcCdStr[i])) {
 					coOptionGiletWashableInfo.setWgAmfColorPlace1(glAmfColorPlcCdStr[i]);
@@ -1228,10 +1238,12 @@ public class CoGiletHelper {
 		String glBtnholeColorCd = orderGl.getGlBtnholeColorCd();
 		if(!"".equals(glBtnholeColorPlcCd) && glBtnholeColorPlcCd!=null 
 				&& !"".equals(glBtnholeColorCd) && glBtnholeColorCd!=null
-				&&!glBtnholeColorPlcCd.startsWith(regex)
-				&&!glBtnholeColorCd.startsWith(regex)) {
+//				&&!glBtnholeColorPlcCd.startsWith(regex)
+//				&&!glBtnholeColorCd.startsWith(regex)
+				) {
 			String[] glBtnholeColorPlcCdStr = glBtnholeColorPlcCd.split(regex);
 			String[] glBtnholeColorCdStr = glBtnholeColorCd.split(regex);
+			glBtnholeColorCdStr = BaseCheckUtil.placeColorMethod(glBtnholeColorPlcCdStr.length,glBtnholeColorCdStr);
 			for (int i = 0; i < glBtnholeColorPlcCdStr.length; i++) {
 				if("0001201".equals(glBtnholeColorPlcCdStr[i])) {
 					coOptionGiletWashableInfo.setWgBhColorPlace1(glBtnholeColorPlcCdStr[i]);
@@ -1260,10 +1272,12 @@ public class CoGiletHelper {
 		String glBtnthreadColorCd = orderGl.getGlBtnthreadColorCd();
 		if(!"".equals(glBtnthreadColorPlcCd) && glBtnthreadColorPlcCd!=null 
 				&& !"".equals(glBtnthreadColorCd) && glBtnthreadColorCd!=null
-				&&!glBtnthreadColorPlcCd.startsWith(regex)
-				&&!glBtnthreadColorCd.startsWith(regex)) {
+//				&&!glBtnthreadColorPlcCd.startsWith(regex)
+//				&&!glBtnthreadColorCd.startsWith(regex)
+				) {
 			String[] glBtnthreadColorPlcCdStr = glBtnthreadColorPlcCd.split(regex);
 			String[] glBtnthreadColorCdStr = glBtnthreadColorCd.split(regex);
+			glBtnthreadColorCdStr = BaseCheckUtil.placeColorMethod(glBtnthreadColorPlcCdStr.length,glBtnthreadColorCdStr);
 			for (int i = 0; i < glBtnthreadColorPlcCdStr.length; i++) {
 				if("0001501".equals(glBtnthreadColorPlcCdStr[i])) {
 					coOptionGiletWashableInfo.setWgByColorPlace1(glBtnthreadColorPlcCdStr[i]);
@@ -1365,7 +1379,8 @@ public class CoGiletHelper {
 						String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgStitchModifyPlace3();
 						stitchModifyList.add(ogStitchModifyPlace3);
 						
-						stitchModifyList.removeAll(Collections.singleton(null)); 
+						stitchModifyList.removeAll(Collections.singleton(null));
+						stitchModifyList.removeAll(Collections.singleton(""));
 
 						if(stitchModifyList.isEmpty() || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
 							splicingCodeForFindUniquePrice = code + key + invokeOne; 
@@ -1389,7 +1404,8 @@ public class CoGiletHelper {
 						String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgDStitchModifyPlace3(); 
 						dStitchModifyList.add(ogStitchModifyPlace3); 
 
-						dStitchModifyList.removeAll(Collections.singleton(null)); 
+						dStitchModifyList.removeAll(Collections.singleton(null));
+						dStitchModifyList.removeAll(Collections.singleton(""));
 
 						if(dStitchModifyList.isEmpty() || OptionCodeKeys.GL_0002601.equals(invokeOne)) { 
 							splicingCodeForFindUniquePrice = code + key + invokeOne; 
@@ -1414,6 +1430,7 @@ public class CoGiletHelper {
 						amfColorSet.add(ogAmfColor3);
 						
 						amfColorSet.removeAll(Collections.singleton(null));
+						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
 						if (OptionCodeKeys.GL_0000801.equals(invokeOne)||(OptionCodeKeys.GL_0000802.equals(invokeOne)&&amfColorSet.isEmpty())) {
@@ -1444,6 +1461,7 @@ public class CoGiletHelper {
 						bhColorSet.add(ogBhColor6);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -1482,6 +1500,7 @@ public class CoGiletHelper {
 						byColorSet.add(ogByColor10);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
@@ -1495,8 +1514,11 @@ public class CoGiletHelper {
 							orderPrice = String.valueOf(colorPrice);
 						}
 					}
+					
+					if( "og_backLiningMate".equals(valueFour) && "1000400".equals(invokeOne)) {
+						splicingCodeDetail = "";
+					} 
 				}
-				
 				
 				if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
 					if("".equals(orderPrice)) {
@@ -1593,6 +1615,7 @@ public class CoGiletHelper {
 						bhColorSet.add(tgBhColor6);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -1631,6 +1654,7 @@ public class CoGiletHelper {
 						byColorSet.add(tgByColor10);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
@@ -1644,6 +1668,14 @@ public class CoGiletHelper {
 							orderPrice = String.valueOf(colorPrice);
 						}
 					}
+					
+					if( "tg_backLiningMate".equals(valueFour) && "1000400".equals(invokeOne)) {
+						splicingCodeDetail = "";
+					} 
+					
+					if( "tg_frontBtnMate".equals(valueFour) && "3000700".equals(invokeOne)) {
+						splicingCodeDetail = "";
+					} 
 				}
 				
 				
@@ -1736,7 +1768,8 @@ public class CoGiletHelper {
 						String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgStitchModifyPlace3();
 						stitchModifyList.add(wgStitchModifyPlace3);
 						
-						stitchModifyList.removeAll(Collections.singleton(null)); 
+						stitchModifyList.removeAll(Collections.singleton(null));
+						stitchModifyList.removeAll(Collections.singleton(""));
 
 						if(stitchModifyList.isEmpty() || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
 							splicingCodeForFindUniquePrice = code + key + invokeOne; 
@@ -1760,7 +1793,8 @@ public class CoGiletHelper {
 						String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgDStitchModifyPlace3(); 
 						dStitchModifyList.add(wgStitchModifyPlace3); 
 
-						dStitchModifyList.removeAll(Collections.singleton(null)); 
+						dStitchModifyList.removeAll(Collections.singleton(null));
+						dStitchModifyList.removeAll(Collections.singleton(""));
 
 						if(dStitchModifyList.isEmpty() || OptionCodeKeys.GL_0002601.equals(invokeOne)) { 
 							splicingCodeForFindUniquePrice = code + key + invokeOne; 
@@ -1785,6 +1819,7 @@ public class CoGiletHelper {
 						amfColorSet.add(wgAmfColor3);
 						
 						amfColorSet.removeAll(Collections.singleton(null));
+						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
 						if (OptionCodeKeys.GL_0000801.equals(invokeOne)||(OptionCodeKeys.GL_0000802.equals(invokeOne)&&amfColorSet.isEmpty())) {
@@ -1815,6 +1850,7 @@ public class CoGiletHelper {
 						bhColorSet.add(wgBhColor6);
 						
 						bhColorSet.removeAll(Collections.singleton(null));
+						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
@@ -1853,6 +1889,7 @@ public class CoGiletHelper {
 						byColorSet.add(wgByColor10);
 						
 						byColorSet.removeAll(Collections.singleton(null));
+						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
@@ -1866,6 +1903,10 @@ public class CoGiletHelper {
 							orderPrice = String.valueOf(colorPrice);
 						}
 					}
+					
+					if( "wg_backLiningMate".equals(valueFour) && "1000400".equals(invokeOne)) {
+						splicingCodeDetail = "";
+					} 
 				}
 				
 				if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {

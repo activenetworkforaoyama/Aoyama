@@ -865,7 +865,7 @@ function pancherinaSpecialController() {
 			&& selectedPantsModel != 'JW21'
 			&& selectedPantsModel != 'AY01') {
 		
-		jQuery('#op_pancherina_id1').prop("disabled", true);
+		jQuery('#op_pancherina_id1').prop("disabled", false);
 		jQuery('#op_pancherina_id1').prop("checked", true);
 		jQuery('#op_pancherina_id1').change();
 		jQuery('#op_pancherina_id2').prop("disabled", true);
@@ -892,7 +892,6 @@ function pancherinaSpecialController() {
 
 // ベルトループ変更時処理
 function changedBeltLoop() {
-
 	// 選択中のベルトループ
 	var selectedBeltLoop = jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]:checked').val();
 	//var disabledFlg = false;
@@ -971,8 +970,10 @@ function dStichSpecialController() {
 	if (selectedStich == '0001904') {
 		jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]').prop("disabled", false);
 	} else {
-		jQuery('input[name="coOptionPantsStandardInfo.opDStitch"]').prop("disabled", true);
+		jQuery('input[id="op_dStitch_id1"]').prop("disabled", false);
+		jQuery('input[id="op_dStitch_id2"]').prop("disabled", true);
 		jQuery('input[id="op_dStitch_id1"]').prop("checked", true);
+		jQuery('input[id="op_dStitch_id1"]').change();
 	}
 }
 

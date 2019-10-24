@@ -209,12 +209,12 @@
 			<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
 			<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
 
-             <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
+            <%--  <input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
              <input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
              <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />
              <input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
              <input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
-             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
+             <input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" /> --%>
 </form:form>
 
 
@@ -249,14 +249,14 @@ var selectIdList = {
  // 自作jsに記載
 jQuery(document).ready(function() {
 	
-	var coatAdFlag="${orderCoForm.coatAdFlag}";
+	
 	if("orderCo"==orderFlag){
 		if(coatAdFlag=="1"){
 		}else{
-			jQuery("#coatAdFlag").val("0");
+			coatAdFlag="0";
 		}
 	}else if("0"==jQuery("#coatItemFlag").val() && "orderCo"!=orderFlag){
-		    jQuery("#coatAdFlag").val("1");
+		    coatAdFlag="1";
 	}
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -621,10 +621,10 @@ function mateStkNoReInit(){
 jQuery("#coatModel").change(function() {
 	jQuery("#coatFlag").val("1");
 	if("orderCo"==orderFlag){
-		jQuery("#coatAdFlag").val("0");	
+		coatAdFlag="0";	
 	}else if("1"==jQuery("#coatItemFlag").val()){
 		if("orderCo"!=orderFlag ){
-			jQuery("#coatAdFlag").val("0");
+			coatAdFlag="0";
 		}
 	}	
 });

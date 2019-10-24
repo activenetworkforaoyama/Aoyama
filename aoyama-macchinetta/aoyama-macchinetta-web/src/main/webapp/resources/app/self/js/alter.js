@@ -178,47 +178,47 @@ function checkRange(id, val) {
 	}
 	
 	// ヒップの場合のウエストチェック
-	/*try {
-		if (id=="ap_hip") {
-			idHip = "ap_hip";
-			checkVal =  jQuery("#ap_waist").val() - 0;
-			if ((setValue > 0 && checkVal < 0) || (checkVal > 0 && setValue < 0)) {
+	try {
+		if (id=="corPtHipRange") {
+			idHip = "corPtHipRange";
+			checkVal =  jQuery("#corPtWaistRange").val() - 0;
+			if ((keepFloatPrecision(setValue) > 0 && keepFloatPrecision(checkVal) < 0) || (keepFloatPrecision(checkVal) > 0 && keepFloatPrecision(setValue) < 0)) {
 				throw new Exception();
 			}
 		}
-		if (id=="ap2_hip") {
-			idHip = "ap2_hip";
-			checkVal =  jQuery("#ap2_waist").val() - 0;
-			if ((setValue > 0 && checkVal < 0) || (checkVal > 0 && setValue < 0)) {
+		if (id=="corPt2HipRange") {
+			idHip = "corPt2HipRange";
+			checkVal =  jQuery("#corPt2WaistRange").val() - 0;
+			if ((keepFloatPrecision(setValue) > 0 && keepFloatPrecision(checkVal) < 0) || (keepFloatPrecision(checkVal) > 0 && keepFloatPrecision(setValue) < 0)) {
 				throw new Exception();
 			}
 		}
-		if (id=="ap_waist") {
-			idHip = "ap_hip";
-			checkVal =  jQuery("#ap_hip").val() - 0;
-			if ((setValue > 0 && checkVal < 0) || (checkVal > 0 && setValue < 0)) {
+		if (id=="corPtWaistRange") {
+			idHip = "corPtHipRange";
+			checkVal =  jQuery("#corPtHipRange").val() - 0;
+			if ((keepFloatPrecision(setValue) > 0 && keepFloatPrecision(checkVal) < 0) || (keepFloatPrecision(checkVal) > 0 && keepFloatPrecision(setValue) < 0)) {
 				throw new Exception();
 			}
 		}
-		if (id=="ap2_waist") {
-			idHip = "ap2_hip";
-			checkVal =  jQuery("#ap2_hip").val() - 0;
-			if ((setValue > 0 && checkVal < 0) || (checkVal > 0 && setValue < 0)) {
+		if (id=="corPt2WaistRange") {
+			idHip = "corPt2HipRange";
+			checkVal =  jQuery("#corPt2HipRange").val() - 0;
+			if ((keepFloatPrecision(setValue) > 0 && keepFloatPrecision(checkVal) < 0) || (keepFloatPrecision(checkVal) > 0 && keepFloatPrecision(setValue) < 0)) {
 				throw new Exception();
 			}
 		}
 		resultHip = true;
 	} catch(e) {
 		// チェック処理から抜けるだけなのでここでの処理は行わない
-	}*/
+	}
 
 	clearAlert(id + "_alert");
-	clearAlert(idHip + "_alert");
+	clearAlert(idHip + "2_alert");
 	if (resultRange == false) {
 		setAlert(id + "_alert", "値が規定値を超えています。");
 	}
 	if (resultHip == false) {
-		appendAlertCo(idHip + "_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
+		appendAlertCo(idHip + "2_alert", "補正値に矛盾があります。工場にて修正を加える場合があります。");
 	}
 	
 	return (resultRange && resultHip);

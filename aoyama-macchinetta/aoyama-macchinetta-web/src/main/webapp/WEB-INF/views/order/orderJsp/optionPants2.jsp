@@ -1085,7 +1085,7 @@
                             <div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
                             <div class="col-12 col-md-6">
                             	<div class="form-check-inline form-check">
-									<form:radiobuttons id="wp2_dStitch_id" path="coOptionPants2WashableInfo.wp2DStitch" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2DStitchMap}"/>
+									<form:radiobuttons id="wp2_dStitchModify_id" path="coOptionPants2WashableInfo.wp2DStitch" class="form-check-input" items="${orderCoForm.coOptionPants2WashableInfo.wp2DStitchMap}"/>
 								</div>
                                 <div id="wp2_dStitchModify_yes_area">
                                 <div class="offset-md-1">
@@ -1106,7 +1106,7 @@
                                 </div>
                                 </div>
                                 </div>
-                                <div class="col-12 col-md-3" align="right" id="wp2_dStitch_Msg"></div>
+                                <div class="col-12 col-md-3" align="right" id="wp2_dStitchModify_Msg"></div>
                             </div>
 
                         <div class="row form-group">
@@ -3530,16 +3530,16 @@ var pt2BtnMateStkNo="";
 var wp2ButtonMap="${orderCoForm.coOptionPants2WashableInfo.wp2ButtonMap}";
 var op2ButtonMap="${orderCoForm.coOptionPants2StandardInfo.op2ButtonMap }";
 var tp2ButtonMap="${orderCoForm.coOptionPants2TuxedoInfo.tp2ButtonMap }"
+var pants2ItemFlag="${orderCoForm.pants2ItemFlag}";
 jQuery(function() {
-var pants2AdFlag="${orderCoForm.pants2AdFlag}";
-if("orderCo"==orderFlag){
-	if(pants2AdFlag=="1"){
-	}else{
-		jQuery("#pants2AdFlag").val("0");
+	if("orderCo"==orderFlag){
+		if(pants2AdFlag=="1"){
+		}else{
+			pants2AdFlag="0";
+		}
+	}else if("0"==jQuery("#pants2ItemFlag").val() && "orderCo"!=orderFlag){
+		    pants2AdFlag="1";
 	}
-}else if("0"==jQuery("#pants2ItemFlag").val() && "orderCo"!=orderFlag){
-	    jQuery("#pants2AdFlag").val("1");
-}
     var productCategory = "${orderCoForm.productCategory}";
 	//getModelByItem();
     var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
@@ -3564,14 +3564,15 @@ if("orderCo"==orderFlag){
 	}else if(productCategory == "9000103"){
 		initOptionPants2Washable();
 	}
+
 	changeViewArea();
 	setPantsModelDisable(productCategory);
 	getPrice();
 	showPrice();
-	optionPants2ChangeModel(productCategory);
+	//optionPants2ChangeModel(productCategory);
 	mateInit();
+	
 	if(productCategory == "9000101"){
-//		initOptionPants2Standard();
 		if("${orderCoForm.pants2ItemFlag }"=="1"
 				|| orderFlag == "orderLink" || orderFlag == "orderDetail" 
 				|| orderFlag == "orderBack" || orderFlag == "orderCheck" 
@@ -3579,15 +3580,11 @@ if("orderCo"==orderFlag){
 			op2Session();
 		}
 		if(ojBtnMatePt2Flag=="1"){
-//			jkBtnMatecomparePt2BtnMate(ojBtnMate,op2ButtonMap,"op2_");
-//			jkBtnMateStkNo=ojBtnMateStkNo;
-//			pt2BtnMateStkNo="op2_btnMateStkNo";
 			jQuery('#op2_btnMateStkNo').val("${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo}");	
 			jQuery("#ojBtnMatePt2Flag").val("0");
 		}
 		
 	}else if(productCategory == "9000102"){
-//		initOptionPants2Tuxedo();
 		if("${orderCoForm.pants2ItemFlag }"=="1"
 				|| orderFlag == "orderLink" || orderFlag == "orderDetail" 
 				|| orderFlag == "orderBack" || orderFlag == "orderCheck" 
@@ -3595,14 +3592,10 @@ if("orderCo"==orderFlag){
 			tp2Session();
 	    }
 		if(ojBtnMatePt2Flag=="1"){
-//		  jkBtnMatecomparePt2BtnMate(tjBtnMate,tp2ButtonMap,"tp2_");
-//		  jkBtnMateStkNo=tjBtnMateStkNo;
-//		  pt2BtnMateStkNo="tp2_btnMateStkNo";
 		  jQuery('#tp2_btnMateStkNo').val("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}");	
 		  jQuery("#ojBtnMatePt2Flag").val("0");
 		}
 	}else if(productCategory == "9000103"){
-//		initOptionPants2Washable();
 		jQuery("#wp2_pantsModel option[value='BS03']").remove();
 		jQuery("#wp2_pantsModel option[value='RS01']").remove();
 		jQuery("#wp2_pantsModel option[value='JW21']").remove();
@@ -3614,492 +3607,16 @@ if("orderCo"==orderFlag){
 			wp2Session();
 	    }
 		if(ojBtnMatePt2Flag=="1"){
-//		  jkBtnMatecomparePt2BtnMate(wjBtnMate,wp2ButtonMap,"wp2_");
-//		  jkBtnMateStkNo=wjBtnMateStkNo;
-//		  pt2BtnMateStkNo="wp2_btnMateStkNo";
 		  jQuery('#wp2_btnMateStkNo').val("${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo}");	
 		  jQuery("#ojBtnMatePt2Flag").val("0");
 		}
 		
 	}
-	
+	//showPrice();
+
+	pants2Twiceflag  = '1';
 	jQuery("#pants2ItemFlag").val("1");
-
-	if(orderFlag == "orderLink" || orderFlag == "orderDivert"){
-		if(productCategory == "9000101"){
-			//ベルトループ
-			var op2BeltLoopPlace = "${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace}";
-			if(isNotEmpty(op2BeltLoopPlace)){
-				op2BeltLoopPlace = op2BeltLoopPlace.split("/");
-				for(var i=0;i<op2BeltLoopPlace.length;i++){
-					if(op2BeltLoopPlace[i] == "0000801"){
-						jQuery("#op2_beltLoopPlace_id1").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000802"){
-						jQuery("#op2_beltLoopPlace_id2").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000803"){
-						jQuery("#op2_beltLoopPlace_id3").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000804"){
-						jQuery("#op2_beltLoopPlace_id4").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000805"){
-						jQuery("#op2_beltLoopPlace_id5").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000806"){
-						jQuery("#op2_beltLoopPlace_id6").prop("checked",true);
-					}else if(op2BeltLoopPlace[i] == "0000807"){
-						jQuery("#op2_beltLoopPlace_id7").prop("checked",true);
-					}
-				}
-			}
-
-			//ステッチ箇所変更
-			var op2StitchModifyPlace = "${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace}";
-			if(isNotEmpty(op2StitchModifyPlace)){
-				op2StitchModifyPlace = op2StitchModifyPlace.split("/");
-				for(var i=0;i<op2StitchModifyPlace.length;i++){
-					if(op2StitchModifyPlace[i] == "0002101"){
-						jQuery("#op2_stitchModifyPlace_id1").prop("checked",true);
-					}else if(op2StitchModifyPlace[i] == "0002102"){
-						jQuery("#op2_stitchModifyPlace_id2").prop("checked",true);
-					}else if(op2StitchModifyPlace[i] == "0002103"){
-						jQuery("#op2_stitchModifyPlace_id3").prop("checked",true);
-					}else if(op2StitchModifyPlace[i] == "0002104"){
-						jQuery("#op2_stitchModifyPlace_id4").prop("checked",true);
-					}
-				}
-			}
-			jQuery('input[id^="op2_stitchModifyPlace_id"]:checked').change();
-
-			//ダブルステッチ
-			ctrlOp2DStitchPlace();
-
-			//AMF色指定
-			ctrlOp2AmfColor();
-
-			//ダブルステッチ
-			var op2DStitchPlace = "${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace}";
-			if(isNotEmpty(op2DStitchPlace)){
-				op2DStitchPlace = op2DStitchPlace.split("/");
-				for(var i=0;i<op2DStitchPlace.length;i++){
-					if(op2DStitchPlace[i] == "0002301"){
-						jQuery("#op2_dStitchPlace_id1").prop("checked",true);
-					}else if(op2DStitchPlace[i] == "0002302"){
-						jQuery("#op2_dStitchPlace_id2").prop("checked",true);
-					}else if(op2DStitchPlace[i] == "0002303"){
-						jQuery("#op2_dStitchPlace_id3").prop("checked",true);
-					}else if(op2DStitchPlace[i] == "0002304"){
-						jQuery("#op2_dStitchPlace_id4").prop("checked",true);
-					}
-				}
-			}
-
-			//AMF色指定
-			var op2AmfColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace}";
-			var op2AmfAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2AmfAllColor}";
-//			if(isNotEmpty(op2AmfColorPlace)&&isNotEmpty(op2AmfAllColor)){
-			if(isNotEmpty(op2AmfColorPlace)){
-				op2AmfColorPlace = op2AmfColorPlace.split("/");
-				op2AmfAllColor = op2AmfAllColor.split("/");
-				for(var i=0;i<op2AmfColorPlace.length;i++){
-					if(op2AmfColorPlace[i] == "0002601"){
-						jQuery("#op2_amfColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor1'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(op2AmfColorPlace[i] == "0002602"){
-						jQuery("#op2_amfColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor2'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(op2AmfColorPlace[i] == "0002603"){
-						jQuery("#op2_amfColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor3'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(op2AmfColorPlace[i] == "0002604"){
-						jQuery("#op2_amfColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor4'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
-					}
-
-					//for(var i=0;i<op2AmfAllColor.length;i++){
-					for(var j=0;j<op2AmfAllColor.length;j++){
-						if(op2AmfColorPlace[i] == "0002601"){
-							//jQuery("#op2_amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor1'][value='" + op2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(op2AmfColorPlace[i] == "0002602"){
-							//jQuery("#op2_amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor2'][value='" + op2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(op2AmfColorPlace[i] == "0002603"){
-							//jQuery("#op2_amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor3'][value='" + op2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(op2AmfColorPlace[i] == "0002604"){
-							//jQuery("#op2_amfColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor4'][value='" + op2AmfAllColor[j] + "']").prop("checked", true);
-						}
-					}
-					
-				}
-				jQuery('input[id^="op2_amfColorPlace_"]:checked').change();
-			}
-			
-			//ボタンホール色指定
-			var op2BhColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace}";
-			var op2BhAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2BhAllColor}";
-//			if(isNotEmpty(op2BhColorPlace)&&isNotEmpty(op2BhColorPlace)){
-	        if(isNotEmpty(op2BhColorPlace)){
-				op2BhColorPlace = op2BhColorPlace.split("/");
-				op2BhAllColor = op2BhAllColor.split("/");
-				for(var i=0;i<op2BhColorPlace.length;i++){
-					if(op2BhColorPlace[i] == "0002901"){
-						jQuery("#op2_bhColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor1'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
-					}else if(op2BhColorPlace[i] == "0002902"){
-						jQuery("#op2_bhColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor2'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
-					}else if(op2BhColorPlace[i] == "0002903"){
-						jQuery("#op2_bhColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor3'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
-					}else if(op2BhColorPlace[i] == "0002904"){
-						jQuery("#op2_bhColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor4'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<op2BhAllColor.length;j++){
-						if(op2BhColorPlace[i] == "0002901"){
-							//jQuery("#op2_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor1'][value='" + op2BhAllColor[j] + "']").prop("checked", true);
-						}else if(op2BhColorPlace[i] == "0002902"){
-							//jQuery("#op2_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor2'][value='" + op2BhAllColor[j] + "']").prop("checked", true);
-						}else if(op2BhColorPlace[i] == "0002903"){
-							//jQuery("#op2_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor3'][value='" + op2BhAllColor[j] + "']").prop("checked", true);
-						}else if(op2BhColorPlace[i] == "0002904"){
-							//jQuery("#op2_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor4'][value='" + op2BhAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="op2_bhColorPlace_"]:checked').change();
-			} 
-
-			//ボタン付け糸指定
-			var op2ByColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace}";
-			var op2ByAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2ByAllColor}";
-//			if(isNotEmpty(op2ByColorPlace)&&isNotEmpty(op2ByColorPlace)){
-			if(isNotEmpty(op2ByColorPlace)){
-				op2ByColorPlace = op2ByColorPlace.split("/");
-				op2ByAllColor = op2ByAllColor.split("/");
-				for(var i=0;i<op2ByColorPlace.length;i++){
-					if(op2ByColorPlace[i] == "0003201"){
-						jQuery("#op2_byColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor1'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
-					}else if(op2ByColorPlace[i] == "0003202"){
-						jQuery("#op2_byColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor2'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
-					}else if(op2ByColorPlace[i] == "0003203"){
-						jQuery("#op2_byColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor3'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
-					}else if(op2ByColorPlace[i] == "0003204"){
-						jQuery("#op2_byColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor4'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<op2ByAllColor.length;j++){
-						if(op2ByColorPlace[i] == "0003201"){
-							//jQuery("#op2_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor1'][value='" + op2ByAllColor[j] + "']").prop("checked", true);
-						}else if(op2ByColorPlace[i] == "0003202"){
-							//jQuery("#op2_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor2'][value='" + op2ByAllColor[j] + "']").prop("checked", true);
-						}else if(op2ByColorPlace[i] == "0003203"){
-							//jQuery("#op2_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor3'][value='" + op2ByAllColor[j] + "']").prop("checked", true);
-						}else if(op2ByColorPlace[i] == "0003204"){
-							//jQuery("#op2_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor4'][value='" + op2ByAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="op2_byColorPlace_"]:checked').change();
-			} 
-
-		}else if(productCategory == "9000102"){
-			var tp2BeltLoopPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace}";
-			if(isNotEmpty(tp2BeltLoopPlace)){
-				tp2BeltLoopPlace = tp2BeltLoopPlace.split("/");
-				for(var i=0;i<tp2BeltLoopPlace.length;i++){
-					if(tp2BeltLoopPlace[i] == "0000801"){
-						jQuery("#tp2_beltLoopPlace_id1").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000802"){
-						jQuery("#tp2_beltLoopPlace_id2").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000803"){
-						jQuery("#tp2_beltLoopPlace_id3").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000804"){
-						jQuery("#tp2_beltLoopPlace_id4").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000805"){
-						jQuery("#tp2_beltLoopPlace_id5").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000806"){
-						jQuery("#tp2_beltLoopPlace_id6").prop("checked",true);
-					}else if(tp2BeltLoopPlace[i] == "0000807"){
-						jQuery("#tp2_beltLoopPlace_id7").prop("checked",true);
-					}
-				}
-			}
-			var tp2BhColorPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace}";
-			var tp2BhAllColor = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BhAllColor}";
-			//if(isNotEmpty(tp2BhColorPlace)&&isNotEmpty(tp2BhColorPlace)){
-			if(isNotEmpty(tp2BhColorPlace)){
-				tp2BhColorPlace = tp2BhColorPlace.split("/");
-				tp2BhAllColor = tp2BhAllColor.split("/");
-				for(var i=0;i<tp2BhColorPlace.length;i++){
-					if(tp2BhColorPlace[i] == "0002901"){
-						jQuery("#tp2_bhColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor1'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(tp2BhColorPlace[i] == "0002902"){
-						jQuery("#tp2_bhColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor2'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(tp2BhColorPlace[i] == "0002903"){
-						jQuery("#tp2_bhColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor3'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(tp2BhColorPlace[i] == "0002904"){
-						jQuery("#tp2_bhColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor4'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<tp2BhAllColor.length;j++){
-						if(tp2BhColorPlace[i] == "0002901"){
-							//jQuery("#tp2_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor1'][value='" + tp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(tp2BhColorPlace[i] == "0002902"){
-							//jQuery("#tp2_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor2'][value='" + tp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(tp2BhColorPlace[i] == "0002903"){
-							//jQuery("#tp2_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor3'][value='" + tp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(tp2BhColorPlace[i] == "0002904"){
-							//jQuery("#tp2_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2StandardInfo.tp2BhColor4'][value='" + tp2BhAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="tp2_bhColorPlace_"]:checked').change();
-			} 
-
-			var tp2ByColorPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace}";
-			var tp2ByAllColor = "${orderCoForm.coOptionPants2TuxedoInfo.tp2ByAllColor}";
-			//if(isNotEmpty(tp2ByColorPlace)&&isNotEmpty(tp2ByColorPlace)){
-			if(isNotEmpty(tp2ByColorPlace)){
-				tp2ByColorPlace = tp2ByColorPlace.split("/");
-				tp2ByAllColor = tp2ByAllColor.split("/");
-				for(var i=0;i<tp2ByColorPlace.length;i++){
-					if(tp2ByColorPlace[i] == "0003201"){
-						jQuery("#tp2_byColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor1'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(tp2ByColorPlace[i] == "0003202"){
-						jQuery("#tp2_byColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor2'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(tp2ByColorPlace[i] == "0003203"){
-						jQuery("#tp2_byColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor3'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(tp2ByColorPlace[i] == "0003204"){
-						jQuery("#tp2_byColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor4'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<tp2ByAllColor.length;j++){
-						if(tp2ByColorPlace[i] == "0003201"){
-							//jQuery("#tp2_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor1'][value='" + tp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(tp2ByColorPlace[i] == "0003202"){
-							//jQuery("#tp2_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor2'][value='" + tp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(tp2ByColorPlace[i] == "0003203"){
-							//jQuery("#tp2_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor3'][value='" + tp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(tp2ByColorPlace[i] == "0003204"){
-							//jQuery("#tp2_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor4'][value='" + tp2ByAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="tp2_byColorPlace_"]:checked').change();
-			} 
-        }else if(productCategory == "9000103"){
-
-        	var wp2BeltLoopPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace}";
-			if(isNotEmpty(wp2BeltLoopPlace)){
-				wp2BeltLoopPlace = wp2BeltLoopPlace.split("/");
-				for(var i=0;i<wp2BeltLoopPlace.length;i++){
-					if(wp2BeltLoopPlace[i] == "0000801"){
-						jQuery("#wp2_beltLoopPlace_id1").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000802"){
-						jQuery("#wp2_beltLoopPlace_id2").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000803"){
-						jQuery("#wp2_beltLoopPlace_id3").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000804"){
-						jQuery("#wp2_beltLoopPlace_id4").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000805"){
-						jQuery("#wp2_beltLoopPlace_id5").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000806"){
-						jQuery("#wp2_beltLoopPlace_id6").prop("checked",true);
-					}else if(wp2BeltLoopPlace[i] == "0000807"){
-						jQuery("#wp2_beltLoopPlace_id7").prop("checked",true);
-					}
-				}
-			}
-
-			var wp2StitchModifyPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace}";
-			if(isNotEmpty(wp2StitchModifyPlace)){
-				wp2StitchModifyPlace = wp2StitchModifyPlace.split("/");
-				for(var i=0;i<wp2StitchModifyPlace.length;i++){
-					if(wp2StitchModifyPlace[i] == "0002101"){
-						jQuery("#wp2_stitchModifyPlace_id1").prop("checked",true);
-					}else if(wp2StitchModifyPlace[i] == "0002102"){
-						jQuery("#wp2_stitchModifyPlace_id2").prop("checked",true);
-					}else if(wp2StitchModifyPlace[i] == "0002103"){
-						jQuery("#wp2_stitchModifyPlace_id3").prop("checked",true);
-					}else if(wp2StitchModifyPlace[i] == "0002104"){
-						jQuery("#wp2_stitchModifyPlace_id4").prop("checked",true);
-					}
-				}
-			}
-			jQuery('input[id^="wp2_stitchModifyPlace_id"]:checked').change();
-			
-			ctrlWp2DStitchPlace();
-			ctrlWp2AmfColor();
-
-			var wp2DStitchPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace}";
-			if(isNotEmpty(wp2DStitchPlace)){
-				wp2DStitchPlace = wp2DStitchPlace.split("/");
-				for(var i=0;i<wp2DStitchPlace.length;i++){
-					if(wp2DStitchPlace[i] == "0002301"){
-						jQuery("#wp2_dStitchModifyPlace_id1").prop("checked",true);
-					}else if(wp2DStitchPlace[i] == "0002302"){
-						jQuery("#wp2_dStitchModifyPlace_id2").prop("checked",true);
-					}else if(wp2DStitchPlace[i] == "0002303"){
-						jQuery("#wp2_dStitchModifyPlace_id3").prop("checked",true);
-					}else if(wp2DStitchPlace[i] == "0002304"){
-						jQuery("#wp2_dStitchModifyPlace_id4").prop("checked",true);
-					}
-				}
-			}
-
-			var wp2AmfColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace}";
-			var wp2AmfAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2AmfAllColor}";
-			//if(isNotEmpty(wp2AmfColorPlace)&&isNotEmpty(wp2AmfAllColor)){
-			if(isNotEmpty(wp2AmfColorPlace)){
-				wp2AmfColorPlace = wp2AmfColorPlace.split("/");
-				wp2AmfAllColor = wp2AmfAllColor.split("/");
-				for(var i=0;i<wp2AmfColorPlace.length;i++){
-					if(wp2AmfColorPlace[i] == "0002601"){
-						jQuery("#wp2_amfColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor1'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(wp2AmfColorPlace[i] == "0002602"){
-						jQuery("#wp2_amfColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor2'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(wp2AmfColorPlace[i] == "0002603"){
-						jQuery("#wp2_amfColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor3'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
-					}else if(wp2AmfColorPlace[i] == "0002604"){
-						jQuery("#wp2_amfColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor4'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<wp2AmfAllColor.length;j++){
-						if(wp2AmfColorPlace[i] == "0002601"){
-							//jQuery("#wp2_amfColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor1'][value='" + wp2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(wp2AmfColorPlace[i] == "0002602"){
-							//jQuery("#wp2_amfColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor2'][value='" + wp2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(wp2AmfColorPlace[i] == "0002603"){
-							//jQuery("#wp2_amfColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor3'][value='" + wp2AmfAllColor[j] + "']").prop("checked", true);
-						}else if(wp2AmfColorPlace[i] == "0002604"){
-							//jQuery("#wp2_amfColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor4'][value='" + wp2AmfAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="wp2_amfColorPlace_"]:checked').change();
-			}
-
-
-			var wp2BhColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace}";
-			var wp2BhAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2BhAllColor}";
-			//if(isNotEmpty(wp2BhColorPlace)&&isNotEmpty(wp2BhColorPlace)){
-			if(isNotEmpty(wp2BhColorPlace)){
-				wp2BhColorPlace = wp2BhColorPlace.split("/");
-				wp2BhAllColor = wp2BhAllColor.split("/");
-				for(var i=0;i<wp2BhColorPlace.length;i++){
-					if(wp2BhColorPlace[i] == "0002901"){
-						jQuery("#wp2_bhColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor1'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(wp2BhColorPlace[i] == "0002902"){
-						jQuery("#wp2_bhColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor2'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(wp2BhColorPlace[i] == "0002903"){
-						jQuery("#wp2_bhColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor3'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
-					}else if(wp2BhColorPlace[i] == "0002904"){
-						jQuery("#wp2_bhColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor4'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<wp2BhAllColor.length;j++){
-						if(wp2BhColorPlace[i] == "0002901"){
-							//jQuery("#wp2_bhColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor1'][value='" + wp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(wp2BhColorPlace[i] == "0002902"){
-							//jQuery("#wp2_bhColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor2'][value='" + wp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(wp2BhColorPlace[i] == "0002903"){
-							//jQuery("#wp2_bhColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor3'][value='" + wp2BhAllColor[j] + "']").prop("checked", true);
-						}else if(wp2BhColorPlace[i] == "0002904"){
-							//jQuery("#wp2_bhColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor4'][value='" + wp2BhAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="wp2_bhColorPlace_"]:checked').change();
-			} 
-
-			var wp2ByColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace}";
-			var wp2ByAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2ByAllColor}";
-			//if(isNotEmpty(wp2ByColorPlace)&&isNotEmpty(wp2ByColorPlace)){
-			if(isNotEmpty(wp2ByColorPlace)){
-				wp2ByColorPlace = wp2ByColorPlace.split("/");
-				wp2ByAllColor = wp2ByAllColor.split("/");
-				for(var i=0;i<wp2ByColorPlace.length;i++){
-					if(wp2ByColorPlace[i] == "0003201"){
-						jQuery("#wp2_byColorPlace_1").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor1'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(wp2ByColorPlace[i] == "0003202"){
-						jQuery("#wp2_byColorPlace_2").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor2'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(wp2ByColorPlace[i] == "0003203"){
-						jQuery("#wp2_byColorPlace_3").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor3'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
-					}else if(wp2ByColorPlace[i] == "0003204"){
-						jQuery("#wp2_byColorPlace_4").prop("checked",true);
-						//jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor4'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
-					}
-					
-					for(var j=0;j<wp2ByAllColor.length;j++){
-						if(wp2ByColorPlace[i] == "0003201"){
-							//jQuery("#wp2_byColorPlace_1").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor1'][value='" + wp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(wp2ByColorPlace[i] == "0003202"){
-							//jQuery("#wp2_byColorPlace_2").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor2'][value='" + wp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(wp2ByColorPlace[i] == "0003203"){
-							//jQuery("#wp2_byColorPlace_3").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor3'][value='" + wp2ByAllColor[j] + "']").prop("checked", true);
-						}else if(wp2ByColorPlace[i] == "0003204"){
-							//jQuery("#wp2_byColorPlace_4").prop("checked",true);
-							jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor4'][value='" + wp2ByAllColor[j] + "']").prop("checked", true);
-						}
-					}
-				}
-				jQuery('input[id^="wp2_byColorPlace_"]:checked').change();
-			}    
-         }	
-	}
-})	
+})
 
 function setPantsModelDisable(productCategory){
 	var ptModel = null;
@@ -4311,8 +3828,8 @@ function getPrice(){
 	//PANTSの料金を表示
 	var pants2Model = "";
 	var priceUrl = "";
-	jQuery("#op2_pantsModel,#op2_tack,#tp2_pantsModel,#tp2_tack,#wp2_pantsModel,#wp2_tack").change(function(){
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+	jQuery("#op2_pantsModel,#tp2_pantsModel,#wp2_pantsModel").change(function(){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "07";
 	    var category = jQuery('input[name="productCategory"]:checked').val();
@@ -4359,7 +3876,7 @@ function getPrice(){
 	//項目：タック、コインポケット、裾上げ、ダブル幅、釦素材、釦素材品番
 	jQuery("#op2_tack,#op2_coinPkt,#op2_hemUp,#op2_doubleWide,#op2_btnMate,#op2_btnMateStkNo,"+
 			"#tp2_tack,#tp2_coinPkt,#tp2_hemUp,#tp2_doubleWide,#tp2_btnMate,#tp2_btnMateStkNo,"+
-			"#wp2_tack,#wp2_coinPkt,#wp2_hemUp,#wp2_doubleWide,#wp2_btnMate,#wp2_btnMateStkNo") 
+			"#wp2_tack_id,#wp2_coinPkt_id,#wp2_hemUp,#wp2_doubleWide,#wp2_btnMate,#wp2_btnMateStkNo") 
 	   .change(function(){
 	   //jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 	   var category = jQuery('input[name="productCategory"]:checked').val();
@@ -4416,7 +3933,7 @@ function getPrice(){
 	//項目：膝裏、膝裏素材、フロント仕様、パンチェリーナ、アジャスター仕様、ベルトループ、ピンループ、脇ポケット、忍びポケット、フラップ付コインポケット、上前ピスポケット、下前ピスポケット、Vカット、ステッチ種類、ステッチ箇所変更、ダブルステッチ、AMF色指定、ボタンホール色指定、ボタン付け糸指定、サスペンダー釦、エイト（滑り止め）、シック大（股補強）、形状記憶
 	jQuery('input[id^="op2_kneeBack_id"],[id^="op2_kneeBackMate_id"],[id^="op2_frontSpec_id"],[id^="op2_pancherina_id"],[id^="op2_adjuster_id"],[id^="op2_beltLoop_id"],[id^="op2_pinLoop_id"],[id^="op2_sidePkt_id"],[id^="op2_sinobiPkt_id"],[id^="op2_flapCoinPkt_id"],[id^="op2_pisPktUf_id"],[id^="op2_pisPktDf_id"],[id^="op2_vCut_id"],[id^="op2_stitch_id"],[id^="op2_stitchModify_id"],[id^="op2_suspenderBtn_id"],[id^="op2_thick_id"],[id^="op2_eight_id"],[id^="op2_shapeMemory_id"],' + 
 		        '[id^="tp2_kneeBack_id"],[id^="tp2_kneeBackMate_id"],[id^="tp2_frontSpec_id"],[id^="tp2_pancherina_id"],[id^="tp2_adjuster_id"],[id^="tp2_beltLoop_id"],[id^="tp2_pinLoop_id"],[id^="tp2_sidePkt_id"],[id^="tp2_sinobiPkt_id"],[id^="tp2_flapCoinPkt_id"],[id^="tp2_pisPktUf_id"],[id^="tp2_pisPktDf_id"],[id^="tp2_vCut_id"],[id^="tp2_stitch_id"],[id^="tp2_suspenderBtn_id"],[id^="tp2_thick_id"],[id^="tp2_eight_id"],[id^="tp2_shapeMemory_id"],[id^="tp2_sideStripe_id"],[id^="tp2_sideStripeWidth_id"],'+
-		        '[id^="wp2_kneeBack_id"],[id^="wp2_kneeBackMate_id"],[id^="wp2_frontSpec_id"],[id^="wp2_pancherina_id"],[id^="wp2_adjuster_id"],[id^="wp2_beltLoop_id"],[id^="wp2_pinLoop_id"],[id^="wp2_sidePkt_id"],[id^="wp2_sinobiPkt_id"],[id^="wp2_flapCoinPkt_id"],[id^="wp2_pisPktUf_id"],[id^="wp2_pisPktDf_id"],[id^="wp2_vCut_id"],[id^="wp2_stitch_id"],[id^="wp2_stitchModify_id"],[id^="wp2_dStitch_id"],[id^="wp2_suspenderBtn_id"],[id^="wp2_eight_id"],[id^="wp2_thick_id"],[id^="wp2_shapeMemory_id"]')
+		        '[id^="wp2_kneeBack_id"],[id^="wp2_kneeBackMate_id"],[id^="wp2_frontSpec_id"],[id^="wp2_pancherina_id"],[id^="wp2_adjuster_id"],[id^="wp2_beltLoop_id"],[id^="wp2_pinLoop_id"],[id^="wp2_sidePkt_id"],[id^="wp2_sinobiPkt_id"],[id^="wp2_flapCoinPkt_id"],[id^="wp2_pisPktUf_id"],[id^="wp2_pisPktDf_id"],[id^="wp2_vCut_id"],[id^="wp2_stitch_id"],[id^="wp2_stitchModify_id"],[id^="wp2_dStitchModify_id"],[id^="wp2_suspenderBtn_id"],[id^="wp2_eight_id"],[id^="wp2_thick_id"],[id^="wp2_shapeMemory_id"]')
 	.change(function(){
 		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var category = jQuery('input[name="productCategory"]:checked').val();
@@ -4462,7 +3979,8 @@ function getPrice(){
 	var priceUrl = "";
 	// 	ラジオボタンの変更処理
 	// 	項目：ベルトループ ,ステッチ箇所変更,ダブルステッチ
-	jQuery('input[id^="op2_beltLoop_id"],[id^="op2_stitchModify_id"],[id^="op2_stitchModifyPlace_id"],[id^="op2_dStitch_id"],[id^="op2_dStitchPlace_id"],[id^="tp2_beltLoop_id"],[id^="tp2_beltLoopPlace_id"],[id^="wp2_beltLoop_id"],[id^="wp2_beltLoopPlace_id"],[id^="wp2_stitchModify_id"],[id^="wp2_stitchModifyPlace_id"],[id^="wp2_dStitch_id"],[id^="wp2_dStitchModifyPlace_id"]')
+	jQuery('input[id^="op2_stitchModify_id"],[id^="op2_stitchModifyPlace_id"],[id^="op2_dStitch_id"],[id^="op2_dStitchPlace_id"],'+
+			'[id^="wp2_stitchModify_id"],[id^="wp2_stitchModifyPlace_id"],[id^="wp2_dStitchModify_id"],[id^="wp2_dStitchModifyPlace_id"]')
 	.change(function(){
 		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		var category = jQuery('input[name="productCategory"]:checked').val();
@@ -4481,46 +3999,45 @@ function getPrice(){
 		var idValueName = jQuery(this).attr("id");
 		var thisValueTemp = jQuery(this).val();
 		var jspOptionCode = "";
-
 		if(category == "9000101"){
-		if(thisValueTemp == "0002001"){
-			//ステッチ箇所変更は無しです
-			//var i = 1;
-			//jQuery('input[id^="op2_stitchModifyPlace_id"]').each(function() {
-			//	jQuery('#op2_stitchModifyPlace_id' + i).removeAttr("checked");
-			//	i++;
-			//});
-			//jQuery('#op2_dStitch_id1').prop("checked", true);
-			//jQuery('#op2_dStitch_id2').prop("disabled", true);
-			//jQuery('#op2_amfColor_id1').prop("checked", true);
-			//jQuery('#op2_amfColor_id2').prop("disabled", true);
-			var findIdPosition = idValueName.indexOf("_id");
-		    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
-			if(isNotEmpty(pants2Model)){
-				jspOptionCode = "00020"
-				var code = itemCode + subItemCode + pants2Model + jspOptionCode;
-				jQuery.ajax({
-					type:"get",
-				    url:contextPath + "/orderCo/" + priceUrl,
-				    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisValueTemp},
-				    async:false,
-				    success:function(result){
-				    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
-				    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
-				        jQuery("#optionPrice").html(result.optionPrice);
-				        getAllPrice(itemCode, result.optionPrice);
-				   }
-		        });
+			if(thisValueTemp == "0002001"){
+				//ステッチ箇所変更は無しです
+				//var i = 1;
+				//jQuery('input[id^="op2_stitchModifyPlace_id"]').each(function() {
+				//	jQuery('#op2_stitchModifyPlace_id' + i).removeAttr("checked");
+				//	i++;
+				//});
+				//jQuery('#op2_dStitch_id1').prop("checked", true);
+				//jQuery('#op2_dStitch_id2').prop("disabled", true);
+				//jQuery('#op2_amfColor_id1').prop("checked", true);
+				//jQuery('#op2_amfColor_id2').prop("disabled", true);
+				var findIdPosition = idValueName.indexOf("_id");
+			    var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
+				if(isNotEmpty(pants2Model)){
+					jspOptionCode = "00020"
+					var code = itemCode + subItemCode + pants2Model + jspOptionCode;
+					jQuery.ajax({
+						type:"get",
+					    url:contextPath + "/orderCo/" + priceUrl,
+					    data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisValueTemp},
+					    async:false,
+					    success:function(result){
+					    	var msgIdValueName = interceptedIdValueName.replace(/_id/,"_Msg");
+					    	jQuery("#"+msgIdValueName).html(result.idValuePrice);
+					        jQuery("#optionPrice").html(result.optionPrice);
+					        getAllPrice(itemCode, result.optionPrice);
+					   }
+			        });
+				}
+				//jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]:checked').change();
+				//jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]:checked').change();
 			}
-			//jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]:checked').change();
-			//jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]:checked').change();
-		}
-		if(thisValueTemp == "0002002"){
-			//ステッチ箇所変更は有りです
-			//jQuery('#op2_dStitch_id2').prop("disabled", false);
-			//jQuery('#op2_amfColor_id2').prop("disabled", false);
-			jQuery('input[id^="op2_stitchModifyPlace_id"]').change();
-		}
+			if(thisValueTemp == "0002002"){
+				//ステッチ箇所変更は有りです
+				//jQuery('#op2_dStitch_id2').prop("disabled", false);
+				//jQuery('#op2_amfColor_id2').prop("disabled", false);
+				jQuery('input[id^="op2_stitchModifyPlace_id"]').change();
+			}
 		}else if(category == "9000103"){
 			if(thisValueTemp == "0002001"){
 				//ステッチ箇所変更は無しです
@@ -4561,6 +4078,7 @@ function getPrice(){
 				jQuery('input[id^="wp2_stitchModifyPlace_id"]').change();
 			}
 		}
+
 		if(thisValueTemp == "0002201"){
 			//ダブルステッチは無しです
 			//var i = 1;
@@ -4592,7 +4110,7 @@ function getPrice(){
 				jQuery('input[id^="op2_dStitchPlace_id"]').change();
 			}
 			else if(category == "9000103"){
-				jQuery('input[id^="wp2_dStitchPlace_id"]').change();
+				jQuery('input[id^="wp2_dStitchModifyPlace_id"]').change();
 			}
 		}
 		
@@ -4884,7 +4402,7 @@ function getPrice(){
 		}else if(findIdBy != -1){
 			idValueNameTemp = idValueNameTemp + "byColor_id";
 			if(productCategory == "9000101"){
-				thisValueTemp = "00031" + jQuery("#wp2_byColorPlaceAll").val();
+				thisValueTemp = "00031" + jQuery("#op2_byColorPlaceAll").val();
 			}else if(productCategory == "9000102"){
 				thisValueTemp = "00031" + jQuery("#tp2_byColorPlaceAll").val();
 			}else if(productCategory == "9000103"){
@@ -4963,88 +4481,345 @@ function getAllPrice(subItemCode, optionPrice){
 
 function  op2Session(){
 
+	var op2PantsModel = jQuery("#op2_pantsModel").val();
+	 if(isEmpty(op2PantsModel)){
+           return; 
+	}
+	//タック
+	var tackElem = jQuery('#op2_tack');
+	// タックの選択肢更新
+	tackElem.empty();
+	var tmpTack = null;
+	for (tmpTack of tackList[op2PantsModel].activeList) {
+		tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
+	}
+	var op2Tack = "${orderCoForm.coOptionPants2StandardInfo.op2Tack}";
+	tackElem.val(op2Tack);
+	tackElem.change();
+
+	//膝裏
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBack"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2KneeBack}"]);
+	var selectedKneeBack = "${orderCoForm.coOptionPants2StandardInfo.op2KneeBack}";
+	if (selectedKneeBack == '0000202') {
+		jQuery('#op2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#op2_kneeBackMate_div').show();
+	}
+	
+	//膝裏素材
+	jQuery('input[name="coOptionPants2StandardInfo.op2KneeBackMate"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMate}"]);
+
+	//フロント仕様
+	jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2FrontSpec}"]);
+	
+	//アジャスター仕様の選択肢制御
+	var selectedAdjuster = jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]:checked').val();
+	jQuery('input[id^="op2_adjuster_"]').each(function() {
+		var tmpOpAdjusterElem = jQuery(this);
+		var value = tmpOpAdjusterElem.val();
+
+		if (adjusterList[op2PantsModel].activeList.indexOf(value) != -1) {
+			// 有効なアジャスター仕様の場合、有効化
+			tmpOpAdjusterElem.prop("disabled", false);
+		} else {
+			// 有効なアジャスター仕様ではない場合、無効化
+			tmpOpAdjusterElem.prop("disabled", true);
+		}
+	});
+
+	//アジャスター仕様
+	jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2Adjuster}"]);
+	
+	//ピンループ
+	jQuery('input[name="coOptionPants2StandardInfo.op2PinLoop"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PinLoop}"]);
+
+	//脇ポケット	
+	jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2SidePkt}"]);
+	
+	//忍びポケット
+	jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2SinobiPkt}"]);
+
+	//フラップ付コインポケット
+	jQuery('input[name="coOptionPants2StandardInfo.op2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2FlapCoinPkt}"]);
+
+	//上前ピスポケット
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PisPktUf}"]);
+
+	//下前ピスポケット 
+	jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PisPktDf}"]);
+
+	//Vカット
+    jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2VCut}"]);
+
+	//ステッチ種類 
+	jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2Stitch}"]);
+
+	//ダブル幅
+	jQuery("#op2_doubleWide").val("${orderCoForm.coOptionPants2StandardInfo.op2DoubleWide}");
+
 	//コインポケット
 	jQuery("#op2_coinPkt").val("${orderCoForm.coOptionPants2StandardInfo.op2CoinPkt}");
 
 	//裾上げ
 	jQuery('#op2_hemUp').val("${orderCoForm.coOptionPants2StandardInfo.op2HemUp}");
 	jQuery("#op2_hemUp").change();
-	
+
 	//ベルトループ
 	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoop"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoop}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace4}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace5}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace6}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace7}"]);
+	var selectedOp2BeltLoop = "${orderCoForm.coOptionPants2StandardInfo.op2BeltLoop}";
+	if (selectedOp2BeltLoop == '0000701') {
+		// 表示
+		jQuery('#op2_beltLoopPlace').show();
+	} else {
+		// 非表示
+		jQuery('#op2_beltLoopPlace').hide();
+	}
+	if((orderFlag == "orderLink" || orderFlag == "orderDivert") && (pants2Twiceflag == '0')){
+		//ベルトループ
+		var op2BeltLoopPlace = "${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace}";
+		if(isNotEmpty(op2BeltLoopPlace)){
+			op2BeltLoopPlace = op2BeltLoopPlace.split("/");
+			for(var i=0;i<op2BeltLoopPlace.length;i++){
+				if(op2BeltLoopPlace[i] == "0000801"){
+					jQuery("#op2_beltLoopPlace_id1").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000802"){
+					jQuery("#op2_beltLoopPlace_id2").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000803"){
+					jQuery("#op2_beltLoopPlace_id3").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000804"){
+					jQuery("#op2_beltLoopPlace_id4").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000805"){
+					jQuery("#op2_beltLoopPlace_id5").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000806"){
+					jQuery("#op2_beltLoopPlace_id6").prop("checked",true);
+				}else if(op2BeltLoopPlace[i] == "0000807"){
+					jQuery("#op2_beltLoopPlace_id7").prop("checked",true);
+				}
+			}
+		}
 
-	//ステッチ箇所変更
-	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModify}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace4}"]);
-	//jQuery('input[id^="op2_stitchModify_id"]:checked').change();
+		//ステッチ箇所変更
+		var op2StitchModifyPlace = "${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace}";
+		if(isNotEmpty(op2StitchModifyPlace)){
+			op2StitchModifyPlace = op2StitchModifyPlace.split("/");
+			for(var i=0;i<op2StitchModifyPlace.length;i++){
+				if(op2StitchModifyPlace[i] == "0002101"){
+					jQuery("#op2_stitchModifyPlace_id1").prop("checked",true);
+				}else if(op2StitchModifyPlace[i] == "0002102"){
+					jQuery("#op2_stitchModifyPlace_id2").prop("checked",true);
+				}else if(op2StitchModifyPlace[i] == "0002103"){
+					jQuery("#op2_stitchModifyPlace_id3").prop("checked",true);
+				}else if(op2StitchModifyPlace[i] == "0002104"){
+					jQuery("#op2_stitchModifyPlace_id4").prop("checked",true);
+				}
+			}
+		}
+		jQuery('input[id^="op2_stitchModifyPlace_id"]:checked').change();
+
+		//ダブルステッチ
+		ctrlOp2DStitchPlace();
+
+		//AMF色指定
+		ctrlOp2AmfColor();
+
+		//ダブルステッチ
+		var op2DStitchPlace = "${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace}";
+		if(isNotEmpty(op2DStitchPlace)){
+			op2DStitchPlace = op2DStitchPlace.split("/");
+			for(var i=0;i<op2DStitchPlace.length;i++){
+				if(op2DStitchPlace[i] == "0002301"){
+					jQuery("#op2_dStitchPlace_id1").prop("checked",true);
+				}else if(op2DStitchPlace[i] == "0002302"){
+					jQuery("#op2_dStitchPlace_id2").prop("checked",true);
+				}else if(op2DStitchPlace[i] == "0002303"){
+					jQuery("#op2_dStitchPlace_id3").prop("checked",true);
+				}else if(op2DStitchPlace[i] == "0002304"){
+					jQuery("#op2_dStitchPlace_id4").prop("checked",true);
+				}
+			}
+		}
+
+		//AMF色指定
+		var op2AmfColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace}";
+		var op2AmfAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2AmfAllColor}";
+		if(isNotEmpty(op2AmfColorPlace)){
+			op2AmfColorPlace = op2AmfColorPlace.split("/");
+			op2AmfAllColor = op2AmfAllColor.split("/");
+			for(var i=0;i<op2AmfColorPlace.length;i++){
+				if(op2AmfColorPlace[i] == "0002601"){
+					jQuery("#op2_amfColorPlace_1").prop("checked",true);
+				}else if(op2AmfColorPlace[i] == "0002602"){
+					jQuery("#op2_amfColorPlace_2").prop("checked",true);
+				}else if(op2AmfColorPlace[i] == "0002603"){
+					jQuery("#op2_amfColorPlace_3").prop("checked",true);
+				}else if(op2AmfColorPlace[i] == "0002604"){
+					jQuery("#op2_amfColorPlace_4").prop("checked",true);
+				}
+
+				//for(var j=0;j<op2AmfAllColor.length;j++){
+					if(op2AmfColorPlace[i] == "0002601"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor1'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(op2AmfColorPlace[i] == "0002602"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor2'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(op2AmfColorPlace[i] == "0002603"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor3'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(op2AmfColorPlace[i] == "0002604"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2AmfColor4'][value='" + op2AmfAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+				
+			}
+			//jQuery('input[id^="op2_amfColorPlace_"]:checked').change();
+			jQuery('input[id^="op2_amfColor_"]:checked').change();
+		}
+		
+		//ボタンホール色指定
+		var op2BhColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace}";
+		var op2BhAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2BhAllColor}";
+        if(isNotEmpty(op2BhColorPlace)){
+			op2BhColorPlace = op2BhColorPlace.split("/");
+			op2BhAllColor = op2BhAllColor.split("/");
+			for(var i=0;i<op2BhColorPlace.length;i++){
+				if(op2BhColorPlace[i] == "0002901"){
+					jQuery("#op2_bhColorPlace_1").prop("checked",true);
+				}else if(op2BhColorPlace[i] == "0002902"){
+					jQuery("#op2_bhColorPlace_2").prop("checked",true);
+				}else if(op2BhColorPlace[i] == "0002903"){
+					jQuery("#op2_bhColorPlace_3").prop("checked",true);
+				}else if(op2BhColorPlace[i] == "0002904"){
+					jQuery("#op2_bhColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<op2BhAllColor.length;j++){
+					if(op2BhColorPlace[i] == "0002901"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor1'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
+					}else if(op2BhColorPlace[i] == "0002902"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor2'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
+					}else if(op2BhColorPlace[i] == "0002903"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor3'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
+					}else if(op2BhColorPlace[i] == "0002904"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2BhColor4'][value='" + op2BhAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="op2_bhColorPlace_"]:checked').change();
+			jQuery('input[id^="op2_bhColor_"]:checked').change();
+		} 
+
+		//ボタン付け糸指定
+		var op2ByColorPlace = "${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace}";
+		var op2ByAllColor = "${orderCoForm.coOptionPants2StandardInfo.op2ByAllColor}";
+		if(isNotEmpty(op2ByColorPlace)){
+			op2ByColorPlace = op2ByColorPlace.split("/");
+			op2ByAllColor = op2ByAllColor.split("/");
+			for(var i=0;i<op2ByColorPlace.length;i++){
+				if(op2ByColorPlace[i] == "0003201"){
+					jQuery("#op2_byColorPlace_1").prop("checked",true);
+				}else if(op2ByColorPlace[i] == "0003202"){
+					jQuery("#op2_byColorPlace_2").prop("checked",true);
+				}else if(op2ByColorPlace[i] == "0003203"){
+					jQuery("#op2_byColorPlace_3").prop("checked",true);
+				}else if(op2ByColorPlace[i] == "0003204"){
+					jQuery("#op2_byColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<op2ByAllColor.length;j++){
+					if(op2ByColorPlace[i] == "0003201"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor1'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
+					}else if(op2ByColorPlace[i] == "0003202"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor2'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
+					}else if(op2ByColorPlace[i] == "0003203"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor3'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
+					}else if(op2ByColorPlace[i] == "0003204"){
+						jQuery(":radio[name='coOptionPants2StandardInfo.op2ByColor4'][value='" + op2ByAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="op2_byColorPlace_"]:checked').change();
+			jQuery('input[id^="op2_byColor_"]:checked').change();
+		} 
+
+	} else {
+		//ベルトループ
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace4}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace5}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace6}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BeltLoopPlace7}"]);
 	
-	ctrlOp2DStitchPlace();
-	ctrlOp2AmfColor();
-
-	//ダブルステッチ
-	jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitch}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace4}"]);
+		//ステッチ箇所変更
+		jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModify}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace4}"]);
+		//jQuery('input[id^="op2_stitchModify_id"]:checked').change();
+		
+		ctrlOp2DStitchPlace();
+		ctrlOp2AmfColor();
 	
-	//AMF色指定
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor}"]);
-
-	//jQuery("#op2_amfColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlaceAll}");
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace4}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor4}"]);
-	jQuery('input[id^="op2_amfColorPlace_"]:checked').change();
-	//jQuery('input[id^="op2_amfColor_"]:checked').change();
+		//ダブルステッチ
+		jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitch}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitchPlace4}"]);
+		
+		//AMF色指定
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor}"]);
+		//jQuery("#op2_amfColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlaceAll}");
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColorPlace4}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor4}"]);
+		//jQuery('input[id^="op2_amfColorPlace_"]:checked').change();
+		jQuery('input[id^="op2_amfColor_"]:checked').change();
+		
+		/* if("${orderCoForm.coOptionPants2StandardInfo.op2AmfColor}" == '0002401'){
+			jQuery('input[id^="op2_amfColor_id"]:checked').change();
+		}
+		else {
+			jQuery('input[id^="op2_amfColor_"]:checked').change();
+		} */
+		
+		//ボタンホール色指定
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor}"]);
+		//jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').change();
 	
-	//ボタンホール色指定
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor}"]);
-	//jQuery('input[name="coOptionPants2StandardInfo.op2BhColor"]').change();
-
-	//jQuery("#op2_bhColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlaceAll}");
-	//jQuery("#op2_bhColorPlaceAll").change();
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace4}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor4}"]);
-	//jQuery('input[id^="op2_bhColor_"]:checked').change();
-	jQuery('input[id^="op2_bhColorPlace_"]:checked').change();
-
-	//ボタン付け糸指定
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor}"]);
+		//jQuery("#op2_bhColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlaceAll}");
+		//jQuery("#op2_bhColorPlaceAll").change();
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColorPlace4}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2BhColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2BhColor4}"]);
+		jQuery('input[id^="op2_bhColor_"]:checked').change();
+		//jQuery('input[id^="op2_bhColorPlace_"]:checked').change();
 	
-	//jQuery("#op2_byColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceAll}");
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace4}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor1}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor2}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor3}"]);
-	jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor4}"]);
-	//jQuery('input[id^="op2_byColor_"]:checked').change();
-	jQuery('input[id^="op2_byColorPlace_"]:checked').change();
-
+		//ボタン付け糸指定
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor}"]);
+		
+		//jQuery("#op2_byColorPlaceAll").val("${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlaceAll}");
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColorPlace4}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColor1"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor1}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColor2"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor2}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColor3"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor3}"]);
+		jQuery('input[name="coOptionPants2StandardInfo.op2ByColor4"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2ByColor4}"]);
+		jQuery('input[id^="op2_byColor_"]:checked').change();
+		//jQuery('input[id^="op2_byColorPlace_"]:checked').change();
+	}
 	//釦素材
     if(isNotEmpty("${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo}")){
     	jQuery('#op2_btnMateStkNo').val("${orderCoForm.coOptionPants2StandardInfo.op2BtnMateStkNo}");
@@ -5053,11 +4828,90 @@ function  op2Session(){
    		 jQuery("#ojBtnMatePt2Flag").val("0");
    		}
     }
-    
 }
 
 function  tp2Session(){
 
+	var tp2PantsModel = jQuery("#tp2_pantsModel").val();
+	if(isEmpty(tp2PantsModel)){
+           return; 
+	}
+	
+	// 選択中のタック
+	var frontBtnCntElem = jQuery('#tp2_tack');
+	var selectedFrontBtnCnt = frontBtnCntElem.val();
+
+	// タックの選択肢更新
+	frontBtnCntElem.empty();
+	var tmpFrontBtnCnt = null;
+	for (tmpFrontBtnCnt of tackList[tp2PantsModel].activeList) {
+		frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+	}
+
+	var tjFrontBtnCnt = "${orderCoForm.coOptionPants2TuxedoInfo.tp2Tack}";
+	frontBtnCntElem.val(tjFrontBtnCnt);
+	frontBtnCntElem.change();
+
+	//膝裏
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBack}"]);
+	var selectedTp2KneeBack = "${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBack}";
+	if (selectedTp2KneeBack == '0000202') {
+		jQuery('#tp2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#tp2_kneeBackMate_div').show();
+	}
+
+	//膝裏素材
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMate}"]);
+
+	//フロント仕様
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2FrontSpec}"]);
+
+	//パンチェリーナ
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Pancherina}"]);
+
+	//アジャスター仕様の選択肢制御
+	var selectedAdjuster = jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]:checked').val();
+	jQuery('input[id^="tp2_adjuster_"]').each(function() {
+		var tmpOpAdjusterElem = jQuery(this);
+		var value = tmpOpAdjusterElem.val();
+
+		if (adjusterList[tp2PantsModel].activeList.indexOf(value) != -1) {
+			// 有効なアジャスター仕様の場合、有効化
+			tmpOpAdjusterElem.prop("disabled", false);
+		} else {
+			// 有効なアジャスター仕様ではない場合、無効化
+			tmpOpAdjusterElem.prop("disabled", true);
+		}
+	});
+	
+	//アジャスター仕様
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Adjuster}"]);
+
+	//ピンループ
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PinLoop"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PinLoop}"]);
+
+	//脇ポケット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SidePkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2SidePkt}"]);
+
+	//忍びポケット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2SinobiPkt}"]);
+
+	//フラップ付コインポケット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2FlapCoinPkt}"]);
+
+	//上前ピスポケット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktUf"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktUf}"]);
+
+	//下前ピスポケット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktDf"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktDf}"]);
+
+	//Vカット
+	jQuery('input[name="coOptionPants2TuxedoInfo.tp2VCut"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2VCut}"]);
+	
+    //ダブル幅
+	jQuery("#tp2_doubleWide").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2DoubleWide}");
+   
 	//コインポケット
 	jQuery("#tp2_coinPkt").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2CoinPkt}");
 	//jQuery("#tp2_coinPkt").change();
@@ -5066,47 +4920,141 @@ function  tp2Session(){
 	jQuery("#tp2_hemUp").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2HemUp}");
 	jQuery("#tp2_hemUp").change();
 
-   //ベルトループ 
+    //ベルトループ 
     jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoop}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace1}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace2}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace3}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace4}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace5}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace6}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace7}"]);
+    var selectedTp2BeltLoop = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoop}";
+	if (selectedTp2BeltLoop == '0000701') {
+		// 表示
+		jQuery('#tp2_beltLoopPlace').show();
+	} else {
+		// 非表示
+		jQuery('#tp2_beltLoopPlace').hide();
+	}
 
 	//ステッチ種類
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Stitch}"]);
-	//ボタンホール色指定
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor}"]);
 
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace1}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace2}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace3}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace4}"]);
-	
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor1}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor2}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor3}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor4}"]);
-	jQuery('input[id^="tp2_bhColor_"]:checked').change();
-	
-	//ボタン付け糸指定
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor}"]);
-	//jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').change();
-	//jQuery("#tp2_byColorPlaceAll").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlaceAll}");
-	//jQuery("#tp2_byColorPlaceAll").change();
+	if((orderFlag == "orderLink" || orderFlag == "orderDivert") && (pants2Twiceflag == '0')){
+		var tp2BeltLoopPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace}";
+		if(isNotEmpty(tp2BeltLoopPlace)){
+			tp2BeltLoopPlace = tp2BeltLoopPlace.split("/");
+			for(var i=0;i<tp2BeltLoopPlace.length;i++){
+				if(tp2BeltLoopPlace[i] == "0000801"){
+					jQuery("#tp2_beltLoopPlace_id1").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000802"){
+					jQuery("#tp2_beltLoopPlace_id2").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000803"){
+					jQuery("#tp2_beltLoopPlace_id3").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000804"){
+					jQuery("#tp2_beltLoopPlace_id4").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000805"){
+					jQuery("#tp2_beltLoopPlace_id5").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000806"){
+					jQuery("#tp2_beltLoopPlace_id6").prop("checked",true);
+				}else if(tp2BeltLoopPlace[i] == "0000807"){
+					jQuery("#tp2_beltLoopPlace_id7").prop("checked",true);
+				}
+			}
+		}
+		var tp2BhColorPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace}";
+		var tp2BhAllColor = "${orderCoForm.coOptionPants2TuxedoInfo.tp2BhAllColor}";
+		if(isNotEmpty(tp2BhColorPlace)){
+			tp2BhColorPlace = tp2BhColorPlace.split("/");
+			tp2BhAllColor = tp2BhAllColor.split("/");
+			for(var i=0;i<tp2BhColorPlace.length;i++){
+				if(tp2BhColorPlace[i] == "0002901"){
+					jQuery("#tp2_bhColorPlace_1").prop("checked",true);
+				}else if(tp2BhColorPlace[i] == "0002902"){
+					jQuery("#tp2_bhColorPlace_2").prop("checked",true);
+				}else if(tp2BhColorPlace[i] == "0002903"){
+					jQuery("#tp2_bhColorPlace_3").prop("checked",true);
+				}else if(tp2BhColorPlace[i] == "0002904"){
+					jQuery("#tp2_bhColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<tp2BhAllColor.length;j++){
+					if(tp2BhColorPlace[i] == "0002901"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2BhColor1'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(tp2BhColorPlace[i] == "0002902"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2BhColor2'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(tp2BhColorPlace[i] == "0002903"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2BhColor3'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(tp2BhColorPlace[i] == "0002904"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2BhColor4'][value='" + tp2BhAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="tp2_bhColorPlace_"]:checked').change();
+			jQuery('input[id^="tp2_bhColor_"]:checked').change();
+		} 
 
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace1}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace2}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace3}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace4}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor1}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor2}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor3}"]);
-	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor4}"]);
-	jQuery('input[id^="tp2_byColor_"]:checked').change();
+		var tp2ByColorPlace = "${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace}";
+		var tp2ByAllColor = "${orderCoForm.coOptionPants2TuxedoInfo.tp2ByAllColor}";
+		if(isNotEmpty(tp2ByColorPlace)){
+			tp2ByColorPlace = tp2ByColorPlace.split("/");
+			tp2ByAllColor = tp2ByAllColor.split("/");
+			for(var i=0;i<tp2ByColorPlace.length;i++){
+				if(tp2ByColorPlace[i] == "0003201"){
+					jQuery("#tp2_byColorPlace_1").prop("checked",true);
+				}else if(tp2ByColorPlace[i] == "0003202"){
+					jQuery("#tp2_byColorPlace_2").prop("checked",true);
+				}else if(tp2ByColorPlace[i] == "0003203"){
+					jQuery("#tp2_byColorPlace_3").prop("checked",true);
+				}else if(tp2ByColorPlace[i] == "0003204"){
+					jQuery("#tp2_byColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<tp2ByAllColor.length;j++){
+					if(tp2ByColorPlace[i] == "0003201"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor1'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(tp2ByColorPlace[i] == "0003202"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor2'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(tp2ByColorPlace[i] == "0003203"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor3'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(tp2ByColorPlace[i] == "0003204"){
+						jQuery(":radio[name='coOptionPants2TuxedoInfo.tp2ByColor4'][value='" + tp2ByAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="tp2_byColorPlace_"]:checked').change();
+			jQuery('input[id^="tp2_byColor_"]:checked').change();
+		} 
+	} else {
+		
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace1}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace2}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace3}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace4}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace5}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace6}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoopPlace7}"]);
+	
+		
+		//ボタンホール色指定
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace1}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace2}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace3}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColorPlace4}"]);
+		
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor1}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor2}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor3}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BhColor4}"]);
+		jQuery('input[id^="tp2_bhColor_"]:checked').change();
+		
+		//ボタン付け糸指定
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace1}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace2}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace3}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColorPlace4}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor1"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor1}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor2"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor2}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor3"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor3}"]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor4"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2ByColor4}"]);
+		jQuery('input[id^="tp2_byColor_"]:checked').change();
+	}
 
 	if(isNotEmpty("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}")){
 		jQuery("#tp2_btnMateStkNo").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}");
@@ -5118,10 +5066,87 @@ function  tp2Session(){
 	
 }
 function  wp2Session(){
+	var wp2PantsModel = jQuery("#wp2_pantsModel").val();
+	if(isEmpty(wp2PantsModel)){
+           return; 
+	}
+	// 選択中のタック
+	var frontBtnCntElem = jQuery('#wp2_tack_id');
+	var selectedFrontBtnCnt = frontBtnCntElem.val();
 
+	// タックの選択肢更新
+	frontBtnCntElem.empty();
+	var tmpFrontBtnCnt = null;
+	for (tmpFrontBtnCnt of tackList[wp2PantsModel].activeList) {
+		frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
+	}
+	
+	var wjFrontBtnCnt = "${orderCoForm.coOptionPants2WashableInfo.wp2Tack}";
+	frontBtnCntElem.val(wjFrontBtnCnt);
+	frontBtnCntElem.change();
+
+	//膝裏
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2KneeBack}"]);
+	var selectedWpKneeBack = "${orderCoForm.coOptionPants2WashableInfo.wp2KneeBack}";
+	if (selectedWpKneeBack == '0000202') {
+		jQuery('#wp2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#wp2_kneeBackMate_div').show();
+	}
+
+	//膝裏素材
+	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMate}"]);
+
+	//フロント仕様
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2FrontSpec}"]);
+	
+	//パンチェリーナ
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Pancherina"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Pancherina}"]);
+
+	//アジャスター仕様の選択肢制御
+	var selectedAdjuster = jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]:checked').val();
+	jQuery('input[id^="wp2_adjuster_"]').each(function() {
+		var tmpOpAdjusterElem = jQuery(this);
+		var value = tmpOpAdjusterElem.val();
+
+		if (adjusterList[wp2PantsModel].activeList.indexOf(value) != -1) {
+			// 有効なアジャスター仕様の場合、有効化
+			tmpOpAdjusterElem.prop("disabled", false);
+		} else {
+			// 有効なアジャスター仕様ではない場合、無効化
+			tmpOpAdjusterElem.prop("disabled", true);
+		}
+	});
+	
+	//アジャスター仕様
+	jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Adjuster}"]);
+
+	//ピンループ
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PinLoop}"]);
+	
+	//脇ポケット
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SidePkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2SidePkt}"]);
+
+	//忍びポケット
+	jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2SinobiPkt}"]);
+
+	//フラップ付コインポケット
+	jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2FlapCoinPkt}"]);
+
+	//上前ピスポケット
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PisPktUf}"]);
+
+	//下前ピスポケット 
+	jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktDf"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PisPktDf}"]);
+
+	//Vカット
+	jQuery('input[name="coOptionPants2WashableInfo.wp2VCut"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2VCut}"]);
+
+	//ダブル幅
+	jQuery("#wp2_doubleWide").val("${orderCoForm.coOptionPants2WashableInfo.wp2DoubleWide}");	
+	
 	//コインポケット
-	jQuery("#wp2_coinPkt").val("${orderCoForm.coOptionPants2WashableInfo.wp2CoinPkt}");
-	//jQuery("#wp2_coinPkt").change();
+	jQuery("#wp2_coinPkt_id").val("${orderCoForm.coOptionPants2WashableInfo.wp2CoinPkt}");
 
 	//裾上げ
 	jQuery("#wp2_hemUp").val("${orderCoForm.coOptionPants2WashableInfo.wp2HemUp}");
@@ -5129,69 +5154,245 @@ function  wp2Session(){
 	
 	//ベルトループ
 	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoop}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace4}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace5}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace6}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace7}"]);
-
-	//ステッチ種類
-	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Stitch}"]);
-	//ステッチ箇所変更
-	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModify}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace4}"]);
-
-
-	ctrlWp2DStitchPlace();
-	ctrlWp2AmfColor();
+	var selectedWp2BeltLoop = "${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoop}";
+	if (selectedWp2BeltLoop == '0000701') {
+		// 表示
+		jQuery('#wp2_beltLoopPlace').show();
+	} else {
+		// 非表示
+		jQuery('#wp2_beltLoopPlace').hide();
+	}
 	
-	//ダブルステッチ
-	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitch}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace4}"]);
+	if((orderFlag == "orderLink" || orderFlag == "orderDivert") && (pants2Twiceflag == '0')){
+    	var wp2BeltLoopPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace}";
+		if(isNotEmpty(wp2BeltLoopPlace)){
+			wp2BeltLoopPlace = wp2BeltLoopPlace.split("/");
+			for(var i=0;i<wp2BeltLoopPlace.length;i++){
+				if(wp2BeltLoopPlace[i] == "0000801"){
+					jQuery("#wp2_beltLoopPlace_id1").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000802"){
+					jQuery("#wp2_beltLoopPlace_id2").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000803"){
+					jQuery("#wp2_beltLoopPlace_id3").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000804"){
+					jQuery("#wp2_beltLoopPlace_id4").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000805"){
+					jQuery("#wp2_beltLoopPlace_id5").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000806"){
+					jQuery("#wp2_beltLoopPlace_id6").prop("checked",true);
+				}else if(wp2BeltLoopPlace[i] == "0000807"){
+					jQuery("#wp2_beltLoopPlace_id7").prop("checked",true);
+				}
+			}
+		}
 
-	//AMF色指定
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace4}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor4}"]);
-	jQuery('input[id^="wp2_amfColor_"]:checked').change();
+		var wp2StitchModifyPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace}";
+		if(isNotEmpty(wp2StitchModifyPlace)){
+			wp2StitchModifyPlace = wp2StitchModifyPlace.split("/");
+			for(var i=0;i<wp2StitchModifyPlace.length;i++){
+				if(wp2StitchModifyPlace[i] == "0002101"){
+					jQuery("#wp2_stitchModifyPlace_id1").prop("checked",true);
+				}else if(wp2StitchModifyPlace[i] == "0002102"){
+					jQuery("#wp2_stitchModifyPlace_id2").prop("checked",true);
+				}else if(wp2StitchModifyPlace[i] == "0002103"){
+					jQuery("#wp2_stitchModifyPlace_id3").prop("checked",true);
+				}else if(wp2StitchModifyPlace[i] == "0002104"){
+					jQuery("#wp2_stitchModifyPlace_id4").prop("checked",true);
+				}
+			}
+		}
+		jQuery('input[id^="wp2_stitchModifyPlace_id"]:checked').change();
+		
+		ctrlWp2DStitchPlace();
+		ctrlWp2AmfColor();
 
-	//ボタンホール色指定
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace4}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor4}"]);
-	jQuery('input[id^="wp2_bhColor_"]:checked').change();
+		var wp2DStitchPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace}";
+		if(isNotEmpty(wp2DStitchPlace)){
+			wp2DStitchPlace = wp2DStitchPlace.split("/");
+			for(var i=0;i<wp2DStitchPlace.length;i++){
+				if(wp2DStitchPlace[i] == "0002301"){
+					jQuery("#wp2_dStitchModifyPlace_id1").prop("checked",true);
+				}else if(wp2DStitchPlace[i] == "0002302"){
+					jQuery("#wp2_dStitchModifyPlace_id2").prop("checked",true);
+				}else if(wp2DStitchPlace[i] == "0002303"){
+					jQuery("#wp2_dStitchModifyPlace_id3").prop("checked",true);
+				}else if(wp2DStitchPlace[i] == "0002304"){
+					jQuery("#wp2_dStitchModifyPlace_id4").prop("checked",true);
+				}
+			}
+		}
+
+		var wp2AmfColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace}";
+		var wp2AmfAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2AmfAllColor}";
+		if(isNotEmpty(wp2AmfColorPlace)){
+			wp2AmfColorPlace = wp2AmfColorPlace.split("/");
+			wp2AmfAllColor = wp2AmfAllColor.split("/");
+			for(var i=0;i<wp2AmfColorPlace.length;i++){
+				if(wp2AmfColorPlace[i] == "0002601"){
+					jQuery("#wp2_amfColorPlace_1").prop("checked",true);
+				}else if(wp2AmfColorPlace[i] == "0002602"){
+					jQuery("#wp2_amfColorPlace_2").prop("checked",true);
+				}else if(wp2AmfColorPlace[i] == "0002603"){
+					jQuery("#wp2_amfColorPlace_3").prop("checked",true);
+				}else if(wp2AmfColorPlace[i] == "0002604"){
+					jQuery("#wp2_amfColorPlace_4").prop("checked",true);
+				}
+
+	 		 	 //for(var j=0;j<wp2AmfAllColor.length;j++){
+					if(wp2AmfColorPlace[i] == "0002601"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor1'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(wp2AmfColorPlace[i] == "0002602"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor2'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(wp2AmfColorPlace[i] == "0002603"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor3'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
+					}else if(wp2AmfColorPlace[i] == "0002604"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2AmfColor4'][value='" + wp2AmfAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+
+				
+			}
+			//jQuery('input[id^="wp2_amfColorPlace_"]:checked').change();
+			jQuery('input[id^="wp2_amfColor_"]:checked').change();
+		}
+
+
+		var wp2BhColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace}";
+		var wp2BhAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2BhAllColor}";
+		if(isNotEmpty(wp2BhColorPlace)){
+			wp2BhColorPlace = wp2BhColorPlace.split("/");
+			wp2BhAllColor = wp2BhAllColor.split("/");
+			for(var i=0;i<wp2BhColorPlace.length;i++){
+				if(wp2BhColorPlace[i] == "0002901"){
+					jQuery("#wp2_bhColorPlace_1").prop("checked",true);
+				}else if(wp2BhColorPlace[i] == "0002902"){
+					jQuery("#wp2_bhColorPlace_2").prop("checked",true);
+				}else if(wp2BhColorPlace[i] == "0002903"){
+					jQuery("#wp2_bhColorPlace_3").prop("checked",true);
+				}else if(wp2BhColorPlace[i] == "0002904"){
+					jQuery("#wp2_bhColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<wp2BhAllColor.length;j++){
+					if(wp2BhColorPlace[i] == "0002901"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor1'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(wp2BhColorPlace[i] == "0002902"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor2'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(wp2BhColorPlace[i] == "0002903"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor3'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
+					}else if(wp2BhColorPlace[i] == "0002904"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2BhColor4'][value='" + wp2BhAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="wp2_bhColorPlace_"]:checked').change();
+			jQuery('input[id^="wp2_bhColor_"]:checked').change();
+		} 
+
+		var wp2ByColorPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace}";
+		var wp2ByAllColor = "${orderCoForm.coOptionPants2WashableInfo.wp2ByAllColor}";
+		if(isNotEmpty(wp2ByColorPlace)){
+			wp2ByColorPlace = wp2ByColorPlace.split("/");
+			wp2ByAllColor = wp2ByAllColor.split("/");
+			for(var i=0;i<wp2ByColorPlace.length;i++){
+				if(wp2ByColorPlace[i] == "0003201"){
+					jQuery("#wp2_byColorPlace_1").prop("checked",true);
+				}else if(wp2ByColorPlace[i] == "0003202"){
+					jQuery("#wp2_byColorPlace_2").prop("checked",true);
+				}else if(wp2ByColorPlace[i] == "0003203"){
+					jQuery("#wp2_byColorPlace_3").prop("checked",true);
+				}else if(wp2ByColorPlace[i] == "0003204"){
+					jQuery("#wp2_byColorPlace_4").prop("checked",true);
+				}
+				
+				//for(var j=0;j<wp2ByAllColor.length;j++){
+					if(wp2ByColorPlace[i] == "0003201"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor1'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(wp2ByColorPlace[i] == "0003202"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor2'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(wp2ByColorPlace[i] == "0003203"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor3'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
+					}else if(wp2ByColorPlace[i] == "0003204"){
+						jQuery(":radio[name='coOptionPants2WashableInfo.wp2ByColor4'][value='" + wp2ByAllColor[i] + "']").prop("checked", true);
+					}
+				//}
+			}
+			//jQuery('input[id^="wp2_byColorPlace_"]:checked').change();
+			jQuery('input[id^="wp2_byColor_"]:checked').change();
+		}    
+     }else {
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace4}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace5"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace5}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace6"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace6}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoopPlace7"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoopPlace7}"]);
 	
-	//ボタン付け糸指定
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace4}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor2}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor3}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor4}"]);
-	jQuery('input[id^="wp2_byColor_"]:checked').change();
+		//ステッチ種類
+		jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Stitch}"]);
+		
+		//ステッチ箇所変更
+		jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModify}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace4}"]);
+	
+	
+		ctrlWp2DStitchPlace();
+		ctrlWp2AmfColor();
+		
+		//ダブルステッチ
+		jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitch}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2DStitchPlace4}"]);
+	
+		//AMF色指定
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColorPlace4}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2AmfColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor4}"]);
+		//jQuery('input[id^="wp2_amfColor_"]:checked').change();
+		
+		if("${orderCoForm.coOptionPants2WashableInfo.wp2AmfColor}" == '0002401'){
+			jQuery('input[id^="wp2_amfColor_id"]:checked').change();
+		}
+		else {
+			jQuery('input[id^="wp2_amfColor_"]:checked').change();
+		}
+	
+		//ボタンホール色指定
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColorPlace4}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BhColor4}"]);
+		jQuery('input[id^="wp2_bhColor_"]:checked').change();
+		
+		//ボタン付け糸指定
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColorPlace4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColorPlace4}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor1"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor1}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor2"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor2}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor3"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor3}"]);
+		jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor4"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2ByColor4}"]);
+		jQuery('input[id^="wp2_byColor_"]:checked').change();
+     }
 
 	if(isNotEmpty("${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo}")){
 		jQuery("#wp2_btnMateStkNo").val("${orderCoForm.coOptionPants2WashableInfo.wp2BtnMateStkNo}");
@@ -5201,239 +5402,7 @@ function  wp2Session(){
 	   	}
 	}
 }
-
-function optionPants2ChangeModel(productCategory){
-	var pants2Flag = jQuery("#pants2Flag").val();
-	 if(pants2Flag == "1"){
-		if(productCategory == "9000101"){
-			var op2PantsModel = jQuery("#op2_pantsModel").val();
-			if(isEmpty(op2PantsModel)){
-	               return; 
-			}
-			//タック
-			var tackElem = jQuery('#op2_tack');
-			// タックの選択肢更新
-			tackElem.empty();
-			var tmpTack = null;
-			for (tmpTack of tackList[op2PantsModel].activeList) {
-				tackElem.append(jQuery('<option />').val(tmpTack.val).text(tmpTack.text));
-			}
-			var op2Tack = "${orderCoForm.coOptionPants2StandardInfo.op2Tack}";
-			tackElem.val(op2Tack);
-			tackElem.change();
-
-			jQuery('input[name="coOptionPants2StandardInfo.op2KneeBack"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2KneeBack}"]);
-
-			//膝裏素材
-			jQuery('input[name="coOptionPants2StandardInfo.op2KneeBackMate"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2KneeBackMate}"]);
-
-			//フロント仕様
-			jQuery('input[name="coOptionPants2StandardInfo.op2FrontSpec"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2FrontSpec}"]);
-			
-			//アジャスター仕様
-			jQuery('input[name="coOptionPants2StandardInfo.op2Adjuster"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2Adjuster}"]);
-
-			//ピンループ
-			jQuery('input[name="coOptionPants2StandardInfo.op2PinLoop"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PinLoop}"]);
-
-			//脇ポケット	
-			jQuery('input[name="coOptionPants2StandardInfo.op2SidePkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2SidePkt}"]);
-			
-			//忍びポケット
-			jQuery('input[name="coOptionPants2StandardInfo.op2SinobiPkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2SinobiPkt}"]);
-
-			//フラップ付コインポケット
-			jQuery('input[name="coOptionPants2StandardInfo.op2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2FlapCoinPkt}"]);
-
-			//上前ピスポケット
-			jQuery('input[name="coOptionPants2StandardInfo.op2PisPktUf"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PisPktUf}"]);
-
-			//下前ピスポケット 
-			jQuery('input[name="coOptionPants2StandardInfo.op2PisPktDf"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2PisPktDf}"]);
-
-			//Vカット
-            jQuery('input[name="coOptionPants2StandardInfo.op2VCut"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2VCut}"]);
-
-			//ステッチ種類 
-			jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2Stitch}"]);
-
-//			//ステッチ箇所変更
-//            jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2StitchModify}"]);
-//			jQuery('input[name="coOptionPants2StandardInfo.op2StitchModify"]:checked').change();
-
-//			//ダブルステッチ
-//			jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2DStitch}"]);
-//			jQuery('input[name="coOptionPants2StandardInfo.op2DStitch"]:checked').change();
-
-//			//AMF色指定
-//			jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]').val(["${orderCoForm.coOptionPants2StandardInfo.op2AmfColor}"]);
-//			jQuery('input[name="coOptionPants2StandardInfo.op2AmfColor"]:checked').change();
-
-			//ダブル幅
-			jQuery("#op2_doubleWide").val("${orderCoForm.coOptionPants2StandardInfo.op2DoubleWide}");
-
-		}else if(productCategory == "9000102"){
-			var tp2PantsModel = jQuery("#tp2_pantsModel").val();
-			if(isEmpty(tp2PantsModel)){
-	               return; 
-			}
-			// 選択中のタック
-			var frontBtnCntElem = jQuery('#tp2_tack');
-			var selectedFrontBtnCnt = frontBtnCntElem.val();
-
-			// タックの選択肢更新
-			frontBtnCntElem.empty();
-			var tmpFrontBtnCnt = null;
-			for (tmpFrontBtnCnt of tackList[tp2PantsModel].activeList) {
-				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
-			}
-
-			var tjFrontBtnCnt = "${orderCoForm.coOptionPants2TuxedoInfo.tp2Tack}";
-			frontBtnCntElem.val(tjFrontBtnCnt);
-			frontBtnCntElem.change();
-
-			//膝裏
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBack}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]:checked').change();
-
-			//膝裏素材
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2KneeBackMate}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]:checked').change();
-
-			//フロント仕様
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2FrontSpec}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2FrontSpec"]:checked').change();
-
-			//パンチェリーナ
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Pancherina}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2Pancherina"]:checked').change();
-
-			//アジャスター仕様
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2Adjuster}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]:checked').change();
-
-			//ベルトループ
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2BeltLoop}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]:checked').change();
-
-			//ピンループ
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2PinLoop"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PinLoop}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2PinLoop"]:checked').change();
-
-			//脇ポケット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2SidePkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2SidePkt}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2SidePkt"]:checked').change();
-
-			//忍びポケット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2SinobiPkt}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]:checked').change();
-
-			//フラップ付コインポケット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2FlapCoinPkt}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]:checked').change();
-
-			//上前ピスポケット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktUf"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktUf}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktUf"]:checked').change();
-
-			//下前ピスポケット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktDf"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2PisPktDf}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2PisPktDf"]:checked').change();
-
-			//Vカット
-			jQuery('input[name="coOptionPants2TuxedoInfo.tp2VCut"]').val(["${orderCoForm.coOptionPants2TuxedoInfo.tp2VCut}"]);
-			//jQuery('input[name="coOptionPants2TuxedoInfo.tp2VCut"]:checked').change();
-
-			//裾上げ
-			jQuery("#tp2_hemUp").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2HemUp}");
-		    //jQuery("#tp2_hemUp").change();
-
-		    //ダブル幅
-			jQuery("#tp2_doubleWide").val("${orderCoForm.coOptionPants2TuxedoInfo.tp2DoubleWide}");
-		   //jQuery("#tp2_doubleWide").change();
-			
-		}else if(productCategory == "9000103"){
-			var wp2PantsModel = jQuery("#wp2_pantsModel").val();
-			if(isEmpty(wp2PantsModel)){
-	               return; 
-			}
-			// 選択中のタック
-			var frontBtnCntElem = jQuery('#wp2_tack');
-			var selectedFrontBtnCnt = frontBtnCntElem.val();
-
-			// タックの選択肢更新
-			frontBtnCntElem.empty();
-			var tmpFrontBtnCnt = null;
-			for (tmpFrontBtnCnt of tackList[wp2PantsModel].activeList) {
-				frontBtnCntElem.append(jQuery('<option />').val(tmpFrontBtnCnt.val).text(tmpFrontBtnCnt.text));
-			}
-			
-			var wjFrontBtnCnt = "${orderCoForm.coOptionPants2WashableInfo.wp2Tack}";
-			frontBtnCntElem.val(wjFrontBtnCnt);
-			frontBtnCntElem.change();
-
-			//膝裏
-			jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2KneeBack}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]:checked').change();
-
-			//膝裏素材
-			jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2KneeBackMate}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]:checked').change();
-
-			//フロント仕様
-			jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2FrontSpec}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2FrontSpec"]:checked').change();
-			
-			//パンチェリーナ
-			jQuery('input[name="coOptionPants2WashableInfo.wp2Pancherina"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Pancherina}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2Pancherina"]:checked').change();
-
-			//アジャスター仕様
-			jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Adjuster}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2Adjuster"]:checked').change();
-
-			//ベルトループ
-			jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2BeltLoop}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]:checked').change();
-
-			//ピンループ
-			jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PinLoop}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2PinLoop"]:checked').change();
-			
-			//脇ポケット
-			jQuery('input[name="coOptionPants2WashableInfo.wp2SidePkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2SidePkt}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2SidePkt"]:checked').change();
-
-			//忍びポケット
-			jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2SinobiPkt}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2SinobiPkt"]:checked').change();
-
-			//フラップ付コインポケット
-			jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2FlapCoinPkt}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]:checked').change();
-
-			//上前ピスポケット
-			jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PisPktUf}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]:checked').change();
-
-			//下前ピスポケット 
-			jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktDf"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2PisPktDf}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktDf"]:checked').change();
-
-			//Vカット
-			jQuery('input[name="coOptionPants2WashableInfo.wp2VCut"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2VCut}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2VCut"]:checked').change();
-
-			//ステッチ種類
-			jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPants2WashableInfo.wp2Stitch}"]);
-			//jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]:checked').change();
-
-			//ダブル幅
-			jQuery("#wp2_doubleWide").val("${orderCoForm.coOptionPants2WashableInfo.wp2DoubleWide}");		
-		}
-	} 
-}
-function  jkBtnMatecomparePt2BtnMate(jkBtnMate,PtBtnMateMap,ptBtnMate){
+/* function  jkBtnMatecomparePt2BtnMate(jkBtnMate,PtBtnMateMap,ptBtnMate){
 	var tt=[];
 	tt.length = 0;
 	var ttt=[];
@@ -5453,30 +5422,29 @@ function  jkBtnMatecomparePt2BtnMate(jkBtnMate,PtBtnMateMap,ptBtnMate){
 		}
 	}
 	jQuery('#'+ptBtnMate+"btnMate").change();
-}
+} */
 jQuery("#op2_pantsModel,#tp2_pantsModel,#wp2_pantsModel,#op2_tack,#tp2_tack,#wp2_tack_id").change(function(){
 	if("orderCo"==orderFlag){
-		jQuery("#pants2AdFlag").val("0");	
+		pants2AdFlag="0";	
 	}else if("1"==jQuery("#pants2ItemFlag").val()){
 		if("orderCo"!=orderFlag){
-			jQuery("#pants2AdFlag").val("0");
+			pants2AdFlag="0";
 		}
 	}
-}) 
+})
 if (document.readyState=="complete")  
 {  
-        $.unblockUI();
+     $.unblockUI();
 }  
 else  
 {  
-        document.onreadystatechange = function()  
-        {  
-             
-                if (document.readyState == "complete")  
-                {  
-                        $.unblockUI();   
-                }  
-        }  
+     document.onreadystatechange = function()  
+     {  
+             if (document.readyState == "complete")  
+             {  
+                     $.unblockUI();   
+             }  
+     }  
 }
 function showPrice(){
 	var pantsModel = null;
@@ -5494,7 +5462,7 @@ function showPrice(){
 		//PANTSの料金を表示
 		var pants2Model = "";
 		var priceUrl = "";
-		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "07";
 	    var category = jQuery('input[name="productCategory"]:checked').val();
@@ -5545,6 +5513,13 @@ jQuery('#btn_op2_samePants').click(function (){
   jQuery('#op2_tack').val("${orderCoForm.coOptionPantsStandardInfo.opTack}");    
   //膝裏
   jQuery('input[name="coOptionPants2StandardInfo.op2KneeBack"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBack}"]);
+  var selectedKneeBack = "${orderCoForm.coOptionPantsStandardInfo.opKneeBack}";
+	if (selectedKneeBack == '0000202') {
+		jQuery('#op2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#op2_kneeBackMate_div').show();
+	}
+	
   //膝裏素材
   jQuery('input[name="coOptionPants2StandardInfo.op2KneeBackMate"]').val(["${orderCoForm.coOptionPantsStandardInfo.opKneeBackMate}"]);
   //フロント仕様
@@ -5693,6 +5668,13 @@ jQuery('#btn_tp2_samePants').click(function (){
 	jQuery('#tp2_tack').val("${orderCoForm.coOptionPantsTuxedoInfo.tpTack}");
 	//膝裏
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBack"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBack}"]);
+	var selectedTpKneeBack = "${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBack}";
+	if (selectedTpKneeBack == '0000202') {
+		jQuery('#tp2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#tp2_kneeBackMate_div').show();
+	}
+	
 	//膝裏素材
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2KneeBackMate"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpKneeBackMate}"]);
 	//フロント仕様
@@ -5728,7 +5710,7 @@ jQuery('#btn_tp2_samePants').click(function (){
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SinobiPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSinobiPkt}"]);
 	//コインポケット
 	jQuery("#tp2_coinPkt").val("${orderCoForm.coOptionPantsTuxedoInfo.tpCoinPkt}");
-	 jQuery("#tp2_coinPkt").change();
+	jQuery("#tp2_coinPkt").change();
 	//フラップ付コインポケット
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2FlapCoinPkt"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpFlapCoinPkt}"]);
 	//上前ピスポケット
@@ -5774,7 +5756,8 @@ jQuery('#btn_tp2_samePants').click(function (){
     mateInit();
 	jQuery("#tp2_btnMate").val("${orderCoForm.coOptionPantsTuxedoInfo.tpButton}");
 	jQuery('#tp2_btnMate').change();
-	jQuery("#tp2_btnMateStkNo").val("${orderCoForm.coOptionPantsStandardInfo.opBtnMateStkNo}");
+	
+	jQuery("#tp2_btnMateStkNo").val("${orderCoForm.coOptionPantsTuxedoInfo.tpBtnMateStkNo}");
 
 	//サスペンダー釦
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SuspenderBtn"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSuspenderBtn}"]);
@@ -5801,6 +5784,13 @@ jQuery('#btn_wp2_samePants').click(function (){
 	jQuery('#wp2_tack_id').val("${orderCoForm.coOptionPantsWashableInfo.wpTack}");
 	//膝裏
 	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBack"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBack}"]);
+	var selectedWpKneeBack = "${orderCoForm.coOptionPantsWashableInfo.wpKneeBack}";
+	if (selectedWpKneeBack == '0000202') {
+		jQuery('#wp2_kneeBackMate_div').hide();
+	} else {
+		jQuery('#wp2_kneeBackMate_div').show();
+	}
+	
 	//膝裏素材
 	jQuery('input[name="coOptionPants2WashableInfo.wp2KneeBackMate"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpKneeBackMate}"]);
 	//フロント仕様
@@ -5867,7 +5857,7 @@ jQuery('#btn_wp2_samePants').click(function (){
   
 	//ダブルステッチ
 	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitch}"]);
-	jQuery('input[id^="wp2_dStitch_"]:checked').change();
+	jQuery('input[id^="wp2_dStitchModify_"]:checked').change();
 	
 	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace1"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace1}"]);
 	jQuery('input[name="coOptionPants2WashableInfo.wp2DStitchPlace2"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpDStitchPlace2}"]);
@@ -5912,8 +5902,10 @@ jQuery('#btn_wp2_samePants').click(function (){
 	
 	//釦素材
 	mateInit();
+	
 	jQuery("#wp2_btnMate").val("${orderCoForm.coOptionPantsWashableInfo.wpButton}");
 	jQuery('#wp2_btnMate').change();
+	
 	jQuery("#wp2_btnMateStkNo").val("${orderCoForm.coOptionPantsWashableInfo.wpBtnMateStkNo}");
 	//サスペンダー釦
 	jQuery('input[name="coOptionPants2WashableInfo.wp2SuspenderBtn"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpSuspenderBtn}"]);

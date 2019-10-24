@@ -920,12 +920,12 @@
 	<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="${orderCoForm.coatItemFlag }"/>
 	<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="${orderCoForm.pants2ItemFlag }"/>
     
-	<input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />	
+	<%-- <input type="hidden" id="giletAdFlag" name="giletAdFlag" value="${orderCoForm.giletAdFlag }" />	
 	<input type="hidden" id="jacketAdFlag" name="jacketAdFlag" value="${orderCoForm.jacketAdFlag }" />
 	<input type="hidden" id="coatAdFlag" name="coatAdFlag" value="${orderCoForm.coatAdFlag }" />
 	<input type="hidden" id="pantsAdFlag" name="pantsAdFlag" value="${orderCoForm.pantsAdFlag }" />
 	<input type="hidden" id="pants2AdFlag" name="pants2AdFlag" value="${orderCoForm.pants2AdFlag }" />
-	<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" />
+	<input type="hidden" id="shirtAdFlag" name="shirtAdFlag" value="${orderCoForm.shirtAdFlag }" /> --%>
 	<input type="hidden" id="jacketBtnMateGlFlag" name="jacketBtnMateGlFlag" value="${orderCoForm.jacketBtnMateGlFlag }" />
 </form:form>
 
@@ -964,14 +964,13 @@ jQuery(function() {
 // 	var productCategory="${orderCoForm.productCategory}";
 	var productCategory=jQuery('input[name="productCategory"]:checked').val();
 
-	var giletAdFlag="${orderCoForm.giletAdFlag}";
 	if("orderCo"==orderFlag){
 		if(giletAdFlag=="1"){
 		}else{
-			jQuery("#giletAdFlag").val("0");
+			giletAdFlag="0";
 		}
 	}else if("0"==jQuery("#giletItemFlag").val() && "orderCo"!=orderFlag){
-		    jQuery("#giletAdFlag").val("1");
+		    giletAdFlag="1";
 	}
 
 	if(jacketBtnMateGlFlag=="1"){
@@ -3369,10 +3368,10 @@ function optionColorReSave(productCategory){
 }
 jQuery("#giletModel,#tg_giletModel,#wg_giletModel").change(function(){
 	if("orderCo"==orderFlag){
-		jQuery("#giletAdFlag").val("0");	
+		giletAdFlag="0";	
 	}else if("1"==jQuery("#giletItemFlag").val()){
 		if("orderCo"!=orderFlag ){
-			jQuery("#giletAdFlag").val("0");
+			giletAdFlag="0";
 		}
 	}	
 })
