@@ -1285,6 +1285,23 @@
     <result column="cust_is_deliver_shortning_rt_price" jdbcType="INTEGER" property="custIsDeliverShortningRtPrice" />
     <result column="cust_is_deliver_shortning_ws_wage" jdbcType="NUMERIC" property="custIsDeliverShortningWsWage" />
     <result column="cust_is_deliver_shortning_ws_price" jdbcType="INTEGER" property="custIsDeliverShortningWsPrice" />
+    
+    <result column="pt_look_cloth_cd" property="ptLookClothCd" jdbcType="VARCHAR" />
+    <result column="pt_look_cloth_nm" property="ptLookClothNm" jdbcType="VARCHAR" />
+    <result column="pt_look_cloth_rt_price" property="ptLookClothRtPrice" jdbcType="INTEGER" />
+    <result column="pt_look_cloth_ws_wage" property="ptLookClothWsWage" jdbcType="NUMERIC" />
+    <result column="pt_look_cloth_ws_price" property="ptLookClothWsPrice" jdbcType="INTEGER" />
+    <result column="pt2_look_cloth_cd" property="pt2LookClothCd" jdbcType="VARCHAR" />
+    <result column="pt2_look_cloth_nm" property="pt2LookClothNm" jdbcType="VARCHAR" />
+    <result column="pt2_look_cloth_rt_price" property="pt2LookClothRtPrice" jdbcType="INTEGER" />
+    <result column="pt2_look_cloth_ws_wage" property="pt2LookClothWsWage" jdbcType="NUMERIC" />
+    <result column="pt2_look_cloth_ws_price" property="pt2LookClothWsPrice" jdbcType="INTEGER" />
+    <result column="gl_look_cloth_cd" property="glLookClothCd" jdbcType="VARCHAR" />
+    <result column="gl_look_cloth_nm" property="glLookClothNm" jdbcType="VARCHAR" />
+    <result column="gl_look_cloth_rt_price" property="glLookClothRtPrice" jdbcType="INTEGER" />
+    <result column="gl_look_cloth_ws_wage" property="glLookClothWsWage" jdbcType="NUMERIC" />
+    <result column="gl_look_cloth_ws_price" property="glLookClothWsPrice" jdbcType="INTEGER" />
+    
   </resultMap>
     
     <sql id="SelectColumn">
@@ -1295,6 +1312,10 @@
 		    product_category_nm,product_lcr_sewing_cd,product_fabric_nm_necessity_nm,product_embroidery_necessity_nm,
 		    product_embroidery_font_cd,product_embroidery_thread_color_cd,product_embroidery_gazette_cd,
 		    product_embroidery_nm_pos_cd,cor_jk_shoulderpad_cd,cor_jk_figure_correct_cd,
+		    pt_look_cloth_cd,pt_look_cloth_nm,pt_look_cloth_rt_price,pt_look_cloth_ws_wage,
+		    pt_look_cloth_ws_price,pt2_look_cloth_cd,pt2_look_cloth_nm,pt2_look_cloth_rt_price,
+		    pt2_look_cloth_ws_wage,pt2_look_cloth_ws_price,gl_look_cloth_cd,gl_look_cloth_nm,
+		    gl_look_cloth_rt_price,gl_look_cloth_ws_wage,gl_look_cloth_ws_price,
 		    cust_is_deliver_shortning_rt_price,cust_is_deliver_shortning_ws_wage,cust_is_deliver_shortning_ws_price,
 		    store_staff_nm, printout_cust_roma_nm, printout_store_staff_roma_nm, cust_cd, cust_nm, 
 		    cust_kana_nm, cust_deliver_date, cust_is_deliver_shortning, cust_is_early_discount, 
@@ -1596,8 +1617,8 @@
 		    loading_date, fabric_used_mount, theory_fabric_used_mount, tsc_status, maker_factory_status, 
 		    send2factory_status, is_cancelled, theoretical_stock_check,schedule_data_transmit_status,shipping_transmit_status, dtb_order.version,
 		    dtb_order.created_user_id, dtb_order.created_at, dtb_order.updated_user_id, dtb_order.updated_at,product_lcr_sewing,product_lcr_sewing_rt_price,
-		    product_lcr_sewing_ws_wage,product_lcr_sewing_ws_price,ct_inner_body_cloth_type,ct_inner_sleeve_cloth_type,ct_btn_material_type,fabric_price,
-		    ws_price_adjust,cor_st_backdarts_unpack_cd,cor_st_backdarts_unpack_nm,cor_jk_store_correction_memo, cor_pt_store_correction_memo,cor_pt2_store_correction_memo,
+		    product_lcr_sewing_ws_wage,product_lcr_sewing_ws_price,ct_inner_body_cloth_type,ct_inner_sleeve_cloth_type,ct_btn_material_type,dtb_order.fabric_price,
+		    dtb_order.ws_price_adjust,cor_st_backdarts_unpack_cd,cor_st_backdarts_unpack_nm,cor_jk_store_correction_memo, cor_pt_store_correction_memo,cor_pt2_store_correction_memo,
 		    cor_gl_store_correction_memo,cor_ct_store_correction_memo
     </sql>
     
@@ -2360,6 +2381,7 @@
 			WHERE
 				fabric_no = #{arg0} and order_pattern =  #{arg4}
 	</update>
+
 	<select id="fuzzyQuery" resultMap="OrderResultMap">
       SELECT 
         order_id,
@@ -2415,8 +2437,7 @@
          COALESCE(cor_jk_leftsleeve_correct, 0) as cor_jk_leftsleeve_correct,
          COALESCE(cor_jk_leftsleeve_gross, 0) as cor_jk_leftsleeve_gross,
          cor_jk_shoulderpad_cd,
-         cor_jk_figure_correct_cd,
-         cor_store_correction_memo
+         cor_jk_figure_correct_cd
         FROM
             dtb_order
         WHERE
@@ -2451,8 +2472,7 @@
          COALESCE(cor_pt_leftinseam_size, 0) as cor_pt_leftinseam_size,
          COALESCE(cor_pt_leftinseam_correct, 0) as cor_pt_leftinseam_correct,
          COALESCE(cor_pt_leftinseam_gross, 0) as cor_pt_leftinseam_gross,
-         cor_pt_hemwidth_type,
-         cor_store_correction_memo
+         cor_pt_hemwidth_type
         FROM
             dtb_order
         WHERE
@@ -2476,8 +2496,7 @@
          COALESCE(cor_gl_bust_gross, 0) as cor_gl_bust_gross,
          COALESCE(cor_gl_waist_size, 0) as cor_gl_waist_size,
          COALESCE(cor_gl_waist_correct, 0) as cor_gl_waist_correct,
-         COALESCE(cor_gl_waist_gross, 0) as cor_gl_waist_gross,
-         cor_store_correction_memo
+         COALESCE(cor_gl_waist_gross, 0) as cor_gl_waist_gross
         FROM
             dtb_order
         WHERE
@@ -2512,8 +2531,7 @@
          COALESCE(cor_pt2_rightinseam_gross, 0) as cor_pt2_rightinseam_gross,
          COALESCE(cor_pt2_leftinseam_size, 0) as cor_pt2_leftinseam_size,
          COALESCE(cor_pt2_leftinseam_correct, 0) as cor_pt2_leftinseam_correct,
-         COALESCE(cor_pt2_leftinseam_gross, 0) as cor_pt2_leftinseam_gross,
-         cor_store_correction_memo
+         COALESCE(cor_pt2_leftinseam_gross, 0) as cor_pt2_leftinseam_gross
         FROM
             dtb_order
         WHERE
@@ -2545,8 +2563,7 @@
         COALESCE(cor_ct_venthight_gross, 0) as cor_ct_venthight_gross,
         COALESCE(cor_ct_pktpos_size, 0) as cor_ct_pktpos_size,
         COALESCE(cor_ct_pktpos_correct, 0) as cor_ct_pktpos_correct,
-        COALESCE(cor_ct_pktpos_gross, 0) as cor_ct_pktpos_gross,
-        cor_store_correction_memo
+        COALESCE(cor_ct_pktpos_gross, 0) as cor_ct_pktpos_gross     
        FROM
             dtb_order
        WHERE
@@ -2586,7 +2603,6 @@
           COALESCE(cor_st_leftcuffs_surrounding_size, 0) as cor_st_leftcuffs_surrounding_size,
           COALESCE(cor_st_leftcuffs_surrounding_correct, 0) as cor_st_leftcuffs_surrounding_correct,
           COALESCE(cor_st_leftcuffs_surrounding_gross, 0) as cor_st_leftcuffs_surrounding_gross,
-          cor_store_correction_memo,
           cor_st_backdarts_unpack_cd
         FROM
             dtb_order
@@ -2713,6 +2729,9 @@
 			pt_beltloop_cd,
 			pt_beltloop_nm,
 			pt_beltloop_rt_price,
+			pt_look_cloth_cd,
+			pt_look_cloth_nm,
+			pt_look_cloth_rt_price,
 			pt_pinloop_cd,
 			pt_pinloop_nm,
 			pt_pinloop_rt_price,
@@ -2830,6 +2849,9 @@
 			pt2_beltloop_cd,
 			pt2_beltloop_nm,
 			pt2_beltloop_rt_price,
+			pt2_look_cloth_cd,
+			pt2_look_cloth_nm,
+			pt2_look_cloth_rt_price,
 			pt2_pinloop_cd,
 			pt2_pinloop_nm,
 			pt2_pinloop_rt_price,
@@ -2987,6 +3009,9 @@
 		    gl_breast_pkt_rt_price, 
 		    gl_breast_pkt_ws_wage, 
 		    gl_breast_pkt_ws_price, 
+		    gl_look_cloth_cd,
+		    gl_look_cloth_nm,
+		    gl_look_cloth_rt_price,
 		    gl_waist_pkt_cd, 
 		    gl_waist_pkt_nm, 
 		    gl_waist_pkt_rt_price, 

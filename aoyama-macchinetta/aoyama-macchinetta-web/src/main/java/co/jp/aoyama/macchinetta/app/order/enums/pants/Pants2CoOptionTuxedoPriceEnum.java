@@ -25,7 +25,7 @@ public enum Pants2CoOptionTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","getTp2VCut","","setPt2VCutRtPrice","tp2_vCut_id","","getPt2VCutRtPrice"),//Vカット
 	PANTS_TUXEDO_OPTION_CODE17("00017","getTp2HemUp","","setPt2HemUpRtPrice","tp2_hemUp","","getPt2HemUpRtPrice"),//裾上げ
 	PANTS_TUXEDO_OPTION_CODE18("00018","getTp2DoubleWide","","setPt2DblWidthRtPrice","tp2_doubleWide","","getPt2DblWidthRtPrice"),//ダブル幅
-	PANTS_TUXEDO_OPTION_CODE19("00019","getTp2Stitch","","setPt2AmfStitchRtPrice","tp2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
+	PANTS_TUXEDO_OPTION_CODE19("00051","getTp2Stitch","","setPt2AmfStitchRtPrice","tp2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
 	PANTS_TUXEDO_OPTION_CODE27("00027","getTp2BhColor","","setPt2BtnholeColorRtPrice","tp2_bhColor_id","","getPt2BtnholeColorRtPrice"),//ボタンホール色指定
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTp2ByColor","","setPt2BtnthreadColorRtPrice","tp2_byColor_id","","getPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE33("00033","getTp2Button","getTp2BtnMateStkNo","setPt2BtnMaterialRtPrice","tp2_btnMate","tp2_btnMateStkNo","getPt2BtnMaterialRtPrice"),//釦素材
@@ -34,7 +34,8 @@ public enum Pants2CoOptionTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE41("00041","getTp2Thick","","setPt2ChicSlipRtPrice","tp2_thick_id","","getPt2ChicSlipRtPrice"),//シック（股補強）
 	PANTS_TUXEDO_OPTION_CODE37("00037","getTp2ShapeMemory","","setPt2ShapeMemoryRtPrice","tp2_shapeMemory_id","","getPt2ShapeMemoryRtPrice"),//形状記憶
 	PANTS_TUXEDO_OPTION_CODE39("00039","getTp2SideStripe","","setPt2SideStripeRtPrice","tp2_sideStripe_id","","getPt2SideStripeRtPrice"),//側章
-	PANTS_TUXEDO_OPTION_CODE40("00040","getTp2SideStripeWidth","","setPt2SideStripeWidthRtPrice","tp2_sideStripeWidth_id","","getPt2SideStripeWidthRtPrice");//側章幅
+	PANTS_TUXEDO_OPTION_CODE40("00040","getTp2SideStripeWidth","","setPt2SideStripeWidthRtPrice","tp2_sideStripeWidth_id","","getPt2SideStripeWidthRtPrice"),//側章幅
+	PANTS_TUXEDO_OPTION_CODE50("00050","getTp2GlossFablic","","setPt2LookClothRtPrice","tp2_GlossFablic","","getPt2LookClothRtPrice");//拝絹地
 	
 	private final String key;
 	private final String valueOne;

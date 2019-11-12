@@ -594,30 +594,14 @@ public class OrderReconfirmController {
 					// 補正絶対値
 					orderHelper.checkAbsolutelyAdjust(adjustByItem, order);
 					
-					//生地品番
-					String fabricNo = orderForm.getProductFabricNo();
-					//商品情報_ITEM(ログ用)
-					String item = LogItemClassEnum.getLogItem(order);
+					//回復ITEM
+					String itemBefore = LogItemClassEnum.getLogItem(selectExistOrder);
+					//更新ITEM
+					String itemAfter = LogItemClassEnum.getLogItem(order);
 					//ステータス
 					String status = orderForm.getStatus();
 					
-					Stock stock = orderService.getStock(fabricNo,order.getOrderPattern());
-					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+orderForm.getCustomerMessageInfo().getOrderId()  
-					+ "、ITEM："+item 
-					+ "、生地品番："+fabricNo
-					+ "、理論在庫："+stock.getTheoreticalStock() 
-					+ "、予約生地量："+stock.getReservationStock() + "」");
-					
-					orderService.updateOrderConfirm(order,status);
-					
-					Stock stockAfter = orderService.getStock(fabricNo,order.getOrderPattern());
-					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+orderForm.getCustomerMessageInfo().getOrderId()  
-					+ "、ITEM："+item
-					+ "、生地品番："+fabricNo
-					+ "、理論在庫："+stockAfter.getTheoreticalStock() 
-					+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					orderService.updateOrderConfirm(order,status,itemBefore,itemAfter);
 					
 				} catch (ResourceNotFoundException e) {
 					String status = orderForm.getStatus();

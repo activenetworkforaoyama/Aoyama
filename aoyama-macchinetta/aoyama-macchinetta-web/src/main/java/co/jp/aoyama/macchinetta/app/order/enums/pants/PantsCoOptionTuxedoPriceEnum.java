@@ -25,7 +25,7 @@ public enum PantsCoOptionTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","getTpVCut","","setPtVCutRtPrice","tp_vCut_id","","getPtVCutRtPrice"),//Vカット
 	PANTS_TUXEDO_OPTION_CODE17("00017","getTpHemUp","","setPtHemUpRtPrice","tp_hemUp","","getPtHemUpRtPrice"),//裾上げ
 	PANTS_TUXEDO_OPTION_CODE18("00018","getTpDoubleWide","","setPtDblWidthRtPrice","tp_doubleWide","","getPtDblWidthRtPrice"),//ダブル幅
-	PANTS_TUXEDO_OPTION_CODE19("00019","getTpStitch","","setPtAmfStitchRtPrice","tp_stitch_id","","getPtAmfStitchRtPrice"),//ステッチ種類
+	PANTS_TUXEDO_OPTION_CODE19("00051","getTpStitch","","setPtAmfStitchRtPrice","tp_stitch_id","","getPtAmfStitchRtPrice"),//ステッチ種類
 	PANTS_TUXEDO_OPTION_CODE27("00027","getTpBhColor","","setPtBtnholeColorRtPrice","tp_bhColor_id","","getPtBtnholeColorRtPrice"),//ボタンホール色指定
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTpByColor","","setPtBtnthreadColorRtPrice","tp_byColor_id","","getPtBtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE33("00033","getTpButton","getTpBtnMateStkNo","setPtBtnMaterialRtPrice","tp_btnMate","tp_btnMateStkNo","getPtBtnMaterialRtPrice"),//釦素材
@@ -34,7 +34,8 @@ public enum PantsCoOptionTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE41("00041","getTpThick","","setPtChicSlipRtPrice","tp_thick_id","","getPtChicSlipRtPrice"),//シック大（股補強）
 	PANTS_TUXEDO_OPTION_CODE37("00037","getTpShapeMemory","","setPtShapeMemoryRtPrice","tp_shapeMemory_id","","getPtShapeMemoryRtPrice"),//形状記憶
 	PANTS_TUXEDO_OPTION_CODE39("00039","getTpSideStripe","","setPtSideStripeRtPrice","tp_sideStripe_id","","getPtSideStripeRtPrice"),//側章
-	PANTS_TUXEDO_OPTION_CODE40("00040","getTpSideStripeWidth","","setPtSideStripeWidthRtPrice","tp_sideStripeWidth_id","","getPtSideStripeWidthRtPrice");//側章幅
+	PANTS_TUXEDO_OPTION_CODE40("00040","getTpSideStripeWidth","","setPtSideStripeWidthRtPrice","tp_sideStripeWidth_id","","getPtSideStripeWidthRtPrice"),//側章幅
+	PANTS_TUXEDO_OPTION_CODE50("00050","getTpGlossFablic","","setPtLookClothRtPrice","tp_GlossFablic","","getPtLookClothRtPrice");//拝絹地
 	
 	private final String key;
 	private final String valueOne;

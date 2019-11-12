@@ -458,7 +458,8 @@ public class OrderDetailCoHelper {
 		orderFm.setPt2ChicSlipRtPriceFm(getRtValue(order.getPt2ChicSlipRtPrice()));
 		orderFm.setPt2ShapeMemoryRtPriceFm(getRtValue(order.getPt2ShapeMemoryRtPrice()));
 		orderFm.setCtLapelDesignRtPriceFm(getRtValue(order.getCtLapelDesignRtPrice()));
-		orderFm.setCtSleeveTypeRtPriceFm(getRtValue(order.getCtSleeveTypeRtPrice()));
+		//仕様変更　「袖仕様」画面削除
+//		orderFm.setCtSleeveTypeRtPriceFm(getRtValue(order.getCtSleeveTypeRtPrice()));
 		orderFm.setCtWaistPktRtPriceFm(getRtValue(order.getCtWaistPktRtPrice()));
 		orderFm.setCtChgPktRtPriceFm(getRtValue(order.getCtChgPktRtPrice()));
 		orderFm.setCtSlantedPktRtPriceFm(getRtValue(order.getCtSlantedPktRtPrice()));
@@ -499,6 +500,9 @@ public class OrderDetailCoHelper {
 		orderFm.setPtSideStripeWidthRtPriceFm(getRtValue(order.getPtSideStripeWidthRtPrice()));
 		orderFm.setPt2SideStripeRtPriceFm(getRtValue(order.getPt2SideStripeRtPrice()));
 		orderFm.setPt2SideStripeWidthRtPriceFm(getRtValue(order.getPt2SideStripeWidthRtPrice()));
+		orderFm.setGlLookClothRtPriceFm(getRtValue(order.getGlLookClothRtPrice()));
+		orderFm.setPtLookClothRtPriceFm(getRtValue(order.getPtLookClothRtPrice()));
+		orderFm.setPt2LookClothRtPriceFm(getRtValue(order.getPt2LookClothRtPrice()));
 		
 		//下代価格
 		orderFm.setWsPriceFm(getFormatMoneyValue(order.getWsPrice()));

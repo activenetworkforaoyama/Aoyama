@@ -35,7 +35,7 @@ public class OptionCodeKeys {
 
 	public static final String JK_0000503 = "0000503";
 	// 拝絹地
-	public static final String JK_0000601 = "0000601";
+	public static final String JK_0005001 = "0005001";
 
 	// 襟裏（ヒゲ）
 	public static final String JK_0000701 = "0000701";
@@ -74,11 +74,11 @@ public class OptionCodeKeys {
 	// 下前胸内ポケット仕様
 	public static final String JK_0002201 = "0002201";
 	// ステッチ種類
-	public static final String JK_0002301 = "0002301";
+	public static final String JK_0005101 = "0005101";
 
-	public static final String JK_0002302 = "0002302";
+	public static final String JK_0005102 = "0005102";
 
-	public static final String JK_0002304 = "0002304";
+	public static final String JK_0005104 = "0005104";
 
 	// ステッチ箇所変更
 	public static final String JK_0002401 = "0002401";
@@ -104,6 +104,7 @@ public class OptionCodeKeys {
 	public static final String JK_0003701 = "0003701";
 	// 胴裏素材
 	public static final String JK_1000100 = "1000100";
+	public static final String JK_1000400 = "1000400";
 	// 袖裏素材
 	public static final String JK_2000100 = "2000100";
 	
@@ -114,6 +115,8 @@ public class OptionCodeKeys {
 	public static final String JK_3000700 = "3000700";
 	// 形状記憶
 	public static final String JK_0004401 = "0004401";
+	
+	public static final String JK_0004402 = "0004402";
 
 	// PANTS
 	// タック:ノータック
@@ -168,11 +171,17 @@ public class OptionCodeKeys {
 	// ダブル幅:4
 	public static final String PT_4 = "4";
 	// ステッチ種類:AMFステッチ
-	public static final String PT_0001904 = "0001904";
+	public static final String PT_0005101 = "0005101";
+	
+	public static final String PT_0001904 = "0005102";
+	
+	public static final String PT_0005103 = "0005103";
+	
+	public static final String PT_0005104 = "0005104";
 	// ステッチ種類:無し
-	public static final String PT_0001903 = "0001903";
+	public static final String PT_0001903 = "0005101";
 	// ステッチ種類:ミシンステッチ
-	public static final String PT_0001901 = "0001901";
+	public static final String PT_0001901 = "0005104";
 	// ステッチ箇所変更:無し
 	public static final String PT_0002001 = "0002001";
 	
@@ -195,6 +204,8 @@ public class OptionCodeKeys {
 	public static final String PT_0003002 = "0003002";
 	// 釦素材:ユリア
 	public static final String PT_3000800 = "3000800";
+	
+	public static final String PT_3000700 = "3000700";
 	// サスペンダー釦:無し
 	public static final String PT_0003501 = "0003501";
 	// シック大（股補強）:無し
@@ -203,10 +214,15 @@ public class OptionCodeKeys {
 	public static final String PT_0003601 = "0003601";
 	// 形状記憶:無し
 	public static final String PT_0003701 = "0003701";
+	// 形状記憶:有り
+	public static final String PT_0003702 = "0003702";
 	// 側章:有り
 	public static final String PT_0003902 = "0003902";
 	// 側章幅:1.5cm
 	public static final String PT_0004001 = "0004001";
+	//拝絹地
+	public static final String PT_0005001 = "0005001";
+	
 
 	// COAT
 	// ラペルデザイン
@@ -235,8 +251,9 @@ public class OptionCodeKeys {
 	public static final String CT_5000100 = "5000100";
 	// 釦素材
 	public static final String CT_6000100 = "6000100";
-	// 釦素材
-	public static final String CT_0001401 = "0001401";
+	//仕様変更　「袖仕様」画面削除
+//	// 釦素材
+//	public static final String CT_0001401 = "0001401";
 
 	// GILET
 	// 胸ポケット
@@ -251,8 +268,10 @@ public class OptionCodeKeys {
 	// 腰ポケット素材
 	public static final String GL_0000401 = "0000401";
 	// ステッチ種類
-	public static final String GL_0000503 = "0000503";
-	public static final String GL_0000504 = "0000504";
+	public static final String GL_0005101 = "0005101";
+	public static final String GL_0005102 = "0005102";
+	public static final String GL_0005103 = "0005103";
+	public static final String GL_0005104 = "0005104";
 	// ステッチ箇所変更
 	public static final String GL_0000601 = "0000601";
 	public static final String GL_0000602 = "0000602";
@@ -279,6 +298,8 @@ public class OptionCodeKeys {
 	public static final String GL_0002302 = "0002302";
 	// ウォッチチェーン
 	public static final String GL_0002401 = "0002401";
+	
+	public static final String GL_0005001 = "0005001";
 
 	// SHIRT
 	// 襟型
@@ -380,11 +401,13 @@ public class OptionCodeKeys {
 	// ダブル幅:4
 	public static final String PT2_4 = "4";
 	// ステッチ種類:AMFステッチ
-	public static final String PT2_0001904 = "0001904";
+	public static final String PT2_0005102 = "0005102";
 	// ステッチ種類:無し
-	public static final String PT2_0001903 = "0001903";
+	public static final String PT2_0005101 = "0005101";
 	// ステッチ種類:ミシンステッチ
-	public static final String PT2_0001901 = "0001901";
+	public static final String PT2_0005104 = "0005104";
+	
+	public static final String PT2_0005103 = "0005103";
 	// ステッチ箇所変更:無し
 	public static final String PT2_0002001 = "0002001";
 	
@@ -407,6 +430,8 @@ public class OptionCodeKeys {
 	public static final String PT2_0003002 = "0003002";
 	// 釦素材:ユリア
 	public static final String PT2_3000800 = "3000800";
+	
+	public static final String PT2_3000700 = "3000700";
 	// サスペンダー釦:無し
 	public static final String PT2_0003501 = "0003501";
 	// シック大（股補強）:無し
@@ -415,9 +440,14 @@ public class OptionCodeKeys {
 	public static final String PT2_0003601 = "0003601";
 	// 形状記憶:無し
 	public static final String PT2_0003701 = "0003701";
+	// 形状記憶:有り
+	public static final String PT2_0003702 = "0003702";
 	// 側章:有り
 	public static final String PT2_0003902 = "0003902";
 	// 側章幅:1.5cm
 	public static final String PT2_0004001 = "0004001";
+	// 拝絹地
+	public static final String PT2_0005001 = "0005001";
 
+	
 }

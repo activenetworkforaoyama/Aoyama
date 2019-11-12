@@ -24,6 +24,9 @@ public class CoAdjustHelper {
 		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkLeftsleeveGross(null);
 		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkLeftsleeveCorrect(null);
 		
+		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkShoulderPadCd(null);
+		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkFigureCorrectCd(null);	
+		
 	}
 	public void coAdjustGiletDefaultValue(OrderCoForm orderCoForm) {
 		
@@ -65,6 +68,14 @@ public class CoAdjustHelper {
 		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthGross(null);
 		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthCorrect(null);
 		
+		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthDegignate(null);
+		
+		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtLeftinseamSize(null);
+		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtLeftinseamGross(null);
+		
+		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtRightinseamSize(null);
+		orderCoForm.getCoAdjustPantsStandardInfo().setCorPtRightinseamGross(null);
+		
 	}
 	public void coAdjustPants2DefaultValue(OrderCoForm orderCoForm) {
 		
@@ -89,6 +100,14 @@ public class CoAdjustHelper {
 		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2HemwidthGross(null);
 		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2HemwidthCorrect(null);
 		
+		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2HemwidthDegignate(null);
+		
+		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2LeftinseamSize(null);
+		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2LeftinseamGross(null);
+		
+		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2RightinseamSize(null);
+		orderCoForm.getCoAdjustPants2StandardInfo().setCorPt2RightinseamGross(null);
+		
 	}
 	public void coAdjustShirtDefaultValue(OrderCoForm orderCoForm) {
 		
@@ -109,6 +128,12 @@ public class CoAdjustHelper {
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStLeftsleeveSize(null);
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStLeftsleeveGross(null);
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStLeftsleeveCorrect(null);
+		
+		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsPackSize(null);
+		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsPackGross(null);
+		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsPackCorrect(null);
+		
+		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsUnpackCd(null);
 		
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStRightcuffsSurroundingSize(null);
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStRightcuffsSurroundingGross(null);

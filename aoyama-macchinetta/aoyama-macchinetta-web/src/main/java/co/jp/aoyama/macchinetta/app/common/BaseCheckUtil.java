@@ -67,4 +67,18 @@ public class BaseCheckUtil {
 		}
 		
 	}
+	
+	/**
+	 * 空とnullの変換
+	 * 
+	 * @param measuring
+	 * @return
+	 */
+	public static BigDecimal convertBigDecimal(String measuring) {
+		BigDecimal result = new BigDecimal(0.0);
+		if ("".equals(measuring) || measuring == null) {
+			return result;
+		}
+		return new BigDecimal(measuring);
+	}
 }

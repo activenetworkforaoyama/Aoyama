@@ -15,7 +15,7 @@ public enum GiletOptionCoWashablePriceEnum {
 	GILET_WASHABLE_OPTION_CODE01("00001","getWgBreastPkt","","setGlBreastPktRtPrice","wg_breastPkt_id","","getGlBreastPktRtPrice"),//胸ポケット
 	GILET_WASHABLE_OPTION_CODE02("00002","getWgWaistPkt","","setGlWaistPktRtPrice","wg_waistPkt_id","","getGlWaistPktRtPrice"),//腰ポケット
 	GILET_WASHABLE_OPTION_CODE03("00003","getWgWaistPktSpec","","setGlWaistPktShapeRtPrice","wg_waistPktSpec_id","","getGlWaistPktShapeRtPrice"),//腰ポケット形状
-	GILET_WASHABLE_OPTION_CODE05("00005","getWgStitch","","setGlAmfStitchRtPrice","wg_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
+	GILET_WASHABLE_OPTION_CODE05("00051","getWgStitch","","setGlAmfStitchRtPrice","wg_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
 	GILET_WASHABLE_OPTION_CODE06("00006","getWgStitchModify","","setGlStitchPlcRtPrice","wg_stitchModify_id","","getGlStitchPlcRtPrice"),//ステッチ箇所変更
 	GILET_WASHABLE_OPTION_CODE07("00026","getWgDStitchModify","","setGlDblstitchPlcRtPrice","wg_dStitchModify_id","","getGlDblstitchPlcRtPrice"),//ダブルステッチ変更
 	GILET_WASHABLE_OPTION_CODE08("00008","getWgAmfColor","","setGlAmfColorRtPrice","wg_amfColor_id","","getGlAmfColorRtPrice"),//AMF色指定

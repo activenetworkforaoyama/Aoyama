@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -657,22 +658,14 @@ public class OrderListController {
 					              BindingResult result,
 					              Model model)throws Exception {
 		
-//		ServletContext servletContext = request.getSession().getServletContext();
-//		String path = servletContext.getRealPath("/");
+		orderListForm.setAuthority(sessionContent.getAuthority());
+		orderListForm.setBelongCode(sessionContent.getBelongCode());
+		orderListForm.setCategory(sessionContent.getCategory());
+		//検索条件bean
+		OrderCondition orderCondition = beanMapper.map(orderListForm,OrderCondition.class);
 		
-//		//ダウンロードファイル名を定義する
-//		Date date = new Date();
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-//		
-//		String fileName = "orderlist_"+simpleDateFormat.format(date) + ".csv";
-		
-		List<Order> orderList = new ArrayList<Order>();
-		
-		for(int i = 0; i < orderListForm.getOrderList().size(); i ++) {
-			String orderId = orderListForm.getOrderList().get(i).getOrderId();
-			Order order= orderListService.findOrderByPk(orderId);
-			orderList.add(order);
-		}
+		//検索結果list
+    	List<Order> orderList = orderListService.findOrderByCondition(orderCondition);
 
 		String authority = orderListForm.getAuthority();
 		

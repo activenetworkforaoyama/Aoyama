@@ -29,8 +29,6 @@ public interface OrderService {
 
 	void updateOrder(Order order);
 	
-	void updateOrderConfirm(Order order,String status);
-
 	String selectMaxOrderId(String belongCode, String type);
 
 	Stock getStock(String productFabricNo, String orderPattern);
@@ -94,5 +92,13 @@ public interface OrderService {
 
 	void deletOrderisExistence(Order order, Measuring measuring);
 
+	void updateOrderConfirm(Order order, String status, String itemBefore, String itemAfter);
+
+	void deleteOrderAddVersionAndStock(Order order, Stock stock, Measuring measuring);
+
+	void deleteOrderAddVersionAndStock(Order order, Measuring measuring, Order orderIsExist, String item,
+			String userId);
+
+	void deletOrderAddVersionAndStock(Order order, Order orderIsExist, String item, String userId, Measuring measuring);
 
 }

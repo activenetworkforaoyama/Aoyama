@@ -36,8 +36,10 @@ function initOptionShirt() {
 		} else {
 			jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
 			jQuery('#os_pinHolePin_id1').prop('checked', true);
+			jQuery('#os_pinHolePin_id1').prop('disabled', false);
 		}
-
+		jQuery('input[name="coOptionShirtStandardInfo.osPinHolePin"]:checked').change();
+		
 		//カラーキーパー
 		var os_colorKeeper_disabled = jQuery('#os_colorKeeper_id2').prop('disabled');
 		if (os_chainModel == "0000108" || os_chainModel == "0000109" ||
@@ -46,7 +48,9 @@ function initOptionShirt() {
 			// 「襟型」ボタンダウン・ショートボタンダウン・ピンホール・ラウンドピンホール・ウイング選択時、
 			// 「カラーキーパー」は「無し」にて選択不可
 			jQuery('#os_colorKeeper_id2').prop('checked', true);
-			jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
+			jQuery('#os_colorKeeper_id1').prop('disabled', true);
+			jQuery('#os_colorKeeper_id2').prop('disabled', false);
+			//jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
 		} else {
 			jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 			if (os_colorKeeper_disabled) {
@@ -54,6 +58,8 @@ function initOptionShirt() {
 				jQuery('#os_colorKeeper_id1').prop('checked', true);
 			}
 		}
+		
+		jQuery('input[name="coOptionShirtStandardInfo.osColorKeeper"]:checked').change();
 		
 		//タブ釦
 		if (os_chainModel == "0000111" || os_chainModel == "0000112") {
@@ -69,7 +75,7 @@ function initOptionShirt() {
 			jQuery('#os_tabBtn_id2').prop('disabled', true);
 			jQuery('#os_tabBtn_id3').prop('disabled', false);
 		}
-
+		jQuery('input[name="coOptionShirtStandardInfo.osTabBtn"]:checked').change();
 	});
 	jQuery('#os_chainModel').change();
 
@@ -87,6 +93,7 @@ function initOptionShirt() {
 			jQuery('#os_convertible').prop('disabled', false);
 		}
 		jQuery('#os_convertible').change();
+		jQuery('#os_adjustBtn').change();
 		
 		// カフスボタン追加の変更
 		changeAddCuff();
@@ -105,6 +112,7 @@ function initOptionShirt() {
 			jQuery('#os_adjustBtn').prop('disabled', true);
 			jQuery('#os_adjustBtn').val("0000401");
 		}
+		jQuery('#os_adjustBtn').change();
 		// カフスボタン追加の変更
 		changeAddCuff();
 	});
@@ -176,6 +184,8 @@ function changeAddCuff() {
 		jQuery('#os_AddCuff_id1').prop('checked', true);
 		jQuery('#os_AddCuff_id2').prop('disabled', true);
 	}
+	
+	jQuery('input[name="coOptionShirtStandardInfo.osAddCuff"]:checked').change();
 }
 
 

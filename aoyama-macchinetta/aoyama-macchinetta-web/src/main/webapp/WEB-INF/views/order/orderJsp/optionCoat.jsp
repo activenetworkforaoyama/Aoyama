@@ -17,7 +17,7 @@
                             	<output id="coatModel_Msg" ></output>
                             </div>
                             <div class="col-12 col-md-9 offset-md-3" id="coatModelMsg" style="margin-top:8px"></div>
-                            <div class="col-12 col-md-9 offset-md-3" id="coatModelCheck" style="margin-top:8px"></div>
+                            <div class="col-12 col-md-9 offset-md-3" id="coatModelCheck" style="display:none"></div>
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">ラペルデザイン</label></div>
@@ -30,19 +30,6 @@
                             	<output id="oc_lapelDesign_Msg"></output>
                             </div>
                         </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3"><label class=" form-control-label">袖仕様</label></div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-check-inline form-check">
-                                    <div class="form-check-inline form-check">
-                                    	<form:radiobuttons id="oc_sleeveSpec_id" path="coOptionCoatStandardInfo.ocSleeveSpec" class="form-check-input" items="${orderCoForm.coOptionCoatStandardInfo.ocSleeveSpecMap}"/>
-                                	</div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-3" align="right">
-                            	<output id="oc_sleeveSpec_Msg"></output>
-                            </div>
-                        </div>                        
                         <div class="row form-group">
                             <div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
                             <div class="col-12 col-md-3">
@@ -255,8 +242,6 @@ jQuery(document).ready(function() {
 		}else{
 			coatAdFlag="0";
 		}
-	}else if("0"==jQuery("#coatItemFlag").val() && "orderCo"!=orderFlag){
-		    coatAdFlag="1";
 	}
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
@@ -441,7 +426,8 @@ function getPrice(){
 	var coatModel = "";
 	//ラジオボタンの変更処理
 	//項目：チェンジポケット、スランテッドポケット、ベント、バックベルト、襟吊
-	jQuery('input[id^="oc_sleeveSpec_id"],[id^="oc_changePkt_id"],[id^="oc_slantedPkt_id"],[id^="oc_ventSpec_id"],[id^="oc_backBelt_id"],[id^="oc_chainHange_id"]')
+//	jQuery('input[id^="oc_sleeveSpec_id"],[id^="oc_changePkt_id"],[id^="oc_slantedPkt_id"],[id^="oc_ventSpec_id"],[id^="oc_backBelt_id"],[id^="oc_chainHange_id"]')
+    jQuery('input[id^="oc_changePkt_id"],[id^="oc_slantedPkt_id"],[id^="oc_ventSpec_id"],[id^="oc_backBelt_id"],[id^="oc_chainHange_id"]')
 	.change(function(){
 		//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').serialize(),type: "post",async:false});
 		coatModel = jQuery("#coatModel option:selected").val();
@@ -544,7 +530,15 @@ function doubleOptionModelPrice(){
 					}
 			     }
 			});
+		} else {
+			jQuery("#ctDoubleModelPrice").val("0");
+			jQuery("#coatModel_Msg").html("無料");
+			allOptionPrice();
 		}
+	} else if(!(coatModelVal == '' || coatModelVal == null)) {
+		jQuery("#ctDoubleModelPrice").val("0");
+		jQuery("#coatModel_Msg").html("無料");
+		allOptionPrice();
 	}
 	
 	if(productCategory == "9000101"){

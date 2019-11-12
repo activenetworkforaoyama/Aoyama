@@ -179,8 +179,6 @@ public class CoOptionPants2WashableInfo implements Serializable{
     
     private String wp2DStitchPlace3;
     
-    private String wp2DStitchPlace4;
-    
     private Map<String,String> wp2DStitchPlaceMap;
     
     //AMF色指定
@@ -1190,14 +1188,6 @@ public class CoOptionPants2WashableInfo implements Serializable{
 
 	public void setWp2DStitchPlace3(String wp2dStitchPlace3) {
 		wp2DStitchPlace3 = wp2dStitchPlace3;
-	}
-
-	public String getWp2DStitchPlace4() {
-		return wp2DStitchPlace4;
-	}
-
-	public void setWp2DStitchPlace4(String wp2dStitchPlace4) {
-		wp2DStitchPlace4 = wp2dStitchPlace4;
 	}
 
 	public String getWp2BhColorPlace1() {

@@ -196,7 +196,7 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
     @NotBlank(groups = { JkTuItem.class }, message = "JACKETのステッチ種類を入力して下さい。")
     private String tjStitch;
     
-    private Map<String,String> tjStitchMap;
+    private Map<String,String> tjCoStitchMap;
     
     private String jkStitchTypeRtPrice;
     
@@ -832,12 +832,12 @@ public class CoOptionJacketTuxedoInfo implements Serializable{
 		this.tjStitch = tjStitch;
 	}
 
-	public Map<String, String> getTjStitchMap() {
-		return tjStitchMap;
+	public Map<String, String> getTjCoStitchMap() {
+		return tjCoStitchMap;
 	}
 
-	public void setTjStitchMap(Map<String, String> tjStitchMap) {
-		this.tjStitchMap = tjStitchMap;
+	public void setTjCoStitchMap(Map<String, String> tjCoStitchMap) {
+		this.tjCoStitchMap = tjCoStitchMap;
 	}
 
 	public String getTjBhColor() {

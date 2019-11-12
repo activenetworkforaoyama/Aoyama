@@ -14,7 +14,8 @@ public enum GiletCoOptionTuxedoNextGenerationPriceEnum {
 	GILET_TUXEDO_OPTION_CODE02("00002","getTgWaistPkt","setGlWaistPktWsWage","setGlWaistPktWsPrice","getGlWaistPktWsWage","getGlWaistPktWsPrice"),//腰ポケット
 	GILET_TUXEDO_OPTION_CODE03("00003","getTgWaistPktSpec","setGlWaistPktShapeWsWage","setGlWaistPktShapeWsPrice","getGlWaistPktShapeWsWage","getGlWaistPktShapeWsPrice"),//腰ポケット形状
 	GILET_TUXEDO_OPTION_CODE04("00004","getTgWaistPktMate","setGlWaistPktClothWsWage","setGlWaistPktClothWsPrice","getGlWaistPktClothWsWage","getGlWaistPktClothWsPrice"),//腰ポケット素材
-	GILET_TUXEDO_OPTION_CODE05("00005","getTgStitch","setGlAmfStitchWsWage","setGlAmfStitchWsPrice","getGlAmfStitchWsWage","getGlAmfStitchWsPrice"),//ステッチ種類
+	GILET_TUXEDO_OPTION_CODE50("00050","getTgGlossFablic","setGlLookClothWsWage","setGlLookClothWsPrice","getGlLookClothWsWage","getGlLookClothWsPrice"),//拝絹地
+	GILET_TUXEDO_OPTION_CODE05("00051","getTgStitch","setGlAmfStitchWsWage","setGlAmfStitchWsPrice","getGlAmfStitchWsWage","getGlAmfStitchWsPrice"),//ステッチ種類
 	GILET_TUXEDO_OPTION_CODE11("00011","getTgBhColor","setGlBtnholeColorWsWage","setGlBtnholeColorWsPrice","getGlBtnholeColorWsWage","getGlBtnholeColorWsPrice"),//ボタンホール色指定
 	GILET_TUXEDO_OPTION_CODE14("00014","getTgByColor","setGlBtnthreadColorWsWage","setGlBtnthreadColorWsPrice","getGlBtnthreadColorWsWage","getGlBtnthreadColorWsPrice"),//ボタン付け糸指定
 	GILET_TUXEDO_OPTION_CODE23("00023","getTgBackBelt","setGlBackBeltWsWage","setGlBackBeltWsPrice","getGlBackBeltWsWage","getGlBackBeltWsPrice"),//バックベルト

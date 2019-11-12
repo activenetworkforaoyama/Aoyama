@@ -13,6 +13,7 @@ public enum PantsCoOptionTuxedoNextGenerationPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE01("00001","getTpTack","setPtTackWsWage","setPtTackWsPrice","getPtTackWsWage","getPtTackWsPrice"),//タック
 	PANTS_TUXEDO_OPTION_CODE02("00002","getTpKneeBack","setPtKneeinnerTypeWsWage","setPtKneeinnerTypeWsPrice","getPtKneeinnerTypeWsWage","getPtKneeinnerTypeWsPrice"),//膝裏
 	PANTS_TUXEDO_OPTION_CODE03("00003","getTpKneeBackMate","setPtKneeinnerClothWsWage","setPtKneeinnerClothWsPrice","getPtKneeinnerClothWsWage","getPtKneeinnerClothWsPrice"),//膝裏素材
+	PANTS_TUXEDO_OPTION_CODE50("00050","getTpGlossFablic","setPtLookClothWsWage","setPtLookClothWsPrice","getPtLookClothWsWage","getPtLookClothWsPrice"),//拝絹地
 	PANTS_TUXEDO_OPTION_CODE04("00004","getTpFrontSpec","setPtFrtTypeWsWage","setPtFrtTypeWsPrice","getPtFrtTypeWsWage","getPtFrtTypeWsPrice"),//フロント仕様
 	PANTS_TUXEDO_OPTION_CODE05("00005","getTpPancherina","setPtPancherinaWsWage","setPtPancherinaWsPrice","getPtPancherinaWsWage","getPtPancherinaWsPrice"),//パンチェリーナ
 	PANTS_TUXEDO_OPTION_CODE06("00006","getTpAdjuster","setPtAdjusterWsWage","setPtAdjusterWsPrice","getPtAdjusterWsWage","getPtAdjusterWsPrice"),//アジャスター仕様
@@ -27,7 +28,7 @@ public enum PantsCoOptionTuxedoNextGenerationPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","getTpVCut","setPtVCutWsWage","setPtVCutWsPrice","getPtVCutWsWage","getPtVCutWsPrice"),//Vカット
 	PANTS_TUXEDO_OPTION_CODE17("00017","getTpHemUp","setPtHemUpWsWage","setPtHemUpWsPrice","getPtHemUpWsWage","getPtHemUpWsPrice"),//裾上げ
 	PANTS_TUXEDO_OPTION_CODE18("00018","getTpDoubleWide","setPtDblWidthWsWage","setPtDblWidthWsPrice","getPtDblWidthWsWage","getPtDblWidthWsPrice"),//ダブル幅
-	PANTS_TUXEDO_OPTION_CODE19("00019","getTpStitch","setPtAmfStitchWsWage","setPtAmfStitchWsPrice","getPtAmfStitchWsWage","getPtAmfStitchWsPrice"),//ステッチ種類
+	PANTS_TUXEDO_OPTION_CODE19("00051","getTpStitch","setPtAmfStitchWsWage","setPtAmfStitchWsPrice","getPtAmfStitchWsWage","getPtAmfStitchWsPrice"),//ステッチ種類
 	PANTS_TUXEDO_OPTION_CODE27("00027","getTpBhColor","setPtBtnholeColorWsWage","setPtBtnholeColorWsPrice","getPtBtnholeColorWsWage","getPtBtnholeColorWsPrice"),//ボタンホール色指定
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTpByColor","setPtBtnthreadColorWsWage","setPtBtnthreadColorWsPrice","getPtBtnthreadColorWsWage","getPtBtnthreadColorWsPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE35("00035","getTpSuspenderBtn","setPtSuspenderBtnWsWage","setPtSuspenderBtnWsPrice","getPtSuspenderBtnWsWage","getPtSuspenderBtnWsPrice"),//サスペンダー釦

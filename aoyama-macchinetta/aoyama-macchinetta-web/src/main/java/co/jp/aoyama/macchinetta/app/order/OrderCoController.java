@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
@@ -36,12 +37,12 @@ import co.jp.aoyama.macchinetta.app.order.coHelper.CoJakcetHelper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants1Helper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoPants2Helper;
 import co.jp.aoyama.macchinetta.app.order.coHelper.CoShirtHelper;
-import co.jp.aoyama.macchinetta.app.order.enums.CoProductPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.LogItemClassEnum;
 import co.jp.aoyama.macchinetta.app.session.SessionContent;
 import co.jp.aoyama.macchinetta.app.shop.ShopForm;
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Cash;
+import co.jp.aoyama.macchinetta.domain.model.CoSizeNumber;
 import co.jp.aoyama.macchinetta.domain.model.Item;
 import co.jp.aoyama.macchinetta.domain.model.Measuring;
 import co.jp.aoyama.macchinetta.domain.model.OptionBranch;
@@ -224,11 +225,12 @@ public class OrderCoController {
 			orderCoForm.setOrderFlag(orderFlag);
 			orderCoForm.setStatus("");
 			orderCoForm.setOrderTscStatus("");
+			orderCoForm.setStatusInput("");
 			// デフォルト値設定
 			orderCoHelper.customerAndProductDefaultValue(orderCoForm,sessionContent);
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
-			coGiletHelper.giletDefaultValue(orderCoForm);
-			coCoatHelper.coatDefaultValue(orderCoForm);
+			//coGiletHelper.giletDefaultValue(orderCoForm);
+			//coCoatHelper.coatDefaultValue(orderCoForm);
 
 			model.addAttribute("orderCoForm", orderCoForm);
 		} catch (Exception e) {
@@ -260,7 +262,7 @@ public class OrderCoController {
 			// 消費税を取得
 			int taxRate = consumptionService.getTaxRate(new Date());
 			// 素材品番のMapを取得
-			List<OrderPrice> priceList = orderService.getOrderPrice(CO_TYPE);
+			List<OrderPrice> priceList = orderService.getOrderPriceNotCate(CO_TYPE);
 
 			orderCoHelper.getOptionStandardData(standardOptionList, orderCoForm);
 			orderCoHelper.getOptionTuxedoData(tuxedoOptionList, orderCoForm);
@@ -313,7 +315,8 @@ public class OrderCoController {
 	 */
 	@RequestMapping(value = "orderCoReconfirm")
 	public String toOrderCoReconfirm(HttpServletRequest request,OrderCoForm orderCoForm, final BindingResult result,Model model) {
-		allAdjustInit(orderCoForm);
+		orderCoForm.setStatus("");
+		//allAdjustInit(orderCoForm);
 		
 		String item = orderCoForm.getProductItem();
 		String productCategory = orderCoForm.getProductCategory();
@@ -496,7 +499,7 @@ public class OrderCoController {
 
 			measuring.setOrderId(orderId);
 
-			String stockCheck = stockCheck(order, measuring);
+			String stockCheck = stockCheck(order, measuring,orderCoForm);
 
 			orderMessage.setOrderId(stockCheck);
 			orderMessage.setOrderMsg("");
@@ -505,42 +508,58 @@ public class OrderCoController {
 		} else {
 			version = orderCoForm.getVersion();
 			Order orderIsExist = orderListService.findOrderByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-			String tscStatus = orderIsExist.getTscStatus();
-			if("T2".equals(tscStatus)) {
-				orderMessage.setOrderId("");
-				orderMessage.setOrderMsg("T2ERROR");
-				orderMessage.setOrderMsgFlag(false);
-			}else if("T3".equals(tscStatus)) {
-				orderMessage.setOrderId("");
-				orderMessage.setOrderMsg("T3ERROR");
-				orderMessage.setOrderMsgFlag(false);
-			}else {
-				Measuring measuringIsExist = measuringService
-						.selectByPrimaryKey(orderCoForm.getCoCustomerMessageInfo().getOrderId());
-
-				// オーダーのデーター → orderCoForm
-				orderCoFormToOrder(orderCoForm, order, measuring, orderIsExist, measuringIsExist);
-
-				order.setVersion(Short.parseShort(version));
-
-				String stockCheck = stockCheck(order, orderIsExist, measuring);
-				orderMessage.setOrderId(stockCheck);
-				orderMessage.setOrderMsg("");
-				orderMessage.setOrderMsgFlag(true);
+			Short versionDb = orderIsExist.getVersion();
+			if(versionDb == null) {
+				versionDb = 0;
 			}
-			return orderMessage;
+			if(!version.equals(String.valueOf(versionDb))) {
+				orderMessage.setOrderId("");
+				orderMessage.setOrderMsg("VERSIONERROR");
+				orderMessage.setOrderMsgFlag(false);
+				return orderMessage;
+			}else {
+				String tscStatus = orderIsExist.getTscStatus();
+				if("T2".equals(tscStatus)) {
+					orderMessage.setOrderId("");
+					orderMessage.setOrderMsg("T2ERROR");
+					orderMessage.setOrderMsgFlag(false);
+				}else if("T3".equals(tscStatus)) {
+					orderMessage.setOrderId("");
+					orderMessage.setOrderMsg("T3ERROR");
+					orderMessage.setOrderMsgFlag(false);
+				}else {
+					Measuring measuringIsExist = measuringService
+							.selectByPrimaryKey(orderCoForm.getCoCustomerMessageInfo().getOrderId());
+
+					// オーダーのデーター → orderCoForm
+					orderCoFormToOrder(orderCoForm, order, measuring, orderIsExist, measuringIsExist);
+
+					order.setVersion(Short.parseShort(version));
+
+					String stockCheck = stockCheck(order, orderIsExist, measuring,orderCoForm);
+					orderMessage.setOrderId(stockCheck);
+					orderMessage.setOrderMsg("");
+					orderMessage.setOrderMsgFlag(true);
+				}
+				return orderMessage;
+			}
 		}
 
 	}
 
-	private String stockCheck(Order order, Measuring measuring) {
+	private String stockCheck(Order order, Measuring measuring,OrderCoForm orderCoForm) {
 		// 商品情報_ITEM(ログ用)
 		String item = LogItemClassEnum.getLogItem(order);
-
+		String saveFlag = orderCoForm.getSaveFlag();
 		// 生地品番が無しの場合
 		if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 			order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-			orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+			// 保存flag 1：自動保存
+			if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+				orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+			} else {
+				orderService.deletOrderisExistence(order,measuring);
+			}
 		}
 		// 生地品番が有りの場合
 		else {
@@ -554,8 +573,12 @@ public class OrderCoController {
 			stock.setUpdatedUserId(sessionContent.getUserId());
 			stock.setUpdatedAt(new Date());
 			order.setTheoreticalStockCheck(IS_THEORETICAL_STOCKCECK);
-			orderService.deleteOrderAndStock(order, stock, measuring);
-
+			// 保存flag 1：自動保存
+			if ("1".equals(saveFlag) || "".equals(saveFlag) || saveFlag == null) {
+				orderService.deleteOrderAndStock(order, stock, measuring);
+			} else {
+				orderService.deleteOrderAddVersionAndStock(order, stock, measuring);
+			}
 			Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
 			logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID：" + order.getOrderId()
 					+ "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
@@ -629,7 +652,7 @@ public class OrderCoController {
 	@ResponseBody
 	@RequestMapping(value = "orderCoTemporarySave", method = RequestMethod.POST)
 	public OrderMessage orderPoTemporarySave(OrderCoForm orderCoForm, Model model) {
-		allAdjustInit(orderCoForm);
+		//allAdjustInit(orderCoForm);
 		
 		Order order = new Order();
 
@@ -722,26 +745,6 @@ public class OrderCoController {
 		// orderCoFormの対象とorderの対応フィールドのマッピング
 		standardBeanMapper.map(orderCoForm.getCoCustomerMessageInfo(), order);
 		standardBeanMapper.map(orderCoForm, order);
-		orderCoHelper.measuringMapping(orderCoForm, measuring, sessionContent.getUserId());
-		orderCoHelper.setProductItemDisplayCode(orderCoForm, order);
-		orderCoHelper.orderMappingLogOn(orderCoForm, order, sessionContent);
-		measuring.setCreatedUserId(sessionContent.getUserId());
-		measuring.setCreatedAt(new Date());
-		String saveFlag = orderCoForm.getSaveFlag();
-		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
-			order.setTscStatus(orderCoForm.getStatus());
-			// 保存flag 1：自動保存
-			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
-		} 
-		else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
-			String tscStatus = orderCoForm.getStatus();
-			if ("".equals(tscStatus) || tscStatus == null) {
-				order.setTscStatus(TSC_STATUST0);
-			} else {
-				order.setTscStatus(tscStatus);
-			}
-		}
-
 		// 標準の場合
 		if ("9000101".equals(orderCoForm.getProductCategory())) {
 			// SUITの場合、itemCodeは"01"
@@ -961,6 +964,25 @@ public class OrderCoController {
 				standardBeanMapper.map(orderCoForm.getCoAdjustGiletStandardInfo(), order);
 				// GILETのグループ項目名とコード
 				orderCoHelper.aboutWashableGiletCheckBoxInDbOnlyCode(orderCoForm, order);
+			}
+		}
+		orderCoHelper.orderMappingLogOn(orderCoForm, order, sessionContent);
+		orderCoHelper.measuringMapping(orderCoForm, measuring, sessionContent.getUserId());
+		orderCoHelper.setProductItemDisplayCode(orderCoForm, order);
+		measuring.setCreatedUserId(sessionContent.getUserId());
+		measuring.setCreatedAt(new Date());
+		String saveFlag = orderCoForm.getSaveFlag();
+		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+			order.setTscStatus(orderCoForm.getStatusInput());
+			// 保存flag 1：自動保存
+			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
+		} 
+		else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
+			String tscStatus = orderCoForm.getStatus();
+			if ("".equals(tscStatus) || tscStatus == null) {
+				order.setTscStatus(TSC_STATUST0);
+			} else {
+				order.setTscStatus(tscStatus);
 			}
 		}
 	}
@@ -1221,7 +1243,7 @@ public class OrderCoController {
 
 		String saveFlag = orderCoForm.getSaveFlag();
 		if ("0".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
-			order.setTscStatus(orderCoForm.getStatus());
+			order.setTscStatus(orderCoForm.getStatusInput());
 			// 保存flag 1：自動保存
 			// ステータスなし→「一時保存」、「一時保存」→「一時保存」、「取り置き」→「取り置き」
 		} else if ("1".equals(saveFlag)||"2".equals(saveFlag)) {
@@ -1242,14 +1264,11 @@ public class OrderCoController {
 	 * @param order
 	 * @param measuring
 	 */
-	private String stockCheck(Order order, Order orderIsExist, Measuring measuring) throws ResourceNotFoundException {
+	private String stockCheck(Order order, Order orderIsExist, Measuring measuring,OrderCoForm orderCoForm) throws ResourceNotFoundException {
 
 		// 商品情報_ITEM(ログ用)
 		String item = LogItemClassEnum.getLogItem(order);
-
-		// 在庫を戻る
-		// stockRecovery(orderIsExist);
-
+		String saveFlag = orderCoForm.getSaveFlag();
 		// 理論在庫チェック値を取得
 		String isCheck = orderIsExist.getTheoreticalStockCheck();
 		Short version = orderIsExist.getVersion();
@@ -1262,11 +1281,21 @@ public class OrderCoController {
 			// 生地品番が無しの場合
 			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-				orderService.deletOrderWithNotVersionAndMeasuring(order, measuring);
+				// 保存flag 1：自動保存
+				if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+					orderService.deletOrderWithNotVersionAndMeasuring(order,measuring);
+				} else {
+					orderService.deletOrderisExistence(order,measuring);
+				}
 			}
 			// 生地品番が有りの場合
 			else {
-				orderService.deleteOrderAndStock(order, measuring, orderIsExist, item, sessionContent.getUserId());
+				// 保存flag 1：自動保存
+				if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+					orderService.deleteOrderAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
+				} else {
+					orderService.deleteOrderAddVersionAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
+				}
 
 				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
 				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
@@ -1278,12 +1307,21 @@ public class OrderCoController {
 			// 生地品番が無しの場合
 			if ("".equals(order.getProductFabricNo()) || order.getProductFabricNo() == null) {
 				order.setTheoreticalStockCheck(IS_NOT_THEORETICAL_STOCKCECK);
-				orderService.deletOrderWithNotVersionAndStock(order, orderIsExist, item, sessionContent.getUserId(),
-						measuring);
+				// 保存flag 1：自動保存
+				if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+					orderService.deletOrderWithNotVersionAndStock(order,orderIsExist,item,sessionContent.getUserId(),measuring);
+				} else {
+					orderService.deletOrderAddVersionAndStock(order,orderIsExist,item,sessionContent.getUserId(),measuring);
+				}
 			}
 			// 生地品番が有りの場合
 			else {
-				orderService.deleteOrderAndStock(order, measuring, orderIsExist, item, sessionContent.getUserId());
+				// 保存flag 1：自動保存
+				if ("1".equals(saveFlag)||"".equals(saveFlag)||saveFlag == null) {
+					orderService.deleteOrderAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
+				} else {
+					orderService.deleteOrderAddVersionAndStock(order, measuring,orderIsExist,item,sessionContent.getUserId());
+				}
 
 				Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
 				logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
@@ -1302,71 +1340,105 @@ public class OrderCoController {
 	 * 
 	 */
 	@RequestMapping(value = "/physicalDelete", method = RequestMethod.GET)
-	public String physicalDelete(String orderId, String version, Model model) {
-		// 注文IDによって 注文を取得
-		Order order = orderListService.findOrderByPk(orderId);
-
-		// 商品情報_ITEM(ログ用)
-		String item = LogItemClassEnum.getLogItem(order);
-
-		String versionDb = String.valueOf(order.getVersion());
-
-		if (version.equals(versionDb)) {
-			// tscステータスが無しの場合 注文物理削除
-			if ("".equals(order.getTscStatus()) || order.getTscStatus() == null) {
-				if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-					orderService.deleteMeasuringBothOrder(orderId);
-				} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
-					// 生地の論理在庫を戻る
-					Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
-					BigDecimal reservationStock = stock.getReservationStock();
-					BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-					stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
-					stock.setUpdatedUserId(sessionContent.getUserId());
-					stock.setUpdatedAt(new Date());
-					orderService.physicalDeleteOrder(stock, orderId);
-					Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-							+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
-							+ stockAfter.getTheoreticalStock() + "、予約生地量：" + stockAfter.getReservationStock() + "」");
-				}
-
-			} else {
-				// tscステータスが「一時保存、取り置き」の場合、物理削除
-				if (TSC_STATUST0.equals(order.getTscStatus()) || TSC_STATUST1.equals(order.getTscStatus())) {
-					// 理論在庫チェックなしの場合
+	public String physicalDelete(String orderId,String version ,Model model) {
+		String orderVersion = this.getOrderVersion(orderId);
+		
+		if(orderVersion != null&& !"".equals(orderVersion)) {
+			// 注文IDによって 注文を取得
+			Order order = orderListService.findOrderByPk(orderId);
+			
+			//商品情報_ITEM(ログ用)
+			String item = LogItemClassEnum.getLogItem(order);
+			
+			String versionDb = String.valueOf(order.getVersion());
+			if(version.equals(versionDb)) {
+				// tscステータスが無しの場合 注文物理削除
+				if ("".equals(order.getTscStatus()) || order.getTscStatus() == null) {
 					if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
 						orderService.deleteMeasuringBothOrder(orderId);
-						// 理論在庫チェックありの場合
 					} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
+						String productFabricNo = order.getProductFabricNo();
+						Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
 						// 生地の論理在庫を戻る
-						Stock stock = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-								+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo()
-								+ "、理論在庫：" + stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock()
-								+ "」");
-						BigDecimal reservationStock = stock.getReservationStock();
-						BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
-						stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
-						stock.setUpdatedUserId(sessionContent.getUserId());
-						stock.setUpdatedAt(new Date());
-						orderService.physicalDeleteOrder(stock, orderId);
-						Stock stockAfter = orderService.getStock(order.getProductFabricNo(), order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() + "、注文ID："
-								+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo()
-								+ "、理論在庫：" + stockAfter.getTheoreticalStock() + "、予約生地量："
-								+ stockAfter.getReservationStock() + "」");
+						if(productFabricNo == null || "".equals(productFabricNo) || stock == null) {
+							logger.warn("注文削除、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+							+ order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番：" + productFabricNo + "」");
+							orderService.physicalDeleteOrder(stock,orderId);
+						}else {
+							logger.info("注文削除、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stock.getTheoreticalStock() 
+							+ "、予約生地量："+stock.getReservationStock() + "」");
+							BigDecimal reservationStock = stock.getReservationStock();
+							BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+							stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
+							stock.setUpdatedUserId(sessionContent.getUserId());
+							stock.setUpdatedAt(new Date());
+							orderService.physicalDeleteOrder(stock,orderId);
+							Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+							logger.info("注文削除、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+							+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						}
+					}
+
+				} else {
+					// tscステータスが「一時保存、取り置き」の場合、物理削除
+					if (TSC_STATUST0.equals(order.getTscStatus()) || TSC_STATUST1.equals(order.getTscStatus())) {
+						// 理論在庫チェックなしの場合
+						if (IS_NOT_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
+							orderService.deleteMeasuringBothOrder(orderId);
+							// 理論在庫チェックありの場合
+						} else if (IS_THEORETICAL_STOCKCECK.equals(order.getTheoreticalStockCheck())) {
+							String productFabricNo = order.getProductFabricNo();
+							Stock stock = orderService.getStock(productFabricNo,order.getOrderPattern());
+							// 生地の論理在庫を戻る
+							if(productFabricNo == null || "".equals(productFabricNo) || stock == null) {
+								logger.warn("注文削除、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+								+ order.getOrderPattern() 
+								+ "、注文ID："+order.getOrderId()  
+								+ "、ITEM："+item 
+								+ "、生地品番：" + productFabricNo + "」");
+								orderService.physicalDeleteOrder(stock,orderId);
+							}else {
+								logger.info("注文削除、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+								+ "、注文ID："+order.getOrderId()  
+								+ "、ITEM："+item 
+								+ "、生地品番："+order.getProductFabricNo() 
+								+ "、理論在庫："+stock.getTheoreticalStock() 
+								+ "、予約生地量："+stock.getReservationStock() + "」");
+								BigDecimal reservationStock = stock.getReservationStock();
+								BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+								stock.setReservationStock(reservationStock.subtract(theoryFabricUsedMount));
+								stock.setUpdatedUserId(sessionContent.getUserId());
+								stock.setUpdatedAt(new Date());
+								orderService.physicalDeleteOrder(stock,orderId);
+								Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+								logger.info("注文削除、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+								+ "、注文ID："+order.getOrderId()  
+								+ "、ITEM："+item
+								+ "、生地品番："+order.getProductFabricNo() 
+								+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+								+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+							}
+						}
 					}
 				}
+				model.addAttribute("isUpdate", IS_UPDATE2);
+			}else {
+				model.addAttribute("isUpdate", IS_UPDATE6);
 			}
-			model.addAttribute("isUpdate", IS_UPDATE2);
-		} else {
+		}else {
 			model.addAttribute("isUpdate", IS_UPDATE6);
 		}
-
 		return "order/orderPoLoginResultForm";
 	}
 
@@ -1377,7 +1449,7 @@ public class OrderCoController {
 	 * 
 	 */
 	@RequestMapping(value = "/logicalDelete", method = RequestMethod.GET)
-	public String logicalDeletion(String orderId, String version, Model model) {
+	public String logicalDeletion(String orderId,String version, Model model) {
 
 		Order order = orderListService.findOrderByPk(orderId);
 		//商品情報_ITEM(ログ用)
@@ -1397,26 +1469,41 @@ public class OrderCoController {
 						// 生地の論理在庫を戻る
 						BigDecimal stockNum = order.getTheoryFabricUsedMount();
 						Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
-						+ "、注文ID："+order.getOrderId()  
-						+ "、ITEM："+item 
-						+ "、生地品番："+order.getProductFabricNo() 
-						+ "、理論在庫："+stockDb.getTheoreticalStock() 
-						+ "、予約生地量："+stockDb.getReservationStock() + "」");
-						stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
-						stockDb.setUpdatedUserId(sessionContent.getUserId());
-						stockDb.setUpdatedAt(new Date());
-						order.setIsCancelled(IS_CANCELLED);
-						orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
-						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
-						+ "、注文ID："+order.getOrderId()  
-						+ "、ITEM："+item
-						+ "、生地品番："+order.getProductFabricNo() 
-						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
-						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						if(stockDb == null) {
+							logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+							+ order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番：" + order.getProductFabricNo() + "」");
+							order.setIsCancelled(IS_CANCELLED);
+							orderService.updateOrderAndCash(order,cash);
+						}else {
+							logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockDb.getTheoreticalStock() 
+							+ "、予約生地量："+stockDb.getReservationStock() + "」");
+							stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+							stockDb.setUpdatedUserId(sessionContent.getUserId());
+							stockDb.setUpdatedAt(new Date());
+							order.setIsCancelled(IS_CANCELLED);
+							orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
+							Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+							logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+							+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						}
 					}else {
 						// 取り消しフラグ:0
+						logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+						+ order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番：" + order.getProductFabricNo() + "」");
 						order.setIsCancelled(IS_CANCELLED);
 						orderService.updateOrderAndCash(order,cash);
 					}
@@ -1428,26 +1515,41 @@ public class OrderCoController {
 						// 生地の論理在庫を戻る
 						BigDecimal stockNum = order.getTheoryFabricUsedMount();
 						Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
-						+ "、注文ID："+order.getOrderId()  
-						+ "、ITEM："+item 
-						+ "、生地品番："+order.getProductFabricNo() 
-						+ "、理論在庫："+stockDb.getTheoreticalStock() 
-						+ "、予約生地量："+stockDb.getReservationStock() + "」");
-						stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
-						stockDb.setUpdatedUserId(sessionContent.getUserId());
-						stockDb.setUpdatedAt(new Date());
-						order.setIsCancelled(IS_CANCELLED);
-						orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
-						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-						logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
-						+ "、注文ID："+order.getOrderId()  
-						+ "、ITEM："+item
-						+ "、生地品番："+order.getProductFabricNo() 
-						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
-						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						if(stockDb == null) {
+							logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+							+ order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番：" + order.getProductFabricNo() + "」");
+							order.setIsCancelled(IS_CANCELLED);
+							orderService.updateOrderAndCash(order,cash);
+						}else {
+							logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item 
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockDb.getTheoreticalStock() 
+							+ "、予約生地量："+stockDb.getReservationStock() + "」");
+							stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+							stockDb.setUpdatedUserId(sessionContent.getUserId());
+							stockDb.setUpdatedAt(new Date());
+							order.setIsCancelled(IS_CANCELLED);
+							orderService.updateStockByPkAndOrderAndCash(stockDb,order,cash);
+							Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+							logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+item
+							+ "、生地品番："+order.getProductFabricNo() 
+							+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+							+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+						}
 					}else {
 						// 取り消しフラグ:0
+						logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+						+ order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番：" + order.getProductFabricNo() + "」");
 						order.setIsCancelled(IS_CANCELLED);
 						orderService.updateOrderAndCash(order,cash);
 					}
@@ -1457,26 +1559,41 @@ public class OrderCoController {
 					// 生地の論理在庫を戻る
 					BigDecimal stockNum = order.getTheoryFabricUsedMount();
 					Stock stockDb = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+order.getOrderId()  
-					+ "、ITEM："+item 
-					+ "、生地品番："+order.getProductFabricNo() 
-					+ "、理論在庫："+stockDb.getTheoreticalStock() 
-					+ "、予約生地量："+stockDb.getReservationStock() + "」");
-					stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
-					stockDb.setUpdatedUserId(sessionContent.getUserId());
-					stockDb.setUpdatedAt(new Date());
-					order.setIsCancelled(IS_CANCELLED);
-					orderService.updateStockByPkAndOrder(stockDb,order);
-					Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
-					logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+order.getOrderId()  
-					+ "、ITEM："+item
-					+ "、生地品番："+order.getProductFabricNo() 
-					+ "、理論在庫："+stockAfter.getTheoreticalStock() 
-					+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					if(stockDb == null) {
+						logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+						+ order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番：" + order.getProductFabricNo() + "」");
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateOrder(order);
+					}else {
+						logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item 
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockDb.getTheoreticalStock() 
+						+ "、予約生地量："+stockDb.getReservationStock() + "」");
+						stockDb.setTheoreticalStock(stockDb.getTheoreticalStock().add(stockNum));
+						stockDb.setUpdatedUserId(sessionContent.getUserId());
+						stockDb.setUpdatedAt(new Date());
+						order.setIsCancelled(IS_CANCELLED);
+						orderService.updateStockByPkAndOrder(stockDb,order);
+						Stock stockAfter = orderService.getStock(order.getProductFabricNo(),order.getOrderPattern());
+						logger.info("注文取消、オーダー登録画面で在庫マスタ情報を更新する。在庫を回復後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+item
+						+ "、生地品番："+order.getProductFabricNo() 
+						+ "、理論在庫："+stockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					}
 				}else {
 					// 取り消しフラグ:0
+					logger.warn("注文取消、オーダー登録画面で在庫マスタ情報を更新する、生地品番は在庫マスタには存在しません。「注文パターン：" 
+					+ order.getOrderPattern() 
+					+ "、注文ID："+order.getOrderId()  
+					+ "、ITEM："+item 
+					+ "、生地品番：" + order.getProductFabricNo() + "」");
 					order.setIsCancelled(IS_CANCELLED);
 					orderService.updateOrder(order);
 				}
@@ -1839,9 +1956,9 @@ public class OrderCoController {
 	@ResponseBody
 	@RequestMapping(value = "tuxdoMateSelect", method = RequestMethod.GET)
 	public Map<String, String> tuxdoMateSelect(String itemCode, String subItemCode, String mateChecked,
-			String orderPattern) {
+			String orderPattern,String optionCode) {
 		List<OptionBranchDetail> mateList = optionBranchDeailService.getTuxedoButtons(itemCode, subItemCode,
-				mateChecked, orderPattern);
+				mateChecked, orderPattern,optionCode);
 		LinkedHashMap<String, String> tuxedoMateMap = orderCoHelper.getButtons(mateList);
 		return tuxedoMateMap;
 	}
@@ -1857,9 +1974,9 @@ public class OrderCoController {
 	@ResponseBody
 	@RequestMapping(value = "washabiMateSelect", method = RequestMethod.GET)
 	public Map<String, String> washabiMateSelect(String itemCode, String subItemCode, String mateChecked,
-			String orderPattern) {
+			String orderPattern,String optionCode) {
 		List<OptionBranchDetail> mateList = optionBranchDeailService.getWashableButtons(itemCode, subItemCode,
-				mateChecked, orderPattern);
+				mateChecked, orderPattern,optionCode);
 		LinkedHashMap<String, String> washabiMateMap = orderCoHelper.getButtons(mateList);
 		return washabiMateMap;
 	}
@@ -1990,6 +2107,21 @@ public class OrderCoController {
 	public List<SizeNumber> getSizeNumberByItem(String orderPattern, String itemCode, String subItemCode,
 			String modelCode) {
 		List<SizeNumber> NumberList = sizeNumberService.getSizeNumberByItem(orderPattern, itemCode, subItemCode,
+				modelCode);
+		return NumberList;
+	}
+	
+	/**
+	 * 
+	 * @param orderPattern
+	 * @param itemCode
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getCoSizeNumberByItem", method = RequestMethod.GET)
+	public List<CoSizeNumber> getCoSizeNumberByItem(String orderPattern, String subItemCode, String figure,
+			String modelCode) {
+		List<CoSizeNumber> NumberList = typeSizeService.getCoSizeNumberByItem(orderPattern, subItemCode, figure,
 				modelCode);
 		return NumberList;
 	}
@@ -2152,7 +2284,7 @@ public class OrderCoController {
 		String productItem = orderCoForm.getProductItem();
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				COAT_SUBITEM);
-		orderCoHelper.getCoatModelMap(orderCoForm, modelList);
+		coCoatHelper.getCoatModelMap(orderCoForm, modelList);
 		if("orderCo".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getCoatItemFlag();
 			if ("0".equals(itemFlag)) {
@@ -2357,19 +2489,6 @@ public class OrderCoController {
 		return orderFindFabric;
 	}
 	
-	@RequestMapping(value = "/changeJkOptionByStock", method = RequestMethod.GET)
-	@ResponseBody
-	public OrderFindFabric changeJkOptionByStock(String fabricNo, String orderPattern) {
-		
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(fabricNo, orderPattern);
-		
-		if(orderFindFabric!=null) {
-			
-		}
-		
-		return orderFindFabric;
-	}
-
 	@ResponseBody
 	@RequestMapping(value = "getOrderPrice", method = RequestMethod.GET)
 	public String getOrderPrice(String code, String codeDetail, OrderCoForm orderCoForm) {
@@ -2473,58 +2592,10 @@ public class OrderCoController {
 	@RequestMapping(value = "/productPrice", method = RequestMethod.GET)
 	@ResponseBody
 	public String productPrice(OrderCoForm orderCoForm,String productCode, String valueCode,String valueName) {
-		String resultPrice = null;
-		CoProductPriceEnum[] values = CoProductPriceEnum.values();
-		String proCode = null;
-		for (CoProductPriceEnum coProductPriceEnum : values) {
-			String key = coProductPriceEnum.getKey();
-			String valueTwo = coProductPriceEnum.getValueTwo();
-			if(BaseCheckUtil.isEmpty(productCode)) {
-				String osShirtModel = orderCoForm.getCoOptionShirtStandardInfo().getOsShirtModel();
-				if(BaseCheckUtil.isNotEmpty(osShirtModel)) {
-					if(BaseCheckUtil.isNotEmpty(valueTwo)) {
-						if(valueTwo.equals(valueName)) {
-							proCode = "05".concat("05").concat(osShirtModel).concat(key).concat(valueCode);
-							resultPrice = getOrderPrice(proCode,orderCoForm);
-						}
-					}
-				}else {
-					resultPrice = "0";
-				}
-			}else {
-				if(BaseCheckUtil.isNotEmpty(valueTwo)) {
-					if(valueTwo.equals(valueName)) {
-						proCode = productCode.concat(key).concat(valueCode);
-						resultPrice = getOrderPrice(proCode,orderCoForm);
-					}
-				}
-			}
-		}
+		String resultPrice = orderCoHelper.productPrice(orderCoForm,productCode,valueCode,valueName);
 		return resultPrice;
 	}
 	
-	private String getOrderPrice(String proCode, OrderCoForm orderCoForm) {
-		String resultPrice = null;
-		List<OrderCodePrice> priceList = orderCoForm.getOrderCodePriceList();
-		for (OrderCodePrice orderCodePrice : priceList) {
-			String orderKeyCode = orderCodePrice.getOrderKeyCode();
-			String orderBranchPrice = orderCodePrice.getOrderBranchPrice();
-			if(orderKeyCode.equals(proCode)) {
-				if("0".equals(orderBranchPrice)) {
-					resultPrice = "0";
-					break;
-				}else {
-					BigDecimal branchPrice = new BigDecimal(orderBranchPrice);
-					resultPrice = String.valueOf(branchPrice);
-					break;
-				}
-			}else {
-				resultPrice = "0";
-			}
-		}
-		return resultPrice;
-	}
-
 	@RequestMapping(value = "/getOrderPriceForJacketStandardModel", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getOrderPriceForJacketModel(OrderCoForm orderCoForm, String code, String orderFlag) {
@@ -2651,9 +2722,9 @@ public class OrderCoController {
 	@RequestMapping(value = "/getOrderPriceForShirtProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForShirtProject(OrderCoForm orderCoForm, String code, Model model, 
-			String idValueName, String colorCount,String thisVal) {
+			String idValueName, String valueBreastPk,String thisVal) {
 		Map<String, String> resultMap = coShirtHelper.getOrderPriceForShirtProject(orderCoForm, code, model, 
-				idValueName, colorCount,thisVal);
+				idValueName, valueBreastPk,thisVal);
 		return resultMap;
 	}
 	
@@ -2681,27 +2752,27 @@ public class OrderCoController {
 	@RequestMapping(value = "/getOrderPriceForPants2Project", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPants2Project(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId) {
 		Map<String, String> resultMap = coPants2Helper.getOrderPriceForPants2Project(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId);
 		return resultMap;
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPants2tProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPants2tProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId,String valueSideStripe) {
 		Map<String, String> resultMap = coPants2Helper.getOrderPriceForPants2tProject(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId,valueSideStripe);
 		return resultMap;
 	}
 
 	@RequestMapping(value = "/getOrderPriceForPants2wProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPants2wProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId) {
 		Map<String, String> resultMap = coPants2Helper.getOrderPriceForPants2WProject(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId);
 		return resultMap;
 	}
 	
@@ -2744,19 +2815,13 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/optionInit", method = RequestMethod.GET)
 	@ResponseBody
-	public void allOptionInit(OrderCoForm orderCoForm,String item,String oldItem) {
+	public void allOptionInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm,String item,String oldItem,String itemCoChangeFlag,String pants2AdFlag, String giletAdFlag) {
 		// デフォルト値設定
 		if("01".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 			coPants1Helper.pantsDefaultValue(orderCoForm);
-			String productIs3Piece = orderCoForm.getProductIs3Piece();
-			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
-			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
-				coGiletHelper.giletDefaultValue(orderCoForm);
-			}
-			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
-				coPants2Helper.pants2DefaultValue(orderCoForm);
-			}
+			coGiletHelper.giletDefaultValue(orderCoForm);
+			coPants2Helper.pants2DefaultValue(orderCoForm);
 		}else if("02".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 		}else if("03".equals(oldItem)) {
@@ -2767,19 +2832,15 @@ public class OrderCoController {
 			coShirtHelper.shirtDefaultValue(orderCoForm);
 		}else if("06".equals(oldItem)) {
 			coCoatHelper.coatDefaultValue(orderCoForm);
+		}else if("07".equals(oldItem)) {
+			coPants2Helper.pants2DefaultValue(orderCoForm);
 		}
 		
 		if("01".equals(item)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 			coPants1Helper.pantsDefaultValue(orderCoForm);
-			String productIs3Piece = orderCoForm.getProductIs3Piece();
-			String productSparePantsClass = orderCoForm.getProductSparePantsClass();
-			if(OptionCodeKeys.THREE_PIECE.equals(productIs3Piece)) {
-				coGiletHelper.giletDefaultValue(orderCoForm);
-			}
-			if(OptionCodeKeys.TWO_PANTS.equals(productSparePantsClass)) {
-				coPants2Helper.pants2DefaultValue(orderCoForm);
-			}
+			coGiletHelper.giletDefaultValue(orderCoForm);
+			coPants2Helper.pants2DefaultValue(orderCoForm);
 		}else if("02".equals(item)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 		}else if("03".equals(item)) {
@@ -2791,10 +2852,27 @@ public class OrderCoController {
 		}else if("06".equals(item)) {
 			coCoatHelper.coatDefaultValue(orderCoForm);
 		}
+		
+		if("1".equals(itemCoChangeFlag)) {
+			coAdjustHelper.coAdjustJacketDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustPantsDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustShirtDefaultValue(orderCoForm);
+			coAdjustHelper.coAdjustCoatDefaultValue(orderCoForm);
+		}
+		if("0".equals(pants2AdFlag)) {
+			coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
+		}
+		if("0".equals(giletAdFlag)) {
+			coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
+		}
 	}
 	
-	public void allAdjustInit(OrderCoForm orderCoForm) {
-		if("1".equals(orderCoForm.getItemCoChangeFlag())) {
+	@RequestMapping(value = "/adjustInit", method = RequestMethod.GET)
+	@ResponseBody
+	public void allAdjustInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm,String jacketAdFlag, String pantsAdFlag,String pants2AdFlag, String giletAdFlag,String coatAdFlag, String shirtAdFlag, String itemCoChangeFlag) {
+		if("1".equals(itemCoChangeFlag)) {
 			coAdjustHelper.coAdjustJacketDefaultValue(orderCoForm);
 			coAdjustHelper.coAdjustPantsDefaultValue(orderCoForm);
 			coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
@@ -2802,22 +2880,22 @@ public class OrderCoController {
 			coAdjustHelper.coAdjustShirtDefaultValue(orderCoForm);
 			coAdjustHelper.coAdjustCoatDefaultValue(orderCoForm);
 		}else {
-			if("0".equals(orderCoForm.getJacketAdFlag())) {
+			if("0".equals(jacketAdFlag)) {
 				coAdjustHelper.coAdjustJacketDefaultValue(orderCoForm);
 			}
-			if("0".equals(orderCoForm.getPantsAdFlag())) {
+			if("0".equals(pantsAdFlag)) {
 				coAdjustHelper.coAdjustPantsDefaultValue(orderCoForm);
 			}
-			if("0".equals(orderCoForm.getPants2AdFlag())) {
+			if("0".equals(pants2AdFlag)) {
 				coAdjustHelper.coAdjustPants2DefaultValue(orderCoForm);
 			}
-			if("0".equals(orderCoForm.getGiletAdFlag())) {
+			if("0".equals(giletAdFlag)) {
 				coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
 			}
-			if("0".equals(orderCoForm.getShirtAdFlag())) {
+			if("0".equals(shirtAdFlag)) {
 				coAdjustHelper.coAdjustShirtDefaultValue(orderCoForm);
 			}
-			if("0".equals(orderCoForm.getCoatAdFlag())) {
+			if("0".equals(coatAdFlag)) {
 				coAdjustHelper.coAdjustCoatDefaultValue(orderCoForm);
 			}
 		}
@@ -2888,16 +2966,16 @@ public class OrderCoController {
 	@RequestMapping(value = "/getOrderPriceForPantsModel", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> getOrderPriceForPantsModel(OrderCoForm orderCoForm, String code, String orderFlag) {
-		Map<String, Object> resultMap = CoPants1Helper.getOrderPriceForPantsModel(orderCoForm,code,orderFlag);
+		Map<String, Object> resultMap = coPants1Helper.getOrderPriceForPantsModel(orderCoForm,code,orderFlag);
 		return resultMap;
 	}
 	
 	@RequestMapping(value = "/getOrderPriceForPantsSProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPantsSProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId,String valueOpKneeBack) {
 		Map<String, String> resultMap = coPants1Helper.getOrderPriceForPantsSProject(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId,valueOpKneeBack);
 		return resultMap;
 	}
 	
@@ -2911,9 +2989,9 @@ public class OrderCoController {
 	@RequestMapping(value = "/getOrderPriceForPantsSTuProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPantsSTuProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId,String valueOpKneeBack,String valueSideStripe) {
 		Map<String, String> resultMap = coPants1Helper.getOrderPriceForPantsSTuProject(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId,valueOpKneeBack,valueSideStripe);
 		return resultMap;
 	}
 	
@@ -2927,9 +3005,9 @@ public class OrderCoController {
 	@RequestMapping(value = "/getOrderPriceForPantsSWPProject", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, String> getOrderPriceForPantsSWPProject(OrderCoForm orderCoForm, String code,String idValueName,
-			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId) {
+			String jspOptionCodeAndBranchCode, String colorCount, String countArr,String thisVal,String thisValStkNo,String valueHemUpId,String valueOpKneeBack) {
 		Map<String, String> resultMap = coPants1Helper.getOrderPriceForPantsSWPProject(orderCoForm, code,idValueName,
-				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId);
+				jspOptionCodeAndBranchCode, colorCount, countArr,thisVal,thisValStkNo,valueHemUpId,valueOpKneeBack);
 		return resultMap;
 	}
 }

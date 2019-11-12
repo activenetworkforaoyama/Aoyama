@@ -18,8 +18,9 @@ public enum CoatOptionStandardCodeEnum {
 	COAT_STANDARD_OPTION_CODE10("00010","setOcChainHangeMap"),
 	COAT_STANDARD_OPTION_CODE11("00011","setOcBodyBackMateMap"),
 	COAT_STANDARD_OPTION_CODE12("00012","setOcCuffBackMateMap"),
-	COAT_STANDARD_OPTION_CODE13("00013","setOcFrontBtnMateMap"),
-	COAT_STANDARD_OPTION_CODE14("00014","setOcSleeveSpecMap");
+	COAT_STANDARD_OPTION_CODE13("00013","setOcFrontBtnMateMap");
+	//仕様変更　「袖仕様」画面削除
+//	COAT_STANDARD_OPTION_CODE14("00014","setOcSleeveSpecMap");
 	
 	
 	private final String key;

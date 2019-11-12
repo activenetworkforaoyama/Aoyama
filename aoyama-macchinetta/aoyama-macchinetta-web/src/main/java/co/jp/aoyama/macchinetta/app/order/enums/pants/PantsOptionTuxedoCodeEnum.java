@@ -24,7 +24,7 @@ public enum PantsOptionTuxedoCodeEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","setTpVCutMap"),
 	PANTS_TUXEDO_OPTION_CODE17("00017","setTpHemUpMap"),
 	PANTS_TUXEDO_OPTION_CODE18("00018","setTpDoubleWideMap"),
-	PANTS_TUXEDO_OPTION_CODE19("00019","setTpStitchMap"),
+	PANTS_TUXEDO_OPTION_CODE19("00051","setTpStitchMap"),
 	PANTS_TUXEDO_OPTION_CODE27("00027","setTpBhColorMap"),
 	PANTS_TUXEDO_OPTION_CODE28("00028","setTpBhColorPlaceAllMap"),
 	PANTS_TUXEDO_OPTION_CODE29("00029","setTpBhColorPlaceMap"),
@@ -37,7 +37,8 @@ public enum PantsOptionTuxedoCodeEnum {
 	PANTS_TUXEDO_OPTION_CODE37("00037","setTpShapeMemoryMap"),
 	PANTS_TUXEDO_OPTION_CODE39("00039","setTpSideStripeMap"),
 	PANTS_TUXEDO_OPTION_CODE40("00040","setTpSideStripeWidthMap"),
-	PANTS_TUXEDO_OPTION_CODE41("00041","setTpThickMap");
+	PANTS_TUXEDO_OPTION_CODE41("00041","setTpThickMap"),
+	PANTS_TUXEDO_OPTION_CODE50("00050","setTpGlossFablicMap");
 	
 	
 	private final String key;

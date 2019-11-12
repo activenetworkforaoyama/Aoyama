@@ -26,12 +26,12 @@ public enum JacketCoOptionWashableUpperPriceEnum {
 	JK_Washable_OPTION_CODE19("00019","getWjCuffSpec","","wjCuffSpecPrice","setJkCuffRtPrice"),//袖口
 	JK_Washable_OPTION_CODE20("00020","getWjInsidePktChange","","wjInsidePktChangePrice","setJkInnerPktRtPrice"),//内ポケット変更
 	JK_Washable_OPTION_CODE22("00022","getWjBreastInnerPkt","","wjBreastInnerPktPrice","setJkRightInnerPktTypeRtPrice"),//下前胸内ポケット仕様
-	JK_Washable_OPTION_CODE23("00023","getWjStitch","","wjStitchPrice","setJkStitchTypeRtPrice"),//ステッチ種類
-	JK_Washable_OPTION_CODE24("00024","getWjStitchModify","","wjStitchModifyPrice","setJkStitchPlcRtPrice"),//ステッチ箇所変更
+	JK_Washable_OPTION_CODE23("00051","getWjStitch","","wjStitchPrice","setJkStitchTypeRtPrice"),//ステッチ種類
+//	JK_Washable_OPTION_CODE24("00024","getWjStitchModify","","wjStitchModifyPrice","setJkStitchPlcRtPrice"),//ステッチ箇所変更
 	JK_Washable_OPTION_CODE26("00026","getWjDStitchModify","","wjDStitchModifyPrice","setJkDblstitchPlcRtPrice"),//ダブルステッチ変更
-	JK_Washable_OPTION_CODE28("00028","getWjAmfColor","","wjAmfColorPrice","setJkAmfColorRtPrice"),//AMF色指定
-	JK_Washable_OPTION_CODE31("00031","getWjBhColor","","wjBhColorPrice","setJkBtnholePlcColorRtPrice"),//ボタンホール色指定
-	JK_Washable_OPTION_CODE34("00034","getWjByColor","","wjByColorPrice","setJkBtnthreadPlcColorRtPrice"),//ボタン付け糸指定
+//	JK_Washable_OPTION_CODE28("00028","getWjAmfColor","","wjAmfColorPrice","setJkAmfColorRtPrice"),//AMF色指定
+//	JK_Washable_OPTION_CODE31("00031","getWjBhColor","","wjBhColorPrice","setJkBtnholePlcColorRtPrice"),//ボタンホール色指定
+//	JK_Washable_OPTION_CODE34("00034","getWjByColor","","wjByColorPrice","setJkBtnthreadPlcColorRtPrice"),//ボタン付け糸指定
 	JK_Washable_OPTION_CODE37("00037","getWjVentSpec","","wjVentSpecPrice","setJkVentRtPrice"),//ベント
 	JK_Washable_OPTION_CODE38("00038","getWjBodyBackMate","getWjBodyBackMateStkNo","wjBodyBackMateStkNoPrice","setJkInnerBodyClothRtPrice"),//胴裏素材
 	JK_Washable_OPTION_CODE40("00040","getWjCuffBackMate","getWjCuffBackMateStkNo","wjCuffBackMateStkNoPrice","setJkInnerSleeveClothRtPrice"),//袖裏素材

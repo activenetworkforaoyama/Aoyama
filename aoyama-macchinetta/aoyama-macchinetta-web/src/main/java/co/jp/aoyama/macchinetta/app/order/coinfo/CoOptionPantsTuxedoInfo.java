@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtSideStripeItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.PtTuTpKneeBackItem;
@@ -41,6 +43,14 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
     private Map<String,String> tpKneeBackMateMap;
  
     private String ptKneeinnerClothRtPrice;
+    
+    //拝絹地
+    @NotBlank(groups = { PtTuItem.class }, message = "PANTS（1本目）の拝絹地を入力して下さい。")
+    private String tpGlossFablic;
+    
+    private Map<String,String> tpGlossFablicMap;
+    
+    private String ptLookClothRtPrice;
     
     //フロント仕様
     @NotBlank(groups = { PtTuItem.class }, message = "PANTS（1本目）のフロント仕様を入力して下さい。")
@@ -284,7 +294,7 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
     private String ptBtnMaterialRtPrice;
     
     //釦素材品番
-    @NotBlank(groups = { PtTuItem.class }, message = "PANTS（1本目）の釦素材品番を入力して下さい。")
+    @NotBlank(groups = { PtTuBtnMateItem.class }, message = "PANTS（1本目）の釦素材品番を入力して下さい。")
     private String tpBtnMateStkNo;
     
     //サスペンダー釦
@@ -328,12 +338,36 @@ public class CoOptionPantsTuxedoInfo implements Serializable{
     private String ptSideStripeRtPrice;
     
     //側章幅
-    @NotBlank(groups = { PtTuItem.class }, message = "PANTS（1本目）の側章幅を入力して下さい。")
+    @NotBlank(groups = { PtSideStripeItem.class }, message = "PANTS（1本目）の側章幅を入力して下さい。")
     private String tpSideStripeWidth;
     
     private Map<String,String> tpSideStripeWidthMap;
     
     private String ptSideStripeWidthRtPrice;
+
+	public String getTpGlossFablic() {
+		return tpGlossFablic;
+	}
+
+	public void setTpGlossFablic(String tpGlossFablic) {
+		this.tpGlossFablic = tpGlossFablic;
+	}
+
+	public Map<String, String> getTpGlossFablicMap() {
+		return tpGlossFablicMap;
+	}
+
+	public void setTpGlossFablicMap(Map<String, String> tpGlossFablicMap) {
+		this.tpGlossFablicMap = tpGlossFablicMap;
+	}
+
+	public String getPtLookClothRtPrice() {
+		return ptLookClothRtPrice;
+	}
+
+	public void setPtLookClothRtPrice(String ptLookClothRtPrice) {
+		this.ptLookClothRtPrice = ptLookClothRtPrice;
+	}
 
 	public String getTpPantsModel() {
 		return tpPantsModel;

@@ -96,6 +96,12 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	// PANTS_ウエスト_再補正値フラッグ
 	private String corPtWaistCorrectAgainFlag;
+	
+	// PANTS_ヒップ_再補正値
+	private String corPtHipCorrectAgain;
+
+	// PANTS_ヒップ_再補正値フラッグ
+	private String corPtHipCorrectAgainFlag;
 
 	// PANTS_ワタリ_再補正値
 	private String corPtThighwidthCorrectAgain;
@@ -391,6 +397,22 @@ public class AdjustPantsStandardInfo implements Serializable {
 
 	public void setCorPtStoreCorrectionMemo(String corPtStoreCorrectionMemo) {
 		this.corPtStoreCorrectionMemo = corPtStoreCorrectionMemo;
+	}
+
+	public String getCorPtHipCorrectAgain() {
+		return corPtHipCorrectAgain;
+	}
+
+	public void setCorPtHipCorrectAgain(String corPtHipCorrectAgain) {
+		this.corPtHipCorrectAgain = corPtHipCorrectAgain;
+	}
+
+	public String getCorPtHipCorrectAgainFlag() {
+		return corPtHipCorrectAgainFlag;
+	}
+
+	public void setCorPtHipCorrectAgainFlag(String corPtHipCorrectAgainFlag) {
+		this.corPtHipCorrectAgainFlag = corPtHipCorrectAgainFlag;
 	}
 	
 }

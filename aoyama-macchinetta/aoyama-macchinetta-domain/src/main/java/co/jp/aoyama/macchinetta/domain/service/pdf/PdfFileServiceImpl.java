@@ -27,6 +27,7 @@ import co.jp.aoyama.macchinetta.domain.repository.orderlist.OrderListRepository;
 import co.jp.aoyama.macchinetta.domain.repository.shop.ShopRepository;
 import co.jp.aoyama.macchinetta.domain.service.member.MemberNameService;
 import jp.co.hos.coreports.CrDraw;
+import jp.co.hos.coreports.CrFileOutJob;
 import jp.co.hos.coreports.CrForm;
 import jp.co.hos.coreports.CrStreamOutJob;
 import jp.co.hos.coreports.constants.CorDocumentType;
@@ -293,10 +294,25 @@ public class PdfFileServiceImpl implements PdfFileService{
                 	insertMeasuringData(form, measuring, "1");
                 	insertSuitDataCo(form, order);
                 	
-                	insertJacketdetailedFieldDataCo(form, order);
-            		insertPantsdetailedFieldDataCo(form, order);
-            		insertPants2detailedFieldDataCo(form, order);
-            		insertGiletdetailedFieldDataCo(form, order);
+                	if("01".equals(order.getProductItem()) || "02".equals(order.getProductItem())) {
+                		//01:suit  02:jacket
+                		insertJacketdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) || "03".equals(order.getProductItem())) {
+                		//01:suit  03:pants
+                		insertPantsdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) 
+                			&& ("22".equals(order.getProductItemDisplaycode()) || "32".equals(order.getProductItemDisplaycode()))) {
+                		//01:suit  22:2PP  32:3P2PP
+                		insertPants2detailedFieldDataCo(form, order);
+                	}
+                	if(("01".equals(order.getProductItem()) && ("31".equals(order.getProductItemDisplaycode()) 
+                			|| "32".equals(order.getProductItemDisplaycode())))
+                			|| "04".equals(order.getProductItem())) {
+                		//01:suit  31:3P  32:3P2PP  04:gilet
+                		insertGiletdetailedFieldDataCo(form, order);
+                	}
                 	
     			}else if("2".equals(sign)) {
     				//注文内容確認書(SUIT)_お客様向
@@ -305,10 +321,25 @@ public class PdfFileServiceImpl implements PdfFileService{
     				insertMeasuringData(form, measuring, "0");
     				insertSuitDataCo(form, order);
     				
-    				insertJacketdetailedFieldDataCo(form, order);
-            		insertPantsdetailedFieldDataCo(form, order);
-            		insertPants2detailedFieldDataCo(form, order);
-            		insertGiletdetailedFieldDataCo(form, order);
+    				if("01".equals(order.getProductItem()) || "02".equals(order.getProductItem())) {
+                		//01:suit  02:jacket
+                		insertJacketdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) || "03".equals(order.getProductItem())) {
+                		//01:suit  03:pants
+                		insertPantsdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) 
+                			&& ("22".equals(order.getProductItemDisplaycode()) || "32".equals(order.getProductItemDisplaycode()))) {
+                		//01:suit  22:2PP  32:3P2PP
+                		insertPants2detailedFieldDataCo(form, order);
+                	}
+                	if(("01".equals(order.getProductItem()) && ("31".equals(order.getProductItemDisplaycode()) 
+                			|| "32".equals(order.getProductItemDisplaycode())))
+                			|| "04".equals(order.getProductItem())) {
+                		//01:suit  31:3P  32:3P2PP  04:gilet
+                		insertGiletdetailedFieldDataCo(form, order);
+                	}
     				
     			}else if("3".equals(sign)) {
     				//工場指示書(SUIT)
@@ -317,10 +348,25 @@ public class PdfFileServiceImpl implements PdfFileService{
     				insertMeasuringData(form, measuring, "1");
     				insertSuitDataCo(form, order);
     				
-    				insertJacketdetailedFieldDataCo(form, order);
-            		insertPantsdetailedFieldDataCo(form, order);
-            		insertPants2detailedFieldDataCo(form, order);
-            		insertGiletdetailedFieldDataCo(form, order);
+    				if("01".equals(order.getProductItem()) || "02".equals(order.getProductItem())) {
+                		//01:suit  02:jacket
+                		insertJacketdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) || "03".equals(order.getProductItem())) {
+                		//01:suit  03:pants
+                		insertPantsdetailedFieldDataCo(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) 
+                			&& ("22".equals(order.getProductItemDisplaycode()) || "32".equals(order.getProductItemDisplaycode()))) {
+                		//01:suit  22:2PP  32:3P2PP
+                		insertPants2detailedFieldDataCo(form, order);
+                	}
+                	if(("01".equals(order.getProductItem()) && ("31".equals(order.getProductItemDisplaycode()) 
+                			|| "32".equals(order.getProductItemDisplaycode())))
+                			|| "04".equals(order.getProductItem())) {
+                		//01:suit  31:3P  32:3P2PP  04:gilet
+                		insertGiletdetailedFieldDataCo(form, order);
+                	}
     				
     			}else if("4".equals(sign)) {
     				//注文内容確認書(COAT)_工場向
@@ -371,10 +417,25 @@ public class PdfFileServiceImpl implements PdfFileService{
     				insertMeasuringData(form, measuring, "1");
     				insertSuitDataCoChinese(form, order);
     				
-    				insertJacketdetailedFieldDataCoChinese(form, order);
-            		insertPantsdetailedFieldDataCoChinese(form, order);
-            		insertPants2detailedFieldDataCoChinese(form, order);
-            		insertGiletdetailedFieldDataCoChinese(form, order);
+    				if("01".equals(order.getProductItem()) || "02".equals(order.getProductItem())) {
+                		//01:suit  02:jacket
+    					insertJacketdetailedFieldDataCoChinese(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) || "03".equals(order.getProductItem())) {
+                		//01:suit  03:pants
+                		insertPantsdetailedFieldDataCoChinese(form, order);
+                	}
+                	if("01".equals(order.getProductItem()) 
+                			&& ("22".equals(order.getProductItemDisplaycode()) || "32".equals(order.getProductItemDisplaycode()))) {
+                		//01:suit  22:2PP  32:3P2PP
+                		insertPants2detailedFieldDataCoChinese(form, order);
+                	}
+                	if(("01".equals(order.getProductItem()) && ("31".equals(order.getProductItemDisplaycode()) 
+                			|| "32".equals(order.getProductItemDisplaycode())))
+                			|| "04".equals(order.getProductItem())) {
+                		//01:suit  31:3P  32:3P2PP  04:gilet
+                		insertGiletdetailedFieldDataCoChinese(form, order);
+                	}
             		
     			}else if("11".equals(sign)) {
     				//工場指示書(SHIRT)中国語
@@ -461,6 +522,121 @@ public class PdfFileServiceImpl implements PdfFileService{
         return output;
     }
 	
+	/**
+	 * pdfファイルの書き方
+	 */
+	@Override
+	public void outputPrintPdf(String sign, Order order, Measuring measuring, String productItem,String path,String filename) throws Exception{
+		@SuppressWarnings("resource")
+		//xmlファイルの読む込み
+		ApplicationContext appContext = new ClassPathXmlApplicationContext(
+				"META-INF" + File.separator + "spring" + File.separator + "aoyama-macchinetta-customer.xml");
+		
+		//リソースを読み込むServiceのクラスを準備します
+		CustomerService customerService = (CustomerService) appContext.getBean("customerService");
+		
+		
+        // （１）描画クラスのインスタンスを生成します
+        CrDraw draw = new CrDraw();
+        
+        draw.setDocumentPath(path);
+        
+        try {
+        	
+            // （２）CrDrawのプロパティを設定します
+            // フォームファイルを読み込むパスを指定します
+            // 出力先のフォルダを指定します
+            // 画像等のデータファイルが置いてあるディレクトリを設定します
+            // 作業用ディレクトリを設定します
+        	
+            // （３）出力形式とファイル名を指定してファイル出力ジョブを生成します
+            //CrStreamOutJob strjob = new CrStreamOutJob(CorDocumentType.PDF, output);
+        	// ドキュメントタイプとファイル名を指定してジョブを作成します
+        	
+        	CrFileOutJob strjob = new CrFileOutJob(CorDocumentType.PDF, filename);
+            
+            // （４）出力形式ごとのプロパティを設定します
+            // ここではドキュメントを開くためのパスワードを設定しています
+            CrPdfDocument doc = strjob.getDocument();            
+            CrForm form = null;
+            // （５）フォームファイルを開きます
+           
+            if("1".equals(sign)) {
+            	//注文内容確認書_工場向
+            	
+            	doc.setDocumentName("注文内容確認書_工場向");
+            	Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+            			+ "po" + File.separator + "confirmationBook-Factory.cfx");
+            	form = CrForm.open(draw, resource.getInputStream());
+            	
+			}else if("2".equals(sign)) {
+				//注文内容確認書_お客様向
+				
+				doc.setDocumentName("注文内容確認書_お客様向");
+				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+						+ "po" + File.separator + "confirmationBook-Guest.cfx");
+				form = CrForm.open(draw, resource.getInputStream());
+				
+			}else if("3".equals(sign)) {
+				//工場指示書
+				
+				doc.setDocumentName("工場指示書");
+				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+						+ "po" + File.separator + "factoryInstructions.cfx");
+				form = CrForm.open(draw, resource.getInputStream());
+				
+			}else{
+				logger.info("このスタイルはありません");
+			}
+            try {
+                // （６）ファイル出力ジョブを開始します
+                draw.startJob(strjob);
+                // （７）出力先の用紙サイズをフォームのサイズに設定します
+                strjob.getCrPrinter().setFormSize(form);
+                // （８）フォームファイル上の「Title」という名前のテキストフィールドに
+                // 「Hello, World」という文字列を設定します
+                if("1".equals(sign)) {
+                	//注文内容確認書_工場向
+                	insertCommonProject(form, order, productItem);
+                	insertConfirmationBookFactorySpecial(form, order);
+                	insertMeasuringData(form, measuring, "1");
+                	insertOrderDataPo(form, order);
+                	
+    			}else{
+    				 logger.info("このスタイルはありません");
+    			}
+            	
+            	// （９）１ページ出力します
+                form.printOut();
+                // （１０）ファイル出力ジョブを終了します
+                draw.endJob();
+            } finally {
+                // （１１）フォームを閉じます
+                form.close();
+            }
+        } catch (Exception cex) {
+            // シーオーリポーツ内で発生した例外を処理します
+            cex.printStackTrace();
+            // 実行中のジョブがあれば破棄します
+            draw.abortJob();
+            logger.info(cex.toString());
+        } finally {
+            // （１２）描画クラスの後処理を行います
+            draw.deleteInstance();
+
+        }
+    }
+	
+	public void delectePrintPdf(String pdfPath) throws Exception{
+		
+		File file = new File(pdfPath);
+		if (file.exists()){
+			file.delete();
+		}else{
+			logger.info("DeletePrintPDF は存在しません");
+		}
+	
+    }
 	/**
 	 * 共通のプロジェクト
 	 * @param form
@@ -1989,7 +2165,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//COAT
 		//サイズ
-		form.getField("Cor_ct_size_data").setData(order.getCorCtSize());
+		form.getField("Cor_ct_size_data").setData(stringChange(order.getCorCtSize()));
 		
 		//型サイズ
 		//着丈
@@ -2035,35 +2211,35 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//COAT
 		//COATモデル
-		form.getField("Ct_model_data").setData(order.getCtModelNm());
+		form.getField("Ct_model_data").setData(stringChange(order.getCtModelNm()));
 		//ラペルデザイン
-		form.getField("Ct_lapel_design_data").setData(order.getCtLapelDesignNm());
+		form.getField("Ct_lapel_design_data").setData(stringChange(order.getCtLapelDesignNm()));
 		//袖仕様
-		form.getField("Ct_sleeve_type_data").setData(order.getCtSleeveTypeNm());
+		form.getField("Ct_sleeve_type_data").setData(stringChange(order.getCtSleeveTypeNm()));
 		//腰ポケット
-		form.getField("Ct_waist_pkt_data").setData(order.getCtWaistPktNm());
+		form.getField("Ct_waist_pkt_data").setData(stringChange(order.getCtWaistPktNm()));
 		//チェンジポケット
-		form.getField("Ct_chg_pkt_data").setData(order.getCtChgPktNm());
+		form.getField("Ct_chg_pkt_data").setData(stringChange(order.getCtChgPktNm()));
 		//スランテッドポケット
-		form.getField("Ct_slanted_pkt_data").setData(order.getCtSlantedPktNm());
+		form.getField("Ct_slanted_pkt_data").setData(stringChange(order.getCtSlantedPktNm()));
 		//ベント
-		form.getField("Ct_vent_data").setData(order.getCtVentNm());
+		form.getField("Ct_vent_data").setData(stringChange(order.getCtVentNm()));
 		//フロント釦数
-		form.getField("Ct_frt_btn_data").setData(order.getCtFrtBtnNm());
+		form.getField("Ct_frt_btn_data").setData(stringChange(order.getCtFrtBtnNm()));
 		//袖口
-		form.getField("Ct_cuff_data").setData(order.getCtCuffNm());
+		form.getField("Ct_cuff_data").setData(stringChange(order.getCtCuffNm()));
 		//袖釦
-		form.getField("Ct_sleeve_btn_data").setData(order.getCtSleeveBtnNm());
+		form.getField("Ct_sleeve_btn_data").setData(stringChange(order.getCtSleeveBtnNm()));
 		//バックベルト
-		form.getField("Ct_back_belt_data").setData(order.getCtBackBeltNm());
+		form.getField("Ct_back_belt_data").setData(stringChange(order.getCtBackBeltNm()));
 		//襟吊
-		form.getField("Ct_collar_hang_data").setData(order.getCtCollarHangNm());
+		form.getField("Ct_collar_hang_data").setData(stringChange(order.getCtCollarHangNm()));
 		//胴裏地
-		form.getField("Ct_inner_body_cloth_data").setData(order.getCtInnerBodyClothNm());
+		form.getField("Ct_inner_body_cloth_data").setData(stringChange(order.getCtInnerBodyClothNm()));
 		//袖裏地
-		form.getField("Ct_inner_sleeve_cloth_data").setData(order.getCtInnerSleeveClothNm());
+		form.getField("Ct_inner_sleeve_cloth_data").setData(stringChange(order.getCtInnerSleeveClothNm()));
 		//釦素材
-		form.getField("Ct_btn_material_data").setData(order.getCtBtnMaterialNm());
+		form.getField("Ct_btn_material_data").setData(stringChange(order.getCtBtnMaterialNm()));
 	}
 	
 	@SuppressWarnings("unlikely-arg-type")
@@ -2087,7 +2263,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 				
 		//SHIRT
 		//サイズ
-		form.getField("Cor_st_size_data").setData(order.getCorStSize());
+		form.getField("Cor_st_size_data").setData(stringChange(order.getCorStSize()));
 		
 		//型サイズ
 		//ネック
@@ -2145,55 +2321,54 @@ public class PdfFileServiceImpl implements PdfFileService{
 		
 		//SHIRT
 		//SHIRTモデル
-		form.getField("St_model_data").setData(order.getStModelNm());
+		form.getField("St_model_data").setData(stringChange(order.getStModelNm()));
 		//襟型
-		form.getField("St_collar_type_data").setData(order.getStCollarTypeNm());
+		form.getField("St_collar_type_data").setData(stringChange(order.getStCollarTypeNm()));
 		//カフス
-		form.getField("St_cuffs_data").setData(order.getStCuffsNm());
+		form.getField("St_cuffs_data").setData(stringChange(order.getStCuffsNm()));
 		//コンバーチブル
-		form.getField("St_convertible_data").setData(order.getStConvertibleNm());
+		form.getField("St_convertible_data").setData(stringChange(order.getStConvertibleNm()));
 		//アジャスト釦
-		form.getField("St_adjuster_btn_data").setData(order.getStAdjusterBtnNm());
+		form.getField("St_adjuster_btn_data").setData(stringChange(order.getStAdjusterBtnNm()));
 		//クレリック仕様
-		form.getField("St_cleric_data").setData(order.getStClericNm());
+		form.getField("St_cleric_data").setData(stringChange(order.getStClericNm()));
 		//ダブルカフス仕様
-		form.getField("St_dbl_cuffs_data").setData(order.getStDblCuffsNm());
+		form.getField("St_dbl_cuffs_data").setData(stringChange(order.getStDblCuffsNm()));
 		//カフスボタン追加
-		form.getField("St_cuffs_btn_data").setData(order.getStCuffsBtnNm());
+		form.getField("St_cuffs_btn_data").setData(stringChange(order.getStCuffsBtnNm()));
 		//釦
-		form.getField("St_btn_material_data").setData(order.getStBtnMaterialNm());
+		form.getField("St_btn_material_data").setData(stringChange(order.getStBtnMaterialNm()));
 		//タブ釦
-		form.getField("St_dbl_btn_data").setData(order.getStDblBtnNm());
+		form.getField("St_dbl_btn_data").setData(stringChange(order.getStDblBtnNm()));
 		//ガントレットボタン位置
-		form.getField("St_gauntlet_btn_pos_data").setData(order.getStGauntletBtnPosNm());
+		form.getField("St_gauntlet_btn_pos_data").setData(stringChange(order.getStGauntletBtnPosNm()));
 		//ピンホールピン
-		form.getField("St_pinhole_pin_data").setData(order.getStPinholePinNm());
+		form.getField("St_pinhole_pin_data").setData(stringChange(order.getStPinholePinNm()));
 		//胸ポケット
-		form.getField("St_breast_pkt_data").setData(order.getStBreastPktNm());
+		form.getField("St_breast_pkt_data").setData(stringChange(order.getStBreastPktNm()));
 		//胸ポケット大きさ
-		form.getField("St_breast_size_data").setData(order.getStBreastSizeNm());
+		form.getField("St_breast_size_data").setData(stringChange(order.getStBreastSizeNm()));
 		//フロントデザイン
-		form.getField("St_frt_design_data").setData(order.getStFrtDesignNm());
+		form.getField("St_frt_design_data").setData(stringChange(order.getStFrtDesignNm()));
 		//ピンタックブザム
-		form.getField("St_pintuck_bosom_data").setData(order.getStPintuckBosomNm());
+		form.getField("St_pintuck_bosom_data").setData(stringChange(order.getStPintuckBosomNm()));
 		//ステッチ
-		form.getField("St_stitch_data").setData(order.getStStitchNm());
+		form.getField("St_stitch_data").setData(stringChange(order.getStStitchNm()));
 		//カラーキーパー
-		form.getField("St_colar_keeper_data").setData(order.getStColarKeeperNm());
+		form.getField("St_colar_keeper_data").setData(stringChange(order.getStColarKeeperNm()));
 		//ボタンホール色変更
-		form.getField("St_btnhole_color_cd_data").setData(order.getStBtnholeColorNm());
+		form.getField("St_btnhole_color_cd_data").setData(stringChange(order.getStBtnholeColorNm()));
 		//ボタン付け糸色変更
-		form.getField("St_btnthread_color_data").setData(order.getStBtnthreadColorNm());
+		form.getField("St_btnthread_color_data").setData(stringChange(order.getStBtnthreadColorNm()));
 		//カジュアルヘムライン仕様
-		System.out.println(order.getStCasualHemlineNm());
 		if("有り".equals(order.getStCasualHemlineNm())) {
-			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm() 
-					+ "  " + order.getStCasualHemlineSize() + "cm");
+			form.getField("St_casual_hemline_data").setData(stringChange(order.getStCasualHemlineNm()) 
+					+ "  " + bigDecimalChange(order.getStCasualHemlineSize()) + "cm");
 		}else if("無し".equals(order.getStCasualHemlineNm())) {
-			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm());
+			form.getField("St_casual_hemline_data").setData(stringChange(order.getStCasualHemlineNm()));
 		}
 		//ボタン位置変更
-		form.getField("St_btnpos_chg_data").setData(order.getStBtnposChgNm());
+		form.getField("St_btnpos_chg_data").setData(stringChange(order.getStBtnposChgNm()));
 		//ボタン位置変更,詳細
 		String stNeckbandBtnPosChg = "";
 		if(!("".equals(order.getStNeckbandBtnPosChg()) || order.getStNeckbandBtnPosChg() == null)) {
@@ -2353,7 +2528,6 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//ボタン付け糸色変更
 		form.getField("St_btnthread_color_data").setData(order.getStBtnthreadColorNm());
 		//カジュアルヘムライン仕様
-		System.out.println(order.getStCasualHemlineNm());
 		if("有".equals(order.getStCasualHemlineNm())) {
 			form.getField("St_casual_hemline_data").setData(order.getStCasualHemlineNm() 
 					+ "  " + order.getStCasualHemlineSize() + "cm");

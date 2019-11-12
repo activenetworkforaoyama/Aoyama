@@ -519,7 +519,7 @@ $(document).ready(function() {
 		$("#storeStaffNm").val("");
 		$("#productOrderdDateFromStr").val("");
 		$("#productOrderdDateToStr").val("");
-		$("#isAccount").attr("checked",false);
+		$("#isAccount").prop("checked",false);
 		$("#storeBrandCode").val("");
 		$("#shopCode").val("");
 		$("#shopCode").trigger("chosen:updated");

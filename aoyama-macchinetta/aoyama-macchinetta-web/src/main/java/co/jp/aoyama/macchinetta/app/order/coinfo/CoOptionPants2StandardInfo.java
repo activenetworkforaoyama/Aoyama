@@ -182,8 +182,6 @@ public class CoOptionPants2StandardInfo implements Serializable{
     
     private String op2DStitchPlace3;
     
-    private String op2DStitchPlace4;
-    
     private Map<String,String> op2DStitchPlaceMap;
 
 	//AMF色指定
@@ -1202,14 +1200,6 @@ public class CoOptionPants2StandardInfo implements Serializable{
 
 	public void setOp2DStitchPlace3(String op2dStitchPlace3) {
 		op2DStitchPlace3 = op2dStitchPlace3;
-	}
-
-	public String getOp2DStitchPlace4() {
-		return op2DStitchPlace4;
-	}
-
-	public void setOp2DStitchPlace4(String op2dStitchPlace4) {
-		op2DStitchPlace4 = op2dStitchPlace4;
 	}
 
 	public String getOp2AmfColorPlace1() {

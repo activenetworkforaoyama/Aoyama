@@ -25,7 +25,7 @@ public enum Pants2CoOptionStandardPriceEnum {
 	PANTS_STANDARD_OPTION_CODE16("00016","getOp2VCut","","setPt2VCutRtPrice","op2_vCut_id","","getPt2VCutRtPrice"),//Vカット
 	PANTS_STANDARD_OPTION_CODE17("00017","getOp2HemUp","","setPt2HemUpRtPrice","op2_hemUp","","getPt2HemUpRtPrice"),//裾上げ
 	PANTS_STANDARD_OPTION_CODE18("00018","getOp2DoubleWide","","setPt2DblWidthRtPrice","op2_doubleWide","","getPt2DblWidthRtPrice"),//ダブル幅
-	PANTS_STANDARD_OPTION_CODE19("00019","getOp2Stitch","","setPt2AmfStitchRtPrice","op2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
+	PANTS_STANDARD_OPTION_CODE19("00051","getOp2Stitch","","setPt2AmfStitchRtPrice","op2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
 	PANTS_STANDARD_OPTION_CODE20("00020","getOp2StitchModify","","setPt2StitchPlcRtPrice","op2_stitchModify_id","","getPt2StitchPlcRtPrice"),//ステッチ箇所変更
 	PANTS_STANDARD_OPTION_CODE22("00022","getOp2DStitch","","setPt2DblstitchPlcRtPrice","op2_dStitch_id","","getPt2DblstitchPlcRtPrice"),//ダブルステッチ
 	PANTS_STANDARD_OPTION_CODE24("00024","getOp2AmfColor","","setPt2AmfColorRtPrice","op2_amfColor_id","","getPt2AmfColorRtPrice"),//AMF色指定

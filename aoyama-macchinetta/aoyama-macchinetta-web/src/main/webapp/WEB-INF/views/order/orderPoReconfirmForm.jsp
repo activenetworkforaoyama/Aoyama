@@ -393,7 +393,7 @@
 							<strong><label class=" form-control-label-value">標準</label></strong>
 						</div>
 					</div>
-					<c:if test="${orderForm.productBrandType == '0'}">
+					<%-- <c:if test="${orderForm.productBrandType == '0'}">
 						<div class="row" id="brandName_div">
 							<div class="col col-md-3">
 								<label class=" form-control-label">ブランドネーム</label>
@@ -402,8 +402,8 @@
 								<strong><label class=" form-control-label-value">無し</label></strong>
 							</div>
 						</div>
-					</c:if>
-					<c:if test="${orderForm.productBrandType == '1'}">
+					</c:if> --%>
+					<%-- <c:if test="${orderForm.productBrandType == '1'}">
 						<div class="row" id="brandName_div">
 							<div class="col col-md-3">
 								<label class=" form-control-label">ブランドネーム</label>
@@ -412,7 +412,7 @@
 								<strong><label class=" form-control-label-value">有り</label></strong>
 							</div>
 						</div>
-					</c:if>
+					</c:if> --%>
 					<c:if test="${orderForm.productFabricNmNecessity == '0'}">
 						<div class="row" id="clothName_div">
 							<div class="col col-md-3">
@@ -1049,7 +1049,7 @@
 								<strong><label class=" form-control-label-value">${orderForm.adjustPantsStandardInfo.corPtWaistGross }</label>cm</strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
-								<label class=" form-control-label">ワタリ修正</label>
+								<label class=" form-control-label">ワタリ幅修正</label>
 							</div>
 							<div class="col-12 col-md-2">
 								<strong><label class=" form-control-label-value" id="corPtThighCorrect"></label>cm</strong>
@@ -1236,7 +1236,7 @@
 								<strong><label class=" form-control-label-value">${orderForm.adjustPants2StandardInfo.corPt2WaistGross }cm</label></strong>
 							</div>
 							<div class="col-12 col-md-3 offset-md-3">
-								<label class=" form-control-label">ワタリ修正</label>
+								<label class=" form-control-label">ワタリ幅修正</label>
 							</div>
 							<div class="col-12 col-md-2">
 								<strong><label class=" form-control-label-value" id="corPt2ThighCorrect"></label>cm</strong>
@@ -2110,7 +2110,7 @@ jQuery("#corJkLeftsleeveCorrect").html(CorrectChange(corJkLeftsleeveCorrect));
 //PTウエスト修正
 var corPtWaistCorrect = "${orderForm.adjustPantsStandardInfo.corPtWaistCorrect}";
 jQuery("#corPtWaistCorrect").html(CorrectChange(corPtWaistCorrect));
-//PTワタリ修正
+//PTワタリ幅修正
 var corPtThighCorrect = "${orderForm.adjustPantsStandardInfo.corPtThighCorrect}";
 jQuery("#corPtThighCorrect").html(CorrectChange(corPtThighCorrect));
 //PT裾幅修正
@@ -2120,7 +2120,7 @@ jQuery("#corPtHemwidthCorrect").html(CorrectChange(corPtHemwidthCorrect));
 //PT2ウエスト修正
 var corPt2WaistCorrect = "${orderForm.adjustPants2StandardInfo.corPt2WaistCorrect}";
 jQuery("#corPt2WaistCorrect").html(CorrectChange(corPt2WaistCorrect));
-//PT2ワタリ修正
+//PT2ワタリ幅修正
 var corPt2ThighCorrect = "${orderForm.adjustPants2StandardInfo.corPt2ThighCorrect}";
 jQuery("#corPt2ThighCorrect").html(CorrectChange(corPt2ThighCorrect));
 //PT2裾幅修正

@@ -59,8 +59,10 @@ function initOptionPants1Tuxedo() {
 				jQuery("#ptModelFlag").val("0");
 				jQuery("#tp_pantsModelCheck").empty();
 				jQuery("#fabricMsg").empty();
+				jQuery("#tp_pantsModelCheck").hide();
 			}else if(checkResult == "false"){
 				//2はモデルチェク失敗の場合
+				jQuery("#tp_pantsModelCheck").show();
 				jQuery("#ptModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS'));
 				appendAlertPo('tp_pantsModelCheck',getMsgByOneArg('msg065','PANTS'));
 			}
@@ -200,6 +202,14 @@ function initOptionPants1Tuxedo() {
 		}
 	});
 
+	//拝絹地
+	var item = jQuery("#item").val();
+	if(item == "01"){
+		jQuery("#tp_GlossFablic").prop("disabled",true);
+	}else{
+		jQuery("#tp_GlossFablic").prop("disabled",false);
+	}
+	
 	// 膝裏
 	jQuery('input[name="coOptionPantsTuxedoInfo.tpKneeBack"]').each(function() {
 		jQuery(this).change(function(){
@@ -290,126 +300,6 @@ function initOptionPants1Tuxedo() {
 		}
 	});
 
-	// AMFステッチ
-//	jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]').each(function() {
-//		jQuery(this).change(function(){
-//			// 選択中のAMFステッチ
-//			var stitchValue = jQuery('input[name="coOptionPantsTuxedoInfo.tpStitch"]:checked').val();
-//
-//			if (stitchValue == "有り") {
-//				// 有りの場合、関連する項目を有効化
-//				// ステッチ箇所変更
-//				jQuery('input[name="tp_stitchModify"]').prop("disabled", false);
-//
-//				// ダブルステッチ
-//				jQuery('input[name="tp_dStitch"]').prop("disabled", false);
-//
-//				// AMF色指定
-//				jQuery('input[name="tp_amfColor"]').prop("disabled", false);
-//			} else {
-//				// 無しの場合、関連する項目を無効化・値変更
-//				// ステッチ箇所変更
-//				jQuery('input[name="tp_stitchModify"]').prop("disabled", true);
-//				jQuery('#tp_stitchModify_no').prop("checked", true);
-//				jQuery('#tp_stitchModify_no').change();
-//
-//				// ダブルステッチ
-//				jQuery('input[name="tp_dStitch"]').prop("disabled", true);
-//				jQuery('#tp_dStitch_no').prop("checked", true);
-//				jQuery('#tp_dStitch_no').change();
-//
-//				// AMF色指定
-//				jQuery('input[name="tp_amfColor"]').prop("disabled", true);
-//				jQuery('#tp_amfColor_no').prop("checked", true);
-//				jQuery('#tp_amfColor_no').change();
-//			}
-//
-//			// ダブルステッチの特殊制御
-//			tpDStichSpecialController();
-//		});
-//	});
-
-	// ステッチ箇所変更
-//	jQuery('input[name="tp_stitchModify"]').each(function() {
-//		jQuery(this).change(function(){
-//			// 選択中のステッチ箇所変更
-//			var stitchModifyValue = jQuery('input[name="tp_stitchModify"]:checked').val();
-//
-//			if (stitchModifyValue == "無し") {
-//				// 無しの場合は全て無効化
-//				jQuery('input[name="tp_stitchModifyPlace"]').prop("disabled", true);
-//				jQuery('#btn_as_tp_stitchModifyPlace').prop("disabled", true);
-//				jQuery('#btn_ar_tp_stitchModifyPlace').prop("disabled", true);
-//			} else {
-//				// 有りの場合は全て有効化
-//				jQuery('input[name="tp_stitchModifyPlace"]').prop("disabled", false);
-//				jQuery('#btn_as_tp_stitchModifyPlace').prop("disabled", false);
-//				jQuery('#btn_ar_tp_stitchModifyPlace').prop("disabled", false);
-//			}
-//		});
-//	});
-//	jQuery('#tp_stitchModify_no').change();
-//
-//	// AMF色指定(有り/無し)
-//	jQuery('input[name="tp_amfColor"]').each(function() {
-//		jQuery(this).change(function(){
-//			// 選択中のAMF色指定を取得
-//			var amfColor = jQuery('input[name="tp_amfColor"]:checked').val();
-//
-//			if (amfColor == '無し') {
-//				// 無しの場合は操作不可
-//				jQuery('input[name="tp_amfColorPlace"]').each(function() {
-//					jQuery(this).prop("disabled", true);
-//					jQuery(this).prop("checked", false);
-//					jQuery('#'+this.id+'_div').hide();
-//				});
-//				jQuery('#tp_amfColorPlaceAll').prop("disabled", true);
-//				jQuery('#btn_as_tp_amfColorPlace').prop("disabled", true);
-//
-//				// 無しの場合は2階層目以降を非表示
-//				jQuery('#tp_amfColor_div').hide();
-//			} else {
-//				// 有りの場合は操作可能
-//				jQuery('input[name="tp_amfColorPlace"]').each(function() {
-//					jQuery(this).prop("disabled", false);
-//					if (jQuery(this).prop("checked")) {
-//						// 選択されているの場合、色指定エリアを表示
-//						jQuery('#'+this.id+'_div').show();
-//					}
-//				});
-//				jQuery('#tp_amfColorPlaceAll').prop("disabled", false);
-//				jQuery('#btn_as_tp_amfColorPlace').prop("disabled", false);
-//
-//				// 有りの場合は2階層目以降を表示
-//				jQuery('#tp_amfColor_div').show();
-//			}
-//		});
-//	});
-//
-//	// AMF色指定(全選択)
-//	jQuery('#btn_as_tp_amfColorPlace').click(function(){
-//		// 全選択する色を取得
-//		var allColor = jQuery('#tp_amfColorPlaceAll').val();
-//
-//		jQuery('#tp_amfColor_div input[type="radio"]').each(function(index, elem){
-//			elem = jQuery(elem);
-//			if (elem.val() == allColor) elem.prop('checked', true);
-//		});
-//	});
-//
-//	// AMF色指定箇所
-//	jQuery('input[name="tp_amfColorPlace"]').each(function() {
-//		jQuery(this).change(function(){
-//			if (jQuery(this).prop("checked")) {
-//				// 選択されているの場合、色指定エリアを表示
-//				jQuery('#'+this.id+'_div').show();
-//			} else {
-//				// 選択されていない場合、色指定エリアを非表示
-//				jQuery('#'+this.id+'_div').hide();
-//			}
-//		});
-//	});
-
 	// ボタンホール色指定(有り/無し)
 	jQuery('input[id^="tp_bhColor_"]').each(function() {
 		jQuery(this).change(function(){
@@ -425,7 +315,18 @@ function initOptionPants1Tuxedo() {
 				});
 				jQuery('#tp_bhColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_tp_bhColorPlace').prop("disabled", true);
-
+				jQuery('#tp_bhColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
+				jQuery('#tp_bhColor_div input[type="checkbox"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#tp_bhColor_div').hide();
 			} else {
@@ -506,7 +407,18 @@ function initOptionPants1Tuxedo() {
 				});
 				jQuery('#tp_byColorPlaceAll').prop("disabled", true);
 				jQuery('#btn_as_tp_byColorPlace').prop("disabled", true);
-
+				jQuery('#tp_byColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
+				jQuery('#tp_byColor_div input[type="checkbox"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
 				// 無しの場合は2階層目を表示しない
 				jQuery('#tp_byColor_div').hide();
 			} else {
@@ -570,6 +482,30 @@ function initOptionPants1Tuxedo() {
 	});
 	// ボタン付け糸指定箇所の制御
 	ctrlTpByColorPlace();
+	
+	// 釦素材
+	jQuery('#tp_btnMate').change(function (){
+		var btnMate = jQuery('#tp_btnMate').val();
+
+		// 釦品番
+		var btnMateStkNoElem = jQuery('#tp_btnMateStkNo');
+
+		// 選択肢をクリア
+		btnMateStkNoElem.empty();
+
+		if (btnMate == '包み') {
+			jQuery('#tp_btnMateStkNo').hide();
+			jQuery('#tp_btnMateStkNo').prop('disabled', true);
+		} else if (btnMateStkNoList[btnMate]) {
+			jQuery('#tp_btnMateStkNo').show();
+			jQuery('#tp_btnMateStkNo').prop('disabled', false);
+			// 定義が存在する場合は品番を選択肢にセット
+			for (var i = 0; i < btnMateStkNoList[btnMate].length; i++) {
+				btnMateStkNoElem.append(jQuery('<option />').val(btnMateStkNoList[btnMate][i]).text(btnMateStkNoList[btnMate][i]));
+			}
+		}
+	});
+	jQuery('#tp_btnMate').change();
 
 	/*// 釦素材
 	jQuery('#tp_button').change(function (){
@@ -766,7 +702,7 @@ function tpPancherinaSpecialController() {
 	}
 
 	// 処理後のパンチェリーナ
-	var changedPancherina = jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]:checked').val();
+	jQuery('input[name="coOptionPantsTuxedoInfo.tpPancherina"]:checked').change();
 }
 
 //ベルトループ変更時処理
@@ -808,7 +744,9 @@ function tpChangedBeltLoop() {
 	if (jQuery('#tp_pantsModel').val() == 'NZ01') {
 		// 表示
 		frsAreaElem.show();
+		jQuery("#tp_beltLoopPlace_id7").prop("disabled",false);
 	} else {
+		jQuery("#tp_beltLoopPlace_id7").prop("disabled",true);
 		jQuery("#tp_beltLoopPlace_id7").prop("checked", false);
 		// 非表示
 		frsAreaElem.hide();
@@ -849,6 +787,7 @@ jQuery('#tp_coinPkt').change(function() {
 		jQuery('#tp_flapCoinPkt_id2').prop('disabled', false);
 	if (selectedValue == "0001201") {
 		jQuery('#tp_flapCoinPkt_id1').prop('checked', true);
+		jQuery('#tp_flapCoinPkt_id1').change();
 		jQuery('#tp_flapCoinPkt_id2').prop('disabled', true);
 	}
 	
@@ -898,6 +837,17 @@ jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index
 		case "0000603": oPLoopElemN.prop("checked", true); break;
 		case "0000604": oPLoopElemY.prop("checked", true); break;
 		default:oPLoopElemN.prop("checked", true);
+		}
+		
+		if(selectedPantsModel == 'NZ01'){
+			if(selected == '0000604'){
+				jQuery('#tp_sidePkt_id1').prop('disabled',true);
+				jQuery('#tp_sidePkt_id2').prop('checked',true);
+				jQuery('#tp_sidePkt_id2').change();
+			}
+			else {
+				jQuery('#tp_sidePkt_id1').prop('disabled',false);
+			}
 		}
 	}
 	

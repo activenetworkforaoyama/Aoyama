@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2SideStripeItem;
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuBtnMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuTpHemUpItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.Pt2TuTpKneeBackItem;
@@ -35,6 +37,12 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
     private String tp2KneeBackMate;
 
     private Map<String,String> tp2KneeBackMateMap;
+    
+  //拝絹地
+    @NotBlank(groups = { Pt2TuItem.class }, message = "PANTS（2本目）の拝絹地を入力して下さい。")
+    private String tp2GlossFablic;
+    
+    private Map<String,String> tp2GlossFablicMap;
     
     //フロント仕様
     @NotBlank(groups = { Pt2TuItem.class }, message = "PANTS（2本目）のフロント仕様を入力して下さい。")
@@ -241,7 +249,7 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
     private Map<String,String> tp2ButtonMap;
     
     //釦素材品番
-    @NotBlank(groups = { Pt2TuItem.class }, message = "PANTS（2本目）の釦素材品番を入力して下さい。")
+    @NotBlank(groups = { Pt2TuBtnMateItem.class }, message = "PANTS（2本目）の釦素材品番を入力して下さい。")
     private String tp2BtnMateStkNo;
     
     //サスペンダー釦
@@ -280,7 +288,7 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
     private Map<String,String> tp2SideStripeMap;
     
     //側章幅
-    @NotBlank(groups = { Pt2TuItem.class }, message = "PANTS（2本目）の側章幅を入力して下さい。")
+    @NotBlank(groups = { Pt2SideStripeItem.class }, message = "PANTS（2本目）の側章幅を入力して下さい。")
     private String tp2SideStripeWidth;
     
     private Map<String,String> tp2SideStripeWidthMap;
@@ -312,6 +320,7 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
     private String pt2ShapeMemoryRtPrice;
     private String pt2SideStripeRtPrice;
     private String pt2SideStripeWidthRtPrice;
+    private String pt2LookClothRtPrice;
 
 	public String getTp2Tack() {
 		return tp2Tack;
@@ -359,6 +368,22 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
 
 	public void setTp2KneeBackMateMap(Map<String, String> tp2KneeBackMateMap) {
 		this.tp2KneeBackMateMap = tp2KneeBackMateMap;
+	}
+
+	public String getTp2GlossFablic() {
+		return tp2GlossFablic;
+	}
+
+	public void setTp2GlossFablic(String tp2GlossFablic) {
+		this.tp2GlossFablic = tp2GlossFablic;
+	}
+
+	public Map<String, String> getTp2GlossFablicMap() {
+		return tp2GlossFablicMap;
+	}
+
+	public void setTp2GlossFablicMap(Map<String, String> tp2GlossFablicMap) {
+		this.tp2GlossFablicMap = tp2GlossFablicMap;
 	}
 
 	public String getTp2FrontSpec() {
@@ -1332,6 +1357,14 @@ public class CoOptionPants2TuxedoInfo implements Serializable{
 
 	public void setTp2ByAllColor(String tp2ByAllColor) {
 		this.tp2ByAllColor = tp2ByAllColor;
+	}
+
+	public String getPt2LookClothRtPrice() {
+		return pt2LookClothRtPrice;
+	}
+
+	public void setPt2LookClothRtPrice(String pt2LookClothRtPrice) {
+		this.pt2LookClothRtPrice = pt2LookClothRtPrice;
 	}
     
 }

@@ -44,8 +44,8 @@ public enum JacketOptionWashableCodeEnum {
 	JK_Washabi_OPTION_CODE38("00038","setWjBodyBackMateMap"),
 	JK_Washabi_OPTION_CODE40("00040","setWjCuffBackMateMap"),
 	JK_Washabi_OPTION_CODE42("00042","setWjBtnMateMap"),
-	JK_Washabi_OPTION_CODE44("00044","setWjShapeMemoryMap");
-	
+	JK_Washabi_OPTION_CODE44("00044","setWjShapeMemoryMap"),
+	JK_Washabi_OPTION_CODE51("00051","setWjCoStitchMap");
 	
 	private final String key;
 	private final String value;

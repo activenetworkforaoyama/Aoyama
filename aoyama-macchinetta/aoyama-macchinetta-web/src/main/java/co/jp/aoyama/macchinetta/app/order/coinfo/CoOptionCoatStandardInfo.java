@@ -28,7 +28,8 @@ public class CoOptionCoatStandardInfo implements Serializable {
 	private String ctLapelDesignRtPrice;
 	
 	// 袖仕様
-	@NotBlank(groups = { CoatItem.class }, message = "COATの袖仕様を入力して下さい。")
+	//仕様変更　「袖仕様」画面削除
+//	@NotBlank(groups = { CoatItem.class }, message = "COATの袖仕様を入力して下さい。")
 	private String ocSleeveSpec;
 
 	private Map<String, String> ocSleeveSpecMap;

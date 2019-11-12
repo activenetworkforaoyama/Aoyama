@@ -19,8 +19,9 @@ public enum CoatCoOptionStandardNextGenerationPriceEnum {
 	COAT_STANDARD_OPTION_CODE07("00007","getOcCuffSpec","setCtCuffWsWage","setCtCuffWsPrice","getCtCuffWsWage","getCtCuffWsPrice"),//袖口
 	COAT_STANDARD_OPTION_CODE08("00008","getOcSleeveBtnType","setCtSleeveBtnWsWage","setCtSleeveBtnWsPrice","getCtSleeveBtnWsWage","getCtSleeveBtnWsPrice"),//袖釦
 	COAT_STANDARD_OPTION_CODE09("00009","getOcBackBelt","setCtBackBeltWsWage","setCtBackBeltWsPrice","getCtBackBeltWsWage","getCtBackBeltWsPrice"),//バックベルト
-	COAT_STANDARD_OPTION_CODE10("00010","getOcChainHange","setCtCollarHangWsWage","setCtCollarHangWsPrice","getCtCollarHangWsWage","getCtCollarHangWsPrice"),//襟吊
-	COAT_STANDARD_OPTION_CODE14("00014","getOcSleeveSpec","setCtSleeveTypeWsWage","setCtSleeveTypeWsPrice","getCtSleeveTypeWsWage","getCtSleeveTypeWsPrice");//袖仕様
+	COAT_STANDARD_OPTION_CODE10("00010","getOcChainHange","setCtCollarHangWsWage","setCtCollarHangWsPrice","getCtCollarHangWsWage","getCtCollarHangWsPrice");//襟吊
+	//仕様変更　「袖仕様」画面削除
+//	COAT_STANDARD_OPTION_CODE14("00014","getOcSleeveSpec","setCtSleeveTypeWsWage","setCtSleeveTypeWsPrice","getCtSleeveTypeWsWage","getCtSleeveTypeWsPrice");//袖仕様
 	
 	private final String key;
 	private final String valueOne;

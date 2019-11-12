@@ -96,4 +96,41 @@
     and figure = #{figure}
     and size_number = #{sizeNumber}
   </select>
+  <select id="getCoSizeNumberByItem" resultType="co.jp.aoyama.macchinetta.domain.model.CoSizeNumber">
+
+SELECT SIZE
+	.size_number,
+	SIZE.display_order 
+FROM
+	(
+SELECT DISTINCT
+	mtb_size.size_number,
+	mtb_number.display_order 
+FROM
+	mtb_size_number mtb_number,
+	(
+SELECT DISTINCT
+	order_pattern,
+	sub_item_code,
+	model_code,
+	figure,
+	size_number 
+FROM
+	mtb_type_size 
+WHERE
+	order_pattern = #{orderPattern}
+	AND sub_item_code = #{subItemCode}
+	AND figure = #{figure}
+	AND model_code = #{modelCode} 
+	) mtb_size 
+WHERE
+	mtb_number.order_pattern = mtb_size.order_pattern 
+	AND mtb_number.sub_item_code = mtb_size.sub_item_code 
+	AND mtb_number.model_code = mtb_size.model_code 
+	AND mtb_number.size_number = mtb_size.size_number 
+	) SIZE 
+ORDER BY
+	SIZE.display_order
+	
+  </select>
 </mapper>

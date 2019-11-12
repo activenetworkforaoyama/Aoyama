@@ -25,7 +25,7 @@ public enum Pants2CoOptionWashablePriceEnum {
 	PANTS_WASHABLE_OPTION_CODE16("00016","getWp2VCut","","setPt2VCutRtPrice","wp2_vCut_id","","getPt2VCutRtPrice"),//Vカット
 	PANTS_WASHABLE_OPTION_CODE17("00017","getWp2HemUp","","setPt2HemUpRtPrice","wp2_hemUp","","getPt2HemUpRtPrice"),//裾上げ
 	PANTS_WASHABLE_OPTION_CODE18("00018","getWp2DoubleWide","","setPt2DblWidthRtPrice","wp2_doubleWide","","getPt2DblWidthRtPrice"),//ダブル幅
-	PANTS_WASHABLE_OPTION_CODE19("00019","getWp2Stitch","","setPt2AmfStitchRtPrice","wp2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
+	PANTS_WASHABLE_OPTION_CODE19("00051","getWp2Stitch","","setPt2AmfStitchRtPrice","wp2_stitch_id","","getPt2AmfStitchRtPrice"),//ステッチ種類
 	PANTS_WASHABLE_OPTION_CODE20("00020","getWp2StitchModify","","setPt2StitchPlcRtPrice","wp2_stitchModify_id","","getPt2StitchPlcRtPrice"),//ステッチ箇所変更
 	PANTS_WASHABLE_OPTION_CODE22("00022","getWp2DStitch","","setPt2DblstitchPlcRtPrice","wp2_dStitchModify_id","","getPt2DblstitchPlcRtPrice"),//ダブルステッチ
 	PANTS_WASHABLE_OPTION_CODE24("00024","getWp2AmfColor","","setPt2AmfColorRtPrice","wp2_amfColor_id","","getPt2AmfColorRtPrice"),//AMF色指定

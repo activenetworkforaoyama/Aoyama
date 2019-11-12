@@ -710,7 +710,7 @@
 							<strong><label class=" form-control-label-value">標準</label></strong>
 						</div>
 					</div>
-					<c:if test="${order.productBrandType == '0'}">
+					<%-- <c:if test="${order.productBrandType == '0'}">
 						<div class="row" id="brandName_div">
 							<div class="col col-md-3">
 								<label class=" form-control-label">ブランドネーム</label>
@@ -729,7 +729,7 @@
 								<strong><label class=" form-control-label-value">有り</label></strong>
 							</div>
 						</div>
-					</c:if>
+					</c:if> --%>
 					<c:if test="${order.productFabricNmNecessity == '0'}">
 						<div class="row" id="clothName_div">
 							<div class="col col-md-3">
@@ -1323,7 +1323,7 @@
 							<strong><label class=" form-control-label-value">${order.corPtWaistGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
-							<label class=" form-control-label">ワタリ修正</label>
+							<label class=" form-control-label">ワタリ幅修正</label>
 						</div>
 						<div class="col-12 col-md-2">
 							<strong><label class=" form-control-label-value" id="corPtThighwidthCorrect"></label>cm</strong>
@@ -1499,7 +1499,7 @@
 							<strong><label class=" form-control-label-value">${order.corPt2WaistGross}</label>cm</strong>
 						</div>
 						<div class="col-12 col-md-3 offset-md-3">
-							<label class=" form-control-label">ワタリ修正</label>
+							<label class=" form-control-label">ワタリ幅修正</label>
 						</div>
 						<div class="col-12 col-md-2">
 							<strong><label class=" form-control-label-value" id="corPt2ThighwidthCorrect"></label>cm</strong>
@@ -1634,7 +1634,7 @@
 					</div>
 					<div class="row">
 						<div class="col col-md-3">
-							<label class=" form-control-label">ワタリ修正</label>
+							<label class=" form-control-label">ヒップ修正</label>
 						</div>
 						<div class="col col-md-8">
 							<strong><label class=" form-control-label-value" id="corPtHipCorrectAgain">${order.corPtHipCorrectAgain}</label>cm</strong>
@@ -1696,7 +1696,7 @@
 					</div>
 					<div class="row">
 						<div class="col col-md-3">
-							<label class=" form-control-label">ワタリ修正</label>
+							<label class=" form-control-label">ヒップ修正</label>
 						</div>
 						<div class="col col-md-8">
 							<strong><label class=" form-control-label-value" id="corPt2HipCorrectAgain">${order.corPt2HipCorrectAgain}</label>cm</strong>
@@ -3395,7 +3395,7 @@ jQuery("#corJkLeftsleeveCorrect").html(CorrectChange(corJkLeftsleeveCorrect));
 //PTウエスト修正
 var corPtWaistCorrect = "${order.corPtWaistCorrect}";
 jQuery("#corPtWaistCorrect").html(CorrectChange(corPtWaistCorrect));
-//PTワタリ修正
+//PTワタリ幅修正
 var corPtThighwidthCorrect = "${order.corPtThighwidthCorrect}";
 jQuery("#corPtThighwidthCorrect").html(CorrectChange(corPtThighwidthCorrect));
 //PT裾幅修正
@@ -3405,7 +3405,7 @@ jQuery("#corPtHemwidthCorrect").html(CorrectChange(corPtHemwidthCorrect));
 //PT2ウエスト修正
 var corPt2WaistCorrect = "${order.corPt2WaistCorrect}";
 jQuery("#corPt2WaistCorrect").html(CorrectChange(corPt2WaistCorrect));
-//PT2ワタリ修正
+//PT2ワタリ幅修正
 var corPt2ThighwidthCorrect = "${order.corPt2ThighwidthCorrect}";
 jQuery("#corPt2ThighwidthCorrect").html(CorrectChange(corPt2ThighwidthCorrect));
 //PT2裾幅修正

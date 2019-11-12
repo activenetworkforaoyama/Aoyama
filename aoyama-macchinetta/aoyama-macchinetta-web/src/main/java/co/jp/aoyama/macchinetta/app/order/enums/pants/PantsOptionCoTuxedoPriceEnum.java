@@ -25,7 +25,7 @@ public enum PantsOptionCoTuxedoPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","getTpVCut","","setPtVCutRtPrice"),//Vカット
 	PANTS_TUXEDO_OPTION_CODE17("00017","getTpHemUp","","setPtHemUpRtPrice"),//裾上げ
 	PANTS_TUXEDO_OPTION_CODE18("00018","getTpDoubleWide","","setPtDblWidthRtPrice"),//ダブル幅
-	PANTS_TUXEDO_OPTION_CODE19("00019","getTpStitch","","setPtAmfStitchRtPrice"),//ステッチ種類
+	PANTS_TUXEDO_OPTION_CODE19("00051","getTpStitch","","setPtAmfStitchRtPrice"),//ステッチ種類
 	PANTS_TUXEDO_OPTION_CODE27("00027","getTpBhColor","","setPtBtnholeColorRtPrice"),//ボタンホール色指定
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTpByColor","","setPtBtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE33("00033","getTpButton","getTpBtnMateStkNo","setPtBtnMaterialRtPrice"),//釦素材

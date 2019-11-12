@@ -115,7 +115,11 @@ public class OrderDetailFormat implements Serializable{
 	private String pt2ChicSlipRtPriceFm;
 	private String pt2ShapeMemoryRtPriceFm;
 	private String ctLapelDesignRtPriceFm;
-	private String ctSleeveTypeRtPriceFm;
+	private String glLookClothRtPriceFm;
+	private String ptLookClothRtPriceFm;
+	private String pt2LookClothRtPriceFm;
+	//仕様変更　「袖仕様」画面削除
+//	private String ctSleeveTypeRtPriceFm;
 	private String ctWaistPktRtPriceFm;
 	private String ctChgPktRtPriceFm;
 	private String ctSlantedPktRtPriceFm;
@@ -898,12 +902,13 @@ public class OrderDetailFormat implements Serializable{
 	public void setCtLapelDesignRtPriceFm(String ctLapelDesignRtPriceFm) {
 		this.ctLapelDesignRtPriceFm = ctLapelDesignRtPriceFm;
 	}
-	public String getCtSleeveTypeRtPriceFm() {
-		return ctSleeveTypeRtPriceFm;
-	}
-	public void setCtSleeveTypeRtPriceFm(String ctSleeveTypeRtPriceFm) {
-		this.ctSleeveTypeRtPriceFm = ctSleeveTypeRtPriceFm;
-	}
+	//仕様変更　「袖仕様」画面削除
+//	public String getCtSleeveTypeRtPriceFm() {
+//		return ctSleeveTypeRtPriceFm;
+//	}
+//	public void setCtSleeveTypeRtPriceFm(String ctSleeveTypeRtPriceFm) {
+//		this.ctSleeveTypeRtPriceFm = ctSleeveTypeRtPriceFm;
+//	}
 	public String getCtWaistPktRtPriceFm() {
 		return ctWaistPktRtPriceFm;
 	}
@@ -1359,6 +1364,24 @@ public class OrderDetailFormat implements Serializable{
 	}
 	public void setCtModelRtPriceFm(String ctModelRtPriceFm) {
 		this.ctModelRtPriceFm = ctModelRtPriceFm;
+	}
+	public String getGlLookClothRtPriceFm() {
+		return glLookClothRtPriceFm;
+	}
+	public void setGlLookClothRtPriceFm(String glLookClothRtPriceFm) {
+		this.glLookClothRtPriceFm = glLookClothRtPriceFm;
+	}
+	public String getPtLookClothRtPriceFm() {
+		return ptLookClothRtPriceFm;
+	}
+	public void setPtLookClothRtPriceFm(String ptLookClothRtPriceFm) {
+		this.ptLookClothRtPriceFm = ptLookClothRtPriceFm;
+	}
+	public String getPt2LookClothRtPriceFm() {
+		return pt2LookClothRtPriceFm;
+	}
+	public void setPt2LookClothRtPriceFm(String pt2LookClothRtPriceFm) {
+		this.pt2LookClothRtPriceFm = pt2LookClothRtPriceFm;
 	}
 
 }

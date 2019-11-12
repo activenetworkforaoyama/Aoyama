@@ -188,6 +188,10 @@
 		<b>glModelNm</b> 
 	</field>
 	<field>
+		<a>tgGlossFablic</a> 
+		<b>glLookClothCd</b> 
+	</field>
+	<field>
 		<a>tgBreastPkt</a> 
 		<b>glBreastPktCd</b> 
 	</field>
@@ -272,6 +276,10 @@
 	<field>
 		<a>tpPantsModel</a> 
 		<b>ptModelNm</b> 
+	</field>
+	<field>
+		<a>tpGlossFablic</a> 
+		<b>ptLookClothCd</b> 
 	</field>
 	<field>
 		<a>tpTack</a> 
@@ -418,6 +426,10 @@
 	<field>
 		<a>tp2PantsModel</a> 
 		<b>pt2ModelNm</b> 
+	</field>
+	<field>
+		<a>tp2GlossFablic</a> 
+		<b>pt2LookClothCd</b> 
 	</field>
 	<field>
 		<a>tp2Tack</a> 

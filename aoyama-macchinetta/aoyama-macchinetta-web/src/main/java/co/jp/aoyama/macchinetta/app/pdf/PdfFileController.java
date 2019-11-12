@@ -1,9 +1,11 @@
 package co.jp.aoyama.macchinetta.app.pdf;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -197,6 +199,47 @@ public class PdfFileController {
     	}
 		
 		return order;
+	}
+	@RequestMapping(value = "PdfFileCreate", method = RequestMethod.GET)
+	@ResponseBody
+	public String  PdfFileCreate(HttpServletRequest request, HttpServletResponse response,String orderId,String sign,String productItem,String fileNameDefault) throws Exception {
+		
+		//orderIdでorderオブジェクトを取得します
+		Order order = orderListService.findOrderByPk(orderId);
+		//orderIdでmeasuringオブジェクトを取得します
+    	Measuring measuring = measuringService.selectByPrimaryKey(orderId);
+    	ServletContext servletContext = request.getSession().getServletContext();
+		String path = servletContext.getRealPath("")+ File.separator + "pdf";
+		
+		File uploadDir = new File(path);
+		 if (!uploadDir.exists()) {
+		  uploadDir.mkdir();
+		 }
+    	if(measuring == null) {
+    		logger.info("measuring対象はnullです。");
+    	}
+    	
+    	try {
+			pdfFileService.outputPrintPdf(sign, order, measuring, productItem,path,fileNameDefault);
+			logger.info("Download is OK");
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.info(e.toString());
+			return path;
+		}
+    	return path;
+	}
+	
+	@RequestMapping(value = "poPdfFileDelete", method = RequestMethod.GET)
+	@ResponseBody
+	public String  poPdfFileDelete(HttpServletRequest request, HttpServletResponse response,String fileNameDefault) throws Exception {
+		
+    	ServletContext servletContext = request.getSession().getServletContext();
+    	String path = servletContext.getRealPath("")+ File.separator + "pdf" + File.separator ;
+    	
+		pdfFileService.delectePrintPdf(path+fileNameDefault);
+		
+    	return path;
 	}
 	
 }

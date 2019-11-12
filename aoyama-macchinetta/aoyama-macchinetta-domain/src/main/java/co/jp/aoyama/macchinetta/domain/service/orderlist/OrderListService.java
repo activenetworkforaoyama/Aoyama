@@ -15,6 +15,8 @@ public interface OrderListService {
 
 	Order findOrderByPk(String orderId);
 	
+	List<Order> findOrderByPkList(List<String> orderList);
+	
 	Order findOrderByPkChinese(String orderId);
 	
 	void updateTscStatus(String orderId,String changeTscStatus,String updatedUserId,Date updatedAt,Short orderVersion);

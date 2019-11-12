@@ -9,6 +9,7 @@ public enum PantsCoOptionTuxedoUpperPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE01("00001","getTpTack","","tpTackPrice","setPtTackRtPrice"),//タック
 	PANTS_TUXEDO_OPTION_CODE02("00002","getTpKneeBack","","tpKneeBackPrice","setPtKneeinnerTypeRtPrice"),//膝裏
 	PANTS_TUXEDO_OPTION_CODE03("00003","getTpKneeBackMate","","tpKneeBackMatePrice","setPtKneeinnerClothRtPrice"),//膝裏素材
+	PANTS_TUXEDO_OPTION_CODE50("00050","getTpGlossFablic","","tpGlossFablicPrice","setPtLookClothRtPrice"),//拝絹地
 	PANTS_TUXEDO_OPTION_CODE04("00004","getTpFrontSpec","","tpFrontSpecPrice","setPtFrtTypeRtPrice"),//フロント仕様
 	PANTS_TUXEDO_OPTION_CODE05("00005","getTpPancherina","","tpPancherinaPrice","setPtPancherinaRtPrice"),//パンチェリーナ
 	PANTS_TUXEDO_OPTION_CODE06("00006","getTpAdjuster","","tpAdjusterPrice","setPtAdjusterRtPrice"),//アジャスター仕様
@@ -23,9 +24,9 @@ public enum PantsCoOptionTuxedoUpperPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE16("00016","getTpVCut","","tpVCutPrice","setPtVCutRtPrice"),//Vカット
 	PANTS_TUXEDO_OPTION_CODE17("00017","getTpHemUp","","tpHemUpPrice","setPtHemUpRtPrice"),//裾上げ
 	PANTS_TUXEDO_OPTION_CODE18("00018","getTpDoubleWide","","tpDoubleWidePrice","setPtDblWidthRtPrice"),//ダブル幅
-	PANTS_TUXEDO_OPTION_CODE19("00019","getTpStitch","","tpStitchPrice","setPtAmfStitchRtPrice"),//ステッチ種類
-	PANTS_TUXEDO_OPTION_CODE27("00027","getTpBhColor","","tpBhColorPrice","setPtBtnholeColorRtPrice"),//ボタンホール色指定
-	PANTS_TUXEDO_OPTION_CODE30("00030","getTpByColor","","tpByColorPrice","setPtBtnthreadColorRtPrice"),//ボタン付け糸指定
+	PANTS_TUXEDO_OPTION_CODE19("00051","getTpStitch","","tpStitchPrice","setPtAmfStitchRtPrice"),//ステッチ種類
+//	PANTS_TUXEDO_OPTION_CODE27("00027","getTpBhColor","","tpBhColorPrice","setPtBtnholeColorRtPrice"),//ボタンホール色指定
+//	PANTS_TUXEDO_OPTION_CODE30("00030","getTpByColor","","tpByColorPrice","setPtBtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_TUXEDO_OPTION_CODE33("00033","getTpButton","getTpBtnMateStkNo","tpBtnMateStkNoPrice","setPtBtnMaterialRtPrice"),//釦素材
 	PANTS_TUXEDO_OPTION_CODE35("00035","getTpSuspenderBtn","","tpSuspenderBtnPrice","setPtSuspenderBtnRtPrice"),//サスペンダー釦
 	PANTS_TUXEDO_OPTION_CODE36("00036","getTpEight","","tpEightPrice","setPtNonSlipRtPrice"),//エイト（滑り止め）

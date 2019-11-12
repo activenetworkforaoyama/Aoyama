@@ -20,8 +20,9 @@ public enum CoatCoOptionStandardPriceEnum {
 	COAT_STANDARD_OPTION_CODE10("00010","getOcChainHange","","setCtCollarHangRtPrice","oc_chainHange_id","","getCtCollarHangRtPrice"),//襟吊
 	COAT_STANDARD_OPTION_CODE11("00011","getOcBodyBackMate","getOcBodyBackMateStkNo","setCtInnerBodyClothRtPrice","oc_bodyBackMate","oc_bodyBackMateStkNo","getCtInnerBodyClothRtPrice"),//胴裏素材
 	COAT_STANDARD_OPTION_CODE12("00012","getOcCuffBackMate","getOcCuffBackMateStkNo","setCtInnerSleeveClothRtPrice","oc_cuffBackMate","oc_cuffBackMateStkNo","getCtInnerSleeveClothRtPrice"),//袖裏素材
-	COAT_STANDARD_OPTION_CODE13("00013","getOcFrontBtnMate","getOcFrontBtnMateStkNo","setCtBtnMaterialRtPrice","oc_frontBtnMate","oc_frontBtnMateStkNo","getCtBtnMaterialRtPrice"),//釦素材
-	COAT_STANDARD_OPTION_CODE14("00014","getOcSleeveSpec","","setCtSleeveTypeRtPrice","oc_sleeveSpec_id","","getCtSleeveTypeRtPrice");//袖仕様
+	COAT_STANDARD_OPTION_CODE13("00013","getOcFrontBtnMate","getOcFrontBtnMateStkNo","setCtBtnMaterialRtPrice","oc_frontBtnMate","oc_frontBtnMateStkNo","getCtBtnMaterialRtPrice");//釦素材
+	//仕様変更　「袖仕様」画面削除
+//	COAT_STANDARD_OPTION_CODE14("00014","getOcSleeveSpec","","setCtSleeveTypeRtPrice","oc_sleeveSpec_id","","getCtSleeveTypeRtPrice");//袖仕様
 	
 	private final String key;
 	private final String valueOne;

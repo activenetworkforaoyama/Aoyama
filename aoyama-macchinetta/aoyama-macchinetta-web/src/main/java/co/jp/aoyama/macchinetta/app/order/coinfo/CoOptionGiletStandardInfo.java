@@ -50,7 +50,7 @@ public class CoOptionGiletStandardInfo implements Serializable {
 	@NotBlank(groups = { GlStItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String ogStitch;
 
-	private Map<String, String> ogStitchMap;
+	private Map<String, String> ogCoStitchMap;
 	
 	private String glAmfStitchRtPrice;
 
@@ -331,12 +331,12 @@ public class CoOptionGiletStandardInfo implements Serializable {
 		this.ogStitch = ogStitch;
 	}
 
-	public Map<String, String> getOgStitchMap() {
-		return ogStitchMap;
+	public Map<String, String> getOgCoStitchMap() {
+		return ogCoStitchMap;
 	}
 
-	public void setOgStitchMap(Map<String, String> ogStitchMap) {
-		this.ogStitchMap = ogStitchMap;
+	public void setOgCoStitchMap(Map<String, String> ogCoStitchMap) {
+		this.ogCoStitchMap = ogCoStitchMap;
 	}
 
 	public String getOgStitchModify() {

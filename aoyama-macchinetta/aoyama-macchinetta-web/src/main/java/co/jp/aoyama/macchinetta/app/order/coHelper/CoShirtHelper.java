@@ -11,6 +11,7 @@ import java.util.Map;
 import org.dozer.util.ReflectionUtils;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
 import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
@@ -23,7 +24,10 @@ import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Model;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
+import co.jp.aoyama.macchinetta.domain.service.order.ModelService;
+import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
 import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
+import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 
 public class CoShirtHelper {
 
@@ -117,6 +121,43 @@ public class CoShirtHelper {
 	            messages.add("E031", "SHIRTサイズ");
 	            shirtFlag = true;
 			}else {
+				if(corStSize != null) {
+					String corStNeckSize = coAdjustShirtStandardInfo.getCorStNeckSize();
+					if("".equals(corStNeckSize)||"0".equals(corStNeckSize)||corStNeckSize==null) {
+						messages.add("E034", "SHIRTのネック修正");
+						shirtFlag = true;
+					}
+					
+					String corStBodylengthSize = coAdjustShirtStandardInfo.getCorStBodylengthSize();
+					if("".equals(corStBodylengthSize)||"0".equals(corStBodylengthSize)||corStBodylengthSize==null) {
+						messages.add("E034", "SHIRTの着丈修正");
+						shirtFlag = true;
+					}
+					
+					String corStRightsleeveSize = coAdjustShirtStandardInfo.getCorStRightsleeveSize();
+					if("".equals(corStRightsleeveSize)||"0".equals(corStRightsleeveSize)||corStRightsleeveSize==null) {
+						messages.add("E034", "SHIRTの袖丈右修正");
+						shirtFlag = true;
+					}
+					
+					String corStLeftsleeveSize = coAdjustShirtStandardInfo.getCorStLeftsleeveSize();
+					if("".equals(corStLeftsleeveSize)||"0".equals(corStLeftsleeveSize)||corStLeftsleeveSize==null) {
+						messages.add("E034", "SHIRTの袖丈左修正");
+						shirtFlag = true;
+					}
+					
+					String corStRightcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStRightcuffsSurroundingSize();
+					if("".equals(corStRightcuffsSurroundingSize)||"0".equals(corStRightcuffsSurroundingSize)||corStRightcuffsSurroundingSize==null) {
+						messages.add("E034", "SHIRTのカフス周り右修正");
+						shirtFlag = true;
+					}
+					
+					String corStLeftcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStLeftcuffsSurroundingSize();
+					if("".equals(corStLeftcuffsSurroundingSize)||"0".equals(corStLeftcuffsSurroundingSize)||corStLeftcuffsSurroundingSize==null) {
+						messages.add("E034", "SHIRTのカフス周り左修正");
+						shirtFlag = true;
+					}	
+				}
 				if(!stAdjustList.isEmpty()&&!coStTypeSizeOptimization.isEmpty()) {
 					// SHIRT_カジュアルヘムライン仕様_コード
 					String stCasualHemlineCd = orderCoForm.getCoOptionShirtStandardInfo().getOsCasHemLine();
@@ -238,45 +279,8 @@ public class CoShirtHelper {
 						}
 					}
 				}
-			}
-			
-			String corStNeckSize = coAdjustShirtStandardInfo.getCorStNeckSize();
-			if("".equals(corStNeckSize)||"0".equals(corStNeckSize)||corStNeckSize==null) {
-				messages.add("E034", "SHIRTのネック修正");
-				shirtFlag = true;
-			}
-			
-			String corStBodylengthSize = coAdjustShirtStandardInfo.getCorStBodylengthSize();
-			if("".equals(corStBodylengthSize)||"0".equals(corStBodylengthSize)||corStBodylengthSize==null) {
-				messages.add("E034", "SHIRTの着丈修正");
-				shirtFlag = true;
-			}
-			
-			String corStRightsleeveSize = coAdjustShirtStandardInfo.getCorStRightsleeveSize();
-			if("".equals(corStRightsleeveSize)||"0".equals(corStRightsleeveSize)||corStRightsleeveSize==null) {
-				messages.add("E034", "SHIRTの袖丈右修正");
-				shirtFlag = true;
-			}
-			
-			String corStLeftsleeveSize = coAdjustShirtStandardInfo.getCorStLeftsleeveSize();
-			if("".equals(corStLeftsleeveSize)||"0".equals(corStLeftsleeveSize)||corStLeftsleeveSize==null) {
-				messages.add("E034", "SHIRTの袖丈左修正");
-				shirtFlag = true;
-			}
-			
-			String corStRightcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStRightcuffsSurroundingSize();
-			if("".equals(corStRightcuffsSurroundingSize)||"0".equals(corStRightcuffsSurroundingSize)||corStRightcuffsSurroundingSize==null) {
-				messages.add("E034", "SHIRTのカフス周り右修正");
-				shirtFlag = true;
-			}
-			
-			String corStLeftcuffsSurroundingSize = coAdjustShirtStandardInfo.getCorStLeftcuffsSurroundingSize();
-			if("".equals(corStLeftcuffsSurroundingSize)||"0".equals(corStLeftcuffsSurroundingSize)||corStLeftcuffsSurroundingSize==null) {
-				messages.add("E034", "SHIRTのカフス周り左修正");
-				shirtFlag = true;
-			}
+			}	
 		}
-		
 		return shirtFlag;
 	}
 	
@@ -488,13 +492,13 @@ public class CoShirtHelper {
 				.setCorStLeftcuffsSurroundingCorrect(order.getCorStLeftcuffsSurroundingCorrect().toString());
 		orderCoForm.getCoAdjustShirtStandardInfo().setCorStBackdartsUnpackCd(order.getCorStBackdartsUnpackCd());
 		
-		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
+		//orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
 		
 	}
 
 	public Map<String, Object> getOrderPriceForShirtModel(OrderCoForm orderCoForm, String code) {
-CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
-		
+
+		CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
 		ShirtCoOptionStandardPriceEnum[] priceEnum = ShirtCoOptionStandardPriceEnum.values();
 		for (ShirtCoOptionStandardPriceEnum price : priceEnum) {
 			String key = price.getKey();
@@ -503,6 +507,7 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 			String valueThree = price.getValueThree();
 			String splicingCodeForFindUniquePrice = "";
 			String splicingCodeDetail = "";
+			String orderPrice = "";
 			try {
 				Method methodOne = optionShirtStandardInfo.getClass().getMethod(valueOne);
 				Object invokeOne = methodOne.invoke(optionShirtStandardInfo);
@@ -512,8 +517,13 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 					invokeTwo = methodTwo.invoke(optionShirtStandardInfo);
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne + invokeTwo;
-				String orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 				
+				String breastPk = orderCoForm.getCoOptionShirtStandardInfo().getOsBreastPk();
+				if(("00013".equals(key) && "0001202".equals(breastPk))) {
+					orderPrice = "0";
+				} else {
+					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+				}
 				Class<?> cls;
 				Object[] args = {orderPrice};
 				cls = Class.forName("co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionShirtStandardInfo");
@@ -557,8 +567,9 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 	}
 
 	public Map<String, String> getOrderPriceForShirtProject(OrderCoForm orderCoForm, String code,
-			org.springframework.ui.Model model, String idValueName, String colorCount, String thisVal) {
-CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
+			org.springframework.ui.Model model, String idValueName, String valueBreastPk, String thisVal) {
+
+		CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
 		
 		ShirtCoOptionStandardPriceEnum[] priceEnum = ShirtCoOptionStandardPriceEnum.values();
 		String orderPrice = "";
@@ -598,9 +609,10 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 				}
 				
 				if(hasIdvalueName == true) {
-					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					if("0".equals(orderPrice)) {
-						//orderPrice = "無料";
+					if(("00013".equals(key) && "0001202".equals(valueBreastPk))) {
+						orderPrice = "0";
+					} else {
+						orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 					}
 					
 					Class<?> cls;
@@ -627,7 +639,7 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 				Object invokeSix = methodSix.invoke(optionShirtStandardInfo);
 				String valueOf = String.valueOf(invokeSix);
 //				if(!("0".equals(valueOf))) {
-				if(!("0".equals(valueOf) || "null".equals(valueOf))) {
+				if(!("0".equals(valueOf) || "null".equals(valueOf)) && BaseCheckUtil.isNotEmpty(valueOf)) {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -655,5 +667,44 @@ CoOptionShirtStandardInfo optionShirtStandardInfo = orderCoForm.getCoOptionShirt
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
 		orderCoForm.setStOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
+	}
+
+	public void optionShirtDbToOrder(String productItem, Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService, OrderService orderService) {
+		//SHIRTのオプション情報を取得
+		Order orderSt = orderListService.findOrderStOptionByOrderId(order.getOrderId());
+		
+		//初期化設定
+		CoOptionShirtStandardInfo coOptionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
+		//オプション情報が存在する場合、レコード値を設定
+		if(orderSt !=null ) {
+			this.shirtDefaultValueFromDb(coOptionShirtStandardInfo, orderSt);
+		//オプション情報が存在しない場合、初期値を設定
+		}else {
+			this.shirtDefaultValue(orderCoForm);
+		}
+		
+		//SHIRTの補正情報を取得
+		Order orderStAd = orderListService.findOrderStByPk(order.getOrderId());
+		
+		//初期化設定
+		CoAdjustShirtStandardInfo coAdjustShirtStandardInfo = orderCoForm.getCoAdjustShirtStandardInfo();
+		if(coAdjustShirtStandardInfo == null ) {
+			coAdjustShirtStandardInfo = new CoAdjustShirtStandardInfo();
+			orderCoForm.setCoAdjustShirtStandardInfo(coAdjustShirtStandardInfo);
+		}
+		if (orderStAd != null) {
+			this.shirtAdjustFromDb(orderCoForm, orderStAd);
+		}
+		
+		String osShirtModel = coOptionShirtStandardInfo.getOsShirtModel();
+		if(osShirtModel!=null&&!"".equals(osShirtModel)) {
+			String code = productItem.concat("05").concat(osShirtModel);
+			this.getOrderPriceForShirtModel(orderCoForm, code);
+		}else {
+			orderCoForm.setStOptionPrice("0");
+		}
+		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), productItem,
+				"05");
+		this.getShirtModelMap(orderCoForm, modelList);
 	}
 }

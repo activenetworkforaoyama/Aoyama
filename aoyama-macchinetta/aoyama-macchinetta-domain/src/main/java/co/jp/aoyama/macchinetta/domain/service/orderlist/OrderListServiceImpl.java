@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -48,32 +49,32 @@ public class OrderListServiceImpl implements OrderListService {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
 		try {
 			if ( !"".equals(condition.getProductOrderdDateFrom()) && condition.getProductOrderdDateFrom() != null) {
-			   condition.setProductOrderdDate2From(format.parse(condition.getProductOrderdDateFrom()));
+			   condition.setProductOrderdDate2From(format.parse(condition.getProductOrderdDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getProductOrderdDateTo()) && condition.getProductOrderdDateTo() != null) {
-			   condition.setProductOrderdDate2To(format.parse(condition.getProductOrderdDateTo()));
+			   condition.setProductOrderdDate2To(format.parse(condition.getProductOrderdDateTo().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustShopDeliveryDateFrom()) && condition.getCustShopDeliveryDateFrom() != null) {
-			   condition.setCustShopDeliveryDate2From(format.parse(condition.getCustShopDeliveryDateFrom()));
+			   condition.setCustShopDeliveryDate2From(format.parse(condition.getCustShopDeliveryDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustShopDeliveryDateTo()) && condition.getCustShopDeliveryDateTo() != null) {
-			   condition.setCustShopDeliveryDate2To(format.parse(condition.getCustShopDeliveryDateTo()));
+			   condition.setCustShopDeliveryDate2To(format.parse(condition.getCustShopDeliveryDateTo().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getUpdatedAtFrom()) && condition.getUpdatedAtFrom() != null) {
-			   condition.setUpdatedAt2From(format.parse(condition.getUpdatedAtFrom()));
+			   condition.setUpdatedAt2From(format.parse(condition.getUpdatedAtFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getUpdatedAtTo()) && condition.getUpdatedAtTo() != null) {
 				Calendar calendar = new GregorianCalendar(); 
-				calendar.setTime(format.parse(condition.getUpdatedAtTo())); 
+				calendar.setTime(format.parse(condition.getUpdatedAtTo().replaceAll("/", "-"))); 
 				calendar.add(5,1);
 				calendar.add(14,-1);
 				condition.setUpdatedAt2To(calendar.getTime());
 			}
 			if ( !"".equals(condition.getCustDeliverDateFrom()) && condition.getCustDeliverDateFrom() != null) {
-			   condition.setCustDeliverDate2From(format.parse(condition.getCustDeliverDateFrom()));
+			   condition.setCustDeliverDate2From(format.parse(condition.getCustDeliverDateFrom().replaceAll("/", "-")));
 			}
 			if ( !"".equals(condition.getCustDeliverDateTo()) && condition.getCustDeliverDateTo() != null) {
-			   condition.setCustDeliverDate2To(format.parse(condition.getCustDeliverDateTo()));
+			   condition.setCustDeliverDate2To(format.parse(condition.getCustDeliverDateTo().replaceAll("/", "-")));
 			}
 			
 		} catch (ParseException e) {
@@ -97,12 +98,31 @@ public class OrderListServiceImpl implements OrderListService {
             
             ResultMessages messages = ResultMessages.error();
             // 該当ユーザーのデータがありません。(orderid={0})
-            messages.add("E020", order);
+            messages.add("E020", orderId);
             logger.error(messages.toString());
 
             throw new ResourceNotFoundException(messages);
         }
 		return order;
+	}
+	
+	@Override
+	public List<Order> findOrderByPkList(List<String> orderIdList) {
+		List<Order> orderList = new ArrayList<Order>();
+		for (int i = 0; i < orderIdList.size(); i++) {
+			Order order = orderListRepository.findOrderByPk(orderIdList.get(i));
+			orderList.add(order);
+			if (order == null) {
+				
+				ResultMessages messages = ResultMessages.error();
+				// 該当ユーザーのデータがありません。(orderid={0})
+				messages.add("E020", order);
+				logger.error(messages.toString());
+				
+				throw new ResourceNotFoundException(messages);
+			}
+		}
+		return orderList;
 	}
 
 	@Override

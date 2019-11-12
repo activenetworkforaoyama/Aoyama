@@ -356,8 +356,6 @@ jQuery(function() {
 		}else{
 			shirtAdFlag="0";
 		}
-	}else if("0"==jQuery("#shirtItemFlag").val() && "orderCo"!=orderFlag){
-		    shirtAdFlag="1";
 	}
 
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
@@ -411,6 +409,7 @@ jQuery(function() {
 				jQuery("#optionPriceId").val(result.optionPrice);
 				jQuery("#optionPrice").html(formatMoney(result.optionPrice,0,""));
 				getAllPrice(itemCode, result.optionPrice);
+				allOptionPrice();
 			}
 		});
 		// 別モデルに変更された場合はアラート表示
@@ -434,9 +433,11 @@ jQuery(function() {
 				//0はモデルチェク成功の場合
 				jQuery("#shModelFlag").val("0");
 				jQuery("#shirtModelCheck").empty();
+				jQuery("#shirtModelCheck").hide();
 				jQuery("#fabricMsg").empty();
 			}else if(checkResult == "false"){
 				//2はモデルチェク失敗の場合
+				jQuery("#shirtModelCheck").show();
 				jQuery("#shModelFlag").val("1"+"*"+getMsgByOneArg('msg065','SHIRT'));
 				setAlert('shirtModelCheck',getMsgByOneArg('msg065','SHIRT'));
 			}
@@ -461,6 +462,11 @@ jQuery(function() {
 		var idValueName = jQuery(this).attr("id");
 		var thisVal = jQuery("#"+idValueName).val();
 
+    	var breastPkVal = jQuery('input[id^="os_breastPk_yes_id"]:checked').val();
+    	if(idValueName == 'os_breastPk_yes_id1' || idValueName == 'os_breastPk_yes_id2' || idValueName == 'os_breastPk_yes_id3'){
+    		jQuery('input[id^="os_breastPkSize_normal_id"]:checked').change();
+ 	    }
+
 		//IDの後の番号を削除します
 		var findIdPosition = idValueName.indexOf("_id");
 		var interceptedIdValueName = idValueName.substr(0, findIdPosition+3);
@@ -469,7 +475,7 @@ jQuery(function() {
 			jQuery.ajax({
 				type:"get",
 				url:contextPath + "/orderCo/getOrderPriceForShirtProject",
-				data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisVal},
+				data:{"code":code,"idValueName":interceptedIdValueName,"thisVal":thisVal,"valueBreastPk":breastPkVal},
 				dataType:"json",
 				contentType:"application/json",
 				async:false,
@@ -477,6 +483,7 @@ jQuery(function() {
 					var msgIdValueName = interceptedIdValueName.replace(/_id/g,"_Msg");
 					jQuery("#"+msgIdValueName).html(result.idValuePrice);
 					getAllPrice(subItemCode, result.optionPrice);
+					allOptionPrice();
 				}
 			});
 		}
@@ -505,6 +512,7 @@ jQuery(function() {
 				success:function(result){
 		            jQuery("#"+idValueName+"_Msg").html(result.idValuePrice);
 		            getAllPrice(subItemCode, result.optionPrice);
+		            allOptionPrice();
 				}
 			});
 		}
@@ -552,8 +560,10 @@ function optionShirtSession() {
 	} else {
 		jQuery(':radio[name="coOptionShirtStandardInfo.osPinHolePin"]').prop('disabled', true);
 		jQuery('#os_pinHolePin_id1').prop('checked', true);
+		jQuery('#os_pinHolePin_id1').prop('disabled', false);
 	}
-
+	jQuery('input[name="coOptionShirtStandardInfo.osPinHolePin"]:checked').change();
+	
 	//カラーキーパー
 	var os_colorKeeper_disabled = jQuery('#os_colorKeeper_id2').prop('disabled');
 	if (os_chainModel == "0000108" || os_chainModel == "0000109" ||
@@ -562,7 +572,9 @@ function optionShirtSession() {
 		// 「襟型」ボタンダウン・ショートボタンダウン・ピンホール・ラウンドピンホール・ウイング選択時、
 		// 「カラーキーパー」は「無し」にて選択不可
 		jQuery('#os_colorKeeper_id2').prop('checked', true);
-		jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
+		jQuery('#os_colorKeeper_id1').prop('disabled', true);
+		jQuery('#os_colorKeeper_id2').prop('disabled', false);
+		//jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', true);
 	} else {
 		jQuery(':radio[name="coOptionShirtStandardInfo.osColorKeeper"]').prop('disabled', false);
 		if (os_colorKeeper_disabled) {
@@ -570,7 +582,8 @@ function optionShirtSession() {
 			jQuery('#os_colorKeeper_id1').prop('checked', true);
 		}
 	}
-
+	jQuery('input[name="coOptionShirtStandardInfo.osColorKeeper"]:checked').change();
+	
 	var osTabBtn = "${orderCoForm.coOptionShirtStandardInfo.osTabBtn}" ;
 	jQuery("input[name='coOptionShirtStandardInfo.osTabBtn'][value='" + osTabBtn + "']").prop("checked", true);
 	//タブ釦
@@ -585,6 +598,7 @@ function optionShirtSession() {
 		jQuery('#os_tabBtn_id2').prop('disabled', true);
 		jQuery('#os_tabBtn_id3').prop('disabled', false);
 	}
+	jQuery('input[name="coOptionShirtStandardInfo.osTabBtn"]:checked').change();
 
 	// カフス
 	var os_cuffs = "${orderCoForm.coOptionShirtStandardInfo.osCuffs}" ;
@@ -602,13 +616,8 @@ function optionShirtSession() {
 	if (os_convertible == '0000302') {
 		// 「コンバーチブル」選択「有り」のときのみ「アジャスト釦」は選択可
 		jQuery('#os_adjustBtn').prop('disabled', false);
-		//jQuery('#os_adjustBtn').val("0000402");
-	} else if ((os_cuffs == "0000204" || os_cuffs == "0000205") && os_convertible == '0000301') {
+	} else {
 		jQuery('#os_adjustBtn').prop('disabled', true);
-		//jQuery('#os_adjustBtn').val("0000401");
-	} else if (os_cuffs != "0000200" && os_convertible == '0000301') {
-		jQuery('#os_adjustBtn').prop('disabled', true);
-		//jQuery('#os_adjustBtn').val("0000401");
 	} 
 		
 	// カフスボタン追加の変更
@@ -684,6 +693,9 @@ function changeAddCuffSession() {
 		// カフスボタン追加は使用不可
 		jQuery('#os_AddCuff_id1').prop('checked', true);
 		jQuery('#os_AddCuff_id2').prop('disabled', true);
+
+		jQuery('#os_convertible').prop('disabled', true);
+		jQuery('#os_adjustBtn').prop('disabled', true);
 	}
 
 	//コンバーチブル「有」選択時不可
@@ -693,6 +705,8 @@ function changeAddCuffSession() {
 		jQuery('#os_AddCuff_id1').prop('checked', true);
 		jQuery('#os_AddCuff_id2').prop('disabled', true);
 	}
+
+	jQuery('input[name="coOptionShirtStandardInfo.osAddCuff"]:checked').change();
 }
 
 

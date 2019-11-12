@@ -24,6 +24,15 @@ public class CoProductInfo implements Serializable{
 	private Map<String, String> custIsDeliverShortningMap;
 	//早割
 	private Map<String, String> custIsEarlyDiscountMap;
+	//拝絹地
+	private Map<String, String> GlossFablicMap;
+	
+	public Map<String, String> getGlossFablicMap() {
+		return GlossFablicMap;
+	}
+	public void setGlossFablicMap(Map<String, String> glossFablicMap) {
+		GlossFablicMap = glossFablicMap;
+	}
 	public Map<String, String> getProductCategoryMap() {
 		return productCategoryMap;
 	}

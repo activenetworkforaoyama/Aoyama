@@ -23,12 +23,12 @@ public enum Pants2CoOptionWashableUpperPriceEnum {
 	PANTS_STANDARD_OPTION_CODE16("00016","getWp2VCut","","wp2VCutPrice","setPt2VCutRtPrice"),//Vカット
 	PANTS_STANDARD_OPTION_CODE17("00017","getWp2HemUp","","wp2HemUpPrice","setPt2HemUpRtPrice"),//裾上げ
 	PANTS_STANDARD_OPTION_CODE18("00018","getWp2DoubleWide","","wp2DoubleWidePrice","setPt2DblWidthRtPrice"),//ダブル幅
-	PANTS_STANDARD_OPTION_CODE19("00019","getWp2Stitch","","wp2StitchPrice","setPt2AmfStitchRtPrice"),//ステッチ種類
-	PANTS_STANDARD_OPTION_CODE20("00020","getWp2StitchModify","","wp2StitchModifyPrice","setPt2StitchPlcRtPrice"),//ステッチ箇所変更
+	PANTS_STANDARD_OPTION_CODE19("00051","getWp2Stitch","","wp2StitchPrice","setPt2AmfStitchRtPrice"),//ステッチ種類
+//	PANTS_STANDARD_OPTION_CODE20("00020","getWp2StitchModify","","wp2StitchModifyPrice","setPt2StitchPlcRtPrice"),//ステッチ箇所変更
 	PANTS_STANDARD_OPTION_CODE22("00022","getWp2DStitch","","wp2DStitchPrice","setPt2DblstitchPlcRtPrice"),//ダブルステッチ
-	PANTS_STANDARD_OPTION_CODE24("00024","getWp2AmfColor","","wp2AmfColorPrice","setPt2AmfColorRtPrice"),//AMF色指定
-	PANTS_STANDARD_OPTION_CODE27("00027","getWp2BhColor","","wp2BhColorPrice","setPt2BtnholeColorRtPrice"),//ボタンホール色指定
-	PANTS_STANDARD_OPTION_CODE30("00030","getWp2ByColor","","wp2ByColorPrice","setPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
+//	PANTS_STANDARD_OPTION_CODE24("00024","getWp2AmfColor","","wp2AmfColorPrice","setPt2AmfColorRtPrice"),//AMF色指定
+//	PANTS_STANDARD_OPTION_CODE27("00027","getWp2BhColor","","wp2BhColorPrice","setPt2BtnholeColorRtPrice"),//ボタンホール色指定
+//	PANTS_STANDARD_OPTION_CODE30("00030","getWp2ByColor","","wp2ByColorPrice","setPt2BtnthreadColorRtPrice"),//ボタン付け糸指定
 	PANTS_STANDARD_OPTION_CODE33("00033","getWp2Button","getWp2BtnMateStkNo","wp2BtnMateStkNoPrice","setPt2BtnMaterialRtPrice"),//釦素材
 	PANTS_STANDARD_OPTION_CODE35("00035","getWp2SuspenderBtn","","wp2SuspenderBtnPrice","setPt2SuspenderBtnRtPrice"),//サスペンダー釦
 	PANTS_STANDARD_OPTION_CODE36("00036","getWp2Eight","","wp2EightPrice","setPt2NonSlipRtPrice"),//エイト（滑り止め）

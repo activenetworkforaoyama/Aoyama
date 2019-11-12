@@ -1057,6 +1057,22 @@ public class OrderMakerUse implements Serializable {
     private String corStBackdartsUnpackCd;
     private String corStBackdartsUnpackNm;
     
+    private String ptLookClothCd;
+    private String ptLookClothNm;
+    private Integer ptLookClothRtPrice;
+    private BigDecimal ptLookClothWsWage;
+    private Integer ptLookClothWsPrice;
+    private String pt2LookClothCd;
+    private String pt2LookClothNm;
+    private Integer pt2LookClothRtPrice;
+    private BigDecimal pt2LookClothWsWage;
+    private Integer pt2LookClothWsPrice;
+    private String glLookClothCd;
+    private String glLookClothNm;
+    private Integer glLookClothRtPrice;
+    private BigDecimal glLookClothWsWage;
+    private Integer glLookClothWsPrice;
+    
 	public String getOrderId() {
 		return orderId;
 	}
@@ -7726,6 +7742,14 @@ public class OrderMakerUse implements Serializable {
 		builder.append(",");
 		builder.append(ptKneeinnerClothWsPrice == null ? "" : ptKneeinnerClothWsPrice);
 		builder.append(",");
+		builder.append(ptLookClothCd == null ? "" : ptLookClothCd);
+		builder.append(",");
+		builder.append(ptLookClothNm == null ? "" : ptLookClothNm);
+		builder.append(",");
+		builder.append(ptLookClothWsWage == null ? "" : ptLookClothWsWage);
+		builder.append(",");
+		builder.append(ptLookClothWsPrice == null ? "" : ptLookClothWsPrice);
+		builder.append(",");
 		builder.append(ptFrtTypeCd == null ? "" : ptFrtTypeCd);
 		builder.append(",");
 		builder.append(ptFrtTypeNm == null ? "" : ptFrtTypeNm);
@@ -8007,6 +8031,14 @@ public class OrderMakerUse implements Serializable {
 		builder.append(pt2KneeinnerClothWsWage == null ? "" : pt2KneeinnerClothWsWage);
 		builder.append(",");
 		builder.append(pt2KneeinnerClothWsPrice == null ? "" : pt2KneeinnerClothWsPrice);
+		builder.append(",");
+		builder.append(pt2LookClothCd == null ? "" : pt2LookClothCd);
+		builder.append(",");
+		builder.append(pt2LookClothNm == null ? "" : pt2LookClothNm);
+		builder.append(",");
+		builder.append(pt2LookClothWsWage == null ? "" : pt2LookClothWsWage);
+		builder.append(",");
+		builder.append(pt2LookClothWsPrice == null ? "" : pt2LookClothWsPrice);
 		builder.append(",");
 		builder.append(pt2FrtTypeCd == null ? "" : pt2FrtTypeCd);
 		builder.append(",");
@@ -8579,6 +8611,14 @@ public class OrderMakerUse implements Serializable {
 		builder.append(glWaistPktClothWsWage == null ? "" : glWaistPktClothWsWage);
 		builder.append(",");
 		builder.append(glWaistPktClothWsPrice == null ? "" : glWaistPktClothWsPrice);
+		builder.append(",");
+		builder.append(glLookClothCd == null ? "" : glLookClothCd);
+		builder.append(",");
+		builder.append(glLookClothNm == null ? "" : glLookClothNm);
+		builder.append(",");
+		builder.append(glLookClothWsWage == null ? "" : glLookClothWsWage);
+		builder.append(",");
+		builder.append(glLookClothWsPrice == null ? "" : glLookClothWsPrice);
 		builder.append(",");
 		builder.append(glAmfStitchCd == null ? "" : glAmfStitchCd);
 		builder.append(",");
@@ -9439,5 +9479,95 @@ public class OrderMakerUse implements Serializable {
 	public void setCorStBackdartsUnpackNm(String corStBackdartsUnpackNm) {
 		this.corStBackdartsUnpackNm = corStBackdartsUnpackNm;
 	}
-
+	public String getPtLookClothCd() {
+		return ptLookClothCd;
+	}
+	public void setPtLookClothCd(String ptLookClothCd) {
+		this.ptLookClothCd = ptLookClothCd;
+	}
+	public String getPtLookClothNm() {
+		return ptLookClothNm;
+	}
+	public void setPtLookClothNm(String ptLookClothNm) {
+		this.ptLookClothNm = ptLookClothNm;
+	}
+	public Integer getPtLookClothRtPrice() {
+		return ptLookClothRtPrice;
+	}
+	public void setPtLookClothRtPrice(Integer ptLookClothRtPrice) {
+		this.ptLookClothRtPrice = ptLookClothRtPrice;
+	}
+	public BigDecimal getPtLookClothWsWage() {
+		return ptLookClothWsWage;
+	}
+	public void setPtLookClothWsWage(BigDecimal ptLookClothWsWage) {
+		this.ptLookClothWsWage = ptLookClothWsWage;
+	}
+	public Integer getPtLookClothWsPrice() {
+		return ptLookClothWsPrice;
+	}
+	public void setPtLookClothWsPrice(Integer ptLookClothWsPrice) {
+		this.ptLookClothWsPrice = ptLookClothWsPrice;
+	}
+	public String getPt2LookClothCd() {
+		return pt2LookClothCd;
+	}
+	public void setPt2LookClothCd(String pt2LookClothCd) {
+		this.pt2LookClothCd = pt2LookClothCd;
+	}
+	public String getPt2LookClothNm() {
+		return pt2LookClothNm;
+	}
+	public void setPt2LookClothNm(String pt2LookClothNm) {
+		this.pt2LookClothNm = pt2LookClothNm;
+	}
+	public Integer getPt2LookClothRtPrice() {
+		return pt2LookClothRtPrice;
+	}
+	public void setPt2LookClothRtPrice(Integer pt2LookClothRtPrice) {
+		this.pt2LookClothRtPrice = pt2LookClothRtPrice;
+	}
+	public BigDecimal getPt2LookClothWsWage() {
+		return pt2LookClothWsWage;
+	}
+	public void setPt2LookClothWsWage(BigDecimal pt2LookClothWsWage) {
+		this.pt2LookClothWsWage = pt2LookClothWsWage;
+	}
+	public Integer getPt2LookClothWsPrice() {
+		return pt2LookClothWsPrice;
+	}
+	public void setPt2LookClothWsPrice(Integer pt2LookClothWsPrice) {
+		this.pt2LookClothWsPrice = pt2LookClothWsPrice;
+	}
+	public String getGlLookClothCd() {
+		return glLookClothCd;
+	}
+	public void setGlLookClothCd(String glLookClothCd) {
+		this.glLookClothCd = glLookClothCd;
+	}
+	public String getGlLookClothNm() {
+		return glLookClothNm;
+	}
+	public void setGlLookClothNm(String glLookClothNm) {
+		this.glLookClothNm = glLookClothNm;
+	}
+	public Integer getGlLookClothRtPrice() {
+		return glLookClothRtPrice;
+	}
+	public void setGlLookClothRtPrice(Integer glLookClothRtPrice) {
+		this.glLookClothRtPrice = glLookClothRtPrice;
+	}
+	public BigDecimal getGlLookClothWsWage() {
+		return glLookClothWsWage;
+	}
+	public void setGlLookClothWsWage(BigDecimal glLookClothWsWage) {
+		this.glLookClothWsWage = glLookClothWsWage;
+	}
+	public Integer getGlLookClothWsPrice() {
+		return glLookClothWsPrice;
+	}
+	public void setGlLookClothWsPrice(Integer glLookClothWsPrice) {
+		this.glLookClothWsPrice = glLookClothWsPrice;
+	}
+	
 }

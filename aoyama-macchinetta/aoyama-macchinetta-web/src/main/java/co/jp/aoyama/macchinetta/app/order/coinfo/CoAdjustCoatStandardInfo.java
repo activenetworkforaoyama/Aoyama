@@ -74,29 +74,29 @@ public class CoAdjustCoatStandardInfo implements Serializable {
 	private Map<String, String> corCtVenthightMap;
 
 	// ベント修正（高さ）型サイズ
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズが不正です。")
-	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズの範囲が不正です。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズが不正です。")
+	//@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）型サイズの範囲が不正です。")
 	private String corCtVenthightSize;
 	// ベント修正（高さ）補正値
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）補正値を入力して下さい。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）補正値を入力して下さい。")
 	private String corCtVenthightCorrect;
 	// ベント修正（高さ）グロス
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスが不正です。")
-	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスの範囲が不正です。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスが不正です。")
+	//@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのベント修正（高さ）グロスの範囲が不正です。")
 	private String corCtVenthightGross;
 
 	// ポケット位置
 	private Map<String, String> corCtPktposMap;
 	// ポケット位置型サイズ
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズが不正です。")
-	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズの範囲が不正です。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズが不正です。")
+	//@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置型サイズの範囲が不正です。")
 	private String corCtPktposSize;
 	// ポケット位置補正値
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置補正値を入力して下さい。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置補正値を入力して下さい。")
 	private String corCtPktposCorrect;
 	// ポケット位置グロス
-	@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置グロスが不正です。")
-	@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置グロスの範囲が不正です。")
+	//@NotBlank(groups = {CoatAdItem.class}, message = "COATのポケット位置グロスが不正です。")
+	//@Range(min=1, max=999, groups = {CoatAdItem.class}, message = "COATのポケット位置グロスの範囲が不正です。")
 	private String corCtPktposGross;
 	
 	//ct再補正コメント

@@ -10,9 +10,10 @@ public enum GiletCoOptionTuxedoUpperPriceEnum {
 	GILET_TUXEDO_OPTION_CODE02("00002","getTgWaistPkt","","tgWaistPktPrice","setGlWaistPktRtPrice"),//腰ポケット
 	GILET_TUXEDO_OPTION_CODE03("00003","getTgWaistPktSpec","","tgWaistPktSpecPrice","setGlWaistPktShapeRtPrice"),//腰ポケット形状
 	GILET_TUXEDO_OPTION_CODE04("00004","getTgWaistPktMate","","tgWaistPktMatePrice","setGlWaistPktClothRtPrice"),//腰ポケット素材
-	GILET_TUXEDO_OPTION_CODE05("00005","getTgStitch","","tgStitchPrice","setGlAmfStitchRtPrice"),//ステッチ種類
-	GILET_TUXEDO_OPTION_CODE11("00011","getTgBhColor","","tgBhColorPrice","setGlBtnholeColorRtPrice"),//ボタンホール色指定
-	GILET_TUXEDO_OPTION_CODE14("00014","getTgByColor","","tgByColorPrice","setGlBtnthreadColorRtPrice"),//ボタン付け糸指定
+	GILET_TUXEDO_OPTION_CODE50("00050","getTgGlossFablic","","tgGlossFablic","setGlLookClothRtPrice"),//拝絹地
+	GILET_TUXEDO_OPTION_CODE05("00051","getTgStitch","","tgStitchPrice","setGlAmfStitchRtPrice"),//ステッチ種類
+//	GILET_TUXEDO_OPTION_CODE11("00011","getTgBhColor","","tgBhColorPrice","setGlBtnholeColorRtPrice"),//ボタンホール色指定
+//	GILET_TUXEDO_OPTION_CODE14("00014","getTgByColor","","tgByColorPrice","setGlBtnthreadColorRtPrice"),//ボタン付け糸指定
 	GILET_TUXEDO_OPTION_CODE17("00017","getTgBackLiningMate","getTgBackLiningMateStkNo","tgBackLiningMateStkNoPrice","setGlBackClothRtPrice"),//背裏地素材
 	GILET_TUXEDO_OPTION_CODE19("00019","getTgInsideLiningMate","getTgInsideLiningMateStkNo","tgInsideLiningMateStkNoPrice","setGlInnnerClothRtPrice"),//内側裏地素材
 	GILET_TUXEDO_OPTION_CODE21("00021","getTgFrontBtnMate","getTgFrontBtnMateStkNo","tgFrontBtnMateStkNoPrice","setGlFrtBtnRtPrice"),//釦素材

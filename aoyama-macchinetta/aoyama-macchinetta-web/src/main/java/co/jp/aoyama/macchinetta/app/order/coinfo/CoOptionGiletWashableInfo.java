@@ -47,7 +47,7 @@ public class CoOptionGiletWashableInfo implements Serializable {
 	@NotBlank(groups = { GlWaItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String wgStitch;
 
-	private Map<String, String> wgStitchMap;
+	private Map<String, String> wgCoStitchMap;
 	
 	private String glAmfStitchRtPrice;
 
@@ -317,12 +317,12 @@ public class CoOptionGiletWashableInfo implements Serializable {
 		this.wgStitch = wgStitch;
 	}
 
-	public Map<String, String> getWgStitchMap() {
-		return wgStitchMap;
+	public Map<String, String> getWgCoStitchMap() {
+		return wgCoStitchMap;
 	}
 
-	public void setWgStitchMap(Map<String, String> wgStitchMap) {
-		this.wgStitchMap = wgStitchMap;
+	public void setWgCoStitchMap(Map<String, String> wgCoStitchMap) {
+		this.wgCoStitchMap = wgCoStitchMap;
 	}
 
 	public String getWgStitchModify() {

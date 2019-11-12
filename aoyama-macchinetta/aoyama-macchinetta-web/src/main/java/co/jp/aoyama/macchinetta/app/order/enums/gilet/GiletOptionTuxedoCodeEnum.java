@@ -23,7 +23,9 @@ public enum GiletOptionTuxedoCodeEnum {
 	GILET_TUXEDO_OPTION_CODE23("00023","setTgBackBeltMap"),
 	GILET_TUXEDO_OPTION_CODE24("00024","setTgWatchChainMap"),
 	GILET_TUXEDO_OPTION_CODE33("00033","setTgBtnHoleColorMap"),
-	GILET_TUXEDO_OPTION_CODE36("00036","setTgBtnThreadColorMap");
+	GILET_TUXEDO_OPTION_CODE36("00036","setTgBtnThreadColorMap"),
+	GILET_TUXEDO_OPTION_CODE50("00050","setTgGlossFablicMap"),
+	GILET_TUXEDO_OPTION_CODE51("00051","setTgCoStitchMap");
 	
 	
 	private final String key;

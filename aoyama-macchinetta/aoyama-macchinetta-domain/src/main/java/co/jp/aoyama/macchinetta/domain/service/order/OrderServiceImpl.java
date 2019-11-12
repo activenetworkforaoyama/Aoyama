@@ -92,7 +92,7 @@ public class OrderServiceImpl  implements OrderService {
 	}
 	
 	@Override
-	public void updateOrderConfirm(Order order,String status) {
+	public void updateOrderConfirm(Order order,String status,String itemBefore,String itemAfter) {
 		Order findOrderByPk = orderListRepository.findOrderByPk(order.getOrderId());
 		Short version = findOrderByPk.getVersion();
 		Short orderVersion = order.getVersion();
@@ -126,7 +126,24 @@ public class OrderServiceImpl  implements OrderService {
 							BigDecimal theoreticalStock = stock.getTheoreticalStock();
 							BigDecimal oldTheoreticalStockUpdate = theoreticalStock.add(theoryFabricUsedMountOrder);
 							BigDecimal newTheoreticalStockUpdate = oldTheoreticalStockUpdate.subtract(reservationStockValue);
+							
+							Stock updateStock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+							logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+itemAfter 
+							+ "、生地品番："+productFabricNo
+							+ "、理論在庫："+updateStock.getTheoreticalStock() 
+							+ "、予約生地量："+updateStock.getReservationStock() + "」");
+							
 							stockRepository.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate,orderPattern);
+							
+							Stock updateStockAfter = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+							logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+							+ "、注文ID："+order.getOrderId()  
+							+ "、ITEM："+itemAfter
+							+ "、生地品番："+productFabricNo
+							+ "、理論在庫："+updateStockAfter.getTheoreticalStock() 
+							+ "、予約生地量："+updateStockAfter.getReservationStock() + "」");
 						}
 					}
 					else if(!productFabricNoExit.equals(productFabricNo)) {
@@ -134,13 +151,48 @@ public class OrderServiceImpl  implements OrderService {
 						Stock oldStock = orderRepository.getStock(productFabricNoExit,order.getOrderPattern());
 						BigDecimal oldTheoreticalStock = oldStock.getTheoreticalStock();
 						BigDecimal oldTheoreticalStockUpdate = oldTheoreticalStock.add(theoryFabricUsedMountOrder);
+						
+						Stock recoveryStock = orderRepository.getStock(productFabricNoExit,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。回復前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemBefore 
+						+ "、生地品番："+productFabricNoExit
+						+ "、理論在庫："+recoveryStock.getTheoreticalStock() 
+						+ "、予約生地量："+recoveryStock.getReservationStock() + "」");
+						
 						stockRepository.updateTheoreticalStock(productFabricNoExit,oldTheoreticalStockUpdate,orderPattern);
+						
+						Stock recoverystockAfter =  orderRepository.getStock(productFabricNoExit,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。回復後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemBefore
+						+ "、生地品番："+productFabricNoExit
+						+ "、理論在庫："+recoverystockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+recoverystockAfter.getReservationStock() + "」");
 						
 						//新しい理論在庫を修正する
 						Stock newStock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
 						BigDecimal newTheoreticalStock = newStock.getTheoreticalStock();
 						BigDecimal newTheoreticalStockUpdate = newTheoreticalStock.subtract(reservationStockValue);
+						
+						Stock updateStock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemAfter 
+						+ "、生地品番："+productFabricNo
+						+ "、理論在庫："+updateStock.getTheoreticalStock() 
+						+ "、予約生地量："+updateStock.getReservationStock() + "」");
+						
 						stockRepository.updateTheoreticalStock(productFabricNo,newTheoreticalStockUpdate,orderPattern);
+						
+						Stock updateStockAfter = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemAfter
+						+ "、生地品番："+productFabricNo
+						+ "、理論在庫："+updateStockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+updateStockAfter.getReservationStock() + "」");
+						
 					}
 				}
 					
@@ -170,7 +222,24 @@ public class OrderServiceImpl  implements OrderService {
 						BigDecimal stockReservationStock = stock.getReservationStock();
 						BigDecimal theoreticalStockUpdate = theoreticalStock.subtract(reservationStockValue);
 						BigDecimal reservationStockUpdate = stockReservationStock.subtract(reservationStockValue);
+						
+						Stock updateStock = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemAfter 
+						+ "、生地品番："+productFabricNo
+						+ "、理論在庫："+updateStock.getTheoreticalStock() 
+						+ "、予約生地量："+updateStock.getReservationStock() + "」");
+						
 						stockRepository.updateStockValue(productFabricNo,theoreticalStockUpdate,reservationStockUpdate,orderPattern);
+						
+						Stock updateStockAfter = orderRepository.getStock(productFabricNo,order.getOrderPattern());
+						logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
+						+ "、注文ID："+order.getOrderId()  
+						+ "、ITEM："+itemAfter
+						+ "、生地品番："+productFabricNo
+						+ "、理論在庫："+updateStockAfter.getTheoreticalStock() 
+						+ "、予約生地量："+updateStockAfter.getReservationStock() + "」");
 					}
 				}
 			}
@@ -300,6 +369,14 @@ public class OrderServiceImpl  implements OrderService {
 		orderRepository.insertOrderWithNotVersion(order);
 		this.deleteMeasuring(measuring);
 	}
+	
+	@Override
+	public void deleteOrderAddVersionAndStock(Order order, Stock stock,Measuring measuring) {
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrder(order);
+		this.deleteMeasuring(measuring);
+	}
 
 
 	@Override
@@ -311,9 +388,14 @@ public class OrderServiceImpl  implements OrderService {
 
 	@Override
 	public void physicalDeleteOrder(Stock stock, String orderId) {
-		orderRepository.updateStockByPk(stock);
-		orderRepository.deletOrderByOrderId(orderId);
-		measuringRepository.deleteByPrimaryKey(orderId);
+		if(stock == null) {
+			orderRepository.deletOrderByOrderId(orderId);
+			measuringRepository.deleteByPrimaryKey(orderId);
+		}else {
+			orderRepository.updateStockByPk(stock);
+			orderRepository.deletOrderByOrderId(orderId);
+			measuringRepository.deleteByPrimaryKey(orderId);
+		}
 	}
 
 
@@ -435,6 +517,18 @@ public class OrderServiceImpl  implements OrderService {
 		}
 	}
 
+	@Override
+	public void deletOrderAddVersionAndStock(Order order, Order orderIsExist,String item,String userId,Measuring measuring) {
+		Order orderDb = orderListRepository.findOrderByPk(order.getOrderId());
+		if (orderDb == null) {
+			orderRepository.insertOrderWithNotVersion(order);
+		} else {
+			stockRecovery(orderIsExist,item,userId);
+			orderRepository.deletOrderByOrderId(order.getOrderId());
+			orderRepository.insertOrderWithNotVersion(order);
+			this.deleteMeasuring(measuring);
+		}
+	}
 
 	private void stockRecovery(Order order,String item,String userId) {
 		if ("1".equals(order.getTheoreticalStockCheck())) {
@@ -493,6 +587,25 @@ public class OrderServiceImpl  implements OrderService {
 		orderRepository.updateStockByPk(stock);
 		orderRepository.deletOrderByOrderId(order.getOrderId());
 		orderRepository.insertOrderWithNotVersion(order);
+		this.deleteMeasuring(measuring);
+	}
+	
+	@Override
+	public void deleteOrderAddVersionAndStock(Order order, Measuring measuring, Order orderIsExist, String item, String userId) {
+		stockRecovery(orderIsExist,item,userId);
+		Stock stock = this.getStock(order.getProductFabricNo(), order.getOrderPattern());
+		logger.info("オーダー登録画面で在庫マスタ情報を更新する。在庫更新前：「注文パターン：" + order.getOrderPattern() + "、注文ID："
+				+ order.getOrderId() + "、ITEM：" + item + "、生地品番：" + order.getProductFabricNo() + "、理論在庫："
+				+ stock.getTheoreticalStock() + "、予約生地量：" + stock.getReservationStock() + "」");
+		BigDecimal reservationStock = stock.getReservationStock();
+		BigDecimal theoryFabricUsedMount = order.getTheoryFabricUsedMount();
+		stock.setReservationStock(reservationStock.add(theoryFabricUsedMount));
+		stock.setUpdatedUserId(userId);
+		stock.setUpdatedAt(new Date());
+		order.setTheoreticalStockCheck("1");
+		orderRepository.updateStockByPk(stock);
+		orderRepository.deletOrderByOrderId(order.getOrderId());
+		orderRepository.insertOrder(order);
 		this.deleteMeasuring(measuring);
 	}
 

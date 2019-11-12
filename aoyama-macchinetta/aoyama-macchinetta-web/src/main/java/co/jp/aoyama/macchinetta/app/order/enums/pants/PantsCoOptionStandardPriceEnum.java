@@ -25,7 +25,7 @@ public enum PantsCoOptionStandardPriceEnum {
 	PANTS_STANDARD_OPTION_CODE16("00016", "getOpVCut", "", "setPtVCutRtPrice", "op_vCut_id", "", "getPtVCutRtPrice"), // Vカット
 	PANTS_STANDARD_OPTION_CODE17("00017", "getOpHemUp", "", "setPtHemUpRtPrice", "op_hemUp", "", "getPtHemUpRtPrice"), // 裾上げ
 	PANTS_STANDARD_OPTION_CODE18("00018", "getOpDoubleWide", "", "setPtDblWidthRtPrice", "op_doubleWide", "", "getPtDblWidthRtPrice"), // ダブル幅
-	PANTS_STANDARD_OPTION_CODE19("00019", "getOpStitch", "", "setPtAmfStitchRtPrice", "op_stitch_id", "", "getPtAmfStitchRtPrice"), // ステッチ種類
+	PANTS_STANDARD_OPTION_CODE19("00051", "getOpStitch", "", "setPtAmfStitchRtPrice", "op_stitch_id", "", "getPtAmfStitchRtPrice"), // ステッチ種類
 	PANTS_STANDARD_OPTION_CODE20("00020", "getOpStitchModify", "", "setPtStitchPlcRtPrice", "op_stitchModify_id", "", "getPtStitchPlcRtPrice"), // ステッチ箇所変更
 	PANTS_STANDARD_OPTION_CODE22("00022", "getOpDStitch", "", "setPtDblstitchPlcRtPrice", "op_dStitch_id", "", "getPtDblstitchPlcRtPrice"), // ダブルステッチ
 	PANTS_STANDARD_OPTION_CODE24("00024", "getOpAmfColor", "", "setPtAmfColorRtPrice", "op_amfColor_id", "", "getPtAmfColorRtPrice"), // AMF色指定

@@ -58,6 +58,10 @@ public class OrderCoForm implements Serializable {
     public static interface JkStCuffBackMateItem {
     };
     
+    // グループ:Jacket 標準袖裏素材
+    public static interface JkStBodyBackMateItem {
+    };
+    
     // グループ:Jacket タキシード
     public static interface JkTuItem {
     };
@@ -92,6 +96,14 @@ public class OrderCoForm implements Serializable {
     
     // グループ:Pants タキシード
     public static interface PtTuItem {
+    };
+    
+    // グループ:Pants タキシード 釦素材
+    public static interface PtTuBtnMateItem {
+    };
+    
+    // グループ:Pants タキシード
+    public static interface PtSideStripeItem {
     };
     
     // グループ:Pants タキシード膝裏
@@ -194,6 +206,14 @@ public class OrderCoForm implements Serializable {
     
     // グループ:2Pants タキシード
     public static interface Pt2TuItem {
+    };
+    
+    // グループ:2Pants タキシード 釦素材
+    public static interface Pt2TuBtnMateItem {
+    };
+    
+    // グループ:Pants タキシード
+    public static interface Pt2SideStripeItem {
     };
     
     // グループ:2Pants タキシード膝裏
@@ -409,6 +429,10 @@ public class OrderCoForm implements Serializable {
 	@NotBlank(groups = {Default.class},message = "カテゴリを入力して下さい。")
 	private String productCategory;
 
+	// 商品情報_カテゴリ
+	//@NotBlank(groups = {Default.class},message = "カテゴリを入力して下さい。")
+	private String productGlossFablic;
+		
 	// 商品情報_ブランド区分
 	private String productBrandType;
 
@@ -565,8 +589,9 @@ public class OrderCoForm implements Serializable {
 	
 	private List<Yield> yieldList;
 	
+	// 納期短縮金額
 	private String expediteDeliveryPrice;
-	
+	// LCR縫製金額
 	private String lcrSewingPrice;
 
 	// 保存flag
@@ -575,7 +600,12 @@ public class OrderCoForm implements Serializable {
 	private String orderFlag;
 
 	private String version;
+	
+	private String fabricFlag;
 
+	private String statusInput; 
+
+	//オプション用flag
 	private String jacketItemFlag;
 
 	private String pantsItemFlag;
@@ -600,9 +630,7 @@ public class OrderCoForm implements Serializable {
 
 	private String shirtFlag;
 
-	private String fabricFlag;
-
-	// 補正
+	// 補正用flag
 	private String jacketAdFlag;
 
 	private String pantsAdFlag;
@@ -630,32 +658,32 @@ public class OrderCoForm implements Serializable {
 	
 	private String orderTscStatus;
 
-	//
 	private OrderFindFabric orderFindFabric;
 
 	private String orderFindFabricStr;
 
+	// JACKETオプション金額
 	private String jkOptionPrice;
-
+	// PANTSオプション金額
 	private String ptOptionPrice;
-
+	// 2PANTSオプション金額
 	private String pt2OptionPrice;
-
+	// GILETオプション金額
 	private String glOptionPrice;
-
+	// COATオプション金額
 	private String ctOptionPrice;
-
+	// SHIRTオプション金額
 	private String stOptionPrice;
-	
+	// SHIRT刺繍箇所金額
 	private String embroideryNmPosPrice;
-	
+	// SHIRTガゼット刺繍金額
 	private String gadgetPrice;
 
-	// ModelDoublePrice
+	// JACKETダブル金額
 	private String jkDoubleModelPrice;
-
+	// COATダブル金額
 	private String ctDoubleModelPrice;
-
+	// GILETダブル金額
 	private String glDoubleModelPrice;
 	
 	
@@ -1634,4 +1662,21 @@ public class OrderCoForm implements Serializable {
 	public void setOrderTscStatus(String orderTscStatus) {
 		this.orderTscStatus = orderTscStatus;
 	}
+
+	public String getStatusInput() {
+		return statusInput;
+	}
+
+	public void setStatusInput(String statusInput) {
+		this.statusInput = statusInput;
+	}
+
+	public String getProductGlossFablic() {
+		return productGlossFablic;
+	}
+
+	public void setProductGlossFablic(String productGlossFablic) {
+		this.productGlossFablic = productGlossFablic;
+	}
+	
 }

@@ -12,7 +12,8 @@ public enum CoProductPriceEnum {
 	PRODUCT_CODE08("90009","getCustIsDeliverShortning","expediteDelivery"),
 	PRODUCT_CODE09("90010","getCustIsEarlyDiscount",""),
 	PRODUCT_CODE10("00022","","productEmbroideryNmPos"),
-	PRODUCT_CODE11("00023","","gadget");
+	PRODUCT_CODE11("00023","","gadget"),
+	PRODUCT_CODE12("90011","getProductGlossFablic","glossFablic");
 	
 	private final String key;
 	private final String valueOne;

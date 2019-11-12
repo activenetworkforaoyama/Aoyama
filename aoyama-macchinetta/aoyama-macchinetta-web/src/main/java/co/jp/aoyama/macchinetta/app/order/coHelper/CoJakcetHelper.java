@@ -20,13 +20,21 @@ import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
 import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
-import co.jp.aoyama.macchinetta.app.order.OrderCoController;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm;
 import co.jp.aoyama.macchinetta.app.order.TypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoAdjustJacketStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletTuxedoInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionGiletWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketStandardInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketTuxedoInfo;
 import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionJacketWashableInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2StandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2TuxedoInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPants2WashableInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsStandardInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsTuxedoInfo;
+import co.jp.aoyama.macchinetta.app.order.coinfo.CoOptionPantsWashableInfo;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionCoStandardPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionCoTuxedoPriceEnum;
 import co.jp.aoyama.macchinetta.app.order.enums.jacket.JacketOptionCoWashablePriceEnum;
@@ -40,7 +48,9 @@ import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
 import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 
 public class CoJakcetHelper {
-
+	CoPants1Helper coPants1Helper = new CoPants1Helper();
+	CoGiletHelper coGiletHelper = new CoGiletHelper();
+	CoPants2Helper coPants2Helper = new CoPants2Helper();
 	@Inject
 	TypeSizeService typeSizeService;
 	
@@ -77,7 +87,7 @@ public class CoJakcetHelper {
 				String ojInsidePktPlace4 = coOptionJacketStandardInfo.getOjInsidePktPlace4();
 				if (BaseCheckUtil.isEmpty(ojInsidePktPlace1) && BaseCheckUtil.isEmpty(ojInsidePktPlace2)
 						&& BaseCheckUtil.isEmpty(ojInsidePktPlace3) && BaseCheckUtil.isEmpty(ojInsidePktPlace4)) {
-					messages.add("E033", "内ポケット変更");
+					messages.add("E033", "JACKET 内ポケット変更");
 					jacketFlag = true;
 				}
 			}
@@ -100,7 +110,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace5) && BaseCheckUtil.isEmpty(ojStitchModifyPlace6)
 						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace7) && BaseCheckUtil.isEmpty(ojStitchModifyPlace8)
 						&& BaseCheckUtil.isEmpty(ojStitchModifyPlace9)) {
-					messages.add("E033", "ステッチ箇所変更");
+					messages.add("E033", "JACKET ステッチ箇所変更");
 					jacketFlag = true;
 				}
 			}
@@ -120,7 +130,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace3) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace4)
 						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace5) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace6)
 						&& BaseCheckUtil.isEmpty(ojDStitchModifyPlace7) && BaseCheckUtil.isEmpty(ojDStitchModifyPlace8)) {
-					messages.add("E033", "ダブルステッチ変更");
+					messages.add("E033", "JACKET ダブルステッチ変更");
 					jacketFlag = true;
 				}
 			}
@@ -150,7 +160,7 @@ public class CoJakcetHelper {
 				
 				if(BaseCheckUtil.isEmpty(ojAmfColorPlace1)&&BaseCheckUtil.isEmpty(ojAmfColorPlace2)&&BaseCheckUtil.isEmpty(ojAmfColorPlace3)&&BaseCheckUtil.isEmpty(ojAmfColorPlace4)&&
 				   BaseCheckUtil.isEmpty(ojAmfColorPlace5)&&BaseCheckUtil.isEmpty(ojAmfColorPlace6)&&BaseCheckUtil.isEmpty(ojAmfColorPlace7)&&BaseCheckUtil.isEmpty(ojAmfColorPlace8)&&BaseCheckUtil.isEmpty(ojAmfColorPlace9)) {
-					messages.add("E032", "AMF色指定");
+					messages.add("E032", "JACKET AMF色指定");
 					jacketFlag = true;
 				}
 				
@@ -159,7 +169,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(ojAmfColorPlace5)&&BaseCheckUtil.isEmpty(ojAmfColor5)||BaseCheckUtil.isNotEmpty(ojAmfColorPlace6)&&BaseCheckUtil.isEmpty(ojAmfColor6)||
 				   BaseCheckUtil.isNotEmpty(ojAmfColorPlace7)&&BaseCheckUtil.isEmpty(ojAmfColor7)||BaseCheckUtil.isNotEmpty(ojAmfColorPlace8)&&BaseCheckUtil.isEmpty(ojAmfColor8)||
 				   BaseCheckUtil.isNotEmpty(ojAmfColorPlace9)&&BaseCheckUtil.isEmpty(ojAmfColor9)) {
-					messages.add("E032", "AMF色指定");
+					messages.add("E032", "JACKET AMF色指定");
 					jacketFlag = true;
 				}
 				
@@ -210,7 +220,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(ojBhColorPlace10)&& BaseCheckUtil.isEmpty(ojBhColorPlace11)&& BaseCheckUtil.isEmpty(ojBhColorPlace12)
 						&& BaseCheckUtil.isEmpty(ojBhColorPlace13)&& BaseCheckUtil.isEmpty(ojBhColorPlace14)&& BaseCheckUtil.isEmpty(ojBhColorPlace15)
 						&& BaseCheckUtil.isEmpty(ojBhColorPlace16)&& BaseCheckUtil.isEmpty(ojBhColorPlace17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 				
@@ -223,7 +233,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(ojBhColorPlace13)&&BaseCheckUtil.isEmpty(ojBhColor13)||BaseCheckUtil.isNotEmpty(ojBhColorPlace14)&&BaseCheckUtil.isEmpty(ojBhColor14)||
 				   BaseCheckUtil.isNotEmpty(ojBhColorPlace15)&&BaseCheckUtil.isEmpty(ojBhColor15)||BaseCheckUtil.isNotEmpty(ojBhColorPlace16)&&BaseCheckUtil.isEmpty(ojBhColor16)||
 				   BaseCheckUtil.isNotEmpty(ojBhColorPlace17)&&BaseCheckUtil.isEmpty(ojBhColor17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 			}
@@ -271,7 +281,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(ojByColorPlace10)&& BaseCheckUtil.isEmpty(ojByColorPlace11)&& BaseCheckUtil.isEmpty(ojByColorPlace12)
 						&& BaseCheckUtil.isEmpty(ojByColorPlace13)&& BaseCheckUtil.isEmpty(ojByColorPlace14)&& BaseCheckUtil.isEmpty(ojByColorPlace15)
 						&& BaseCheckUtil.isEmpty(ojByColorPlace16)) {
-					messages.add("E032", "ボタン付け糸指定");
+					messages.add("E032", "JACKET ボタン付け糸指定");
 					jacketFlag = true;
 				}
 				
@@ -283,7 +293,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(ojByColorPlace11)&&BaseCheckUtil.isEmpty(ojByColor11)||BaseCheckUtil.isNotEmpty(ojByColorPlace12)&&BaseCheckUtil.isEmpty(ojByColor12)||
 				   BaseCheckUtil.isNotEmpty(ojByColorPlace13)&&BaseCheckUtil.isEmpty(ojByColor13)||BaseCheckUtil.isNotEmpty(ojByColorPlace14)&&BaseCheckUtil.isEmpty(ojByColor14)||
 				   BaseCheckUtil.isNotEmpty(ojByColorPlace15)&&BaseCheckUtil.isEmpty(ojByColor15)||BaseCheckUtil.isNotEmpty(ojByColorPlace16)&&BaseCheckUtil.isEmpty(ojByColor16)) {
-					messages.add("E032", "ボタン付け糸指定");
+					messages.add("E032", "JACKET ボタン付け糸指定");
 					jacketFlag = true;
 				}
 				
@@ -343,7 +353,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(tjBhColorPlace10) && BaseCheckUtil.isEmpty(tjBhColorPlace11) && BaseCheckUtil.isEmpty(tjBhColorPlace12)
 						&& BaseCheckUtil.isEmpty(tjBhColorPlace13) && BaseCheckUtil.isEmpty(tjBhColorPlace14) && BaseCheckUtil.isEmpty(tjBhColorPlace15)
 						&& BaseCheckUtil.isEmpty(tjBhColorPlace16) && BaseCheckUtil.isEmpty(tjBhColorPlace17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 
@@ -356,7 +366,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(tjBhColorPlace13)&&BaseCheckUtil.isEmpty(tjBhColor13)||BaseCheckUtil.isNotEmpty(tjBhColorPlace14)&&BaseCheckUtil.isEmpty(tjBhColor14)||
 				   BaseCheckUtil.isNotEmpty(tjBhColorPlace15)&&BaseCheckUtil.isEmpty(tjBhColor15)||BaseCheckUtil.isNotEmpty(tjBhColorPlace16)&&BaseCheckUtil.isEmpty(tjBhColor16)||
 				   BaseCheckUtil.isNotEmpty(tjBhColorPlace17)&&BaseCheckUtil.isEmpty(tjBhColor17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 				
@@ -403,7 +413,7 @@ public class CoJakcetHelper {
 							&& BaseCheckUtil.isEmpty(tjByColorPlace10) && BaseCheckUtil.isEmpty(tjByColorPlace11) && BaseCheckUtil.isEmpty(tjByColorPlace12)
 							&& BaseCheckUtil.isEmpty(tjByColorPlace13) && BaseCheckUtil.isEmpty(tjByColorPlace14) && BaseCheckUtil.isEmpty(tjByColorPlace15)
 							&& BaseCheckUtil.isEmpty(tjByColorPlace16)) {
-						messages.add("E032", "ボタン付け糸指定");
+						messages.add("E032", "JACKET ボタン付け糸指定");
 						jacketFlag = true;
 					}
 					
@@ -415,7 +425,7 @@ public class CoJakcetHelper {
 					   BaseCheckUtil.isNotEmpty(tjByColorPlace11)&&BaseCheckUtil.isEmpty(tjByColor11)||BaseCheckUtil.isNotEmpty(tjByColorPlace12)&&BaseCheckUtil.isEmpty(tjByColor12)||
 					   BaseCheckUtil.isNotEmpty(tjByColorPlace13)&&BaseCheckUtil.isEmpty(tjByColor13)||BaseCheckUtil.isNotEmpty(tjByColorPlace14)&&BaseCheckUtil.isEmpty(tjByColor14)||
 					   BaseCheckUtil.isNotEmpty(tjByColorPlace15)&&BaseCheckUtil.isEmpty(tjByColor15)||BaseCheckUtil.isNotEmpty(tjByColorPlace16)&&BaseCheckUtil.isEmpty(tjByColor16)) {
-						messages.add("E032", "ボタン付け糸指定");
+						messages.add("E032", "JACKET ボタン付け糸指定");
 						jacketFlag = true;
 					}
 				}
@@ -447,7 +457,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace5) && BaseCheckUtil.isEmpty(wjStitchModifyPlace6)
 						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace7) && BaseCheckUtil.isEmpty(wjStitchModifyPlace8)
 						&& BaseCheckUtil.isEmpty(wjStitchModifyPlace9)) {
-					messages.add("E033", "ステッチ箇所変更");
+					messages.add("E033", "JACKET ステッチ箇所変更");
 					jacketFlag = true;
 				}
 			}
@@ -467,7 +477,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace3) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace4)
 						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace5) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace6)
 						&& BaseCheckUtil.isEmpty(wjDStitchModifyPlace7) && BaseCheckUtil.isEmpty(wjDStitchModifyPlace8)) {
-					messages.add("E033", "ダブルステッチ変更");
+					messages.add("E033", "JACKET ダブルステッチ変更");
 					jacketFlag = true;
 				}
 			}
@@ -497,7 +507,7 @@ public class CoJakcetHelper {
 				
 				if(BaseCheckUtil.isEmpty(wjAmfColorPlace1)&&BaseCheckUtil.isEmpty(wjAmfColorPlace2)&&BaseCheckUtil.isEmpty(wjAmfColorPlace3)&&BaseCheckUtil.isEmpty(wjAmfColorPlace4)&&
 				   BaseCheckUtil.isEmpty(wjAmfColorPlace5)&&BaseCheckUtil.isEmpty(wjAmfColorPlace6)&&BaseCheckUtil.isEmpty(wjAmfColorPlace7)&&BaseCheckUtil.isEmpty(wjAmfColorPlace8)&&BaseCheckUtil.isEmpty(wjAmfColorPlace9)) {
-					messages.add("E032", "AMF色指定");
+					messages.add("E032", "JACKET AMF色指定");
 					jacketFlag = true;
 				}
 				
@@ -506,7 +516,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(wjAmfColorPlace5)&&BaseCheckUtil.isEmpty(wjAmfColor5)||BaseCheckUtil.isNotEmpty(wjAmfColorPlace6)&&BaseCheckUtil.isEmpty(wjAmfColor6)||
 				   BaseCheckUtil.isNotEmpty(wjAmfColorPlace7)&&BaseCheckUtil.isEmpty(wjAmfColor7)||BaseCheckUtil.isNotEmpty(wjAmfColorPlace8)&&BaseCheckUtil.isEmpty(wjAmfColor8)||
 				   BaseCheckUtil.isNotEmpty(wjAmfColorPlace9)&&BaseCheckUtil.isEmpty(wjAmfColor9)) {
-					messages.add("E032", "AMF色指定");
+					messages.add("E032", "JACKET AMF色指定");
 					jacketFlag = true;
 				}
 				
@@ -557,7 +567,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(wjBhColorPlace10)&& BaseCheckUtil.isEmpty(wjBhColorPlace11)&& BaseCheckUtil.isEmpty(wjBhColorPlace12)
 						&& BaseCheckUtil.isEmpty(wjBhColorPlace13)&& BaseCheckUtil.isEmpty(wjBhColorPlace14)&& BaseCheckUtil.isEmpty(wjBhColorPlace15)
 						&& BaseCheckUtil.isEmpty(wjBhColorPlace16)&& BaseCheckUtil.isEmpty(wjBhColorPlace17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 				
@@ -570,7 +580,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(wjBhColorPlace13)&&BaseCheckUtil.isEmpty(wjBhColor13)||BaseCheckUtil.isNotEmpty(wjBhColorPlace14)&&BaseCheckUtil.isEmpty(wjBhColor14)||
 				   BaseCheckUtil.isNotEmpty(wjBhColorPlace15)&&BaseCheckUtil.isEmpty(wjBhColor15)||BaseCheckUtil.isNotEmpty(wjBhColorPlace16)&&BaseCheckUtil.isEmpty(wjBhColor16)||
 				   BaseCheckUtil.isNotEmpty(wjBhColorPlace17)&&BaseCheckUtil.isEmpty(wjBhColor17)) {
-					messages.add("E032", "ボタンホール色指定");
+					messages.add("E032", "JACKET ボタンホール色指定");
 					jacketFlag = true;
 				}
 			}
@@ -618,7 +628,7 @@ public class CoJakcetHelper {
 						&& BaseCheckUtil.isEmpty(wjByColorPlace10)&& BaseCheckUtil.isEmpty(wjByColorPlace11)&& BaseCheckUtil.isEmpty(wjByColorPlace12)
 						&& BaseCheckUtil.isEmpty(wjByColorPlace13)&& BaseCheckUtil.isEmpty(wjByColorPlace14)&& BaseCheckUtil.isEmpty(wjByColorPlace15)
 						&& BaseCheckUtil.isEmpty(wjByColorPlace16)) {
-					messages.add("E032", "ボタン付け糸指定");
+					messages.add("E032", "JACKET ボタン付け糸指定");
 					jacketFlag = true;
 				}
 				
@@ -630,7 +640,7 @@ public class CoJakcetHelper {
 				   BaseCheckUtil.isNotEmpty(wjByColorPlace11)&&BaseCheckUtil.isEmpty(wjByColor11)||BaseCheckUtil.isNotEmpty(wjByColorPlace12)&&BaseCheckUtil.isEmpty(wjByColor12)||
 				   BaseCheckUtil.isNotEmpty(wjByColorPlace13)&&BaseCheckUtil.isEmpty(wjByColor13)||BaseCheckUtil.isNotEmpty(wjByColorPlace14)&&BaseCheckUtil.isEmpty(wjByColor14)||
 				   BaseCheckUtil.isNotEmpty(wjByColorPlace15)&&BaseCheckUtil.isEmpty(wjByColor15)||BaseCheckUtil.isNotEmpty(wjByColorPlace16)&&BaseCheckUtil.isEmpty(wjByColor16)) {
-					messages.add("E032", "ボタン付け糸指定");
+					messages.add("E032", "JACKET ボタン付け糸指定");
 					jacketFlag = true;
 				}
 			}
@@ -887,7 +897,7 @@ public class CoJakcetHelper {
 		//下前胸内ポケット仕様
 		optionJacketStandardInfo.setOjBreastInnerPkt(OptionCodeKeys.JK_0002201);
 		//ステッチ種類
-		optionJacketStandardInfo.setOjStitch(OptionCodeKeys.JK_0002301);
+		optionJacketStandardInfo.setOjStitch(OptionCodeKeys.JK_0005102);
 		//ステッチ箇所変更
 		optionJacketStandardInfo.setOjStitchModify(OptionCodeKeys.JK_0002401);
 		optionJacketStandardInfo.setOjStitchModifyPlace(null);
@@ -924,6 +934,15 @@ public class CoJakcetHelper {
 		optionJacketStandardInfo.setOjAmfColorPlace7(null);
 		optionJacketStandardInfo.setOjAmfColorPlace8(null);
 		optionJacketStandardInfo.setOjAmfColorPlace9(null);
+		optionJacketStandardInfo.setOjAmfColor1(null);
+		optionJacketStandardInfo.setOjAmfColor2(null);
+		optionJacketStandardInfo.setOjAmfColor3(null);
+		optionJacketStandardInfo.setOjAmfColor4(null);
+		optionJacketStandardInfo.setOjAmfColor5(null);
+		optionJacketStandardInfo.setOjAmfColor6(null);
+		optionJacketStandardInfo.setOjAmfColor7(null);
+		optionJacketStandardInfo.setOjAmfColor8(null);
+		optionJacketStandardInfo.setOjAmfColor9(null);
 		optionJacketStandardInfo.setOjAmfAllColor(null);
 		//ボタンホール色指定
 		optionJacketStandardInfo.setOjBhColor(OptionCodeKeys.JK_0003101);
@@ -945,6 +964,23 @@ public class CoJakcetHelper {
 		optionJacketStandardInfo.setOjBhColorPlace15(null);
 		optionJacketStandardInfo.setOjBhColorPlace16(null);
 		optionJacketStandardInfo.setOjBhColorPlace17(null);
+		optionJacketStandardInfo.setOjBhColor1(null);
+		optionJacketStandardInfo.setOjBhColor2(null);
+		optionJacketStandardInfo.setOjBhColor3(null);
+		optionJacketStandardInfo.setOjBhColor4(null);
+		optionJacketStandardInfo.setOjBhColor5(null);
+		optionJacketStandardInfo.setOjBhColor6(null);
+		optionJacketStandardInfo.setOjBhColor7(null);
+		optionJacketStandardInfo.setOjBhColor8(null);
+		optionJacketStandardInfo.setOjBhColor9(null);
+		optionJacketStandardInfo.setOjBhColor10(null);
+		optionJacketStandardInfo.setOjBhColor11(null);
+		optionJacketStandardInfo.setOjBhColor12(null);
+		optionJacketStandardInfo.setOjBhColor13(null);
+		optionJacketStandardInfo.setOjBhColor14(null);
+		optionJacketStandardInfo.setOjBhColor15(null);
+		optionJacketStandardInfo.setOjBhColor16(null);
+		optionJacketStandardInfo.setOjBhColor17(null);
 		optionJacketStandardInfo.setOjBhAllColor(null);
 		//ボタン付け糸指定
 		optionJacketStandardInfo.setOjByColor(OptionCodeKeys.JK_0003401);
@@ -965,6 +1001,22 @@ public class CoJakcetHelper {
 		optionJacketStandardInfo.setOjByColorPlace14(null);
 		optionJacketStandardInfo.setOjByColorPlace15(null);
 		optionJacketStandardInfo.setOjByColorPlace16(null);
+		optionJacketStandardInfo.setOjByColor1(null);
+		optionJacketStandardInfo.setOjByColor2(null);
+		optionJacketStandardInfo.setOjByColor3(null);
+		optionJacketStandardInfo.setOjByColor4(null);
+		optionJacketStandardInfo.setOjByColor5(null);
+		optionJacketStandardInfo.setOjByColor6(null);
+		optionJacketStandardInfo.setOjByColor7(null);
+		optionJacketStandardInfo.setOjByColor8(null);
+		optionJacketStandardInfo.setOjByColor9(null);
+		optionJacketStandardInfo.setOjByColor10(null);
+		optionJacketStandardInfo.setOjByColor11(null);
+		optionJacketStandardInfo.setOjByColor12(null);
+		optionJacketStandardInfo.setOjByColor13(null);
+		optionJacketStandardInfo.setOjByColor14(null);
+		optionJacketStandardInfo.setOjByColor15(null);
+		optionJacketStandardInfo.setOjByColor16(null);
 		optionJacketStandardInfo.setOjByAllColor(null);
 		//ベント
 		optionJacketStandardInfo.setOjVentSpec(OptionCodeKeys.JK_0003701);
@@ -988,7 +1040,7 @@ public class CoJakcetHelper {
 		optionJacketTuxedoInfo.setTjGrade(OptionCodeKeys.JK_0000301);
 		optionJacketTuxedoInfo.setTjBackSpec(OptionCodeKeys.JK_0000401);
 		optionJacketTuxedoInfo.setTjFort(OptionCodeKeys.JK_0000502);
-		optionJacketTuxedoInfo.setTjGlossFablic(OptionCodeKeys.JK_0000601);
+		optionJacketTuxedoInfo.setTjGlossFablic(OptionCodeKeys.JK_0005001);
 		optionJacketTuxedoInfo.setTjBackCollar(OptionCodeKeys.JK_0000701);
 		optionJacketTuxedoInfo.setTjChainHange(OptionCodeKeys.JK_0000801);
 		optionJacketTuxedoInfo.setTjLapelWidth(OptionCodeKeys.JK_0000901);
@@ -1005,7 +1057,7 @@ public class CoJakcetHelper {
 		optionJacketTuxedoInfo.setTjCuffSpec(OptionCodeKeys.JK_0001901);
 		optionJacketTuxedoInfo.setTjInsidePktChange(OptionCodeKeys.JK_0002001);
 		optionJacketTuxedoInfo.setTjBreastInnerPkt(OptionCodeKeys.JK_0002201);
-		optionJacketTuxedoInfo.setTjStitch(OptionCodeKeys.JK_0002302);
+		optionJacketTuxedoInfo.setTjStitch(OptionCodeKeys.JK_0005101);
 		optionJacketTuxedoInfo.setTjBhColor(OptionCodeKeys.JK_0003101);
 		optionJacketTuxedoInfo.setTjBhColorPlace(null);
 		optionJacketTuxedoInfo.setTjBhColorPlace1(null);
@@ -1025,6 +1077,23 @@ public class CoJakcetHelper {
 		optionJacketTuxedoInfo.setTjBhColorPlace15(null);
 		optionJacketTuxedoInfo.setTjBhColorPlace16(null);
 		optionJacketTuxedoInfo.setTjBhColorPlace17(null);
+		optionJacketTuxedoInfo.setTjBhColor1(null);
+		optionJacketTuxedoInfo.setTjBhColor2(null);
+		optionJacketTuxedoInfo.setTjBhColor3(null);
+		optionJacketTuxedoInfo.setTjBhColor4(null);
+		optionJacketTuxedoInfo.setTjBhColor5(null);
+		optionJacketTuxedoInfo.setTjBhColor6(null);
+		optionJacketTuxedoInfo.setTjBhColor7(null);
+		optionJacketTuxedoInfo.setTjBhColor8(null);
+		optionJacketTuxedoInfo.setTjBhColor9(null);
+		optionJacketTuxedoInfo.setTjBhColor10(null);
+		optionJacketTuxedoInfo.setTjBhColor11(null);
+		optionJacketTuxedoInfo.setTjBhColor12(null);
+		optionJacketTuxedoInfo.setTjBhColor13(null);
+		optionJacketTuxedoInfo.setTjBhColor14(null);
+		optionJacketTuxedoInfo.setTjBhColor15(null);
+		optionJacketTuxedoInfo.setTjBhColor16(null);
+		optionJacketTuxedoInfo.setTjBhColor17(null);
 		optionJacketTuxedoInfo.setTjAllBhColor(null);
 		optionJacketTuxedoInfo.setTjByColor(OptionCodeKeys.JK_0003401);
 		optionJacketTuxedoInfo.setTjByColorPlace(null);
@@ -1044,6 +1113,22 @@ public class CoJakcetHelper {
 		optionJacketTuxedoInfo.setTjByColorPlace14(null);
 		optionJacketTuxedoInfo.setTjByColorPlace15(null);
 		optionJacketTuxedoInfo.setTjByColorPlace16(null);
+		optionJacketTuxedoInfo.setTjByColor1(null);
+		optionJacketTuxedoInfo.setTjByColor2(null);
+		optionJacketTuxedoInfo.setTjByColor3(null);
+		optionJacketTuxedoInfo.setTjByColor4(null);
+		optionJacketTuxedoInfo.setTjByColor5(null);
+		optionJacketTuxedoInfo.setTjByColor6(null);
+		optionJacketTuxedoInfo.setTjByColor7(null);
+		optionJacketTuxedoInfo.setTjByColor8(null);
+		optionJacketTuxedoInfo.setTjByColor9(null);
+		optionJacketTuxedoInfo.setTjByColor10(null);
+		optionJacketTuxedoInfo.setTjByColor11(null);
+		optionJacketTuxedoInfo.setTjByColor12(null);
+		optionJacketTuxedoInfo.setTjByColor13(null);
+		optionJacketTuxedoInfo.setTjByColor14(null);
+		optionJacketTuxedoInfo.setTjByColor15(null);
+		optionJacketTuxedoInfo.setTjByColor16(null);
 		optionJacketTuxedoInfo.setTjAllByColor(null);
 		optionJacketTuxedoInfo.setTjVentSpec(OptionCodeKeys.JK_0003701);
 		optionJacketTuxedoInfo.setTjBodyBackMate(OptionCodeKeys.JK_1000100);
@@ -1078,7 +1163,7 @@ public class CoJakcetHelper {
 		optionJacketWashableInfo.setWjCuffSpec(OptionCodeKeys.JK_0001901);
 		optionJacketWashableInfo.setWjInsidePktChange(OptionCodeKeys.JK_0002001);
 		optionJacketWashableInfo.setWjBreastInnerPkt(OptionCodeKeys.JK_0002201);
-		optionJacketWashableInfo.setWjStitch(OptionCodeKeys.JK_0002304);
+		optionJacketWashableInfo.setWjStitch(OptionCodeKeys.JK_0005104);
 		optionJacketWashableInfo.setWjStitchModify(OptionCodeKeys.JK_0002401);
 		optionJacketWashableInfo.setWjStitchModifyPlace(null);
 		optionJacketWashableInfo.setWjStitchModifyPlace1(null);
@@ -1112,6 +1197,15 @@ public class CoJakcetHelper {
 		optionJacketWashableInfo.setWjAmfColorPlace7(null);
 		optionJacketWashableInfo.setWjAmfColorPlace8(null);
 		optionJacketWashableInfo.setWjAmfColorPlace9(null);
+		optionJacketWashableInfo.setWjAmfColor1(null);
+		optionJacketWashableInfo.setWjAmfColor2(null);
+		optionJacketWashableInfo.setWjAmfColor3(null);
+		optionJacketWashableInfo.setWjAmfColor4(null);
+		optionJacketWashableInfo.setWjAmfColor5(null);
+		optionJacketWashableInfo.setWjAmfColor6(null);
+		optionJacketWashableInfo.setWjAmfColor7(null);
+		optionJacketWashableInfo.setWjAmfColor8(null);
+		optionJacketWashableInfo.setWjAmfColor9(null);
 		optionJacketWashableInfo.setWjAllAmfColor(null);
 		optionJacketWashableInfo.setWjBhColor(OptionCodeKeys.JK_0003101);
 		optionJacketWashableInfo.setWjBhColorPlace(null);
@@ -1131,6 +1225,22 @@ public class CoJakcetHelper {
 		optionJacketWashableInfo.setWjBhColorPlace15(null);
 		optionJacketWashableInfo.setWjBhColorPlace16(null);
 		optionJacketWashableInfo.setWjBhColorPlace17(null);
+		optionJacketWashableInfo.setWjBhColor1(null);
+		optionJacketWashableInfo.setWjBhColor2(null);
+		optionJacketWashableInfo.setWjBhColor3(null);
+		optionJacketWashableInfo.setWjBhColor4(null);
+		optionJacketWashableInfo.setWjBhColor5(null);
+		optionJacketWashableInfo.setWjBhColor6(null);
+		optionJacketWashableInfo.setWjBhColor7(null);
+		optionJacketWashableInfo.setWjBhColor8(null);
+		optionJacketWashableInfo.setWjBhColor9(null);
+		optionJacketWashableInfo.setWjBhColor10(null);
+		optionJacketWashableInfo.setWjBhColor12(null);
+		optionJacketWashableInfo.setWjBhColor13(null);
+		optionJacketWashableInfo.setWjBhColor14(null);
+		optionJacketWashableInfo.setWjBhColor15(null);
+		optionJacketWashableInfo.setWjBhColor16(null);
+		optionJacketWashableInfo.setWjBhColor17(null);
 		optionJacketWashableInfo.setWjAllBhColor(null);
 		optionJacketWashableInfo.setWjByColor(OptionCodeKeys.JK_0003401);
 		optionJacketWashableInfo.setWjByColorPlace(null);
@@ -1150,6 +1260,22 @@ public class CoJakcetHelper {
 		optionJacketWashableInfo.setWjByColorPlace14(null);
 		optionJacketWashableInfo.setWjByColorPlace15(null);
 		optionJacketWashableInfo.setWjByColorPlace16(null);
+		optionJacketWashableInfo.setWjByColor1(null);
+		optionJacketWashableInfo.setWjByColor2(null);
+		optionJacketWashableInfo.setWjByColor3(null);
+		optionJacketWashableInfo.setWjByColor4(null);
+		optionJacketWashableInfo.setWjByColor5(null);
+		optionJacketWashableInfo.setWjByColor6(null);
+		optionJacketWashableInfo.setWjByColor7(null);
+		optionJacketWashableInfo.setWjByColor8(null);
+		optionJacketWashableInfo.setWjByColor9(null);
+		optionJacketWashableInfo.setWjByColor10(null);
+		optionJacketWashableInfo.setWjByColor11(null);
+		optionJacketWashableInfo.setWjByColor12(null);
+		optionJacketWashableInfo.setWjByColor13(null);
+		optionJacketWashableInfo.setWjByColor14(null);
+		optionJacketWashableInfo.setWjByColor15(null);
+		optionJacketWashableInfo.setWjByColor16(null);
 		optionJacketWashableInfo.setWjAllByColor(null);
 		optionJacketWashableInfo.setWjVentSpec(OptionCodeKeys.JK_0003701);
 		optionJacketWashableInfo.setWjBodyBackMate(OptionCodeKeys.JK_1000100);
@@ -1158,7 +1284,7 @@ public class CoJakcetHelper {
 		optionJacketWashableInfo.setWjCuffBackMateStkNo(null);
 		optionJacketWashableInfo.setWjBtnMate(OptionCodeKeys.JK_3000800);
 		optionJacketWashableInfo.setWjBtnMateStkNo(null);
-		optionJacketWashableInfo.setWjShapeMemory(OptionCodeKeys.JK_0004401);
+		optionJacketWashableInfo.setWjShapeMemory(OptionCodeKeys.JK_0004402);
 	}
 	
 	public void jacketDefaultValueFromDb(OrderCoForm orderCoForm, Order orderJK) {
@@ -1191,7 +1317,11 @@ public class CoJakcetHelper {
 			optionJacketStandardInfo.setOjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
 			optionJacketStandardInfo.setOjStitch(orderJK.getJkStitchTypeCd());
 			optionJacketStandardInfo.setOjStitchModify(orderJK.getJkStitchPlcType());
-			optionJacketStandardInfo.setOjStitchModifyPlace(orderJK.getJkStitchPlcCd());
+			if(OptionCodeKeys.JK_0002401.equals(orderJK.getJkStitchPlcType())) {
+				optionJacketStandardInfo.setOjStitchModifyPlace(null);
+			}else {
+				optionJacketStandardInfo.setOjStitchModifyPlace(orderJK.getJkStitchPlcCd());
+			}
 			optionJacketStandardInfo.setOjDStitchModify(orderJK.getJkDblstitchPlcType());
 			optionJacketStandardInfo.setOjDStitchModifyPlace(orderJK.getJkDblstitchPlcCd());
 			optionJacketStandardInfo.setOjAmfColor(orderJK.getJkAmfColorType());
@@ -1235,7 +1365,7 @@ public class CoJakcetHelper {
 			optionJacketTuxedoInfo.setTjCoinPkt(orderJK.getJkShinobiPktCd());
 			optionJacketTuxedoInfo.setTjSleeveSpec(orderJK.getJkSleeveTypeCd());
 			optionJacketTuxedoInfo.setTjManica(orderJK.getJkManicaCd());
-			optionJacketTuxedoInfo.setTjSleeveBtnType(orderJK.getJkSleeveBtnType());
+			optionJacketTuxedoInfo.setTjSleeveBtnType(orderJK.getJkSleeveBtnCd());
 			optionJacketTuxedoInfo.setTjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
 			optionJacketTuxedoInfo.setTjCuffSpec(orderJK.getJkCuffCd());
 			optionJacketTuxedoInfo.setTjInsidePktChange(orderJK.getJkInnerPktType());
@@ -1284,7 +1414,11 @@ public class CoJakcetHelper {
 			optionJacketWashableInfo.setWjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
 			optionJacketWashableInfo.setWjStitch(orderJK.getJkStitchTypeCd());
 			optionJacketWashableInfo.setWjStitchModify(orderJK.getJkStitchPlcType());
-			optionJacketWashableInfo.setWjStitchModifyPlace(orderJK.getJkStitchPlcCd());
+			if(OptionCodeKeys.JK_0002401.equals(orderJK.getJkStitchPlcType())) {
+				optionJacketWashableInfo.setWjStitchModifyPlace(null);
+			}else {
+				optionJacketWashableInfo.setWjStitchModifyPlace(orderJK.getJkStitchPlcCd());
+			}
 			optionJacketWashableInfo.setWjDStitchModify(orderJK.getJkDblstitchPlcType());
 			optionJacketWashableInfo.setWjDStitchModifyPlace(orderJK.getJkDblstitchPlcCd());
 			optionJacketWashableInfo.setWjAmfColor(orderJK.getJkAmfColorType());
@@ -1300,7 +1434,7 @@ public class CoJakcetHelper {
 			optionJacketWashableInfo.setWjBodyBackMate(orderJK.getJkInnerBodyClothType());
 			optionJacketWashableInfo.setWjCuffBackMate(orderJK.getJkInnerSleeveClothType());
 			optionJacketWashableInfo.setWjBtnMate(orderJK.getJkBtnMaterialType());
-			optionJacketWashableInfo.setWjBtnMate(orderJK.getJkBtnMaterialType());
+			optionJacketWashableInfo.setWjBtnMateStkNo(orderJK.getJkBtnMaterialCd());
 			optionJacketWashableInfo.setWjBodyBackMateStkNo(orderJK.getJkInnerBodyClothCd());
 			optionJacketWashableInfo.setWjCuffBackMateStkNo(orderJK.getJkInnerSleeveClothCd());
 			optionJacketWashableInfo.setWjShapeMemory(orderJK.getJkShapeMemoryCd());
@@ -1315,7 +1449,7 @@ public class CoJakcetHelper {
 		
 		//ステッチ箇所変更
 		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)/* &&!jkStitchPlcCd.startsWith(regex) */) {
+		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd) &&!OptionCodeKeys.JK_0002401.equals(orderJK.getJkStitchPlcType())) {
 			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
 			for (String stitchPlcCode : jkStitchPlcSplit) {
 				if("0002501".equals(stitchPlcCode)) {
@@ -1691,7 +1825,7 @@ public class CoJakcetHelper {
 		
 		//ステッチ箇所変更
 		String jkStitchPlcCd = orderJK.getJkStitchPlcCd();
-		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd)/* &&!jkStitchPlcCd.startsWith(regex) */) {
+		if (jkStitchPlcCd != null && !"".equals(jkStitchPlcCd) && !OptionCodeKeys.JK_0002401.equals(orderJK.getJkStitchPlcType())) {
 			String[] jkStitchPlcSplit = jkStitchPlcCd.split(regex);
 			for (String stitchPlcCode : jkStitchPlcSplit) {
 				if("0002501".equals(stitchPlcCode)) {
@@ -1985,12 +2119,12 @@ public class CoJakcetHelper {
 		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkShoulderPadCd(order.getCorJkShoulderpadCd());
 		orderCoForm.getCoAdjustJacketStandardInfo().setCorJkFigureCorrectCd(order.getCorJkFigureCorrectCd());
 		
-		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
+		//orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
 
 	}
 	
 	
-	public void optionJacketDbToOrder(String productItem, String productCategory, OrderCoController orderCoController,
+	public void optionJacketDbToOrder(String productItem, String productCategory,
 			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
 			OrderService orderService, String orderFlag) {
 		Order orderJk = orderListService.findOrderJkOptionByOrderId(order.getOrderId());
@@ -2024,7 +2158,7 @@ public class CoJakcetHelper {
 			String ojJacketModel = coOptionJacketStandardInfo.getOjJacketModel();
 			if (ojJacketModel != null && !"".equals(ojJacketModel)) {
 				String code = productItem.concat("02").concat(ojJacketModel);
-				orderCoController.getOrderPriceForJacketModel(orderCoForm, code,orderFlag);
+				this.getOrderPriceForJacketModel(orderCoForm, code,orderFlag);
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionJacketStandardInfo.getOjStitchModify();
 				String stitchModifyCountArr = coOptionJacketStandardInfo.getOjStitchModifyPlace();
@@ -2032,23 +2166,23 @@ public class CoJakcetHelper {
 					String stitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00025");
 					String stitchModifyValueName = "stitchModify_id";
 					//if(!stitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForJacketProject(orderCoForm, stitchModifyCode,
+						this.getOrderPriceForJacketProject(orderCoForm, stitchModifyCode,
 								stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
 					//}
 				}
 
 				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionJacketStandardInfo.getOjDStitchModify();
-				String dSitchModifyCountArr = coOptionJacketStandardInfo.getOjDStitchModifyPlace();
-				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
-					String dStitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00027");
-					String dSitchModifyValueName = "dStitchModify_id";
-					//if(!dSitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForJacketProject(orderCoForm, dStitchModifyCode,
-								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-					//}
-					
-				}
+//				String dSitchModifyValue = coOptionJacketStandardInfo.getOjDStitchModify();
+//				String dSitchModifyCountArr = coOptionJacketStandardInfo.getOjDStitchModifyPlace();
+//				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
+//					String dStitchModifyCode = productItem.concat("02").concat(ojJacketModel).concat("00027");
+//					String dSitchModifyValueName = "dStitchModify_id";
+//					//if(!dSitchModifyCountArr.startsWith("/")) {
+//						this.getOrderPriceForJacketProject(orderCoForm, dStitchModifyCode,
+//								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+//					//}
+//					
+//				}
 
 				// AMF色指定
 				String jkAmfColorCd = coOptionJacketStandardInfo.getOjAmfAllColor();
@@ -2069,7 +2203,7 @@ public class CoJakcetHelper {
 						amfValuesList.removeAll(Collections.singleton(""));
 						String amfColorCount = String.valueOf(amfValuesList.size());
 						String amfColorCode = "00030".concat(amfValuesList.get(0));
-						orderCoController.getOrderPriceForJacketProject(orderCoForm, amfCode, amfValueName, amfColorCode,
+						this.getOrderPriceForJacketProject(orderCoForm, amfCode, amfValueName, amfColorCode,
 								amfColorCount, "", "", "");
 					}
 				}
@@ -2097,7 +2231,7 @@ public class CoJakcetHelper {
 						bhValuesList.removeAll(Collections.singleton(""));
 						String bhColorCount = String.valueOf(bhValuesList.size());
 						String bhColorCode = "00033".concat(bhValuesList.get(0));
-						orderCoController.getOrderPriceForJacketProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						this.getOrderPriceForJacketProject(orderCoForm, bhCode, bhValueName, bhColorCode,
 								bhColorCount, "", "", "");
 					}
 				}
@@ -2120,7 +2254,7 @@ public class CoJakcetHelper {
 						byValuesList.removeAll(Collections.singleton(""));
 						String byColorCount = String.valueOf(byValuesList.size());
 						String byColorCode = "00036".concat(byValuesList.get(0));
-						orderCoController.getOrderPriceForJacketProject(orderCoForm, byCode, byValueName, byColorCode,
+						this.getOrderPriceForJacketProject(orderCoForm, byCode, byValueName, byColorCode,
 								byColorCount, "", "", "");
 					}
 				}
@@ -2132,7 +2266,7 @@ public class CoJakcetHelper {
 			String tjJacketModel = coOptionJacketTuxedoInfo.getTjJacketModel();
 			if (tjJacketModel != null && !"".equals(tjJacketModel)) {
 				String code = productItem.concat("02").concat(tjJacketModel);
-				orderCoController.getOrderPriceForJacketTuxedoModel(orderCoForm, code,orderFlag);
+				this.getOrderPriceForJacketTuxedoModel(orderCoForm, code,orderFlag);
 				// ボタンホール色指定
 				String jkBtnholeColorCd = coOptionJacketTuxedoInfo.getTjAllBhColor();
 				if (jkBtnholeColorCd != null && !"".equals(jkBtnholeColorCd)/* &&!jkBtnholeColorCd.startsWith("/") */) {
@@ -2153,7 +2287,7 @@ public class CoJakcetHelper {
 						bhValuesList.removeAll(Collections.singleton(""));
 						String bhColorCount = String.valueOf(bhValuesList.size());
 						String bhColorCode = "00033".concat(bhValuesList.get(0));
-						orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						this.getOrderPriceForJacketTuxedoProject(orderCoForm, bhCode, bhValueName, bhColorCode,
 								bhColorCount, "", "", "");
 					}
 				}
@@ -2177,7 +2311,7 @@ public class CoJakcetHelper {
 						byValuesList.removeAll(Collections.singleton(""));
 						String byColorCount = String.valueOf(byValuesList.size());
 						String byColorCode = "00036".concat(byValuesList.get(0));
-						orderCoController.getOrderPriceForJacketTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
+						this.getOrderPriceForJacketTuxedoProject(orderCoForm, byCode, byValueName, byColorCode,
 								byColorCount, "", "", "");
 					}
 				}
@@ -2189,7 +2323,7 @@ public class CoJakcetHelper {
 			String wjJacketModel = coOptionJacketWashableInfo.getWjJacketModel();
 			if (wjJacketModel != null && !"".equals(wjJacketModel)) {
 				String code = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
-				orderCoController.getOrderPriceForJacketWashableModel(orderCoForm, code,orderFlag);
+				this.getOrderPriceForJacketWashableModel(orderCoForm, code,orderFlag);
 				
 				// ステッチ箇所変更
 				String stitchModifyValue = coOptionJacketWashableInfo.getWjStitchModify();
@@ -2198,24 +2332,24 @@ public class CoJakcetHelper {
 					String stitchModifyCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel())
 							.concat("00025");
 					String stitchModifyValueName = "wj_stitchModify_id";
-					if(!stitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, stitchModifyCode,
+					//if(!stitchModifyCountArr.startsWith("/")) {
+						this.getOrderPriceForJacketWashableProject(orderCoForm, stitchModifyCode,
 								stitchModifyValueName, "", "", stitchModifyCountArr, stitchModifyValue, "");
-					}
+					//}
 				}
 				
 				// ダブルステッチ変更
-				String dSitchModifyValue = coOptionJacketWashableInfo.getWjDStitchModify();
-				String dSitchModifyCountArr = coOptionJacketWashableInfo.getWjDStitchModifyPlace();
-				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
-					String dStitchModifyCode = productItem.concat("02")
-							.concat(coOptionJacketWashableInfo.getWjJacketModel()).concat("00027");
-					String dSitchModifyValueName = "wj_dStitchModify_id";
-					if(!dSitchModifyCountArr.startsWith("/")) {
-						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, dStitchModifyCode,
-								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
-					}
-				}
+//				String dSitchModifyValue = coOptionJacketWashableInfo.getWjDStitchModify();
+//				String dSitchModifyCountArr = coOptionJacketWashableInfo.getWjDStitchModifyPlace();
+//				if ("0002602".equals(dSitchModifyValue)&&BaseCheckUtil.isNotEmpty(dSitchModifyCountArr)) {
+//					String dStitchModifyCode = productItem.concat("02")
+//							.concat(coOptionJacketWashableInfo.getWjJacketModel()).concat("00027");
+//					String dSitchModifyValueName = "wj_dStitchModify_id";
+//					//if(!dSitchModifyCountArr.startsWith("/")) {
+//						this.getOrderPriceForJacketWashableProject(orderCoForm, dStitchModifyCode,
+//								dSitchModifyValueName, "", "", dSitchModifyCountArr, dSitchModifyValue, "");
+//					//}
+//				}
 				// AMF色指定
 				String jkAmfColorCd = coOptionJacketWashableInfo.getWjAllAmfColor();
 				if (jkAmfColorCd != null && !"".equals(jkAmfColorCd)) {
@@ -2236,7 +2370,7 @@ public class CoJakcetHelper {
 						amfValuesList.removeAll(Collections.singleton(""));
 						String amfColorCount = String.valueOf(amfValuesList.size());
 						String amfColorCode = "00030".concat(amfValuesList.get(0));
-						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, amfCode, amfValueName,
+						this.getOrderPriceForJacketWashableProject(orderCoForm, amfCode, amfValueName,
 								amfColorCode, amfColorCount, "", "", "");
 					}
 				}
@@ -2260,14 +2394,14 @@ public class CoJakcetHelper {
 						bhValuesList.removeAll(Collections.singleton(""));
 						String bhColorCount = String.valueOf(bhValuesList.size());
 						String bhColorCode = "00033".concat(bhValuesList.get(0));
-						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, bhCode, bhValueName, bhColorCode,
+						this.getOrderPriceForJacketWashableProject(orderCoForm, bhCode, bhValueName, bhColorCode,
 								bhColorCount, "", "", "");
 					}
 				}
 				// ボタン付け糸指定
 				String jkBtnthreadColorCd = coOptionJacketWashableInfo.getWjAllByColor();
 				if (jkBtnthreadColorCd != null && !"".equals(jkBtnthreadColorCd)) {
-					String bhTemp = jkBtnholeColorCd.replaceAll("/", "");
+					String bhTemp = jkBtnthreadColorCd.replaceAll("/", "");
 					if(!"".equals(bhTemp)) {
 						String byValueName = "wj_byColor_id";
 						String byCode = productItem.concat("02").concat(coOptionJacketWashableInfo.getWjJacketModel());
@@ -2284,7 +2418,7 @@ public class CoJakcetHelper {
 						String byColorCode = "00036".concat(byValuesList.get(0));
 						byValuesList.removeAll(Collections.singleton(null));
 						byValuesList.removeAll(Collections.singleton(""));
-						orderCoController.getOrderPriceForJacketWashableProject(orderCoForm, byCode, byValueName, byColorCode,
+						this.getOrderPriceForJacketWashableProject(orderCoForm, byCode, byValueName, byColorCode,
 								byColorCount, "", "", "");
 					}
 				}
@@ -2324,6 +2458,12 @@ public class CoJakcetHelper {
 				}
 				splicingCodeForFindUniquePrice = code + key + invokeOne;
 				
+				//胴裏素材
+				if("bodyBackMate".equals(valueFour)&&"1000400".equals(invokeOne)) {
+					splicingCodeDetail = "";
+				}
+				
+				//袖裏素材
 				if("cuffBackMate".equals(valueFour)&&"2000300".equals(invokeOne)) {
 					splicingCodeDetail = "";
 				}
@@ -2332,8 +2472,6 @@ public class CoJakcetHelper {
 					
 				}else {
 					if( "stitchModify_id".equals(valueFour)) {
-						
-						// || "dStitchModify_id".equals(valueFour)
 						
 						List<String> stitchModifyList = new ArrayList<String>();
 						String ojStitchModifyPlace1 = optionJacketStandardInfo.getOjStitchModifyPlace1();
@@ -2357,12 +2495,6 @@ public class CoJakcetHelper {
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
 						stitchModifyList.removeAll(Collections.singleton(""));
-//						Iterator<String> iterator = stitchModifyList.iterator();
-//						while (iterator.hasNext()) {
-//							if (iterator.next() == null || "".equals(iterator.next())) {
-//								iterator.remove();
-//							}
-//						}
 						
 						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne)) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
@@ -2379,50 +2511,44 @@ public class CoJakcetHelper {
 						}
 					}
 					
-					if( "dStitchModify_id".equals(valueFour)) {
-						List<String> stitchModifyList = new ArrayList<String>();
-						String ojStitchModifyPlace1 = optionJacketStandardInfo.getOjDStitchModifyPlace1();
-						stitchModifyList.add(ojStitchModifyPlace1);
-						String ojStitchModifyPlace2 = optionJacketStandardInfo.getOjDStitchModifyPlace2();
-						stitchModifyList.add(ojStitchModifyPlace2);
-						String ojStitchModifyPlace3 = optionJacketStandardInfo.getOjDStitchModifyPlace3();
-						stitchModifyList.add(ojStitchModifyPlace3);
-						String ojStitchModifyPlace4 = optionJacketStandardInfo.getOjDStitchModifyPlace4();
-						stitchModifyList.add(ojStitchModifyPlace4);
-						String ojStitchModifyPlace5 = optionJacketStandardInfo.getOjDStitchModifyPlace5();
-						stitchModifyList.add(ojStitchModifyPlace5);
-						String ojStitchModifyPlace6 = optionJacketStandardInfo.getOjDStitchModifyPlace6();
-						stitchModifyList.add(ojStitchModifyPlace6);
-						String ojStitchModifyPlace7 = optionJacketStandardInfo.getOjDStitchModifyPlace7();
-						stitchModifyList.add(ojStitchModifyPlace7);
-						String ojStitchModifyPlace8 = optionJacketStandardInfo.getOjDStitchModifyPlace8();
-						stitchModifyList.add(ojStitchModifyPlace8);
-						String ojStitchModifyPlace9 = optionJacketStandardInfo.getOjDStitchModifyPlace9();
-						stitchModifyList.add(ojStitchModifyPlace9);
-						
-						stitchModifyList.removeAll(Collections.singleton(null));
-						stitchModifyList.removeAll(Collections.singleton(""));
-//						Iterator<String> iterator = stitchModifyList.iterator();
-//						while (iterator.hasNext()) {
-//							if (iterator.next() == null || "".equals(iterator.next())) {
-//								iterator.remove();
+//					if( "dStitchModify_id".equals(valueFour)) {
+//						List<String> stitchModifyList = new ArrayList<String>();
+//						String ojStitchModifyPlace1 = optionJacketStandardInfo.getOjDStitchModifyPlace1();
+//						stitchModifyList.add(ojStitchModifyPlace1);
+//						String ojStitchModifyPlace2 = optionJacketStandardInfo.getOjDStitchModifyPlace2();
+//						stitchModifyList.add(ojStitchModifyPlace2);
+//						String ojStitchModifyPlace3 = optionJacketStandardInfo.getOjDStitchModifyPlace3();
+//						stitchModifyList.add(ojStitchModifyPlace3);
+//						String ojStitchModifyPlace4 = optionJacketStandardInfo.getOjDStitchModifyPlace4();
+//						stitchModifyList.add(ojStitchModifyPlace4);
+//						String ojStitchModifyPlace5 = optionJacketStandardInfo.getOjDStitchModifyPlace5();
+//						stitchModifyList.add(ojStitchModifyPlace5);
+//						String ojStitchModifyPlace6 = optionJacketStandardInfo.getOjDStitchModifyPlace6();
+//						stitchModifyList.add(ojStitchModifyPlace6);
+//						String ojStitchModifyPlace7 = optionJacketStandardInfo.getOjDStitchModifyPlace7();
+//						stitchModifyList.add(ojStitchModifyPlace7);
+//						String ojStitchModifyPlace8 = optionJacketStandardInfo.getOjDStitchModifyPlace8();
+//						stitchModifyList.add(ojStitchModifyPlace8);
+//						String ojStitchModifyPlace9 = optionJacketStandardInfo.getOjDStitchModifyPlace9();
+//						stitchModifyList.add(ojStitchModifyPlace9);
+//						
+//						stitchModifyList.removeAll(Collections.singleton(null));
+//						stitchModifyList.removeAll(Collections.singleton(""));
+//						
+//						if(stitchModifyList.isEmpty() || OptionCodeKeys.JK_0002601.equals(invokeOne)) {
+//							splicingCodeForFindUniquePrice = code + key + invokeOne;
+//							//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
+//						}else {
+//							Integer orderPriceInt = 0;
+//							//String[] strArr = countArr.split(",");
+//							for (int i = 0; i < stitchModifyList.size(); i++) {
+//								String projectPriceCode = code + "00027" + stitchModifyList.get(i);
+//								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+//								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
 //							}
+//							orderPrice = String.valueOf(orderPriceInt);
 //						}
-						
-						if(stitchModifyList.isEmpty() || OptionCodeKeys.JK_0002601.equals(invokeOne)) {
-							splicingCodeForFindUniquePrice = code + key + invokeOne;
-							//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
-						}else {
-							Integer orderPriceInt = 0;
-							//String[] strArr = countArr.split(",");
-							for (int i = 0; i < stitchModifyList.size(); i++) {
-								String projectPriceCode = code + "00027" + stitchModifyList.get(i);
-								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
-								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-							}
-							orderPrice = String.valueOf(orderPriceInt);
-						}
-					}
+//					}
 					
 					if ("amfColor_id".equals(valueFour)) {
 						HashSet<String> amfColorSet = new HashSet<String>();
@@ -2879,41 +3005,41 @@ public class CoJakcetHelper {
 						}
 					}
 					
-					if( "wj_dStitchModify_id".equals(valueFour)) {
-						List<String> stitchModifyList = new ArrayList<String>();
-						String wjStitchModifyPlace1 = optionJacketWashableInfo.getWjDStitchModifyPlace1();
-						stitchModifyList.add(wjStitchModifyPlace1);
-						String wjStitchModifyPlace2 = optionJacketWashableInfo.getWjDStitchModifyPlace2();
-						stitchModifyList.add(wjStitchModifyPlace2);
-						String wjStitchModifyPlace3 = optionJacketWashableInfo.getWjDStitchModifyPlace3();
-						stitchModifyList.add(wjStitchModifyPlace3);
-						String wjStitchModifyPlace4 = optionJacketWashableInfo.getWjDStitchModifyPlace4();
-						stitchModifyList.add(wjStitchModifyPlace4);
-						String wjStitchModifyPlace5 = optionJacketWashableInfo.getWjDStitchModifyPlace5();
-						stitchModifyList.add(wjStitchModifyPlace5);
-						String wjStitchModifyPlace6 = optionJacketWashableInfo.getWjDStitchModifyPlace6();
-						stitchModifyList.add(wjStitchModifyPlace6);
-						String wjStitchModifyPlace7 = optionJacketWashableInfo.getWjDStitchModifyPlace7();
-						stitchModifyList.add(wjStitchModifyPlace7);
-						String wjStitchModifyPlace8 = optionJacketWashableInfo.getWjDStitchModifyPlace8();
-						stitchModifyList.add(wjStitchModifyPlace8);
-						String wjStitchModifyPlace9 = optionJacketWashableInfo.getWjDStitchModifyPlace9();
-						stitchModifyList.add(wjStitchModifyPlace9);
-						
-						stitchModifyList.removeAll(Collections.singleton(null));
-						stitchModifyList.removeAll(Collections.singleton(""));
-						if(stitchModifyList.isEmpty() || OptionCodeKeys.JK_0002601.equals(invokeOne)) {
-							splicingCodeForFindUniquePrice = code + key + invokeOne;
-						}else {
-							Integer orderPriceInt = 0;
-							for (int i = 0; i < stitchModifyList.size(); i++) {
-								String projectPriceCode = code + "00027" + stitchModifyList.get(i);
-								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
-								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
-							}
-							orderPrice = String.valueOf(orderPriceInt);
-						}
-					}
+//					if( "wj_dStitchModify_id".equals(valueFour)) {
+//						List<String> stitchModifyList = new ArrayList<String>();
+//						String wjStitchModifyPlace1 = optionJacketWashableInfo.getWjDStitchModifyPlace1();
+//						stitchModifyList.add(wjStitchModifyPlace1);
+//						String wjStitchModifyPlace2 = optionJacketWashableInfo.getWjDStitchModifyPlace2();
+//						stitchModifyList.add(wjStitchModifyPlace2);
+//						String wjStitchModifyPlace3 = optionJacketWashableInfo.getWjDStitchModifyPlace3();
+//						stitchModifyList.add(wjStitchModifyPlace3);
+//						String wjStitchModifyPlace4 = optionJacketWashableInfo.getWjDStitchModifyPlace4();
+//						stitchModifyList.add(wjStitchModifyPlace4);
+//						String wjStitchModifyPlace5 = optionJacketWashableInfo.getWjDStitchModifyPlace5();
+//						stitchModifyList.add(wjStitchModifyPlace5);
+//						String wjStitchModifyPlace6 = optionJacketWashableInfo.getWjDStitchModifyPlace6();
+//						stitchModifyList.add(wjStitchModifyPlace6);
+//						String wjStitchModifyPlace7 = optionJacketWashableInfo.getWjDStitchModifyPlace7();
+//						stitchModifyList.add(wjStitchModifyPlace7);
+//						String wjStitchModifyPlace8 = optionJacketWashableInfo.getWjDStitchModifyPlace8();
+//						stitchModifyList.add(wjStitchModifyPlace8);
+//						String wjStitchModifyPlace9 = optionJacketWashableInfo.getWjDStitchModifyPlace9();
+//						stitchModifyList.add(wjStitchModifyPlace9);
+//						
+//						stitchModifyList.removeAll(Collections.singleton(null));
+//						stitchModifyList.removeAll(Collections.singleton(""));
+//						if(stitchModifyList.isEmpty() || OptionCodeKeys.JK_0002601.equals(invokeOne)) {
+//							splicingCodeForFindUniquePrice = code + key + invokeOne;
+//						}else {
+//							Integer orderPriceInt = 0;
+//							for (int i = 0; i < stitchModifyList.size(); i++) {
+//								String projectPriceCode = code + "00027" + stitchModifyList.get(i);
+//								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+//								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner);
+//							}
+//							orderPrice = String.valueOf(orderPriceInt);
+//						}
+//					}
 					
 					if ("wj_amfColor_id".equals(valueFour)) {
 						HashSet<String> amfColorSet = new HashSet<String>();
@@ -3111,10 +3237,16 @@ public class CoJakcetHelper {
 
 	public Map<String, String> getOrderPriceForJacketProject(OrderCoForm orderCoForm, String code, String idValueName,
 			String jspOptionCodeAndBranchCode, String colorCount, String countArr, String thisVal,String thisValStkNo) {
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+		String productItem = orderCoForm.getProductItem();
 		CoOptionJacketStandardInfo coOptionJacketStandardInfo = orderCoForm.getCoOptionJacketStandardInfo();
 		String ojFrontBtnCnt = coOptionJacketStandardInfo.getOjFrontBtnCnt();
 		JacketOptionCoStandardPriceEnum[] priceEnum = JacketOptionCoStandardPriceEnum.values();
 		String orderPrice = "";
+		String pantsOptionPrice = "";
+		String giletOptionPrice = "";
+		String pants2OptionPrice = "";
 		for (JacketOptionCoStandardPriceEnum price : priceEnum) {
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
@@ -3148,7 +3280,7 @@ public class CoJakcetHelper {
 					splicingCodeForFindUniquePrice = code + key + invokeOne;
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
-				if(("stitchModify_id".equals(idValueName) && "stitchModify_id".equals(valueFour))|| ("dStitchModify_id".equals(idValueName) &&"dStitchModify_id".equals(valueFour))) {
+				if("stitchModify_id".equals(idValueName) && "stitchModify_id".equals(valueFour)) {
 					hasIdvalueName = true;
 					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
@@ -3164,6 +3296,61 @@ public class CoJakcetHelper {
 						orderPrice = String.valueOf(orderPriceInt);
 					}
 				}
+				
+				if("stitch_id".equals(idValueName) && "stitch_id".equals(valueFour)) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					
+					if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					
+					if("01".equals(productItem)) {
+						CoOptionPantsStandardInfo coOptionPantsStandardInfo = orderCoForm.getCoOptionPantsStandardInfo();
+						String opPantsModel = coOptionPantsStandardInfo.getOpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(opPantsModel)) {
+							String pantsCode = productItem + "03" + opPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsModel(orderCoForm,pantsCode,"");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+							String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(ogGiletModel)) {
+								String giletCode = productItem + "04" + ogGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletStandardModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
+							String op2PantsModel = coOptionPants2StandardInfo.getOp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(op2PantsModel)) {
+								String pants2Code = productItem + "07" + op2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2Model(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
+					}
+				}
+				
 				if(("amfColor_id".equals(idValueName)&&"amfColor_id".equals(valueFour))||
 					("bhColor_id".equals(idValueName)&&"bhColor_id".equals(valueFour))||
 					("byColor_id".equals(idValueName))&&"byColor_id".equals(valueFour)) {
@@ -3175,6 +3362,61 @@ public class CoJakcetHelper {
 					}else {
 						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
 						orderPrice = String.valueOf(colorPrice);
+					}
+				}
+				
+				if(("btnMate".equals(idValueName) && "btnMate".equals(valueFour)) || ("btnMateStkNo".equals(idValueName) && "btnMateStkNo".equals(valueFour))) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+					if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					if("01".equals(productItem)) {
+						CoOptionPantsStandardInfo coOptionPantsStandardInfo = orderCoForm.getCoOptionPantsStandardInfo();
+						String opPantsModel = coOptionPantsStandardInfo.getOpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(opPantsModel)) {
+							String pantsCode = productItem + "03" + opPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsModel(orderCoForm,pantsCode,"");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletStandardInfo coOptionGiletStandardInfo = orderCoForm.getCoOptionGiletStandardInfo();
+							String ogGiletModel = coOptionGiletStandardInfo.getOgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(ogGiletModel)) {
+								String giletCode = productItem + "04" + ogGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletStandardModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2StandardInfo coOptionPants2StandardInfo = orderCoForm.getCoOptionPants2StandardInfo();
+							String op2PantsModel = coOptionPants2StandardInfo.getOp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(op2PantsModel)) {
+								String pants2Code = productItem + "07" + op2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2Model(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
 					}
 				}
 
@@ -3210,7 +3452,7 @@ public class CoJakcetHelper {
 				Method methodSix = coOptionJacketStandardInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionJacketStandardInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
+				if(!("0".equals(valueOf)) && BaseCheckUtil.isNotEmpty(valueOf) && !"null".equals(valueOf)) {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -3219,7 +3461,6 @@ public class CoJakcetHelper {
 			}
 		}
 		 
-		
 		if("0".equals(orderPrice)) {
 			orderPrice = "無料";
 		}else {
@@ -3227,6 +3468,17 @@ public class CoJakcetHelper {
 		}
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
+		if("01".equals(productItem)) {
+			if("btnMate".equals(idValueName) || "btnMateStkNo".equals(idValueName) || "stitch_id".equals(idValueName)) {
+				resultMap.put("optionPtPrice", String.valueOf(pantsOptionPrice));
+				if("0009902".equals(productIs3Piece)) {
+					resultMap.put("optionGlPrice", String.valueOf(giletOptionPrice));
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					resultMap.put("optionPt2Price", String.valueOf(pants2OptionPrice));
+				}
+			}
+		}
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
 		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
@@ -3238,7 +3490,13 @@ public class CoJakcetHelper {
 		CoOptionJacketTuxedoInfo coOptionJacketTuxedoInfo = orderCoForm.getCoOptionJacketTuxedoInfo();
 		String tjFrontBtnCnt = coOptionJacketTuxedoInfo.getTjFrontBtnCnt();
 		JacketOptionCoTuxedoPriceEnum[] priceEnum = JacketOptionCoTuxedoPriceEnum.values();
+		String productItem = orderCoForm.getProductItem();
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
 		String orderPrice = "";
+		String pantsOptionPrice = "";
+		String giletOptionPrice = "";
+		String pants2OptionPrice = "";
 		for (JacketOptionCoTuxedoPriceEnum price : priceEnum) {
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
@@ -3285,6 +3543,114 @@ public class CoJakcetHelper {
 							orderPrice = String.valueOf(colorPrice);
 						}
 				}
+				
+				if("tj_GlossFablic".equals(idValueName) && "tj_GlossFablic".equals(valueFour)) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					
+					if("01".equals(productItem)) {
+						CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo = orderCoForm.getCoOptionPantsTuxedoInfo();
+						String tpPantsModel = coOptionPantsTuxedoInfo.getTpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(tpPantsModel)) {
+							String pantsCode = productItem + "03" + tpPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsTuModel(orderCoForm, pantsCode, "");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+							String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(tgGiletModel)) {
+								String giletCode = productItem + "04" + tgGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletTuxedoModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
+							String tp2PantsModel = coOptionPants2TuxedoInfo.getTp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(tp2PantsModel)) {
+								String pants2Code = productItem + "07" + tp2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2TuxedoModel(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
+					}
+				}
+				
+				if(("tj_btnMate".equals(idValueName) && "tj_btnMate".equals(valueFour)) || ("tj_btnMateStkNo".equals(idValueName) && "tj_btnMateStkNo".equals(valueFour))) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					if("01".equals(productItem)) {
+						CoOptionPantsTuxedoInfo coOptionPantsTuxedoInfo = orderCoForm.getCoOptionPantsTuxedoInfo();
+						String tpPantsModel = coOptionPantsTuxedoInfo.getTpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(tpPantsModel)) {
+							String pantsCode = productItem + "03" + tpPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsTuModel(orderCoForm, pantsCode, "");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletTuxedoInfo coOptionGiletTuxedoInfo = orderCoForm.getCoOptionGiletTuxedoInfo();
+							String tgGiletModel = coOptionGiletTuxedoInfo.getTgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(tgGiletModel)) {
+								String giletCode = productItem + "04" + tgGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletTuxedoModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2TuxedoInfo coOptionPants2TuxedoInfo = orderCoForm.getCoOptionPants2TuxedoInfo();
+							String tp2PantsModel = coOptionPants2TuxedoInfo.getTp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(tp2PantsModel)) {
+								String pants2Code = productItem + "07" + tp2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2TuxedoModel(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
+					}
+				}
 
 				if (hasIdvalueName == true) {
 					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
@@ -3318,7 +3684,7 @@ public class CoJakcetHelper {
 				Method methodSix = coOptionJacketTuxedoInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionJacketTuxedoInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
+				if(!("0".equals(valueOf)) && BaseCheckUtil.isNotEmpty(valueOf) && !"null".equals(valueOf)) {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -3334,6 +3700,17 @@ public class CoJakcetHelper {
 		}
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
+		if("01".equals(productItem)) {
+			if("tj_btnMate".equals(idValueName) || "tj_btnMateStkNo".equals(idValueName) || "tj_GlossFablic".equals(idValueName)) {
+				resultMap.put("optionPtPrice", String.valueOf(pantsOptionPrice));
+				if("0009902".equals(productIs3Piece)) {
+					resultMap.put("optionGlPrice", String.valueOf(giletOptionPrice));
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					resultMap.put("optionPt2Price", String.valueOf(pants2OptionPrice));
+				}
+			}
+		}
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
 		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));
@@ -3343,9 +3720,15 @@ public class CoJakcetHelper {
 	public Map<String, String> getOrderPriceForJacketWashableProject(OrderCoForm orderCoForm, String code,
 			String idValueName, String jspOptionCodeAndBranchCode, String colorCount, String countArr, String thisVal,String thisValStkNo) {
 		CoOptionJacketWashableInfo coOptionJacketWashableInfo = orderCoForm.getCoOptionJacketWashableInfo();
+		String productIs3Piece = orderCoForm.getProductIs3Piece();
+		String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+		String productItem = orderCoForm.getProductItem();
 		String wjFrontBtnCnt = coOptionJacketWashableInfo.getWjFrontBtnCnt();
 		JacketOptionCoWashablePriceEnum[] priceEnum = JacketOptionCoWashablePriceEnum.values();
 		String orderPrice = "";
+		String pantsOptionPrice = "";
+		String giletOptionPrice = "";
+		String pants2OptionPrice = "";
 		for (JacketOptionCoWashablePriceEnum price : priceEnum) {
 			String key = price.getKey();
 			String valueOne = price.getValueOne();
@@ -3380,7 +3763,7 @@ public class CoJakcetHelper {
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
 				
-				if(("wj_stitchModify_id".equals(idValueName) && "wj_stitchModify_id".equals(valueFour))|| ("wj_dStitchModify_id".equals(idValueName) &&"wj_dStitchModify_id".equals(valueFour))) {
+				if("wj_stitchModify_id".equals(idValueName) && "wj_stitchModify_id".equals(valueFour)) {
 					hasIdvalueName = true;
 					if(BaseCheckUtil.isEmpty(countArr)) {
 						splicingCodeForFindUniquePrice = code + thisVal;
@@ -3397,6 +3780,60 @@ public class CoJakcetHelper {
 					}
 				}
 				
+				if("wj_stitch_id".equals(idValueName) && "wj_stitch_id".equals(valueFour)) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					
+					if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					
+					if("01".equals(productItem)) {
+						CoOptionPantsWashableInfo coOptionPantsWashableInfo = orderCoForm.getCoOptionPantsWashableInfo();
+						String wpPantsModel = coOptionPantsWashableInfo.getWpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(wpPantsModel)) {
+							String pantsCode = productItem + "03" + wpPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsWPModel(orderCoForm, pantsCode, "");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+							String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(wgGiletModel)) {
+								String giletCode = productItem + "04" + wgGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletWashableModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
+							String wp2PantsModel = coOptionPants2WashableInfo.getWp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(wp2PantsModel)) {
+								String pants2Code = productItem + "07" + wp2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2WashableModel(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
+					}
+				}
+				
 				if(("wj_amfColor_id".equals(idValueName)&&"wj_amfColor_id".equals(valueFour))||
 				   ("wj_bhColor_id".equals(idValueName)&&"wj_bhColor_id".equals(valueFour))||
 				   ("wj_byColor_id".equals(idValueName))&&"wj_byColor_id".equals(valueFour)) {
@@ -3408,6 +3845,61 @@ public class CoJakcetHelper {
 					}else {
 						Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
 						orderPrice = String.valueOf(colorPrice);
+					}
+				}
+				
+				if(("wj_btnMate".equals(idValueName) && "wj_btnMate".equals(valueFour)) || ("wj_btnMateStkNo".equals(idValueName) && "wj_btnMateStkNo".equals(valueFour))) {
+					hasIdvalueName = true;
+					splicingCodeForFindUniquePrice = code + key + thisVal;
+					if (thisValStkNo != null&&!"".equals(thisValStkNo)) {
+						splicingCodeDetail = code + key + thisVal + thisValStkNo;
+					}
+					if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}else{
+						if("".equals(orderPrice)) {
+							orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
+						}
+					}
+					if("01".equals(productItem)) {
+						CoOptionPantsWashableInfo coOptionPantsWashableInfo = orderCoForm.getCoOptionPantsWashableInfo();
+						String wpPantsModel = coOptionPantsWashableInfo.getWpPantsModel();
+						if(BaseCheckUtil.isNotEmpty(wpPantsModel)) {
+							String pantsCode = productItem + "03" + wpPantsModel;
+							Map<String, Object> orderPriceForPants = coPants1Helper.getOrderPriceForPantsWPModel(orderCoForm, pantsCode, "");
+							pantsOptionPrice = (String) orderPriceForPants.get("optionPrice");
+						}else {
+							pantsOptionPrice = "0";
+						}
+						if("0009902".equals(productIs3Piece)) {
+							CoOptionGiletWashableInfo coOptionGiletWashableInfo = orderCoForm.getCoOptionGiletWashableInfo();
+							String wgGiletModel = coOptionGiletWashableInfo.getWgGiletModel();
+							if(BaseCheckUtil.isNotEmpty(wgGiletModel)) {
+								String giletCode = productItem + "04" + wgGiletModel;
+								Map<String, Object> orderPriceForGilet = coGiletHelper.getOrderPriceForGiletWashableModel(orderCoForm, giletCode, "");
+								giletOptionPrice = (String) orderPriceForGilet.get("optionPrice");
+							}else {
+								giletOptionPrice = "0";
+							}
+						}else {
+							giletOptionPrice = "0";
+						}
+						
+						if("0009902".equals(productSparePantsClass)) {
+							CoOptionPants2WashableInfo coOptionPants2WashableInfo = orderCoForm.getCoOptionPants2WashableInfo();
+							String wp2PantsModel = coOptionPants2WashableInfo.getWp2PantsModel();
+							if(BaseCheckUtil.isNotEmpty(wp2PantsModel)) {
+								String pants2Code = productItem + "07" + wp2PantsModel;
+								Map<String, Object> orderPriceForPants2 = coPants2Helper.getOrderPriceForPants2WashableModel(orderCoForm, pants2Code, "");
+								pants2OptionPrice = (String) orderPriceForPants2.get("optionPrice");
+							}else {
+								pants2OptionPrice = "0";
+							}
+						}else {
+							pants2OptionPrice = "0";
+						}
 					}
 				}
 				
@@ -3445,7 +3937,7 @@ public class CoJakcetHelper {
 				Method methodSix = coOptionJacketWashableInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionJacketWashableInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if(!("0".equals(valueOf)) && valueOf!=null && !"null".equals(valueOf)) {
+				if(!("0".equals(valueOf)) && BaseCheckUtil.isNotEmpty(valueOf) && !"null".equals(valueOf)) {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -3461,6 +3953,17 @@ public class CoJakcetHelper {
 		}
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
+		if("01".equals(productItem)) {
+			if("wj_btnMate".equals(idValueName) || "wj_btnMateStkNo".equals(idValueName) || "wj_stitch_id".equals(idValueName)) {
+				resultMap.put("optionPtPrice", String.valueOf(pantsOptionPrice));
+				if("0009902".equals(productIs3Piece)) {
+					resultMap.put("optionGlPrice", String.valueOf(giletOptionPrice));
+				}
+				if("0009902".equals(productSparePantsClass)) {
+					resultMap.put("optionPt2Price", String.valueOf(pants2OptionPrice));
+				}
+			}
+		}
 		resultMap.put("idValuePrice", orderPrice);
 		resultMap.put("optionPrice", String.valueOf(optionPriceInt));
 		orderCoForm.setJkOptionPrice(String.valueOf(optionPriceInt));

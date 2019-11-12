@@ -27,7 +27,7 @@ public enum Pants2CoOptionWashableNextGenerationPriceEnum {
 	PANTS_STANDARD_OPTION_CODE16("00016","getWp2VCut","setPt2VCutWsWage","setPt2VCutWsPrice","getPt2VCutWsWage","getPt2VCutWsPrice"),//Vカット
 	PANTS_STANDARD_OPTION_CODE17("00017","getWp2HemUp","setPt2HemUpWsWage","setPt2HemUpWsPrice","getPt2HemUpWsWage","getPt2HemUpWsPrice"),//裾上げ
 	PANTS_STANDARD_OPTION_CODE18("00018","getWp2DoubleWide","setPt2DblWidthWsWage","setPt2DblWidthWsPrice","getPt2DblWidthWsWage","getPt2DblWidthWsPrice"),//ダブル幅
-	PANTS_STANDARD_OPTION_CODE19("00019","getWp2Stitch","setPt2AmfStitchWsWage","setPt2AmfStitchWsPrice","getPt2AmfStitchWsWage","getPt2AmfStitchWsPrice"),//ステッチ種類
+	PANTS_STANDARD_OPTION_CODE19("00051","getWp2Stitch","setPt2AmfStitchWsWage","setPt2AmfStitchWsPrice","getPt2AmfStitchWsWage","getPt2AmfStitchWsPrice"),//ステッチ種類
 	PANTS_STANDARD_OPTION_CODE20("00020","getWp2StitchModify","setPt2StitchPlcWsWage","setPt2StitchPlcWsPrice","getPt2StitchPlcWsWage","getPt2StitchPlcWsPrice"),//ステッチ箇所変更
 	PANTS_STANDARD_OPTION_CODE22("00022","getWp2DStitch","setPt2DblstitchPlcWsWage","setPt2DblstitchPlcWsPrice","getPt2DblstitchPlcWsWage","getPt2DblstitchPlcWsPrice"),//ダブルステッチ
 	PANTS_STANDARD_OPTION_CODE24("00024","getWp2AmfColor","setPt2AmfColorWsWage","setPt2AmfColorWsPrice","getPt2AmfColorWsWage","getPt2AmfColorWsPrice"),//AMF色指定

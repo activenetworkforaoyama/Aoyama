@@ -187,7 +187,7 @@ public class CoOptionJacketWashableInfo implements Serializable{
     @NotBlank(groups = { JkWaItem.class }, message = "JACKETのステッチ種類を入力して下さい。")
     private String wjStitch;
     
-    private Map<String,String> wjStitchMap;
+    private Map<String,String> wjCoStitchMap;
     
     private String jkStitchTypeRtPrice;
     
@@ -933,12 +933,12 @@ public class CoOptionJacketWashableInfo implements Serializable{
 		this.wjStitch = wjStitch;
 	}
 
-	public Map<String, String> getWjStitchMap() {
-		return wjStitchMap;
+	public Map<String, String> getWjCoStitchMap() {
+		return wjCoStitchMap;
 	}
 
-	public void setWjStitchMap(Map<String, String> wjStitchMap) {
-		this.wjStitchMap = wjStitchMap;
+	public void setWjCoStitchMap(Map<String, String> wjCoStitchMap) {
+		this.wjCoStitchMap = wjCoStitchMap;
 	}
 
 	public String getWjStitchModify() {

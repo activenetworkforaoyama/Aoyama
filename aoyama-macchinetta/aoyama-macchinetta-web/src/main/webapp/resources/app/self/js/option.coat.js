@@ -27,8 +27,10 @@ function initOptionCoat() {
 				jQuery("#ctModelFlag").val("0");
 				jQuery("#coatModelCheck").empty();
 				jQuery("#fabricMsg").empty();
+				jQuery("#coatModelCheck").hide();
 			}else if(checkResult == "false"){
 				//2はモデルチェク失敗の場合
+				jQuery("#coatModelCheck").show();
 				jQuery("#ctModelFlag").val("1"+"*"+getMsgByOneArg('msg065','COAT'));
 				setAlert('coatModelCheck',getMsgByOneArg('msg065','COAT'));
 			}
@@ -43,6 +45,7 @@ function initOptionCoat() {
 			jQuery('#oc_lapelDesign').prop('disabled', true);
 		}
 		
+/*       //仕様変更　「袖仕様」画面削除
 		// 袖仕様の制御
 		if (coatModel == "SoutienCollar") {
 			// チェンジポケット　選択可
@@ -54,8 +57,9 @@ function initOptionCoat() {
 			jQuery(':radio[name="coOptionCoatStandardInfo.ocSleeveSpec"]').each(function (index, elem) {
 				jQuery(elem).prop('disabled', true);
 			});
-			jQuery('#oc_sleeveSpec_id1').prop('checked', true);;
-		}
+			jQuery('#oc_sleeveSpec_id1').prop('checked', true);
+			jQuery('#oc_sleeveSpec_id1').prop('disabled', false);
+		}*/
 		// 腰ポケットの制御
 		var oc_waistPkt_options = ["フラップ通常", "箱（斜め）", "パッチ", "パッチ＆フラップ"];
 		var oc_waistPkt_options_code = ["0000201", "0000202", "0000203", "0000204"];
@@ -64,7 +68,7 @@ function initOptionCoat() {
 		var oc_waistPktElem = jQuery('#oc_waistPkt');
 		var before_oc_waistPkt = oc_waistPktElem.val();
 		oc_waistPktElem.empty();
-		if (coatModel == "SoutienCollar") {
+		if (coatModel == "SoutienCollar" || coatModel == "SoutienCollarRa") {
 			for (var index = 0; index < oc_waistPkt_stenOptions.length; index++) {
 				oc_waistPktElem.append(jQuery('<option />').val(oc_waistPkt_stenOptions_code[index]).text(oc_waistPkt_stenOptions[index]));
 			}
@@ -86,7 +90,7 @@ function initOptionCoat() {
 		var existBefore = false;
 		
 		oc_cuffSpecElem.empty();
-		if (coatModel == "SoutienCollar") {
+		if (coatModel == "SoutienCollar" || coatModel == "SoutienCollarRa") {
 			for (var index = 0; index < oc_cuffSpec_stenOptions.length; index++) {
 				oc_cuffSpecElem.append(jQuery('<option />').val(oc_cuffSpec_stenOptions_code[index]).text(oc_cuffSpec_stenOptions[index]));
 			}
@@ -104,7 +108,7 @@ function initOptionCoat() {
 			}
 			var coatItemFlag=jQuery('#coatItemFlag').val();
 			if ((coatItemFlag == "0" || coatItemFlag == "") && (orderFlag == "orderLink" 
-				|| orderFlag == "orderDetail" || orderFlag == "orderBack" 
+				|| orderFlag == "orderDetail" || orderFlag == "orderBack" || orderFlag == "orderCo" 
 				|| orderFlag == "orderCheck" || orderFlag == "orderDivert")) {
 				if (existBefore) {
 					oc_cuffSpecElem.val(before_oc_cuffSpec);
@@ -185,12 +189,14 @@ function initOptionCoat() {
 			// チェンジポケット　選択不可
 			jQuery(':radio[name="coOptionCoatStandardInfo.ocChangePkt"]').each(function (index, elem) {
 				jQuery('#oc_changePkt_id1').prop('checked', true).change();
+				jQuery('#oc_changePkt_id1').prop('disabled', false);
 				jQuery(elem).prop('disabled', true);
 			});
 			jQuery('#oc_changePkt_id1').prop('checked', true).change();
 			// スランテッドポケット　選択不可
 			jQuery(':radio[name="coOptionCoatStandardInfo.ocSlantedPkt"]').each(function (index, elem) {
 				jQuery('#oc_slantedPkt_id1').prop('checked', true).change();
+				jQuery('#oc_slantedPkt_id1').prop('disabled', false);
 				jQuery(elem).prop('disabled', true);
 			});
 			jQuery('#oc_slantedPkt_id1').prop('checked', true).change();
@@ -242,7 +248,7 @@ function initOptionCoat() {
 			oc_sleeveBtnTypeElem.val(oc_sleeveBtnTypeSet_code[0]);
 		}
 		jQuery('#oc_sleeveBtnType_div').show();
-
+		jQuery('#oc_sleeveBtnType').change();
 /*
 		if (oc_cuffSpec == "本切羽" || oc_cuffSpec == "仮切羽") {
 			// 本切羽か仮切羽の場合のみ、袖釦を表示

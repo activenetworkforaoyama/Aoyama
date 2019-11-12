@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.jp.aoyama.macchinetta.domain.model.CoSizeNumber;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.repository.order.TypeSizeRepository;
 
@@ -25,6 +26,14 @@ public class TypeSizeServiceImpl implements TypeSizeService{
 			String figure, String number) {
 		List<TypeSize> poTypeSizeList = typeSizeRepository.getPoTypeSizeOptimization(orderPattern,subItemCode,modelCode,figure,number);
 		return poTypeSizeList;
+	}
+	@Override
+	public List<CoSizeNumber> getCoSizeNumberByItem(String orderPattern, String subItemCode, String figure,
+			String modelCode) {
+	
+			List<CoSizeNumber> coTypeSizeList = typeSizeRepository.getCoSizeNumberByItem(orderPattern,subItemCode,figure,modelCode);
+			return coTypeSizeList;
+			
 	}
 
 }

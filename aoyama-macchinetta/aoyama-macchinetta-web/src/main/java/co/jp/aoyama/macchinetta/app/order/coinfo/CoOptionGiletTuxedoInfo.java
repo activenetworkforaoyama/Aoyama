@@ -52,12 +52,20 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	private Map<String, String> tgWaistPktMateMap;
 	
 	private String glWaistPktClothRtPrice;
+	
+	// 拝絹地
+	@NotBlank(groups = { GlTuItem.class }, message = "Giletの拝絹地を入力して下さい。")
+	private String tgGlossFablic;
+
+	private Map<String, String> tgGlossFablicMap;
+
+	private String glLookClothRtPrice;
 
 	// ステッチ種類
 	@NotBlank(groups = { GlTuItem.class }, message = "Giletのステッチ種類を入力して下さい。")
 	private String tgStitch;
 
-	private Map<String, String> tgStitchMap;
+	private Map<String, String> tgCoStitchMap;
 	
 	private String glAmfStitchRtPrice;
 	
@@ -216,6 +224,30 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 	
 	private String glWatchChainRtPrice;
 
+	public String getTgGlossFablic() {
+		return tgGlossFablic;
+	}
+
+	public void setTgGlossFablic(String tgGlossFablic) {
+		this.tgGlossFablic = tgGlossFablic;
+	}
+
+	public Map<String, String> getTgGlossFablicMap() {
+		return tgGlossFablicMap;
+	}
+
+	public void setTgGlossFablicMap(Map<String, String> tgGlossFablicMap) {
+		this.tgGlossFablicMap = tgGlossFablicMap;
+	}
+
+	public String getGlLookClothRtPrice() {
+		return glLookClothRtPrice;
+	}
+
+	public void setGlLookClothRtPrice(String glLookClothRtPrice) {
+		this.glLookClothRtPrice = glLookClothRtPrice;
+	}
+
 	public String getTgBreastPkt() {
 		return tgBreastPkt;
 	}
@@ -288,12 +320,12 @@ public class CoOptionGiletTuxedoInfo implements Serializable {
 		this.tgStitch = tgStitch;
 	}
 
-	public Map<String, String> getTgStitchMap() {
-		return tgStitchMap;
+	public Map<String, String> getTgCoStitchMap() {
+		return tgCoStitchMap;
 	}
 
-	public void setTgStitchMap(Map<String, String> tgStitchMap) {
-		this.tgStitchMap = tgStitchMap;
+	public void setTgCoStitchMap(Map<String, String> tgCoStitchMap) {
+		this.tgCoStitchMap = tgCoStitchMap;
 	}
 
 	public String getTgBhColor() {

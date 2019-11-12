@@ -113,6 +113,7 @@
     	and option_branch_code=#{optionBranchCode}
     	and tuxedo_available = '1'
     	and order_pattern = #{orderPattern}
+    	and option_code = #{optionCode}
   </select>
   
   <select id="getTuxedoButtonsList" resultMap="BaseResultMap" parameterType="java.lang.String">
@@ -131,6 +132,7 @@
     	and option_branch_code=#{optionBranchCode}
     	and washable_available = '1'
     	and order_pattern = #{orderPattern}
+    	and option_code = #{optionCode}
   </select>
   
   <select id="getWashableButtonsList" resultMap="BaseResultMap" parameterType="java.lang.String">

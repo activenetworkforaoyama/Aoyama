@@ -972,6 +972,13 @@
 						<strong><label class=" form-control-label-value" id="gl_model_rt_price">${orderFm.glModelRtPriceFm}</label></strong>
 					</div>
 				</div>
+				<c:if test="${order.productCategory == '9000102'}">
+				<div class="row">
+					<div class="col col-md-3"><label class=" form-control-label">拝絹地</label></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glLookClothNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="gl_look_cloth_rt_price">${orderFm.glLookClothRtPriceFm}</label></strong></div>
+				</div>
+				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">胸ポケット</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.glBreastPktNm}</label></strong></div>
@@ -1123,6 +1130,13 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptTackNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_tack_rt_price">${orderFm.ptTackRtPriceFm}</label></strong></div>
 				</div>
+				<c:if test="${order.productCategory == '9000102'}">
+				<div class="row">
+					<div class="col col-md-3"><label class=" form-control-label">拝絹地</label></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptLookClothNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_look_cloth_rt_price">${orderFm.ptLookClothRtPriceFm}</label></strong></div>
+				</div>
+				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">膝裏</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptKneeinnerTypeNm}</label></strong></div>
@@ -1221,7 +1235,7 @@
 					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt_stitch_plc_rt_price">${orderFm.ptStitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ変更</label></div>
 					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.ptDblstitchPlcType}</label></strong>
 					</div>
@@ -1280,11 +1294,13 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptSideStripeNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_side_stripe_rt_price">${orderFm.ptSideStripeRtPriceFm}</label></strong></div>
 				</div>
+				<c:if test="${order.ptSideStripeNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">側章幅</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ptSideStripeWidthNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt_side_stripe_width_rt_price">${orderFm.ptSideStripeWidthRtPriceFm}</label></strong></div>
 				</div>
+				</c:if>
 				</c:if>
 			</div>
 		</div>
@@ -1371,6 +1387,13 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2TackNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_tack_rt_price">${orderFm.pt2TackRtPriceFm}</label></strong></div>
 				</div>
+				<c:if test="${order.productCategory == '9000102'}">
+				<div class="row">
+					<div class="col col-md-3"><label class=" form-control-label">拝絹地</label></div>
+					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2LookClothNm}</label></strong></div>
+					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_look_cloth_rt_price">${orderFm.pt2LookClothRtPriceFm}</label></strong></div>
+				</div>
+				</c:if>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">膝裏</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2KneeinnerTypeNm}</label></strong></div>
@@ -1469,7 +1492,7 @@
 					<div class="col-12 col-md-1 text-right"><strong><label class=" form-control-label-value" id="pt2_stitch_plc_rt_price">${orderFm.pt2StitchPlcRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ</label></div>
+					<div class="col col-md-3"><label class=" form-control-label">ダブルステッチ変更</label></div>
 					<div class="col-12 col-md-8">
 					<strong><label class=" form-control-label-value">${order.pt2DblstitchPlcType}</label></strong>
 					</div>
@@ -1528,11 +1551,13 @@
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2SideStripeNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_side_stripe_rt_price">${orderFm.pt2SideStripeRtPriceFm}</label></strong></div>
 				</div>
+				<c:if test="${order.pt2SideStripeNm != '無し'}">
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">側章幅</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.pt2SideStripeWidthNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="pt2_side_stripe_width_rt_price">${orderFm.pt2SideStripeWidthRtPriceFm}</label></strong></div>
 				</div>
+				</c:if>
 				</c:if>
 			</div>
 		</div>
@@ -1622,11 +1647,6 @@
 					<div class="col col-md-3"><label class=" form-control-label">ラペルデザイン</label></div>
 					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ctLapelDesignNm}</label></strong></div>
 					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="ct_lapel_design_rt_price">${orderFm.ctLapelDesignRtPriceFm}</label></strong></div>
-				</div>
-				<div class="row">
-					<div class="col col-md-3"><label class=" form-control-label">袖仕様</label></div>
-					<div class="col-12 col-md-6"><strong><label class=" form-control-label-value">${order.ctSleeveTypeNm}</label></strong></div>
-					<div class="col-12 col-md-3 text-right"><strong><label class=" form-control-label-value" id="ct_sleeve_type_rt_price">${orderFm.ctSleeveTypeRtPriceFm}</label></strong></div>
 				</div>
 				<div class="row">
 					<div class="col col-md-3"><label class=" form-control-label">腰ポケット</label></div>
@@ -1971,27 +1991,6 @@
 </div>
 </div>
 <!-- SHIRT End -->
-<c:if test="${authority != '03' && authority != '04'}">
-<div class="col-md-12">
-	<div class="card">
-		<div class="card-header">
-			<strong class="card-title">店舗補正入力欄</strong>
-		</div>
-		<div class="card-body">
-			<div class="row">
-				<div class="col col-lg-12">
-					<div class="row">
-						<div class="col col-lg-12">
-							<textarea readonly name="textarea-input" id="textarea-input"
-								rows="3" class="form-control">${f:h(order.corStoreCorrectionMemo)}</textarea>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-</c:if>
 <!-- オプション End -->
 <c:if test="${authority == '01' || authority == '02'}">
 <div class="col-md-12">
@@ -3465,6 +3464,9 @@ jQuery("#saveOrChangeValue").click(function(){
 		jQuery("#pt_side_stripe_width_rt_price").hide();
 		jQuery("#pt2_side_stripe_rt_price").hide();
 		jQuery("#pt2_side_stripe_width_rt_price").hide();
+		jQuery("#gl_look_cloth_rt_price").hide();
+		jQuery("#pt_look_cloth_rt_price").hide();
+		jQuery("#pt2_look_cloth_rt_price").hide();
 	}
 	
 	//組成表示　胴裏地

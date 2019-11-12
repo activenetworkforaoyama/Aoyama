@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.terasoluna.gfw.common.exception.ResourceNotFoundException;
+import org.terasoluna.gfw.common.message.ResultMessages;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenCheck;
 import org.terasoluna.gfw.web.token.transaction.TransactionTokenType;
 
@@ -33,8 +35,8 @@ import co.jp.aoyama.macchinetta.domain.model.NextGenerationPrice;
 import co.jp.aoyama.macchinetta.domain.model.OptionBranchDetail;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderFindFabric;
+import co.jp.aoyama.macchinetta.domain.model.OrderPrice;
 import co.jp.aoyama.macchinetta.domain.model.Shop;
-import co.jp.aoyama.macchinetta.domain.model.Stock;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
 import co.jp.aoyama.macchinetta.domain.service.maker.MakerService;
 import co.jp.aoyama.macchinetta.domain.service.measuring.MeasuringService;
@@ -105,7 +107,229 @@ public class OrderCoReconfirmController {
 	@RequestMapping(value = "orderCoReForm")
 	@TransactionTokenCheck(value = "create",type = TransactionTokenType.BEGIN)
 	public String toOrderCoReForm(OrderCoForm orderCoForm,Model model,Map<String, Map<String, Integer>> map) {
-		String status = orderCoForm.getStatus();
+		
+		String productItem = orderCoForm.getProductItem();
+		String productCategory = orderCoForm.getProductCategory();
+		List<OrderPrice> priceList = orderService.getOrderPriceNotCate("CO");
+		List<OrderCodePrice> optionBranchPriceList = orderCoHelper.optionBranchPriceData(priceList);
+		Map<String, Integer> retailPriceRelatedCoProjects = this.retailPriceRelatedCoProjects(orderCoForm);
+		OrderFindFabric findStock = this.findStock(orderCoForm);
+		int optionPrice = Integer.parseInt(orderCoForm.getOptionPrice());
+		int productPrice = Integer.parseInt(orderCoForm.getProductPrice());
+		int setSomeProductPrice = orderCoHelper.setSomeProductPrice(orderCoForm);
+		int coOptionCountVal = 0;
+		coOptionCountVal = coOptionCountVal + setSomeProductPrice;
+		if("9000101".equals(productCategory)) {
+			if("01".equals(productItem)) {
+				String productIs3Piece = orderCoForm.getProductIs3Piece();
+				String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+				
+				//３Pieceまたはスペアパンツは有り
+				String productYes = "0009902";
+				//３Pieceまたはスペアパンツは無し
+				String productNo = "0009901";
+				int setStandard3Piece2PantsPrice = orderCoHelper.setStandard3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int jacketStandardPriceConfirm = orderCoHelper.jacketStandardPriceConfirm(orderCoForm);
+				int standardJkUpperPriceCount = orderCoHelper.standardJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				int pantsStandardPriceConfirm = orderCoHelper.pantsStandardPriceConfirm(orderCoForm);
+				int standardPtUpperPriceCount = orderCoHelper.standardPtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + setStandard3Piece2PantsPrice 
+						+ standardJkUpperPriceCount + jacketStandardPriceConfirm
+						+ standardPtUpperPriceCount + pantsStandardPriceConfirm;
+				
+				if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int giletStandardPriceConfirm = orderCoHelper.giletStandardPriceConfirm(orderCoForm);
+					int standardGlUpperPriceCount = orderCoHelper.standardGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					int pants2StandardPriceConfirm = orderCoHelper.pants2StandardPriceConfirm(orderCoForm);
+					int standardPt2UpperPriceCount = orderCoHelper.standardPt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + standardGlUpperPriceCount + giletStandardPriceConfirm
+							+ standardPt2UpperPriceCount + pants2StandardPriceConfirm;
+				}
+				else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int pants2StandardPriceConfirm = orderCoHelper.pants2StandardPriceConfirm(orderCoForm);
+					int standardPt2UpperPriceCount = orderCoHelper.standardPt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + standardPt2UpperPriceCount + pants2StandardPriceConfirm;
+				}
+				else if(productYes.equals(productIs3Piece) && productNo.equals(productSparePantsClass)) {
+					int giletStandardPriceConfirm = orderCoHelper.giletStandardPriceConfirm(orderCoForm);
+					int standardGlUpperPriceCount = orderCoHelper.standardGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + standardGlUpperPriceCount + giletStandardPriceConfirm;
+				}
+			}
+			else if("02".equals(productItem)) {
+				int jacketStandardPriceConfirm = orderCoHelper.jacketStandardPriceConfirm(orderCoForm);
+				int setStandard3Piece2PantsPrice = orderCoHelper.setStandard3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int standardJkUpperPriceCount = orderCoHelper.standardJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + standardJkUpperPriceCount 
+						+ setStandard3Piece2PantsPrice + jacketStandardPriceConfirm;
+			}
+			else if("03".equals(productItem)) {
+				int pantsStandardPriceConfirm = orderCoHelper.pantsStandardPriceConfirm(orderCoForm);
+				int standardPtUpperPriceCount = orderCoHelper.standardPtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + standardPtUpperPriceCount + pantsStandardPriceConfirm;
+			}
+			else if("04".equals(productItem)) {
+				int giletStandardPriceConfirm = orderCoHelper.giletStandardPriceConfirm(orderCoForm);
+				int setStandard3Piece2PantsPrice = orderCoHelper.setStandard3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int standardGlUpperPriceCount = orderCoHelper.standardGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + standardGlUpperPriceCount 
+						+ setStandard3Piece2PantsPrice + giletStandardPriceConfirm;
+			}
+			else if("05".equals(productItem)) {
+				int standardStUpperPriceCount = orderCoHelper.standardStUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + standardStUpperPriceCount;
+			}
+			else if("06".equals(productItem)) {
+				int setStandard3Piece2PantsPrice = orderCoHelper.setStandard3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int standardCtUpperPriceCount = orderCoHelper.standardCtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + standardCtUpperPriceCount + setStandard3Piece2PantsPrice;
+			}
+			
+			//データベースでオプション金額合計
+			if(coOptionCountVal != optionPrice) {
+				ResultMessages resultMessages = ResultMessages.error();
+				resultMessages.add("E037");
+				model.addAttribute("resultMessages",resultMessages);
+				return "forward:/orderCo/orderCoBack";
+			}
+			
+		}
+		else if("9000102".equals(productCategory)) {
+			if("01".equals(productItem)) {
+				String productIs3Piece = orderCoForm.getProductIs3Piece();
+				String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+				
+				//３Pieceまたはスペアパンツは有り
+				String productYes = "0009902";
+				//３Pieceまたはスペアパンツは無し
+				String productNo = "0009901";
+				int setTuxedo3Piece2PantsPrice = orderCoHelper.setTuxedo3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int jacketTuexdoPriceConfirm = orderCoHelper.jacketTuexdoPriceConfirm(orderCoForm);
+				int tuxedoJkUpperPriceCount = orderCoHelper.tuxedoJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				int pantsTuxedoPriceConfirm = orderCoHelper.pantsTuxedoPriceConfirm(orderCoForm);
+				int tuxedoPtUpperPriceCount = orderCoHelper.tuxedoPtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + setTuxedo3Piece2PantsPrice 
+						+ tuxedoJkUpperPriceCount + jacketTuexdoPriceConfirm 
+						+ tuxedoPtUpperPriceCount + pantsTuxedoPriceConfirm;
+				if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int giletTuxedoPriceConfirm = orderCoHelper.giletTuxedoPriceConfirm(orderCoForm);
+					int tuxedoGlUpperPriceCount = orderCoHelper.tuxedoGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					int pants2TuexdoPriceConfirm = orderCoHelper.pants2TuexdoPriceConfirm(orderCoForm);
+					int tuxedoPt2UpperPriceCount = orderCoHelper.tuxedoPt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + tuxedoGlUpperPriceCount + giletTuxedoPriceConfirm
+							+ tuxedoPt2UpperPriceCount + pants2TuexdoPriceConfirm;
+				}
+				else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int pants2TuexdoPriceConfirm = orderCoHelper.pants2TuexdoPriceConfirm(orderCoForm);
+					int tuxedoPt2UpperPriceCount = orderCoHelper.tuxedoPt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + tuxedoPt2UpperPriceCount + pants2TuexdoPriceConfirm;
+				}
+				else if(productYes.equals(productIs3Piece) && productNo.equals(productSparePantsClass)) {
+					int giletTuxedoPriceConfirm = orderCoHelper.giletTuxedoPriceConfirm(orderCoForm);
+					int tuxedoGlUpperPriceCount = orderCoHelper.tuxedoGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + tuxedoGlUpperPriceCount + giletTuxedoPriceConfirm;
+				}
+			}
+			else if("02".equals(productItem)) {
+				int setTuxedo3Piece2PantsPrice = orderCoHelper.setTuxedo3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int jacketTuexdoPriceConfirm = orderCoHelper.jacketTuexdoPriceConfirm(orderCoForm);
+				int tuxedoJkUpperPriceCount = orderCoHelper.tuxedoJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + tuxedoJkUpperPriceCount + jacketTuexdoPriceConfirm + setTuxedo3Piece2PantsPrice;
+			}
+			else if("03".equals(productItem)) {
+				int pantsTuxedoPriceConfirm = orderCoHelper.pantsTuxedoPriceConfirm(orderCoForm);
+				int tuxedoPtUpperPriceCount = orderCoHelper.tuxedoPtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + tuxedoPtUpperPriceCount + pantsTuxedoPriceConfirm;
+			}
+			else if("04".equals(productItem)) {
+				int setTuxedo3Piece2PantsPrice = orderCoHelper.setTuxedo3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int giletTuxedoPriceConfirm = orderCoHelper.giletTuxedoPriceConfirm(orderCoForm);
+				int tuxedoGlUpperPriceCount = orderCoHelper.tuxedoGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + tuxedoGlUpperPriceCount + giletTuxedoPriceConfirm + setTuxedo3Piece2PantsPrice;
+			}
+			
+			if(coOptionCountVal != optionPrice) {
+				ResultMessages resultMessages = ResultMessages.error();
+				resultMessages.add("E037");
+				model.addAttribute("resultMessages",resultMessages);
+				return "forward:/orderCo/orderCoBack";
+			}
+		}
+		else if("9000103".equals(productCategory)) {
+			if("01".equals(productItem)) {
+				String productIs3Piece = orderCoForm.getProductIs3Piece();
+				String productSparePantsClass = orderCoForm.getProductSparePantsClass();
+				
+				//３Pieceまたはスペアパンツは有り
+				String productYes = "0009902";
+				//３Pieceまたはスペアパンツは無し
+				String productNo = "0009901";
+				
+				int setWashable3Piece2PantsPrice = orderCoHelper.setWashable3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int jacketWashablePriceConfirm = orderCoHelper.jacketWashablePriceConfirm(orderCoForm);
+				int washableJkUpperPriceCount = orderCoHelper.washableJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				int pantsWashablePriceConfirm = orderCoHelper.pantsWashablePriceConfirm(orderCoForm);
+				int washablePtUpperPriceCount = orderCoHelper.washablePtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + setWashable3Piece2PantsPrice 
+						+ washableJkUpperPriceCount + jacketWashablePriceConfirm
+						+ washablePtUpperPriceCount + pantsWashablePriceConfirm;
+				
+				if(productYes.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int giletWashablePriceConfirm = orderCoHelper.giletWashablePriceConfirm(orderCoForm);
+					int washableGlUpperPriceCount = orderCoHelper.washableGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					int pants2WashablePriceConfirm = orderCoHelper.pants2WashablePriceConfirm(orderCoForm);
+					int washablePt2UpperPriceCount = orderCoHelper.washablePt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + washableGlUpperPriceCount + giletWashablePriceConfirm
+							+ washablePt2UpperPriceCount + pants2WashablePriceConfirm;
+				}
+				else if(productNo.equals(productIs3Piece) && productYes.equals(productSparePantsClass)) {
+					int pants2WashablePriceConfirm = orderCoHelper.pants2WashablePriceConfirm(orderCoForm);
+					int washablePt2UpperPriceCount = orderCoHelper.washablePt2UpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + washablePt2UpperPriceCount + pants2WashablePriceConfirm;
+				}
+				else if(productYes.equals(productIs3Piece) && productNo.equals(productSparePantsClass)) {
+					int giletWashablePriceConfirm = orderCoHelper.giletWashablePriceConfirm(orderCoForm);
+					int washableGlUpperPriceCount = orderCoHelper.washableGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+					coOptionCountVal = coOptionCountVal + washableGlUpperPriceCount + giletWashablePriceConfirm;
+				}
+			}
+			else if("02".equals(productItem)) {
+				int setWashable3Piece2PantsPrice = orderCoHelper.setWashable3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int jacketWashablePriceConfirm = orderCoHelper.jacketWashablePriceConfirm(orderCoForm);
+				int washableJkUpperPriceCount = orderCoHelper.washableJkUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + setWashable3Piece2PantsPrice + jacketWashablePriceConfirm + washableJkUpperPriceCount;
+			}
+			else if("03".equals(productItem)) {
+				int setWashable3Piece2PantsPrice = orderCoHelper.setWashable3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int pantsWashablePriceConfirm = orderCoHelper.pantsWashablePriceConfirm(orderCoForm);
+				int washablePtUpperPriceCount = orderCoHelper.washablePtUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + setWashable3Piece2PantsPrice + pantsWashablePriceConfirm + washablePtUpperPriceCount;
+			}
+			else if("04".equals(productItem)) {
+				int setWashable3Piece2PantsPrice = orderCoHelper.setWashable3Piece2PantsPrice(orderCoForm, retailPriceRelatedCoProjects);
+				int giletWashablePriceConfirm = orderCoHelper.giletWashablePriceConfirm(orderCoForm);
+				int washableGlUpperPriceCount = orderCoHelper.washableGlUpperPriceCount(orderCoForm, optionBranchPriceList);
+				coOptionCountVal = coOptionCountVal + washableGlUpperPriceCount + giletWashablePriceConfirm + setWashable3Piece2PantsPrice;
+			}
+			
+			if(coOptionCountVal != optionPrice) {
+				ResultMessages resultMessages = ResultMessages.error();
+				resultMessages.add("E037");
+				model.addAttribute("resultMessages",resultMessages);
+				return "forward:/orderCo/orderCoBack";
+			}
+		}
+		
+		// データベースで商品金額合計
+		int goodsPrice = orderCoHelper.getGoodsPrice(findStock, orderCoForm);
+		if(productPrice != goodsPrice) {
+			ResultMessages resultMessages = ResultMessages.error();
+			resultMessages.add("E037");
+			model.addAttribute("resultMessages",resultMessages);
+			return "forward:/orderCo/orderCoBack";
+		}
+		
+		String status = orderCoForm.getStatusInput();
 		if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
 			//注文ID
 			String orderId = orderCoForm.getCoCustomerMessageInfo().getOrderId();
@@ -118,7 +342,7 @@ public class OrderCoReconfirmController {
 				model.addAttribute("productOrderdDateFormat",productOrderdDateFormat);
 			}
 		}
-		OrderFindFabric findStock = this.findStock(orderCoForm);
+		
 		String color = findStock.getColor();
 		String pattern = findStock.getPattern();
 		model.addAttribute("color",color);
@@ -137,9 +361,8 @@ public class OrderCoReconfirmController {
 			mapShop.put(shop.getShopCode(), shop.getShopName());
 		}
 		model.addAttribute("mapShop",mapShop);
-		String productCategory = orderCoForm.getProductCategory();
+		
 		if("9000101".equals(productCategory)) {
-			String productItem = orderCoForm.getProductItem();
 			List<OptionBranchDetail> mateList = this.getMateList(orderCoForm);
 			
 			if("01".equals(productItem)) {
@@ -245,7 +468,6 @@ public class OrderCoReconfirmController {
 			}
 		}
 		else if("9000102".equals(productCategory)) {
-			String productItem = orderCoForm.getProductItem();
 			List<OptionBranchDetail> tuxedoMateList = this.getTuxedoMateList(orderCoForm);
 			if("01".equals(productItem)) {
 				String productIs3Piece = orderCoForm.getProductIs3Piece();
@@ -374,7 +596,6 @@ public class OrderCoReconfirmController {
 			}
 		}
 		else if("9000103".equals(productCategory)) {
-			String productItem = orderCoForm.getProductItem();
 			List<OptionBranchDetail> washableMateList = this.getWashableMateList(orderCoForm);
 			if("01".equals(productItem)) {
 				String productIs3Piece = orderCoForm.getProductIs3Piece();
@@ -1773,9 +1994,9 @@ public class OrderCoReconfirmController {
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedCoProjects(orderCoForm);
 			List<Adjust> adjustByItem = this.getAdjustByItem(orderCoForm);
 			//JACKETのステッチ箇所変更下代付属
-			List<NextGenerationPrice> selectJkOjInsidePktPlaceList = this.selectJkOjInsidePktPlaceList(orderCoForm);
+//			List<NextGenerationPrice> selectJkOjInsidePktPlaceList = this.selectJkOjInsidePktPlaceList(orderCoForm);
 			//JACKETのステッチ箇所変更下代工賃
-			List<NextGenerationPrice> selectCoComplexItemsWageList = this.selectCoComplexItemsWageList(orderCoForm);
+//			List<NextGenerationPrice> selectCoComplexItemsWageList = this.selectCoComplexItemsWageList(orderCoForm);
 			//JACKETのAMF色指定下代付属
 			List<NextGenerationPrice> selectJkOjAmfColorPriceList = this.selectJkOjAmfColorPriceList(orderCoForm);
 			//JACKETのAMF色指定下代工賃
@@ -1790,9 +2011,9 @@ public class OrderCoReconfirmController {
 			List<NextGenerationPrice> selectJkOjByColorWageList = this.selectJkOjByColorWageList(orderCoForm);
 			
 			//GILETのステッチ箇所変更下代付属
-			List<NextGenerationPrice> selectGlOgStitchModifyPriceList = this.selectGlOgStitchModifyPriceList(orderCoForm);
+//			List<NextGenerationPrice> selectGlOgStitchModifyPriceList = this.selectGlOgStitchModifyPriceList(orderCoForm);
 			//GILETのステッチ箇所変更下代工賃
-			List<NextGenerationPrice> selectGlOgStitchModifyWageList = this.selectGlOgStitchModifyWageList(orderCoForm);
+//			List<NextGenerationPrice> selectGlOgStitchModifyWageList = this.selectGlOgStitchModifyWageList(orderCoForm);
 			//GILETのAMF色指定下代付属
 			List<NextGenerationPrice> selectGlOjAmfColorPriceList = this.selectGlOjAmfColorPriceList(orderCoForm);
 			//GILETのAMF色指定下代工賃
@@ -1807,9 +2028,9 @@ public class OrderCoReconfirmController {
 			List<NextGenerationPrice> selectGlOjByColorWageList = this.selectGlOjByColorWageList(orderCoForm);
 			
 			//PANTSのステッチ箇所変更下代付属
-			List<NextGenerationPrice> selectPtOgStitchModifyPriceList = this.selectPtOgStitchModifyPriceList(orderCoForm);
+//			List<NextGenerationPrice> selectPtOgStitchModifyPriceList = this.selectPtOgStitchModifyPriceList(orderCoForm);
 			//PANTSのステッチ箇所変更下代工賃
-			List<NextGenerationPrice> selectPtOgStitchModifyWageList = this.selectPtOgStitchModifyWageList(orderCoForm);
+//			List<NextGenerationPrice> selectPtOgStitchModifyWageList = this.selectPtOgStitchModifyWageList(orderCoForm);
 			//PANTSのAMF色指定下代付属
 			List<NextGenerationPrice> selectPtOjAmfColorPriceList = this.selectPtOjAmfColorPriceList(orderCoForm);
 			//PANTSのAMF色指定下代工賃
@@ -1824,9 +2045,9 @@ public class OrderCoReconfirmController {
 			List<NextGenerationPrice> selectPtOjByColorWageList = this.selectPtOjByColorWageList(orderCoForm);
 			
 			//PANTS2のステッチ箇所変更下代付属
-			List<NextGenerationPrice> selectPt2OgStitchModifyPriceList = this.selectPt2OgStitchModifyPriceList(orderCoForm);
+//			List<NextGenerationPrice> selectPt2OgStitchModifyPriceList = this.selectPt2OgStitchModifyPriceList(orderCoForm);
 			//PANTS2のステッチ箇所変更下代工賃
-			List<NextGenerationPrice> selectPt2OgStitchModifyWageList = this.selectPt2OgStitchModifyWageList(orderCoForm);
+//			List<NextGenerationPrice> selectPt2OgStitchModifyWageList = this.selectPt2OgStitchModifyWageList(orderCoForm);
 			//PANTS2のAMF色指定下代付属
 			List<NextGenerationPrice> selectPt2OjAmfColorPriceList = this.selectPt2OjAmfColorPriceList(orderCoForm);
 			//PANTS2のAMF色指定下代工賃
@@ -1850,7 +2071,10 @@ public class OrderCoReconfirmController {
 				List<OptionBranchDetail> mateList = this.getMateList(orderCoForm);
 				
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
-
+				List<NextGenerationPrice> pants2OptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("07")).collect(Collectors.toList());
+				List<NextGenerationPrice> pantsOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("03")).collect(Collectors.toList());
+				List<NextGenerationPrice> giletOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("04")).collect(Collectors.toList());
+				
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
 				orderCoHelper.getGl3PieceNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
 				//商品情報_スペアパンツ_下代工賃と下代付属をデータベースに入力する
@@ -1880,9 +2104,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET_下代付属をデータベースに入力する
 					orderCoHelper.getCoStandardJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -1908,13 +2132,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutPantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS_下代付属をデータベースに入力する
-					orderCoHelper.getCoStandardPtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoStandardPtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS_下代付属をデータベースに入力する
 					orderCoHelper.getCoStandardPtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -1942,13 +2166,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET_下代付属をデータベースに入力する
 						orderCoHelper.getCoStandardGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -1974,13 +2198,13 @@ public class OrderCoReconfirmController {
 						//PANTS2のグループ項目名とコード
 						orderCoHelper.aboutPants2CheckBoxInDb(orderCoForm, order);
 						//PANTS2項目の下代工賃とPANTS2下代付属をデータベースに入力する
-						orderCoHelper.getCoStandardPt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoStandardPt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//PANTS2オプション付属詳細項目の下代工賃とPANTS2_下代付属をデータベースに入力する
 						orderCoHelper.getCoStandardPt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//PANTS2のステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//PANTS2のステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2009,13 +2233,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET_下代付属をデータベースに入力する
 						orderCoHelper.getCoStandardGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -2044,13 +2268,13 @@ public class OrderCoReconfirmController {
 						//PANTS2のグループ項目名とコード
 						orderCoHelper.aboutPants2CheckBoxInDb(orderCoForm, order);
 						//PANTS2項目の下代工賃とPANTS2下代付属をデータベースに入力する
-						orderCoHelper.getCoStandardPt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoStandardPt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//PANTS2オプション付属詳細項目の下代工賃とPANTS2_下代付属をデータベースに入力する
 						orderCoHelper.getCoStandardPt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//PANTS2のステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//PANTS2のステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2073,6 +2297,7 @@ public class OrderCoReconfirmController {
 				//JACKETの場合、itemCodeは"02"
 				else if("02".equals(productItem)) {
 					List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderCoForm);	
+					
 					//標準JACKET素材名
 					Map<String, String> selectStandardJkMaterialName = this.standardJkMateSelect(mateList, orderCoForm);
 					//JACKETについてのマピンッグ
@@ -2089,9 +2314,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET_下代付属をデータベースに入力する
 					orderCoHelper.getCoStandardJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -2120,13 +2345,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutPantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS_下代付属をデータベースに入力する
-					orderCoHelper.getCoStandardPtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoStandardPtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS_下代付属をデータベースに入力する
 					orderCoHelper.getCoStandardPtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -2155,13 +2380,13 @@ public class OrderCoReconfirmController {
 					//GILETのグループ項目名とコード
 					orderCoHelper.aboutGiletCheckBoxInDb(orderCoForm, order);
 					//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-					orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoStandardGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 					//GILETオプション付属詳細項目の下代工賃とGILET_下代付属をデータベースに入力する
 					orderCoHelper.getCoStandardGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//GILETのステッチ箇所変更下代工賃
-					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 					//GILETのステッチ箇所変更下代付属
-					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 					//GILETのAMF色指定の下代工賃
 					orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 					//GILETのAMF色指定の下代付属
@@ -2214,6 +2439,9 @@ public class OrderCoReconfirmController {
 			if("9000102".equals(orderCoForm.getProductCategory())) {
 				
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
+				List<NextGenerationPrice> pants2OptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("07")).collect(Collectors.toList());
+				List<NextGenerationPrice> pantsOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("03")).collect(Collectors.toList());
+				List<NextGenerationPrice> giletOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("04")).collect(Collectors.toList());
 				List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderCoForm);
 				
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
@@ -2251,9 +2479,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET下代付属をデータベースに入力する
 					orderCoHelper.getCoTuxedoJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -2277,13 +2505,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutTuxedoPantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS下代付属をデータベースに入力する
-					orderCoHelper.getCoTuxedoPtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoTuxedoPtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS下代付属をデータベースに入力する
 					orderCoHelper.getCoTuxedoPtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -2309,13 +2537,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutTuxedoGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 						orderCoHelper.getCoTuxedoGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -2339,13 +2567,13 @@ public class OrderCoReconfirmController {
 						//2PANTSのグループ項目名とコード
 						orderCoHelper.aboutTuxedoPants2CheckBoxInDb(orderCoForm, order);
 						//2PANTS項目の下代工賃と2PANTS下代付属をデータベースに入力する
-						orderCoHelper.getCoTuxedoPt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoTuxedoPt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//2PANTSオプション付属詳細項目の下代工賃と2PANTS下代付属をデータベースに入力する
 						orderCoHelper.getCoTuxedoPt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//PANTS2のステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//PANTS2のステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2371,13 +2599,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutTuxedoGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 						orderCoHelper.getCoTuxedoGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -2403,13 +2631,13 @@ public class OrderCoReconfirmController {
 						//2PANTSのグループ項目名とコード
 						orderCoHelper.aboutTuxedoPants2CheckBoxInDb(orderCoForm, order);
 						//2PANTS項目の下代工賃と2PANTS下代付属をデータベースに入力する
-						orderCoHelper.getCoTuxedoPt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoTuxedoPt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//2PANTSオプション付属詳細項目の下代工賃と2PANTS下代付属をデータベースに入力する
 						orderCoHelper.getCoTuxedoPt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//PANTS2のステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//PANTS2のステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2445,9 +2673,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET下代付属をデータベースに入力する
 					orderCoHelper.getCoTuxedoJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -2473,13 +2701,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutTuxedoPantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS下代付属をデータベースに入力する
-					orderCoHelper.getCoTuxedoPtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoTuxedoPtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS下代付属をデータベースに入力する
 					orderCoHelper.getCoTuxedoPtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -2505,13 +2733,13 @@ public class OrderCoReconfirmController {
 					//GILETのグループ項目名とコード
 					orderCoHelper.aboutTuxedoGiletCheckBoxInDb(orderCoForm, order);
 					//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-					orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoTuxedoGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 					//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 					orderCoHelper.getCoTuxedoGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//GILETのステッチ箇所変更下代工賃
-					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 					//GILETのステッチ箇所変更下代付属
-					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 					//GILETのAMF色指定の下代工賃
 					orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 					//GILETのAMF色指定の下代付属
@@ -2530,6 +2758,9 @@ public class OrderCoReconfirmController {
 			if("9000103".equals(orderCoForm.getProductCategory())) {
 				
 				List<NextGenerationPrice> optionNextGenerationPriceList = this.optionNextGenerationPrice(orderCoForm);
+				List<NextGenerationPrice> pants2OptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("07")).collect(Collectors.toList());
+				List<NextGenerationPrice> pantsOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("03")).collect(Collectors.toList());
+				List<NextGenerationPrice> giletOptionTypeList = optionNextGenerationPriceList.stream().filter(a -> a.getMobSubItemCode().equals("04")).collect(Collectors.toList());
 				List<NextGenerationPrice> detailNextGenerationPriceList = this.detailNextGenerationPrice(orderCoForm);
 				
 				//商品情報_３Piece_下代工賃と下代付属をデータベースに入力する
@@ -2563,9 +2794,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET下代付属をデータベースに入力する
 					orderCoHelper.getCoWashableJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -2589,13 +2820,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutWashablePantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS下代付属をデータベースに入力する
-					orderCoHelper.getCoWashablePtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoWashablePtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS下代付属をデータベースに入力する
 					orderCoHelper.getCoWashablePtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -2621,13 +2852,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutWashableGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 						orderCoHelper.getCoWashableGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -2651,13 +2882,13 @@ public class OrderCoReconfirmController {
 						//2PANTSのグループ項目名とコード
 						orderCoHelper.aboutWashablePants2CheckBoxInDb(orderCoForm, order);
 						//2PANTS項目の下代工賃と2PANTS下代付属をデータベースに入力する
-						orderCoHelper.getCoWashablePt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoWashablePt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//2PANTSオプション付属詳細項目の下代工賃と2PANTS下代付属をデータベースに入力する
 						orderCoHelper.getCoWashablePt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//PANTS2のステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//PANTS2のステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2683,13 +2914,13 @@ public class OrderCoReconfirmController {
 						//GILETのグループ項目名とコード
 						orderCoHelper.aboutWashableGiletCheckBoxInDb(orderCoForm, order);
 						//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-						orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 						//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 						orderCoHelper.getCoWashableGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//GILETのステッチ箇所変更下代工賃
-						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 						//GILETのステッチ箇所変更下代付属
-						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//						orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 						//GILETのAMF色指定の下代工賃
 						orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 						//GILETのAMF色指定の下代付属
@@ -2716,13 +2947,13 @@ public class OrderCoReconfirmController {
 						//2PANTSのグループ項目名とコード
 						orderCoHelper.aboutWashablePants2CheckBoxInDb(orderCoForm, order);
 						//2PANTS項目の下代工賃と2PANTS下代付属をデータベースに入力する
-						orderCoHelper.getCoWashablePt2NextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+						orderCoHelper.getCoWashablePt2NextGenerationPrice(orderCoForm, order, pants2OptionTypeList);
 						//2PANTSオプション付属詳細項目の下代工賃と2PANTS下代付属をデータベースに入力する
 						orderCoHelper.getCoWashablePt2DetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 						//2PANTSのステッチ箇所変更の下代工賃
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextWageCount(orderCoForm, order, selectPt2OgStitchModifyWageList);
 						//2PANTSのステッチ箇所変更の下代付属
-						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
+//						orderCoHelper.standardPt2Op2StitchModifyPlaceNextPriceCount(orderCoForm, order, selectPt2OgStitchModifyPriceList);
 						//PANTS2のAMF色指定の下代工賃
 						orderCoHelper.standardPt2Op2AmfColorPlaceNextWageCount(orderCoForm, order, selectPt2OjAmfColorWageList);
 						//PANTS2のAMF色指定の下代付属
@@ -2758,9 +2989,9 @@ public class OrderCoReconfirmController {
 					//JACKETオプション付属詳細項目の下代工賃とJACKET下代付属をデータベースに入力する
 					orderCoHelper.getCoWashableJkDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//JACKETのステッチ箇所変更下代工賃
-					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextWageCount(orderCoForm, order, selectCoComplexItemsWageList);
 					//JACKETのステッチ箇所変更下代付属
-					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
+//					orderCoHelper.standardJkOjStitchModifyPlaceNextPriceCount(orderCoForm, order, selectJkOjInsidePktPlaceList);
 					//JACKETのAMF色指定下代工賃
 					orderCoHelper.standardJkOjAmfColorNextWageCount(orderCoForm, order, selectJkOjAmfColorWageList);
 					//JACKETのAMF色指定下代付属
@@ -2787,13 +3018,13 @@ public class OrderCoReconfirmController {
 					//PANTSのグループ項目名とコード
 					orderCoHelper.aboutWashablePantsCheckBoxInDb(orderCoForm, order);
 					//PANTS項目の下代工賃とPANTS下代付属をデータベースに入力する
-					orderCoHelper.getCoWashablePtNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoWashablePtNextGenerationPrice(orderCoForm, order, pantsOptionTypeList);
 					//PANTSオプション付属詳細項目の下代工賃とPANTS下代付属をデータベースに入力する
 					orderCoHelper.getCoWashablePtDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//PANTSのステッチ箇所変更下代工賃
-					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectPtOgStitchModifyWageList);
 					//PANTSのステッチ箇所変更下代付属
-					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
+//					orderCoHelper.standardPtOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectPtOgStitchModifyPriceList);
 					//PANTSのAMF色指定の下代工賃
 					orderCoHelper.standardPtOpAmfColorPlaceNextWageCount(orderCoForm, order, selectPtOjAmfColorWageList);
 					//PANTSのAMF色指定の下代付属
@@ -2819,13 +3050,13 @@ public class OrderCoReconfirmController {
 					//GILETのグループ項目名とコード
 					orderCoHelper.aboutWashableGiletCheckBoxInDb(orderCoForm, order);
 					//GILET項目の下代工賃とGILET下代付属をデータベースに入力する
-					orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, optionNextGenerationPriceList);
+					orderCoHelper.getCoWashableGlNextGenerationPrice(orderCoForm, order, giletOptionTypeList);
 					//GILETオプション付属詳細項目の下代工賃とGILET下代付属をデータベースに入力する
 					orderCoHelper.getCoWashableGlDetailNextGenerationPrice(orderCoForm, order, detailNextGenerationPriceList);
 					//GILETのステッチ箇所変更下代工賃
-					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextWageCount(orderCoForm, order, selectGlOgStitchModifyWageList);
 					//GILETのステッチ箇所変更下代付属
-					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
+//					orderCoHelper.standardGlOgStitchModifyPlaceNextPriceCount(orderCoForm, order, selectGlOgStitchModifyPriceList);
 					//GILETのAMF色指定の下代工賃
 					orderCoHelper.standardGlOgAmfColorPlaceNextWageCount(orderCoForm, order, selectGlOjAmfColorWageList);
 					//GILETのAMF色指定の下代付属
@@ -2870,34 +3101,17 @@ public class OrderCoReconfirmController {
 					orderCoHelper.checkAbsolutelyAdjust(adjustByItem, order, orderCoForm,
 							coJkTypeSizeOptimization, coGlTypeSizeOptimization, coPtTypeSizeOptimization,
 							coPt2TypeSizeOptimization, coStTypeSizeOptimization, coCtTypeSizeOptimization);
-					
-					//生地品番
-					String fabricNo = orderCoForm.getProductFabricNo();
-					//商品情報_ITEM(ログ用)
-					String item = LogItemClassEnum.getLogItem(order);
+					//回復ITEM
+					String itemBefore = LogItemClassEnum.getLogItem(selectExistOrder);
+					//更新ITEM
+					String itemAfter = LogItemClassEnum.getLogItem(order);
 					//ステータス
-					String status = orderCoForm.getStatus();
+					String status = orderCoForm.getStatusInput();
 					
-					Stock stock = orderService.getStock(fabricNo,order.getOrderPattern());
-					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新前：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+orderCoForm.getCoCustomerMessageInfo().getOrderId()  
-					+ "、ITEM："+item 
-					+ "、生地品番："+fabricNo
-					+ "、理論在庫："+stock.getTheoreticalStock() 
-					+ "、予約生地量："+stock.getReservationStock() + "」");
-					
-					orderService.updateOrderConfirm(order,status);
-					
-					Stock stockAfter = orderService.getStock(fabricNo,order.getOrderPattern());
-					logger.info("オーダー登録確認画面で在庫マスタ情報を更新する。更新後：「注文パターン：" + order.getOrderPattern() 
-					+ "、注文ID："+orderCoForm.getCoCustomerMessageInfo().getOrderId()  
-					+ "、ITEM："+item
-					+ "、生地品番："+fabricNo
-					+ "、理論在庫："+stockAfter.getTheoreticalStock() 
-					+ "、予約生地量："+stockAfter.getReservationStock() + "」");
+					orderService.updateOrderConfirm(order,status,itemBefore,itemAfter);
 					
 				} catch (ResourceNotFoundException e) {
-					String status = orderCoForm.getStatus();
+					String status = orderCoForm.getOrderTscStatus();
 					if("T2".equals(status) || "T3".equals(status) || "T4".equals(status) || "T5".equals(status)) {
 						//注文ID
 						String orderError = orderCoForm.getCoCustomerMessageInfo().getOrderId();
@@ -2916,7 +3130,7 @@ public class OrderCoReconfirmController {
 					return "order/orderCoReconfirmForm";
 				}
 			}
-			if("".equals(orderCoForm.getStatus()) || "T0".equals(orderCoForm.getStatus()) || "T1".equals(orderCoForm.getStatus())) {
+			if("".equals(orderCoForm.getOrderTscStatus()) || "T0".equals(orderCoForm.getOrderTscStatus()) || "T1".equals(orderCoForm.getOrderTscStatus())) {
 				String isLogin = "8";
 				model.addAttribute("isLogin",isLogin);
 			}
@@ -2932,7 +3146,7 @@ public class OrderCoReconfirmController {
 			re.printStackTrace();
 			logger.error(re.toString());
 			String isFailure = null;
-			if("".equals(orderCoForm.getStatus()) || "T0".equals(orderCoForm.getStatus()) || "T1".equals(orderCoForm.getStatus())) {
+			if("".equals(orderCoForm.getOrderTscStatus()) || "T0".equals(orderCoForm.getOrderTscStatus()) || "T1".equals(orderCoForm.getOrderTscStatus())) {
 				isFailure = "1";
 			}
 			else {

@@ -15,7 +15,7 @@ public enum JacketCoOptionTuxedoNextGenerationPriceEnum {
 	JK_Tuxedo_OPTION_CODE03("00003","getTjGrade","setJkGradeWsWage","setJkGradeWsPrice","getJkGradeWsWage","getJkGradeWsPrice"),//グレード
 	JK_Tuxedo_OPTION_CODE04("00004","getTjBackSpec","setJkInnerClothWsWage","setJkInnerClothWsPrice","getJkInnerClothWsWage","getJkInnerClothWsPrice"),//裏仕様
 	JK_Tuxedo_OPTION_CODE05("00005","getTjFort","setJkDaibaWsWage","setJkDaibaWsPrice","getJkDaibaWsWage","getJkDaibaWsPrice"),//台場
-	JK_Tuxedo_OPTION_CODE06("00006","getTjGlossFablic","setJkLookClothWsWage","setJkLookClothWsPrice","getJkLookClothWsWage","getJkLookClothWsPrice"),//拝見地
+	JK_Tuxedo_OPTION_CODE06("00050","getTjGlossFablic","setJkLookClothWsWage","setJkLookClothWsPrice","getJkLookClothWsWage","getJkLookClothWsPrice"),//拝見地
 	JK_Tuxedo_OPTION_CODE07("00007","getTjBackSpec","setJkCollarInnerWsWage","setJkCollarInnerWsPrice","getJkCollarInnerWsWage","getJkCollarInnerWsPrice"),//襟裏（ヒゲ）
 	JK_Tuxedo_OPTION_CODE08("00008","getTjChainHange","setJkCollarHangWsWage","setJkCollarHangWsPrice","getJkCollarHangWsWage","getJkCollarHangWsPrice"),//襟吊
 	JK_Tuxedo_OPTION_CODE09("00009","getTjLapelWidth","setJkLapelWidthWsWage","setJkLapelWidthWsPrice","getJkLapelWidthWsWage","getJkLapelWidthWsPrice"),//ラペル幅
@@ -31,7 +31,7 @@ public enum JacketCoOptionTuxedoNextGenerationPriceEnum {
 	JK_Tuxedo_OPTION_CODE19("00019","getTjCuffSpec","setJkCuffWsWage","setJkCuffWsPrice","getJkCuffWsWage","getJkCuffWsPrice"),//袖口
 	JK_Tuxedo_OPTION_CODE20("00020","getTjInsidePktChange","setJkInnerPktWsWage","setJkInnerPktWsPrice","getJkInnerPktWsWage","getJkInnerPktWsPrice"),//内ポケット変更
 	JK_Tuxedo_OPTION_CODE22("00022","getTjBreastInnerPkt","setJkRightInnerPktTypeWsWage","setJkRightInnerPktTypeWsPrice","getJkRightInnerPktTypeWsWage","getJkRightInnerPktTypeWsPrice"),//下前胸内ポケット仕様
-	JK_Tuxedo_OPTION_CODE23("00023","getTjStitch","setJkStitchTypeWsWage","setJkStitchTypeWsPrice","getJkStitchTypeWsWage","getJkStitchTypeWsPrice"),//ステッチ種類
+	JK_Tuxedo_OPTION_CODE23("00051","getTjStitch","setJkStitchTypeWsWage","setJkStitchTypeWsPrice","getJkStitchTypeWsWage","getJkStitchTypeWsPrice"),//ステッチ種類
 	JK_Tuxedo_OPTION_CODE31("00031","getTjBhColor","setJkBtnholePlcColorWsWage","setJkBtnholePlcColorWsPrice","getJkBtnholePlcColorWsWage","getJkBtnholePlcColorWsPrice"),//ボタンホール色指定
 	JK_Tuxedo_OPTION_CODE34("00034","getTjByColor","setJkBtnthreadPlcColorWsWage","setJkBtnthreadPlcColorWsPrice","getJkBtnthreadPlcColorWsWage","getJkBtnthreadPlcColorWsPrice"),//ボタン付け糸指定
 	JK_Tuxedo_OPTION_CODE37("00037","getTjVentSpec","setJkVentWsWage","setJkVentWsPrice","getJkVentWsWage","getJkVentWsPrice"),//ベント

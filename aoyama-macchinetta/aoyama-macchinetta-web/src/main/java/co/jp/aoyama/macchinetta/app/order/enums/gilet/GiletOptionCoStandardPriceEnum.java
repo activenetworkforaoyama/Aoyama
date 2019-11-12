@@ -14,7 +14,7 @@ public enum GiletOptionCoStandardPriceEnum {
 	GILET_STANDARD_OPTION_CODE01("00001","getOgBreastPkt","","setGlBreastPktRtPrice","og_breastPkt_id","","getGlBreastPktRtPrice"),//胸ポケット
 	GILET_STANDARD_OPTION_CODE02("00002","getOgWaistPkt","","setGlWaistPktRtPrice","og_waistPkt_id","","getGlWaistPktRtPrice"),//腰ポケット
 	GILET_STANDARD_OPTION_CODE03("00003","getOgWaistPktSpec","","setGlWaistPktShapeRtPrice","og_waistPktSpec_id","","getGlWaistPktShapeRtPrice"),//腰ポケット形状
-	GILET_STANDARD_OPTION_CODE05("00005","getOgStitch","","setGlAmfStitchRtPrice","og_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
+	GILET_STANDARD_OPTION_CODE05("00051","getOgStitch","","setGlAmfStitchRtPrice","og_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
 	GILET_STANDARD_OPTION_CODE06("00006","getOgStitchModify","","setGlStitchPlcRtPrice","og_stitchModify_id","","getGlStitchPlcRtPrice"),//ステッチ箇所変更
 	GILET_STANDARD_OPTION_CODE07("00026","getOgDStitchModify","","setGlDblstitchPlcRtPrice","og_dStitchModify_id","","getGlDblstitchPlcRtPrice"),//ダブルステッチ変更
 	GILET_STANDARD_OPTION_CODE08("00008","getOgAmfColor","","setGlAmfColorRtPrice","og_amfColor_id","","getGlAmfColorRtPrice"),//AMF色指定

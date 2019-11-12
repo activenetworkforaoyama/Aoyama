@@ -203,6 +203,119 @@ var lapelDesignMap = {
 	}
 };
 
+var lapelDesignTuexdoMap = {
+		'TR02':{
+			activeList:{
+				//段返り3つボタン
+				'0000101':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				},
+				//2つボタン
+				'0000102':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				},
+				//1つボタン
+				'0000103':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				},
+				//ダブル６つボタン
+				'0000105':{
+					activeList:['0000202'],
+					defaultValue:'0000202'
+				},
+				//ダブル４つボタン
+				'0000106':{
+					activeList:['0000202'],
+					defaultValue:'0000202'
+				},
+				'0000104':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				}
+			},
+			defaultValue:'0000101'
+		},
+		'CH14':{
+			activeList:{
+				'0000102':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				},
+				'0000103':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				},
+				'0000105':{
+					activeList:['0000202'],
+					defaultValue:'0000202'
+				},
+				'0000106':{
+					activeList:['0000202'],
+					defaultValue:'0000202'
+				},
+				'0000104':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				}
+			},
+			defaultValue:'0000102'
+		},
+		'NR05':{
+			activeList:{
+				'0000102':{
+					activeList:['0000201','0000202'],
+					defaultValue:'0000201'
+				},
+				'0000103':{
+					activeList:['0000201','0000202'],
+					defaultValue:'0000201'
+				},
+				'0000104':{
+					activeList:['0000201','0000202'],
+					defaultValue:'0000201'
+				}
+			},
+			defaultValue:'0000102'
+		},
+		'NZ01':{
+			activeList:{
+				'0000102':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				},
+				'0000103':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				},
+				'0000104':{
+					activeList:['0000201'],
+					defaultValue:'0000201'
+				}
+			},
+			defaultValue:'0000102'
+		},
+		'BS05':{
+			activeList:{
+				'0000102':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				},
+				'0000103':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				},
+				'0000104':{
+					activeList:['0000201','0000202','0000203'],
+					defaultValue:'0000201'
+				}
+			},
+			defaultValue:'0000102'
+		}
+	};
+
 /*
  * ルール２
  * グレード毎の有効な裏仕様を保持するマップ
@@ -1161,47 +1274,61 @@ var pantsTuxedoModelDefaultList = {
  *         og_waistPkt:腰ポケットのデフォルト値
  *         oj_waistPktSpec:腰ポケット形状のデフォルト値
  */
-var giletModelDefaultList = {
+var ogGiletModelDefaultList = {
 	"TR02":{
 		"og_breastPkt":"0000101",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002302"
 	},
 	"CH14":{
 		"og_breastPkt":"0000103",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002301"
 	},
 	"NR04":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002302"
 	},
 	"BS01":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000303",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002301"
 	},
 	"BS03":{
 		"og_breastPkt":"0000102",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000303",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002301"
 	},
 	"BS01-D":{
 		"og_breastPkt":"0000103",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
+		"og_stitch":"0005102",
+		"wg_stitch":"0005102",
 		"og_backBelt":"0002301"
 	},
 	"ET15-D":{
 		"og_breastPkt":"0000101",
 		"og_waistPkt":"0000201",
 		"og_waistPktSpec":"0000301",
+		"og_stitch":"0005103",
+		"wg_stitch":"0005103",
 		"og_backBelt":"0002302"
 	}
 };

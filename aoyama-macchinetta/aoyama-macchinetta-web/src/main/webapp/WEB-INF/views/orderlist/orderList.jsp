@@ -778,11 +778,11 @@ function reset(){
 	$("#updatedAtFrom").val(""); 
 	$("#updatedAtTo").val("");
 	
-	$("#isCancelled").attr("checked",false);
-	$("#isAccount").attr("checked",false);
-	$("#isConfirm").attr("checked",false);
-	$("#isOtherShop").attr("checked",false);
-	$("#isSendFailure").attr("checked",false);
+	$("#isCancelled").prop("checked",false);
+	$("#isAccount").prop("checked",false);
+	$("#isConfirm").prop("checked",false);
+	$("#isOtherShop").prop("checked",false);
+	$("#isSendFailure").prop("checked",false);
 	$("#errorMessage").hide();
 	$("#searchButton").attr('disabled',false);  
 
@@ -1704,32 +1704,32 @@ $(function() {
 //未承認、未会計、工場自動連携失敗　ボタン同時クリアできません
 function checkboxOnclick(checkbox){
 		if (checkbox.checked == true && checkbox.id =='isConfirm'){
-			$("#isAccount").attr("checked",false); 
-			$("#isSendFailure").attr("checked",false); 
-			$("#isCancelled").attr("checked",false); 
-			$("#isOtherShop").attr("checked",false); 
+			$("#isAccount").prop("checked",false); 
+			$("#isSendFailure").prop("checked",false); 
+			$("#isCancelled").prop("checked",false); 
+			$("#isOtherShop").prop("checked",false); 
 		}
 		if (checkbox.checked == true && checkbox.id =='isAccount'){
-			$("#isConfirm").attr("checked",false); 
-			$("#isSendFailure").attr("checked",false); 
-			$("#isCancelled").attr("checked",false); 
-			$("#isOtherShop").attr("checked",false); 
+			$("#isConfirm").prop("checked",false); 
+			$("#isSendFailure").prop("checked",false); 
+			$("#isCancelled").prop("checked",false); 
+			$("#isOtherShop").prop("checked",false); 
 		}
 		if (checkbox.checked == true && checkbox.id =='isSendFailure'){
-			$("#isAccount").attr("checked",false); 
-			$("#isConfirm").attr("checked",false); 
-			$("#isCancelled").attr("checked",false); 
-			$("#isOtherShop").attr("checked",false); 
+			$("#isAccount").prop("checked",false); 
+			$("#isConfirm").prop("checked",false); 
+			$("#isCancelled").prop("checked",false); 
+			$("#isOtherShop").prop("checked",false); 
 		}
 		if (checkbox.checked == true && checkbox.id =='isCancelled'){
-			$("#isAccount").attr("checked",false); 
-			$("#isConfirm").attr("checked",false); 
-			$("#isSendFailure").attr("checked",false); 
+			$("#isAccount").prop("checked",false); 
+			$("#isConfirm").prop("checked",false); 
+			$("#isSendFailure").prop("checked",false); 
 		}
 		if (checkbox.checked == true && checkbox.id =='isOtherShop'){
-			$("#isAccount").attr("checked",false); 
-			$("#isConfirm").attr("checked",false); 
-			$("#isSendFailure").attr("checked",false); 
+			$("#isAccount").prop("checked",false); 
+			$("#isConfirm").prop("checked",false); 
+			$("#isSendFailure").prop("checked",false); 
 		}
 }
 

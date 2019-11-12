@@ -10,7 +10,8 @@ public enum CoProductEnum {
 	PRODUCT_CODE06("90006","setProductEmbroideryFontMap"),
 	PRODUCT_CODE07("90008","setProductRemainingClothTypeMap"),
 	PRODUCT_CODE08("90009","setCustIsDeliverShortningMap"),
-	PRODUCT_CODE09("90010","setCustIsEarlyDiscountMap");
+	PRODUCT_CODE09("90010","setCustIsEarlyDiscountMap"),
+	PRODUCT_CODE10("90011","setGlossFablicMap");
 	
 	private final String key;
 	private final String value;

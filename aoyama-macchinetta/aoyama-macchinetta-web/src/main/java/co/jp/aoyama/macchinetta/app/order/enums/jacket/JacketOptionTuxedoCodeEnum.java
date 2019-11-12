@@ -11,7 +11,7 @@ public enum JacketOptionTuxedoCodeEnum {
 	JK_Tuxedo_OPTION_CODE03("00003","setTjGradeMap"),
 	JK_Tuxedo_OPTION_CODE04("00004","setTjBackSpecMap"),
 	JK_Tuxedo_OPTION_CODE05("00005","setTjFortMap"),
-	JK_Tuxedo_OPTION_CODE06("00006","setTjGlossFablicMap"),
+	JK_Tuxedo_OPTION_CODE06("00050","setTjGlossFablicMap"),
 	JK_Tuxedo_OPTION_CODE07("00007","setTjBackCollarMap"),
 	JK_Tuxedo_OPTION_CODE08("00008","setTjChainHangeMap"),
 	JK_Tuxedo_OPTION_CODE09("00009","setTjLapelWidthMap"),
@@ -38,7 +38,8 @@ public enum JacketOptionTuxedoCodeEnum {
 	JK_Tuxedo_OPTION_CODE38("00038","setTjBodyBackMateMap"),
 	JK_Tuxedo_OPTION_CODE40("00040","setTjCuffBackMateMap"),
 	JK_Tuxedo_OPTION_CODE42("00042","setTjBtnMateMap"),
-	JK_Tuxedo_OPTION_CODE44("00044","setTjShapeMemoryMap");
+	JK_Tuxedo_OPTION_CODE44("00044","setTjShapeMemoryMap"),
+	JK_Tuxedo_OPTION_CODE51("00051","setTjCoStitchMap");
 	
 	
 	private final String key;

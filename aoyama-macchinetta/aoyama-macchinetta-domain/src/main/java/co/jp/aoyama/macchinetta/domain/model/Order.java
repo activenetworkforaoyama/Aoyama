@@ -57,6 +57,12 @@ public class Order implements Serializable {
 
     private String custIsDeliverShortning;
 
+    private Integer custIsDeliverShortningRtPrice;
+
+    private BigDecimal custIsDeliverShortningWsWage;
+
+    private Integer custIsDeliverShortningWsPrice;
+
     private String custIsEarlyDiscount;
 
     private Date custShopDeliveryDate;
@@ -92,30 +98,52 @@ public class Order implements Serializable {
     private Integer productSparePantsWsPrice;
 
     private String productFabricNo;
-    
+
     private String fabricColor;
-    
+
     private String fabricPattern;
-    
+
     private Integer fabricPrice;
-    
+
     private Integer wsPriceAdjust;
 
     private String productCategory;
+
+    private String productCategoryNm;
 
     private String productBrandType;
 
     private String productBrandNm;
 
+    private String productLcrSewingCd;
+
+    private String productLcrSewing;
+
+    private Integer productLcrSewingRtPrice;
+
+    private BigDecimal productLcrSewingWsWage;
+
+    private Integer productLcrSewingWsPrice;
+
     private String productFabricNmNecessity;
+
+    private String productFabricNmNecessityNm;
 
     private String productEmbroideryNecessity;
 
+    private String productEmbroideryNecessityNm;
+
     private String productEmbroideryNm;
+
+    private String productEmbroideryFontCd;
 
     private String productEmbroideryFont;
 
+    private String productEmbroideryThreadColorCd;
+
     private String productEmbroideryThreadColor;
+
+    private String productEmbroideryGazetteCd;
 
     private String productEmbroideryGazette;
 
@@ -124,6 +152,8 @@ public class Order implements Serializable {
     private BigDecimal productEmbroideryGazetteWsWage;
 
     private Integer productEmbroideryGazetteWsPrice;
+
+    private String productEmbroideryNmPosCd;
 
     private String productEmbroideryNmPos;
 
@@ -1878,7 +1908,7 @@ public class Order implements Serializable {
     private BigDecimal ctCollarHangWsWage;
 
     private Integer ctCollarHangWsPrice;
-    
+
     private String ctInnerBodyClothType;
 
     private String ctInnerBodyClothCd;
@@ -1890,7 +1920,7 @@ public class Order implements Serializable {
     private BigDecimal ctInnerBodyClothWsWage;
 
     private Integer ctInnerBodyClothWsPrice;
-    
+
     private String ctInnerSleeveClothType;
 
     private String ctInnerSleeveClothCd;
@@ -1902,7 +1932,7 @@ public class Order implements Serializable {
     private BigDecimal ctInnerSleeveClothWsWage;
 
     private Integer ctInnerSleeveClothWsPrice;
-    
+
     private String ctBtnMaterialType;
 
     private String ctBtnMaterialCd;
@@ -2211,9 +2241,15 @@ public class Order implements Serializable {
 
     private BigDecimal corJkLeftsleeveGross;
 
+    private String corJkShoulderpadCd;
+
     private String corJkShoulderpad;
 
+    private String corJkFigureCorrectCd;
+
     private String corJkFigureCorrect;
+
+    private String corJkStoreCorrectionMemo;
 
     private String corPtDrop;
 
@@ -2259,6 +2295,8 @@ public class Order implements Serializable {
 
     private BigDecimal corPtLeftinseamGross;
 
+    private String corPtStoreCorrectionMemo;
+
     private String corPt2Drop;
 
     private String corPt2Size;
@@ -2303,6 +2341,8 @@ public class Order implements Serializable {
 
     private BigDecimal corPt2LeftinseamGross;
 
+    private String corPt2StoreCorrectionMemo;
+
     private String corGlDrop;
 
     private String corGlSize;
@@ -2324,6 +2364,8 @@ public class Order implements Serializable {
     private BigDecimal corGlWaistCorrect;
 
     private BigDecimal corGlWaistGross;
+
+    private String corGlStoreCorrectionMemo;
 
     private String corCtSize;
 
@@ -2363,6 +2405,8 @@ public class Order implements Serializable {
 
     private BigDecimal corCtPktposGross;
 
+    private String corCtStoreCorrectionMemo;
+
     private String corStSize;
 
     private BigDecimal corStNeckSize;
@@ -2394,6 +2438,10 @@ public class Order implements Serializable {
     private BigDecimal corStBackdartsPackCorrect;
 
     private BigDecimal corStBackdartsPackGross;
+
+    private String corStBackdartsUnpackCd;
+
+    private String corStBackdartsUnpackNm;
 
     private BigDecimal corStBackdartsUnpackSize;
 
@@ -2492,11 +2540,11 @@ public class Order implements Serializable {
     private String isCancelled;
 
     private String theoreticalStockCheck;
-    
+
     private String scheduleDataTransmitStatus;
-    
+
     private String shippingTransmitStatus;
-    
+
     private Short version;
 
     private String createdUserId;
@@ -2506,55 +2554,36 @@ public class Order implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
-    
-    private String productLcrSewing;
 
-    private Integer productLcrSewingRtPrice;
+    private String ptLookClothCd;
 
-    private BigDecimal productLcrSewingWsWage;
+    private String ptLookClothNm;
 
-    private Integer productLcrSewingWsPrice;
-    
-    private String corJkStoreCorrectionMemo;
-    
-    private String corPtStoreCorrectionMemo;
-    
-    private String corPt2StoreCorrectionMemo;
-    
-    private String corCtStoreCorrectionMemo;
-    
-    private String corGlStoreCorrectionMemo;
-    
-    private String corStBackdartsUnpackCd;
-    
-    private String corStBackdartsUnpackNm;
-    
-    
-    private String productCategoryNm;
-    
-    private String productLcrSewingCd;
-    
-    private String productFabricNmNecessityNm;
-    
-    private String productEmbroideryNecessityNm;
-    
-    private String productEmbroideryFontCd;
-    
-    private String productEmbroideryThreadColorCd;
-    
-    private String productEmbroideryGazetteCd;
-    
-    private String productEmbroideryNmPosCd;
-    
-    private String corJkShoulderpadCd;
-    
-    private String corJkFigureCorrectCd;
-    
-    private Integer custIsDeliverShortningRtPrice;
-    
-    private BigDecimal custIsDeliverShortningWsWage;
-    
-    private Integer custIsDeliverShortningWsPrice;
+    private Integer ptLookClothRtPrice;
+
+    private BigDecimal ptLookClothWsWage;
+
+    private Integer ptLookClothWsPrice;
+
+    private String pt2LookClothCd;
+
+    private String pt2LookClothNm;
+
+    private Integer pt2LookClothRtPrice;
+
+    private BigDecimal pt2LookClothWsWage;
+
+    private Integer pt2LookClothWsPrice;
+
+    private String glLookClothCd;
+
+    private String glLookClothNm;
+
+    private Integer glLookClothRtPrice;
+
+    private BigDecimal glLookClothWsWage;
+
+    private Integer glLookClothWsPrice;
     
     public String getOrderId() {
         return orderId;
@@ -12581,6 +12610,126 @@ public class Order implements Serializable {
 		this.corGlStoreCorrectionMemo = corGlStoreCorrectionMemo;
 	}
 
+	public String getPtLookClothCd() {
+		return ptLookClothCd;
+	}
+
+	public void setPtLookClothCd(String ptLookClothCd) {
+		this.ptLookClothCd = ptLookClothCd;
+	}
+
+	public String getPtLookClothNm() {
+		return ptLookClothNm;
+	}
+
+	public void setPtLookClothNm(String ptLookClothNm) {
+		this.ptLookClothNm = ptLookClothNm;
+	}
+
+	public Integer getPtLookClothRtPrice() {
+		return ptLookClothRtPrice;
+	}
+
+	public void setPtLookClothRtPrice(Integer ptLookClothRtPrice) {
+		this.ptLookClothRtPrice = ptLookClothRtPrice;
+	}
+
+	public BigDecimal getPtLookClothWsWage() {
+		return ptLookClothWsWage;
+	}
+
+	public void setPtLookClothWsWage(BigDecimal ptLookClothWsWage) {
+		this.ptLookClothWsWage = ptLookClothWsWage;
+	}
+
+	public Integer getPtLookClothWsPrice() {
+		return ptLookClothWsPrice;
+	}
+
+	public void setPtLookClothWsPrice(Integer ptLookClothWsPrice) {
+		this.ptLookClothWsPrice = ptLookClothWsPrice;
+	}
+
+	public String getPt2LookClothCd() {
+		return pt2LookClothCd;
+	}
+
+	public void setPt2LookClothCd(String pt2LookClothCd) {
+		this.pt2LookClothCd = pt2LookClothCd;
+	}
+
+	public String getPt2LookClothNm() {
+		return pt2LookClothNm;
+	}
+
+	public void setPt2LookClothNm(String pt2LookClothNm) {
+		this.pt2LookClothNm = pt2LookClothNm;
+	}
+
+	public Integer getPt2LookClothRtPrice() {
+		return pt2LookClothRtPrice;
+	}
+
+	public void setPt2LookClothRtPrice(Integer pt2LookClothRtPrice) {
+		this.pt2LookClothRtPrice = pt2LookClothRtPrice;
+	}
+
+	public BigDecimal getPt2LookClothWsWage() {
+		return pt2LookClothWsWage;
+	}
+
+	public void setPt2LookClothWsWage(BigDecimal pt2LookClothWsWage) {
+		this.pt2LookClothWsWage = pt2LookClothWsWage;
+	}
+
+	public Integer getPt2LookClothWsPrice() {
+		return pt2LookClothWsPrice;
+	}
+
+	public void setPt2LookClothWsPrice(Integer pt2LookClothWsPrice) {
+		this.pt2LookClothWsPrice = pt2LookClothWsPrice;
+	}
+
+	public String getGlLookClothCd() {
+		return glLookClothCd;
+	}
+
+	public void setGlLookClothCd(String glLookClothCd) {
+		this.glLookClothCd = glLookClothCd;
+	}
+
+	public String getGlLookClothNm() {
+		return glLookClothNm;
+	}
+
+	public void setGlLookClothNm(String glLookClothNm) {
+		this.glLookClothNm = glLookClothNm;
+	}
+
+	public Integer getGlLookClothRtPrice() {
+		return glLookClothRtPrice;
+	}
+
+	public void setGlLookClothRtPrice(Integer glLookClothRtPrice) {
+		this.glLookClothRtPrice = glLookClothRtPrice;
+	}
+
+	public BigDecimal getGlLookClothWsWage() {
+		return glLookClothWsWage;
+	}
+
+	public void setGlLookClothWsWage(BigDecimal glLookClothWsWage) {
+		this.glLookClothWsWage = glLookClothWsWage;
+	}
+
+	public Integer getGlLookClothWsPrice() {
+		return glLookClothWsPrice;
+	}
+
+	public void setGlLookClothWsPrice(Integer glLookClothWsPrice) {
+		this.glLookClothWsPrice = glLookClothWsPrice;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -13178,6 +13327,16 @@ public class Order implements Serializable {
 		builder.append(",");
 		builder.append(ptKneeinnerClothWsPrice == null ? "" : ptKneeinnerClothWsPrice);
 		builder.append(",");
+		builder.append(ptLookClothCd == null ? "" : ptLookClothCd);
+		builder.append(",");
+		builder.append(ptLookClothNm == null ? "" : ptLookClothNm);
+		builder.append(",");
+		builder.append(ptLookClothRtPrice == null ? "" : ptLookClothRtPrice);
+		builder.append(",");
+		builder.append(ptLookClothWsWage == null ? "" : ptLookClothWsWage);
+		builder.append(",");
+		builder.append(ptLookClothWsPrice == null ? "" : ptLookClothWsPrice);
+		builder.append(",");
 		builder.append(ptFrtTypeCd == null ? "" : ptFrtTypeCd);
 		builder.append(",");
 		builder.append(ptFrtTypeNm == null ? "" : ptFrtTypeNm);
@@ -13523,6 +13682,16 @@ public class Order implements Serializable {
 		builder.append(pt2KneeinnerClothWsWage == null ? "" : pt2KneeinnerClothWsWage);
 		builder.append(",");
 		builder.append(pt2KneeinnerClothWsPrice == null ? "" : pt2KneeinnerClothWsPrice);
+		builder.append(",");
+		builder.append(pt2LookClothCd == null ? "" : pt2LookClothCd);
+		builder.append(",");
+		builder.append(pt2LookClothNm == null ? "" : pt2LookClothNm);
+		builder.append(",");
+		builder.append(pt2LookClothRtPrice == null ? "" : pt2LookClothRtPrice);
+		builder.append(",");
+		builder.append(pt2LookClothWsWage == null ? "" : pt2LookClothWsWage);
+		builder.append(",");
+		builder.append(pt2LookClothWsPrice == null ? "" : pt2LookClothWsPrice);
 		builder.append(",");
 		builder.append(pt2FrtTypeCd == null ? "" : pt2FrtTypeCd);
 		builder.append(",");
@@ -14225,6 +14394,16 @@ public class Order implements Serializable {
 		builder.append(glWaistPktClothWsWage == null ? "" : glWaistPktClothWsWage);
 		builder.append(",");
 		builder.append(glWaistPktClothWsPrice == null ? "" : glWaistPktClothWsPrice);
+		builder.append(",");
+		builder.append(glLookClothCd == null ? "" : glLookClothCd);
+		builder.append(",");
+		builder.append(glLookClothNm == null ? "" : glLookClothNm);
+		builder.append(",");
+		builder.append(glLookClothRtPrice == null ? "" : glLookClothRtPrice);
+		builder.append(",");
+		builder.append(glLookClothWsWage == null ? "" : glLookClothWsWage);
+		builder.append(",");
+		builder.append(glLookClothWsPrice == null ? "" : glLookClothWsPrice);
 		builder.append(",");
 		builder.append(glAmfStitchCd == null ? "" : glAmfStitchCd);
 		builder.append(",");

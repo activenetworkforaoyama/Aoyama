@@ -25,7 +25,7 @@ public enum PantsOptionCoWashablePriceEnum {
 	PANTS_WASHABLE_OPTION_CODE16("00016","getWpVCut","","setPtVCutRtPrice"),//Vカット
 	PANTS_WASHABLE_OPTION_CODE17("00017","getWpHemUp","","setPtHemUpRtPrice"),//裾上げ
 	PANTS_WASHABLE_OPTION_CODE18("00018","getWpDoubleWide","","setPtDblWidthRtPrice"),//ダブル幅
-	PANTS_WASHABLE_OPTION_CODE19("00019","getWpStitch","","setPtAmfStitchRtPrice"),//ステッチ種類
+	PANTS_WASHABLE_OPTION_CODE19("00051","getWpStitch","","setPtAmfStitchRtPrice"),//ステッチ種類
 	PANTS_WASHABLE_OPTION_CODE20("00020","getWpStitchModify","","setPtStitchPlcRtPrice"),//ステッチ箇所変更
 	PANTS_WASHABLE_OPTION_CODE22("00022","getWpDStitch","","setPtDblstitchPlcRtPrice"),//ダブルステッチ
 	PANTS_WASHABLE_OPTION_CODE24("00024","getWpAmfColor","","setPtAmfColorRtPrice"),//AMF色指定

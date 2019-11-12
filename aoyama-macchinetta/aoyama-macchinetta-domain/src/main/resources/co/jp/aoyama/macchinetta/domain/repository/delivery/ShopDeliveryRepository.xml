@@ -40,7 +40,7 @@
   </select>
   
   <select id="shopDeliveryQueryFuzzy" resultMap="ShopDeliveryResultMap">	
-	SELECT 
+	SELECT DISTINCT 
     	shop_delivery_class, 
 		order_on_start_date,
     	order_on_end_date, 
@@ -54,14 +54,25 @@
         mtb_shop_delivery
 	WHERE
 		<if test="shopDeliveryClass!=null and shopDeliveryClass!=''">
-			shop_delivery_class = #{shopDeliveryClass,jdbcType=VARCHAR} and 
+			shop_delivery_class = #{shopDeliveryClass,jdbcType=VARCHAR} AND 
 		</if>
+		<![CDATA[(]]>
 		<if test="orderOnStartDate!=null">
-    		order_on_start_date &gt;= #{orderOnStartDate,jdbcType=DATE} and 
+    		(order_on_start_date &lt;= #{orderOnStartDate,jdbcType=DATE} AND 
+    		order_on_end_date &gt;= #{orderOnStartDate,jdbcType=DATE}) OR 
 		</if>
 		<if test="orderOnEndDate!=null">
-	    	order_on_end_date &lt;= #{orderOnEndDate,jdbcType=DATE}  and 
+			(order_on_start_date &lt;= #{orderOnEndDate,jdbcType=DATE}  AND 
+	    	order_on_end_date &gt;= #{orderOnEndDate,jdbcType=DATE})  OR 
 		</if>
+		<![CDATA[(]]>
+		<if test="orderOnStartDate!=null">
+    		order_on_start_date &gt;= #{orderOnStartDate,jdbcType=DATE} AND 
+		</if>
+		<if test="orderOnEndDate!=null">
+	    	order_on_end_date &lt;= #{orderOnEndDate,jdbcType=DATE}  AND 
+		</if>
+		<![CDATA[1 = 1 )) AND ]]>
 		1 = 1 
 	ORDER BY
 		shop_delivery_class, 

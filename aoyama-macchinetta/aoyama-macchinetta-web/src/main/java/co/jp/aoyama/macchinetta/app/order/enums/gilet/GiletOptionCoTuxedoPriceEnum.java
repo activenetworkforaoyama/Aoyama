@@ -16,14 +16,15 @@ public enum GiletOptionCoTuxedoPriceEnum {
 	GILET_TUXEDO_OPTION_CODE02("00002","getTgWaistPkt","","setGlWaistPktRtPrice","tg_waistPkt_id","","getGlWaistPktRtPrice"),//腰ポケット
 	GILET_TUXEDO_OPTION_CODE03("00003","getTgWaistPktSpec","","setGlWaistPktShapeRtPrice","tg_waistPktSpec_id","","getGlWaistPktShapeRtPrice"),//腰ポケット形状
 	GILET_TUXEDO_OPTION_CODE04("00004","getTgWaistPktMate","","setGlWaistPktClothRtPrice","tg_waistPktMate_id","","getGlWaistPktClothRtPrice"),//腰ポケット素材
-	GILET_TUXEDO_OPTION_CODE05("00005","getTgStitch","","setGlAmfStitchRtPrice","tg_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
+	GILET_TUXEDO_OPTION_CODE05("00051","getTgStitch","","setGlAmfStitchRtPrice","tg_stitch_id","","getGlAmfStitchRtPrice"),//ステッチ種類
 	GILET_TUXEDO_OPTION_CODE11("00011","getTgBhColor","","setGlBtnholeColorRtPrice","tg_bhColor_id","","getGlBtnholeColorRtPrice"),//ボタンホール色指定
 	GILET_TUXEDO_OPTION_CODE14("00014","getTgByColor","","setGlBtnthreadColorRtPrice","tg_byColor_id","","getGlBtnthreadColorRtPrice"),//ボタン付け糸指定
 	GILET_TUXEDO_OPTION_CODE17("00017","getTgBackLiningMate","getTgBackLiningMateStkNo","setGlBackClothRtPrice","tg_backLiningMate","tg_backLiningMateStkNo","getGlBackClothRtPrice"),//背裏地素材
 	GILET_TUXEDO_OPTION_CODE19("00019","getTgInsideLiningMate","getTgInsideLiningMateStkNo","setGlInnnerClothRtPrice","tg_insideLiningMate","tg_insideLiningMateStkNo","getGlInnnerClothRtPrice"),//内側裏地素材
 	GILET_TUXEDO_OPTION_CODE21("00021","getTgFrontBtnMate","getTgFrontBtnMateStkNo","setGlFrtBtnRtPrice","tg_frontBtnMate","tg_frontBtnMateStkNo","getGlFrtBtnRtPrice"),//釦素材
 	GILET_TUXEDO_OPTION_CODE23("00023","getTgBackBelt","","setGlBackBeltRtPrice","tg_backBelt","","getGlBackBeltRtPrice"),//バックベルト
-	GILET_TUXEDO_OPTION_CODE24("00024","getTgWatchChain","","setGlWatchChainRtPrice","tg_watchChain_id","","getGlWatchChainRtPrice");//ウォッチチェーン
+	GILET_TUXEDO_OPTION_CODE24("00024","getTgWatchChain","","setGlWatchChainRtPrice","tg_watchChain_id","","getGlWatchChainRtPrice"),//ウォッチチェーン
+	GILET_TUXEDO_OPTION_CODE50("00050","getTgGlossFablic","","setGlLookClothRtPrice","tg_GlossFablic","","getGlLookClothRtPrice");//拝絹地
 	
 	
 	private final String key;

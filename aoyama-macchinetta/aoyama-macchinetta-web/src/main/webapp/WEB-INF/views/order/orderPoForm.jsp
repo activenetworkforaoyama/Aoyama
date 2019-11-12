@@ -542,7 +542,7 @@ select.hidedown {
                             <div class="col col-md-3"><label class=" form-control-label">生地品番</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
-                                    <input type="text" id="productFabricNo" name="productFabricNo" placeholder="" class="form-control-sm form-control" style="width:128px" maxlength="20" onblur="stockCheck()">　
+                                    <input type="text" id="productFabricNo" name="productFabricNo" placeholder="" class="form-control-sm form-control" style="width:128px" maxlength="20" onblur="stockAddVersionCheck()">　
                                     <!-- <button type="button" class="btn btn-outline-info btn-sm" id="stockCheck">在庫チェック</button> -->
                                 	<output id="stockMsg" style="display:none;"></output>
                                 	<output id="fabricMsg"></output>
@@ -565,7 +565,7 @@ select.hidedown {
                                 </div>
                             </div>
                         </div>
-                        <div class="row form-group" id="brandName_div">
+                        <!-- <div class="row form-group" id="brandName_div">
                             <div class="col col-md-3"><label class=" form-control-label">ブランドネーム</label></div>
                             <div class="col-12 col-md-9">
                                 <div class="form-check-inline form-check">
@@ -578,7 +578,7 @@ select.hidedown {
 
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="row form-group" id="clothName_div">
                             <div class="col col-md-3"><label class=" form-control-label">生地ネーム</label></div>
                             <div class="col-12 col-md-9">
@@ -1790,7 +1790,7 @@ select.hidedown {
 										<div style="float:left;">&nbsp;cm</div>
 									</div>
 									<div class="col-12 col-md-3">
-										<label class=" form-control-label">ワタリ修正</label>
+										<label class=" form-control-label">ワタリ幅修正</label>
 									</div>
 									<div class="col-12 col-md-9" id="corPtThighwidthCorrectAgain">
 										<a id="corPtThighwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
@@ -1887,7 +1887,7 @@ select.hidedown {
 										<div style="float:left;">&nbsp;cm</div>
 									</div>
 									<div class="col-12 col-md-3">
-										<label class=" form-control-label">ワタリ修正</label>
+										<label class=" form-control-label">ワタリ幅修正</label>
 									</div>
 									<div class="col-12 col-md-9" id="corPt2ThighwidthCorrectAgain">
 										<a id="corPt2Thighwidth_range_1_m" class="re_alter_sign minus" style="display:none;">
@@ -1982,7 +1982,7 @@ select.hidedown {
                 
                     </div>
                     <div class="col">
-                <button id = "poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
+                <button id = "poConfirm" type="button" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     </div>
                     	<div class="col">
                 			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
@@ -2006,7 +2006,7 @@ select.hidedown {
                     <div class="col">
                     </div>
                     	<div class="col col-md-3">
-                			<button id="poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
+                			<button id="poConfirm" type="button" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     	</div>
                     	<div class="col col-md-3">
                 			<button id="cancelButton" type="button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文取消</button>
@@ -2037,7 +2037,7 @@ select.hidedown {
                 
                     </div>
                     <div class="col">
-                <button id = "poConfirm" type="submit" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
+                <button id = "poConfirm" type="button" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 内容確認</button>
                     </div>
                     	<div class="col">
                 			<button type="button" id= "deleteButton" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i> 注文削除</button>
@@ -2145,6 +2145,8 @@ select.hidedown {
 			<input type="hidden" id="productComposFrtFabric"  name="productComposFrtFabric"   value="" />
 			<!-- 取扱注意 -->
 			<input type="hidden" id="productNotice"  name="productNotice"   value="" />
+			<!-- ブランドネーム -->
+			<input type="hidden" id="productBrandType"  name="productBrandType"   value="1" />
 			
 			<!-- ご請求金額 -->
 			<input type="hidden" id="billingAmountId"  name="billingAmount"   value="0" />
@@ -2955,9 +2957,6 @@ jQuery(document).ready(function() {
 		var yieldNum = "${order.theoryFabricUsedMount}";
 		jQuery("#theoryFabricUsedMountId").val(yieldNum);
 		
-		//ブランドネーム
-		var productBrandType = "${order.productBrandType}";
-		jQuery("input[name='productBrandType'][value='" + productBrandType + "']").prop("checked", true);
 		//生地ネーム
 		var productFabricNmNecessity = "${order.productFabricNmNecessity}";
 		jQuery("input[name='productFabricNmNecessity'][value='" + productFabricNmNecessity + "']").prop("checked", true);
@@ -3202,9 +3201,6 @@ jQuery(document).ready(function() {
 		//組成表示
 		compositionExpress();
 		
-		//ブランドネーム
-		var productBrandType = "${order.productBrandType}";
-		jQuery("input[name='productBrandType'][value='" + productBrandType + "']").prop("checked", true);
 		//刺繍入れ
 		var productEmbroideryNecessity = "${order.productEmbroideryNecessity}";
 		jQuery("input[name='productEmbroideryNecessity'][value='" + productEmbroideryNecessity + "']").prop("checked", true);
@@ -3655,9 +3651,6 @@ jQuery(document).ready(function() {
 		//生地によって、商品を表示
 		fabricView(item,productFabricNo);
 		
-		//ブランドネーム
-		var productBrandType = "${orderForm.productBrandType}";
-		jQuery("input[name='productBrandType'][value='" + productBrandType + "']").prop("checked", true);
 		//生地ネーム
 		var productFabricNmNecessity = "${orderForm.productFabricNmNecessity}";
 		jQuery("input[name='productFabricNmNecessity'][value='" + productFabricNmNecessity + "']").prop("checked", true);
@@ -3981,9 +3974,14 @@ jQuery(document).ready(function(){
 				
 			setInterval(function(){
 
-				//バージョンフラッグ
-				//var versionFlag = "";
-				//保存flag
+				var result = temporarySaveCheck();
+				
+				if(!result){
+					jQuery("div.alert-success").hide();
+					return false;
+				}
+
+				//保存flag（versionをそのまま）
 				jQuery("#saveFlag").val("1");
 				//TSCステータス  一時保存
 				var statusInput = jQuery("#statusInput").val();
@@ -3994,93 +3992,30 @@ jQuery(document).ready(function(){
 					jQuery("#statusInput").val(jQuery("#statusInput").val());
 				}
 
-				var stockCheckResult = stockCheck();
-
-				var result = temporarySaveCheck();
-					
-				if(!result){
-					jQuery("div.alert-success").hide();
-					return false;
-				}
-
-				if(stockCheckResult){
-					jQuery('select').removeAttr("disabled");
-					jQuery('input').not("#clothName_yes").removeAttr("disabled");
-					jQuery.ajax({
-			              url : contextPath + "/order/orderPoTemporarySave",
-					      type: "post",
-					      async:false,
-					      data: jQuery('#formId').serialize(),
-						  }).then(function(data) {
-							  if(!data.orderMsgFlag){
-								  if(data.orderMsg == 'T2ERROR'){
-									  swal({
-					        				text: getMsg('msg048'),
-					        				icon: "info"
-					        		  }).then(function(val){
-					        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-					        		  });
-								  }else if(data.orderMsg == 'T3ERROR'){
-									  swal({
-					        				text: getMsg('msg048'),
-					        				icon: "info"
-					        		  }).then(function(val){
-					        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-					        		  });
-								  }
-							  }else{
-								  if(data.orderId == "true"){
-									  //ステータス設定
-								   	  jQuery("#status").empty();
-								   	  var statusInput = jQuery("#statusInput").val();
-									  if(statusInput=="T0"){
-									 	  jQuery("#status").html("一時保存");
-									  }else{
-										  jQuery("#status").html("取り置き");
-									  }
-									  /* versionFlag = data;
-									  jQuery("#versionFlag").val(versionFlag); */
-								  }else if(data.orderId.length == 12){
-									  jQuery("#orderId").val(data.orderId);
-								      //ステータス設定
-									  jQuery("#status").empty();
-								   	  var statusInput = jQuery("#statusInput").val();
-									  if(statusInput=="T0"){
-									 	  jQuery("#status").html("一時保存");
-									  }else{
-										  jQuery("#status").html("取り置き");
-									  }
-									  var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":data.orderId},async:false});
-									  version = version.responseText;
-									  jQuery("#version").val(version);
-									  /* versionFlag = "true";
-									  jQuery("#versionFlag").val(versionFlag); */
-								  }
-							  }
-							  /* else if(data == "1"){
-								  versionFlag = "false";
-								  jQuery("#versionFlag").val(versionFlag);
-								  appendAlert('errormssage', getMsg('msg048'));
-							  } */
-							  
-						  })
-				}
+				jQuery('select').removeAttr("disabled");
+				jQuery('input').not("#clothName_yes").removeAttr("disabled");
 				
+				var stockCheckResult = stockCheck();
+				
+				if(stockCheckResult){
+					//ステータス設定
+				   	jQuery("#status").empty();
+				   	var statusInput = jQuery("#statusInput").val();
+					if(statusInput=="T0"){
+						jQuery("#status").html("一時保存");
+					}else{
+						jQuery("#status").html("取り置き");
+					}
+				}
+
 				changeViewArea();
-			  },30000)
+			  },60000)
 		};
 	}
  	
 	//一時保存ボタンをクリック
 	jQuery("#temporarySave").click(function(){
 
-		//バージョンフラッグ
-		//var versionFlag = "";
-		//保存flag
-		jQuery("#saveFlag").val("0");
-		//TSCステータス  一時保存
-		jQuery("#statusInput").val("T0");
-		var stockCheckResult = stockCheck();
 		//一時保存チェク結果
 		var result = temporarySaveCheck();
 		
@@ -4088,77 +4023,27 @@ jQuery(document).ready(function(){
 			return false;
 		}
 
+		//保存flag（versionを増える）
+		jQuery("#saveFlag").val("0");
+		//TSCステータス  一時保存
+		jQuery("#statusInput").val("T0");
+		
+		jQuery('select').removeAttr("disabled");
+		jQuery('input').not("#clothName_yes").removeAttr("disabled");
+		
+		var stockCheckResult = stockCheck();
+
 		if(stockCheckResult){
-			jQuery('select').removeAttr("disabled");
-			jQuery('input').not("#clothName_yes").removeAttr("disabled");
-			jQuery.ajax({url : contextPath + "/order/orderPoTemporarySave",
-			    type: "post",
-			    async:false,
-				data: jQuery('#formId').serialize(),
-			    }).then(function(data){
-			    	if(!data.orderMsgFlag){
-						  if(data.orderMsg == 'T2ERROR'){
-							  swal({
-			        				text: getMsg('msg048'),
-			        				icon: "info"
-			        		  }).then(function(val){
-			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-			        		  });
-						  }else if(data.orderMsg == 'T3ERROR'){
-							  swal({
-			        				text: getMsg('msg048'),
-			        				icon: "info"
-			        		  }).then(function(val){
-			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-			        		  });
-						  }
-					}else{
-						if(data.orderId == "true"){
-					    	//ステータス設定
-							jQuery("#status").empty();
-							jQuery("#status").html("一時保存");
-						   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-						   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-							version = version.responseText;
-							jQuery("#version").val(version);
-							/* versionFlag = data;
-							jQuery("#versionFlag").val(versionFlag); */
-						}else if(data.orderId.length == 12){
-							jQuery("#orderId").val(data.orderId);
-					    	//ステータス設定
-							jQuery("#status").empty();
-							jQuery("#status").html("一時保存");
-						   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
-						   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-							version = version.responseText;
-							jQuery("#version").val(version);
-							/* versionFlag = "true";
-							jQuery("#versionFlag").val(versionFlag); */
-						}
-					}
-				    /* else if(data == "1"){
-						versionFlag = "false";
-						jQuery("#versionFlag").val(versionFlag);
-						appendAlert('errormssage', getMsg('msg048'));
-						jQuery("#version").val(jQuery("#version").val());
-					} */
-				})
+			jQuery("#status").empty();
+			jQuery("#status").html("一時保存");
+		   	appendAlert('successmssage', getMsgByOneArg('msg015',jQuery("#orderId").val()));
 		}
+
 		changeViewArea();
 	})
 	
 	//取り置きボタンをクリック
 	jQuery("#layUpSave").click(function(){
-		
-		//バージョンフラッグ
-		//var versionFlag = "";
-		
-		//保存flag
-		jQuery("#saveFlag").val("0");
-		//TSCステータス  取り置き
-		jQuery("#statusInput").val("T1");
-
-		var stockCheckResult = stockCheck();
 		
 		//取り置きチェク結果
 		var result = temporarySaveCheck();
@@ -4167,63 +4052,22 @@ jQuery(document).ready(function(){
 			return false;
 		}
 
+		//保存flag（versionを増える）
+		jQuery("#saveFlag").val("0");
+		//TSCステータス  取り置き
+		jQuery("#statusInput").val("T1");
+		
+		jQuery('select').removeAttr("disabled");
+		jQuery('input').not("#clothName_yes").removeAttr("disabled");
+		
+		var stockCheckResult = stockCheck();
+		
 		if(stockCheckResult){
-			jQuery('select').removeAttr("disabled");
-			jQuery('input').not("#clothName_yes").removeAttr("disabled");
-			jQuery.ajax({url : contextPath + "/order/orderPoTemporarySave",
-			    type: "post",
-			    async:false,
-			    data: jQuery('#formId').serialize(),
-			    }).then(function(data){
-			    	if(!data.orderMsgFlag){
-						  if(data.orderMsg == 'T2ERROR'){
-							  swal({
-			        				text: getMsg('msg048'),
-			        				icon: "info"
-			        		  }).then(function(val){
-			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-			        		  });
-						  }else if(data.orderMsg == 'T3ERROR'){
-							  swal({
-			        				text: getMsg('msg048'),
-			        				icon: "info"
-			        		  }).then(function(val){
-			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-			        		  });
-						  }
-					}else{
-						if(data.orderId == "true"){
-					  	    //ステータス設定
-						   	jQuery("#status").empty();
-						   	jQuery("#status").html("取り置き");
-						   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-						  	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-							version = version.responseText;
-							jQuery("#version").val(version);
-							/* versionFlag = "true";
-				    		jQuery("#versionFlag").val(versionFlag); */
-						}else if(data.orderId.length == 12){
-							jQuery("#orderId").val(data.orderId);
-					    	//ステータス設定
-							jQuery("#status").empty();
-							jQuery("#status").html("取り置き");
-						   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
-						   	var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-							version = version.responseText;
-							jQuery("#version").val(version);
-							/* versionFlag = "true";
-							jQuery("#versionFlag").val(versionFlag); */
-						}
-					}
-			    	/* else if(data == "1"){
-						versionFlag = "false";
-						jQuery("#versionFlag").val(versionFlag);
-						appendAlert('errormssage', getMsg('msg048'));
-						versionFlag = "1";
-						jQuery("#version").val(jQuery("#version").val());
-					} */
-				})
+			jQuery("#status").empty();
+		   	jQuery("#status").html("取り置き");
+		   	appendAlert('successmssage', getMsgByOneArg('msg058',jQuery("#orderId").val()));
 		}
+
 		changeViewArea();
 	})
 	
@@ -5476,7 +5320,7 @@ jQuery(document).ready(function(){
 						//新規登録の場合
 						(orderStatus==""&&orderFormStatus=="")){
 						//在庫チェク
-						stockCheck();
+						stockAddVersionCheck();
 					}else{
 						//生地品番
 					    var productFabricNo = jQuery("#productFabricNo").val();
@@ -5583,7 +5427,7 @@ jQuery(document).ready(function(){
 			//新規登録の場合
 			(orderStatus==""&&orderFormStatus=="")){
 				//在庫チェク
-				stockCheck();
+				stockAddVersionCheck();
 			}else{
 
 				//生地品番
@@ -5689,7 +5533,7 @@ jQuery(document).ready(function(){
 				//新規登録の場合
 				(orderStatus==""&&orderFormStatus=="")){
 				//在庫チェク
-				stockCheck();
+				stockAddVersionCheck();
 			}else{
 				
 				//生地品番
@@ -10996,7 +10840,10 @@ function imageCheck(){
 		}
     }
 
-	stockCheck();
+    var stockCheckResult = stockAddVersionCheck();
+    if(!stockCheckResult){
+    	return false;
+    }
 	
     var productFabricNo = jQuery("#productFabricNo").val();
 
@@ -11507,7 +11354,8 @@ function clearNoNum(obj) {
 
 }
 
-//在庫チェク
+//在庫チェク（ 一時保存、 取り置き、自動保存用）
+//保存flag無し（保存flagによって、versionそのまま）
 function stockCheck(){
 	var checkFlag = true;
 	var item = jQuery("#item option:selected").val();
@@ -11525,8 +11373,6 @@ function stockCheck(){
 		//新規登録の場合
 		(orderStatus==""&&orderFormStatus=="")){
 		
-		//保存flag
-		//jQuery("#saveFlag").val("1");
 		//TSCステータス  一時保存
 		var statusInput = jQuery("#statusInput").val();
 
@@ -11559,9 +11405,6 @@ function stockCheck(){
 			optionRetailPrice("");
 			allPrice();
 			
-			//保存flag ２：在庫チェク
-			//jQuery("#saveFlag").val("2");
-			
 			//注文を登録
 			jQuery('select').removeAttr("disabled");
 			jQuery('input').not("#clothName_yes").removeAttr("disabled");
@@ -11574,20 +11417,14 @@ function stockCheck(){
 				 success:function(result){
 					 checkFlag = true;
 					 if(!result.orderMsgFlag){
-						  if(result.orderMsg == 'T2ERROR'){
+						 if(result.orderMsg == 'T2ERROR' || result.orderMsg == 'T3ERROR' || result.orderMsg == 'VERSIONERROR'){
 							  swal({
 			        				text: getMsg('msg048'),
 			        				icon: "info"
 			        		  }).then(function(val){
 			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
 			        		  });
-						  }else if(result.orderMsg == 'T3ERROR'){
-							  swal({
-			        				text: getMsg('msg048'),
-			        				icon: "info"
-			        		  }).then(function(val){
-			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-			        		  });
+							  checkFlag = false;
 						  }
 					}else{
 						if(result.orderId == "true"){
@@ -11599,6 +11436,9 @@ function stockCheck(){
 							}else{
 							   jQuery("#status").html("取り置き");
 							}
+							var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+							version = version.responseText;
+							jQuery("#version").val(version);
 						 }else if(result.orderId.length == 12){
 							 appendAlertDel('errormssage');
 							 jQuery("#orderId").val(result.orderId);
@@ -11620,75 +11460,9 @@ function stockCheck(){
 		        	 checkFlag = false;
 		         }
 			})
-			
-			/* jQuery.ajax({url : contextPath + "/order/stockDecrease",
-			    type: "post",
-			    async:false,
-			    data: jQuery('#formId').serialize(),
-			 }).then(function(result){
-				if(!result.orderMsgFlag){
-					  if(result.orderMsg == 'T2ERROR'){
-						  swal({
-		        				text: getMsg('msg048'),
-		        				icon: "info"
-		        		  }).then(function(val){
-		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-		        		  });
-					  }else if(result.orderMsg == 'T3ERROR'){
-						  swal({
-		        				text: getMsg('msg048'),
-		        				icon: "info"
-		        		  }).then(function(val){
-		        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-		        		  });
-					  }
-				}else{
-					if(result.orderId == "true"){
-						//ステータス設定
-					   	jQuery("#status").empty();
-					   	var statusInput = jQuery("#statusInput").val();
-						if(statusInput=="T0"){
-						   jQuery("#status").html("一時保存");
-						}else{
-						   jQuery("#status").html("取り置き");
-						}
-						//var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-						//version = version.responseText;
-						//jQuery("#version").val(version);
-						//versionFlag = result;
-						//jQuery("#versionFlag").val(versionFlag);
-					 }else if(result.orderId.length == 12){
-						 appendAlertDel('errormssage');
-						 jQuery("#orderId").val(result.orderId);
-					     //ステータス設定
-						 jQuery("#status").empty();
-					   	 var statusInput = jQuery("#statusInput").val();
-						 if(statusInput=="T0"){
-						 	 jQuery("#status").html("一時保存");
-						 }else{
-							 jQuery("#status").html("取り置き");
-						 }
-						 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
-						 version = version.responseText;
-						 jQuery("#version").val(version);
-						 //versionFlag = "true";
-						 //jQuery("#versionFlag").val(versionFlag);
-					 }
-				}
-				 //else if(result == "1"){
-				 //versionFlag = "false";
-				 //jQuery("#versionFlag").val(versionFlag);
-				 //jQuery("#version").val(jQuery("#version").val());
-				 //appendAlert('errormssage', getMsg('msg048'));
-				 //}
-			 }) */
-			 changeViewArea();
+			changeViewArea();
 		//生地品番が有りの場合
 	    }else{
-	    	//var versionFlag = "";
-	    	//保存flag ２：在庫チェク
-	    	//jQuery("#saveFlag").val("2");
-	    	
 			//在庫チェック
 			var checkResult = fabricCheck(item,productFabricNo);
 			//在庫成功の場合
@@ -11705,20 +11479,14 @@ function stockCheck(){
 					 success:function(result){
 						 checkFlag = true;
 						 if(!result.orderMsgFlag){
-							  if(result.orderMsg == 'T2ERROR'){
+							 if(result.orderMsg == 'T2ERROR' || result.orderMsg == 'T3ERROR' || result.orderMsg == 'VERSIONERROR'){
 								  swal({
 				        				text: getMsg('msg048'),
 				        				icon: "info"
 				        		  }).then(function(val){
 				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
 				        		  });
-							  }else if(result.orderMsg == 'T3ERROR'){
-								  swal({
-				        				text: getMsg('msg048'),
-				        				icon: "info"
-				        		  }).then(function(val){
-				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-				        		  });
+								  checkFlag = false;
 							  }
 						}else{
 							if(result.orderId == "true"){
@@ -11730,6 +11498,204 @@ function stockCheck(){
 								}else{
 								   jQuery("#status").html("取り置き");
 								}
+								var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+								version = version.responseText;
+								jQuery("#version").val(version);
+							 }else if(result.orderId.length == 12){
+								 appendAlertDel('errormssage');
+								 jQuery("#orderId").val(result.orderId);
+							     //ステータス設定
+								 jQuery("#status").empty();
+							   	 var statusInput = jQuery("#statusInput").val();
+								 if(statusInput=="T0"){
+								 	 jQuery("#status").html("一時保存");
+								 }else{
+									 jQuery("#status").html("取り置き");
+								 }
+								 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
+								 version = version.responseText;
+								 jQuery("#version").val(version);
+							 }
+						}
+			    	 },
+			         error:function (result) {
+			        	 checkFlag = false;
+			         }
+				})		
+			}
+			//生地によって、商品を表示
+			if(checkResult == "0"||checkResult == "2"){
+				fabricView(item,productFabricNo);
+			}
+			changeViewArea();
+		}
+	}
+	//登録済以降の場合
+	else{
+	    //在庫チェック
+	    var checkResult = fabricCheck(item,productFabricNo);
+	    //在庫成功の場合
+		if(checkResult == "0"||checkResult == "2"){
+			//生地によって、商品を表示
+			fabricView(item,productFabricNo);
+		}
+	}
+	return checkFlag;
+}
+
+//在庫チェク（内容確認用）
+function stockAddVersionCheck(){
+	var checkFlag = true;
+	var item = jQuery("#item option:selected").val();
+	var productFabricNo = jQuery("#productFabricNo").val();
+	jQuery("div.error-message-list").hide();
+	//注文のTSCステータス
+	var orderStatus = "${order.tscStatus}";
+	//戻るの場合、orderFormのTSCステータス
+	var orderFormStatus = "${orderForm.status}";
+	//T0 ：一時保存、T1 ：取り置き、""：ステータス無し
+	//オーダー一覧から来たの場合
+	if(　((orderStatus=="T0"||orderStatus=="T1")&&orderFormStatus=="")||
+		//「内容確認」画面来たの場合	
+		((orderFormStatus=="T0"||orderFormStatus=="T1")&&orderStatus=="")||
+		//新規登録の場合
+		(orderStatus==""&&orderFormStatus=="")){
+		
+		//TSCステータス  一時保存
+		var statusInput = jQuery("#statusInput").val();
+
+		if(statusInput==""||statusInput==null){
+			jQuery("#statusInput").val("T0");
+		}else{
+			jQuery("#statusInput").val(jQuery("#statusInput").val());
+		}
+		
+		//生地品番が無しの場合
+		if(isEmpty(productFabricNo)){
+			//var versionFlag = "";
+	    	//生地のメッセージをクリア
+			jQuery("#notice").empty();
+	    	jQuery("#fabric_brand_nm_p").empty();
+	    	jQuery("#service_nm_p").empty();
+			jQuery("#compos_frt_fabric_p").empty();
+			jQuery("#goodsPrice").html('0');
+			jQuery("productPriceId").val("");
+			jQuery("#theoryFabricUsedMountId").val("");
+			jQuery("#fabricColor").val("");
+			jQuery("#fabricPattern").val("");
+			jQuery("#factoryCode").val("");
+			jQuery("#makerCode").val("");
+			jQuery("#fabricMsg").empty();
+			jQuery("#fabricFlag").val("0");
+			jQuery("#custShopDeliveryDate").val("");
+			jQuery("#stockMsg").empty();
+			jQuery("#clothName_yes").removeAttr("disabled","disabled");
+			optionRetailPrice("");
+			allPrice();
+			
+			//保存flag ２：在庫チェク（保存flagによって、versionを増える）
+			jQuery("#saveFlag").val("2");
+			
+			//注文を登録
+			jQuery('select').removeAttr("disabled");
+			jQuery('input').not("#clothName_yes").removeAttr("disabled");
+
+			jQuery.ajax({
+				 type:"post",
+				 url: contextPath + "/order/stockDecrease",
+				 data: jQuery('#formId').serialize(),
+				 async:false,
+				 success:function(result){
+					 checkFlag = true;
+					 if(!result.orderMsgFlag){
+						 if(result.orderMsg == 'T2ERROR' || result.orderMsg == 'T3ERROR' || result.orderMsg == 'VERSIONERROR'){
+							  swal({
+			        				text: getMsg('msg048'),
+			        				icon: "info"
+			        		  }).then(function(val){
+			        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+			        		  });
+							  checkFlag = false;
+						  }
+					}else{
+						if(result.orderId == "true"){
+							//ステータス設定
+						   	jQuery("#status").empty();
+						   	var statusInput = jQuery("#statusInput").val();
+							if(statusInput=="T0"){
+							   jQuery("#status").html("一時保存");
+							}else{
+							   jQuery("#status").html("取り置き");
+							}
+							var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+							version = version.responseText;
+							jQuery("#version").val(version);
+						 }else if(result.orderId.length == 12){
+							 appendAlertDel('errormssage');
+							 jQuery("#orderId").val(result.orderId);
+						     //ステータス設定
+							 jQuery("#status").empty();
+						   	 var statusInput = jQuery("#statusInput").val();
+							 if(statusInput=="T0"){
+							 	 jQuery("#status").html("一時保存");
+							 }else{
+								 jQuery("#status").html("取り置き");
+							 }
+							 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
+							 version = version.responseText;
+							 jQuery("#version").val(version);
+						 }
+					}
+		    	 },
+		         error:function (result) {
+		        	 checkFlag = false;
+		         }
+			})
+			changeViewArea();
+		//生地品番が有りの場合
+	    }else{
+	    	
+			//在庫チェック
+			var checkResult = fabricCheck(item,productFabricNo);
+			//在庫成功の場合
+			if(checkResult == "0"){
+				//保存flag ２：在庫チェク（保存flagによって、versionを増える）
+				jQuery("#saveFlag").val("2");
+				
+				//注文を登録　8、9
+				jQuery('select').removeAttr("disabled");
+				jQuery('input').not("#clothName_yes").removeAttr("disabled");
+
+				jQuery.ajax({
+					 type:"post",
+					 url: contextPath + "/order/stockDecrease",
+					 data: jQuery('#formId').serialize(),
+					 async:false,
+					 success:function(result){
+						 checkFlag = true;
+						 if(!result.orderMsgFlag){
+							  if(result.orderMsg == 'T2ERROR' || result.orderMsg == 'T3ERROR' || result.orderMsg == 'VERSIONERROR'){
+								  swal({
+				        				text: getMsg('msg048'),
+				        				icon: "info"
+				        		  }).then(function(val){
+				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
+				        		  });
+								  checkFlag = false;
+							  }
+						}else{
+							if(result.orderId == "true"){
+								//ステータス設定
+							   	jQuery("#status").empty();
+							   	var statusInput = jQuery("#statusInput").val();
+								if(statusInput=="T0"){
+								   jQuery("#status").html("一時保存");
+								}else{
+								   jQuery("#status").html("取り置き");
+								}
+								var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
+								version = version.responseText;
+								jQuery("#version").val(version);
 							 }else if(result.orderId.length == 12){
 								 appendAlertDel('errormssage');
 								 jQuery("#orderId").val(result.orderId);
@@ -11752,66 +11718,6 @@ function stockCheck(){
 			         }
 
 				})		
-				/* jQuery.ajax({url : contextPath + "/order/stockDecrease",
-				    type: "post",
-				    async:false,
-				    data: jQuery('#formId').serialize(),
-			        }).then(function(result){
-			        	if(!result.orderMsgFlag){
-							  if(result.orderMsg == 'T2ERROR'){
-								  swal({
-				        				text: getMsg('msg048'),
-				        				icon: "info"
-				        		  }).then(function(val){
-				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-				        		  });
-							  }else if(result.orderMsg == 'T3ERROR'){
-								  swal({
-				        				text: getMsg('msg048'),
-				        				icon: "info"
-				        		  }).then(function(val){
-				        				window.location.href= contextPath + "/orderlist/gotoOrderlist";
-				        		  });
-							  }
-						}else{
-							if(result.orderId == "true"){
-								jQuery("#status").empty();
-							   	 var statusInput = jQuery("#statusInput").val();
-								 if(statusInput=="T0"){
-								 	 jQuery("#status").html("一時保存");
-								 }else{
-									 jQuery("#status").html("取り置き");
-								 }
-				        		 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":jQuery("#orderId").val()},async:false});
-								 //version = version.responseText;
-								 //jQuery("#version").val(version);
-								 //versionFlag = result;
-								 //jQuery("#versionFlag").val(versionFlag);
-						    }else if(result.orderId.length == 12){
-								 appendAlertDel('errormssage');
-								 jQuery("#orderId").val(result.orderId);
-							     //ステータス設定
-								 jQuery("#status").empty();
-							   	 var statusInput = jQuery("#statusInput").val();
-								 if(statusInput=="T0"){
-								 	 jQuery("#status").html("一時保存");
-								 }else{
-									 jQuery("#status").html("取り置き");
-								 }
-								 var version = jQuery.ajax({url:contextPath + "/order/getOrderVersion",data:{"orderId":result.orderId},async:false});
-								 version = version.responseText;
-								 jQuery("#version").val(version);
-								 //versionFlag = "true";
-								 //jQuery("#versionFlag").val(versionFlag);
-							 }
-						}
-			        	//else if(result == "1"){
-						    	//versionFlag = "false";
-								//jQuery("#versionFlag").val(versionFlag);
-						    	//appendAlert('errormssage', getMsg('msg048'));
-						    	//jQuery("#version").val(jQuery("#version").val());
-						//}
-				    }); */
 			}
 			//生地によって、商品を表示
 			if(checkResult == "0"||checkResult == "2"){
@@ -11825,7 +11731,7 @@ function stockCheck(){
 	    //在庫チェック
 	    var checkResult = fabricCheck(item,productFabricNo);
 	    //在庫成功の場合
-		if(checkResult){
+		if(checkResult == "0"||checkResult == "2"){
 			//生地によって、商品を表示
 			fabricView(item,productFabricNo);
 		}

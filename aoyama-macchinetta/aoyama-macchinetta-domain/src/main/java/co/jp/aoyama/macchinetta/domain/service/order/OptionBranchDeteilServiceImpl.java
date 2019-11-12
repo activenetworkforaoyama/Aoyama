@@ -24,13 +24,13 @@ public class OptionBranchDeteilServiceImpl implements OptionBranchDeailService {
 	}
 
 	@Override
-	public List<OptionBranchDetail> getTuxedoButtons(String itemCode,String subItemCode, String tpButton, String orderPattern) {
-		return optionBranchDetailRepository.getTuxedoButtons(itemCode,subItemCode,tpButton,orderPattern);
+	public List<OptionBranchDetail> getTuxedoButtons(String itemCode,String subItemCode, String tpButton, String orderPattern, String optionCode) {
+		return optionBranchDetailRepository.getTuxedoButtons(itemCode,subItemCode,tpButton,orderPattern, optionCode);
 	}
 
 	@Override
-	public List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern) {
-		return optionBranchDetailRepository.getWashableButtons(itemCode,subItemCode,wpButton,orderPattern);
+	public List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern, String optionCode) {
+		return optionBranchDetailRepository.getWashableButtons(itemCode,subItemCode,wpButton,orderPattern,optionCode);
 	}
 
 	@Override

@@ -18,9 +18,9 @@ public interface OptionBranchDetailRepository {
     
     List<OptionBranchDetail> getStandardButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern,@Param("optionCode") String optionCode);
 
-	List<OptionBranchDetail> getTuxedoButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern);
+	List<OptionBranchDetail> getTuxedoButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern,@Param("optionCode") String optionCode);
 
-	List<OptionBranchDetail> getWashableButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern);
+	List<OptionBranchDetail> getWashableButtons(@Param("itemCode")String itemCode,@Param("subItemCode") String subItemCode,@Param("optionBranchCode") String optionBranchCode,@Param("orderPattern") String orderPattern,@Param("optionCode") String optionCode);
 
 	List<OptionBranchDetail> getAllOption(@Param("orderPattern")String orderPattern);
 	

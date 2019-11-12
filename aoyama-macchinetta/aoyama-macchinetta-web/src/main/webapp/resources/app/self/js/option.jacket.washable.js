@@ -12,6 +12,13 @@ function initOptionJacketWashable() {
 		// 選択されたJacketモデルを取得
 		var jacketModel = jQuery(this).val();
 		var jacketOldModel = jQuery('#wj_jacketModel').attr("oldWjJkModel");
+		var modelFlag = 0;
+		if(jacketOldModel == '' || jacketOldModel == null){
+			modelFlag = 1;
+		}
+		else {
+			modelFlag = 2;
+		}
 		if(jacketModel != jacketOldModel){
 			jQuery("#jacketFlag").val("0");
 		}else{
@@ -72,6 +79,7 @@ function initOptionJacketWashable() {
 			// 袖釦のデフォルト制御
 			jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]').val([sleeveBtnTypeList[jacketModel]]);
 			jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]').change();
+			jQuery('#wj_sleeveBtnCnt').val(4);
 
 			// ベントのデフォルト制御
 			jQuery('input[name="coOptionJacketWashableInfo.wjVentSpec"]').val([ventSpecList[jacketModel]]);
@@ -85,7 +93,7 @@ function initOptionJacketWashable() {
 			}
 
 			// 別モデルに変更された場合はアラート表示
-			if (tmpWjJacketModel != '' && jacketModel != tmpWjJacketModel) {
+			if ((tmpWjJacketModel != '' || null != tmpWjJacketModel)&& jacketModel != tmpWjJacketModel && modelFlag == 2) {
 			    setAlert('wj_jacketModelMsg', "モデルが変更されました。選択項目の見直しを行ってください。");
 			}
 			// 一時保存のモデルを更新
@@ -121,7 +129,17 @@ function initOptionJacketWashable() {
 		}
 		
 	});
-
+	
+	var jacketModel = jQuery('#wj_jacketModel').val();
+	
+	// 袖仕様のデフォルト制御
+	if (jacketModel == 'TR02') {
+		jQuery('#wj_sleeveSpec_id2').prop('disabled', false);
+	} else {
+		jQuery('#wj_sleeveSpec_id1').prop('checked', true);  // 通常にチェック
+		jQuery('#wj_sleeveSpec_id2').prop('disabled', true);
+	}
+	
 	// フロント釦数変更時の制御
 	jQuery('#wj_frontBtnCnt').change(function(){
 		// 選択中のJacketモデルを取得
@@ -223,8 +241,41 @@ function initOptionJacketWashable() {
 	//胸ポケット
 	jQuery('input[id^="wj_breastPkt_"]').each(function() {
 		jQuery(this).change(function(){
-			// ダブルステッチ変更箇所の有効/無効
-			ctrlWjDStitchModify();
+			// 選択中のステッチ箇所変更
+			var dStitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').val();
+
+			// 選択中の胸ポケットを取得
+			var breastPktValue = jQuery('input[name="coOptionJacketWashableInfo.wjBreastPkt"]:checked').val();
+
+			// 選択中の腰ポケットを取得
+			var waistPktValue = jQuery('#wj_waistPkt').val();
+			
+			//有り:0002602
+			if (dStitchValue == "0002602") {
+				jQuery('#wj_dStitchModifyPlace').show();
+			} else {
+				jQuery('#wj_dStitchModifyPlace').hide();
+			}
+
+			// 選択中のJacketモデルを取得
+			var jacketModel = jQuery('#wj_jacketModel').val();
+
+			// ダブルステッチ変更箇所の有効/無効設定
+			jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
+				var stichModifyPlaceIdTemp = jQuery(this).attr("id").replace("wj_dStitch","wj_stitch");
+				var twoStichModifyPlaceChecked = jQuery("#"+stichModifyPlaceIdTemp).prop("checked");
+				
+				//胸ポケット:0002702,パッチ:0001102
+				if(jQuery(this).val() == "0002702"){
+					// 胸ポケットが「パッチ」選択時、胸ポケットは選択不可
+					if(breastPktValue == "0001102"){
+						jQuery(this).prop("disabled", true);
+						jQuery(this).prop("checked", false);
+					}else if(breastPktValue == "0001101" && twoStichModifyPlaceChecked){
+						jQuery(this).prop("disabled", false);
+					}
+				}
+			});
 		});
 	});
 	wjWaistPktChange();
@@ -250,22 +301,61 @@ function initOptionJacketWashable() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').val([slantedPktList[waistPkt].defaultValue]);
+		jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]:checked').change();
 
 		// チェンジポケット変更時の制御
 		changeWjChangePkt();
 
-		// ダブルステッチ変更箇所の有効/無効
-		ctrlWjDStitchModify();
+		var dStitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').val();
+
+		// 選択中の胸ポケットを取得
+		var breastPktValue = jQuery('input[name="coOptionJacketWashableInfo.wjBreastPkt"]:checked').val();
+
+		// 選択中の腰ポケットを取得
+		var waistPktValue = jQuery('#wj_waistPkt').val();
+		
+		//有り:0002602
+		if (dStitchValue == "0002602") {
+			jQuery('#wj_dStitchModifyPlace').show();
+		} else {
+			jQuery('#wj_dStitchModifyPlace').hide();
+		}
+
+		// 選択中のJacketモデルを取得
+		var jacketModel = jQuery('#wj_jacketModel').val();
+
+		// 選択中のラペルデザインを取得
+		var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').val();
+
+		// ダブルステッチ変更箇所の有効/無効設定
+		jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
+			var stichModifyPlaceIdTemp = jQuery(this).attr("id").replace("wj_dStitch","wj_stitch");
+			var twoStichModifyPlaceChecked = jQuery("#"+stichModifyPlaceIdTemp).prop("checked");
+			
+			//腰ポケット0002703:,パッチ:0001203,パッチ＆フラップ:0001204
+			if(jQuery(this).val() == "0002703"){
+				if(waistPktValue == "0001203" || waistPktValue == "0001204"){
+					// 腰ポケットが「パッチ、パッチ＆フラップ」選択時、腰ポケットは選択不可
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);	
+				}else{
+					if(twoStichModifyPlaceChecked){
+						jQuery(this).prop("disabled", false);
+					}
+				}
+			}
+		});
 	});
 
 	// チェンジポケット変更時
 	jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').each(function() {
-		jQuery(this).click(changeWjChangePkt);
+		jQuery(this).change(changeWjChangePkt);
 	});
 
 	// AMFステッチ
-	jQuery('input[id^="wj_stitch_id"]').each(function() {
-		jQuery(this).click(changeWjStitch);
+	jQuery('input[name="coOptionJacketWashableInfo.wjStitch"]').each(function() {
+	//jQuery('input[id^="wj_stitch_id"]').each(function() {
+		jQuery(this).change(changeWjStitch);
 	});
 	changeWjStitch();
 	
@@ -338,8 +428,15 @@ function initOptionJacketWashable() {
 			var sleeveBtnType = jQuery('input[name="coOptionJacketWashableInfo.wjSleeveBtnType"]:checked').val();
 			var sleeveBtnCnt = jQuery('#wj_sleeveBtnCnt').val() - 0;
 
+			if(sleeveBtnType == '0001802'){
+				if(sleeveBtnCnt == 5 ||sleeveBtnCnt == '5'){
+					// 袖釦数をデフォルトに変更
+					jQuery('#wj_sleeveBtnCnt').val(4);
+				}
+			}
+			
 			// 袖釦数をデフォルトに変更
-			jQuery('#wj_sleeveBtnCnt').val(4);
+			//jQuery('#wj_sleeveBtnCnt').val(4);
 
 			// ボタンホール色指定箇所の制御
 			ctrlWjBhColorPlace();
@@ -432,6 +529,13 @@ function initOptionJacketWashable() {
 				elem.removeAttr("checked");
 			}
 		})
+		
+		jQuery('#wj_bhColor_div input[type="checkbox"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
 		// 無しの場合は2階層目を表示しない
 		jQuery('#wj_bhColor_div').hide();
 	} else {
@@ -468,6 +572,13 @@ function initOptionJacketWashable() {
 				jQuery('#btn_as_wj_bhColorPlace').prop("disabled", true);
 
 				jQuery('#wj_bhColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
+				
+				jQuery('#wj_bhColor_div input[type="checkbox"]').each(function(index, elem){
 					elem = jQuery(elem);
 					if (elem.prop("checked")) {
 						elem.removeAttr("checked");
@@ -552,6 +663,12 @@ function initOptionJacketWashable() {
 				elem.removeAttr("checked");
 			}
 		})
+		jQuery('#wj_byColor_div input[type="checkbox"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		})
 		// 無しの場合は2階層目を表示しない
 		jQuery('#wj_byColor_div').hide();
 	} else {
@@ -588,6 +705,12 @@ function initOptionJacketWashable() {
 				jQuery('#btn_as_wj_byColorPlace').prop("disabled", true);
 
 				jQuery('#wj_byColor_div input[type="radio"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+					}
+				})
+				jQuery('#wj_byColor_div input[type="checkbox"]').each(function(index, elem){
 					elem = jQuery(elem);
 					if (elem.prop("checked")) {
 						elem.removeAttr("checked");
@@ -797,7 +920,9 @@ function changeWjStitch() {
 	var stitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjStitch"]:checked').val();
 	
 	var stitchDValue = jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').val();
-	//ミシンステッチ:0002304,AMFステッチ:0002301
+	
+	var amfValue = jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]:checked').val();
+	//ミシンステッチ:0005104,AMFステッチ:0005102
 	
 	// 有りの場合、関連する項目を有効化
 	// ステッチ箇所変更
@@ -806,8 +931,8 @@ function changeWjStitch() {
 	jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", false);
 	
 	// ダブルステッチ変更
-	if (stitchValue != "0002304") {
-		if(stitchValue == "0002301"){
+	if (stitchValue != "0005104") {
+		if(stitchValue == "0005102"){
 			jQuery('input[id="wj_dStitchModify_id2"]').prop("disabled", false);
 		}else{
 			jQuery('input[id="wj_dStitchModify_id2"]').prop("disabled", true);
@@ -822,32 +947,29 @@ function changeWjStitch() {
 		if(stitchDValue != "0002601"){
 			jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').change();
 		}
+		
+		jQuery('input[id="wj_amfColor_id2"]').prop("disabled", true);
+		jQuery('input[id="wj_amfColor_id1"]').prop("checked", true);
+		if(amfValue != "0002801"){
+			jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]:checked').change();
+		}
 	}
 	
-//	if (stitchValue == "0002304" || stitchValue == "0002301") {
-//		// 有りの場合、関連する項目を有効化
-//		// ステッチ箇所変更
-//		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", false);
-//		// AMF色指定
-//		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", false);
-//	} else {
-//		// 無しの場合、関連する項目を無効化・値変更
-//		// ステッチ箇所変更
-//		jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').prop("disabled", true);
-//		jQuery('#wj_stitchModify_id1').prop("checked", true);
-//		jQuery('#wj_stitchModify_id1').change();
-//
-//		// ダブルステッチ変更
-//		jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]').prop("disabled", true);
-//		jQuery('#wj_dStitchModify_id1').prop("checked", true);
-//		jQuery('#wj_dStitchModify_id1').change();
-//
-//		// AMF色指定
-//		jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]').prop("disabled", true);
-//		jQuery('#wj_amfColor_id1').prop("checked", true);
-//		jQuery('#wj_amfColor_id1').change();
-//	}
 }
+
+jQuery('#btn_ar_wj_stitchModifyPlace').click(function(){
+	var wjStitchModify = jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]:checked').val();
+	var wjDStitchModify = jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').val();
+	var wjAmfColor = jQuery('input[name="coOptionJacketWashableInfo.wjAmfColor"]:checked').val();
+	
+	if(wjDStitchModify == "0002602"){
+		jQuery("#btn_ar_wj_dStitchModifyPlace").click();
+	}
+	
+	if(wjAmfColor == "0002802"){
+		jQuery("#btn_ar_wj_amfColorPlace").click();
+	}
+})
 
 //ステッチ箇所変更の有効/無効を制御する
 function ctrlWjStitchModify() {
@@ -952,6 +1074,26 @@ function ctrlWjDStitchModify() {
 	for (tmpStitchModifyPlace in stitchModifyList[jacketModel]) {
 		// 定義取得
 		stitchModifyDef = stitchModifyList[jacketModel][tmpStitchModifyPlace];
+		
+		if(tmpStitchModifyPlace == 'id4'){
+			continue;
+		}
+		else if(tmpStitchModifyPlace == 'id5'){
+			tmpStitchModifyPlace = 'id4';
+		}
+		else if(tmpStitchModifyPlace == 'id6'){
+			tmpStitchModifyPlace = 'id5';
+		}
+		else if(tmpStitchModifyPlace == 'id7'){
+			tmpStitchModifyPlace = 'id6';
+		}
+		else if(tmpStitchModifyPlace == 'id8'){
+			tmpStitchModifyPlace = 'id7';
+		}
+		else if(tmpStitchModifyPlace == 'id9'){
+			tmpStitchModifyPlace = 'id8';
+		}
+		
 		// 要素取得
 		tmpStitchModify = jQuery('#wj_dStitchModifyPlace_'+tmpStitchModifyPlace);
 
@@ -970,8 +1112,50 @@ function ctrlWjDStitchModify() {
 
 	// ダブルステッチ変更箇所の有効/無効設定
 	jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
-		if(jQuery(this).prop("disabled")){
-			// 無効選択肢は何もしない
+		var stichModifyPlaceIdTemp = jQuery(this).attr("id").replace("wj_dStitch","wj_stitch");
+		var twoStichModifyPlaceChecked = jQuery("#"+stichModifyPlaceIdTemp).prop("checked");
+		
+		//胸ポケット:0002702,パッチ:0001102
+		if(jQuery(this).val() == "0002702"){
+			// 胸ポケットが「パッチ」選択時、胸ポケットは選択不可
+			if(breastPktValue == "0001102"){
+				jQuery(this).prop("disabled", true);
+				jQuery(this).prop("checked", false);
+			}else if(breastPktValue == "0001101" && twoStichModifyPlaceChecked){
+				jQuery(this).prop("disabled", false);
+			}
+		}
+		//腰ポケット0002703:,パッチ:0001203,パッチ＆フラップ:0001204
+		else if(jQuery(this).val() == "0002703"){
+			if(waistPktValue == "0001203" || waistPktValue == "0001204"){
+				// 腰ポケットが「パッチ、パッチ＆フラップ」選択時、腰ポケットは選択不可
+				jQuery(this).prop("disabled", true);
+				jQuery(this).prop("checked", false);	
+			}else{
+				if(twoStichModifyPlaceChecked){
+					jQuery(this).prop("disabled", false);
+				}
+			}
+		}
+		
+		/*if(jQuery(this).prop("disabled")){
+			if(jQuery(this).val() == "0002702"){
+				if(breastPktValue == "0001102"){
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);
+				}else{
+					jQuery(this).prop("disabled", false);
+				}
+			}
+			
+			if(jQuery(this).val() == "0002703"){
+				if(waistPktValue == "0001203" || waistPktValue == "0001204"){
+					jQuery(this).prop("disabled", true);
+					jQuery(this).prop("checked", false);
+				}else{
+					jQuery(this).prop("disabled", false);
+				}
+			}
 			//胸ポケット:0002702,パッチ:0001102
 		} else if (jQuery(this).val() == "0002702" && breastPktValue == "0001102") {
 			// 胸ポケットが「パッチ」選択時、胸ポケットは選択不可
@@ -984,34 +1168,9 @@ function ctrlWjDStitchModify() {
 			jQuery(this).prop("checked", false);
 		} else {
 			//jQuery(this).prop("checked", true);
-		}
+		}*/
 	});
 	
-	if (dStitchValue == "0002602") {
-		//jQuery('input[id^="wj_stitchModifyPlace_"]').change();
-		jQuery('input[id^="wj_dStitchModifyPlace_id"]').change();
-	}
-	
-	// ダブルステッチ変更箇所の有効/無効設定
-	/*
-	jQuery('input[id^="wj_dStitchPlace_"]').each(function() {
-		if (dStitchModifyValue == "有り") {
-			// 有りの場合はステッチ箇所変更に基づく
-			var id = this.id;
-			id = id.replace("wj_dStitchPlace", "wj_stitchModifyPlace");
-			if (jQuery('#'+id).prop("checked")) {
-				jQuery(this).prop("disabled", false);
-			} else {
-				jQuery(this).prop("disabled", true);
-				jQuery(this).prop("checked", false);
-			}
-		} else {
-			// 無しの場合は変更不可
-			jQuery(this).prop("disabled", true);
-			jQuery(this).prop("checked", false);
-		}
-	});
-	*/
 }
 
 //ダブルステッチ変更(選択肢)の有効/無効を制御する
@@ -1174,9 +1333,27 @@ function ctrlWjAmfColor() {
 				elem.removeAttr("checked");
 			}
 		});
+		jQuery('#wj_amfColor_div input[type="checkbox"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+			}
+		});
 		jQuery('#wj_amfColor_div').hide();
 	}
 
+	// 選択中のJacketモデルを取得
+	var jacketModel = jQuery('#wj_jacketModel').val();
+
+	if (!stitchModifyList[jacketModel]) {
+		// Jacketモデルとラペルデザインの組み合わせが定義にない場合はすべて変更不可
+		jQuery('input[id^="wj_amfColorPlace_"]').each(function() {
+			jQuery(this).prop("disabled", true);
+			jQuery(this).prop("checked", false);
+		});
+		return;
+	}
+	
 	// AMF色指定の有効/無効設定
 	if(stitchModifyValue == "0002402"){
 		jQuery('input[id^="wj_amfColorPlace_"]').each(function() {
@@ -1270,6 +1447,7 @@ function changeWjChangePkt() {
 	});
 	// デフォルトを選択
 	jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]').val([slantedPktList[waistPkt].activeList[changePkt].defaultValue]);
+	jQuery('input[name="coOptionJacketWashableInfo.wjSlantedPkt"]:checked').change();
 }
 
 function wjWaistPktChange(){
@@ -1293,12 +1471,50 @@ function wjWaistPktChange(){
 	});
 	// デフォルトを選択
 	jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]').val([slantedPktList[waistPkt].defaultValue]);
-
+	jQuery('input[name="coOptionJacketWashableInfo.wjChangePkt"]:checked').change();
 	// チェンジポケット変更時の制御
 	changeWjChangePkt();
 
-	// ダブルステッチ変更箇所の有効/無効
-	ctrlWjDStitchModify();
+	// 選択中のステッチ箇所変更
+	var dStitchValue = jQuery('input[name="coOptionJacketWashableInfo.wjDStitchModify"]:checked').val();
+
+	// 選択中の胸ポケットを取得
+	var breastPktValue = jQuery('input[name="coOptionJacketWashableInfo.wjBreastPkt"]:checked').val();
+
+	// 選択中の腰ポケットを取得
+	var waistPktValue = jQuery('#wj_waistPkt').val();
+	
+	//有り:0002602
+	if (dStitchValue == "0002602") {
+		jQuery('#wj_dStitchModifyPlace').show();
+	} else {
+		jQuery('#wj_dStitchModifyPlace').hide();
+	}
+
+	// 選択中のJacketモデルを取得
+	var jacketModel = jQuery('#wj_jacketModel').val();
+
+	// 選択中のラペルデザインを取得
+	var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjLapelDesign"]:checked').val();
+
+	// ダブルステッチ変更箇所の有効/無効設定
+	jQuery('input[id^="wj_dStitchModifyPlace_"]').each(function() {
+		var stichModifyPlaceIdTemp = jQuery(this).attr("id").replace("wj_dStitch","wj_stitch");
+		var twoStichModifyPlaceChecked = jQuery("#"+stichModifyPlaceIdTemp).prop("checked");
+		
+		//腰ポケット0002703:,パッチ:0001203,パッチ＆フラップ:0001204
+		if(jQuery(this).val() == "0002703"){
+			if(waistPktValue == "0001203" || waistPktValue == "0001204"){
+				// 腰ポケットが「パッチ、パッチ＆フラップ」選択時、腰ポケットは選択不可
+				jQuery(this).prop("disabled", true);
+				jQuery(this).prop("checked", false);	
+			}else{
+				if(twoStichModifyPlaceChecked){
+					jQuery(this).prop("disabled", false);
+				}
+			}
+		}
+	});
 }
 
 //ボタンホール色指定箇所の有効/無効を制御する

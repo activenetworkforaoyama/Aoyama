@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStBodyBackMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStCuffBackMateItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStItem;
 import co.jp.aoyama.macchinetta.app.order.OrderCoForm.JkStStitchItem;
@@ -203,7 +204,7 @@ public class CoOptionJacketStandardInfo implements Serializable {
 	@NotBlank(groups = { JkStItem.class }, message = "JACKETのステッチ種類を入力して下さい。")
 	private String ojStitch;
 
-	private Map<String, String> ojStitchMap;
+	private Map<String, String> ojCoStitchMap;
 
 	private String jkStitchTypeRtPrice;
 
@@ -574,7 +575,7 @@ public class CoOptionJacketStandardInfo implements Serializable {
 	private String jkInnerBodyClothRtPrice;
 
 	// 胴裏素材品番
-	@NotBlank(groups = { JkStItem.class }, message = "JACKETの胴裏素材品番を入力して下さい。")
+	@NotBlank(groups = { JkStBodyBackMateItem.class }, message = "JACKETの胴裏素材品番を入力して下さい。")
 	private String ojBodyBackMateStkNo;
 
 	// 袖裏素材
@@ -1021,12 +1022,12 @@ public class CoOptionJacketStandardInfo implements Serializable {
 		this.ojStitch = ojStitch;
 	}
 
-	public Map<String, String> getOjStitchMap() {
-		return ojStitchMap;
+	public Map<String, String> getOjCoStitchMap() {
+		return ojCoStitchMap;
 	}
 
-	public void setOjStitchMap(Map<String, String> ojStitchMap) {
-		this.ojStitchMap = ojStitchMap;
+	public void setOjCoStitchMap(Map<String, String> ojCoStitchMap) {
+		this.ojCoStitchMap = ojCoStitchMap;
 	}
 
 	public String getOjStitchModify() {

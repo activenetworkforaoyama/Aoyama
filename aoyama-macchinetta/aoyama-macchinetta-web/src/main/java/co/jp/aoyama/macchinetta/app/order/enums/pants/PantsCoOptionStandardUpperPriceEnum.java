@@ -12,7 +12,7 @@ public enum PantsCoOptionStandardUpperPriceEnum {
 	PANTS_STANDARD_OPTION_CODE04("00004","getOpFrontSpec","","opFrontSpecPrice","setPtFrtTypeRtPrice"),//フロント仕様
 	PANTS_STANDARD_OPTION_CODE05("00005","getOpPancherina","","opPancherinaPrice","setPtPancherinaRtPrice"),//パンチェリーナ
 	PANTS_STANDARD_OPTION_CODE06("00006","getOpAdjuster","","opAdjusterPrice","setPtAdjusterRtPrice"),//アジャスター仕様
-//	PANTS_STANDARD_OPTION_CODE07("00007","getOpBeltLoop","","opBeltLoopPrice","setPtBeltloopRtPrice"),//ベルトループ変更
+	PANTS_STANDARD_OPTION_CODE07("00007","getOpBeltLoop","","opBeltLoopPrice","setPtBeltloopRtPrice"),//ベルトループ変更
 	PANTS_STANDARD_OPTION_CODE08("00009","getOpPinLoop","","opPinLoopPrice","setPtPinloopRtPrice"),//ピンループ
 	PANTS_STANDARD_OPTION_CODE10("00010","getOpSidePkt","","opSidePktPrice","setPtSidePktRtPrice"),//脇ポケット
 	PANTS_STANDARD_OPTION_CODE11("00011","getOpSinobiPkt","","opSinobiPktPrice","setPtShinobiPktRtPrice"),//忍びポケット
@@ -23,7 +23,7 @@ public enum PantsCoOptionStandardUpperPriceEnum {
 	PANTS_STANDARD_OPTION_CODE16("00016","getOpVCut","","opVCutPrice","setPtVCutRtPrice"),//Vカット
 	PANTS_STANDARD_OPTION_CODE17("00017","getOpHemUp","","opHemUpPrice","setPtHemUpRtPrice"),//裾上げ
 	PANTS_STANDARD_OPTION_CODE18("00018","getOpDoubleWide","","opDoubleWidePrice","setPtDblWidthRtPrice"),//ダブル幅
-	PANTS_STANDARD_OPTION_CODE19("00019","getOpStitch","","opStitchPrice","setPtAmfStitchRtPrice"),//ステッチ種類
+	PANTS_STANDARD_OPTION_CODE19("00051","getOpStitch","","opStitchPrice","setPtAmfStitchRtPrice"),//ステッチ種類
 //	PANTS_STANDARD_OPTION_CODE20("00020","getOpStitchModify","","opStitchModifyPrice","setPtStitchPlcRtPrice"),//ステッチ箇所変更
 	PANTS_STANDARD_OPTION_CODE22("00022","getOpDStitch","","opDStitchPrice","setPtDblstitchPlcRtPrice"),//ダブルステッチ
 //	PANTS_STANDARD_OPTION_CODE24("00024","getOpAmfColor","","opAmfColorPrice","setPtAmfColorRtPrice"),//AMF色指定

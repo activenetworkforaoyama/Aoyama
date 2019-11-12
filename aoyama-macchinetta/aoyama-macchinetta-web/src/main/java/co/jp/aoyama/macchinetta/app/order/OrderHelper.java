@@ -6175,6 +6175,19 @@ public class OrderHelper {
 			BigDecimal corPtThighwidthCorrect = corPtThighwidthCorrectA.multiply(corPtThighwidthCorrectAgainF);
 			// PANTS_ワタリ_再補正値
 			order.setCorPtThighwidthCorrectAgain(corPtThighwidthCorrect);
+			
+			// PANTS_ヒップ_再補正値
+			String corPtHipCorrectAgain = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtHipCorrectAgain();
+			BigDecimal corPtHipCorrectAgainA = convertBigDecimal(corPtHipCorrectAgain);
+			// PANTS_ヒップ_再補正値フラッグ
+			String corPtHipCorrectAgainFlag = orderForm.getAdjustPantsStandardInfo()
+					.getCorPtHipCorrectAgainFlag();
+			BigDecimal corPtHipCorrectAgainF = new BigDecimal(corPtHipCorrectAgainFlag);
+			// 再補正値*再補正値フラッグ
+			BigDecimal corPtHipCorrect = corPtHipCorrectAgainA.multiply(corPtHipCorrectAgainF);
+			// PANTS_ヒップ_再補正値
+			order.setCorPtHipCorrectAgain(corPtHipCorrect);
 
 			// PANTS_裾幅_修正_再補正値
 			String corPtHemwidthCorrectAgain = orderForm.getAdjustPantsStandardInfo().getCorPtHemwidthCorrectAgain();
@@ -6226,6 +6239,19 @@ public class OrderHelper {
 				BigDecimal corPt2WaistCorrect = corPt2WaistCorrectA.multiply(corPt2WaistCorrectAgainF);
 				// ２PANTS_ウエスト_再補正値
 				order.setCorPt2WaistCorrectAgain(corPt2WaistCorrect);
+				
+				// 2PANTS_ヒップ_再補正値
+				String corPt2HipCorrectAgain = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2HipCorrectAgain();
+				BigDecimal corPt2HipCorrectAgainA = convertBigDecimal(corPt2HipCorrectAgain);
+				// 2PANTS_ヒップ_再補正値フラッグ
+				String corPt2HipCorrectAgainFlag = orderForm.getAdjustPants2StandardInfo()
+						.getCorPt2HipCorrectAgainFlag();
+				BigDecimal corPt2HipCorrectAgainF = new BigDecimal(corPt2HipCorrectAgainFlag);
+				// 再補正値*再補正値フラッグ
+				BigDecimal corPt2HipCorrect = corPt2HipCorrectAgainA.multiply(corPt2HipCorrectAgainF);
+				// 2PANTS_ヒップ_再補正値
+				order.setCorPt2HipCorrectAgain(corPt2HipCorrect);
 
 				// 2PANTS_ワタリ_再補正値
 				String corPt2ThighwidthCorrectAgain = orderForm.getAdjustPants2StandardInfo()

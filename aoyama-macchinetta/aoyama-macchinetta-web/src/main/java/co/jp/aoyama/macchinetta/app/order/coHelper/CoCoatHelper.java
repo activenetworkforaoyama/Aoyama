@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.dozer.util.ReflectionUtils;
 import org.springframework.ui.Model;
 import org.terasoluna.gfw.common.message.ResultMessages;
 
+import co.jp.aoyama.macchinetta.app.common.BaseCheckUtil;
 import co.jp.aoyama.macchinetta.app.common.CoContorllerPublicMethodUtil;
 import co.jp.aoyama.macchinetta.app.common.CoTypeSizeOptimization;
 import co.jp.aoyama.macchinetta.app.order.OptionCodeKeys;
@@ -24,7 +26,10 @@ import co.jp.aoyama.macchinetta.app.order.enums.coat.CoatCoOptionStandardPriceEn
 import co.jp.aoyama.macchinetta.domain.model.Adjust;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.TypeSize;
+import co.jp.aoyama.macchinetta.domain.service.order.ModelService;
+import co.jp.aoyama.macchinetta.domain.service.order.OrderService;
 import co.jp.aoyama.macchinetta.domain.service.order.TypeSizeService;
+import co.jp.aoyama.macchinetta.domain.service.orderlist.OrderListService;
 
 public class CoCoatHelper {
 	
@@ -76,17 +81,16 @@ public class CoCoatHelper {
 					coatFlag = true;
 				}
 				
-				String corCtVenthightSize = coAdjustCoatStandardInfo.getCorCtVenthightSize();
-				if("".equals(corCtVenthightSize)||"0".equals(corCtVenthightSize)||corCtVenthightSize == null) {
-					messages.add("E034", "COATのベント修正（高さ）");
-					coatFlag = true;
-				}
-				
-				String corCtPktposSize = coAdjustCoatStandardInfo.getCorCtPktposSize();
-				if("".equals(corCtPktposSize)||"0".equals(corCtPktposSize)||corCtPktposSize == null) {
-					messages.add("E034", "COATのポケット位置");
-					coatFlag = true;
-				}
+				/*
+				 * String corCtVenthightSize = coAdjustCoatStandardInfo.getCorCtVenthightSize();
+				 * if("".equals(corCtVenthightSize)||"0".equals(corCtVenthightSize)||
+				 * corCtVenthightSize == null) { messages.add("E034", "COATのベント修正（高さ）");
+				 * coatFlag = true; }
+				 * 
+				 * String corCtPktposSize = coAdjustCoatStandardInfo.getCorCtPktposSize();
+				 * if("".equals(corCtPktposSize)||"0".equals(corCtPktposSize)||corCtPktposSize
+				 * == null) { messages.add("E034", "COATのポケット位置"); coatFlag = true; }
+				 */
 				
 				List<Adjust> glAdjustList = adjustByItem.get("06");
 				if(!glAdjustList.isEmpty()&&!coCtTypeSizeOptimization.isEmpty()) {
@@ -108,13 +112,15 @@ public class CoCoatHelper {
 						String stringCorCtLeftsleeveSize = ctStandardValue.get("corCtLeftsleeveSize");
 						BigDecimal corCtLeftlengthsleeveSize = new BigDecimal(stringCorCtLeftsleeveSize);
 						
-						// COAT_ベント修正（高さ）_型サイズ
-						String stringCorCtVenthightSize = ctStandardValue.get("corCtVenthightSize");
-						BigDecimal corCtVenthightlengthSize = new BigDecimal(stringCorCtVenthightSize);
-						
-						// COAT_ポケット位置_型サイズ
-						String stringCorCtPktposSize = ctStandardValue.get("corCtPktposSize");
-						BigDecimal corCtPktposlengthSize = new BigDecimal(stringCorCtPktposSize);
+						/*
+						 * // COAT_ベント修正（高さ）_型サイズ String stringCorCtVenthightSize =
+						 * ctStandardValue.get("corCtVenthightSize"); BigDecimal
+						 * corCtVenthightlengthSize = new BigDecimal(stringCorCtVenthightSize);
+						 * 
+						 * // COAT_ポケット位置_型サイズ String stringCorCtPktposSize =
+						 * ctStandardValue.get("corCtPktposSize"); BigDecimal corCtPktposlengthSize =
+						 * new BigDecimal(stringCorCtPktposSize);
+						 */
 						
 						// COAT_着丈_グロス
 						BigDecimal corCtBodylengthGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtBodylengthGross());
@@ -129,10 +135,10 @@ public class CoCoatHelper {
 						BigDecimal corCtLeftsleeveGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtLeftsleeveGross());
 						
 						// COAT_ベント修正（高さ）_グロス
-						BigDecimal corCtVenthightGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtVenthightGross());
+						//BigDecimal corCtVenthightGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtVenthightGross());
 						
 						// COAT_ポケット位置_グロス
-						BigDecimal corCtPktposGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtPktposGross());
+						//BigDecimal corCtPktposGross = new BigDecimal(coAdjustCoatStandardInfo.getCorCtPktposGross());
 						
 						if("06".equals(adjust.getItemCode())) {
 							if("06".equals(adjust.getSubItemCode())) {
@@ -181,27 +187,25 @@ public class CoCoatHelper {
 									}
 								}
 								// ベント修正（高さ）
-								if("17".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corCtVenthightlengthSize);
-									BigDecimal addMax = adjusteMax.add(corCtVenthightlengthSize);
-									if(corCtVenthightGross.compareTo(addMin) == -1 || corCtVenthightGross.compareTo(addMax) == 1) {
-										messages.add("E035","COATのベント修正（高さ）");
-										coatFlag = true;
-									}
-								}
+								/*
+								 * if("17".equals(adjust.getAdjusteClass())) { BigDecimal adjusteMax =
+								 * adjust.getAdjusteMax(); BigDecimal adjusteMin = adjust.getAdjusteMin();
+								 * BigDecimal addMin = adjusteMin.add(corCtVenthightlengthSize); BigDecimal
+								 * addMax = adjusteMax.add(corCtVenthightlengthSize);
+								 * if(corCtVenthightGross.compareTo(addMin) == -1 ||
+								 * corCtVenthightGross.compareTo(addMax) == 1) {
+								 * messages.add("E035","COATのベント修正（高さ）"); coatFlag = true; } }
+								 */
 								// ポケット位置
-								if("18".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corCtPktposlengthSize);
-									BigDecimal addMax = adjusteMax.add(corCtPktposlengthSize);
-									if(corCtPktposGross.compareTo(addMin) == -1 || corCtPktposGross.compareTo(addMax) == 1) {
-										messages.add("E035","COATのポケット位置");
-										coatFlag = true;
-									}
-								}
+								/*
+								 * if("18".equals(adjust.getAdjusteClass())) { BigDecimal adjusteMax =
+								 * adjust.getAdjusteMax(); BigDecimal adjusteMin = adjust.getAdjusteMin();
+								 * BigDecimal addMin = adjusteMin.add(corCtPktposlengthSize); BigDecimal addMax
+								 * = adjusteMax.add(corCtPktposlengthSize);
+								 * if(corCtPktposGross.compareTo(addMin) == -1 ||
+								 * corCtPktposGross.compareTo(addMax) == 1) {
+								 * messages.add("E035","COATのポケット位置"); coatFlag = true; } }
+								 */
 							}
 						}
 					}
@@ -239,16 +243,14 @@ public class CoCoatHelper {
 				String corCtLeftsleeveSize = typeSizeOptimization.getTypeSize();
 				adjustCtStandardValue.put("corCtLeftsleeveSize", corCtLeftsleeveSize);
 			}
-			// ベント修正（高さ）
-			else if("17".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtVenthightSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtVenthightSize", corCtVenthightSize);
-			}
-			// ポケット位置
-			else if("18".equals(typeSizeOptimization.getAdjustClass())) {
-				String corCtPktposSize = typeSizeOptimization.getTypeSize();
-				adjustCtStandardValue.put("corCtPktposSize", corCtPktposSize);
-			}
+			/*
+			 * // ベント修正（高さ） else if("17".equals(typeSizeOptimization.getAdjustClass())) {
+			 * String corCtVenthightSize = typeSizeOptimization.getTypeSize();
+			 * adjustCtStandardValue.put("corCtVenthightSize", corCtVenthightSize); } //
+			 * ポケット位置 else if("18".equals(typeSizeOptimization.getAdjustClass())) { String
+			 * corCtPktposSize = typeSizeOptimization.getTypeSize();
+			 * adjustCtStandardValue.put("corCtPktposSize", corCtPktposSize); }
+			 */
 		}
 		return adjustCtStandardValue;
 	}
@@ -284,7 +286,9 @@ public class CoCoatHelper {
 		optionCoatStandardInfo.setOcCuffBackMateStkNo(orderCt.getCtInnerSleeveClothCd());
 		optionCoatStandardInfo.setOcFrontBtnMate(orderCt.getCtBtnMaterialType());
 		optionCoatStandardInfo.setOcFrontBtnMateStkNo(orderCt.getCtBtnMaterialCd());
-		optionCoatStandardInfo.setOcSleeveSpec(orderCt.getCtSleeveTypeCd());
+		//仕様変更　「袖仕様」画面削除
+//		optionCoatStandardInfo.setOcSleeveSpec(orderCt.getCtSleeveTypeCd());
+		optionCoatStandardInfo.setOcSleeveSpec("");
 	}
 	
 	public void coatDefaultValue(OrderCoForm orderCoForm) {
@@ -306,7 +310,9 @@ public class CoCoatHelper {
 		optionCoatStandardInfo.setOcCuffBackMateStkNo(null);
 		optionCoatStandardInfo.setOcFrontBtnMate(OptionCodeKeys.CT_6000100);
 		optionCoatStandardInfo.setOcFrontBtnMateStkNo(null);
-		optionCoatStandardInfo.setOcSleeveSpec(OptionCodeKeys.CT_0001401);
+		//仕様変更　「袖仕様」画面削除
+//		optionCoatStandardInfo.setOcSleeveSpec(OptionCodeKeys.CT_0001401);
+		optionCoatStandardInfo.setOcSleeveSpec("");
 	}
 	
 	public void coatAdjustFromDb(OrderCoForm orderCoForm, Order order) {
@@ -341,7 +347,7 @@ public class CoCoatHelper {
 		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposGross(order.getCorCtPktposGross().toString());
 		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposCorrect(order.getCorCtPktposCorrect().toString());
 		
-		orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
+		//orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
 	}
 
 	public Map<String, String> getOrderPriceForCoatProject(OrderCoForm orderCoForm, String code, Model model,
@@ -395,7 +401,8 @@ public class CoCoatHelper {
 				if (hasIdvalueName == true) {
 					if("DoubleChester".equals(coatModel) || "DoublePolo".equals(coatModel)) {
 						orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-					}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+//					}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+					}else {
 						orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 					}
 					
@@ -420,7 +427,7 @@ public class CoCoatHelper {
 				Method methodSix = coOptionCoatStandardInfo.getClass().getMethod(valueSix);
 				Object invokeSix = methodSix.invoke(coOptionCoatStandardInfo);
 				String valueOf = String.valueOf(invokeSix);
-				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)))  {
+				if (!("無料".equals(valueOf)) &&  !("null".equals(valueOf)) && BaseCheckUtil.isNotEmpty(valueOf))  {
 					optionPriceInt = optionPriceInt + Integer.valueOf(valueOf);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -461,7 +468,8 @@ public class CoCoatHelper {
 				//orderPrice = getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 				if("DoubleChester".equals(coatModel) || "DoublePolo".equals(coatModel)) {
 					orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
-				}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+//				}else if("SingleChester".equals(coatModel) || "SoutienCollar".equals(coatModel)) {
+				}else {
 					orderPrice = CoContorllerPublicMethodUtil.getOrderPrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
 				}
 				Class<?> cls;
@@ -502,5 +510,45 @@ public class CoCoatHelper {
 		resultMap.put("optionPrice", optionPriceInt);
 		orderCoForm.setCtOptionPrice(String.valueOf(optionPriceInt));
 		return resultMap;
+	}
+
+	public void optionCoatDbToOrder(String productItem, Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService, OrderService orderService) {
+		Order orderCt = orderListService.findOrderCtOptionByOrderId(order.getOrderId());
+		CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
+		if(orderCt !=null ) {
+			this.coatDefaultValueFromDb(orderCoForm, orderCt);
+		}else {
+			this.coatDefaultValue(orderCoForm);
+		}
+		
+		Order orderCtAd = orderListService.findOrderCtByPk(order.getOrderId());
+		CoAdjustCoatStandardInfo coAdjustCoatStandardInfo = orderCoForm.getCoAdjustCoatStandardInfo();
+		if(coAdjustCoatStandardInfo == null ) {
+			coAdjustCoatStandardInfo = new CoAdjustCoatStandardInfo();
+			orderCoForm.setCoAdjustCoatStandardInfo(coAdjustCoatStandardInfo);
+		}
+		if (orderCtAd != null) {
+			this.coatAdjustFromDb(orderCoForm, orderCtAd);
+		}
+		
+		String coatModel = coOptionCoatStandardInfo.getCoatModel();
+		if(coatModel!=null&&!"".equals(coatModel)) {
+			String code = productItem.concat("06").concat(coatModel);
+			this.getOrderPriceForCoatModel(orderCoForm, code);
+		}else {
+			orderCoForm.setCtOptionPrice("0");
+		}
+		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = modelService.getItemModel(order.getOrderPattern(), productItem,
+				"06");
+		this.getCoatModelMap(orderCoForm, modelList);
+	}
+	
+	public void getCoatModelMap(OrderCoForm orderCoForm, List<co.jp.aoyama.macchinetta.domain.model.Model> modelList) {
+		LinkedHashMap<String, String> modelMap = new LinkedHashMap<String, String>();
+		for (co.jp.aoyama.macchinetta.domain.model.Model model : modelList) {
+			modelMap.put("", "モデル選択");
+			modelMap.put(model.getModelCode(), model.getModelName());
+		}
+		orderCoForm.getCoOptionCoatStandardInfo().setCoatModelMap(modelMap);
 	}
 }

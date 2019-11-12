@@ -8,9 +8,9 @@ public interface OptionBranchDeailService {
 
 	List<OptionBranchDetail> getStandardButtons(String itemCode,String subItemCode, String opButton, String orderPattern, String optionCode);
 
-	List<OptionBranchDetail> getTuxedoButtons(String itemCode,String subItemCode, String tpButton, String orderPattern);
+	List<OptionBranchDetail> getTuxedoButtons(String itemCode,String subItemCode, String tpButton, String orderPattern, String optionCode);
 
-	List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern);
+	List<OptionBranchDetail> getWashableButtons(String itemCode,String subItemCode, String wpButton, String orderPattern, String optionCode);
 
 	List<OptionBranchDetail> getAllOption(String orderPattern);
 	
