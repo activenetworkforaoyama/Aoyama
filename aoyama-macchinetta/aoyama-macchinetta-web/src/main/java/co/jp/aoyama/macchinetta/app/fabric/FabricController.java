@@ -413,7 +413,7 @@ public class FabricController {
 				
 				//検査項目数
 				if(("I".equals(data[0]) || "U".equals(data[0]) || "D".equals(data[0])) 
-						&& (data.length != 52)) {
+						&& (data.length != 53)) {
 					fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "", NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT));
 					break;
 				}

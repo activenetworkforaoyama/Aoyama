@@ -5,6 +5,9 @@ function initAlter() {
 	jQuery('input[type="range"]').each(function() {
 		var elem = jQuery(this);
 		var id = elem.prop('id');
+		if(id == "embroideryHeightRange" || id == "embroideryWidthRange"){
+			return;
+		}
 		var step = elem.prop('step') - 0;
 		elem.on('input', function(){
 			checkRange(id, elem.val());
@@ -77,8 +80,47 @@ function initAlter() {
 	});	
 }
 
+
 function shirtInitAlter() {
-	jQuery('input[type="range"]').each(function() {
+	jQuery('input[id="os_btnPosChg_collar"],[id="os_btnPosChg_front1"],[id="os_btnPosChg_front2"]').each(function() {
+		var elem = jQuery(this);
+		var id = elem.prop('id');
+		var step = elem.prop('step') - 0;
+		elem.on('input', function(){
+			checkRange(id, elem.val());
+			jQuery('#'+id+'_out').val(this.value);
+			setFont(id);
+			//規定値超えチェック
+		});
+		jQuery('#'+id+'_p').click(function(){
+			// 無効設定チェック
+			var disabled = elem.attr('disabled');
+			if (disabled != null && disabled != "") return false;
+			
+			elem.val(elem.val()-0+step);
+			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
+			//規定値超えチェック
+			checkRange(id, elem.val());
+			return false;
+		});
+		jQuery('#'+id+'_m').click(function(){
+			// 無効設定チェック
+			var disabled = elem.attr('disabled');
+			if (disabled != null && disabled != "") return false;
+			
+			elem.val(elem.val()-0-step);
+			jQuery('#'+id+'_out').val(elem.val());
+			setFont(id);
+			//規定値超えチェック
+			checkRange(id, elem.val());
+			return false;
+		});
+	});	
+}
+
+function coInitAlter() {
+	jQuery('input[id="embroideryHeightRange"],[id="embroideryWidthRange"]').each(function() {
 		var elem = jQuery(this);
 		var id = elem.prop('id');
 		var step = elem.prop('step') - 0;

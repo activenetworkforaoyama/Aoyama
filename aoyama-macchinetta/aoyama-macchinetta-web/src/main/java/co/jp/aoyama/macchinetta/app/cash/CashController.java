@@ -121,8 +121,8 @@ public class CashController {
 				if("02".equals(cashinfo.getCustType())) {					
 					BigDecimal  wsPrice=new BigDecimal(cashinfo.getWsPrice());
 					BigDecimal  multiplyingPower=new BigDecimal("1.1");
-					wsPrice = wsPrice.multiply(multiplyingPower);
-					cashinfo.setWsPrice(wsPrice.intValue());				
+					wsPrice =wsPrice.multiply(multiplyingPower);
+					cashinfo.setWsPrice(wsPrice.setScale( 0, BigDecimal.ROUND_DOWN ).intValue());
 				}
 			}
 			helpCashForm.add(cashinfo);

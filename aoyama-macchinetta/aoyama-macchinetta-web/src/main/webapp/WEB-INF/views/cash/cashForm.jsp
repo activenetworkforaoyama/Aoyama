@@ -423,10 +423,10 @@ if(error == "error"){
 }
 
 $(document).ready(function() {
-	console.dir(obj);
 	for(var i = 0;i<=obj.length-1;i++){
 		if(""==$("#cash_discount_price_"+i).val() && obj[i].custType=="02"){
-			$("#cash_discount_price_"+i).val(obj[i].wsPrice);	
+			$("#cash_discount_price_"+i).val(obj[i].wsPrice);
+			$("#cash_discount_price_"+i).attr("readonly","readonly")	
 		}		
 	}
 var backFlag = "${cashForm.backFlag}";

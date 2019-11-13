@@ -2815,7 +2815,7 @@ public class OrderCoController {
 	
 	@RequestMapping(value = "/optionInit", method = RequestMethod.GET)
 	@ResponseBody
-	public void allOptionInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm,String item,String oldItem,String itemCoChangeFlag,String pants2AdFlag, String giletAdFlag) {
+	public void allOptionInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm,String item,String oldItem,String categoryChange,String itemCoChangeFlag,String pants2AdFlag, String giletAdFlag) {
 		// デフォルト値設定
 		if("01".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
@@ -2866,6 +2866,13 @@ public class OrderCoController {
 		}
 		if("0".equals(giletAdFlag)) {
 			coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
+		}
+		
+		if("1".equals(categoryChange)) {
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
+			coGiletHelper.giletDefaultValue(orderCoForm);
+			coPants2Helper.pants2DefaultValue(orderCoForm);
 		}
 	}
 	

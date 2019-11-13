@@ -1382,7 +1382,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Jk_inner_cloth_data").setData(stringChange(order.getJkInnerClothNm()));
 		//台場
 		form.getField("Jk_daiba_data").setData(stringChange(order.getJkDaibaNm()));
-		//拝見地
+		//拝絹地
 		form.getField("Jk_look_cloth_data").setData(stringChange(order.getJkLookClothNm()));
 		//襟裏（ヒゲ）
 		form.getField("Jk_collar_inner_data").setData(stringChange(order.getJkCollarInnerNm()));
@@ -1469,6 +1469,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//PANTS
 		//PANTSモデル
 		form.getField("Pt_model_data").setData(stringChange(order.getPtModelNm()));
+		//拝絹地
+		form.getField("Pt_look_cloth_data").setData(stringChange(order.getPtLookClothNm()));
 		//タック
 		form.getField("Pt_tack_data").setData(stringChange(order.getPtTackNm()));
 		//膝裏
@@ -1557,6 +1559,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//PANTS
 		//PANTSモデル
 		form.getField("Pt_model_data2").setData(stringChange(order.getPt2ModelNm()));
+		//拝絹地
+		form.getField("Pt_look_cloth_data2").setData(stringChange(order.getPt2LookClothNm()));
 		//タック
 		form.getField("Pt_tack_data2").setData(stringChange(order.getPt2TackNm()));
 		//膝裏
@@ -1645,6 +1649,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//GILET
 		//GILETモデル
 		form.getField("Gl_model_data").setData(stringChange(order.getGlModelNm()));
+		//拝絹地
+		form.getField("Gl_look_cloth_data").setData(stringChange(order.getGlLookClothNm()));
 		//胸ポケット
 		form.getField("Gl_breast_pkt_data").setData(stringChange(order.getGlBreastPktNm()));
 		//腰ポケット
@@ -1910,7 +1916,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Jk_inner_cloth_data").setData(stringChange(order.getJkInnerClothNm()));
 		//台場
 		form.getField("Jk_daiba_data").setData(stringChange(order.getJkDaibaNm()));
-		//拝見地
+		//拝絹地
 		form.getField("Jk_look_cloth_data").setData(stringChange(order.getJkLookClothNm()));
 		//襟裏（ヒゲ）
 		form.getField("Jk_collar_inner_data").setData(stringChange(order.getJkCollarInnerNm()));
