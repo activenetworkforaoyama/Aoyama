@@ -109,7 +109,7 @@ function initOptionPants1Standard() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
-
+		jQuery('input[id^="op_adjuster_id"]:checked').change();
 		// 選択中のベルトループ
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsStandardInfo.opBeltLoop"]:checked').val();
 
@@ -1435,6 +1435,9 @@ jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').change(function(ind
 			else {
 				jQuery('#op_sidePkt_id1').prop('disabled',false);
 			}
+		}
+		else {
+			jQuery('#op_sidePkt_id1').prop('disabled',false);
 		}
 	}
 	

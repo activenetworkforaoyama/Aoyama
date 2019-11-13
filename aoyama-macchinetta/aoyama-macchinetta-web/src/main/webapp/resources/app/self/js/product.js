@@ -95,6 +95,8 @@ function initProduct() {
 			})
 			.then((isConfirm) => {
 			  if (isConfirm) {
+				  	jQuery("#embroideryName").val("");
+				  	jQuery('input[name="productEmbroideryFont"]').removeAttr("checked");
 				    var item = jQuery("#item").val();
 				    jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"item":item,"oldItem":jQuery('#item').attr("hook"),"itemCoChangeFlag":"1"},type: "get",async:false});
 				    jQuery("#resultMessages").hide();
@@ -107,13 +109,6 @@ function initProduct() {
 				  	jQuery("#shirtItemFlag").val("0");
 				  	jQuery("#coatItemFlag").val("0");
 				  	jQuery("#pants2ItemFlag").val("0");
-				  	
-				  	
-				  	if (item == "05" || item == "06") {
-						jQuery('#lcrSewing_div').hide();
-					} else {
-						jQuery('#lcrSewing_div').show();
-					}
 				  	
 			        jQuery("#jkOptionPriceId").val("0");
 				  	jQuery("#ptOptionPriceId").val("0");
@@ -132,11 +127,18 @@ function initProduct() {
 				  				
 				  	jQuery('input[name="productEmbroideryNecessity"][value="9000501"]').prop("checked",true);
 				  	
+				  	if (item == "05" || item == "06") {
+						jQuery('#lcrSewing_div').hide();
+					} else {
+						jQuery('#lcrSewing_div').show();
+					}
+				  	
 				  	getProductPrice();
 				  	shirtProductPrice();
 				  	stockAddVersionCheck();
 				    compositionExpress();
 				    getAdjustByItem();
+				    
 			        // ３Piece、スペアパンツ
 					if (item == "01") {
 						jQuery('#threePiece_div').show();

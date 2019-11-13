@@ -103,6 +103,8 @@ function openPdfWindow(sign,belongCode){
 	    	var hostTransmitARow = result.hostTransmitARow;
 	    	var productFactoryCd = result.productFactoryCd;
 	    	var makerFactoryStatus = result.makerFactoryStatus;
+	    	var orderPattern = result.orderPattern;
+	    	var productItem = result.productItem;
 	    	if(productFactoryCd != belongCode){
 	    		//"1" == sign：注文内容確認書
 		    	//msg139 = 入力された注文IDは存在しません。
@@ -126,7 +128,12 @@ function openPdfWindow(sign,belongCode){
 			}else{
 				var path = contextPath+'/';
 				var fileNameDefault = "注文内容確認書("+orderId+").pdf";
-				var printwindow = pdfCreate(sign,orderId,productItem,fileNameDefault);
+				if(productItem == '05'){
+					sign='3';
+				}else if (productItem == '06'){
+					sign='2';
+				}
+				var printwindow = pdfCreate(sign,orderId,productItem,fileNameDefault,orderPattern);
 				printwindow.onafterprint = function(){
 					var result = pdfDelete(fileNameDefault);
 					if (result){
@@ -141,18 +148,19 @@ function openPdfWindow(sign,belongCode){
         }
 	});
 }
-function pdfCreate(sign,orderId,productItem,fileNameDefault){
+function pdfCreate(sign,orderId,productItem,fileNameDefault,orderPattern){
 	var childWindow = null ;
 	jQuery.ajax({
 		url: contextPath + "/pdfFile/PdfFileCreate",
 		type: 'get',
-		data:{"orderId" : orderId ,"sign" : sign ,"productItem" : productItem , "fileNameDefault" : fileNameDefault},
+		data:{"orderId" : orderId ,"sign" : sign ,"productItem" : productItem , "fileNameDefault" : fileNameDefault, "orderPattern" : orderPattern},
 		contentType:"application/pdf",
 		async: false,
 		success: function(result){
 			appendAlert('errormssage', getMsgByTwoArgs('msg019', 'PDF表示'));
 			//ローカル環境
 			childWindow =window.open(location.protocol+ '//' + location.host  +'/pdfjs/web/viewer.html?file=../..' + contextPath + '/pdf/' + fileNameDefault, 'newtab');
+			//childWindow =window.open('http://localhost:8080/aoyama-macchinetta-web/pdfjs/web/viewer.html?file=../../pdf/'+ fileNameDefault, 'newtab');
 			//ステージング環境
 			//childWindow =window.open('http://202.214.88.88/order/pdfjs/web/viewer.html?file=' + fileNameDefault, 'newtab');
 			$.unblockUI();

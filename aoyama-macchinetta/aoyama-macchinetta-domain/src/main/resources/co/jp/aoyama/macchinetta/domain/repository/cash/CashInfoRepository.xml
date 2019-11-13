@@ -26,6 +26,8 @@
     <result column="updated_user_id" property="updatedUserId" jdbcType="VARCHAR" />
     <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" /> 
     <result column="version" property="version" jdbcType="SMALLINT" />
+    <result column="cust_type" jdbcType="VARCHAR" property="custType" />
+    <result column="ws_price" jdbcType="INTEGER" property="wsPrice" />
   </resultMap>
   <select id="selectOrderByOrderId" resultType="CashInfo" parameterType="java.lang.String" >
     SELECT
@@ -45,7 +47,9 @@
        cust_staff,
        product_orderd_date,
        version,
-       cash_contail_tax_product_price
+       cash_contail_tax_product_price,
+       ws_price,
+       cust_type
 	FROM   
 		dtb_order  
 	WHERE order_id =  #{orderId}

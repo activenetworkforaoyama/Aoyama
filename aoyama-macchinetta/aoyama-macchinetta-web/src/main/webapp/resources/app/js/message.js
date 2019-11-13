@@ -206,7 +206,7 @@ function embroideryNameCheck(argVlaue) {
  * @returns true/false
  */
 function embroideryCoNameCheck(argVlaue) {
-	var patrn = /(^$)|^[ a-z0-9A-Z!”&’()-.\/?]+$/g;
+	var patrn = /(^$)|^[ a-z0-9A-Z!”&’().\/?-]+$/g;
 	
 	if (patrn.test(argVlaue)) {
 		   return true;

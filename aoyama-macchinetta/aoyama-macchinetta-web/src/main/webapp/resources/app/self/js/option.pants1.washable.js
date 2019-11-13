@@ -105,7 +105,7 @@ function initOptionPants1Washable() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
-
+		jQuery('input[id^="wp_adjuster_id"]:checked').change();
 		// 選択中のベルトループ
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').val();
 
@@ -1359,6 +1359,9 @@ jQuery('input[name="coOptionPantsWashableInfo.wpAdjuster"]').change(function(ind
 			else {
 				jQuery('#wp_sidePkt_id1').prop('disabled',false);
 			}
+		}
+		else {
+			jQuery('#wp_sidePkt_id1').prop('disabled',false);
 		}
 	}
 	

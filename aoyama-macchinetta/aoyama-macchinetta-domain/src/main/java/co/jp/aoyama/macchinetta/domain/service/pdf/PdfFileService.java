@@ -11,7 +11,7 @@ public interface PdfFileService {
 	
 	ByteArrayOutputStream outputSampleCoPdf(String sign, Order order, Measuring measuring, String productItem) throws Exception;
 	
-	void outputPrintPdf(String sign, Order order, Measuring measuring, String productItem,String path,String filename) throws Exception;
+	void outputPrintPdf(String sign, Order order, Measuring measuring, String productItem,String path,String filename,String orderPattern) throws Exception;
 	
 	void delectePrintPdf(String pdfPath) throws Exception;
 

@@ -2166,7 +2166,13 @@
         <if test="condition.authority == '05'">
         <![CDATA[
         AND
-            (maker_factory_status = 'F1' OR maker_factory_status = 'F2')
+            (tsc_status = 'T2' OR
+             tsc_status = 'T3' OR
+             tsc_status = 'T4' OR 
+             tsc_status = 'T5' OR 
+             tsc_status = 'T6' OR 
+             tsc_status = 'T7' OR
+            maker_factory_status = 'F1' OR maker_factory_status = 'F2')
         ]]>
         </if>
         
@@ -2394,6 +2400,7 @@
         fabric_pattern,
         product_category,
         ws_price,
+        cust_type,
         cust_cd,
         cust_staff,
         store_nm, 

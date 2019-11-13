@@ -86,13 +86,9 @@
 		    <li>
 		        <a href="javascript:menuSubmit('${pageContext.request.contextPath}/password/init')"> <i class="menu-icon fas fa-lock"></i>パスワード管理</a>
 		    </li>
-		    <c:choose>
-		    	<c:when test="${sessionContent.category == 'PO'}">
-				   	<li>
-				       	<a href="javascript:menuSubmit('${pageContext.request.contextPath}/print/init')"> <i class="menu-icon fas fa-print"></i>注文内容確認書印刷</a>
-				   	</li>
-				</c:when>
-			</c:choose>
+		   	<li>
+		       	<a href="javascript:menuSubmit('${pageContext.request.contextPath}/print/init')"> <i class="menu-icon fas fa-print"></i>注文内容確認書印刷</a>
+		   	</li>
 		</c:otherwise>
 	</c:choose>
 	</form:form>

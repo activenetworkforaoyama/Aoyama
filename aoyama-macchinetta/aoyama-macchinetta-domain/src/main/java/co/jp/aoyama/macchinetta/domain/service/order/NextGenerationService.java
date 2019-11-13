@@ -22,11 +22,11 @@ public interface NextGenerationService {
 	
 	List<NextGenerationPrice> selectCoYield(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String shirtSubItemCode, String coatSubItemCode);
 	
-	List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo);
+	List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo,String factoryCd);
 	
-	List<NextGenerationPrice> selectCoBasicNextGenerationPrice(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String shirtSubItemCode,String coatSubItemCode,String itemCode,String fabricNo);
+	List<NextGenerationPrice> selectCoBasicNextGenerationPrice(String jkSubItemCode,String ptSubItemCode,String gtSubItemCode,String pt2SubItemCode,String shirtSubItemCode,String coatSubItemCode,String itemCode,String fabricNo,String factoryCd);
 	
-	NextGenerationPrice selectCoMarginRate(String fabricNo);
+	NextGenerationPrice selectCoMarginRate(String fabricNo,String makerCode);
 	
 	NextGenerationPrice selectCoFactoryCode(String fabricNo);
 	

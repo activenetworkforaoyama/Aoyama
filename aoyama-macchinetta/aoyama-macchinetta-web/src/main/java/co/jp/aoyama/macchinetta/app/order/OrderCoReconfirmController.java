@@ -1108,13 +1108,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjInsidePktPlaceList(OrderCoForm orderCoForm) {
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1125,13 +1125,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectCoComplexItemsWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1142,13 +1142,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjAmfColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00030";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1159,13 +1159,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjAmfColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00030";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1176,13 +1176,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjBhColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00033";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1193,13 +1193,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjBhColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00033";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1210,13 +1210,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjByColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00036";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1227,13 +1227,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectJkOjByColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "02";
 		String optionCode = "00036";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1244,13 +1244,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOgStitchModifyPriceList(OrderCoForm orderCoForm) {
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00007";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1261,13 +1261,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOgStitchModifyWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00007";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1278,13 +1278,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjAmfColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00010";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1295,13 +1295,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjAmfColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00010";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1312,13 +1312,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjBhColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00013";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1329,13 +1329,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjBhColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00013";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1346,13 +1346,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjByColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00016";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1363,13 +1363,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectGlOjByColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "04";
 		String optionCode = "00016";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1382,13 +1382,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOgStitchModifyPriceList(OrderCoForm orderCoForm) {
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00021";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1399,13 +1399,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOgStitchModifyWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00021";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1416,13 +1416,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjAmfColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1433,13 +1433,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjAmfColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1450,13 +1450,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjBhColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00028";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1467,13 +1467,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjBhColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00028";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1484,13 +1484,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjByColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00031";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1501,13 +1501,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPtOjByColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "03";
 		String optionCode = "00031";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1518,13 +1518,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OgStitchModifyPriceList(OrderCoForm orderCoForm) {
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00021";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1535,13 +1535,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OgStitchModifyWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00021";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1552,13 +1552,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjAmfColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1569,13 +1569,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjAmfColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00025";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1586,13 +1586,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjBhColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00028";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1603,13 +1603,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjBhColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00028";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1620,13 +1620,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjByColorPriceList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00031";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsAccessoryPriceList = nextGenerationService.selectCoComplexItemsAccessoryPriceList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsAccessoryPriceList;
 	}
@@ -1637,13 +1637,13 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> selectPt2OjByColorWageList(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
 		String subItem = "07";
 		String optionCode = "00031";
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		List<NextGenerationPrice> selectCoComplexItemsWageList = nextGenerationService.selectCoComplexItemsWageList(factoryCode, itemCode, subItem, optionCode);
 		return selectCoComplexItemsWageList;
 	}
@@ -1655,11 +1655,11 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> optionNextGenerationPrice(OrderCoForm orderCoForm) {
-		String orderPattern = orderCoForm.getOrderPattern();
+//		String orderPattern = orderCoForm.getOrderPattern();
 		String itemCode = orderCoForm.getProductItem();
-		String productFabricNo = orderCoForm.getProductFabricNo();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		//JACKETのsubItemCode
 		String jkSubItemCode = null;
 		//GILETのsubItemCode
@@ -1690,11 +1690,11 @@ public class OrderCoReconfirmController {
 	 * @return
 	 */
 	public List<NextGenerationPrice> detailNextGenerationPrice(OrderCoForm orderCoForm){
-		String orderPattern = orderCoForm.getOrderPattern();
-		String productFabricNo = orderCoForm.getProductFabricNo();
+//		String orderPattern = orderCoForm.getOrderPattern();
+//		String productFabricNo = orderCoForm.getProductFabricNo();
 		String itemCode = orderCoForm.getProductItem();
-		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
-		String factoryCode = orderFindFabric.getFactoryCode();
+//		OrderFindFabric orderFindFabric = orderService.getOrderFabric(productFabricNo, orderPattern);
+		String factoryCode = orderCoForm.getProductFactoryCd();
 		//JACKETのsubItemCode
 		String jkSubItemCode = null;
 		//GILETのsubItemCode
@@ -1727,6 +1727,7 @@ public class OrderCoReconfirmController {
 	public List<NextGenerationPrice> selectCoBasicNextGenerationPrice(OrderCoForm orderCoForm){
 		String fabricNo = orderCoForm.getProductFabricNo();
 		String itemCode = orderCoForm.getProductItem();
+		String factoryCd = orderCoForm.getProductFactoryCd();
 		//JACKETのsubItemCode
 		String jkSubItemCode = null;
 		//GILETのsubItemCode
@@ -1746,7 +1747,7 @@ public class OrderCoReconfirmController {
 		pt2SubItemCode = subItemCodeValue.get("pt2SubItemCode");
 		stSubItemCode = subItemCodeValue.get("shirtSubItemCode");
 		ctSubItemCode = subItemCodeValue.get("coatSubItemCode");
-		List<NextGenerationPrice> selectCoBasicNextGenerationPriceList = nextGenerationService.selectCoBasicNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode, stSubItemCode, ctSubItemCode, itemCode, fabricNo);
+		List<NextGenerationPrice> selectCoBasicNextGenerationPriceList = nextGenerationService.selectCoBasicNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode, stSubItemCode, ctSubItemCode, itemCode, fabricNo,factoryCd);
 		return selectCoBasicNextGenerationPriceList;
 	}
 	
@@ -1785,7 +1786,8 @@ public class OrderCoReconfirmController {
 	 */
 	public List<NextGenerationPrice> selectCoWholesalePiece(OrderCoForm orderCoForm){
 		String fabricNo = orderCoForm.getProductFabricNo();
-		List<NextGenerationPrice> selectCoWholesalePiece = nextGenerationService.selectCoWholesalePiece(fabricNo);
+		String factoryCd = orderCoForm.getProductFactoryCd();
+		List<NextGenerationPrice> selectCoWholesalePiece = nextGenerationService.selectCoWholesalePiece(fabricNo,factoryCd);
 		return selectCoWholesalePiece;
 	}
 	
@@ -1796,7 +1798,8 @@ public class OrderCoReconfirmController {
 	 */
 	public NextGenerationPrice selectCoMarginRate(OrderCoForm orderCoForm) {
 		String fabricNo = orderCoForm.getProductFabricNo();
-		NextGenerationPrice selectCoMarginRate = nextGenerationService.selectCoMarginRate(fabricNo);
+		String makerCode = orderCoForm.getProductMakerCode();
+		NextGenerationPrice selectCoMarginRate = nextGenerationService.selectCoMarginRate(fabricNo,makerCode);
 		return selectCoMarginRate;
 	}
 	
@@ -1986,6 +1989,7 @@ public class OrderCoReconfirmController {
 			Order orderId = orderListService.findOrderByPk(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			OrderFindFabric findStock = this.findStock(orderCoForm);
 			NextGenerationPrice priceCode = this.getPriceCode(orderCoForm);
+			priceCode.setMfaFactoryCode(orderCoForm.getProductFactoryCd());
 			Order selectExistOrder = this.selectExistOrder(orderCoForm);
 			List<NextGenerationPrice> selectCoYield = this.selectCoYield(orderCoForm);
 			List<NextGenerationPrice> selectCoWholesalePiece = this.selectCoWholesalePiece(orderCoForm);

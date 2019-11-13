@@ -357,10 +357,34 @@ function initOptionGiletTuxedo() {
 	// ボタン付け糸指定箇所の制御
 	ctrlTgByColorPlace();
 
+	var bodyBackMate = jQuery('#tg_backLiningMate').val();
+	// バックベルト
+	var backBeltElem = jQuery('#tg_backBelt');
+	var selectedBackBelt = backBeltElem.val();
+	// 選択肢をクリア
+	backBeltElem.empty();
+	if (bodyBackMate == "1000400") {
+		// 背裏素材「表地」選択時、バックベルトは「無し」か「537-5K」のみ
+		backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
+		backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
+
+		if (selectedBackBelt == "0002301") {
+			backBeltElem.val("0002302");
+			jQuery('#tg_backBelt').change();
+		} else {
+			backBeltElem.val(selectedBackBelt);
+		}
+	} else {
+		backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
+		backBeltElem.append(jQuery('<option />').val("0002301").text("537-5K（2×1型）"));
+		backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
+		backBeltElem.val(selectedBackBelt);
+	}
+	
 //	// 背裏地素材
-//	jQuery('#tg_backLiningMate').change(function (){
-//		var bodyBackMate = jQuery('#tg_backLiningMate').val();
-//
+	jQuery('#tg_backLiningMate').change(function (){
+		var bodyBackMate = jQuery('#tg_backLiningMate').val();
+
 //		// 背裏地品番
 //		var bodyBackMateStkNoElem = jQuery('#tg_backLiningMateStkNo');
 //
@@ -379,33 +403,31 @@ function initOptionGiletTuxedo() {
 //			bodyBackMateStkNoElem.prop("disabled", true);
 //			jQuery('#btn_tg_insideLiningMate').prop("disabled", true);
 //		}
-//
-//		// バックベルト
-//		var backBeltElem = jQuery('#tg_backBelt');
-//		var selectedBackBelt = backBeltElem.val();
-//
-//		// 選択肢をクリア
-//		backBeltElem.empty();
-//
-//		if (bodyBackMate == "1000400") {
-//			// 背裏素材「表地」選択時、バックベルトは「無し」か「537-5K」のみ
-//			backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
-////			backBeltElem.append(jQuery('<option />').val("0002301").text("537-5K（2×1型）"));
-//			backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
-//
-//			if (selectedBackBelt == "0002301") {
-//				backBeltElem.val("0002302");
-//				jQuery('#tg_backBelt').change();
-//			} else {
-//				backBeltElem.val(selectedBackBelt);
-//			}
-//		} else {
-//			backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
+
+		// バックベルト
+		var backBeltElem = jQuery('#tg_backBelt');
+		var selectedBackBelt = backBeltElem.val();
+		// 選択肢をクリア
+		backBeltElem.empty();
+		if (bodyBackMate == "1000400") {
+			// 背裏素材「表地」選択時、バックベルトは「無し」か「537-5K」のみ
+			backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
 //			backBeltElem.append(jQuery('<option />').val("0002301").text("537-5K（2×1型）"));
-//			backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
-//			backBeltElem.val(selectedBackBelt);
-//		}
-//	});
+			backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
+
+			if (selectedBackBelt == "0002301") {
+				backBeltElem.val("0002302");
+				jQuery('#tg_backBelt').change();
+			} else {
+				backBeltElem.val(selectedBackBelt);
+			}
+		} else {
+			backBeltElem.append(jQuery('<option />').val("0002302").text("546-20（尾錠型）"));
+			backBeltElem.append(jQuery('<option />').val("0002301").text("537-5K（2×1型）"));
+			backBeltElem.append(jQuery('<option />').val("0002303").text("無し"));
+			backBeltElem.val(selectedBackBelt);
+		}
+	});
 //	jQuery('#tg_backLiningMate').change();
 //
 //	// 背裏地素材（上着と同じ）

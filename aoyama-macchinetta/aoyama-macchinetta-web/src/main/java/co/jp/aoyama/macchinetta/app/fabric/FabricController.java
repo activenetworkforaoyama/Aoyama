@@ -132,7 +132,8 @@ public class FabricController {
 				"Pantsの単品購買追加金額","シングルCoatの単品購買追加金額","ダブルCoatの単品購買追加金額",
 				"生地代","ウォッシャブル可否","タキシード可否","下代調整金","契約No",
 				"手帳(貿易)期限","生地インポーター","フル毛芯仕様可否","シャツ仕様可否","店着納期区分（通常）",
-				"店着納期区分（早割）","店着納期区分（コート専用）","取扱注意","生地ネーム有無","理論在庫"};
+				"店着納期区分（早割）","店着納期区分（コート専用）","取扱注意","生地ネーム有無","理論在庫",
+				"実在庫"};
 		
 		String[][] content = new String[fabricList.size()][title.length];
 		for (int i = 0; i < fabricList.size(); i++) {
@@ -215,6 +216,9 @@ public class FabricController {
 			content[i][49] = setUpEmptyString(String.valueOf(fabric.getHandlingCaution()));
 			content[i][50] = setUpEmptyString(String.valueOf(fabric.getFabricNameExist()));
 			content[i][51] = setUpEmptyString(String.valueOf(fabric.getTheoreticalStock()));
+			
+			//実在庫
+			content[i][52] = setUpEmptyString(String.valueOf(fabric.getActualStock()));
 		}
 		
 		//タイトルと内容をバイト出力ストリーム書き込みます

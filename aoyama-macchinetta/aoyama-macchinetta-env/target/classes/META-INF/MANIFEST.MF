@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: aoyama-macchinetta-env
-Implementation-Version: 1.0.0-SNAPSHOT
-Built-By: gaoxiang-pc
-Implementation-Vendor-Id: co.jp.aoyama.macchinetta
-Build-Jdk: 1.8.0_202-ea
-Created-By: Maven Integration for Eclipse
-Implementation-Vendor: Macchinetta Framework Team
-

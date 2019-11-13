@@ -73,7 +73,8 @@ public class CoPants1Helper {
 
 				if (BaseCheckUtil.isEmpty(opBeltLoopPlace1) && BaseCheckUtil.isEmpty(opBeltLoopPlace2)
 						&& BaseCheckUtil.isEmpty(opBeltLoopPlace3) && BaseCheckUtil.isEmpty(opBeltLoopPlace4)
-						&& BaseCheckUtil.isEmpty(opBeltLoopPlace5) && BaseCheckUtil.isEmpty(opBeltLoopPlace6)) {
+						&& BaseCheckUtil.isEmpty(opBeltLoopPlace5) && BaseCheckUtil.isEmpty(opBeltLoopPlace6)
+						&& !"NZ01".equals(opPantsModel)) {
 					messages.add("E033", "PANTS ベルトループ");
 					pantsFlag = true;
 				}
@@ -213,7 +214,8 @@ public class CoPants1Helper {
 
 				if (BaseCheckUtil.isEmpty(tpBeltLoopPlace1) && BaseCheckUtil.isEmpty(tpBeltLoopPlace2)
 						&& BaseCheckUtil.isEmpty(tpBeltLoopPlace3) && BaseCheckUtil.isEmpty(tpBeltLoopPlace4)
-						&& BaseCheckUtil.isEmpty(tpBeltLoopPlace5) && BaseCheckUtil.isEmpty(tpBeltLoopPlace6)) {
+						&& BaseCheckUtil.isEmpty(tpBeltLoopPlace5) && BaseCheckUtil.isEmpty(tpBeltLoopPlace6)
+						&& !"NZ01".equals(tpPantsModel)) {
 					messages.add("E033", "PANTS ベルトループ");
 					pantsFlag = true;
 				}
@@ -302,7 +304,8 @@ public class CoPants1Helper {
 
 				if (BaseCheckUtil.isEmpty(wpBeltLoopPlace1) && BaseCheckUtil.isEmpty(wpBeltLoopPlace2)
 						&& BaseCheckUtil.isEmpty(wpBeltLoopPlace3) && BaseCheckUtil.isEmpty(wpBeltLoopPlace4)
-						&& BaseCheckUtil.isEmpty(wpBeltLoopPlace5) && BaseCheckUtil.isEmpty(wpBeltLoopPlace6)) {
+						&& BaseCheckUtil.isEmpty(wpBeltLoopPlace5) && BaseCheckUtil.isEmpty(wpBeltLoopPlace6)
+						&& !"NZ01".equals(wpPantsModel)) {
 					messages.add("E033", "PANTS ベルトループ");
 					pantsFlag = true;
 				}
@@ -2090,7 +2093,7 @@ public class CoPants1Helper {
 			optionPantsTuxedoInfo.setTpHemUp(orderPt.getPtHemUpCd());
 			optionPantsTuxedoInfo.setTpDoubleWide(orderPt.getPtDblWidthCd());
 			optionPantsTuxedoInfo.setTpStitch(orderPt.getPtAmfStitchCd());
-			optionPantsTuxedoInfo.setTpStitchModify(orderPt.getPtStitchPlcCd());
+			optionPantsTuxedoInfo.setTpStitchModify(orderPt.getPtStitchPlcType());
 			optionPantsTuxedoInfo.setTpDStitchPlace(orderPt.getPtDblstitchPlcCd());
 			optionPantsTuxedoInfo.setTpAmfColor(orderPt.getPtAmfColorCd());
 			optionPantsTuxedoInfo.setTpBhColor(orderPt.getPtBtnholeColorType());

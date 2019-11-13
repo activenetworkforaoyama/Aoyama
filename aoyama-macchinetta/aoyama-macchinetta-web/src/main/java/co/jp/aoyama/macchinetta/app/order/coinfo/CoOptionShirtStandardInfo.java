@@ -203,7 +203,7 @@ public class CoOptionShirtStandardInfo implements Serializable {
 
 	// カジュアルヘムライン値
 	@NotNull(groups = { StCasualHemlineSizeItem.class }, message = "SHIRTのカジュアルヘムライン値を入力して下さい。")
-	@Range(min=0, max=(long) 199.5, groups = {StCasualHemlineSizeItem.class}, message = "SHIRTのカジュアルヘムライン値の範囲が不正です。")
+	@Range(min=0, max=200, groups = {StCasualHemlineSizeItem.class}, message = "SHIRTのカジュアルヘムライン値の範囲が不正です。")
 	private BigDecimal stCasualHemlineSize;
 
 	// ボタン位置変更 台襟釦値

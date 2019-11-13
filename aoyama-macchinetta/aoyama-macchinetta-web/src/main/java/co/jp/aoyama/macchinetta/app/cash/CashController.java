@@ -1,5 +1,6 @@
 package co.jp.aoyama.macchinetta.app.cash;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,6 +116,15 @@ public class CashController {
 				model.addAttribute("error","error");
 			}
 			arr[i] = Long.parseLong(cashinfo.getOrderId());
+			
+			if(null!=cashinfo.getCustType()&&!"".equals(cashinfo.getCustType())) {
+				if("02".equals(cashinfo.getCustType())) {					
+					BigDecimal  wsPrice=new BigDecimal(cashinfo.getWsPrice());
+					BigDecimal  multiplyingPower=new BigDecimal("1.1");
+					wsPrice = wsPrice.multiply(multiplyingPower);
+					cashinfo.setWsPrice(wsPrice.intValue());				
+				}
+			}
 			helpCashForm.add(cashinfo);
 		}
 		Arrays.sort(arr); 

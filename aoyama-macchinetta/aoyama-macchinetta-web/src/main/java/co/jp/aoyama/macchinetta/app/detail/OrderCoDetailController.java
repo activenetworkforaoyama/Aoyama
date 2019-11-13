@@ -106,7 +106,8 @@ public class OrderCoDetailController {
 	public  List<NextGenerationPrice> getCoWholesalePieceList(Order order){
 		//生地品番
 		String fabricNo = order.getProductFabricNo();
-		List<NextGenerationPrice> wholesalePieceList= nextGenerationService.selectCoWholesalePiece(fabricNo);
+		String productFactoryCd = order.getProductFactoryCd();
+		List<NextGenerationPrice> wholesalePieceList= nextGenerationService.selectCoWholesalePiece(fabricNo,productFactoryCd);
 		return wholesalePieceList;
 	}
 	
@@ -119,6 +120,7 @@ public class OrderCoDetailController {
 		//生地品番
 		String fabricNo = order.getProductFabricNo();
 		String itemCode = order.getProductItem();
+		String productFactoryCd = order.getProductFactoryCd();
 		//JACKETのsubItemCode
 		String jkSubItemCode = null;
 		//GILETのsubItemCode
@@ -140,7 +142,7 @@ public class OrderCoDetailController {
 		shirtSubItemCode = subItemCodeValue.get("shirtSubItemCode");
 		coatSubItemCode = subItemCodeValue.get("coatSubItemCode");
 		//基本下代工賃と基本下代付属の取得
-		List<NextGenerationPrice> coBasicNextGenerationPriceList= nextGenerationService.selectCoBasicNextGenerationPrice(jkSubItemCode, gtSubItemCode, ptSubItemCode, pt2SubItemCode, shirtSubItemCode, coatSubItemCode, itemCode, fabricNo);
+		List<NextGenerationPrice> coBasicNextGenerationPriceList= nextGenerationService.selectCoBasicNextGenerationPrice(jkSubItemCode, gtSubItemCode, ptSubItemCode, pt2SubItemCode, shirtSubItemCode, coatSubItemCode, itemCode, fabricNo,productFactoryCd);
 		return coBasicNextGenerationPriceList;
 	}
 	
@@ -152,7 +154,9 @@ public class OrderCoDetailController {
 	public NextGenerationPrice getCoMarginRate(Order order) {
 		//生地品番
 		String fabricNo = order.getProductFabricNo();
-		NextGenerationPrice marginRate = nextGenerationService.selectCoMarginRate(fabricNo);
+		//工場コード
+		String makerCode = order.getProductMakerCode();
+		NextGenerationPrice marginRate = nextGenerationService.selectCoMarginRate(fabricNo,makerCode);
 		return marginRate;
 	}
 	

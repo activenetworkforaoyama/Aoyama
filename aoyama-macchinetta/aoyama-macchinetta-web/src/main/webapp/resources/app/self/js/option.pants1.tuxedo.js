@@ -107,7 +107,7 @@ function initOptionPants1Tuxedo() {
 		});
 		// デフォルトを選択
 		jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').val([adjusterList[pantsModel].defaultValue]);
-
+		jQuery('input[id^="tp_adjuster_id"]:checked').change();
 		// 選択中のベルトループ
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
 		
@@ -848,6 +848,9 @@ jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index
 			else {
 				jQuery('#tp_sidePkt_id1').prop('disabled',false);
 			}
+		}
+		else {
+			jQuery('#tp_sidePkt_id1').prop('disabled',false);
 		}
 	}
 	

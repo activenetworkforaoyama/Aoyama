@@ -4608,7 +4608,7 @@ if(osCasHemLine == '0002002'){
 else {
 	jQuery("#corStBodylengthGross").html(corStBodylengthGross);
 }
-if(corStBodylengthCorrect != null && corStBodylengthCorrect != ""){
+if(osCasHemLine != '0002002' && corStBodylengthCorrect != null && corStBodylengthCorrect != ""){
 	jQuery("#corStBodylengthCorrect").html(CorrectChange(corStBodylengthCorrect));
 }
 else {

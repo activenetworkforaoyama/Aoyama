@@ -146,8 +146,8 @@ public class NextGenerationServiceImpl implements NextGenerationService{
 	}
 
 	@Override
-	public List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo) {
-		List<NextGenerationPrice> coWholesalePieceList = nextGenerationRepository.selectCoWholesalePiece(fabricNo);
+	public List<NextGenerationPrice> selectCoWholesalePiece(String fabricNo,String factoryCd) {
+		List<NextGenerationPrice> coWholesalePieceList = nextGenerationRepository.selectCoWholesalePiece(fabricNo,factoryCd);
 		if(coWholesalePieceList.isEmpty()) {
 			ResultMessages resultMessages = ResultMessages.error();
 			resultMessages.add("E024");
@@ -161,8 +161,8 @@ public class NextGenerationServiceImpl implements NextGenerationService{
 	@Override
 	public List<NextGenerationPrice> selectCoBasicNextGenerationPrice(String jkSubItemCode, String ptSubItemCode,
 			String gtSubItemCode, String pt2SubItemCode, String shirtSubItemCode, String coatSubItemCode,
-			String itemCode, String fabricNo) {
-		List<NextGenerationPrice> coBasicNextGenerationPrice = nextGenerationRepository.selectCoBasicNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode,shirtSubItemCode,coatSubItemCode, itemCode, fabricNo);
+			String itemCode, String fabricNo,String factoryCd) {
+		List<NextGenerationPrice> coBasicNextGenerationPrice = nextGenerationRepository.selectCoBasicNextGenerationPrice(jkSubItemCode, ptSubItemCode, gtSubItemCode, pt2SubItemCode,shirtSubItemCode,coatSubItemCode, itemCode, fabricNo,factoryCd);
 		if(coBasicNextGenerationPrice.isEmpty()) {
 			ResultMessages resultMessages = ResultMessages.error();
 			resultMessages.add("E024");
@@ -174,10 +174,10 @@ public class NextGenerationServiceImpl implements NextGenerationService{
 	}
 
 	@Override
-	public NextGenerationPrice selectCoMarginRate(String fabricNo) {
+	public NextGenerationPrice selectCoMarginRate(String fabricNo,String makerCode) {
 		String orderPattern = "CO";
 		OrderFindFabric orderFabric = orderRepository.getOrderFabric(fabricNo, orderPattern);
-		NextGenerationPrice marginRate = nextGenerationRepository.selectCoMarginRate(fabricNo);
+		NextGenerationPrice marginRate = nextGenerationRepository.selectCoMarginRate(fabricNo,makerCode);
 		
 		if(marginRate == null) {
 			ResultMessages resultMessages = ResultMessages.error();

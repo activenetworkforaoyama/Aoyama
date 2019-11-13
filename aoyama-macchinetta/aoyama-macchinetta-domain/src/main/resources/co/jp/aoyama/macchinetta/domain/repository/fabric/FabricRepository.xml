@@ -121,6 +121,7 @@
 	        fabric_name_exist, 
 	        mtb_stock.theoretical_stock, 
 	        mtb_stock.reservation_stock, 
+	        mtb_stock.actual_stock, 
 	        mtb_fabric.version AS fabric_version, 
 	        mtb_stock.version AS stock_version, 
 	        mtb_fabric.created_user_id, 

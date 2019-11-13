@@ -202,7 +202,7 @@ public class PdfFileController {
 	}
 	@RequestMapping(value = "PdfFileCreate", method = RequestMethod.GET)
 	@ResponseBody
-	public String  PdfFileCreate(HttpServletRequest request, HttpServletResponse response,String orderId,String sign,String productItem,String fileNameDefault) throws Exception {
+	public String  PdfFileCreate(HttpServletRequest request, HttpServletResponse response,String orderId,String sign,String productItem,String fileNameDefault,String orderPattern) throws Exception {
 		
 		//orderIdでorderオブジェクトを取得します
 		Order order = orderListService.findOrderByPk(orderId);
@@ -220,7 +220,7 @@ public class PdfFileController {
     	}
     	
     	try {
-			pdfFileService.outputPrintPdf(sign, order, measuring, productItem,path,fileNameDefault);
+			pdfFileService.outputPrintPdf(sign, order, measuring, productItem,path,fileNameDefault,orderPattern);
 			logger.info("Download is OK");
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -2500,7 +2500,7 @@ public class CoPants2Helper {
 			optionPants2TuxedoInfo.setTp2HemUp(orderPt2.getPt2HemUpCd());
 			optionPants2TuxedoInfo.setTp2DoubleWide(orderPt2.getPt2DblWidthCd());
 			optionPants2TuxedoInfo.setTp2Stitch(orderPt2.getPt2AmfStitchCd());
-			optionPants2TuxedoInfo.setTp2StitchModify(orderPt2.getPt2StitchPlcCd());
+			optionPants2TuxedoInfo.setTp2StitchModify(orderPt2.getPt2StitchPlcType());
 			optionPants2TuxedoInfo.setTp2DStitchPlace(orderPt2.getPt2DblstitchPlcCd());
 			optionPants2TuxedoInfo.setTp2AmfColor(orderPt2.getPt2AmfColorCd());
 			optionPants2TuxedoInfo.setTp2BhColor(orderPt2.getPt2BtnholeColorType());
@@ -2701,14 +2701,14 @@ public class CoPants2Helper {
 					optionPants2StandardInfo.setOp2ByColorPlace1(pt2BtnthreadColorPlcSplit[i]);
 					optionPants2StandardInfo.setOp2ByColor1(pt2BtnthreadColorSplit[i]);
 				}else if("0003202".equals(pt2BtnthreadColorPlcSplit[i])) {
-					optionPants2StandardInfo.setOp2ByColorPlace1(pt2BtnthreadColorPlcSplit[i]);
-					optionPants2StandardInfo.setOp2ByColor1(pt2BtnthreadColorSplit[i]);
+					optionPants2StandardInfo.setOp2ByColorPlace2(pt2BtnthreadColorPlcSplit[i]);
+					optionPants2StandardInfo.setOp2ByColor2(pt2BtnthreadColorSplit[i]);
 				}else if("0003203".equals(pt2BtnthreadColorPlcSplit[i])) {
-					optionPants2StandardInfo.setOp2ByColorPlace1(pt2BtnthreadColorPlcSplit[i]);
-					optionPants2StandardInfo.setOp2ByColor1(pt2BtnthreadColorSplit[i]);
+					optionPants2StandardInfo.setOp2ByColorPlace3(pt2BtnthreadColorPlcSplit[i]);
+					optionPants2StandardInfo.setOp2ByColor3(pt2BtnthreadColorSplit[i]);
 				}else if("0003204".equals(pt2BtnthreadColorPlcSplit[i])) {
-					optionPants2StandardInfo.setOp2ByColorPlace1(pt2BtnthreadColorPlcSplit[i]);
-					optionPants2StandardInfo.setOp2ByColor1(pt2BtnthreadColorSplit[i]);
+					optionPants2StandardInfo.setOp2ByColorPlace4(pt2BtnthreadColorPlcSplit[i]);
+					optionPants2StandardInfo.setOp2ByColor4(pt2BtnthreadColorSplit[i]);
 				}
 			}
 		}

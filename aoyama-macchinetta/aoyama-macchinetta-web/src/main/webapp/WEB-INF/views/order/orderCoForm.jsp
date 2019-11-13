@@ -6714,21 +6714,57 @@ function temporarySaveCheck(){
 	//商品
 	//刺繍ネーム
 	var productEmbroideryNecessity = jQuery('input[name=productEmbroideryNecessity]:checked').val();
-	if(isNotEmpty(productEmbroideryNecessity)){
-		if (productEmbroideryNecessity == '9000502') {
-			var embroideryName = jQuery("#embroideryName").val();
-			if(embroideryName.length>50){
-				appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','40'));
+	var productEmbroideryGazette = jQuery('input[name=productEmbroideryGazette]:checked').val();
+	if (productEmbroideryNecessity == '9000502') {
+		var embroideryName = jQuery("#embroideryName").val();
+
+		var item = jQuery("#item").val();
+
+		if(item == "01" || item == "02"){
+			if(embroideryName.length>12){
+				appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','12'));
 				return false;
 			}else{
 		    	appendAlertDel('errormssage');
 			}
 
-			if(charactersCheck(embroideryName)) {
-				appendAlert('errormssage', getMsg('msg120'));
-		        return false;
+			if(embroideryCoNameCheck(embroideryName)) {
+				appendAlertDel('errormssage');
 		    }else{
-		    	appendAlertDel('errormssage');
+		    	appendAlert('errormssage', getMsgByOneArg('msg144','12'));
+		        return false;
+			}
+			
+		}else if(item == "05"){
+			if(productEmbroideryGazette == "0002301"){
+				if(embroideryName.length>12){
+					appendAlert('errormssage', getMsgByTwoArgs('msg011', '刺繍ネーム','12'));
+					return false;
+				}else{
+			    	appendAlertDel('errormssage');
+				}
+
+				if(embroideryCoNameCheck(embroideryName)) {
+					appendAlertDel('errormssage');
+			    }else{
+			    	appendAlert('errormssage', getMsgByOneArg('msg144','12'));
+			        return false;
+				}
+				
+			}else if(productEmbroideryGazette == "0002302"){
+				if(embroideryName.length>3){
+					appendAlert('errormssage', getMsg('msg145'));
+					return false;
+				}else{
+			    	appendAlertDel('errormssage');
+				}
+
+				if(embroideryCoNameCheck(embroideryName)) {
+					appendAlertDel('errormssage');
+			    }else{
+			    	appendAlert('errormssage', getMsgByOneArg('msg144','3'));
+			        return false;
+				}
 			}
 		}
 	}
@@ -7049,8 +7085,6 @@ function optionControlNotDisabled(){
 			jQuery('#bodyBackMateStkNo').removeAttr("disabled");
 			//PANTS
 			jQuery('input[id^="op_stitch_id"]').removeAttr("disabled");
-			//GILET
-			jQuery('input[id^="og_stitch_id"]').removeAttr("disabled");
 		}else if(productCategory == "9000102"){
 			//JACKET
 			jQuery('#tj_flowerHole').removeAttr("disabled");
@@ -7059,18 +7093,25 @@ function optionControlNotDisabled(){
 			jQuery("#tp_btnMateStkNo").removeAttr("disabled");
 			jQuery("#tp_GlossFablic").removeAttr("disabled");
 			jQuery('input[id^="tp_stitch_id"]').removeAttr("disabled");
-			//GILET
-			jQuery("#tg_GlossFablic").removeAttr("disabled");
 		}else if(productCategory == "9000103"){
 			//JACKET
 			jQuery('#wj_flowerHole').removeAttr("disabled");
 			//PANTS
 			jQuery('input[id^="wp_stitch_id"]').removeAttr("disabled");
-			//GILET
-			jQuery('input[id^="wg_stitch_id"]').removeAttr("disabled");
 		}
 		if(threePiece == "0009902"){
 			//GILET
+			if(productCategory == "9000101"){
+				jQuery('input[id^="og_stitch_id"]').removeAttr("disabled");
+				jQuery("#og_backLiningMateStkNo").removeAttr("disabled");
+			}else if(productCategory == "9000102"){
+				jQuery("#tg_GlossFablic").removeAttr("disabled");
+				jQuery("#tg_backLiningMateStkNo").removeAttr("disabled");
+				jQuery("#tg_frontBtnMateStkNo").removeAttr("disabled");
+			}else if(productCategory == "9000103"){
+				jQuery('input[id^="wg_stitch_id"]').removeAttr("disabled");
+				jQuery("#wg_backLiningMateStkNo").removeAttr("disabled");
+			}
 		}
 		
 		if(sparePants == "0009902"){
@@ -7105,7 +7146,18 @@ function optionControlNotDisabled(){
 		}else if(productCategory == "9000103"){
 		}
 	}else if(item == "04"){
-
+		//GILET
+		if(productCategory == "9000101"){
+			jQuery('input[id^="og_stitch_id"]').removeAttr("disabled");
+			jQuery("#og_backLiningMateStkNo").removeAttr("disabled");
+		}else if(productCategory == "9000102"){
+			jQuery("#tg_GlossFablic").removeAttr("disabled");
+			jQuery("#tg_backLiningMateStkNo").removeAttr("disabled");
+			jQuery("#tg_frontBtnMateStkNo").removeAttr("disabled");
+		}else if(productCategory == "9000103"){
+			jQuery('input[id^="wg_stitch_id"]').removeAttr("disabled");
+			jQuery("#wg_backLiningMateStkNo").removeAttr("disabled");
+		}
 	}else if(item == "05"){
 		jQuery('#os_adjustBtn').removeAttr("disabled");
 		jQuery("#os_convertible").removeAttr("disabled");
@@ -7147,8 +7199,6 @@ function optionControlDisabled(){
 			}
 			//PANTS
 			jQuery('input[id^="op_stitch_id"]').prop("disabled",true);
-			//GILET
-			jQuery('input[id^="og_stitch_id"]').prop("disabled",true);
 		}else if(productCategory == "9000102"){
 			//JACKET
 			var selectedLapelDesign = jQuery('input[name="coOptionJacketTuxedoInfo.tjLapelDesign"]:checked').val();
@@ -7166,9 +7216,6 @@ function optionControlDisabled(){
 			}
 			jQuery("#tp_GlossFablic").prop("disabled",true);
 			jQuery('input[id^="tp_stitch_id"]').prop("disabled",true);
-			
-			//GILET
-			jQuery("#tg_GlossFablic").prop("disabled",true);
 		}else if(productCategory == "9000103"){
 			//JACKET
 			var selectedLapelDesign = jQuery('input[name="coOptionJacketWashableInfo.wjFlowerHole"]:checked').val();
@@ -7177,12 +7224,27 @@ function optionControlDisabled(){
 			}
 			//PANTS
 			jQuery('input[id^="wp_stitch_id"]').prop("disabled",true);
-			//GILET
-			jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
 		}
 
 		if(threePiece == "0009902"){
 			//GILET
+			if(productCategory == "9000101"){
+				jQuery('input[id^="og_stitch_id"]').prop("disabled",true);
+				jQuery("#og_backLiningMateStkNo").prop("disabled",true);
+			}else if(productCategory == "9000102"){
+				jQuery("#tg_GlossFablic").prop("disabled",true);
+				var tg_backLiningMate = jQuery("#tg_backLiningMate").val();
+				if(tg_backLiningMate == "1000400"){
+					jQuery("#tg_backLiningMateStkNo").prop("disabled",true);
+				}
+				var tg_frontBtnMate = jQuery("#tg_frontBtnMate").val();
+				if(tg_frontBtnMate == "3000700"){
+					jQuery("#tg_frontBtnMateStkNo").prop("disabled",true);
+				}
+			}else if(productCategory == "9000103"){
+				jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
+				jQuery("#wg_backLiningMateStkNo").prop("disabled",true);
+			}
 		}
 		
 		if(sparePants == "0009902"){
@@ -7243,7 +7305,24 @@ function optionControlDisabled(){
 		}else if(productCategory == "9000103"){
 		}
 	}else if(item == "04"){
-
+		//GILET
+		if(productCategory == "9000101"){
+			jQuery('input[id^="og_stitch_id"]').prop("disabled",true);
+			jQuery("#og_backLiningMateStkNo").prop("disabled",true);
+		}else if(productCategory == "9000102"){
+			jQuery("#tg_GlossFablic").prop("disabled",true);
+			var tg_backLiningMate = jQuery("#tg_backLiningMate").val();
+			if(tg_backLiningMate == "1000400"){
+				jQuery("#tg_backLiningMateStkNo").prop("disabled",true);
+			}
+			var tg_frontBtnMate = jQuery("#tg_frontBtnMate").val();
+			if(tg_frontBtnMate == "3000700"){
+				jQuery("#tg_frontBtnMateStkNo").prop("disabled",true);
+			}
+		}else if(productCategory == "9000103"){
+			jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
+			jQuery("#wg_backLiningMateStkNo").prop("disabled",true);
+		}
 	}else if(item == "05"){
 		var selectedLapelDesign = jQuery('#os_convertible').val();
 		var os_cuffs = jQuery('#os_cuffs').val();
@@ -7282,7 +7361,7 @@ function lcrDetermined(result){
 		  jQuery("#makerCode").val(result.makerCode);
 	  }else{
 		  jQuery("#factoryCode").val("F00006");
-		  jQuery("#makerCode").val("M00001");
+		  jQuery("#makerCode").val(result.makerCode);
 	  }
 
 	  jQuery("input[name='productLcrSewing']:checked").change(function(){
@@ -7293,7 +7372,7 @@ function lcrDetermined(result){
 			  jQuery("#makerCode").val(result.makerCode);
 		  }else{
 			  jQuery("#factoryCode").val("F00006");
-			  jQuery("#makerCode").val("M00001");
+			  jQuery("#makerCode").val(result.makerCode);
 		  }
 	  });
 }

@@ -49,6 +49,26 @@ public class CashInfo implements Serializable {
     private String updatedUserId;
 
     private Date updatedAt;
+    
+    private Integer wsPrice;
+    
+    private String custType;
+
+	public Integer getWsPrice() {
+		return wsPrice;
+	}
+
+	public void setWsPrice(Integer wsPrice) {
+		this.wsPrice = wsPrice;
+	}
+
+	public String getCustType() {
+		return custType;
+	}
+
+	public void setCustType(String custType) {
+		this.custType = custType;
+	}
 
 	public String getOrderId() {
 		return orderId;

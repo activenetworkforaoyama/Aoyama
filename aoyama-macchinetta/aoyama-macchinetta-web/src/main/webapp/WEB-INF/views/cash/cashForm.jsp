@@ -402,6 +402,7 @@ table.dataTable tbody td {
 
 var contextPath = $("meta[name='contextPath']").attr("content");
 var list = ${json};
+var allCheckedFlag;
 // var dataView = [];
 var data =[];
 var sendData = JSON.stringify(list);
@@ -422,6 +423,12 @@ if(error == "error"){
 }
 
 $(document).ready(function() {
+	console.dir(obj);
+	for(var i = 0;i<=obj.length-1;i++){
+		if(""==$("#cash_discount_price_"+i).val() && obj[i].custType=="02"){
+			$("#cash_discount_price_"+i).val(obj[i].wsPrice);	
+		}		
+	}
 var backFlag = "${cashForm.backFlag}";
 if(backFlag == "orderFrom" || backFlag == "cashInit"){
 	if($("#cash_except_tax_price").val() == null || $("#cash_except_tax_price").val() == undefined 

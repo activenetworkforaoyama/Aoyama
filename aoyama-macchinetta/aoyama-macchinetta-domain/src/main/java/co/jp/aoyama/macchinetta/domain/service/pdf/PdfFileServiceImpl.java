@@ -526,7 +526,7 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * pdfファイルの書き方
 	 */
 	@Override
-	public void outputPrintPdf(String sign, Order order, Measuring measuring, String productItem,String path,String filename) throws Exception{
+	public void outputPrintPdf(String sign, Order order, Measuring measuring, String productItem,String path,String filename,String orderPattern) throws Exception{
 		@SuppressWarnings("resource")
 		//xmlファイルの読む込み
 		ApplicationContext appContext = new ClassPathXmlApplicationContext(
@@ -560,60 +560,126 @@ public class PdfFileServiceImpl implements PdfFileService{
             CrPdfDocument doc = strjob.getDocument();            
             CrForm form = null;
             // （５）フォームファイルを開きます
-           
-            if("1".equals(sign)) {
-            	//注文内容確認書_工場向
-            	
-            	doc.setDocumentName("注文内容確認書_工場向");
-            	Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-            			+ "po" + File.separator + "confirmationBook-Factory.cfx");
-            	form = CrForm.open(draw, resource.getInputStream());
-            	
-			}else if("2".equals(sign)) {
-				//注文内容確認書_お客様向
-				
-				doc.setDocumentName("注文内容確認書_お客様向");
-				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-						+ "po" + File.separator + "confirmationBook-Guest.cfx");
-				form = CrForm.open(draw, resource.getInputStream());
-				
-			}else if("3".equals(sign)) {
-				//工場指示書
-				
-				doc.setDocumentName("工場指示書");
-				Resource resource = customerService.getResource("classpath:cfx" + File.separator 
-						+ "po" + File.separator + "factoryInstructions.cfx");
-				form = CrForm.open(draw, resource.getInputStream());
-				
-			}else{
-				logger.info("このスタイルはありません");
-			}
-            try {
-                // （６）ファイル出力ジョブを開始します
-                draw.startJob(strjob);
-                // （７）出力先の用紙サイズをフォームのサイズに設定します
-                strjob.getCrPrinter().setFormSize(form);
-                // （８）フォームファイル上の「Title」という名前のテキストフィールドに
-                // 「Hello, World」という文字列を設定します
-                if("1".equals(sign)) {
-                	//注文内容確認書_工場向
-                	insertCommonProject(form, order, productItem);
-                	insertConfirmationBookFactorySpecial(form, order);
-                	insertMeasuringData(form, measuring, "1");
-                	insertOrderDataPo(form, order);
-                	
-    			}else{
-    				 logger.info("このスタイルはありません");
-    			}
-            	
-            	// （９）１ページ出力します
-                form.printOut();
-                // （１０）ファイル出力ジョブを終了します
-                draw.endJob();
-            } finally {
-                // （１１）フォームを閉じます
-                form.close();
-            }
+           if("CO".equals(orderPattern)) {
+        	   if("1".equals(sign)) {
+        		   //注文内容確認書(SUIT)_工場向
+        		   doc.setDocumentName("注文内容確認書_工場向");
+        		   Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+        				   + "co" + File.separator + "confirmationBookSuit-Factory.cfx");
+        		   form = CrForm.open(draw, resource.getInputStream());
+        	   }else if("2".equals(sign)) {
+        		   //注文内容確認書(COAT)_工場向
+        		   doc.setDocumentName("注文内容確認書_工場向");
+        		   Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+   						+ "co" + File.separator + "confirmationBookCoat-Factory.cfx");
+        		   form = CrForm.open(draw, resource.getInputStream());
+        	   }else if("3".equals(sign)) {
+        		   //注文内容確認書(SHIRT)_工場向
+        		   doc.setDocumentName("注文内容確認書_工場向");
+        		   Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+   						+ "co" + File.separator + "confirmationBookShirt-Factory.cfx");
+        		   form = CrForm.open(draw, resource.getInputStream());
+        	   }else{
+        		   logger.info("このスタイルはありません");
+        	   }
+               
+               try {
+                   // （６）ファイル出力ジョブを開始します
+                   draw.startJob(strjob);
+                   // （７）出力先の用紙サイズをフォームのサイズに設定します
+                   strjob.getCrPrinter().setFormSize(form);
+                   // （８）フォームファイル上の「Title」という名前のテキストフィールドに
+                   // 「Hello, World」という文字列を設定します
+                   if("1".equals(sign)) {
+                	   //注文内容確認書(SUIT)_工場向
+                	   insertCommonProject(form, order, productItem);
+                	   insertConfirmationBookFactorySpecial(form, order);
+                	   insertMeasuringData(form, measuring, "1");
+                	   insertSuitDataCo(form, order);
+                	   if("01".equals(order.getProductItem()) || "02".equals(order.getProductItem())) {
+                		   //01:suit  02:jacket
+                		   insertJacketdetailedFieldDataCo(form, order);
+                	   }
+                	   if("01".equals(order.getProductItem()) || "03".equals(order.getProductItem())) {
+                		   //01:suit  03:pants
+                		   insertPantsdetailedFieldDataCo(form, order);
+                	   }
+                	   if("01".equals(order.getProductItem()) 
+                   			&& ("22".equals(order.getProductItemDisplaycode()) || "32".equals(order.getProductItemDisplaycode()))) {
+                		   //01:suit  22:2PP  32:3P2PP
+                		   insertPants2detailedFieldDataCo(form, order);
+                	   }
+                	   if(("01".equals(order.getProductItem()) && ("31".equals(order.getProductItemDisplaycode()) 
+                			   || "32".equals(order.getProductItemDisplaycode())))
+                			   || "04".equals(order.getProductItem())) {
+                		   //01:suit  31:3P  32:3P2PP  04:gilet
+                		   insertGiletdetailedFieldDataCo(form, order);
+                	   }
+                   	
+                   }else if("2".equals(sign)) {
+                	   //注文内容確認書(COAT)_工場向
+                	   insertCommonProject(form, order, productItem);
+                	   insertConfirmationBookFactorySpecial(form, order);
+                	   insertMeasuringData(form, measuring, "1");
+                	   insertCoatDataCo(form, order);
+                   }else if("3".equals(sign)) {
+                	   //注文内容確認書(SHIRT)_工場向
+                	   insertCommonProject(form, order, productItem);
+                	   insertConfirmationBookFactorySpecial(form, order);
+                	   insertMeasuringData(form, measuring, "1");
+                	   insertShirtDataCo(form, order);
+                   }else{
+                	   logger.info("このスタイルはありません");
+                   }
+               	// （９）１ページ出力します
+                   form.printOut();
+               //（１０）ファイル出力ジョブを終了します
+                   draw.endJob();
+               } finally {
+                   // （１１）フォームを閉じます
+                   form.close();
+               }
+        	   
+           }else if ("PO".equals(orderPattern)) {
+        	   if("1".equals(sign)) {
+               	//注文内容確認書_工場向
+               	
+               	doc.setDocumentName("注文内容確認書_工場向");
+               	Resource resource = customerService.getResource("classpath:cfx" + File.separator 
+               			+ "po" + File.separator + "confirmationBook-Factory.cfx");
+               	form = CrForm.open(draw, resource.getInputStream());
+               	
+        	   }else{
+   				logger.info("このスタイルはありません");
+        	   }
+               try {
+                   // （６）ファイル出力ジョブを開始します
+                   draw.startJob(strjob);
+                   // （７）出力先の用紙サイズをフォームのサイズに設定します
+                   strjob.getCrPrinter().setFormSize(form);
+                   // （８）フォームファイル上の「Title」という名前のテキストフィールドに
+                   // 「Hello, World」という文字列を設定します
+                   if("1".equals(sign)) {
+                   	//注文内容確認書_工場向
+                   	insertCommonProject(form, order, productItem);
+                   	insertConfirmationBookFactorySpecial(form, order);
+                   	insertMeasuringData(form, measuring, "1");
+                   	insertOrderDataPo(form, order);
+                   	
+       			}else{
+       				 logger.info("このスタイルはありません");
+       			}
+               	
+               	// （９）１ページ出力します
+                   form.printOut();
+                   // （１０）ファイル出力ジョブを終了します
+                   draw.endJob();
+               } finally {
+                   // （１１）フォームを閉じます
+                   form.close();
+               }
+           }
+            
         } catch (Exception cex) {
             // シーオーリポーツ内で発生した例外を処理します
             cex.printStackTrace();

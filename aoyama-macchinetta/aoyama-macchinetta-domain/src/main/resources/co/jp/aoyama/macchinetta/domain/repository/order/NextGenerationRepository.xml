@@ -270,7 +270,7 @@
 		     shipping_error as shippingError
  	  from mtb_wholesale_piece as mwp,
       		mtb_fabric as mfa
- 	  where mwp.factory_code = mfa.factory_code
+ 	  where mwp.factory_code = #{arg1}
 	       and mfa.fabric_no = #{arg0}
 	       and mfa.order_pattern = 'CO'
   </select>
@@ -290,8 +290,8 @@
 	from mtb_fabric as mfa,
 	   mtb_base_wage as mbw left join mtb_double_breasted_wage as mdbw on mdbw.factory_code = mbw.factory_code and mbw.item_code = mdbw.item_code,
 	   mtb_nomal_accessory_price as mnap left join mtb_double_breasted_accessory_price as mdbap on mdbap.factory_code = mnap.factory_code and mnap.item_code = mdbap.item_code and mnap.order_pattern = mdbap.order_pattern
- 	where  mnap.factory_code = mfa.factory_code
-       and mbw.factory_code = mfa.factory_code 
+ 	where  mnap.factory_code = #{arg8}
+       and mbw.factory_code = #{arg8}
        and mbw.item_code = mnap.item_code
        and mdbw.sub_item_code = mdbap.sub_item_code
        and mfa.fabric_no = #{arg7}
@@ -345,7 +345,7 @@
 	  select margin_rate as marginRate
 	  from mtb_maker_margin as mmm,
 		   mtb_fabric as mfa
-	  where mmm.maker_code = mfa.maker_code
+	  where mmm.maker_code = #{arg1}
 	        and mfa.fabric_no = #{arg0}
 	        and mfa.order_pattern = 'CO'
   </select>

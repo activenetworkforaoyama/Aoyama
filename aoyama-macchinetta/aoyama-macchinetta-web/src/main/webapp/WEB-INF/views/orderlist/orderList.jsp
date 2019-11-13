@@ -138,7 +138,7 @@
 											<form:option value="T7">お渡し済</form:option>
 										</form:select>
 									</c:when>
-									<c:when test="${sessionContent.authority == '03'}">
+									<c:when test="${sessionContent.authority == '03' or sessionContent.authority == '05'}">
 
 										<form:select path="tscStatus" id="tscStatus"
 											class="form-control-sm form-control">
@@ -153,7 +153,7 @@
 											<form:option value="T7">お渡し済</form:option>
 										</form:select>
 									</c:when>
-									<c:when test="${sessionContent.authority == '04' or sessionContent.authority == '05'}">
+									<c:when test="${sessionContent.authority == '04'}">
 
 										<form:select path="tscStatus" id="tscStatus"
 											class="form-control-sm form-control">
@@ -1040,6 +1040,7 @@ function searchOrder(){
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;    
 								d["shop_code"] = result[i].shopCode;    
+								d["cust_type"] = result[i].custType;
 						   }
 						   //結果があるの場合、
 						   if (result.length != 0){
@@ -1175,6 +1176,7 @@ function searchOrder(){
 								d["send2factory_status"] = result[i].send2factoryStatus;
 								d["is_cancelled"] = result[i].isCancelled;   
 								d["shop_code"] = result[i].shopCode;    
+								d["cust_type"] = result[i].custType;
 						   }
 						   //結果があるの場合、
 						   if (result.length != 0){
@@ -1570,27 +1572,41 @@ function gotoAccountCheck(){
 	closeAlert('errorMessage', 'msg_dataError');
 	grid.gotoCell(0, 1,true);
 	var oneShopFlag = true;
+	var oneCushTypeFlag = true;
 	var orderListString = JSON.stringify(dataView.getItems());
 	var orderLength = eval('('+ orderListString +')');
 	var orderIdArray = new Array();
 	var shopCodeArray = new Array();
+	var custTypeMap = new Map();
 	for (var i = 0; i < orderLength.length; i++) {
 		if(orderLength[i].account_kubun){
 			var length = orderLength[i].order_id.length;
 			orderIdArray.push(orderLength[i].order_id.substring(length-23, length-11));
 			shopCodeArray.push(orderLength[i].shop_code);
+			custTypeMap.set(orderLength[i].cust_type,orderLength[i].cust_type);
 		}
 	}
-	if (shopCodeArray.length != 0){
+	if (shopCodeArray.length != 0 && custTypeMap.size != 0){
 		for (var i = 1; i < shopCodeArray.length; i++){
 			 if (shopCodeArray[i-1] != shopCodeArray[i]){
 				 oneShopFlag = false;
 			 }
 		}
-		if (oneShopFlag){
+		try{
+			custTypeMap.forEach(function(key){
+				if(key == "02" && custTypeMap.size != 1){
+					oneCushTypeFlag = false;
+					throw "jump";
+				}
+			})
+		}catch(e){
+		}
+		if (oneShopFlag && oneCushTypeFlag){
 			gotoAccount();
-		}else{
+		}else if(!oneShopFlag){
 			addAlert('errorMessage', 'msg_oneShop', getMsg('msg090'));
+		}else if(!oneCushTypeFlag){
+			addAlert('errorMessage', 'msg_oneShop', getMsg('msg146'));
 		}
 
 	}else{

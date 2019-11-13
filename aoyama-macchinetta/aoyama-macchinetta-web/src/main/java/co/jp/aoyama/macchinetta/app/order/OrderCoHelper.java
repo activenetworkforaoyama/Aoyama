@@ -11093,7 +11093,7 @@ public class OrderCoHelper {
 		}
 		else {
 			// PANTS_ボタン付け糸指定_箇所コード
-			order.setPtBtnthreadColorPlcCd(null);
+			order.setPt2BtnthreadColorPlcCd(null);
 			// PANTS_ボタン付け糸指定_箇所名
 			order.setPt2BtnthreadColorPlcNm(null);
 			// PANTS_ボタン付け糸指定_色コード
@@ -11455,12 +11455,12 @@ public class OrderCoHelper {
 		if(tpBeltLoopYes.equals(tpBeltLoop)) {
 			// タキシードPANTSのベルトループ箇所
 			String tpBeltLoopPlace1 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace5 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace6 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
-			String tpBeltLoopPlace7 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace1();
+			String tpBeltLoopPlace2 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace2();
+			String tpBeltLoopPlace3 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace3();
+			String tpBeltLoopPlace4 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace4();
+			String tpBeltLoopPlace5 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace5();
+			String tpBeltLoopPlace6 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace6();
+			String tpBeltLoopPlace7 = orderCoForm.getCoOptionPantsTuxedoInfo().getTpBeltLoopPlace7();
 
 			List<String> tpBeltLoopPlaceList = new ArrayList<>();
 			tpBeltLoopPlaceList.add(tpBeltLoopPlace1);
@@ -11590,12 +11590,12 @@ public class OrderCoHelper {
 		if(tp2BeltLoopYes.equals(tp2BeltLoop)) {
 			// タキシードPANTSのベルトループ箇所
 			String tp2BeltLoopPlace1 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace5 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace6 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
-			String tp2BeltLoopPlace7 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace1();
+			String tp2BeltLoopPlace2 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace2();
+			String tp2BeltLoopPlace3 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace3();
+			String tp2BeltLoopPlace4 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace4();
+			String tp2BeltLoopPlace5 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace5();
+			String tp2BeltLoopPlace6 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace6();
+			String tp2BeltLoopPlace7 = orderCoForm.getCoOptionPants2TuxedoInfo().getTp2BeltLoopPlace7();
 
 			List<String> tp2BeltLoopPlaceList = new ArrayList<>();
 			tp2BeltLoopPlaceList.add(tp2BeltLoopPlace1);
@@ -14941,7 +14941,7 @@ public class OrderCoHelper {
 		}
 		else {
 			// PANTS_ボタン付け糸指定_箇所コード
-			order.setPt2BtnthreadColorPlcCd(null);
+			order.setPtBtnthreadColorPlcCd(null);
 			// PANTS_ボタン付け糸指定_箇所名
 			order.setPtBtnthreadColorPlcNm(null);
 			// PANTS_ボタン付け糸指定_色コード
@@ -18783,11 +18783,11 @@ public class OrderCoHelper {
 		order.setTheoreticalStockCheck("1");
 
 		// 商品情報_工場
-		String productFactoryCd = findStock.getFactoryCode();
+		String productFactoryCd = orderCoForm.getProductFactoryCd();
 		order.setProductFactoryCd(productFactoryCd);
 
 		// 商品情報_メーカーコード
-		String productMakerCode = findStock.getMakerCode();
+		String productMakerCode = orderCoForm.getProductMakerCode();
 		order.setProductMakerCode(productMakerCode);
 
 		// 生地_色
