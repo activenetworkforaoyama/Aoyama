@@ -5681,7 +5681,21 @@ function showPrice(){
 		//PANTSの料金を表示
 		var pants2Model = "";
 		var priceUrl = "";
+		if(category == "9000101"){
+			jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').removeAttr("disabled");
+		} else if(category == "9000102"){
+			jQuery('#tp2_GlossFablic').removeAttr("disabled");
+		} else if(category == "9000103"){
+			jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').removeAttr("disabled");
+		}
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
+		if(category == "9000101"){
+			jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').prop("disabled",true);
+		} else if(category == "9000102"){
+			jQuery("#tp2_GlossFablic").prop("disabled",true);
+		} else if(category == "9000103"){
+			jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').prop("disabled",true);
+		}
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "07";
 	    var category = jQuery('input[name="productCategory"]:checked').val();
@@ -6162,6 +6176,17 @@ jQuery('#btn_tp2_samePants').click(function (){
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2ShapeMemory"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpShapeMemory}"]);
 	//側章
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripe"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripe}"]);
+
+	// 選択中の側章
+	var sideStripe = jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripe"]:checked').val();
+	if (sideStripe == '0003902') {
+		// 側章が有りの場合は側章幅を表示する
+		jQuery('#tp2_sideStripe_yes_area').show();
+	} else {
+		// 側章が無しの場合は側章幅を非表示にする
+		jQuery('#tp2_sideStripe_yes_area').hide();
+	}
+	
 	//側章幅
 	jQuery('input[name="coOptionPants2TuxedoInfo.tp2SideStripeWidth"]').val(["${orderCoForm.coOptionPantsTuxedoInfo.tpSideStripeWidth}"]);
 
@@ -6324,7 +6349,6 @@ jQuery('#btn_wp2_samePants').click(function (){
 	jQuery("#wp2_doubleWide").val("${orderCoForm.coOptionPantsWashableInfo.wpDoubleWide}");
 	//ステッチ種類
 	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitch}"]);
-	jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]:checked').change();
 	//ステッチ箇所変更
 	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]').val(["${orderCoForm.coOptionPantsWashableInfo.wpStitchModify}"]);
 	jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]:checked').change();

@@ -12,7 +12,7 @@ public enum GiletCoOptionDetailWashableNextGenerationPriceEnum {
 	// Value6:orderのmethod
 	
 	GILET_WASHABLE_OPTION_CODE17("00017","getWgBackLiningMate","getWgBackLiningMateStkNo","setGlBackClothWsWage","setGlBackClothWsPrice","getGlBackClothWsWage","getGlBackClothWsPrice"),//背裏地素材
-	GILET_WASHABLE_OPTION_CODE19("00019","getWgInsideLiningMate","getWgInsideLiningMate","setGlInnnerClothWsWage","setGlInnnerClothWsPrice","getGlInnnerClothWsWage","getGlInnnerClothWsPrice"),//内側裏地素材
+	GILET_WASHABLE_OPTION_CODE19("00019","getWgInsideLiningMate","getWgInsideLiningMateStkNo","setGlInnnerClothWsWage","setGlInnnerClothWsPrice","getGlInnnerClothWsWage","getGlInnnerClothWsPrice"),//内側裏地素材
 	GILET_WASHABLE_OPTION_CODE21("00021","getWgFrontBtnMate","getWgFrontBtnMateStkNo","setGlFrtBtnWsWage","setGlFrtBtnWsPrice","getGlFrtBtnWsWage","getGlFrtBtnWsPrice");//釦素材
 	
 	

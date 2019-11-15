@@ -112,7 +112,7 @@ function initOptionPants1Tuxedo() {
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsTuxedoInfo.tpBeltLoop"]:checked').val();
 		
 		// ベルトループの選択肢制御
-		jQuery('input[id^="tp_beltLotp_"]').each(function() {
+		jQuery('input[id^="tp_beltLoop_"]').each(function() {
 			var tmpTpBeltLoopElem = jQuery(this);
 			var value = tmpTpBeltLoopElem.val();
 
@@ -808,6 +808,7 @@ jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index
 	var oPLoopElemN = jQuery('#tp_pinLoop_id2');
 	
 	if(selectedPantsModel == 'AY01'){
+		jQuery('#tp_beltLoop_id1').prop('disabled', true);
 		switch(selected) {
 		case "0000601": oBLoopElemN.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;

@@ -19,6 +19,7 @@ public enum GiletCoOptionWashableNextGenerationPriceEnum {
 	GILET_WASHABLE_OPTION_CODE08("00008","getWgAmfColor","setGlAmfColorWsWage","setGlAmfColorWsPrice","getGlAmfColorWsWage","getGlAmfColorWsPrice"),//AMF色指定
 	GILET_WASHABLE_OPTION_CODE11("00011","getWgBhColor","setGlBtnholeColorWsWage","setGlBtnholeColorWsPrice","getGlBtnholeColorWsWage","getGlBtnholeColorWsPrice"),//ボタンホール色指定
 	GILET_WASHABLE_OPTION_CODE14("00014","getWgByColor","setGlBtnthreadColorWsWage","setGlBtnthreadColorWsPrice","getGlBtnthreadColorWsWage","getGlBtnthreadColorWsPrice"),//ボタン付け糸指定
+	GILET_WASHABLE_OPTION_CODE17("00017","getWgBackLiningMate","setGlBackClothWsWage","setGlBackClothWsPrice","getGlBackClothWsWage","getGlBackClothWsPrice"),//背裏地素材
 	GILET_WASHABLE_OPTION_CODE23("00023","getWgBackBelt","setGlBackBeltWsWage","setGlBackBeltWsPrice","getGlBackBeltWsWage","getGlBackBeltWsPrice"),//バックベルト
 	GILET_WASHABLE_OPTION_CODE24("00024","getWgWatchChain","setGlWatchChainWsWage","setGlWatchChainWsPrice","getGlWatchChainWsWage","getGlWatchChainWsPrice");//ウォッチチェーン
 	

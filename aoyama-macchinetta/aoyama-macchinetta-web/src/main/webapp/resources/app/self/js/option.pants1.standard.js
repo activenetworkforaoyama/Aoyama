@@ -1395,6 +1395,7 @@ jQuery('input[name="coOptionPantsStandardInfo.opAdjuster"]').change(function(ind
 	
 	
 	if(pantsModel == 'AY01'){
+		jQuery('#op_beltLoop_id1').prop('disabled', true);
 		switch(selected) {
 		case "0000601": oBLoopElemN.prop("checked", true); break;
 		case "0000602": oBLoopElemN.prop("checked", true); break;

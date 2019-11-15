@@ -37,6 +37,8 @@ public enum JacketCoOptionStandardNextGenerationPriceEnum {
 	JK_Standard_OPTION_CODE31("00031","getOjBhColor","setJkBtnholePlcColorWsWage","setJkBtnholePlcColorWsPrice","getJkBtnholePlcColorWsWage","getJkBtnholePlcColorWsPrice"),//ボタンホール色指定
 	JK_Standard_OPTION_CODE34("00034","getOjByColor","setJkBtnthreadPlcColorWsWage","setJkBtnthreadPlcColorWsPrice","getJkBtnthreadPlcColorWsWage","getJkBtnthreadPlcColorWsPrice"),//ボタン付け糸指定
 	JK_Standard_OPTION_CODE37("00037","getOjVentSpec","setJkVentWsWage","setJkVentWsPrice","getJkVentWsWage","getJkVentWsPrice"),//ベント
+	JK_Standard_OPTION_CODE38("00038","getOjBodyBackMate","setJkInnerBodyClothWsWage","setJkInnerBodyClothWsPrice","getJkInnerBodyClothWsWage","getJkInnerBodyClothWsPrice"),//胴裏素材
+	JK_Standard_OPTION_CODE40("00040","getOjCuffBackMate","setJkInnerSleeveClothWsWage","setJkInnerSleeveClothWsPrice","getJkInnerSleeveClothWsWage","getJkInnerSleeveClothWsPrice"),//袖裏素材
 	JK_Standard_OPTION_CODE44("00044","getOjShapeMemory","setJkShapeMemoryWsWage","setJkShapeMemoryWsPrice","getJkShapeMemoryWsWage","getJkShapeMemoryWsPrice");//形状記憶
 	
 	

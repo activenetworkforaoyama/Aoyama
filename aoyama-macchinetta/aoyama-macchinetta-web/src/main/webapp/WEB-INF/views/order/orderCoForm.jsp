@@ -1372,7 +1372,7 @@ select.hidedown {
 				<input type="hidden" id="coatItemFlag" name="coatItemFlag" value="0"/>
 				<input type="hidden" id="pants2ItemFlag" name="pants2ItemFlag" value="0"/>
 			</c:if>
-			<c:if test="${orderCoForm.orderFlag == 'orderLink'|| orderCoForm.orderFlag == 'orderDivert'}">
+			<c:if test="${orderCoForm.orderFlag == 'orderLink'|| orderCoForm.orderFlag == 'orderDivert'|| orderCoForm.orderFlag == 'orderCheck'}">
 				<input type="hidden" id="jacketItemFlag" name="jacketItemFlag" value="1"/>
 				<input type="hidden" id="pantsItemFlag" name="pantsItemFlag" value="1"/>
 				<input type="hidden" id="giletItemFlag" name="giletItemFlag" value="1"/>
@@ -3382,7 +3382,8 @@ jQuery(function() {
 					  if(oldCategory != category){
 						  jQuery('input[name="productCategory"]').attr("hookCate",category);
 					  }
-					  jQuery.ajax({url:contextPath + "/orderCo/optionInit",data:{"categoryChange":"1"},type: "get",async:false});
+					  jQuery.ajax({url:contextPath + "/orderCo/optionCategoryInit",type: "get",async:false});
+					  
 					  if(item == "01") {
 						  jQuery("#jacketItemFlag").val("0");
 						  jQuery("#pantsItemFlag").val("0");
@@ -7319,8 +7320,8 @@ function optionControlDisabled(){
 		//GILET
 		if(productCategory == "9000101"){
 // 			jQuery('input[id^="og_stitch_id"]').prop("disabled",true);
-			var tg_backLiningMate = jQuery("#tg_backLiningMate").val();
-			if(tg_backLiningMate == "1000400"){
+			var og_backLiningMate = jQuery("#og_backLiningMate").val();
+			if(og_backLiningMate == "1000400"){
 				jQuery("#og_backLiningMateStkNo").prop("disabled",true);
 			}
 		}else if(productCategory == "9000102"){
@@ -7335,8 +7336,8 @@ function optionControlDisabled(){
 			}
 		}else if(productCategory == "9000103"){
 // 			jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
-			var tg_backLiningMate = jQuery("#tg_backLiningMate").val();
-			if(tg_backLiningMate == "1000400"){
+			var wg_backLiningMate = jQuery("#wg_backLiningMate").val();
+			if(wg_backLiningMate == "1000400"){
 				jQuery("#wg_backLiningMateStkNo").prop("disabled",true);
 			}
 		}

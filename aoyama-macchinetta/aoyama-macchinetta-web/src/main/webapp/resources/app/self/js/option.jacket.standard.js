@@ -488,6 +488,11 @@ function initOptionJacketStandard() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
 			ctrlStitchModify();
+			if(jQuery(this).val() == "0002401"){
+				ctrlDStitchModify();
+				ctrlDStitchModifyPlace();
+				ctrlAmfColor();
+			}
 		});
 	});
 	ctrlStitchModify();
@@ -499,6 +504,8 @@ function initOptionJacketStandard() {
 			ctrlDStitchModifyPlace();
 			// AMF色指定の有効/無効を制御
 			ctrlAmfColor();
+			var amfColorPlaceIdTemp = jQuery(this).attr("id").replace("stitchModifyPlace_id","amfColorPlace_");
+			jQuery("#"+amfColorPlaceIdTemp).change();
 		});
 	});
 

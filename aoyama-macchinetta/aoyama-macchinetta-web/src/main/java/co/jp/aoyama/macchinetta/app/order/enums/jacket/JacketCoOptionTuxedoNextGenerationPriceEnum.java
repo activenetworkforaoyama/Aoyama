@@ -35,6 +35,7 @@ public enum JacketCoOptionTuxedoNextGenerationPriceEnum {
 	JK_Tuxedo_OPTION_CODE31("00031","getTjBhColor","setJkBtnholePlcColorWsWage","setJkBtnholePlcColorWsPrice","getJkBtnholePlcColorWsWage","getJkBtnholePlcColorWsPrice"),//ボタンホール色指定
 	JK_Tuxedo_OPTION_CODE34("00034","getTjByColor","setJkBtnthreadPlcColorWsWage","setJkBtnthreadPlcColorWsPrice","getJkBtnthreadPlcColorWsWage","getJkBtnthreadPlcColorWsPrice"),//ボタン付け糸指定
 	JK_Tuxedo_OPTION_CODE37("00037","getTjVentSpec","setJkVentWsWage","setJkVentWsPrice","getJkVentWsWage","getJkVentWsPrice"),//ベント
+	JK_Tuxedo_OPTION_CODE42("00042","getTjBtnMate","setJkBtnMaterialWsWage","setJkBtnMaterialWsPrice","getJkBtnMaterialWsWage","getJkBtnMaterialWsPrice"),//釦素材
 	JK_Tuxedo_OPTION_CODE44("00044","getTjShapeMemory","setJkShapeMemoryWsWage","setJkShapeMemoryWsPrice","getJkShapeMemoryWsWage","getJkShapeMemoryWsPrice");//形状記憶
 	
 	

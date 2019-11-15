@@ -1464,7 +1464,12 @@ public class CoGiletHelper {
 								Integer orderPriceInt = 0; 
 								for (int i = 0; i < stitchModifyList.size(); i++) { 
 									String projectPriceCode = code + "00007" + stitchModifyList.get(i); 
-									String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm); 
+									String orderPriceInner = "";
+									if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+										orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+									}else{
+										orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+									}
 									orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner); 
 								} 
 								orderPrice = String.valueOf(orderPriceInt); 
@@ -1535,7 +1540,12 @@ public class CoGiletHelper {
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00010" + amfColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(amfColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1562,11 +1572,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00013" + bhColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1601,11 +1621,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00016" + byColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1720,11 +1750,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00013" + bhColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1759,11 +1799,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00016" + byColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1874,7 +1924,12 @@ public class CoGiletHelper {
 							Integer orderPriceInt = 0; 
 							for (int i = 0; i < stitchModifyList.size(); i++) { 
 								String projectPriceCode = code + "00007" + stitchModifyList.get(i); 
-								String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm); 
+								String orderPriceInner = "";
+								if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+									orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+								}else{
+									orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+								}
 								orderPriceInt = orderPriceInt + Integer.valueOf(orderPriceInner); 
 							} 
 							orderPrice = String.valueOf(orderPriceInt); 
@@ -1939,11 +1994,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0000801.equals(invokeOne)||(OptionCodeKeys.GL_0000802.equals(invokeOne)&&amfColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00010" + amfColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(amfColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -1970,11 +2035,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00013" + bhColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(bhColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}
@@ -2009,11 +2084,21 @@ public class CoGiletHelper {
 						
 						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
 							String projectPriceCode = code + key + invokeOne;
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							orderPrice = orderPriceInner;
 						} else {
 							String projectPriceCode = code + "00016" + byColorList.get(0);
-							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							String orderPriceInner = "";
+							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+							}else{
+								orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+							}
 							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(byColorList.size());
 							orderPrice = String.valueOf(colorPrice);
 						}

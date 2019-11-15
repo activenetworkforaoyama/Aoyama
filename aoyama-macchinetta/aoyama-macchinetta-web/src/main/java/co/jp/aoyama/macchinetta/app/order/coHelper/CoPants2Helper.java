@@ -2433,7 +2433,11 @@ public class CoPants2Helper {
 			optionPants2StandardInfo.setOp2PantsModel(orderPt2.getPt2ModelCd());
 			optionPants2StandardInfo.setOp2Tack(orderPt2.getPt2TackCd());
 			optionPants2StandardInfo.setOp2KneeBack(orderPt2.getPt2KneeinnerTypeCd());
-			optionPants2StandardInfo.setOp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			if ("0000202".equals(orderPt2.getPt2KneeinnerTypeCd())) {
+				optionPants2StandardInfo.setOp2KneeBackMate("0000301");
+			} else {
+				optionPants2StandardInfo.setOp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			}
 			optionPants2StandardInfo.setOp2FrontSpec(orderPt2.getPt2FrtTypeCd());
 			optionPants2StandardInfo.setOp2Pancherina(orderPt2.getPt2PancherinaCd());
 			optionPants2StandardInfo.setOp2Adjuster(orderPt2.getPt2AdjusterCd());
@@ -2483,7 +2487,11 @@ public class CoPants2Helper {
 			optionPants2TuxedoInfo.setTp2PantsModel(orderPt2.getPt2ModelCd());
 			optionPants2TuxedoInfo.setTp2Tack(orderPt2.getPt2TackCd());
 			optionPants2TuxedoInfo.setTp2KneeBack(orderPt2.getPt2KneeinnerTypeCd());
-			optionPants2TuxedoInfo.setTp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			if ("0000202".equals(orderPt2.getPt2KneeinnerTypeCd())) {
+				optionPants2TuxedoInfo.setTp2KneeBackMate("0000301");
+			} else {
+				optionPants2TuxedoInfo.setTp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			}
 			optionPants2TuxedoInfo.setTp2FrontSpec(orderPt2.getPt2FrtTypeCd());
 			optionPants2TuxedoInfo.setTp2Pancherina(orderPt2.getPt2PancherinaCd());
 			optionPants2TuxedoInfo.setTp2Adjuster(orderPt2.getPt2AdjusterCd());
@@ -2528,7 +2536,11 @@ public class CoPants2Helper {
 			optionPants2WashableInfo.setWp2PantsModel(orderPt2.getPt2ModelCd());
 			optionPants2WashableInfo.setWp2Tack(orderPt2.getPt2TackCd());
 			optionPants2WashableInfo.setWp2KneeBack(orderPt2.getPt2KneeinnerTypeCd());
-			optionPants2WashableInfo.setWp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			if ("0000202".equals(orderPt2.getPt2KneeinnerTypeCd())) {
+				optionPants2WashableInfo.setWp2KneeBackMate("0000301");
+			} else {
+				optionPants2WashableInfo.setWp2KneeBackMate(orderPt2.getPt2KneeinnerClothCd());
+			}
 			optionPants2WashableInfo.setWp2FrontSpec(orderPt2.getPt2FrtTypeCd());
 			optionPants2WashableInfo.setWp2Pancherina(orderPt2.getPt2PancherinaCd());
 			optionPants2WashableInfo.setWp2Adjuster(orderPt2.getPt2AdjusterCd());

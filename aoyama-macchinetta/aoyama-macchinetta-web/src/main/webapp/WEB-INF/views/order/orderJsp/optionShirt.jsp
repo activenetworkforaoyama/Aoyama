@@ -228,6 +228,7 @@
                             </div>
                             <div class="col-12 col-md-3" align="right" id="os_casHemLine_Msg">
                             </div>
+                            <div class="col-12 col-md-9 offset-md-3" id="osCasHemLineCheck"></div>
                             <div class="col col-md-3 casHemLineSizeArea">　</div>
                             <div class="col-12 col-md-9 casHemLineSizeArea" style="display:none;">
                                 <div class="form-check-inline form-check">
@@ -486,6 +487,9 @@ jQuery(function() {
 					allOptionPrice();
 				}
 			});
+		}
+		if (idValueName == 'os_casHemLine_id1' || idValueName == 'os_casHemLine_id2'){
+			setAlert('osCasHemLineCheck', getMsg('msg147'));
 		}
 	});
 

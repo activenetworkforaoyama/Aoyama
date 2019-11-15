@@ -19,6 +19,7 @@ public enum GiletCoOptionStandardNextGenerationPriceEnum {
 	GILET_STANDARD_OPTION_CODE08("00008","getOgAmfColor","setGlAmfColorWsWage","setGlAmfColorWsPrice","getGlAmfColorWsWage","getGlAmfColorWsPrice"),//AMF色指定
 	GILET_STANDARD_OPTION_CODE11("00011","getOgBhColor","setGlBtnholeColorWsWage","setGlBtnholeColorWsPrice","getGlBtnholeColorWsWage","getGlBtnholeColorWsPrice"),//ボタンホール色指定
 	GILET_STANDARD_OPTION_CODE14("00014","getOgByColor","setGlBtnthreadColorWsWage","setGlBtnthreadColorWsPrice","getGlBtnthreadColorWsWage","getGlBtnthreadColorWsPrice"),//ボタン付け糸指定
+	GILET_STANDARD_OPTION_CODE17("00017","getOgBackLiningMate","setGlBackClothWsWage","setGlBackClothWsPrice","getGlBackClothWsWage","getGlBackClothWsPrice"),//背裏地素材
 	GILET_STANDARD_OPTION_CODE23("00023","getOgBackBelt","setGlBackBeltWsWage","setGlBackBeltWsPrice","getGlBackBeltWsWage","getGlBackBeltWsPrice"),//バックベルト
 	GILET_STANDARD_OPTION_CODE24("00024","getOgWatchChain","setGlWatchChainWsWage","setGlWatchChainWsPrice","getGlWatchChainWsWage","getGlWatchChainWsPrice");//ウォッチチェーン
 	

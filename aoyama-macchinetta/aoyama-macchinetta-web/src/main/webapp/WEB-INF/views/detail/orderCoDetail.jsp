@@ -240,7 +240,7 @@
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
 					</button>
-					<c:if test="${order.productFactoryCd == 'F00001'}">
+					<c:if test="${order.productFactoryCd == 'F00001' || order.productFactoryCd == 'F00004' || order.productFactoryCd == 'F00006'}">
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 						工場指示書(中国語)
 					</button>
@@ -267,7 +267,7 @@
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
-						<c:if test="${order.productFactoryCd == 'F00001'}">
+						<c:if test="${order.productFactoryCd == 'F00001' || order.productFactoryCd == 'F00004' || order.productFactoryCd == 'F00006'}">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 							工場指示書(中国語)
 						</button>
@@ -284,7 +284,7 @@
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 							工場指示書
 						</button>
-						<c:if test="${order.productFactoryCd == 'F00001'}">
+						<c:if test="${order.productFactoryCd == 'F00001' || order.productFactoryCd == 'F00004' || order.productFactoryCd == 'F00006'}">
 						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.chineseSijiSign})">
 							工場指示書(中国語)
 						</button>
@@ -580,7 +580,7 @@
 							<strong><label class=" form-control-label-value">無し</label></strong>
 						</c:if>
 						<c:if test="${order.productSparePantsClass == '0009902'}">
-						<strong><label class=" form-control-label-value">2パンツ</label></strong>
+						<strong><label class=" form-control-label-value">２パンツ</label></strong>
 						</c:if>
 						</div>
 						<div class="col-12 col-md-1" align="right">

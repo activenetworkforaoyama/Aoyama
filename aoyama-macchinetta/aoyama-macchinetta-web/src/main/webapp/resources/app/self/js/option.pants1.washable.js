@@ -110,7 +110,7 @@ function initOptionPants1Washable() {
 		var selectedBeltLoop = jQuery('input[name="coOptionPantsWashableInfo.wpBeltLoop"]:checked').val();
 
 		// ベルトループの選択肢制御
-		jQuery('input[id^="wp_beltLowp_"]').each(function() {
+		jQuery('input[id^="wp_beltLoop_"]').each(function() {
 			var tmpWpBeltLoopElem = jQuery(this);
 			var value = tmpWpBeltLoopElem.val();
 

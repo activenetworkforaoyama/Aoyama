@@ -2005,6 +2005,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Pt_model_data").setData(stringChange(order.getPtModelNm()));
 		//タック
 		form.getField("Pt_tack_data").setData(stringChange(order.getPtTackNm()));
+		//拝絹地
+		form.getField("Pt_look_cloth_data").setData(stringChange(order.getPtLookClothNm()));
 		//膝裏
 		form.getField("Pt_kneeinner_type_data").setData(stringChange(order.getPtKneeinnerTypeNm()));
 		//膝裏素材
@@ -2093,6 +2095,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		form.getField("Pt_model_data2").setData(stringChange(order.getPt2ModelNm()));
 		//タック
 		form.getField("Pt_tack_data2").setData(stringChange(order.getPt2TackNm()));
+		//拝絹地
+		form.getField("Pt_look_cloth_data2").setData(stringChange(order.getPt2LookClothNm()));
 		//膝裏
 		form.getField("Pt_kneeinner_type_data2").setData(stringChange(order.getPt2KneeinnerTypeNm()));
 		//膝裏素材
@@ -2179,6 +2183,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 		//GILET
 		//GILETモデル
 		form.getField("Gl_model_data").setData(stringChange(order.getGlModelNm()));
+		//拝絹地
+		form.getField("Gl_look_cloth_data").setData(stringChange(order.getGlLookClothNm()));
 		//胸ポケット
 		form.getField("Gl_breast_pkt_data").setData(stringChange(order.getGlBreastPktNm()));
 		//腰ポケット

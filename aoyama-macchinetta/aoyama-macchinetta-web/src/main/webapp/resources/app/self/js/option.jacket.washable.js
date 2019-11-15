@@ -360,10 +360,16 @@ function initOptionJacketWashable() {
 	changeWjStitch();
 	
 	// ステッチ箇所変更
-	jQuery('input[id^="wj_stitchModify_id"]').each(function() {
+	jQuery('input[name="coOptionJacketWashableInfo.wjStitchModify"]').each(function() {
+	//jQuery('input[id^="wj_stitchModify_id"]').each(function() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
 			ctrlWjStitchModify();
+			if(jQuery(this).val() == "0002401"){
+				ctrlWjDStitchModify();
+				ctrlWjDStitchPlace();
+				ctrlWjAmfColor();
+			}
 		});
 	});
 	ctrlWjStitchModify();
@@ -374,6 +380,8 @@ function initOptionJacketWashable() {
 			// 選択中のダブルステッチ変更
 			ctrlWjDStitchPlace();
 			ctrlWjAmfColor();
+			var amfColorPlaceIdTemp = jQuery(this).attr("id").replace("wj_stitchModifyPlace_id","wj_amfColorPlace_");
+			jQuery("#"+amfColorPlaceIdTemp).change();
 		});
 	});
 

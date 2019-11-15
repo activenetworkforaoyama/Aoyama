@@ -2159,19 +2159,25 @@ public class OrderCoController {
 				JACKET_SUBITEM);
 		coJakcetHelper.getJacketModelMap(orderCoForm, modelList);
 		
-		if("orderCo".equals(orderFlag)) {
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getJacketItemFlag();
 			if ("0".equals(itemFlag)) {
 				coJakcetHelper.jacketDefaultValue(orderCoForm);
 			} else if ("1".equals(itemFlag)) {
 
 			}
-		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getJacketItemFlag();
-			if ("0".equals(itemFlag)) {
-				coJakcetHelper.jacketDefaultValue(orderCoForm);
-			}
 		}
+//		else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getJacketItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coJakcetHelper.jacketDefaultValue(orderCoForm);
+//			}
+//		}else if("orderCheck".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getJacketItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coJakcetHelper.jacketDefaultValue(orderCoForm);
+//			}
+//		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionJacket");
 		return m;
@@ -2184,18 +2190,24 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS_SUBITEM);
 		coPants1Helper.getPantsModelMap(orderCoForm, modelList);
-		if ("orderCo".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getPantsItemFlag();
-			if ("0".equals(itemFlag)) {
-				coPants1Helper.pantsDefaultValue(orderCoForm);
-			} else if ("1".equals(itemFlag)) {
-			}
-		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPantsItemFlag();
 			if ("0".equals(itemFlag)) {
 				coPants1Helper.pantsDefaultValue(orderCoForm);
 			}
-		}		
+		}
+//		if ("orderCo".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getPantsItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coPants1Helper.pantsDefaultValue(orderCoForm);
+//			} else if ("1".equals(itemFlag)) {
+//			}
+//		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getPantsItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coPants1Helper.pantsDefaultValue(orderCoForm);
+//			}
+//		}		
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionPants1");
 		return m;
@@ -2208,19 +2220,25 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				PANTS2_SUBITEM);
 		coPants2Helper.getPants2ModelMap(orderCoForm, modelList);
-		if("orderCo".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getPants2ItemFlag();
-			if ("0".equals(itemFlag)) {
-				coPants2Helper.pants2DefaultValue(orderCoForm);
-			} else if ("1".equals(itemFlag)) {
-
-			}
-		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getPants2ItemFlag();
 			if ("0".equals(itemFlag)) {
 				coPants2Helper.pants2DefaultValue(orderCoForm);
 			}
-		}		
+		}
+//		if("orderCo".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getPants2ItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coPants2Helper.pants2DefaultValue(orderCoForm);
+//			} else if ("1".equals(itemFlag)) {
+//
+//			}
+//		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getPants2ItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coPants2Helper.pants2DefaultValue(orderCoForm);
+//			}
+//		}		
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionPants2");
 		return m;
@@ -2233,20 +2251,25 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				GILET_SUBITEM);
 		coGiletHelper.getGiletModelMap(orderCoForm, modelList);
-
-		if("orderCo".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getGiletItemFlag();
-			if ("0".equals(itemFlag)) {
-				coGiletHelper.giletDefaultValue(orderCoForm);
-			} else if ("1".equals(itemFlag)) {
-
-			}
-		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			String itemFlag = orderCoForm.getGiletItemFlag();
 			if ("0".equals(itemFlag)) {
 				coGiletHelper.giletDefaultValue(orderCoForm);
 			}
 		}
+//		if("orderCo".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getGiletItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coGiletHelper.giletDefaultValue(orderCoForm);
+//			} else if ("1".equals(itemFlag)) {
+//
+//			}
+//		}else if("orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getGiletItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coGiletHelper.giletDefaultValue(orderCoForm);
+//			}
+//		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionGilet");
 		return m;
@@ -2260,17 +2283,22 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				SHIRT_SUBITEM);
 		coShirtHelper.getShirtModelMap(orderCoForm, modelList);
-		if ("orderCo".equals(orderFlag)) {
-			if ("0".equals(itemFlag)) {
-				coShirtHelper.shirtDefaultValue(orderCoForm);
-			} else if ("1".equals(itemFlag)) {
-
-			}
-		} else if ("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			if ("0".equals(itemFlag)) {
 				coShirtHelper.shirtDefaultValue(orderCoForm);
 			}
 		}
+//		if ("orderCo".equals(orderFlag)) {
+//			if ("0".equals(itemFlag)) {
+//				coShirtHelper.shirtDefaultValue(orderCoForm);
+//			} else if ("1".equals(itemFlag)) {
+//
+//			}
+//		} else if ("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+//			if ("0".equals(itemFlag)) {
+//				coShirtHelper.shirtDefaultValue(orderCoForm);
+//			}
+//		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionShirt");
 
@@ -2285,19 +2313,25 @@ public class OrderCoController {
 		List<co.jp.aoyama.macchinetta.domain.model.Model> modelList = this.getItemModel(CO_TYPE, productItem,
 				COAT_SUBITEM);
 		coCoatHelper.getCoatModelMap(orderCoForm, modelList);
-		if("orderCo".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getCoatItemFlag();
-			if ("0".equals(itemFlag)) {
-				coCoatHelper.coatDefaultValue(orderCoForm);
-			} else if ("1".equals(itemFlag)) {
-
-			}
-		}else if("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
-			String itemFlag = orderCoForm.getCoatItemFlag();
+		String itemFlag = orderCoForm.getCoatItemFlag();
+		if("orderCo".equals(orderFlag) || "orderLink".equals(orderFlag)||"orderDivert".equals(orderFlag) || "orderCheck".equals(orderFlag)) {
 			if ("0".equals(itemFlag)) {
 				coCoatHelper.coatDefaultValue(orderCoForm);
 			}
 		}
+//		if("orderCo".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getCoatItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coCoatHelper.coatDefaultValue(orderCoForm);
+//			} else if ("1".equals(itemFlag)) {
+//
+//			}
+//		}else if("orderLink".equals(orderFlag) || "orderDivert".equals(orderFlag)) {
+//			String itemFlag = orderCoForm.getCoatItemFlag();
+//			if ("0".equals(itemFlag)) {
+//				coCoatHelper.coatDefaultValue(orderCoForm);
+//			}
+//		}
 		m.addObject("orderCoForm", orderCoForm);
 		m.setViewName("order/orderJsp/optionCoat");
 
@@ -2817,6 +2851,15 @@ public class OrderCoController {
 	@ResponseBody
 	public void allOptionInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm,String item,String oldItem,String categoryChange,String itemCoChangeFlag,String pants2AdFlag, String giletAdFlag) {
 		// デフォルト値設定
+		
+		if("1".equals(categoryChange)) {
+			coJakcetHelper.jacketDefaultValue(orderCoForm);
+			coPants1Helper.pantsDefaultValue(orderCoForm);
+			coGiletHelper.giletDefaultValue(orderCoForm);
+			coPants2Helper.pants2DefaultValue(orderCoForm);
+		}
+		
+		
 		if("01".equals(oldItem)) {
 			coJakcetHelper.jacketDefaultValue(orderCoForm);
 			coPants1Helper.pantsDefaultValue(orderCoForm);
@@ -2868,12 +2911,16 @@ public class OrderCoController {
 			coAdjustHelper.coAdjustGiletDefaultValue(orderCoForm);
 		}
 		
-		if("1".equals(categoryChange)) {
-			coJakcetHelper.jacketDefaultValue(orderCoForm);
-			coPants1Helper.pantsDefaultValue(orderCoForm);
-			coGiletHelper.giletDefaultValue(orderCoForm);
-			coPants2Helper.pants2DefaultValue(orderCoForm);
-		}
+	}
+	
+	@RequestMapping(value = "/optionCategoryInit", method = RequestMethod.GET)
+	@ResponseBody
+	public void optionCategoryInit(@SessionAttribute(value = "orderCoForm") OrderCoForm orderCoForm) {
+		// デフォルト値設定
+		coJakcetHelper.jacketDefaultValue(orderCoForm);
+		coPants1Helper.pantsDefaultValue(orderCoForm);
+		coGiletHelper.giletDefaultValue(orderCoForm);
+		coPants2Helper.pants2DefaultValue(orderCoForm);
 	}
 	
 	@RequestMapping(value = "/adjustInit", method = RequestMethod.GET)

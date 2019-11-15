@@ -338,7 +338,7 @@ select.hidedown {
 									<label class=" form-control-label">スペアパンツ</label>
 								</div>
 								<div class="col-12 col-md-8">
-									<strong><label class=" form-control-label-value">2パンツ</label></strong>
+									<strong><label class=" form-control-label-value">２パンツ</label></strong>
 								</div>
 								<div class="col-12 col-md-1" align="right">
 									<strong><label class=" form-control-label-value" id="productSparePantsClass_appear">${productAboutPrice["is2PantsPrice"]}</label></strong>

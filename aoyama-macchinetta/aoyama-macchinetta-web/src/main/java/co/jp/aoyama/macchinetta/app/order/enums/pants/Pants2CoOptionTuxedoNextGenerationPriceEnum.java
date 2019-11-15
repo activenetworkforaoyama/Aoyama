@@ -31,6 +31,7 @@ public enum Pants2CoOptionTuxedoNextGenerationPriceEnum {
 	PANTS_TUXEDO_OPTION_CODE19("00051","getTp2Stitch","setPt2AmfStitchWsWage","setPt2AmfStitchWsPrice","getPt2AmfStitchWsWage","getPt2AmfStitchWsPrice"),//ステッチ種類
 	PANTS_TUXEDO_OPTION_CODE27("00027","getTp2BhColor","setPt2BtnholeColorWsWage","setPt2BtnholeColorWsPrice","getPt2BtnholeColorWsWage","getPt2BtnholeColorWsPrice"),//ボタンホール色指定
 	PANTS_TUXEDO_OPTION_CODE30("00030","getTp2ByColor","setPt2BtnthreadColorWsWage","setPt2BtnthreadColorWsPrice","getPt2BtnthreadColorWsWage","getPt2BtnthreadColorWsPrice"),//ボタン付け糸指定
+	PANTS_TUXEDO_OPTION_CODE33("00033","getTp2Button","setPt2BtnMaterialWsWage","setPt2BtnMaterialWsPrice","getPt2BtnMaterialWsWage","getPt2BtnMaterialWsPrice"),//釦素材
 	PANTS_TUXEDO_OPTION_CODE35("00035","getTp2SuspenderBtn","setPt2SuspenderBtnWsWage","setPt2SuspenderBtnWsPrice","getPt2SuspenderBtnWsWage","getPt2SuspenderBtnWsPrice"),//サスペンダー釦
 	PANTS_TUXEDO_OPTION_CODE36("00036","getTp2Eight","setPt2NonSlipWsWage","setPt2NonSlipWsPrice","getPt2NonSlipWsWage","getPt2NonSlipWsPrice"),//エイト（滑り止め）
 	PANTS_TUXEDO_OPTION_CODE41("00041","getTp2Thick","setPt2ChicSlipWsWage","setPt2ChicSlipWsPrice","getPt2ChicSlipWsWage","getPt2ChicSlipWsPrice"),//シック（股補強）

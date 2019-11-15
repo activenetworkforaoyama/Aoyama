@@ -2025,7 +2025,11 @@ public class CoPants1Helper {
 			optionPantsStandardInfo.setOpPantsModel(orderPt.getPtModelCd());
 			optionPantsStandardInfo.setOpTack(orderPt.getPtTackCd());
 			optionPantsStandardInfo.setOpKneeBack(orderPt.getPtKneeinnerTypeCd());
-			optionPantsStandardInfo.setOpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			if ("0000202".equals(orderPt.getPtKneeinnerTypeCd())) {
+				optionPantsStandardInfo.setOpKneeBackMate("0000301");
+			} else {
+				optionPantsStandardInfo.setOpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			}
 			optionPantsStandardInfo.setOpFrontSpec(orderPt.getPtFrtTypeCd());
 			optionPantsStandardInfo.setOpPancherina(orderPt.getPtPancherinaCd());
 			optionPantsStandardInfo.setOpAdjuster(orderPt.getPtAdjusterCd());
@@ -2075,7 +2079,11 @@ public class CoPants1Helper {
 			optionPantsTuxedoInfo.setTpPantsModel(orderPt.getPtModelCd());
 			optionPantsTuxedoInfo.setTpTack(orderPt.getPtTackCd());
 			optionPantsTuxedoInfo.setTpKneeBack(orderPt.getPtKneeinnerTypeCd());
-			optionPantsTuxedoInfo.setTpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			if ("0000202".equals(orderPt.getPtKneeinnerTypeCd())) {
+				optionPantsTuxedoInfo.setTpKneeBackMate("0000301");
+			} else {
+				optionPantsTuxedoInfo.setTpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			}
 			optionPantsTuxedoInfo.setTpFrontSpec(orderPt.getPtFrtTypeCd());
 			optionPantsTuxedoInfo.setTpGlossFablic(orderPt.getPtLookClothCd());
 			optionPantsTuxedoInfo.setTpPancherina(orderPt.getPtPancherinaCd());
@@ -2118,7 +2126,11 @@ public class CoPants1Helper {
 			optionPantsWashableInfo.setWpPantsModel(orderPt.getPtModelCd());
 			optionPantsWashableInfo.setWpTack(orderPt.getPtTackCd());
 			optionPantsWashableInfo.setWpKneeBack(orderPt.getPtKneeinnerTypeCd());
-			optionPantsWashableInfo.setWpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			if ("0000202".equals(orderPt.getPtKneeinnerTypeCd())) {
+				optionPantsWashableInfo.setWpKneeBackMate("0000301");
+			} else {
+				optionPantsWashableInfo.setWpKneeBackMate(orderPt.getPtKneeinnerClothCd());
+			}
 			optionPantsWashableInfo.setWpFrontSpec(orderPt.getPtFrtTypeCd());
 			optionPantsWashableInfo.setWpPancherina(orderPt.getPtPancherinaCd());
 			optionPantsWashableInfo.setWpAdjuster(orderPt.getPtAdjusterCd());

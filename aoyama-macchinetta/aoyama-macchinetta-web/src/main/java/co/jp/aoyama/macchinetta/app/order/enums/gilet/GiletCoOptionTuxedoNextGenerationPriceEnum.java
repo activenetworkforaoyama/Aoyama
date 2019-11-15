@@ -18,6 +18,8 @@ public enum GiletCoOptionTuxedoNextGenerationPriceEnum {
 	GILET_TUXEDO_OPTION_CODE05("00051","getTgStitch","setGlAmfStitchWsWage","setGlAmfStitchWsPrice","getGlAmfStitchWsWage","getGlAmfStitchWsPrice"),//ステッチ種類
 	GILET_TUXEDO_OPTION_CODE11("00011","getTgBhColor","setGlBtnholeColorWsWage","setGlBtnholeColorWsPrice","getGlBtnholeColorWsWage","getGlBtnholeColorWsPrice"),//ボタンホール色指定
 	GILET_TUXEDO_OPTION_CODE14("00014","getTgByColor","setGlBtnthreadColorWsWage","setGlBtnthreadColorWsPrice","getGlBtnthreadColorWsWage","getGlBtnthreadColorWsPrice"),//ボタン付け糸指定
+	GILET_TUXEDO_OPTION_CODE17("00017","getTgBackLiningMate","setGlBackClothWsWage","setGlBackClothWsPrice","getGlBackClothWsWage","getGlBackClothWsPrice"),//背裏地素材
+	GILET_TUXEDO_OPTION_CODE21("00021","getTgFrontBtnMate","setGlFrtBtnWsWage","setGlFrtBtnWsPrice","getGlFrtBtnWsWage","getGlFrtBtnWsPrice"),//釦素材
 	GILET_TUXEDO_OPTION_CODE23("00023","getTgBackBelt","setGlBackBeltWsWage","setGlBackBeltWsPrice","getGlBackBeltWsWage","getGlBackBeltWsPrice"),//バックベルト
 	GILET_TUXEDO_OPTION_CODE24("00024","getTgWatchChain","setGlWatchChainWsWage","setGlWatchChainWsPrice","getGlWatchChainWsWage","getGlWatchChainWsPrice");//ウォッチチェーン
 	

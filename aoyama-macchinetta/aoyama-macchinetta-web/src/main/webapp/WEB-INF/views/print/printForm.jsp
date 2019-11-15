@@ -215,28 +215,9 @@ function check() {
     return true;
 }
 function num_check(str){
-	var ok = true;
-	var wresult = "";
-	var wcheck = true;
-	var wnum = str;
-	wresult = /[^\d-.]/.test(wnum);
-	if (wresult){
-		ok=false;
-	} else {
-		wresult = /-+/.test(wnum);
-		if (wresult){
-			wcheck=minus_check(wnum);
-		}
-		if (wcheck){
-			wresult = /[.]+/.test(wnum);
-			if (wresult){
-				wcheck=point_check(wnum);
-			}
-		}
-		if (!wcheck){
-			ok=false;
-		}
-	}
-	return(ok);
+	// チェック条件パターン
+	var pattern = /^([1-9]\d*|0)$/;
+	// 数値チェック
+	return pattern.test(str);	
 }
 </script>

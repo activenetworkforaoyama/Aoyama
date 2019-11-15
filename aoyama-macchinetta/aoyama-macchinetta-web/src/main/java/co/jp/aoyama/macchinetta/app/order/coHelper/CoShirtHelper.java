@@ -372,7 +372,11 @@ public class CoShirtHelper {
 		// 胸ポケット
 		coOptionShirtStandardInfo.setOsBreastPk(orderSt.getStBreastPktCd());
 		//胸ポケット大きさ
-		coOptionShirtStandardInfo.setOsBreastPkSize(orderSt.getStBreastSizeCd());
+		if ("0001202".equals(orderSt.getStBreastPktCd())) {
+			coOptionShirtStandardInfo.setOsBreastPkSize("0001301");
+		} else {
+			coOptionShirtStandardInfo.setOsBreastPkSize(orderSt.getStBreastSizeCd());
+		}
 		// フロントデザイン
 		coOptionShirtStandardInfo.setOsFrontDesign(orderSt.getStFrtDesignCd());
 		// ピンタックブザム

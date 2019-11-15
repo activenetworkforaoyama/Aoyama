@@ -3533,8 +3533,8 @@ function getPrice(){
 	var priceUrl = "";
 	//プルダウンの変更処理
 	//項目：フロント釦数、裏仕様、台場、フラワーホール、腰ポケット、忍びポケット、胴裏素材、胴裏素材品番、袖裏素材、袖裏素材品番、釦素材、釦素材品番
-	jQuery("#oj_frontBtnCnt,#backSpec,#fort,#flowerHole,#waistPkt,#coinPkt,#bodyBackMate,#bodyBackMateStkNo,#cuffBackMate,#cuffBackMateStkNo"+
-			"#tj_frontBtnCnt,#tj_fort,#tj_waistPkt,#tj_backSpec,#tj_flowerHole,#tj_coinPkt,#tj_bodyBackMate,#tj_bodyBackMateStkNo,#tj_cuffBackMate,#tj_cuffBackMateStkNo"+
+	jQuery("#oj_frontBtnCnt,#backSpec,#fort,#flowerHole,#waistPkt,#coinPkt,#bodyBackMate,#bodyBackMateStkNo,#cuffBackMate,#cuffBackMateStkNo,"+
+			"#tj_frontBtnCnt,#tj_fort,#tj_waistPkt,#tj_backSpec,#tj_flowerHole,#tj_coinPkt,#tj_bodyBackMate,#tj_bodyBackMateStkNo,#tj_cuffBackMate,#tj_cuffBackMateStkNo,"+
 			"#wj_frontBtnCnt,#wj_backSpec,#wj_fort,#wj_flowerHole,#wj_waistPkt,#wj_coinPkt,#wj_bodyBackMate,#wj_cuffBackMate,#wj_bodyBackMateStkNo,#wj_cuffBackMateStkNo") 
 	   .change(function(){
 	   var category = jQuery('input[name="productCategory"]:checked').val();

@@ -203,6 +203,7 @@ function initOptionGiletWashable() {
 						}else{
 							jQuery(this).prop("disabled", false);
 						}
+						jQuery(this).change();
 					}
 				});
 			}
@@ -283,6 +284,7 @@ function initOptionGiletWashable() {
 						}else{
 							jQuery(this).prop("disabled", false);
 						}
+						jQuery(this).change();
 					}
 				});
 			}
@@ -330,6 +332,11 @@ function initOptionGiletWashable() {
 	jQuery('input[name="coOptionGiletWashableInfo.wgStitchModify"]').each(function() {
 		jQuery(this).change(function(){
 			ctrlWgStitchModify();
+			if(jQuery(this).val() == "0000601"){
+				ctrlWgDStitchModify();
+				ctrlWgDStitchModifyPlace();
+				ctrlWgAmfColor();
+			}
 		});
 	});
 	ctrlWgStitchModify();
@@ -339,6 +346,8 @@ function initOptionGiletWashable() {
 		jQuery(this).change(function(){
 			ctrlWgDStitchModifyPlace();
 			ctrlWgAmfColor();
+			var amfColorPlaceIdTemp = jQuery(this).attr("id").replace("wg_stitchModifyPlace_id","wg_amfColorPlace_");
+			jQuery("#"+amfColorPlaceIdTemp).change();
 		});
 	});
 
@@ -859,6 +868,19 @@ function changeWgStitch() {
 		}
 	}
 }
+
+jQuery('#btn_ar_wg_stitchModifyPlace').click(function(){
+	var wgDStitchModify = jQuery('input[name="coOptionGiletWashableInfo.wgDStitchModify"]:checked').val();
+	var wgAmfColor = jQuery('input[name="coOptionGiletWashableInfo.wgAmfColor"]:checked').val();
+	
+	if(wgDStitchModify == "0002602"){
+		jQuery("#btn_ar_wg_dStitchModifyPlace").click();
+	}
+	
+	if(wgAmfColor == "0000802"){
+		jQuery("#btn_ar_wg_amfColorPlace").click();
+	}
+})
 
 //ステッチ箇所変更の有効/無効を制御する
 function ctrlWgStitchModify() {
