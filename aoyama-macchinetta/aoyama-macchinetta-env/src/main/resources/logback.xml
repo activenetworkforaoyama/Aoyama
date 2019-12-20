@@ -2,7 +2,7 @@
 <!DOCTYPE configuration>
 <configuration>
 
-	<property name="app.log.dir" value="/opt/tomcat9/logs/" />
+	<property name="app.log.dir" value="/cluster/tomcat9-9081/logs/" />
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern><![CDATA[date:%d{yyyy-MM-dd HH:mm:ss}\tthread:%thread\tX-Track:%X{X-Track}\tlevel:%-5level\tlogger:%-48logger{48}\tmessage:%msg%n]]></pattern>
@@ -76,16 +76,16 @@
     </logger>
 
     <logger name="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <level value="warn" />
+        <level value="debug" />
     </logger>
 
     <logger name="jdbc.sqltiming">
-        <level value="warn" />
+        <level value="debug" />
     </logger>
     
     <!-- only for development -->
     <logger name="jdbc.resultsettable">
-        <level value="warn" />
+        <level value="debug" />
     </logger>
     
     <root level="warn">

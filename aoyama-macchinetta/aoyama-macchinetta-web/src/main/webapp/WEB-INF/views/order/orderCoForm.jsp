@@ -1640,6 +1640,7 @@ var jacketTwiceflag = '0';
 var pantsTwiceflag = '0';
 var pants2Twiceflag = '0';
 var	giletTwiceflag = '0';
+var optionJspFlag = "1";
 var orderFlag = "${orderCoForm.orderFlag}";
 jQuery('#productFabricNo').attr("oldProductFabricNo",jQuery("#productFabricNo").val());
 function zenkakuToHankaku(mae){
@@ -2069,51 +2070,6 @@ jQuery(function() {
 		//メジャーリングを設定
 		measuring();
 
-		//ご請求金額
-		var billingAmount = "${order.billingAmount}";
-		if(isNotEmpty(billingAmount)){
-			billingAmount = formatMoney(billingAmount,0,"");
-			jQuery("#askPrice").html(billingAmount)
-		}else{
-			jQuery("#askPrice").html("0");
-		}
-		
-		//消費税
-		var consumptionTaxAmount = "${order.consumptionTaxAmount}";
-		if(isNotEmpty(consumptionTaxAmount)){
-			consumptionTaxAmount = formatMoney(consumptionTaxAmount,0,"");
-			jQuery("#excisePrice").html(consumptionTaxAmount);
-		}else{
-			jQuery("#excisePrice").html("0");
-		}
-		
-		//商品金額
-		var productPrice = "${order.productPrice}";
-		if(isNotEmpty(productPrice)){
-			productPrice = formatMoney(productPrice,0,"");
-			jQuery("#goodsPrice").html(productPrice);
-		}else{
-			jQuery("#goodsPrice").html("0");
-		}
-		
-		//オプション金額
-		var optionPrice = "${order.optionPrice}";
-		if(isNotEmpty(optionPrice)){
-			optionPrice = formatMoney(optionPrice,0,"");
-			jQuery("#optionPrice").html(optionPrice);
-		}else{
-			jQuery("#optionPrice").html("0");
-		}
-		
-		//合計金額
-		var totalPrice = "${order.totalPrice}";
-		if(isNotEmpty(totalPrice)){
-			totalPrice = formatMoney(totalPrice,0,"");
-			jQuery("#allPrice").html(totalPrice);
-		}else{
-			jQuery("#allPrice").html("0");
-		}
-
 		if(item == "05"){
 			//縦
 			var productEmbroideryLength = "${order.productEmbroideryLength}";
@@ -2136,7 +2092,6 @@ jQuery(function() {
 
 		//ブランドネーム
 		var productBrandNm = "${order.productBrandType}";
-		//jQuery('input[name="productBrandNm"][value="0"]').prop("checked",true);
 		jQuery(":radio[name=productBrandNm][value='" + productBrandNm + "']").prop("checked", true);
 		
 	} else if(orderFlag == "orderDivert"){
@@ -2472,7 +2427,7 @@ jQuery(function() {
 		jQuery(".pantsbox").addClass("activebk");
 		jQuery(".pants2box").addClass("activebk");
 		jQuery("#nav2_div_option").show();
-		
+		optionJspFlag = "0";
 		var item = jQuery("#item").val();
 		var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 		var sparePants = jQuery('input[name="productSparePantsClass"]:checked').val();
@@ -2510,6 +2465,7 @@ jQuery(function() {
 	})
 	
 	jQuery("#nav2_product").click(function(){
+		optionJspFlag = "1";
 		optionControlNotDisabled();
 		jQuery(".tabbox").removeClass("activebk");
 		jQuery(".alertbox").removeClass("activebk");
@@ -2530,6 +2486,7 @@ jQuery(function() {
 	})
 	
 	jQuery('#nav2_alter').click(function(){
+		optionJspFlag = "1";
 		optionControlNotDisabled();
 		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idForm').ghostsf_serialize(),type: "post",async:false});
 		optionControlDisabled();
@@ -2862,7 +2819,8 @@ jQuery(function() {
 		var gyotaiCd = getGyotaiCd();
 		var tenCd = jQuery("#shopCode").val();
 // TODO:社員コードを動的に取得する
-		var syainNo = jQuery("#custStaff").val();
+//		var syainNo = jQuery("#custStaff").val();
+		var syainNo = 0;
 		var fullLength = getPartsSize(jQuery("#fullLengthTe"), jQuery("#fullLengthSe"), "フルレングス");
 		if (fullLength == null) {
 			return;
@@ -3838,8 +3796,10 @@ function stockCheck(){
 	jQuery.ajax({url:contextPath + "/orderCo/adjustInit",data:{"jacketAdFlag":jacketAdFlag,"pantsAdFlag":pantsAdFlag,"pants2AdFlag":pants2AdFlag,"giletAdFlag":giletAdFlag
 				,"coatAdFlag":coatAdFlag,"shirtAdFlag":shirtAdFlag,"itemCoChangeFlag":itemCoChangeFlag},type: "get",async:false});
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
-	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
-
+	if(optionJspFlag == "0"){
+		jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
+	}
+	compositionExpress();
 	var checkFlag = true;
 	var item = jQuery("#item option:selected").val();
 	var productFabricNo = jQuery("#productFabricNo").val();
@@ -4029,8 +3989,8 @@ function stockAddVersionCheck(){
 	jQuery.ajax({url:contextPath + "/orderCo/adjustInit",data:{"jacketAdFlag":jacketAdFlag,"pantsAdFlag":pantsAdFlag,"pants2AdFlag":pants2AdFlag,"giletAdFlag":giletAdFlag
 				,"coatAdFlag":coatAdFlag,"shirtAdFlag":shirtAdFlag,"itemCoChangeFlag":itemCoChangeFlag},type: "get",async:false});
 	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idAdjustForm').ghostsf_serialize(),type: "post",async:false});
-	jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
-
+	//jQuery.ajax({url:contextPath + "/orderCo/saveOptionData",data: jQuery('#idInfoForm').ghostsf_serialize(),type: "post",async:false});
+	compositionExpress();
 	var checkFlag = true;
 	var item = jQuery("#item option:selected").val();
 	var productFabricNo = jQuery("#productFabricNo").val();
@@ -4606,6 +4566,7 @@ function fabricCheck(item,productFabricNo){
 		     				fabricCheckValue = "2";
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','JACKET'));
 		     				jQuery("#jkModelFlag").val(jkModelFlag+"*"+getMsgByOneArg('msg065','JACKET'));
+		     				return false;
 				     	}
 
 		     			var ptCheckResult = result.ptModelCheck;
@@ -4619,8 +4580,11 @@ function fabricCheck(item,productFabricNo){
 			     			//生地チェク失敗フラッグ
 		     				ptModelFlag = "1";
 		     				fabricCheckValue = "2";
-		     				setAlert('fabricMsg', getMsgByOneArg('msg065','PANTS'));
+		     				if(jkModelFlag != "1"){
+		     					setAlert('fabricMsg', getMsgByOneArg('msg065','PANTS'));
+			     			}
 		     				jQuery("#ptModelFlag").val(ptModelFlag+"*"+getMsgByOneArg('msg065','PANTS'));
+		     				return false;
 				     	}
 
 						 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
@@ -4637,9 +4601,15 @@ function fabricCheck(item,productFabricNo){
 					     			//生地チェク失敗フラッグ
 				     				glModelFlag = "1";
 				     				fabricCheckValue = "2";
-				     				setAlert('fabricMsg', getMsgByOneArg('msg065','GILET'));
+				     				if(jkModelFlag != "1" && ptModelFlag!="1"){
+				     					setAlert('fabricMsg', getMsgByOneArg('msg065','GILET'));
+					     			}
 				     				jQuery("#glModelFlag").val(glModelFlag+"*"+getMsgByOneArg('msg065','GILET'));
+				     				return false;
 						     	}
+						 }else{
+							 glModelFlag = "0";
+		     				 jQuery("#glModelFlag").val(glModelFlag);
 						 }
 						 if(twoPants == "0009902"){
 							var pt2CheckResult = result.pt2ModelCheck;
@@ -4653,9 +4623,21 @@ function fabricCheck(item,productFabricNo){
 				     			//生地チェク失敗フラッグ
 			     				pt2ModelFlag = "1";
 			     				fabricCheckValue = "2";
-			     				appendAlertPo('fabricMsg', getMsgByOneArg('msg065','PANTS（2本目）'));
+			     				if(threePiece == "0009902"){
+			     					if(jkModelFlag != "1" && ptModelFlag!="1" && glModelFlag!="1"){
+				     					setAlert('fabricMsg', getMsgByOneArg('msg065','PANTS（2本目）'));
+					     			}
+				     			}else if(threePiece == "0009901"){
+				     				if(jkModelFlag != "1" && ptModelFlag!="1"){
+				     					setAlert('fabricMsg', getMsgByOneArg('msg065','PANTS（2本目）'));
+					     			}
+					     		}
 			     				jQuery("#pt2ModelFlag").val(pt2ModelFlag+"*"+getMsgByOneArg('msg065','PANTS（2本目）'));
+								return false;
 					     	}
+						 }else{
+							 pt2ModelFlag = "0";
+		     				 jQuery("#pt2ModelFlag").val(pt2ModelFlag);
 						 }
 			     	}else if(item == "02"){
 	     				var jkCheckResult = result.jkModelCheck;
@@ -4672,6 +4654,14 @@ function fabricCheck(item,productFabricNo){
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','JACKET'));
 		     				jQuery("#jkModelFlag").val(jkModelFlag+"*"+getMsgByOneArg('msg065','JACKET'));
 				     	}
+		     			jQuery("#ptModelFlag").val("0");
+		     			jQuery("#glModelFlag").val("0");
+		     			jQuery("#pt2ModelFlag").val("0");
+		     			jQuery("#shModelFlag").val("0");
+		     			jQuery("#ctModelFlag").val("0");
+		     			if(fabricCheckValue == "2"){
+							return false;
+						}
 		     		}else if(item == "03"){
 						var ptCheckResult = result.ptModelCheck;
 						if(ptCheckResult == true){
@@ -4687,6 +4677,14 @@ function fabricCheck(item,productFabricNo){
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','PANTS'));
 		     				jQuery("#ptModelFlag").val(ptModelFlag+"*"+getMsgByOneArg('msg065','PANTS'));
 				     	}
+						jQuery("#jkModelFlag").val("0");
+						jQuery("#glModelFlag").val("0");
+						jQuery("#pt2ModelFlag").val("0");
+						jQuery("#shModelFlag").val("0");
+						jQuery("#ctModelFlag").val("0");
+						if(fabricCheckValue == "2"){
+							return false;
+						}
 			     	}else if(item == "04"){
 						var glCheckResult = result.glModelCheck;
 						if(glCheckResult == true){
@@ -4702,6 +4700,14 @@ function fabricCheck(item,productFabricNo){
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','GILET'));
 		     				jQuery("#glModelFlag").val(glModelFlag+"*"+getMsgByOneArg('msg065','GILET'));
 				     	}
+						jQuery("#jkModelFlag").val("0");
+						jQuery("#ptModelFlag").val("0");
+						jQuery("#pt2ModelFlag").val("0");
+						jQuery("#shModelFlag").val("0");
+						jQuery("#ctModelFlag").val("0");
+						if(fabricCheckValue == "2"){
+							return false;
+						}
 				    }else if(item == "05"){
 				    	var shCheckResult = result.shModelCheck;
 				    	if(shCheckResult == true){
@@ -4717,6 +4723,14 @@ function fabricCheck(item,productFabricNo){
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','SHIRT'));
 		     				jQuery("#shModelFlag").val(shModelFlag+"*"+getMsgByOneArg('msg065','SHIRT'));
 				     	}
+				    	jQuery("#jkModelFlag").val("0");
+				    	jQuery("#ptModelFlag").val("0");
+				    	jQuery("#glModelFlag").val("0");
+				    	jQuery("#pt2ModelFlag").val("0");
+				    	jQuery("#ctModelFlag").val("0");
+				    	if(fabricCheckValue == "2"){
+							return false;
+						}
 					}else if(item == "06"){
 				    	var ctCheckResult = result.ctModelCheck;
 				    	if(ctCheckResult == true){
@@ -4732,8 +4746,16 @@ function fabricCheck(item,productFabricNo){
 		     				setAlert('fabricMsg', getMsgByOneArg('msg065','COAT'));
 		     				jQuery("#ctModelFlag").val(ctModelFlag+"*"+getMsgByOneArg('msg065','COAT'));
 				     	}
+				    	jQuery("#jkModelFlag").val("0");
+				    	jQuery("#ptModelFlag").val("0");
+				    	jQuery("#glModelFlag").val("0");
+				    	jQuery("#pt2ModelFlag").val("0");
+				    	jQuery("#shModelFlag").val("0");
+				    	if(fabricCheckValue == "2"){
+							return false;
+						}
 					}
-	     			
+
 		     		//入力した生地は選択したITEMを作るできるのチェク
 		     		//canMake(アイテム,アイテム区分)　4
 	     			if(!canMake(item,result.itemClass,result.coatAvailable)){
@@ -6370,6 +6392,18 @@ function imageCheck(){
 	     return false;
 	 }
 
+	 var ptModelFlag = jQuery("#ptModelFlag").val();
+	 ptModelFlag = ptModelFlag.split("*");
+	 //ptModelFlag[0]:0 or 1 
+	 //ptModelFlag[1]:エラーメッセージ 
+	 //生地チェク成功の場合
+	 if(ptModelFlag[0]=="0"){
+			
+	 //生地チェクの場合	
+	 }else if(ptModelFlag[0]=="1"){
+	     appendAlert('errormssage',ptModelFlag[1]);
+	     return false;
+	 }
 
 	 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 	
@@ -6392,21 +6426,6 @@ function imageCheck(){
 	     return false;
 	 }
 	 
-
-	 var ptModelFlag = jQuery("#ptModelFlag").val();
-	 ptModelFlag = ptModelFlag.split("*");
-	 //ptModelFlag[0]:0 or 1 
-	 //ptModelFlag[1]:エラーメッセージ 
-	 //生地チェク成功の場合
-	 if(ptModelFlag[0]=="0"){
-			
-	 //生地チェクの場合	
-	 }else if(ptModelFlag[0]=="1"){
-	     appendAlert('errormssage',ptModelFlag[1]);
-	     return false;
-	 }
-
-
 	 var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
 	 if(item == "01"){
 		if(twoPants == "0009901"){
@@ -6807,6 +6826,20 @@ function temporarySaveCheck(){
 		     appendAlert('errormssage',jkModelFlag[1]);
 		     return false;
 		 }
+
+		 var ptModelFlag = jQuery("#ptModelFlag").val();
+		 ptModelFlag = ptModelFlag.split("*");
+		 //ptModelFlag[0]:0 or 1 
+		 //ptModelFlag[1]:エラーメッセージ 
+		 //生地チェク成功の場合
+		 if(ptModelFlag[0]=="0"){
+				
+		 //生地チェクの場合	
+		 }else if(ptModelFlag[0]=="1"){
+		     appendAlert('errormssage',ptModelFlag[1]);
+		     return false;
+		 }
+		 
 		 var item = jQuery("#item").val();
 		 var threePiece = jQuery('input[name="productIs3Piece"]:checked').val();
 		 if(item == "01"){
@@ -6826,18 +6859,7 @@ function temporarySaveCheck(){
 		     appendAlert('errormssage',glModelFlag[1]);
 		     return false;
 		 }
-		 var ptModelFlag = jQuery("#ptModelFlag").val();
-		 ptModelFlag = ptModelFlag.split("*");
-		 //ptModelFlag[0]:0 or 1 
-		 //ptModelFlag[1]:エラーメッセージ 
-		 //生地チェク成功の場合
-		 if(ptModelFlag[0]=="0"){
-				
-		 //生地チェクの場合	
-		 }else if(ptModelFlag[0]=="1"){
-		     appendAlert('errormssage',ptModelFlag[1]);
-		     return false;
-		 }
+		 
 		 var twoPants = jQuery('input[name="productSparePantsClass"]:checked').val();
 		 if(item == "01"){
 			if(twoPants == "0009901"){
@@ -7112,6 +7134,7 @@ function optionControlNotDisabled(){
 				jQuery("#og_backLiningMateStkNo").removeAttr("disabled");
 			}else if(productCategory == "9000102"){
 				jQuery("#tg_GlossFablic").removeAttr("disabled");
+				jQuery('input[id^="tg_stitch_id"]').removeAttr("disabled");
 				jQuery("#tg_backLiningMateStkNo").removeAttr("disabled");
 				jQuery("#tg_frontBtnMateStkNo").removeAttr("disabled");
 			}else if(productCategory == "9000103"){
@@ -7127,6 +7150,7 @@ function optionControlNotDisabled(){
 			}else if(productCategory == "9000102"){
 				jQuery("#tp2_btnMateStkNo").removeAttr("disabled");
 				jQuery("#tp2_GlossFablic").removeAttr("disabled");
+				jQuery('input[id^="tp2_stitch_id"]').removeAttr("disabled");
 			}else if(productCategory == "9000103"){
 				jQuery('input[id^="wp2_stitch_id"]').removeAttr("disabled");
 			}
@@ -7149,6 +7173,7 @@ function optionControlNotDisabled(){
 		}else if(productCategory == "9000102"){
 			//PANTS
 			jQuery("#tp_btnMateStkNo").removeAttr("disabled");
+			jQuery('input[id^="tp_stitch_id"]').removeAttr("disabled");
 		}else if(productCategory == "9000103"){
 		}
 	}else if(item == "04"){
@@ -7160,6 +7185,7 @@ function optionControlNotDisabled(){
 			jQuery("#tg_GlossFablic").removeAttr("disabled");
 			jQuery("#tg_backLiningMateStkNo").removeAttr("disabled");
 			jQuery("#tg_frontBtnMateStkNo").removeAttr("disabled");
+			jQuery('input[id^="tg_stitch_id"]').removeAttr("disabled");
 		}else if(productCategory == "9000103"){
 			jQuery('input[id^="wg_stitch_id"]').removeAttr("disabled");
 			jQuery("#wg_backLiningMateStkNo").removeAttr("disabled");
@@ -7250,6 +7276,7 @@ function optionControlDisabled(){
 				if(tg_frontBtnMate == "3000700"){
 					jQuery("#tg_frontBtnMateStkNo").prop("disabled",true);
 				}
+				jQuery('input[id^="tg_stitch_id"]').prop("disabled",true);
 			}else if(productCategory == "9000103"){
 				jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
 				var wg_backLiningMate = jQuery("#wg_backLiningMate").val();
@@ -7269,6 +7296,7 @@ function optionControlDisabled(){
 					jQuery("#tp2_btnMateStkNo").prop("disabled",true);
 				}
 				jQuery("#tp2_GlossFablic").prop("disabled",true);
+				jQuery('input[id^="tp2_stitch_id"]').prop("disabled",true);
 			}else if(productCategory == "9000103"){
 				jQuery('input[id^="wp2_stitch_id"]').prop("disabled",true);
 			}

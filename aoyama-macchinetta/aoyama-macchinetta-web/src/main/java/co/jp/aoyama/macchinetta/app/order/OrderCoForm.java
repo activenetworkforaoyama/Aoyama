@@ -492,7 +492,7 @@ public class OrderCoForm implements Serializable {
 	private String productFabricBrandNm;
 
 	// 商品情報_サービスネーム
-	@NotBlank(groups = {Default.class},message = "素材名をが不正です。")
+	@NotBlank(groups = {Default.class},message = "素材名が不正です。")
 	private String productServiceNm;
 	
 	// 商品情報_組成表示_表地
@@ -1678,5 +1678,5 @@ public class OrderCoForm implements Serializable {
 	public void setProductGlossFablic(String productGlossFablic) {
 		this.productGlossFablic = productGlossFablic;
 	}
-	
+
 }

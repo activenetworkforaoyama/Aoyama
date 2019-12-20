@@ -55,7 +55,7 @@ function initOptionPants2Washable() {
 					//2はモデルチェク失敗の場合
 					jQuery("#wp2_pantsModelCheck").show();
 					jQuery("#pt2ModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS（2本目）'));
-					appendAlertPo('wp2_pantsModelCheck',getMsgByOneArg('msg065','PANTS（2本目）'));
+					setAlert('wp2_pantsModelCheck',getMsgByOneArg('msg065','PANTS（2本目）'));
 				}
 			}
 			
@@ -102,7 +102,7 @@ function initOptionPants2Washable() {
 			var selectedBeltLoop = jQuery('input[name="coOptionPants2WashableInfo.wp2BeltLoop"]:checked').val();
 	
 			// ベルトループの選択肢制御
-			jQuery('input[id^="wp2_beltLowp2_"]').each(function() {
+			jQuery('input[id^="wp2_beltLoop_"]').each(function() {
 				var tmpWp2BeltLoopElem = jQuery(this);
 				var value = tmpWp2BeltLoopElem.val();
 	
@@ -294,8 +294,8 @@ function initOptionPants2Washable() {
 		jQuery(this).change(function(){
 			// ステッチ箇所変更(ピスフラップ)の制御
 			ctrlWp2StitchModifyPisFlap();
-			// ダブルステッチ(選択肢)の制御
-			ctrlWp2DStitchPlace();
+//			// ダブルステッチ(選択肢)の制御
+//			ctrlWp2DStitchPlace();
 			// ボタンホール色指定箇所の制御
 			ctrlWp2BhColorPlace();
 			// ボタン付け糸指定箇所の制御
@@ -309,8 +309,8 @@ function initOptionPants2Washable() {
 		jQuery(this).change(function(){
 			// ステッチ箇所変更(ピスフラップ)の制御
 			ctrlWp2StitchModifyPisFlap();
-			// ダブルステッチ(選択肢)の制御
-			ctrlWp2DStitchPlace();
+//			// ダブルステッチ(選択肢)の制御
+//			ctrlWp2DStitchPlace();
 			// ボタンホール色指定箇所の制御
 			ctrlWp2BhColorPlace();
 			// ボタン付け糸指定箇所の制御
@@ -383,7 +383,7 @@ function initOptionPants2Washable() {
 			// 選択中のステッチ箇所変更
 			var stitchModifyValue = jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]:checked').val();
 
-			if (stitchModifyValue == "0002001") {
+			if (stitchModifyValue != "0002002") {
 				// 無しの場合は全て無効化
 				jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModifyPlace"]').prop("disabled", true);
 				jQuery('#btn_as_wp2_stitchModifyPlace').prop("disabled", true);
@@ -416,6 +416,7 @@ function initOptionPants2Washable() {
 
 			// AMF色指定の有効/無効を制御する
 			ctrlWp2AmfColor();
+			ctrlWp2AmfColorSpecialController();
 		});
 	});
 	jQuery('#wp2_stitchModify_id1').change();
@@ -490,7 +491,7 @@ function initOptionPants2Washable() {
 			// 選択中のボタンホール色指定を取得
 			var wp2_bhColor = jQuery('input[name="coOptionPants2WashableInfo.wp2BhColor"]:checked').val();
 
-			if (wp2_bhColor == '0002701') {
+			if (wp2_bhColor != '0002702') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="wp2_bhColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -581,7 +582,7 @@ function initOptionPants2Washable() {
 			// 選択中のボタンホール色指定を取得
 			var wp2_byColor = jQuery('input[name="coOptionPants2WashableInfo.wp2ByColor"]:checked').val();
 
-			if (wp2_byColor == '0003001') {
+			if (wp2_byColor != '0003002') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="wp2_byColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -958,7 +959,7 @@ function ctrlWp2StitchModify() {
 	var stitchModifyValue = jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]:checked').val();
 
 	// ステッチ箇所変更の有無で下位階層の表示制御
-	if (stitchModifyValue != '0002001') {
+	if (stitchModifyValue == '0002002') {
 		jQuery('#wp2_stitchModify_yes_area').show();
 	} else {
 		jQuery('#wp2_stitchModify_yes_area input[type="checkbox"]').each(function(index, elem){ 
@@ -1120,7 +1121,7 @@ function ctrlWp2DStitchPlace() {
 	var tmpStitchModifyPlace = null;
 	var tmpStitchModify = null;
 	var stichModifyChecked = false;
-	var dStichModifyChecked = false;
+//	var dStichModifyChecked = false;
 
 	for (tmpStitchModifyPlace in opStitchModifyList[pantsModel]) {
 		// 定義取得
@@ -1132,10 +1133,10 @@ function ctrlWp2DStitchPlace() {
 		// ダブルステッチ要素取得
 		if(tmpStitchModifyPlace == 'id4') {
 			tmpStitchModify = jQuery('#wp2_dStitchModifyPlace_id3');
-			dStichModifyChecked = jQuery('#wp2_dStitchModifyPlace_id3').prop("checked");
+//			dStichModifyChecked = jQuery('#wp2_dStitchModifyPlace_id3').prop("checked");
 		} else {
 			tmpStitchModify = jQuery('#wp2_dStitchModifyPlace_'+tmpStitchModifyPlace);
-			dStichModifyChecked = jQuery('#wp2_dStitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
+//			dStichModifyChecked = jQuery('#wp2_dStitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
 		}
 		// ステッチ箇所変更要素取得
 		stichModifyChecked = jQuery('#wp2_stitchModifyPlace_'+tmpStitchModifyPlace).prop("checked");
@@ -1164,20 +1165,27 @@ function ctrlWp2DStitchPlace() {
 				tmpStitchModify.prop("checked", false);
 			}
 		}else {
+			jQuery('#wp2_dStitchModifyPlace input[type="checkbox"]').each(function(index, elem){
+				elem = jQuery(elem);
+				if (elem.prop("checked")) {
+					elem.removeAttr("checked");
+				}
+			});
 			// 有効無効設定
 			// 0002202(有り)
-			if (dStitchValue == '0002202' && dStichModifyChecked) {
+//			if (dStitchValue == '0002202' && dStichModifyChecked) {
+			if (dStitchValue == '0002202' && stitchModifyDef.default) {
 				// 有りの場合、定義に基づいて設定変更
 				tmpStitchModify.prop("disabled", false);
 				
 				// 上前ピスポケットと下前ピスポケットのどちらかがフラップ/ボタン有の場合は選択可
 //				if (pisPktUf == '0001403' || pisPktDf == '0001503') {
-                if (pisPktUf == '0001403' || pisPktDf == '0001503' || flapCoinPkt == '0001302') {
-					stitchModifyPisFlap.prop("disabled", false);
-				} else {
-					stitchModifyPisFlap.prop("disabled", true);
-					stitchModifyPisFlap.prop("checked", false);
-				}
+//                if (pisPktUf == '0001403' || pisPktDf == '0001503' || flapCoinPkt == '0001302') {
+//					stitchModifyPisFlap.prop("disabled", false);
+//				} else {
+//					stitchModifyPisFlap.prop("disabled", true);
+//					stitchModifyPisFlap.prop("checked", false);
+//				}
 			} else {
 				// 無しの場合、無効にする
 				tmpStitchModify.prop("disabled", true);
@@ -1226,6 +1234,8 @@ function ctrlWp2AmfColor() {
 	// ピスフラップの要素取得
 	stitchModifyPisFlap = jQuery('#wp2_amfColorPlace_4');
 
+	// 選択中のフラップ付コインポケット
+	var flapCoinPkt = jQuery('input[name="coOptionPants2WashableInfo.wp2FlapCoinPkt"]:checked').val();
 	// 選択中の上前ピスポケット
 	var pisPktUf = jQuery('input[name="coOptionPants2WashableInfo.wp2PisPktUf"]:checked').val();
 	// 選択中の下前ピスポケット
@@ -1262,18 +1272,18 @@ function ctrlWp2AmfColor() {
 
 				// 有効無効設定
 				// 0002402(有り)
-				if (amfColorValue == '0002402') {
+				if (amfColorValue == '0002402' && stitchModifyDef.default) {
 					// 有りの場合、定義に基づいて設定変更
-					tmpStitchModify.prop("disabled", false);
+					tmpStitchModify.prop("disabled",  !stitchModifyDef.default);
 					
 					// 上前ピスポケットと下前ピスポケットのどちらかがフラップ/ボタン有の場合は選択可
 					// 0001403(上前ピスポケット	フラップ/ボタン有)
 					// 0001503(下前ピスポケット	フラップ/ボタン有)
-//					if (pisPktUf == '0001403' || pisPktDf == '0001503') {
+//					if (pisPktUf == '0001403' || pisPktDf == '0001503' || flapCoinPkt == '0001302') {
 //						stitchModifyPisFlap.prop("disabled", false);
 //					} else {
-						stitchModifyPisFlap.prop("disabled", true);
-						stitchModifyPisFlap.prop("checked", false);
+//						stitchModifyPisFlap.prop("disabled", true);
+//						stitchModifyPisFlap.prop("checked", false);
 //					}
 				} else {
 					// 無しの場合、無効にする
@@ -1297,6 +1307,22 @@ function ctrlWp2AmfColor() {
 		}
 //		jQuery(this).change();
 	});
+}
+//AMF色指定制御
+function ctrlWp2AmfColorSpecialController() {
+
+	// 選択中のステッチ箇所変更
+	var wp2StitchModifyValue = jQuery('input[name="coOptionPants2WashableInfo.wp2StitchModify"]:checked').val();
+
+	if (wp2StitchModifyValue == "0002001") {
+		jQuery('#wp2_amfColor_div input[type="checkbox"]').each(function(index, elem){
+			elem = jQuery(elem);
+			if (elem.prop("checked")) {
+				elem.removeAttr("checked");
+				elem.change(); 
+			}
+		});
+	}
 }
 
 jQuery('#wp2_coinPkt_id').change(function() {

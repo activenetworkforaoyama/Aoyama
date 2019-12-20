@@ -459,137 +459,138 @@ public class CoPants1Helper {
 			if (falg) {
 				pantsFlag = true;
 			}
+			if(!pantsFlag) {
+				if (BaseCheckUtil.isNotEmpty(sizeNumber)) {
+					String corPtWaistSize = coAdjustPantsStandardInfo.getCorPtWaistSize();
+					if ("".equals(corPtWaistSize) || "0".equals(corPtWaistSize) || corPtWaistSize == null) {
+						messages.add("E034", "PANTS（1本目）のウエスト修正");
+						pantsFlag = true;
+					}
 
-			if (BaseCheckUtil.isNotEmpty(sizeNumber)) {
-				String corPtWaistSize = coAdjustPantsStandardInfo.getCorPtWaistSize();
-				if ("".equals(corPtWaistSize) || "0".equals(corPtWaistSize) || corPtWaistSize == null) {
-					messages.add("E034", "PANTS（1本目）のウエスト修正");
-					pantsFlag = true;
-				}
+					String corPtHipSize = coAdjustPantsStandardInfo.getCorPtHipSize();
+					if ("".equals(corPtHipSize) || "0".equals(corPtHipSize) || corPtHipSize == null) {
+						messages.add("E034", "PANTS（1本目）のヒップ修正");
+						pantsFlag = true;
+					}
 
-				String corPtHipSize = coAdjustPantsStandardInfo.getCorPtHipSize();
-				if ("".equals(corPtHipSize) || "0".equals(corPtHipSize) || corPtHipSize == null) {
-					messages.add("E034", "PANTS（1本目）のヒップ修正");
-					pantsFlag = true;
-				}
-
-				String corPtThighSize = coAdjustPantsStandardInfo.getCorPtThighSize();
-				if ("".equals(corPtThighSize) || "0".equals(corPtThighSize) || corPtThighSize == null) {
-					messages.add("E034", "PANTS（1本目）のワタリ幅修正");
-					pantsFlag = true;
-				}
-				String corPtHemwidthType2 = coAdjustPantsStandardInfo.getCorPtHemwidthType();
-				if ("".equals(corPtHemwidthType2) || "0".equals(corPtHemwidthType2) || corPtHemwidthType2 == null) {
-					messages.add("E034", "PANTS（1本目）の裾幅");
-					pantsFlag = true;	
-				}else {
-					if("1".equals(corPtHemwidthType2)) {
-						String corPt2HemwidthSize = coAdjustPantsStandardInfo.getCorPtHemwidthSize();
-						if ("".equals(corPt2HemwidthSize) || "0".equals(corPt2HemwidthSize) || corPt2HemwidthSize == null) {
-							messages.add("E034", "PANTS（1本目）の裾幅");
-							pantsFlag = true;
-						}
-					}else if("2".equals(corPtHemwidthType2)) {
-						String corPt2HemwidthDegignate = coAdjustPantsStandardInfo.getCorPtHemwidthDegignate();
-						if ("".equals(corPt2HemwidthDegignate) || "0".equals(corPt2HemwidthDegignate) || corPt2HemwidthDegignate == null) {
-							messages.add("E034", "PANTS（1本目）の裾幅");
-							pantsFlag = true;
+					String corPtThighSize = coAdjustPantsStandardInfo.getCorPtThighSize();
+					if ("".equals(corPtThighSize) || "0".equals(corPtThighSize) || corPtThighSize == null) {
+						messages.add("E034", "PANTS（1本目）のワタリ幅修正");
+						pantsFlag = true;
+					}
+					String corPtHemwidthType2 = coAdjustPantsStandardInfo.getCorPtHemwidthType();
+					if ("".equals(corPtHemwidthType2) || "0".equals(corPtHemwidthType2) || corPtHemwidthType2 == null) {
+						messages.add("E034", "PANTS（1本目）の裾幅");
+						pantsFlag = true;	
+					}else {
+						if("1".equals(corPtHemwidthType2)) {
+							String corPt2HemwidthSize = coAdjustPantsStandardInfo.getCorPtHemwidthSize();
+							if ("".equals(corPt2HemwidthSize) || "0".equals(corPt2HemwidthSize) || corPt2HemwidthSize == null) {
+								messages.add("E034", "PANTS（1本目）の裾幅");
+								pantsFlag = true;
+							}
+						}else if("2".equals(corPtHemwidthType2)) {
+							String corPt2HemwidthDegignate = coAdjustPantsStandardInfo.getCorPtHemwidthDegignate();
+							if ("".equals(corPt2HemwidthDegignate) || "0".equals(corPt2HemwidthDegignate) || corPt2HemwidthDegignate == null) {
+								messages.add("E034", "PANTS（1本目）の裾幅");
+								pantsFlag = true;
+							}
 						}
 					}
-				}
 
-				/*
-				 * String corPtHemwidthSize = coAdjustPantsStandardInfo.getCorPtHemwidthSize();
-				 * if ("".equals(corPtHemwidthSize) || "0".equals(corPtHemwidthSize) ||
-				 * corPtHemwidthSize == null) { messages.add("E034", "PANTS（1本目）の裾幅");
-				 * pantsFlag = true; }
-				 */
+					/*
+					 * String corPtHemwidthSize = coAdjustPantsStandardInfo.getCorPtHemwidthSize();
+					 * if ("".equals(corPtHemwidthSize) || "0".equals(corPtHemwidthSize) ||
+					 * corPtHemwidthSize == null) { messages.add("E034", "PANTS（1本目）の裾幅");
+					 * pantsFlag = true; }
+					 */
 
-				List<TypeSizeOptimization> coPtTypeSizeOptimization = getCoPtTypeSizeOptimization(orderCoForm,
-						typeSizeService);
-				List<Adjust> ptAdjustList = adjustByItem.get("03");
-				if (!ptAdjustList.isEmpty() && !coPtTypeSizeOptimization.isEmpty()) {
-					for (Adjust adjust : ptAdjustList) {
-						Map<String, String> ptStandardValue = getPtStandardValue(orderCoForm, coPtTypeSizeOptimization);
-						// PANTS_ウエスト_型サイズ
-						String stringCorPtWaistSize = ptStandardValue.get("corPtWaistSize");
-						BigDecimal corPtWaistlengthSize = new BigDecimal(stringCorPtWaistSize);
+					List<TypeSizeOptimization> coPtTypeSizeOptimization = getCoPtTypeSizeOptimization(orderCoForm,
+							typeSizeService);
+					List<Adjust> ptAdjustList = adjustByItem.get("03");
+					if (!ptAdjustList.isEmpty() && !coPtTypeSizeOptimization.isEmpty()) {
+						for (Adjust adjust : ptAdjustList) {
+							Map<String, String> ptStandardValue = getPtStandardValue(orderCoForm, coPtTypeSizeOptimization);
+							// PANTS_ウエスト_型サイズ
+							String stringCorPtWaistSize = ptStandardValue.get("corPtWaistSize");
+							BigDecimal corPtWaistlengthSize = new BigDecimal(stringCorPtWaistSize);
 
-						// PANTS_ヒップ_型サイズ
-						String stringCorPtHipSize = ptStandardValue.get("corPtHipSize");
-						BigDecimal corPtHiplengthSize = new BigDecimal(stringCorPtHipSize);
+							// PANTS_ヒップ_型サイズ
+							String stringCorPtHipSize = ptStandardValue.get("corPtHipSize");
+							BigDecimal corPtHiplengthSize = new BigDecimal(stringCorPtHipSize);
 
-						// PANTS_ワタリ_型サイズ
-						String stringCorPtThighwidthSize = ptStandardValue.get("corPtThighwidthSize");
-						BigDecimal corPtThighlengthSize = new BigDecimal(stringCorPtThighwidthSize);
+							// PANTS_ワタリ_型サイズ
+							String stringCorPtThighwidthSize = ptStandardValue.get("corPtThighwidthSize");
+							BigDecimal corPtThighlengthSize = new BigDecimal(stringCorPtThighwidthSize);
 
-						// PANTS_裾幅_修正_型サイズ
-						String stringCorPtHemwidthSize = ptStandardValue.get("corPtHemwidthSize");
-						BigDecimal corPtHemlengthSize = new BigDecimal(stringCorPtHemwidthSize);
+							// PANTS_裾幅_修正_型サイズ
+							String stringCorPtHemwidthSize = ptStandardValue.get("corPtHemwidthSize");
+							BigDecimal corPtHemlengthSize = new BigDecimal(stringCorPtHemwidthSize);
 
-						// PANTS_ウエスト_グロス
-						BigDecimal corPtWaistGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtWaistGross());
+							// PANTS_ウエスト_グロス
+							BigDecimal corPtWaistGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtWaistGross());
 
-						// PANTS_ヒップ_グロス
-						BigDecimal corPtHipGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtHipGross());
+							// PANTS_ヒップ_グロス
+							BigDecimal corPtHipGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtHipGross());
 
-						// PANTS_ワタリ_グロス
-						BigDecimal corPtThighwidthGross = new BigDecimal(
-								coAdjustPantsStandardInfo.getCorPtThighGross());
+							// PANTS_ワタリ_グロス
+							BigDecimal corPtThighwidthGross = new BigDecimal(
+									coAdjustPantsStandardInfo.getCorPtThighGross());
 
-						// PANTS_裾幅_修正_グロス
-						BigDecimal corPtHemwidthGross = null;
-						if ("1".equals(corPtHemwidthType)) {
-							corPtHemwidthGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtHemwidthGross());
-						}
-						if (item.equals(adjust.getItemCode())) {
-							if ("03".equals(adjust.getSubItemCode())) {
-								// ウエスト修正
-								if ("06".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corPtWaistlengthSize);
-									BigDecimal addMax = adjusteMax.add(corPtWaistlengthSize);
-									if (corPtWaistGross.compareTo(addMin) == -1
-											|| corPtWaistGross.compareTo(addMax) == 1) {
-										messages.add("E035", "PANTS（1本目）のウエスト修正");
-										pantsFlag = true;
-									}
-								}
-								// ヒップ修正
-								if ("05".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corPtHiplengthSize);
-									BigDecimal addMax = adjusteMax.add(corPtHiplengthSize);
-									if (corPtHipGross.compareTo(addMin) == -1 || corPtHipGross.compareTo(addMax) == 1) {
-										messages.add("E035", "PANTS（1本目）のヒップ修正");
-										pantsFlag = true;
-									}
-								}
-								// ワタリ修正
-								if ("07".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corPtThighlengthSize);
-									BigDecimal addMax = adjusteMax.add(corPtThighlengthSize);
-									if (corPtThighwidthGross.compareTo(addMin) == -1
-											|| corPtThighwidthGross.compareTo(addMax) == 1) {
-										messages.add("E035", "PANTS（1本目）のワタリ修正");
-										pantsFlag = true;
-									}
-								}
-								if ("1".equals(corPtHemwidthType)) {
-									// 裾幅修正
-									if ("08".equals(adjust.getAdjusteClass())) {
+							// PANTS_裾幅_修正_グロス
+							BigDecimal corPtHemwidthGross = null;
+							if ("1".equals(corPtHemwidthType)) {
+								corPtHemwidthGross = new BigDecimal(coAdjustPantsStandardInfo.getCorPtHemwidthGross());
+							}
+							if (item.equals(adjust.getItemCode())) {
+								if ("03".equals(adjust.getSubItemCode())) {
+									// ウエスト修正
+									if ("06".equals(adjust.getAdjusteClass())) {
 										BigDecimal adjusteMax = adjust.getAdjusteMax();
 										BigDecimal adjusteMin = adjust.getAdjusteMin();
-										BigDecimal addMin = adjusteMin.add(corPtHemlengthSize);
-										BigDecimal addMax = adjusteMax.add(corPtHemlengthSize);
-										if (corPtHemwidthGross.compareTo(addMin) == -1
-												|| corPtHemwidthGross.compareTo(addMax) == 1) {
-											messages.add("E035", "PANTS（1本目）の裾幅修正");
+										BigDecimal addMin = adjusteMin.add(corPtWaistlengthSize);
+										BigDecimal addMax = adjusteMax.add(corPtWaistlengthSize);
+										if (corPtWaistGross.compareTo(addMin) == -1
+												|| corPtWaistGross.compareTo(addMax) == 1) {
+											messages.add("E035", "PANTS（1本目）のウエスト修正");
 											pantsFlag = true;
+										}
+									}
+									// ヒップ修正
+									if ("05".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corPtHiplengthSize);
+										BigDecimal addMax = adjusteMax.add(corPtHiplengthSize);
+										if (corPtHipGross.compareTo(addMin) == -1 || corPtHipGross.compareTo(addMax) == 1) {
+											messages.add("E035", "PANTS（1本目）のヒップ修正");
+											pantsFlag = true;
+										}
+									}
+									// ワタリ修正
+									if ("07".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corPtThighlengthSize);
+										BigDecimal addMax = adjusteMax.add(corPtThighlengthSize);
+										if (corPtThighwidthGross.compareTo(addMin) == -1
+												|| corPtThighwidthGross.compareTo(addMax) == 1) {
+											messages.add("E035", "PANTS（1本目）のワタリ修正");
+											pantsFlag = true;
+										}
+									}
+									if ("1".equals(corPtHemwidthType)) {
+										// 裾幅修正
+										if ("08".equals(adjust.getAdjusteClass())) {
+											BigDecimal adjusteMax = adjust.getAdjusteMax();
+											BigDecimal adjusteMin = adjust.getAdjusteMin();
+											BigDecimal addMin = adjusteMin.add(corPtHemlengthSize);
+											BigDecimal addMax = adjusteMax.add(corPtHemlengthSize);
+											if (corPtHemwidthGross.compareTo(addMin) == -1
+													|| corPtHemwidthGross.compareTo(addMax) == 1) {
+												messages.add("E035", "PANTS（1本目）の裾幅修正");
+												pantsFlag = true;
+											}
 										}
 									}
 								}
@@ -732,18 +733,22 @@ public class CoPants1Helper {
 							splicingCodeForFindUniquePrice = code + key + OptionCodeKeys.PT_0002001;
 						}else {
 							List<String> stitchModifyList = new ArrayList<String>();
-							String opStitchModifyPlace1 = coOptionPantsStandardInfo.getOpStitchModifyPlace1();
-							stitchModifyList.add(opStitchModifyPlace1);
-							String opStitchModifyPlace2 = coOptionPantsStandardInfo.getOpStitchModifyPlace2();
-							stitchModifyList.add(opStitchModifyPlace2);
-							String opStitchModifyPlace3 = coOptionPantsStandardInfo.getOpStitchModifyPlace3();
-							stitchModifyList.add(opStitchModifyPlace3);
-							String opStitchModifyPlace4 = coOptionPantsStandardInfo.getOpStitchModifyPlace4();
-							stitchModifyList.add(opStitchModifyPlace4);
+							String opStitchModify = coOptionPantsStandardInfo.getOpStitchModify();
+							if(OptionCodeKeys.PT_0002002.equals(opStitchModify)) {
+								String opStitchModifyPlace1 = coOptionPantsStandardInfo.getOpStitchModifyPlace1();
+								stitchModifyList.add(opStitchModifyPlace1);
+								String opStitchModifyPlace2 = coOptionPantsStandardInfo.getOpStitchModifyPlace2();
+								stitchModifyList.add(opStitchModifyPlace2);
+								String opStitchModifyPlace3 = coOptionPantsStandardInfo.getOpStitchModifyPlace3();
+								stitchModifyList.add(opStitchModifyPlace3);
+								String opStitchModifyPlace4 = coOptionPantsStandardInfo.getOpStitchModifyPlace4();
+								stitchModifyList.add(opStitchModifyPlace4);
+							}
+							
 							
 							stitchModifyList.removeAll(Collections.singleton(null));
 							stitchModifyList.removeAll(Collections.singleton(""));
-							if(stitchModifyList.isEmpty()|| OptionCodeKeys.PT_0002001.equals(invokeOne)) {
+							if(stitchModifyList.isEmpty()|| OptionCodeKeys.PT_0002001.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ) {
 								splicingCodeForFindUniquePrice = code + key + invokeOne;
 							}else {
 								Integer orderPriceInt = 0;
@@ -817,7 +822,7 @@ public class CoPants1Helper {
 						amfColorSet.removeAll(Collections.singleton(null));
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
-						if (OptionCodeKeys.PT_0002401.equals(invokeOne)||(OptionCodeKeys.PT_0002402.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0002401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -843,7 +848,7 @@ public class CoPants1Helper {
 						bhColorSet.removeAll(Collections.singleton(null));
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
-						if (OptionCodeKeys.PT_0002701.equals(invokeOne)||(OptionCodeKeys.PT_0002702.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0002701.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -868,7 +873,7 @@ public class CoPants1Helper {
 						byColorSet.removeAll(Collections.singleton(null));
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
-						if (OptionCodeKeys.PT_0003001.equals(invokeOne)||(OptionCodeKeys.PT_0003002.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0003001.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -988,7 +993,7 @@ public class CoPants1Helper {
 						bhColorSet.removeAll(Collections.singleton(null));
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
-						if (OptionCodeKeys.PT_0002701.equals(invokeOne)||(OptionCodeKeys.PT_0002702.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0002701.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1013,7 +1018,7 @@ public class CoPants1Helper {
 						byColorSet.removeAll(Collections.singleton(null));
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
-						if (OptionCodeKeys.PT_0003001.equals(invokeOne)||(OptionCodeKeys.PT_0003002.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0003001.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1045,7 +1050,7 @@ public class CoPants1Helper {
 					else if("00003".equals(subOptionBranchCode) && "0000202".equals(tpKneeBack)) {
 						orderPrice = "0";
 					}
-					else if("00040".equals(subOptionBranchCode) && "0003901".equals(tpSideStripe)) {
+					else if("00040".equals(subOptionBranchCode) && ("0003901".equals(tpSideStripe) || BaseCheckUtil.isEmpty(tpSideStripe))) {
 						orderPrice = "0";
 					}
 					else {
@@ -1123,18 +1128,22 @@ public class CoPants1Helper {
 				}else {
 					if( "wp_stitchModify_id".equals(valueFour)) {
 						List<String> stitchModifyList = new ArrayList<String>();
-						String opStitchModifyPlace1 = coOptionPantsWashableInfo.getWpStitchModifyPlace1();
-						stitchModifyList.add(opStitchModifyPlace1);
-						String opStitchModifyPlace2 = coOptionPantsWashableInfo.getWpStitchModifyPlace2();
-						stitchModifyList.add(opStitchModifyPlace2);
-						String opStitchModifyPlace3 = coOptionPantsWashableInfo.getWpStitchModifyPlace3();
-						stitchModifyList.add(opStitchModifyPlace3);
-						String opStitchModifyPlace4 = coOptionPantsWashableInfo.getWpStitchModifyPlace4();
-						stitchModifyList.add(opStitchModifyPlace4);
+						String wpStitchModify = coOptionPantsWashableInfo.getWpStitchModify();
+						if(OptionCodeKeys.PT_0002002.equals(wpStitchModify)) {
+							
+							String opStitchModifyPlace1 = coOptionPantsWashableInfo.getWpStitchModifyPlace1();
+							stitchModifyList.add(opStitchModifyPlace1);
+							String opStitchModifyPlace2 = coOptionPantsWashableInfo.getWpStitchModifyPlace2();
+							stitchModifyList.add(opStitchModifyPlace2);
+							String opStitchModifyPlace3 = coOptionPantsWashableInfo.getWpStitchModifyPlace3();
+							stitchModifyList.add(opStitchModifyPlace3);
+							String opStitchModifyPlace4 = coOptionPantsWashableInfo.getWpStitchModifyPlace4();
+							stitchModifyList.add(opStitchModifyPlace4);
+						}
 
 						stitchModifyList.removeAll(Collections.singleton(null));
 						stitchModifyList.removeAll(Collections.singleton(""));
-						if (stitchModifyList.isEmpty() || OptionCodeKeys.PT_0002001.equals(invokeOne)) {
+						if (stitchModifyList.isEmpty()  || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) || OptionCodeKeys.PT_0002001.equals(invokeOne)) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
 						} else {
 							Integer orderPriceInt = 0;
@@ -1207,7 +1216,7 @@ public class CoPants1Helper {
 						amfColorSet.removeAll(Collections.singleton(null));
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
-						if (OptionCodeKeys.PT_0002401.equals(invokeOne)||(OptionCodeKeys.PT_0002402.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0002401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1232,7 +1241,7 @@ public class CoPants1Helper {
 						bhColorSet.removeAll(Collections.singleton(null));
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
-						if (OptionCodeKeys.PT_0002701.equals(invokeOne)||(OptionCodeKeys.PT_0002702.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0002701.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1257,7 +1266,7 @@ public class CoPants1Helper {
 						byColorSet.removeAll(Collections.singleton(null));
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
-						if (OptionCodeKeys.PT_0003001.equals(invokeOne)||(OptionCodeKeys.PT_0003002.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.PT_0003001.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1719,28 +1728,56 @@ public class CoPants1Helper {
 
 	public void optionPantsDbToOrder(String productItem, String productCategory,
 			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
-			String orderFlag) {
+			String orderFlag ,String isDnpDivertFlag) {
 
-		Order orderPt = orderListService.findOrderPtOptionByOrderId(order.getOrderId());
-		if(orderPt !=null ) {
-			// PANTS_膝裏_コード
-			String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
-			// PANTS_フロント仕様_コード
-			String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
+		Order orderPt = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderPt = orderListService.findDnpOrderPtOptionByOrderId(order.getOrderId());
+		}else {
+			orderPt = orderListService.findOrderPtOptionByOrderId(order.getOrderId());
+		}
+		
+//		if(orderPt !=null ) {
+//			// PANTS_膝裏_コード
+//			String ptKneeinnerTypeCd = orderPt.getPtKneeinnerTypeCd();
+//			// PANTS_フロント仕様_コード
+//			String ptFrtTypeCd = orderPt.getPtFrtTypeCd();
+//			// PANTS_パンチェリーナ_コード
+//			String ptPancherinaCd = orderPt.getPtPancherinaCd();
+//			
+//			if(ptKneeinnerTypeCd != null && !"".equals(ptKneeinnerTypeCd) && ptFrtTypeCd != null
+//					&& !"".equals(ptFrtTypeCd) && ptPancherinaCd != null && !"".equals(ptPancherinaCd)) {
+//				this.pantsDefaultValueFromDb(orderCoForm, orderPt);
+//			}
+//			else {
+//				this.pantsDefaultValue(orderCoForm);
+//			}
+//		}else {
+//			this.pantsDefaultValue(orderCoForm);
+//		}
+		
+		if (orderPt != null) {
 			// PANTS_パンチェリーナ_コード
 			String ptPancherinaCd = orderPt.getPtPancherinaCd();
-			if(ptKneeinnerTypeCd != null && !"".equals(ptKneeinnerTypeCd) && ptFrtTypeCd != null
-					&& !"".equals(ptFrtTypeCd) && ptPancherinaCd != null && !"".equals(ptPancherinaCd)) {
+			// PANTS_裾上げ_コード
+			String ptHemUpCd = orderPt.getPtHemUpCd();
+			// PANTS_アジャスター_コード
+			String ptAdjusterCd = orderPt.getPtAdjusterCd();
+			if(BaseCheckUtil.isEmpty(ptPancherinaCd)&&BaseCheckUtil.isEmpty(ptHemUpCd)&&BaseCheckUtil.isEmpty(ptAdjusterCd)) {
+				this.pantsDefaultValue(orderCoForm);
+			}else {
 				this.pantsDefaultValueFromDb(orderCoForm, orderPt);
 			}
-			else {
-				this.pantsDefaultValue(orderCoForm);
-			}
-		}else {
+		} else {
 			this.pantsDefaultValue(orderCoForm);
 		}
 		
-		Order orderPtAd = orderListService.findOrderPtByPk(order.getOrderId());
+		Order orderPtAd = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderPtAd = orderListService.findDnpOrderPtByPk(order.getOrderId());
+		}else {
+			orderPtAd = orderListService.findOrderPtByPk(order.getOrderId());
+		}
 		CoAdjustPantsStandardInfo coAdjustPantsStandardInfo = orderCoForm.getCoAdjustPantsStandardInfo();
 		if(coAdjustPantsStandardInfo == null ) {
 			coAdjustPantsStandardInfo = new CoAdjustPantsStandardInfo();
@@ -2101,9 +2138,9 @@ public class CoPants1Helper {
 			optionPantsTuxedoInfo.setTpHemUp(orderPt.getPtHemUpCd());
 			optionPantsTuxedoInfo.setTpDoubleWide(orderPt.getPtDblWidthCd());
 			optionPantsTuxedoInfo.setTpStitch(orderPt.getPtAmfStitchCd());
-			optionPantsTuxedoInfo.setTpStitchModify(orderPt.getPtStitchPlcType());
-			optionPantsTuxedoInfo.setTpDStitchPlace(orderPt.getPtDblstitchPlcCd());
-			optionPantsTuxedoInfo.setTpAmfColor(orderPt.getPtAmfColorCd());
+//			optionPantsTuxedoInfo.setTpStitchModify(orderPt.getPtStitchPlcType());
+//			optionPantsTuxedoInfo.setTpDStitchPlace(orderPt.getPtDblstitchPlcCd());
+//			optionPantsTuxedoInfo.setTpAmfColor(orderPt.getPtAmfColorCd());
 			optionPantsTuxedoInfo.setTpBhColor(orderPt.getPtBtnholeColorType());
 			optionPantsTuxedoInfo.setTpBhColorPlace(orderPt.getPtBtnholeColorPlcCd());
 			optionPantsTuxedoInfo.setTpBhAllColor(orderPt.getPtBtnholeColorCd());
@@ -2560,10 +2597,28 @@ public class CoPants1Helper {
 			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthCorrect)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthCorrect(String.valueOf(corPtHemwidthCorrect));
 			}
+			
+			BigDecimal corPtHemwidthDegignate = order.getCorPtHemwidthDegignate();
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthDegignate)) {
+				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthDegignate(String.valueOf(corPtHemwidthDegignate));
+			}
 		}else if("2".equals(order.getCorPtHemwidthType())) {
 			BigDecimal corPtHemwidthDegignate = order.getCorPtHemwidthDegignate();
 			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthDegignate)) {
 				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthDegignate(String.valueOf(corPtHemwidthDegignate));
+			}
+			
+			BigDecimal corPtHemwidthSize = order.getCorPtHemwidthSize();
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthSize)) {
+				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthSize(String.valueOf(corPtHemwidthSize));
+			}
+			BigDecimal corPtHemwidthGross = order.getCorPtHemwidthGross();
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthGross)) {
+				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthGross(String.valueOf(corPtHemwidthGross));
+			}
+			BigDecimal corPtHemwidthCorrect = order.getCorPtHemwidthCorrect();
+			if(BaseCheckUtil.isNotBigDecimalNull(corPtHemwidthCorrect)) {
+				orderCoForm.getCoAdjustPantsStandardInfo().setCorPtHemwidthCorrect(String.valueOf(corPtHemwidthCorrect));
 			}
 		}
 

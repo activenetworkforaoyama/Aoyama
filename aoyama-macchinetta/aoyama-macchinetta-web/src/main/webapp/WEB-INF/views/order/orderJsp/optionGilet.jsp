@@ -1330,6 +1330,7 @@ jQuery(function() {
 			}
 		}
 	}
+	
 	var headerName = $("meta[name='_csrf_header']").attr("content"); // (1)
     var tokenValue = $("meta[name='_csrf']").attr("content"); // (2)
     jQuery(document).ajaxSend(function(e, xhr, options) {
@@ -2310,6 +2311,7 @@ function getPrice(){
 		if(itemCode == "01"){
 			jQuery('input[id^="og_stitch_id"]').removeAttr("disabled");
 			jQuery("#tg_GlossFablic").removeAttr("disabled");
+			jQuery('input[id^="tg_stitch_id"]').removeAttr("disabled");
 			jQuery('input[id^="wg_stitch_id"]').removeAttr("disabled");
 		}
 		
@@ -2318,6 +2320,7 @@ function getPrice(){
 		if(itemCode == "01"){
 			jQuery('input[id^="og_stitch_id"]').prop("disabled",true);
 			jQuery("#tg_GlossFablic").prop("disabled",true);
+			jQuery('input[id^="tg_stitch_id"]').prop("disabled",true);
 			jQuery('input[id^="wg_stitch_id"]').prop("disabled",true);
 		}
 
@@ -3488,6 +3491,11 @@ function optionColorReSave(productCategory){
 			jQuery("#tg_GlossFablic").change();
 		}
 		tgSession();
+		if(item == "01"){
+			var jacketStitch = "${orderCoForm.coOptionJacketTuxedoInfo.tjStitch}";
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgStitch"]').val([jacketStitch]);
+			jQuery('input[name="coOptionGiletTuxedoInfo.tgStitch"]:checked').change();
+		}
 	}else if(productCategory == "9000103"){
 		wgSession();
 		var item = jQuery("#item").val();

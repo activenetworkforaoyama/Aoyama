@@ -31,7 +31,9 @@
 	    <sec:intercept-url pattern = "/orderlist/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP') or hasRole('ROLE_MAKER') or hasRole('ROLE_FACTORY') or hasRole('ROLE_OTHER')" />
 	    <sec:intercept-url pattern = "/orderDetail/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP') or hasRole('ROLE_MAKER') or hasRole('ROLE_FACTORY') or hasRole('ROLE_OTHER')" />
 	    <sec:intercept-url pattern = "/order/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
+	    <sec:intercept-url pattern = "/orderCo/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
 	    <sec:intercept-url pattern = "/orderConfirm/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
+	    <sec:intercept-url pattern = "/orderCoConfirm/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
 	    <sec:intercept-url pattern = "/accounting/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
 	    <sec:intercept-url pattern = "/cash/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />
 	    <sec:intercept-url pattern = "/cashConfirm/**" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_SHOP')" />

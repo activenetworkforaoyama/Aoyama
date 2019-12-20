@@ -455,6 +455,7 @@ public class OrderReconfirmController {
 			Order selectExistOrder = this.selectExistOrder(orderForm);
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedProjects(orderForm);
 			List<Adjust> adjustByItem = this.getAdjustByItem(orderForm);
+			Measuring existMeasuring = measuringService.selectByPrimaryKey(orderForm.getCustomerMessageInfo().getOrderId());
 		
 			
 			//商品情報_３Piece上代
@@ -580,6 +581,10 @@ public class OrderReconfirmController {
 			orderHelper.measuringMapping(orderForm, measuring,sessionContent.getUserId());
 			orderHelper.nextGenerationRelationCount(orderForm, order, yieldList, wholesalePieceList,basicNextGenerationPriceList, priceCode, marginRate);
 			
+			if(existMeasuring != null) {
+				measuring.setCreatedUserId(existMeasuring.getCreatedUserId());
+				measuring.setCreatedAt(existMeasuring.getCreatedAt());
+			}
 			measuringService.updateByPrimaryKey(measuring);
 			
 			//挿入の場合

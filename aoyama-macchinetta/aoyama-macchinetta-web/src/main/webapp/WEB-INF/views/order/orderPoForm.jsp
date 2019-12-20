@@ -4133,7 +4133,8 @@ jQuery(document).ready(function(){
 		var gyotaiCd = getGyotaiCd();
 		var tenCd = jQuery("#shopCode").val();
 // TODO:社員コードを動的に取得する
-		var syainNo = jQuery("#custStaff").val();
+//		var syainNo = jQuery("#custStaff").val();
+		var syainNo = 0;
 		var fullLength = getPartsSize(jQuery("#fullLengthTe"), jQuery("#fullLengthSe"), "フルレングス");
 		if (fullLength == null) {
 			return;

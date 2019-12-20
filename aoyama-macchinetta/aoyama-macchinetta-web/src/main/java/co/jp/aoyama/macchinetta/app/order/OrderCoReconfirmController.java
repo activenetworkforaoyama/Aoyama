@@ -1997,6 +1997,7 @@ public class OrderCoReconfirmController {
 			NextGenerationPrice selectCoMarginRate = this.selectCoMarginRate(orderCoForm);
 			Map<String, Integer> retailPriceRelatedMap = this.retailPriceRelatedCoProjects(orderCoForm);
 			List<Adjust> adjustByItem = this.getAdjustByItem(orderCoForm);
+			Measuring existMeasuring = measuringService.selectByPrimaryKey(orderCoForm.getCoCustomerMessageInfo().getOrderId());
 			//JACKETのステッチ箇所変更下代付属
 //			List<NextGenerationPrice> selectJkOjInsidePktPlaceList = this.selectJkOjInsidePktPlaceList(orderCoForm);
 			//JACKETのステッチ箇所変更下代工賃
@@ -3084,6 +3085,10 @@ public class OrderCoReconfirmController {
 			orderCoHelper.nextGenerationValueRelationCount(order, selectCoYield, selectCoWholesalePiece, selectCoBasicNextGenerationPrice, priceCode, selectCoMarginRate);
 			
 			// メジャーリングをデータベースに入力する
+			if(existMeasuring != null) {
+				measuring.setCreatedUserId(existMeasuring.getCreatedUserId());
+				measuring.setCreatedAt(existMeasuring.getCreatedAt());
+			}
 			measuringService.updateByPrimaryKey(measuring);
 			
 			//挿入の場合

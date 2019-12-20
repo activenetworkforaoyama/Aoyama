@@ -387,96 +387,96 @@ public class CoGiletHelper {
 				messages.add("E031", "GILET サイズ号数");
 				giletFlag = true;
 			}
-			
-			if(BaseCheckUtil.isNotEmpty(sizeFigure)&&BaseCheckUtil.isNotEmpty(sizeNumber)) {
-				String corGlBodySize = coAdjustGiletStandardInfo.getCorGlBodySize();
-				if("".equals(corGlBodySize)||"0".equals(corGlBodySize)||corGlBodySize == null) {
-					messages.add("E034", "GILETの着丈修正");
-					giletFlag = true;
-				}
-				
-				String corGlBustSize = coAdjustGiletStandardInfo.getCorGlBustSize();
-				if("".equals(corGlBustSize)||"0".equals(corGlBustSize)||corGlBustSize == null) {
-					messages.add("E034", "GILETのバスト修正");
-					giletFlag = true;
-				}
-				
-				String corGlWaistSize = coAdjustGiletStandardInfo.getCorGlWaistSize();
-				if("".equals(corGlWaistSize)||"0".equals(corGlWaistSize)||corGlWaistSize == null) {
-					messages.add("E034", "GILETのウエスト修正");
-					giletFlag = true;
-				}
-				
-				List<TypeSizeOptimization> coGlTypeSizeOptimization = this.getCoGlTypeSizeOptimization(orderCoForm,typeSizeService);
-				List<Adjust> glAdjustList = adjustByItem.get("04");
-				if(!glAdjustList.isEmpty()&&!coGlTypeSizeOptimization.isEmpty()) {
-					for (Adjust adjust : glAdjustList) {
-						Map<String, String> glStandardValue = this
-								.getGlStandardValue(coGlTypeSizeOptimization);
+			if(!giletFlag) {
+				if(BaseCheckUtil.isNotEmpty(sizeFigure)&&BaseCheckUtil.isNotEmpty(sizeNumber)) {
+					String corGlBodySize = coAdjustGiletStandardInfo.getCorGlBodySize();
+					if("".equals(corGlBodySize)||"0".equals(corGlBodySize)||corGlBodySize == null) {
+						messages.add("E034", "GILETの着丈修正");
+						giletFlag = true;
+					}
+					
+					String corGlBustSize = coAdjustGiletStandardInfo.getCorGlBustSize();
+					if("".equals(corGlBustSize)||"0".equals(corGlBustSize)||corGlBustSize == null) {
+						messages.add("E034", "GILETのバスト修正");
+						giletFlag = true;
+					}
+					
+					String corGlWaistSize = coAdjustGiletStandardInfo.getCorGlWaistSize();
+					if("".equals(corGlWaistSize)||"0".equals(corGlWaistSize)||corGlWaistSize == null) {
+						messages.add("E034", "GILETのウエスト修正");
+						giletFlag = true;
+					}
+					
+					List<TypeSizeOptimization> coGlTypeSizeOptimization = this.getCoGlTypeSizeOptimization(orderCoForm,typeSizeService);
+					List<Adjust> glAdjustList = adjustByItem.get("04");
+					if(!glAdjustList.isEmpty()&&!coGlTypeSizeOptimization.isEmpty()) {
+						for (Adjust adjust : glAdjustList) {
+							Map<String, String> glStandardValue = this
+									.getGlStandardValue(coGlTypeSizeOptimization);
 
-						// GILET_着丈_型サイズ
-						String stringCorGlBodylengthSize = glStandardValue.get("corGlBodylengthSize");
-						BigDecimal corGlBodylengthSize = new BigDecimal(stringCorGlBodylengthSize);
+							// GILET_着丈_型サイズ
+							String stringCorGlBodylengthSize = glStandardValue.get("corGlBodylengthSize");
+							BigDecimal corGlBodylengthSize = new BigDecimal(stringCorGlBodylengthSize);
 
-						// GILET_バスト_型サイズ
-						String stringCorGlBustSize = glStandardValue.get("corGlBustSize");
-						BigDecimal corGlBustlengthSize = new BigDecimal(stringCorGlBustSize);
+							// GILET_バスト_型サイズ
+							String stringCorGlBustSize = glStandardValue.get("corGlBustSize");
+							BigDecimal corGlBustlengthSize = new BigDecimal(stringCorGlBustSize);
 
-						// GILET_ウエスト_型サイズ
-						String stringCorGlWaistSize = glStandardValue.get("corGlWaistSize");
-						BigDecimal corGlWaistlengthSize = new BigDecimal(stringCorGlWaistSize);
+							// GILET_ウエスト_型サイズ
+							String stringCorGlWaistSize = glStandardValue.get("corGlWaistSize");
+							BigDecimal corGlWaistlengthSize = new BigDecimal(stringCorGlWaistSize);
 
-						// GILET_着丈_グロス
-						BigDecimal corGlBodylengthGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlBodyGross());
+							// GILET_着丈_グロス
+							BigDecimal corGlBodylengthGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlBodyGross());
 
-						// GILET_バスト_グロス
-						BigDecimal corGlBustGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlBustGross());
+							// GILET_バスト_グロス
+							BigDecimal corGlBustGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlBustGross());
 
-						// GILET_ウエスト_グロス
-						BigDecimal corGlWaistGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlWaistGross());
-						if(item.equals(adjust.getItemCode())) {
-							if("04".equals(adjust.getSubItemCode())) {
-								// 着丈修正
-								if ("01".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corGlBodylengthSize);
-									BigDecimal addMax = adjusteMax.add(corGlBodylengthSize);
-									if (corGlBodylengthGross.compareTo(addMin) == -1
-											|| corGlBodylengthGross.compareTo(addMax) == 1) {
-										messages.add("E035", "GILETの着丈修正");
-										giletFlag = true;
+							// GILET_ウエスト_グロス
+							BigDecimal corGlWaistGross = new BigDecimal(coAdjustGiletStandardInfo.getCorGlWaistGross());
+							if(item.equals(adjust.getItemCode())) {
+								if("04".equals(adjust.getSubItemCode())) {
+									// 着丈修正
+									if ("01".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corGlBodylengthSize);
+										BigDecimal addMax = adjusteMax.add(corGlBodylengthSize);
+										if (corGlBodylengthGross.compareTo(addMin) == -1
+												|| corGlBodylengthGross.compareTo(addMax) == 1) {
+											messages.add("E035", "GILETの着丈修正");
+											giletFlag = true;
+										}
 									}
-								}
-								// バスト修正
-								if ("14".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corGlBustlengthSize);
-									BigDecimal addMax = adjusteMax.add(corGlBustlengthSize);
-									if (corGlBustGross.compareTo(addMin) == -1 || corGlBustGross.compareTo(addMax) == 1) {
-										messages.add("E035", "GILETのバスト修正");
-										giletFlag = true;
+									// バスト修正
+									if ("14".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corGlBustlengthSize);
+										BigDecimal addMax = adjusteMax.add(corGlBustlengthSize);
+										if (corGlBustGross.compareTo(addMin) == -1 || corGlBustGross.compareTo(addMax) == 1) {
+											messages.add("E035", "GILETのバスト修正");
+											giletFlag = true;
+										}
 									}
-								}
-								// ウエスト修正
-								if ("02".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corGlWaistlengthSize);
-									BigDecimal addMax = adjusteMax.add(corGlWaistlengthSize);
-									if (corGlWaistGross.compareTo(addMin) == -1 || corGlWaistGross.compareTo(addMax) == 1) {
-										messages.add("E035", "GILETのウエスト修正");
-										giletFlag = true;
+									// ウエスト修正
+									if ("02".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corGlWaistlengthSize);
+										BigDecimal addMax = adjusteMax.add(corGlWaistlengthSize);
+										if (corGlWaistGross.compareTo(addMin) == -1 || corGlWaistGross.compareTo(addMax) == 1) {
+											messages.add("E035", "GILETのウエスト修正");
+											giletFlag = true;
+										}
 									}
 								}
 							}
 						}
 					}
 				}
-			}
+			}	
 		}
-		
 		return giletFlag;
 		
 	}
@@ -538,15 +538,32 @@ public class CoGiletHelper {
 	
 	public void optionGiletDbToOrder(String productItem, String productCategory,
 			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
-			OrderService orderService, String orderFlag) {
-		Order orderGl = orderListService.findOrderGlOptionByOrderId(order.getOrderId());
+			OrderService orderService, String orderFlag, String isDnpDivertFlag) {
+		Order orderGl = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderGl = orderListService.findDnpOrderGlOptionByOrderId(order.getOrderId());
+		}else {
+			orderGl = orderListService.findOrderGlOptionByOrderId(order.getOrderId());
+		}
 		if(orderGl !=null ) {
-			this.giletDefaultValueFromDb(orderCoForm, orderGl);
+			String glBackClothCd = orderGl.getGlBackClothCd();
+			String glFrtBtnCd = orderGl.getGlFrtBtnCd();
+			if((glBackClothCd == null || "".equals(glBackClothCd)) && 
+					(glFrtBtnCd == null || "".equals(glFrtBtnCd))) {
+				this.giletDefaultValue(orderCoForm);
+			}else {
+				this.giletDefaultValueFromDb(orderCoForm, orderGl);
+			}
 		}else {
 			this.giletDefaultValue(orderCoForm);
 		}
 		
-		Order orderGlAd = orderListService.findOrderGlByPk(order.getOrderId());
+		Order orderGlAd = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderGlAd = orderListService.findDnpOrderGlByPk(order.getOrderId());
+		}else {
+			orderGlAd = orderListService.findOrderGlByPk(order.getOrderId());
+		}
 		CoAdjustGiletStandardInfo coAdjustGiletStandardInfo = orderCoForm.getCoAdjustGiletStandardInfo();
 		if(coAdjustGiletStandardInfo == null ) {
 			coAdjustGiletStandardInfo = new CoAdjustGiletStandardInfo();
@@ -854,7 +871,7 @@ public class CoGiletHelper {
 		optionGiletStandardInfo.setOgBackLiningMateStkNo(null);
 		optionGiletStandardInfo.setOgInsideLiningMate(OptionCodeKeys.GL_1000100);
 		optionGiletStandardInfo.setOgInsideLiningMateStkNo(null);
-		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+		if("1".equals(orderCoForm.getJacketBtnMateGlFlag())) {
 		}else {
 			optionGiletStandardInfo.setOgFrontBtnMate(OptionCodeKeys.GL_3000800);
 			optionGiletStandardInfo.setOgFrontBtnMateStkNo(null);
@@ -877,7 +894,7 @@ public class CoGiletHelper {
 		optionGiletTuxedoInfo.setTgInsideLiningMate(OptionCodeKeys.GL_1000100);
 		optionGiletTuxedoInfo.setTgInsideLiningMateStkNo(null);
 		optionGiletTuxedoInfo.setTgGlossFablic(OptionCodeKeys.GL_0005001);
-		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+		if("1".equals(orderCoForm.getJacketBtnMateGlFlag())) {
 		}else {
 			optionGiletTuxedoInfo.setTgFrontBtnMate(OptionCodeKeys.GL_3000800);
 			optionGiletTuxedoInfo.setTgFrontBtnMateStkNo(null);
@@ -901,7 +918,7 @@ public class CoGiletHelper {
 		optionGiletWashableInfo.setWgBackLiningMateStkNo(null);
 		optionGiletWashableInfo.setWgInsideLiningMate(OptionCodeKeys.GL_1000100);
 		optionGiletWashableInfo.setWgInsideLiningMateStkNo(null);
-		if("1".equals(orderCoForm.getOjBtnMatePtFlag())) {
+		if("1".equals(orderCoForm.getJacketBtnMateGlFlag())) {
 		}else {
 			optionGiletWashableInfo.setWgFrontBtnMate(OptionCodeKeys.GL_3000800);
 			optionGiletWashableInfo.setWgFrontBtnMateStkNo(null);
@@ -1448,17 +1465,20 @@ public class CoGiletHelper {
 							splicingCodeForFindUniquePrice = code + key + OptionCodeKeys.GL_0000601;
 						}else {
 							List<String> stitchModifyList = new ArrayList<String>();
-							String ogStitchModifyPlace1 = coOptionGiletStandardInfo.getOgStitchModifyPlace1();
-							stitchModifyList.add(ogStitchModifyPlace1);
-							String ogStitchModifyPlace2 = coOptionGiletStandardInfo.getOgStitchModifyPlace2();
-							stitchModifyList.add(ogStitchModifyPlace2);
-							String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgStitchModifyPlace3();
-							stitchModifyList.add(ogStitchModifyPlace3);
+							String ogStitchModify = coOptionGiletStandardInfo.getOgStitchModify();
+							if(OptionCodeKeys.GL_0000602.equals(ogStitchModify)) {
+								String ogStitchModifyPlace1 = coOptionGiletStandardInfo.getOgStitchModifyPlace1();
+								stitchModifyList.add(ogStitchModifyPlace1);
+								String ogStitchModifyPlace2 = coOptionGiletStandardInfo.getOgStitchModifyPlace2();
+								stitchModifyList.add(ogStitchModifyPlace2);
+								String ogStitchModifyPlace3 = coOptionGiletStandardInfo.getOgStitchModifyPlace3();
+								stitchModifyList.add(ogStitchModifyPlace3);
+							}
 							
 							stitchModifyList.removeAll(Collections.singleton(null));
 							stitchModifyList.removeAll(Collections.singleton(""));
 
-							if(stitchModifyList.isEmpty() || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
+							if(stitchModifyList.isEmpty() || BaseCheckUtil.isEmpty(String.valueOf(invokeOne))  || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
 								splicingCodeForFindUniquePrice = code + key + invokeOne; 
 							} else { 
 								Integer orderPriceInt = 0; 
@@ -1534,7 +1554,7 @@ public class CoGiletHelper {
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
-						if (OptionCodeKeys.GL_0000801.equals(invokeOne)||(OptionCodeKeys.GL_0000802.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0000801.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
 							orderPrice = orderPriceInner;
@@ -1570,7 +1590,7 @@ public class CoGiletHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
@@ -1619,7 +1639,7 @@ public class CoGiletHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(ogGiletModel) || "ET15-D".equals(ogGiletModel)) {
@@ -1748,7 +1768,7 @@ public class CoGiletHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
@@ -1797,7 +1817,7 @@ public class CoGiletHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
@@ -1908,17 +1928,20 @@ public class CoGiletHelper {
 				}else {
 					if( "wg_stitchModify_id".equals(valueFour)) {
 						List<String> stitchModifyList = new ArrayList<String>();
-						String wgStitchModifyPlace1 = coOptionGiletWashableInfo.getWgStitchModifyPlace1();
-						stitchModifyList.add(wgStitchModifyPlace1);
-						String wgStitchModifyPlace2 = coOptionGiletWashableInfo.getWgStitchModifyPlace2();
-						stitchModifyList.add(wgStitchModifyPlace2);
-						String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgStitchModifyPlace3();
-						stitchModifyList.add(wgStitchModifyPlace3);
+						String wgStitchModify = coOptionGiletWashableInfo.getWgStitchModify();
+						if(OptionCodeKeys.GL_0000602.equals(wgStitchModify)) {
+							String wgStitchModifyPlace1 = coOptionGiletWashableInfo.getWgStitchModifyPlace1();
+							stitchModifyList.add(wgStitchModifyPlace1);
+							String wgStitchModifyPlace2 = coOptionGiletWashableInfo.getWgStitchModifyPlace2();
+							stitchModifyList.add(wgStitchModifyPlace2);
+							String wgStitchModifyPlace3 = coOptionGiletWashableInfo.getWgStitchModifyPlace3();
+							stitchModifyList.add(wgStitchModifyPlace3);
+						}
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
 						stitchModifyList.removeAll(Collections.singleton(""));
 
-						if(stitchModifyList.isEmpty() || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
+						if(stitchModifyList.isEmpty() || BaseCheckUtil.isEmpty(String.valueOf(invokeOne))  || OptionCodeKeys.GL_0000601.equals(invokeOne)) { 
 							splicingCodeForFindUniquePrice = code + key + invokeOne; 
 						} else { 
 							Integer orderPriceInt = 0; 
@@ -1992,7 +2015,7 @@ public class CoGiletHelper {
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
-						if (OptionCodeKeys.GL_0000801.equals(invokeOne)||(OptionCodeKeys.GL_0000802.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0000801.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
@@ -2033,7 +2056,7 @@ public class CoGiletHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.GL_0001101.equals(invokeOne)||(OptionCodeKeys.GL_0001102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
@@ -2082,7 +2105,7 @@ public class CoGiletHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.GL_0001401.equals(invokeOne)||(OptionCodeKeys.GL_0001402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.GL_0001401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = "";
 							if("BS01-D".equals(wgGiletModel) || "ET15-D".equals(wgGiletModel)) {
@@ -2390,7 +2413,7 @@ public class CoGiletHelper {
 				
 				if(idValueName.equals(valueFour) && ("tg_breastPkt_id".equals(idValueName) 
 						|| "tg_waistPktSpec_id".equals(idValueName) || "tg_waistPktMate_id".equals(idValueName) 
-						|| "tg_watchChain_id".equals(idValueName))) {
+						|| "tg_watchChain_id".equals(idValueName) || "tg_stitch_id".equals(idValueName))) {
 					String projectPriceCode = code + jspOptionCodeAndBranchCode;
 					if("BS01-D".equals(tgGiletModel) || "ET15-D".equals(tgGiletModel)) {
 						orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);

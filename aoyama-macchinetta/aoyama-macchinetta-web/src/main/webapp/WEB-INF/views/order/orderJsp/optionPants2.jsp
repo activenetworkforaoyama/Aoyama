@@ -3576,8 +3576,6 @@ jQuery(function() {
 
 	changeViewArea();
 	setPantsModelDisable(productCategory);
-	getPrice();
-	showPrice();
 	optionPants2ChangeModel(productCategory);
 	mateInit();
 	
@@ -3616,6 +3614,11 @@ jQuery(function() {
 		  jQuery('#tp2_btnMateStkNo').val("${orderCoForm.coOptionPants2TuxedoInfo.tp2BtnMateStkNo}");	
 		  jQuery("#ojBtnMatePt2Flag").val("0");
 		}
+		
+		var jacketStitch = "${orderCoForm.coOptionJacketTuxedoInfo.tjStitch}";
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').val([jacketStitch]);
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]:checked').change();
+		jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').prop("disabled",true);
 	}else if(productCategory == "9000103"){
 		jQuery("#wp2_pantsModel option[value='BS03']").remove();
 		jQuery("#wp2_pantsModel option[value='RS01']").remove();
@@ -3636,7 +3639,8 @@ jQuery(function() {
 		jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]:checked').change();
 		jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').prop("disabled",true);
 	}
-
+	getPrice();
+	showPrice();
 	if((orderFlag == "orderLink" || orderFlag == "orderDivert") && pants2Twiceflag == '0'){
 		if(productCategory == "9000101"){
 			//ベルトループ
@@ -3663,6 +3667,7 @@ jQuery(function() {
 			}
 	
 			//ステッチ箇所変更
+			var op2StitchModify = "${orderCoForm.coOptionPants2StandardInfo.op2StitchModify}";
 			var op2StitchModifyPlace = "${orderCoForm.coOptionPants2StandardInfo.op2StitchModifyPlace}";
 			if(isNotEmpty(op2StitchModifyPlace)){
 				op2StitchModifyPlace = op2StitchModifyPlace.split("/");
@@ -3678,7 +3683,9 @@ jQuery(function() {
 					}
 				}
 			}
-			jQuery('input[id^="op2_stitchModifyPlace_id"]:checked').change();
+			if(op2StitchModify == '0002002'){
+				jQuery('input[id^="op2_stitchModifyPlace_id"]:checked').change();
+			}
 	
 			//ダブルステッチ
 			ctrlOp2DStitchPlace();
@@ -3895,7 +3902,8 @@ jQuery(function() {
 					}
 				}
 			}
-	
+
+			var wp2StitchModify = "${orderCoForm.coOptionPants2WashableInfo.wp2StitchModify}";
 			var wp2StitchModifyPlace = "${orderCoForm.coOptionPants2WashableInfo.wp2StitchModifyPlace}";
 			if(isNotEmpty(wp2StitchModifyPlace)){
 				wp2StitchModifyPlace = wp2StitchModifyPlace.split("/");
@@ -3911,7 +3919,9 @@ jQuery(function() {
 					}
 				}
 			}
-			jQuery('input[id^="wp2_stitchModifyPlace_id"]:checked').change();
+			if(wp2StitchModify == '0002002'){
+				jQuery('input[id^="wp2_stitchModifyPlace_id"]:checked').change();
+			}
 			
 			ctrlWp2DStitchPlace();
 			ctrlWp2AmfColor();
@@ -4244,6 +4254,7 @@ function getPrice(){
 			jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').removeAttr("disabled");
 		} else if(category == "9000102"){
 			jQuery('#tp2_GlossFablic').removeAttr("disabled");
+			jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').removeAttr("disabled");
 		} else if(category == "9000103"){
 			jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').removeAttr("disabled");
 		}
@@ -4252,6 +4263,7 @@ function getPrice(){
 			jQuery('input[name="coOptionPants2StandardInfo.op2Stitch"]').prop("disabled",true);
 		} else if(category == "9000102"){
 			jQuery("#tp2_GlossFablic").prop("disabled",true);
+			jQuery('input[name="coOptionPants2TuxedoInfo.tp2Stitch"]').prop("disabled",true);
 		} else if(category == "9000103"){
 			jQuery('input[name="coOptionPants2WashableInfo.wp2Stitch"]').prop("disabled",true);
 		}
@@ -5066,7 +5078,7 @@ function  op2Session(){
 	} else {
 
 		// 後続処理のために一旦パンチェリーナの選択肢を活性化させる
-		jQuery('#op1_pancherina_id1').prop("disabled", false);
+		jQuery('#op2_pancherina_id1').prop("disabled", false);
 		jQuery('#op2_pancherina_id2').prop("disabled", false);
 
 		// 現在のフロント仕様を取得
@@ -5238,7 +5250,7 @@ function  tp2Session(){
 		});
 
 		// ベルトループの選択肢制御
-		jQuery('input[id^="tp2_beltLotp2_"]').each(function() {
+		jQuery('input[id^="tp2_beltLoop_"]').each(function() {
 			var tmpTp2BeltLoopElem = jQuery(this);
 			var value = tmpTp2BeltLoopElem.val();
 
@@ -5288,7 +5300,7 @@ function  tp2Session(){
 	} else {
 
 		// 後続処理のために一旦パンチェリーナの選択肢を活性化させる
-		jQuery('#tp1_pancherina_id1').prop("disabled", false);
+		jQuery('#tp2_pancherina_id1').prop("disabled", false);
 		jQuery('#tp2_pancherina_id2').prop("disabled", false);
 
 		// 現在のフロント仕様を取得
@@ -5447,7 +5459,7 @@ function  wp2Session(){
 		});
 
 		// ベルトループの選択肢制御
-		jQuery('input[id^="wp2_beltLowp2_"]').each(function() {
+		jQuery('input[id^="wp2_beltLoop_"]').each(function() {
 			var tmpWp2BeltLoopElem = jQuery(this);
 			var value = tmpWp2BeltLoopElem.val();
 
@@ -5497,7 +5509,7 @@ function  wp2Session(){
 	} else {
 
 		// 後続処理のために一旦パンチェリーナの選択肢を活性化させる
-		jQuery('#wp1_pancherina_id1').prop("disabled", false);
+		jQuery('#wp2_pancherina_id1').prop("disabled", false);
 		jQuery('#wp2_pancherina_id2').prop("disabled", false);
 
 		// 現在のフロント仕様を取得

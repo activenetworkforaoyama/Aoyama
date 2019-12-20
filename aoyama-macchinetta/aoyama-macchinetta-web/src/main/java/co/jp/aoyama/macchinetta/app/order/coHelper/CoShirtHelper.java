@@ -469,8 +469,8 @@ public class CoShirtHelper {
 
 //		orderCoForm.getCoAdjustShirtStandardInfo()
 //				.setCorStBackdartsPackSize(order.getCorStBackdartsPackSize().toString());
-		orderCoForm.getCoAdjustShirtStandardInfo()
-				.setCorStBackdartsPackGross(order.getCorStBackdartsPackGross().toString());
+		//orderCoForm.getCoAdjustShirtStandardInfo()
+				//.setCorStBackdartsPackGross(order.getCorStBackdartsPackGross().toString());
 		orderCoForm.getCoAdjustShirtStandardInfo()
 				.setCorStBackdartsPackCorrect(order.getCorStBackdartsPackCorrect().toString());
 
@@ -673,10 +673,14 @@ public class CoShirtHelper {
 		return resultMap;
 	}
 
-	public void optionShirtDbToOrder(String productItem, Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService, OrderService orderService) {
+	public void optionShirtDbToOrder(String productItem, Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService, OrderService orderService, String isDnpDivertFlag) {
 		//SHIRTのオプション情報を取得
-		Order orderSt = orderListService.findOrderStOptionByOrderId(order.getOrderId());
-		
+		Order orderSt = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderSt = orderListService.findDnpOrderStOptionByOrderId(order.getOrderId());
+		}else {
+			orderSt = orderListService.findOrderStOptionByOrderId(order.getOrderId());
+		}
 		//初期化設定
 		CoOptionShirtStandardInfo coOptionShirtStandardInfo = orderCoForm.getCoOptionShirtStandardInfo();
 		//オプション情報が存在する場合、レコード値を設定
@@ -688,8 +692,12 @@ public class CoShirtHelper {
 		}
 		
 		//SHIRTの補正情報を取得
-		Order orderStAd = orderListService.findOrderStByPk(order.getOrderId());
-		
+		Order orderStAd = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderStAd = orderListService.findDnpOrderStByPk(order.getOrderId());
+		}else {
+			orderStAd = orderListService.findOrderStByPk(order.getOrderId());
+		}
 		//初期化設定
 		CoAdjustShirtStandardInfo coAdjustShirtStandardInfo = orderCoForm.getCoAdjustShirtStandardInfo();
 		if(coAdjustShirtStandardInfo == null ) {

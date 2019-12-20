@@ -1884,17 +1884,17 @@ function formatMoney(number, places, symbol, thousand, decimal) {
 
 
 //承り日は現在の日
-if("${orderForm.status}" == "" || "${orderForm.status}" == "T0" || "${orderForm.status}" == "T1"){
+// if("${orderForm.status}" == "" || "${orderForm.status}" == "T0" || "${orderForm.status}" == "T1"){
 	var now = new Date();
 	var day = ("0" + now.getDate()).slice(-2);
 	var month = ("0" + (now.getMonth() + 1)).slice(-2);
 
 	jQuery("#License_day").html(now.getFullYear() + "/" + month + "/" + day);
-}
-else {
-	var productOrderdDate = "${productOrderdDateFormat}";
-	jQuery("#License_day").html(dateFormat(productOrderdDate));
-}
+// }
+// else {
+// 	var productOrderdDate = "${productOrderdDateFormat}";
+// 	jQuery("#License_day").html(dateFormat(productOrderdDate));
+// }
 
 var statusList = {T0:"一時保存",T1:"取り置き",T2:"登録済",T3:"会計済",T4:"商品部承認済",T5:"メーカー承認済",T6:"仕入済",T7:"お渡し済"};
 jQuery("#status_appear").html(statusList["${orderForm.status}"]);

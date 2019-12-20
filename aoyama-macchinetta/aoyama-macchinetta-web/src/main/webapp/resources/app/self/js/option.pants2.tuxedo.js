@@ -56,7 +56,7 @@ function initOptionPants2Tuxedo() {
 					//2はモデルチェク失敗の場合
 					jQuery("#tp2_pantsModelCheck").show();
 					jQuery("#pt2ModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS（2本目）'));
-					appendAlertPo('tp2_pantsModelCheck',getMsgByOneArg('msg065','PANTS（2本目）'));
+					setAlert('tp2_pantsModelCheck',getMsgByOneArg('msg065','PANTS（2本目）'));
 				}
 			}
 
@@ -104,7 +104,7 @@ function initOptionPants2Tuxedo() {
 			var selectedBeltLoop = jQuery('input[name="coOptionPants2TuxedoInfo.tp2BeltLoop"]:checked').val();
 	
 			// ベルトループの選択肢制御
-			jQuery('input[id^="tp2_beltLotp2_"]').each(function() {
+			jQuery('input[id^="tp2_beltLoop_"]').each(function() {
 				var tmpTp2BeltLoopElem = jQuery(this);
 				var value = tmpTp2BeltLoopElem.val();
 	
@@ -314,7 +314,7 @@ function initOptionPants2Tuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var tp2_bhColor = jQuery('input[name="coOptionPants2TuxedoInfo.tp2BhColor"]:checked').val();
 
-			if (tp2_bhColor == '0002701') {
+			if (tp2_bhColor != '0002702') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tp2_bhColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -404,7 +404,7 @@ function initOptionPants2Tuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var tp2_byColor = jQuery('input[name="coOptionPants2TuxedoInfo.tp2ByColor"]:checked').val();
 
-			if (tp2_byColor == '0003001') {
+			if (tp2_byColor != '0003002') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tp2_byColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -797,7 +797,6 @@ jQuery('input[name="coOptionPants2TuxedoInfo.tp2Adjuster"]').change(function(ind
 		jQuery('#tp2_pinLoop_id2').prop('disabled', false);
 		jQuery('#tp2_pinLoop_id2').prop('checked', true);
 	} else {
-		
 		switch(selected) {
 			case "0000601": oBLoopElemY.prop("checked", true); break;
 			case "0000602": oBLoopElemN.prop("checked", true); break;

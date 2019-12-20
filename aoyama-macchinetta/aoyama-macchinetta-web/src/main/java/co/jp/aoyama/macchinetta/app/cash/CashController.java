@@ -110,6 +110,8 @@ public class CashController {
 		Long[] arr = new Long[strs.length];
 		//会計の注文の件数
 		Short amount = (short) strs.length;
+		BigDecimal totalPrice=new BigDecimal("0");
+		BigDecimal  multiplyingPower=new BigDecimal("1.1");
 		for(int i=0;i<strs.length;i++){
 			CashInfo cashinfo = cashInfoService.selectOrderByOrderId(strs[i]);
 			if(!"".equals(cashinfo.getCashId()) && cashinfo.getCashId() != null) {
@@ -120,13 +122,15 @@ public class CashController {
 			if(null!=cashinfo.getCustType()&&!"".equals(cashinfo.getCustType())) {
 				if("02".equals(cashinfo.getCustType())) {					
 					BigDecimal  wsPrice=new BigDecimal(cashinfo.getWsPrice());
-					BigDecimal  multiplyingPower=new BigDecimal("1.1");
+					totalPrice=totalPrice.add(wsPrice);
 					wsPrice =wsPrice.multiply(multiplyingPower);
 					cashinfo.setWsPrice(wsPrice.setScale( 0, BigDecimal.ROUND_DOWN ).intValue());
 				}
 			}
 			helpCashForm.add(cashinfo);
 		}
+		totalPrice=totalPrice.multiply(multiplyingPower);
+		
 		Arrays.sort(arr); 
 		cashForm.setHelpCashForm(helpCashForm);
 		Cash cash = cashService.selectOrderByOrderId(strs[0].toString());
@@ -182,9 +186,16 @@ public class CashController {
 		Date date = new Date();
 		// 消費税を取得
 		int taxRate = consumptionService.getTaxRate(date);
+		BigDecimal oldTaxRate= new BigDecimal(taxRate);
+		
+		BigDecimal newTaxRate=oldTaxRate.divide(new BigDecimal("100"),20,BigDecimal.ROUND_HALF_UP);
+		BigDecimal finaleTaxRate=newTaxRate.add(new BigDecimal("1"));
+		totalPrice=totalPrice.multiply(finaleTaxRate);
+		int cashTotalPrice=totalPrice.setScale( 0, BigDecimal.ROUND_DOWN ).intValue();
 		String taxRateStr = String.valueOf(taxRate);
 		model.addAttribute("taxRateStr", taxRateStr);
 		String json = new Gson().toJson(helpCashForm);
+		model.addAttribute("cashTotalPrice", cashTotalPrice);
 		model.addAttribute("json", json);
 		return "cash/cashForm";
 	}

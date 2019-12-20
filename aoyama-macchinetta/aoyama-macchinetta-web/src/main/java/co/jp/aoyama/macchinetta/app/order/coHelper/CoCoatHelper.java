@@ -339,12 +339,12 @@ public class CoCoatHelper {
 		orderCoForm.getCoAdjustCoatStandardInfo()
 				.setCorCtLeftsleeveCorrect(order.getCorCtLeftsleeveCorrect().toString());
 
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightSize(order.getCorCtVenthightSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightGross(order.getCorCtVenthightGross().toString());
+	    //orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightSize(order.getCorCtVenthightSize().toString());
+		//orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightGross(order.getCorCtVenthightGross().toString());
 		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtVenthightCorrect(order.getCorCtVenthightCorrect().toString());
 
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposSize(order.getCorCtPktposSize().toString());
-		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposGross(order.getCorCtPktposGross().toString());
+		//orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposSize(order.getCorCtPktposSize().toString());
+		//orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposGross(order.getCorCtPktposGross().toString());
 		orderCoForm.getCoAdjustCoatStandardInfo().setCorCtPktposCorrect(order.getCorCtPktposCorrect().toString());
 		
 		//orderCoForm.setCorStoreCorrectionMemoAgain(order.getCorStoreCorrectionMemo());
@@ -515,7 +515,7 @@ public class CoCoatHelper {
 	public void optionCoatDbToOrder(String productItem, Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService, OrderService orderService) {
 		Order orderCt = orderListService.findOrderCtOptionByOrderId(order.getOrderId());
 		CoOptionCoatStandardInfo coOptionCoatStandardInfo = orderCoForm.getCoOptionCoatStandardInfo();
-		if(orderCt !=null ) {
+		if(orderCt !=null && !"".equals(orderCt.getCtWaistPktCd()) && null != orderCt.getCtWaistPktCd() && !"".equals(orderCt.getCtChgPktCd()) && null != orderCt.getCtChgPktCd()) {
 			this.coatDefaultValueFromDb(orderCoForm, orderCt);
 		}else {
 			this.coatDefaultValue(orderCoForm);

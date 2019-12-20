@@ -154,6 +154,11 @@ function initOptionJacketStandard() {
 		// 選択中のフロント釦数
 		var frontBtnCnt = jQuery('#oj_frontBtnCnt').val();
 
+		if(isEmpty(frontBtnCnt)){
+			// 未選択の場合は何もしない
+			return;
+		}
+
 		// 選択中のラペルデザイン
 		var selectedLapelDesign = jQuery('input[name="coOptionJacketStandardInfo.ojLapelDesign"]:checked').val();
 
@@ -488,10 +493,17 @@ function initOptionJacketStandard() {
 		jQuery(this).change(function(){
 			// 選択中のステッチ箇所変更
 			ctrlStitchModify();
+			ctrlDStitchModify();
+			ctrlDStitchModifyPlace();
 			if(jQuery(this).val() == "0002401"){
-				ctrlDStitchModify();
-				ctrlDStitchModifyPlace();
 				ctrlAmfColor();
+				jQuery('#amfColor_div input[type="checkbox"]').each(function(index, elem){
+					elem = jQuery(elem);
+					if (elem.prop("checked")) {
+						elem.removeAttr("checked");
+						elem.change();
+					}
+				});
 			}
 		});
 	});
@@ -555,7 +567,7 @@ function initOptionJacketStandard() {
 	});
 
 	// 袖釦
-	jQuery('input[id^="sleeveBtnType"]').each(function() {
+	jQuery('input[id^="sleeveBtnType_id"]').each(function() {
 		jQuery(this).change(function(){
 			var sleeveBtnType = jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]:checked').val();
 			var sleeveBtnCnt = jQuery('#sleeveBtnCnt').val() - 0;
@@ -799,7 +811,7 @@ function initOptionJacketStandard() {
 	// 選択中のボタンホール色指定を取得
 	var byColor = jQuery('input[name="coOptionJacketStandardInfo.ojByColor"]:checked').val();
 	//無し
-	if (byColor == '0003401') {
+	if (byColor != '0003402') {
 		// 無しの場合は操作不可
 		jQuery('input[id^="byColorPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -846,7 +858,7 @@ function initOptionJacketStandard() {
 			// 選択中のボタンホール色指定を取得
 			var byColor = jQuery('input[name="coOptionJacketStandardInfo.ojByColor"]:checked').val();
 			//無し
-			if (byColor == '0003401') {
+			if (byColor != '0003402') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="byColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -1159,7 +1171,7 @@ function ctrlStitchModify() {
 
 	// ステッチ箇所変更の有無で下位階層の表示制御
 	//無し:0002401
-	if (stitchModifyValue != '0002401') {
+	if (stitchModifyValue == '0002402') {
 		jQuery('#stitchModify_yes_area').show();
 	} else {
 		jQuery('#stitchModify_yes_area').hide();
@@ -1217,6 +1229,9 @@ function ctrlStitchModify() {
 
 // ダブルステッチ変更箇所の有効/無効を制御する
 function ctrlDStitchModify() {
+	// 選択中のステッチ箇所変更
+	var stitchModifyValue = jQuery('input[name="coOptionJacketStandardInfo.ojStitchModify"]:checked').val();
+	
 	// 選択中のステッチ箇所変更
 	var dStitchModifyValue = jQuery('input[name="coOptionJacketStandardInfo.ojDStitchModify"]:checked').val();
 
@@ -1287,7 +1302,12 @@ function ctrlDStitchModify() {
 			tmpStitchModify.prop("disabled", true);
 		}
 		// チェック状態の設定
-		tmpStitchModify.prop("checked", stitchModifyDef.default);
+		if(stitchModifyValue == "0002402"){
+			tmpStitchModify.prop("checked", stitchModifyDef.default);
+		}else{
+			tmpStitchModify.prop("checked", false);
+		}
+		
 	}
 
 	// ダブルステッチ変更箇所の有効/無効設定
@@ -1610,6 +1630,13 @@ function ctrlAmfColor() {
 				jQuery('#'+tmpAmfColorPlaceId+'_div').show();
 			} else {
 				jQuery('#'+tmpAmfColorPlaceId+'_div').hide();
+				jQuery('#'+tmpAmfColorPlaceId+'_div input[type="radio"]').each(function(index, elem){ 
+				     elem = jQuery(elem); 
+				     if (elem.prop("checked")) { 
+				     elem.removeAttr("checked"); 
+				     elem.change(); 
+				     } 
+				 })
 			}
 		}
 	}

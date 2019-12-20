@@ -1182,6 +1182,7 @@ var jkModel="";
 var jacketModel = "${orderCoForm.coOptionJacketStandardInfo.ojJacketModel}";
 var tjJacketModel = "${orderCoForm.coOptionJacketTuxedoInfo.tjJacketModel}";
 var wjJacketModel = "${orderCoForm.coOptionJacketWashableInfo.wjJacketModel}";
+var ojGackSpec = "${orderCoForm.coOptionJacketStandardInfo.ojGackSpec}";
 //01:着丈修正、02：ウエスト修正、03：袖丈右修正、04：袖丈左修正
 var jkAdjustList = [
 	{type:"01",id:"corJkBody_div"},
@@ -1261,6 +1262,7 @@ jQuery(document).ready(function() {
     jQuery(document).ajaxSend(function(e, xhr, options) {
         xhr.setRequestHeader(headerName, tokenValue); // (3)
     });
+    var category = jQuery('input[name="productCategory"]:checked').val();
     var jk="";
     var pt="";
     var pt2="";
@@ -1326,16 +1328,105 @@ jQuery(document).ready(function() {
 		 itemCoChangeFlag="0";
 		 }
 		if(itemCode=="01" || itemCode=="02"){
-			if(jkModel!="TR02"){
-	    		jQuery('#oj_figureAlter_id3').prop("disabled", true);
-	    		jQuery('#oj_figureAlter_id2').prop("disabled", true);
-	    		jQuery('#oj_shoulderPat_id3').prop("disabled", true);
-	    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
-	    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
-	    	    jQuery("#oj_figureAlter_id1").prop("checked", true);
-	    	}
-			  jQuery("#oj_shoulderPat_id1").prop("checked", true);
-			  jQuery("#oj_figureAlter_id1").prop("checked", true);
+			if(category == "9000101"){
+				if(jkModel!="TR02"){
+		    		jQuery("#oj_figureAlter_id1").prop("checked", true);
+		    		jQuery('#oj_figureAlter_id2').prop("disabled", true);
+		    		jQuery('#oj_figureAlter_id3').prop("disabled", true);
+		    	}
+				jQuery("#oj_figureAlter_id1").prop("checked", true);
+				if(jkModel == "TR02"){
+					if(ojGackSpec == "0000404"){
+						jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+			    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+					}else{
+						jQuery('#oj_shoulderPat_id3').prop("disabled", false);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+			    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+					}
+				}else if(jkModel == "CH14"){
+					jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+		    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+		    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+				}else if(jkModel == "NR05"){
+					if(ojGackSpec == "0000404"){
+						jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+			    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+					}else{
+						jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+						jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+						jQuery('#oj_shoulderPat_id2').prop("checked", true);
+						
+					}
+				}else if(jkModel == "NZ01"){
+					if(ojGackSpec == "0000404"){
+						jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+			    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+					}else{
+						jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+						jQuery('#oj_shoulderPat_id3').prop("disabled", false);
+						jQuery('#oj_shoulderPat_id3').prop("checked", true);
+						
+					}
+				}else if(jkModel == "BS05"){
+					if(ojGackSpec == "0000404"){
+						jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+			    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+					}else{
+						jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    		jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+						jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+						jQuery('#oj_shoulderPat_id2').prop("checked", true);
+						
+					}
+				}else{
+					jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+		    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+		    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+				}
+			}else{
+				if(jkModel!="TR02"){
+		    		jQuery("#oj_figureAlter_id1").prop("checked", true);
+		    		jQuery('#oj_figureAlter_id2').prop("disabled", true);
+		    		jQuery('#oj_figureAlter_id3').prop("disabled", true);
+		    	}
+				jQuery("#oj_figureAlter_id1").prop("checked", true);
+				if(jkModel == "TR02"){
+					jQuery('#oj_shoulderPat_id3').prop("disabled", false);
+			    	jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+			    	jQuery("#oj_shoulderPat_id1").prop("checked", true);
+				}else if(jkModel == "CH14"){
+					jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+		    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+		    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+				}else if(jkModel == "NR05"){
+					jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    	jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+					jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+					jQuery('#oj_shoulderPat_id2').prop("checked", true);
+					
+				}else if(jkModel == "NZ01"){
+					jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    	jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+					jQuery('#oj_shoulderPat_id3').prop("disabled", false);
+					jQuery('#oj_shoulderPat_id3').prop("checked", true);
+				}else if(jkModel == "BS05"){
+					jQuery('#oj_shoulderPat_id1').prop("disabled", true);
+			    	jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+					jQuery('#oj_shoulderPat_id2').prop("disabled", false);
+					jQuery('#oj_shoulderPat_id2').prop("checked", true);
+				}else{
+					jQuery('#oj_shoulderPat_id3').prop("disabled", true);
+		    		jQuery('#oj_shoulderPat_id2').prop("disabled", true);
+		    		jQuery("#oj_shoulderPat_id1").prop("checked", true);
+				}
+			}
 	    	if(orderFlag == "orderCo"){		    	
 	    		if(jacketAdFlag==""){
 	    			 adjustJkReInit();	  		   				   
@@ -1581,7 +1672,7 @@ jQuery(document).ready(function() {
     	
     });
     jQuery("#pt_hemWidth_relative").click(function(){
-    	jQuery("#corPtHemwidthDegignate").val("10.0");
+    	jQuery("#corPtHemwidthDegignate").val("");
     	jQuery("#ap_hemWidthAbs10").val("1");
     	jQuery("#ap_hemWidthAbs1").val("0");
     	jQuery("#ap_hemWidthAbsM1").val("0");
@@ -1679,7 +1770,7 @@ jQuery(document).ready(function() {
     	jQuery("#ap2_hemWidthAbsM1").val("0");
     });
     jQuery("#pt2_hemWidth_relative").click(function(){
-    	jQuery("#corPt2HemwidthDegignate").val("10.0");
+    	jQuery("#corPt2HemwidthDegignate").val("");
     	jQuery("#ap2_hemWidthAbs10").val("1");
     	jQuery("#ap2_hemWidthAbs1").val("0");
     	jQuery("#ap2_hemWidthAbsM1").val("0");
@@ -2005,6 +2096,42 @@ function ptAdjust(){
 		jQuery("#corPtHipRange_out").html('0');
 		jQuery("#corPtHemwidthRange_out").html('0');
 	}
+
+	if(isEmpty(ptTack)){
+		swal({
+			text:getMsgByOneArg('msg066', 'PANTS（1本目） のタック'),
+			icon:"info"
+	 	});
+		jQuery("#corPtWaist_div_Size").val("");
+		jQuery("#corPtWaist_div_Gross").val("");
+		jQuery("#corPtWaist_div_html").html("000.0cm");
+		jQuery("#corPtWaistRange_out").html("0");
+		jQuery("#corPtWaistRange").val("0");
+		setFont("corPtWaistRange");
+
+		jQuery("#corPtHip_div_Size").val("");
+		jQuery("#corPtHip_div_Gross").val("");
+		jQuery("#corPtHip_div_html").html("000.0cm");
+		jQuery("#corPtHipRange_out").html("0");
+		jQuery("#corPtHipRange").val("0");
+		setFont("corPtHipRange");
+		
+		jQuery("#corPtThigh_div_Size").val("");
+		jQuery("#corPtThigh_div_Gross").val("");
+		jQuery("#corPtThigh_div_html").html("000.0cm");
+		jQuery("#corPtThighRange_out").html("0");
+		jQuery("#corPtThighRange").val("0");
+		setFont("corPtThighRange");
+
+		jQuery("#corPtHemwidth_div_Size").val("");
+		jQuery("#corPtHemwidth_div_Gross").val("");
+		jQuery("#corPtHemwidth_div_html").html("000.0cm");
+		jQuery("#corPtHemwidthRange_out").html("0");
+		jQuery("#corPtHemwidthRange").val("0");
+		setFont("corPtHemwidthRange");
+	 	return ;
+	}
+	
 	var subItemCode = "03";
 	pantsFigure = jQuery("#selectPantsFigure").val();
 	pantsNumber = jQuery("#selectPantsNumber").val();
@@ -2171,6 +2298,42 @@ function pt2Adjust(){
 		jQuery("#corPt2ThighRange_out").html('0');
 		jQuery("#corPt2HemwidthRange_out").html('0');
 	}
+	
+	if(isEmpty(pt2Tack)){
+		swal({
+			text:getMsgByOneArg('msg066', 'PANTS（2本目） のタック'),
+			icon:"info"
+	 	});
+		jQuery("#corPt2Waist_div_Size").val("");
+		jQuery("#corPt2Waist_div_Gross").val("");
+		jQuery("#corPt2Waist_div_html").html("000.0cm");
+		jQuery("#corPt2WaistRange_out").html("0");
+		jQuery("#corPt2WaistRange").val("0");
+		setFont("corPt2WaistRange");
+
+		jQuery("#corPt2Hip_div_Size").val("");
+		jQuery("#corPt2Hip_div_Gross").val("");
+		jQuery("#corPt2Hip_div_html").html("000.0cm");
+		jQuery("#corPt2HipRange_out").html("0");
+		jQuery("#corPt2HipRange").val("0");
+		setFont("corPt2HipRange");
+		
+		jQuery("#corPt2Thigh_div_Size").val("");
+		jQuery("#corPt2Thigh_div_Gross").val("");
+		jQuery("#corPt2Thigh_div_html").html("000.0cm");
+		jQuery("#corPt2ThighRange_out").html("0");
+		jQuery("#corPt2ThighRange").val("0");
+		setFont("corPt2ThighRange");
+
+		jQuery("#corPt2Hemwidth_div_Size").val("");
+		jQuery("#corPt2Hemwidth_div_Gross").val("");
+		jQuery("#corPt2Hemwidth_div_html").html("000.0cm");
+		jQuery("#corPt2HemwidthRange_out").html("0");
+		jQuery("#corPt2HemwidthRange").val("0");
+		setFont("corPt2HemwidthRange");
+	 	return ;
+	}
+	
 	var subItemCode = "07";
 	pants2Figure = jQuery("#selectPants2Figure").val();
 	pants2Number = jQuery("#selectPants2Number").val();
@@ -2407,13 +2570,13 @@ function coatAdjust(){
 	            		jQuery("#corCtRightsleeve_div_Size").val(data[i].typeSize);
 	            		jQuery("#corCtRightsleeve_div_Gross").val(data[i].typeSize);
 					}else if(data[i].adjustClass == "17"){
-						jQuery("#corCtVenthight_div_html")[0].innerHTML='000.0cm';
-	            		jQuery("#corCtVenthight_div_Size").val("0");
-	            		jQuery("#corCtVenthight_div_Gross").val("0");
+						//jQuery("#corCtVenthight_div_html")[0].innerHTML='000.0cm';
+	            		//jQuery("#corCtVenthight_div_Size").val("0");
+	            		//jQuery("#corCtVenthight_div_Gross").val("0");
 					}else if(data[i].adjustClass == "18"){
-						jQuery("#corCtPktpos_div_html")[0].innerHTML='000.0cm';
-	            		jQuery("#corCtPktpos_div_Size").val("0");
-	            		jQuery("#corCtPktpos_div_Gross").val("0");
+						//jQuery("#corCtPktpos_div_html")[0].innerHTML='000.0cm';
+	            		//jQuery("#corCtPktpos_div_Size").val("0");
+	            		//jQuery("#corCtPktpos_div_Gross").val("0");
 					}
 		        }
 	        	if(data==""){
@@ -3657,12 +3820,12 @@ function adjustPtSession(){
 		jQuery("#corStLeftsleeveRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStLeftsleeveCorrect}");
 		setFont("corStLeftsleeveRange");
 
-		jQuery("#corStBackdartsPack_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackSize}");
-		jQuery("#corStBackdartsPack_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}");
-		jQuery("#corStBackdartsPack_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"+"cm");
-		if("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"=="" || "${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"=="0"){
-			jQuery("#corStBackdartsPack_div_html").html("000.0cm");
-			}
+		//jQuery("#corStBackdartsPack_div_Size").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackSize}");
+		//jQuery("#corStBackdartsPack_div_Gross").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}");
+		//jQuery("#corStBackdartsPack_div_html").html("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"+"cm");
+		//if("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"=="" || "${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackGross}"=="0"){
+			//jQuery("#corStBackdartsPack_div_html").html("000.0cm");
+			//}
 		jQuery("#corStBackdartsPackRange_out").html("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackCorrect}");
 		jQuery("#corStBackdartsPackRange").val("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackCorrect}");
         if("${orderCoForm.coAdjustShirtStandardInfo.corStBackdartsPackCorrect}"==""){
@@ -3766,12 +3929,12 @@ function adjustPtSession(){
 		jQuery("#corCtLeftsleeveRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtLeftsleeveCorrect}");
 		setFont("corCtLeftsleeveRange");
 
-		jQuery("#corCtVenthight_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightSize}");
-		jQuery("#corCtVenthight_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}");
-		jQuery("#corCtVenthight_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"+"cm");
-		if("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"=="" || "${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"=="0"){
-			jQuery("#corCtVenthight_div_html").html("000.0cm");
-			}
+		//jQuery("#corCtVenthight_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightSize}");
+		//jQuery("#corCtVenthight_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}");
+		//jQuery("#corCtVenthight_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"+"cm");
+		//if("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"=="" || "${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightGross}"=="0"){
+			//jQuery("#corCtVenthight_div_html").html("000.0cm");
+			//}
 		jQuery("#corCtVenthightRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightCorrect}");
         if("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightCorrect}"==""){
         	jQuery("#corCtVenthightRange_out").html("0");   
@@ -3779,12 +3942,12 @@ function adjustPtSession(){
 		jQuery("#corCtVenthightRange").val("${orderCoForm.coAdjustCoatStandardInfo.corCtVenthightCorrect}");
 		setFont("corCtVenthightRange");
 
-		jQuery("#corCtPktpos_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposSize}");
-		jQuery("#corCtPktpos_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}");
-		jQuery("#corCtPktpos_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"+"cm");
-		if("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"=="" || "${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"=="0"){
-			jQuery("#corCtPktpos_div_html").html("000.0cm");
-			}
+		//jQuery("#corCtPktpos_div_Size").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposSize}");
+		//jQuery("#corCtPktpos_div_Gross").val("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}");
+		//jQuery("#corCtPktpos_div_html").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"+"cm");
+		//if("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"=="" || "${orderCoForm.coAdjustCoatStandardInfo.corCtPktposGross}"=="0"){
+			//jQuery("#corCtPktpos_div_html").html("000.0cm");
+			//}
 		jQuery("#corCtPktposRange_out").html("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}");
         if("${orderCoForm.coAdjustCoatStandardInfo.corCtPktposCorrect}"==""){
         	jQuery("#corCtPktposRange_out").html("0");

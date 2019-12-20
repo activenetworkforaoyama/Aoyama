@@ -4391,17 +4391,17 @@ else{
 }
 
 //承り日は現在の日
-if("${orderCoForm.statusInput}" == "" || "${orderCoForm.statusInput}" == "T0" || "${orderCoForm.statusInput}" == "T1"){
+// if("${orderCoForm.statusInput}" == "" || "${orderCoForm.statusInput}" == "T0" || "${orderCoForm.statusInput}" == "T1"){
 	var now = new Date();
 	var day = ("0" + now.getDate()).slice(-2);
 	var month = ("0" + (now.getMonth() + 1)).slice(-2);
 
 	jQuery("#License_day").html(now.getFullYear() + "/" + month + "/" + day);
-}
-else {
-	var productOrderdDate = "${productOrderdDateFormat}";
-	jQuery("#License_day").html(dateFormat(productOrderdDate));
-}
+// }
+// else {
+// 	var productOrderdDate = "${productOrderdDateFormat}";
+// 	jQuery("#License_day").html(dateFormat(productOrderdDate));
+// }
 
 //お渡し日format
 function dateFormat(time) {

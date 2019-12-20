@@ -662,125 +662,127 @@ public class CoJakcetHelper {
 				messages.add("E031", "JACKETサイズ号数");
 				jacketFlag = true;
 			}
-			
-			if(BaseCheckUtil.isNotEmpty(sizeFigure)&&BaseCheckUtil.isNotEmpty(sizeNumber)) {
-				
-				String corJkBodySize = coAdjustJacketStandardInfo.getCorJkBodySize();
-				if("".equals(corJkBodySize)||"0".equals(corJkBodySize)||corJkBodySize == null) {
-					messages.add("E034", "JACKETの着丈修正");
-					jacketFlag = true;
-				}
-				
-				String corJkWaistSize = coAdjustJacketStandardInfo.getCorJkWaistSize();
-				if("".equals(corJkWaistSize)||"0".equals(corJkWaistSize)||corJkWaistSize == null) {
-					messages.add("E034", "JACKETのウエスト修正");
-					jacketFlag = true;
-				}
-				
-				String corJkRightsleeveSize = coAdjustJacketStandardInfo.getCorJkRightsleeveSize();
-				if("".equals(corJkRightsleeveSize)||"0".equals(corJkRightsleeveSize)||corJkRightsleeveSize == null) {
-					messages.add("E034", "JACKETの袖丈右修正");
-					jacketFlag = true;
-				}
-				
-				String corJkLeftsleeveSize = coAdjustJacketStandardInfo.getCorJkLeftsleeveSize();
-				if("".equals(corJkLeftsleeveSize)||"0".equals(corJkLeftsleeveSize)||corJkLeftsleeveSize == null) {
-					messages.add("E034", "JACKETの袖丈左修正");
-					jacketFlag = true;
-				}
-				
-				List<TypeSizeOptimization> coJkTypeSizeOptimization = this.getCoJkTypeSizeOptimization(orderCoForm,typeSizeService);
-				List<Adjust> jkAdjustList = adjustByItem.get("02");
-				if(!jkAdjustList.isEmpty()&&!coJkTypeSizeOptimization.isEmpty()) {
-					for (Adjust adjust : jkAdjustList) {
-						Map<String, String> jkStandardValue = this
-								.getJkStandardValue(coJkTypeSizeOptimization);
-						// JACKET_着丈_型サイズ
-						String stringCorJkBodylengthSize = jkStandardValue.get("corJkBodylengthSize");
-						BigDecimal corJkBodylengthSize = new BigDecimal(stringCorJkBodylengthSize);
+			if(!jacketFlag) {
+				if(BaseCheckUtil.isNotEmpty(sizeFigure)&&BaseCheckUtil.isNotEmpty(sizeNumber)) {
+					
+					String corJkBodySize = coAdjustJacketStandardInfo.getCorJkBodySize();
+					if("".equals(corJkBodySize)||"0".equals(corJkBodySize)||corJkBodySize == null) {
+						messages.add("E034", "JACKETの着丈修正");
+						jacketFlag = true;
+					}
+					
+					String corJkWaistSize = coAdjustJacketStandardInfo.getCorJkWaistSize();
+					if("".equals(corJkWaistSize)||"0".equals(corJkWaistSize)||corJkWaistSize == null) {
+						messages.add("E034", "JACKETのウエスト修正");
+						jacketFlag = true;
+					}
+					
+					String corJkRightsleeveSize = coAdjustJacketStandardInfo.getCorJkRightsleeveSize();
+					if("".equals(corJkRightsleeveSize)||"0".equals(corJkRightsleeveSize)||corJkRightsleeveSize == null) {
+						messages.add("E034", "JACKETの袖丈右修正");
+						jacketFlag = true;
+					}
+					
+					String corJkLeftsleeveSize = coAdjustJacketStandardInfo.getCorJkLeftsleeveSize();
+					if("".equals(corJkLeftsleeveSize)||"0".equals(corJkLeftsleeveSize)||corJkLeftsleeveSize == null) {
+						messages.add("E034", "JACKETの袖丈左修正");
+						jacketFlag = true;
+					}
+					
+					List<TypeSizeOptimization> coJkTypeSizeOptimization = this.getCoJkTypeSizeOptimization(orderCoForm,typeSizeService);
+					List<Adjust> jkAdjustList = adjustByItem.get("02");
+					if(!jkAdjustList.isEmpty()&&!coJkTypeSizeOptimization.isEmpty()) {
+						for (Adjust adjust : jkAdjustList) {
+							Map<String, String> jkStandardValue = this
+									.getJkStandardValue(coJkTypeSizeOptimization);
+							// JACKET_着丈_型サイズ
+							String stringCorJkBodylengthSize = jkStandardValue.get("corJkBodylengthSize");
+							BigDecimal corJkBodylengthSize = new BigDecimal(stringCorJkBodylengthSize);
 
-						// JACKET_ウエスト_型サイズ
-						String stringCorJkWaistSize = jkStandardValue.get("corJkWaistSize");
-						BigDecimal corJkWaistlengthSize = new BigDecimal(stringCorJkWaistSize);
+							// JACKET_ウエスト_型サイズ
+							String stringCorJkWaistSize = jkStandardValue.get("corJkWaistSize");
+							BigDecimal corJkWaistlengthSize = new BigDecimal(stringCorJkWaistSize);
 
-						// JACKET_袖丈右_型サイズ
-						String stringCorJkRightsleeveSize = jkStandardValue.get("corJkRightsleeveSize");
-						BigDecimal corJkRightlengthsleeveSize = new BigDecimal(stringCorJkRightsleeveSize);
+							// JACKET_袖丈右_型サイズ
+							String stringCorJkRightsleeveSize = jkStandardValue.get("corJkRightsleeveSize");
+							BigDecimal corJkRightlengthsleeveSize = new BigDecimal(stringCorJkRightsleeveSize);
 
-						// JACKET_袖丈左_型サイズ
-						String stringCorJkLeftsleeveSize = jkStandardValue.get("corJkLeftsleeveSize");
-						BigDecimal corJkLeftlengthsleeveSize = new BigDecimal(stringCorJkLeftsleeveSize);
+							// JACKET_袖丈左_型サイズ
+							String stringCorJkLeftsleeveSize = jkStandardValue.get("corJkLeftsleeveSize");
+							BigDecimal corJkLeftlengthsleeveSize = new BigDecimal(stringCorJkLeftsleeveSize);
 
-						// JACKET_着丈_グロス
-						BigDecimal corJkBodylengthGross = new BigDecimal(
-								coAdjustJacketStandardInfo.getCorJkBodyGross());
+							// JACKET_着丈_グロス
+							BigDecimal corJkBodylengthGross = new BigDecimal(
+									coAdjustJacketStandardInfo.getCorJkBodyGross());
 
-						// JACKET_ウエスト_グロス
-						BigDecimal corJkWaistGross = new BigDecimal(coAdjustJacketStandardInfo.getCorJkWaistGross());
+							// JACKET_ウエスト_グロス
+							BigDecimal corJkWaistGross = new BigDecimal(coAdjustJacketStandardInfo.getCorJkWaistGross());
 
-						// JACKET_袖丈右_グロス
-						BigDecimal corJkRightsleeveGross = new BigDecimal(
-								coAdjustJacketStandardInfo.getCorJkRightsleeveGross());
+							// JACKET_袖丈右_グロス
+							BigDecimal corJkRightsleeveGross = new BigDecimal(
+									coAdjustJacketStandardInfo.getCorJkRightsleeveGross());
 
-						// JACKET_袖丈左_グロス
-						BigDecimal corJkLeftsleeveGross = new BigDecimal(
-								coAdjustJacketStandardInfo.getCorJkLeftsleeveGross());
+							// JACKET_袖丈左_グロス
+							BigDecimal corJkLeftsleeveGross = new BigDecimal(
+									coAdjustJacketStandardInfo.getCorJkLeftsleeveGross());
 
-						if (item.equals(adjust.getItemCode())) {
-							if ("02".equals(adjust.getSubItemCode())) {
-								// 着丈修正
-								if ("01".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corJkBodylengthSize);
-									BigDecimal addMax = adjusteMax.add(corJkBodylengthSize);
-									if (corJkBodylengthGross.compareTo(addMin) == -1
-											|| corJkBodylengthGross.compareTo(addMax) == 1) {
-										messages.add("E035", "JACKETの着丈修正");
-										jacketFlag = true;
+							if (item.equals(adjust.getItemCode())) {
+								if ("02".equals(adjust.getSubItemCode())) {
+									// 着丈修正
+									if ("01".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corJkBodylengthSize);
+										BigDecimal addMax = adjusteMax.add(corJkBodylengthSize);
+										if (corJkBodylengthGross.compareTo(addMin) == -1
+												|| corJkBodylengthGross.compareTo(addMax) == 1) {
+											messages.add("E035", "JACKETの着丈修正");
+											jacketFlag = true;
+										}
 									}
-								}
-								// ウエスト修正
-								if ("02".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corJkWaistlengthSize);
-									BigDecimal addMax = adjusteMax.add(corJkWaistlengthSize);
-									if (corJkWaistGross.compareTo(addMin) == -1
-											|| corJkWaistGross.compareTo(addMax) == 1) {
-										messages.add("E035", "JACKETのウエスト修正");
-										jacketFlag = true;
+									// ウエスト修正
+									if ("02".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corJkWaistlengthSize);
+										BigDecimal addMax = adjusteMax.add(corJkWaistlengthSize);
+										if (corJkWaistGross.compareTo(addMin) == -1
+												|| corJkWaistGross.compareTo(addMax) == 1) {
+											messages.add("E035", "JACKETのウエスト修正");
+											jacketFlag = true;
+										}
 									}
-								}
-								// 袖丈右修正
-								if ("03".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corJkRightlengthsleeveSize);
-									BigDecimal addMax = adjusteMax.add(corJkRightlengthsleeveSize);
-									if (corJkRightsleeveGross.compareTo(addMin) == -1
-											|| corJkRightsleeveGross.compareTo(addMax) == 1) {
-										messages.add("E035", "JACKETの袖丈右修正");
-										jacketFlag = true;
+									// 袖丈右修正
+									if ("03".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corJkRightlengthsleeveSize);
+										BigDecimal addMax = adjusteMax.add(corJkRightlengthsleeveSize);
+										if (corJkRightsleeveGross.compareTo(addMin) == -1
+												|| corJkRightsleeveGross.compareTo(addMax) == 1) {
+											messages.add("E035", "JACKETの袖丈右修正");
+											jacketFlag = true;
+										}
 									}
-								}
-								// 袖丈左修正
-								if ("04".equals(adjust.getAdjusteClass())) {
-									BigDecimal adjusteMax = adjust.getAdjusteMax();
-									BigDecimal adjusteMin = adjust.getAdjusteMin();
-									BigDecimal addMin = adjusteMin.add(corJkLeftlengthsleeveSize);
-									BigDecimal addMax = adjusteMax.add(corJkLeftlengthsleeveSize);
-									if (corJkLeftsleeveGross.compareTo(addMin) == -1
-											|| corJkLeftsleeveGross.compareTo(addMax) == 1) {
-										messages.add("E035", "JACKETの袖丈左修正");
-										jacketFlag = true;
+									// 袖丈左修正
+									if ("04".equals(adjust.getAdjusteClass())) {
+										BigDecimal adjusteMax = adjust.getAdjusteMax();
+										BigDecimal adjusteMin = adjust.getAdjusteMin();
+										BigDecimal addMin = adjusteMin.add(corJkLeftlengthsleeveSize);
+										BigDecimal addMax = adjusteMax.add(corJkLeftlengthsleeveSize);
+										if (corJkLeftsleeveGross.compareTo(addMin) == -1
+												|| corJkLeftsleeveGross.compareTo(addMax) == 1) {
+											messages.add("E035", "JACKETの袖丈左修正");
+											jacketFlag = true;
+										}
 									}
 								}
 							}
 						}
 					}
-				}
+				}	
 			}
+			
 		}
 		return jacketFlag;
 	}
@@ -1310,7 +1312,12 @@ public class CoJakcetHelper {
 			optionJacketStandardInfo.setOjSleeveSpec(orderJK.getJkSleeveTypeCd());
 			optionJacketStandardInfo.setOjManica(orderJK.getJkManicaCd());
 			optionJacketStandardInfo.setOjSleeveBtnType(orderJK.getJkSleeveBtnCd());
-			optionJacketStandardInfo.setOjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			String jkSleeveBtnCd = orderJK.getJkSleeveBtnCd();
+			if(BaseCheckUtil.isEmpty(jkSleeveBtnCd)) {
+				optionJacketStandardInfo.setOjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
+			}else {
+				optionJacketStandardInfo.setOjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			}
 			optionJacketStandardInfo.setOjCuffSpec(orderJK.getJkCuffCd());
 			optionJacketStandardInfo.setOjInsidePktChange(orderJK.getJkInnerPktType());
 			optionJacketStandardInfo.setOjInsidePktPlace(orderJK.getJkInnerPktCd());
@@ -1366,7 +1373,12 @@ public class CoJakcetHelper {
 			optionJacketTuxedoInfo.setTjSleeveSpec(orderJK.getJkSleeveTypeCd());
 			optionJacketTuxedoInfo.setTjManica(orderJK.getJkManicaCd());
 			optionJacketTuxedoInfo.setTjSleeveBtnType(orderJK.getJkSleeveBtnCd());
-			optionJacketTuxedoInfo.setTjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			String jkSleeveBtnCd = orderJK.getJkSleeveBtnCd();
+			if(BaseCheckUtil.isEmpty(jkSleeveBtnCd)) {
+				optionJacketTuxedoInfo.setTjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
+			}else {
+				optionJacketTuxedoInfo.setTjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			}
 			optionJacketTuxedoInfo.setTjCuffSpec(orderJK.getJkCuffCd());
 			optionJacketTuxedoInfo.setTjInsidePktChange(orderJK.getJkInnerPktType());
 			optionJacketTuxedoInfo.setTjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
@@ -1408,7 +1420,12 @@ public class CoJakcetHelper {
 			optionJacketWashableInfo.setWjSleeveSpec(orderJK.getJkSleeveTypeCd());
 			optionJacketWashableInfo.setWjManica(orderJK.getJkManicaCd());
 			optionJacketWashableInfo.setWjSleeveBtnType(orderJK.getJkSleeveBtnCd());
-			optionJacketWashableInfo.setWjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			String jkSleeveBtnCd = orderJK.getJkSleeveBtnCd();
+			if(BaseCheckUtil.isEmpty(jkSleeveBtnCd)) {
+				optionJacketWashableInfo.setWjSleeveBtnCnt(OptionCodeKeys.JK_SLEEVE_BTN_CNT4);
+			}else {
+				optionJacketWashableInfo.setWjSleeveBtnCnt(String.valueOf(orderJK.getJkSleeveBtnNumber()));
+			}
 			optionJacketWashableInfo.setWjCuffSpec(orderJK.getJkCuffCd());
 			optionJacketWashableInfo.setWjInsidePktChange(orderJK.getJkInnerPktType());
 			optionJacketWashableInfo.setWjBreastInnerPkt(orderJK.getJkRightInnerPktTypeCd());
@@ -2126,15 +2143,23 @@ public class CoJakcetHelper {
 	
 	public void optionJacketDbToOrder(String productItem, String productCategory,
 			Order order, OrderCoForm orderCoForm, OrderListService orderListService, ModelService modelService,
-			OrderService orderService, String orderFlag) {
-		Order orderJk = orderListService.findOrderJkOptionByOrderId(order.getOrderId());
+			OrderService orderService, String orderFlag ,String isDnpDivertFlag) {
+		Order orderJk = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderJk = orderListService.findDnpOrderJkOptionByOrderId(order.getOrderId());
+		}else {
+			orderJk = orderListService.findOrderJkOptionByOrderId(order.getOrderId());
+		}
+		
 		if (orderJk != null) {
-			String jkFrtBtnCd = orderJk.getJkFrtBtnCd();
-			String jkFlowerHoleCd = orderJk.getJkFlowerHoleCd();
+			// JACKET_マニカ
+			String jkManicaCd = orderJk.getJkManicaCd();
+			// JACKET_腰ポケッ
+			String jkWaistPktCd = orderJk.getJkWaistPktCd();
+			// JACKET_胸ポケット
 			String jkBreastPktCd = orderJk.getJkBreastPktCd();
-			if((jkFrtBtnCd == null||"".equals(jkFrtBtnCd))&&
-					(jkFlowerHoleCd == null||"".equals(jkFlowerHoleCd))&&
-					(jkBreastPktCd == null||"".equals(jkFrtBtnCd))) {
+			if (BaseCheckUtil.isEmpty(jkManicaCd) && BaseCheckUtil.isEmpty(jkBreastPktCd)
+					&& BaseCheckUtil.isEmpty(jkWaistPktCd)) {
 				this.jacketDefaultValue(orderCoForm);
 			}else {
 				this.jacketDefaultValueFromDb(orderCoForm, orderJk);
@@ -2143,7 +2168,13 @@ public class CoJakcetHelper {
 			this.jacketDefaultValue(orderCoForm);
 		}
 
-		Order orderJkAd = orderListService.findOrderJkByPk(order.getOrderId());
+		Order orderJkAd = null;
+		if("1".equals(isDnpDivertFlag)) {
+			orderJkAd = orderListService.findDnpOrderJkByPk(order.getOrderId());
+		}else {
+			orderJkAd = orderListService.findOrderJkByPk(order.getOrderId());
+		}
+		
 		CoAdjustJacketStandardInfo coAdjustJacketStandardInfo = orderCoForm.getCoAdjustJacketStandardInfo();
 		if (coAdjustJacketStandardInfo == null) {
 			coAdjustJacketStandardInfo = new CoAdjustJacketStandardInfo();
@@ -2474,29 +2505,33 @@ public class CoJakcetHelper {
 					if( "stitchModify_id".equals(valueFour)) {
 						
 						List<String> stitchModifyList = new ArrayList<String>();
-						String ojStitchModifyPlace1 = optionJacketStandardInfo.getOjStitchModifyPlace1();
-						stitchModifyList.add(ojStitchModifyPlace1);
-						String ojStitchModifyPlace2 = optionJacketStandardInfo.getOjStitchModifyPlace2();
-						stitchModifyList.add(ojStitchModifyPlace2);
-						String ojStitchModifyPlace3 = optionJacketStandardInfo.getOjStitchModifyPlace3();
-						stitchModifyList.add(ojStitchModifyPlace3);
-						String ojStitchModifyPlace4 = optionJacketStandardInfo.getOjStitchModifyPlace4();
-						stitchModifyList.add(ojStitchModifyPlace4);
-						String ojStitchModifyPlace5 = optionJacketStandardInfo.getOjStitchModifyPlace5();
-						stitchModifyList.add(ojStitchModifyPlace5);
-						String ojStitchModifyPlace6 = optionJacketStandardInfo.getOjStitchModifyPlace6();
-						stitchModifyList.add(ojStitchModifyPlace6);
-						String ojStitchModifyPlace7 = optionJacketStandardInfo.getOjStitchModifyPlace7();
-						stitchModifyList.add(ojStitchModifyPlace7);
-						String ojStitchModifyPlace8 = optionJacketStandardInfo.getOjStitchModifyPlace8();
-						stitchModifyList.add(ojStitchModifyPlace8);
-						String ojStitchModifyPlace9 = optionJacketStandardInfo.getOjStitchModifyPlace9();
-						stitchModifyList.add(ojStitchModifyPlace9);
+						String ojStitchModify = optionJacketStandardInfo.getOjStitchModify();
+						if(OptionCodeKeys.JK_0002402.equals(ojStitchModify)) {
+							String ojStitchModifyPlace1 = optionJacketStandardInfo.getOjStitchModifyPlace1();
+							stitchModifyList.add(ojStitchModifyPlace1);
+							String ojStitchModifyPlace2 = optionJacketStandardInfo.getOjStitchModifyPlace2();
+							stitchModifyList.add(ojStitchModifyPlace2);
+							String ojStitchModifyPlace3 = optionJacketStandardInfo.getOjStitchModifyPlace3();
+							stitchModifyList.add(ojStitchModifyPlace3);
+							String ojStitchModifyPlace4 = optionJacketStandardInfo.getOjStitchModifyPlace4();
+							stitchModifyList.add(ojStitchModifyPlace4);
+							String ojStitchModifyPlace5 = optionJacketStandardInfo.getOjStitchModifyPlace5();
+							stitchModifyList.add(ojStitchModifyPlace5);
+							String ojStitchModifyPlace6 = optionJacketStandardInfo.getOjStitchModifyPlace6();
+							stitchModifyList.add(ojStitchModifyPlace6);
+							String ojStitchModifyPlace7 = optionJacketStandardInfo.getOjStitchModifyPlace7();
+							stitchModifyList.add(ojStitchModifyPlace7);
+							String ojStitchModifyPlace8 = optionJacketStandardInfo.getOjStitchModifyPlace8();
+							stitchModifyList.add(ojStitchModifyPlace8);
+							String ojStitchModifyPlace9 = optionJacketStandardInfo.getOjStitchModifyPlace9();
+							stitchModifyList.add(ojStitchModifyPlace9);
+						}
+						
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
 						stitchModifyList.removeAll(Collections.singleton(""));
 						
-						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne)) {
+						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne))) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
 							//orderPrice = getOrderPrice(projectPriceCode, "", orderCoForm);
 						}else {
@@ -2580,7 +2615,7 @@ public class CoJakcetHelper {
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
-						if (OptionCodeKeys.JK_0002801.equals(invokeOne)||(OptionCodeKeys.JK_0002802.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0002801.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) || amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
@@ -2643,7 +2678,7 @@ public class CoJakcetHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
@@ -2704,7 +2739,7 @@ public class CoJakcetHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(ojFrontBtnCnt) || "0000106".equals(ojFrontBtnCnt)) {
@@ -2855,7 +2890,7 @@ public class CoJakcetHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
@@ -2916,7 +2951,7 @@ public class CoJakcetHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
@@ -3025,29 +3060,33 @@ public class CoJakcetHelper {
 					if( "wj_stitchModify_id".equals(valueFour)) {
 						
 						List<String> stitchModifyList = new ArrayList<String>();
-						String wjStitchModifyPlace1 = optionJacketWashableInfo.getWjStitchModifyPlace1();
-						stitchModifyList.add(wjStitchModifyPlace1);
-						String wjStitchModifyPlace2 = optionJacketWashableInfo.getWjStitchModifyPlace2();
-						stitchModifyList.add(wjStitchModifyPlace2);
-						String wjStitchModifyPlace3 = optionJacketWashableInfo.getWjStitchModifyPlace3();
-						stitchModifyList.add(wjStitchModifyPlace3);
-						String wjStitchModifyPlace4 = optionJacketWashableInfo.getWjStitchModifyPlace4();
-						stitchModifyList.add(wjStitchModifyPlace4);
-						String wjStitchModifyPlace5 = optionJacketWashableInfo.getWjStitchModifyPlace5();
-						stitchModifyList.add(wjStitchModifyPlace5);
-						String wjStitchModifyPlace6 = optionJacketWashableInfo.getWjStitchModifyPlace6();
-						stitchModifyList.add(wjStitchModifyPlace6);
-						String wjStitchModifyPlace7 = optionJacketWashableInfo.getWjStitchModifyPlace7();
-						stitchModifyList.add(wjStitchModifyPlace7);
-						String wjStitchModifyPlace8 = optionJacketWashableInfo.getWjStitchModifyPlace8();
-						stitchModifyList.add(wjStitchModifyPlace8);
-						String wjStitchModifyPlace9 = optionJacketWashableInfo.getWjStitchModifyPlace9();
-						stitchModifyList.add(wjStitchModifyPlace9);
+						String wjStitchModify = optionJacketWashableInfo.getWjStitchModify();
+						if(OptionCodeKeys.JK_0002402.equals(wjStitchModify)) {
+							
+							String wjStitchModifyPlace1 = optionJacketWashableInfo.getWjStitchModifyPlace1();
+							stitchModifyList.add(wjStitchModifyPlace1);
+							String wjStitchModifyPlace2 = optionJacketWashableInfo.getWjStitchModifyPlace2();
+							stitchModifyList.add(wjStitchModifyPlace2);
+							String wjStitchModifyPlace3 = optionJacketWashableInfo.getWjStitchModifyPlace3();
+							stitchModifyList.add(wjStitchModifyPlace3);
+							String wjStitchModifyPlace4 = optionJacketWashableInfo.getWjStitchModifyPlace4();
+							stitchModifyList.add(wjStitchModifyPlace4);
+							String wjStitchModifyPlace5 = optionJacketWashableInfo.getWjStitchModifyPlace5();
+							stitchModifyList.add(wjStitchModifyPlace5);
+							String wjStitchModifyPlace6 = optionJacketWashableInfo.getWjStitchModifyPlace6();
+							stitchModifyList.add(wjStitchModifyPlace6);
+							String wjStitchModifyPlace7 = optionJacketWashableInfo.getWjStitchModifyPlace7();
+							stitchModifyList.add(wjStitchModifyPlace7);
+							String wjStitchModifyPlace8 = optionJacketWashableInfo.getWjStitchModifyPlace8();
+							stitchModifyList.add(wjStitchModifyPlace8);
+							String wjStitchModifyPlace9 = optionJacketWashableInfo.getWjStitchModifyPlace9();
+							stitchModifyList.add(wjStitchModifyPlace9);
+						}
 						
 						stitchModifyList.removeAll(Collections.singleton(null));
 						stitchModifyList.removeAll(Collections.singleton(""));
 						
-						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne)) {
+						if(stitchModifyList.isEmpty()|| OptionCodeKeys.JK_0002401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ) {
 							splicingCodeForFindUniquePrice = code + key + invokeOne;
 						}else {
 							Integer orderPriceInt = 0;
@@ -3126,7 +3165,7 @@ public class CoJakcetHelper {
 						amfColorSet.removeAll(Collections.singleton(""));
 						List<String> amfColorList = new ArrayList<String>(amfColorSet);
 						
-						if (OptionCodeKeys.JK_0002801.equals(invokeOne)||(OptionCodeKeys.JK_0002802.equals(invokeOne)&&amfColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0002801.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||amfColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
@@ -3189,7 +3228,7 @@ public class CoJakcetHelper {
 						bhColorSet.removeAll(Collections.singleton(""));
 						List<String> bhColorList = new ArrayList<String>(bhColorSet);
 						
-						if (OptionCodeKeys.JK_0003101.equals(invokeOne)||(OptionCodeKeys.JK_0003102.equals(invokeOne)&&bhColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003101.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||bhColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
@@ -3250,7 +3289,7 @@ public class CoJakcetHelper {
 						byColorSet.removeAll(Collections.singleton(""));
 						List<String> byColorList = new ArrayList<String>(byColorSet);
 						
-						if (OptionCodeKeys.JK_0003401.equals(invokeOne)||(OptionCodeKeys.JK_0003402.equals(invokeOne)&&byColorSet.isEmpty())) {
+						if (OptionCodeKeys.JK_0003401.equals(invokeOne) || BaseCheckUtil.isEmpty(String.valueOf(invokeOne)) ||byColorList.isEmpty()) {
 							String projectPriceCode = code + key + invokeOne;
 							String orderPriceInner = null;
 							if("0000105".equals(wjFrontBtnCnt) || "0000106".equals(wjFrontBtnCnt)) {
@@ -3631,27 +3670,11 @@ public class CoJakcetHelper {
 					splicingCodeDetail = code + key + invokeOne + invokeTwo;
 				}
 				
-				if(("tj_bhColor_id".equals(idValueName)&&"tj_bhColor_id".equals(valueFour))||
-				   ("tj_byColor_id".equals(idValueName))&&"tj_byColor_id".equals(valueFour)) {
-						hasIdvalueName = true;
-						String projectPriceCode = code + jspOptionCodeAndBranchCode;
-						String orderPriceInner = null;
-						if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
-							orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
-						}else {
-							orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
-						}
-						if("-1".equals(colorCount)) {
-							orderPrice = orderPriceInner;
-						}else {
-							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
-							orderPrice = String.valueOf(colorPrice);
-						}
-				}
-				
-				if("tj_GlossFablic".equals(idValueName) && "tj_GlossFablic".equals(valueFour)) {
+				if(("tj_stitch_id".equals(idValueName) && "tj_stitch_id".equals(valueFour))||
+				   ("tj_GlossFablic".equals(idValueName) && "tj_GlossFablic".equals(valueFour))) {
 					hasIdvalueName = true;
 					splicingCodeForFindUniquePrice = code + key + thisVal;
+					
 					if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
 						if("".equals(orderPrice)) {
 							orderPrice = CoContorllerPublicMethodUtil.getOrderDoublePrice(splicingCodeForFindUniquePrice, splicingCodeDetail, orderCoForm);
@@ -3700,6 +3723,24 @@ public class CoJakcetHelper {
 							pants2OptionPrice = "0";
 						}
 					}
+				}
+				
+				if(("tj_bhColor_id".equals(idValueName)&&"tj_bhColor_id".equals(valueFour))||
+				   ("tj_byColor_id".equals(idValueName))&&"tj_byColor_id".equals(valueFour)) {
+						hasIdvalueName = true;
+						String projectPriceCode = code + jspOptionCodeAndBranchCode;
+						String orderPriceInner = null;
+						if("0000105".equals(tjFrontBtnCnt) || "0000106".equals(tjFrontBtnCnt)) {
+							orderPriceInner = CoContorllerPublicMethodUtil.getOrderDoublePrice(projectPriceCode, "", orderCoForm);
+						}else {
+							orderPriceInner = CoContorllerPublicMethodUtil.getOrderPrice(projectPriceCode, "", orderCoForm);
+						}
+						if("-1".equals(colorCount)) {
+							orderPrice = orderPriceInner;
+						}else {
+							Integer colorPrice = Integer.valueOf(orderPriceInner) * Integer.valueOf(colorCount);
+							orderPrice = String.valueOf(colorPrice);
+						}
 				}
 				
 				if(("tj_btnMate".equals(idValueName) && "tj_btnMate".equals(valueFour)) || ("tj_btnMateStkNo".equals(idValueName) && "tj_btnMateStkNo".equals(valueFour))) {
@@ -3806,7 +3847,7 @@ public class CoJakcetHelper {
 		
 		Map<String, String> resultMap = new HashMap<String, String>();
 		if("01".equals(productItem)) {
-			if("tj_btnMate".equals(idValueName) || "tj_btnMateStkNo".equals(idValueName) || "tj_GlossFablic".equals(idValueName)) {
+			if("tj_btnMate".equals(idValueName) || "tj_btnMateStkNo".equals(idValueName) || "tj_GlossFablic".equals(idValueName)|| "tj_stitch_id".equals(idValueName)) {
 				resultMap.put("optionPtPrice", String.valueOf(pantsOptionPrice));
 				if("0009902".equals(productIs3Piece)) {
 					resultMap.put("optionGlPrice", String.valueOf(giletOptionPrice));

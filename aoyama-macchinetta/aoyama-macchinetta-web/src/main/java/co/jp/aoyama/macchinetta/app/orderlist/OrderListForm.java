@@ -3,6 +3,7 @@ package co.jp.aoyama.macchinetta.app.orderlist;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -85,8 +86,103 @@ public class OrderListForm implements Serializable {
     
     private String category;
     
-    
     private List<Order> orderList;
+    
+    //DNP
+    //電話番号
+    private String searchTelNo;
+    
+    //姓（カナ）
+    private String searchSei;
+    
+    //名（カナ）
+    private String searchMei;
+    
+    //承り日
+    private String productOrderDnpDateFrom;
+    
+    private String productOrderDnpDateTo;
+    
+    //営業担当者
+    private String storeDnpStaffNm;
+    
+    //ITEM(CO)
+    private String productDnpItem;
+    
+    //印刷準備中
+    private boolean printReadyStatus = false;
+    
+    //印刷準備済
+    private boolean printReadyOk = false;
+    
+    //再印刷
+    private boolean rePrint = false;
+    
+    private Map<String,String> shopTelMap;
+    
+	public Map<String, String> getShopTelMap() {
+		return shopTelMap;
+	}
+
+	public void setShopTelMap(Map<String, String> shopTelMap) {
+		this.shopTelMap = shopTelMap;
+	}
+
+	public String getStoreDnpStaffNm() {
+		return storeDnpStaffNm;
+	}
+
+	public void setStoreDnpStaffNm(String storeDnpStaffNm) {
+		this.storeDnpStaffNm = storeDnpStaffNm;
+	}
+
+	public String getProductDnpItem() {
+		return productDnpItem;
+	}
+
+	public void setProductDnpItem(String productDnpItem) {
+		this.productDnpItem = productDnpItem;
+	}
+
+	public String getProductOrderDnpDateFrom() {
+		return productOrderDnpDateFrom;
+	}
+
+	public void setProductOrderDnpDateFrom(String productOrderDnpDateFrom) {
+		this.productOrderDnpDateFrom = productOrderDnpDateFrom;
+	}
+
+	public String getProductOrderDnpDateTo() {
+		return productOrderDnpDateTo;
+	}
+
+	public void setProductOrderDnpDateTo(String productOrderDnpDateTo) {
+		this.productOrderDnpDateTo = productOrderDnpDateTo;
+	}
+
+	public String getSearchTelNo() {
+		return searchTelNo;
+	}
+
+	public void setSearchTelNo(String searchTelNo) {
+		this.searchTelNo = searchTelNo;
+	}
+
+	public String getSearchSei() {
+		return searchSei;
+	}
+
+	public void setSearchSei(String searchSei) {
+		this.searchSei = searchSei;
+	}
+
+	public String getSearchMei() {
+		return searchMei;
+	}
+
+	public void setSearchMei(String searchMei) {
+		this.searchMei = searchMei;
+	}
 
 	public String getOrderId() {
 		return orderId;
@@ -354,6 +450,30 @@ public class OrderListForm implements Serializable {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public boolean getPrintReadyStatus() {
+		return printReadyStatus;
+	}
+
+	public void setPrintReadyStatus(boolean printReadyStatus) {
+		this.printReadyStatus = printReadyStatus;
+	}
+
+	public boolean getPrintReadyOk() {
+		return printReadyOk;
+	}
+
+	public void setPrintReadyOk(boolean printReadyOk) {
+		this.printReadyOk = printReadyOk;
+	}
+
+	public boolean getRePrint() {
+		return rePrint;
+	}
+
+	public void setRePrint(boolean rePrint) {
+		this.rePrint = rePrint;
 	}
 
     

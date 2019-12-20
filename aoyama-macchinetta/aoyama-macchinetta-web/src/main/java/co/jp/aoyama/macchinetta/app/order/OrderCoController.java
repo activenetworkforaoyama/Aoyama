@@ -122,7 +122,7 @@ public class OrderCoController {
 	StockService stockService;
 	@Inject
 	CashService cashService;
-
+	
 	CoTypeSizeOptimization coTypeSizeOptimization = new CoTypeSizeOptimization();
 	
 	OrderCoHelper orderCoHelper = new OrderCoHelper();
@@ -246,8 +246,13 @@ public class OrderCoController {
 			Order orderReq = (Order) req.getAttribute("order");
 			String orderFlag = (String) req.getAttribute("orderFlag");
 			String orderId = orderReq.getOrderId();
-			Order order= orderListService.findOrderProductByPk(orderId);
-			
+			String isDnpDivertFlag = (String) req.getAttribute("isDnpDivertFlag");
+			Order order = null;
+			if("1".equals(isDnpDivertFlag)) {
+				order= orderListService.findDnpOrderProductByPk(orderId);
+			}else {
+				order= orderListService.findOrderProductByPk(orderId);
+			}
 			OrderCoForm orderCoForm = new OrderCoForm();
 			orderCoForm.setAuthority(sessionContent.getAuthority());
 			// オプションデーターを取得
@@ -276,12 +281,12 @@ public class OrderCoController {
 			orderCoForm.setOrderCodePriceList(optionBranchPriceData);
 			if("orderLink".equals(orderFlag) || "orderDetail".equals(orderFlag)) {
 				orderCoHelper.setCustomerMessageAndProductOrderLink(order,orderCoForm);
-				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
+				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag,isDnpDivertFlag);
 				orderCoForm.setFabricFlag("0");
 				orderCoForm.setOrderTscStatus(order.getTscStatus());
 			}else if("orderDivert".equals(orderFlag)) {
 				orderCoHelper.setCustomerMessageAndProductOrderDivert(order,orderCoForm,sessionContent);
-				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag);
+				orderCoHelper.setDbDefaultValue(order,orderCoForm,orderListService,modelService,orderService,orderFlag,isDnpDivertFlag);
 				orderCoForm.setFabricFlag("");
 				orderCoForm.setOrderTscStatus("");
 			}
@@ -746,7 +751,7 @@ public class OrderCoController {
 		standardBeanMapper.map(orderCoForm.getCoCustomerMessageInfo(), order);
 		standardBeanMapper.map(orderCoForm, order);
 		// 標準の場合
-		if ("9000101".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_STANDARD.equals(orderCoForm.getProductCategory())) {
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
 				// JACKETについてのマピンッグ
@@ -820,7 +825,7 @@ public class OrderCoController {
 		}
 
 		// タキシードの場合
-		if ("9000102".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_TUXEDO.equals(orderCoForm.getProductCategory())) {
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
 				// JACKETについてのマピンッグ
@@ -893,7 +898,7 @@ public class OrderCoController {
 		}
 
 		// ウォッシャブルの場合
-		if ("9000103".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_WASHABLE.equals(orderCoForm.getProductCategory())) {
 
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
@@ -1015,7 +1020,7 @@ public class OrderCoController {
 		standardBeanMapper.map(orderCoForm, order);
 		orderCoHelper.measuringMapping(orderCoForm, measuring, sessionContent.getUserId());
 		// 標準の場合
-		if ("9000101".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_STANDARD.equals(orderCoForm.getProductCategory())) {
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
 				// JACKETについてのマピンッグ
@@ -1089,7 +1094,7 @@ public class OrderCoController {
 		}
 
 		// タキシードの場合
-		if ("9000102".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_TUXEDO.equals(orderCoForm.getProductCategory())) {
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
 				// JACKETについてのマピンッグ
@@ -1162,7 +1167,7 @@ public class OrderCoController {
 		}
 
 		// ウォッシャブルの場合
-		if ("9000103".equals(orderCoForm.getProductCategory())) {
+		if (OptionCodeKeys.CATEGORY_WASHABLE.equals(orderCoForm.getProductCategory())) {
 
 			// SUITの場合、itemCodeは"01"
 			if ("01".equals(productItem)) {
@@ -1655,7 +1660,7 @@ public class OrderCoController {
 			String factoryCode = orderFindFabric.getFactoryCode();
 			if ("01".equals(itemCode)) {
 				String subItemCode = null;
-				if ("9000101".equals(category)) {
+				if (OptionCodeKeys.CATEGORY_STANDARD.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketStandardInfo().getOjJacketModel();
 					subItemCode = "02";
 					if("".equals(jacketModel)||jacketModel == null) {
@@ -1700,7 +1705,7 @@ public class OrderCoController {
 					}else {
 						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
 					}
-				}else if ("9000102".equals(category)) {
+				}else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketTuxedoInfo().getTjJacketModel();
 					subItemCode = "02";
 					if("".equals(jacketModel)||jacketModel == null) {
@@ -1746,7 +1751,7 @@ public class OrderCoController {
 					}else {
 						orderFindFabric.setPt2ModelCheck(pt2CheckFlag);
 					}
-				}else if ("9000103".equals(category)) {
+				}else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketWashableInfo().getWjJacketModel();
 					subItemCode = "02";
 					if("".equals(jacketModel)||jacketModel == null) {
@@ -1796,7 +1801,7 @@ public class OrderCoController {
 				}
 			} else if ("02".equals(itemCode)) {
 				String subItemCode = itemCode;
-				if ("9000101".equals(category)) {
+				if (OptionCodeKeys.CATEGORY_STANDARD.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketStandardInfo().getOjJacketModel();
 					if("".equals(jacketModel)||jacketModel == null) {
 						orderFindFabric.setJkModelCheck(checkFlag);
@@ -1805,7 +1810,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setJkModelCheck(checkFlag);
 					}
-				} else if ("9000102".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketTuxedoInfo().getTjJacketModel();
 					if("".equals(jacketModel)||jacketModel == null) {
 						orderFindFabric.setJkModelCheck(checkFlag);
@@ -1814,7 +1819,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setJkModelCheck(checkFlag);
 					}
-				} else if ("9000103".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(category)) {
 					String jacketModel = orderCoForm.getCoOptionJacketWashableInfo().getWjJacketModel();
 					if("".equals(jacketModel)||jacketModel == null) {
 						orderFindFabric.setJkModelCheck(checkFlag);
@@ -1826,7 +1831,7 @@ public class OrderCoController {
 				}
 			} else if ("03".equals(itemCode)) {
 				String subItemCode = itemCode;
-				if ("9000101".equals(category)) {
+				if (OptionCodeKeys.CATEGORY_STANDARD.equals(category)) {
 					String pantsModel = orderCoForm.getCoOptionPantsStandardInfo().getOpPantsModel();
 					if("".equals(pantsModel)||pantsModel==null) {
 						orderFindFabric.setPtModelCheck(checkFlag);
@@ -1835,7 +1840,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setPtModelCheck(checkFlag);
 					}
-				} else if ("9000102".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(category)) {
 					String pantsModel = orderCoForm.getCoOptionPantsTuxedoInfo().getTpPantsModel();
 					if("".equals(pantsModel)||pantsModel==null) {
 						orderFindFabric.setPtModelCheck(checkFlag);
@@ -1844,7 +1849,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setPtModelCheck(checkFlag);
 					}
-				} else if ("9000103".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(category)) {
 					String pantsModel = orderCoForm.getCoOptionPantsWashableInfo().getWpPantsModel();
 					if("".equals(pantsModel)||pantsModel==null) {
 						orderFindFabric.setPtModelCheck(checkFlag);
@@ -1856,7 +1861,7 @@ public class OrderCoController {
 				}
 			} else if ("04".equals(itemCode)) {
 				String subItemCode = itemCode;
-				if ("9000101".equals(category)) {
+				if (OptionCodeKeys.CATEGORY_STANDARD.equals(category)) {
 					String giletModel = orderCoForm.getCoOptionGiletStandardInfo().getOgGiletModel();
 					if("".equals(giletModel)||giletModel == null) {
 						orderFindFabric.setGlModelCheck(checkFlag);
@@ -1865,7 +1870,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setGlModelCheck(checkFlag);
 					}
-				} else if ("9000102".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_TUXEDO.equals(category)) {
 					String giletModel = orderCoForm.getCoOptionGiletTuxedoInfo().getTgGiletModel();
 					if("".equals(giletModel)||giletModel == null) {
 						orderFindFabric.setGlModelCheck(checkFlag);
@@ -1874,7 +1879,7 @@ public class OrderCoController {
 						checkFlag = factories.contains(factoryCode);
 						orderFindFabric.setGlModelCheck(checkFlag);
 					}
-				} else if ("9000103".equals(category)) {
+				} else if (OptionCodeKeys.CATEGORY_WASHABLE.equals(category)) {
 					String giletModel = orderCoForm.getCoOptionGiletWashableInfo().getWgGiletModel();
 					if("".equals(giletModel)||giletModel == null) {
 						orderFindFabric.setGlModelCheck(checkFlag);

@@ -109,10 +109,10 @@ public class FabricController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/fabricDownload" , method = RequestMethod.GET)
 	public ResponseEntity fabricDownload(HttpServletRequest request,HttpServletResponse response,Model model) throws Exception{
-		//order_pttern状況を取得する
-		String category = request.getParameter("category");
+		//order_pattern状況を取得する
+		String orderPatternFabricDownload = request.getParameter("category");
 		//データベースから生地の情報を読み取る
-		List<Fabric> fabricList = fabricService.fabricQueryByCoOrPo(category);
+		List<Fabric> fabricList = fabricService.fabricQueryByCoOrPo(orderPatternFabricDownload);
 		//バイト配列出力ストリーム
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		
@@ -259,7 +259,7 @@ public class FabricController {
 	@RequestMapping(value = "fabricUpload" , method = RequestMethod.POST)
 	public String fabricUpload(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request, Model model) throws IllegalStateException, IOException {
 		//order_pttern状況を取得する
-		String category = request.getParameter("category");
+		String orderPattern = request.getParameter("category");
 		//strArr：エラー発生の第一番目の情報
 		//strArr「０」：エラー発生の第一番目の行数。 strArr「１」：エラー発生の項目名。 strArr「２」：エラー発生のタイプ。
 		String[] strArr = new String[3];
@@ -271,7 +271,7 @@ public class FabricController {
 		String[] fabricUpdate = {"0","0","0"};
 		try {
 			//ファイル解析をリスト化する
-			fabricList = convertStreamToString(file.getInputStream(), category);
+			fabricList = convertStreamToString(file.getInputStream(), orderPattern);
 			//ループ、エラー発生の第一番目の行数を探す
 			for (Fabric fabricFor : fabricList) {
 				if(fabricFor.getErrorArr() != null) {
@@ -370,7 +370,7 @@ public class FabricController {
 	    	logger.error(messagesError.toString());
 		}
 		
-		model.addAttribute("category", category);
+		model.addAttribute("category", orderPattern);
 		return "fabric/fabricForm";
 	}
 	
@@ -381,7 +381,7 @@ public class FabricController {
 	 * @throws UnsupportedEncodingException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private List<Fabric> convertStreamToString(InputStream inputStream, String category) throws UnsupportedEncodingException{
+	private List<Fabric> convertStreamToString(InputStream inputStream, String orderPattern) throws UnsupportedEncodingException{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,"Shift_JIS"));
 	    StringBuilder sb = new StringBuilder();
 	    ArrayList<Fabric> fabricList = new ArrayList<Fabric>();
@@ -445,7 +445,8 @@ public class FabricController {
 					}
 					
 					//検査オーダーバターン、特殊のチェック
-					if("CO".equals(data[1]) || "PO".equals(data[1])){
+//					if("CO".equals(data[1]) || "PO".equals(data[1])){
+					if(orderPattern.equals(data[1])){
 						fabric.setOrderPattern(data[1]);
 					}else if("".equals(data[1])){
 						fabricList.add(setErrorArrayDeploy(fabric, countErrorLine, "オーダーパターン", PROJECT_NAME_IS_EMPTY));
@@ -878,7 +879,7 @@ public class FabricController {
 				}
 				
 				//契約No
-				dataWhetherConform = stringCheckIsHalfAngle(data[41], 20);
+				dataWhetherConform = stringCheckIsHalfAngleOther(data[41], 20);
 				if(dataWhetherConform == MEET_THE_REQUIREMENT || dataWhetherConform == PROJECT_NAME_IS_EMPTY){
 					fabric.setContractNo(data[41]);
 				}else{
@@ -1100,6 +1101,34 @@ public class FabricController {
 	 */
 	private String stringCheckIsHalfAngle(String str, int i) {
 		String regEx = "^[A-Za-z0-9]+$";
+		Pattern pattern = Pattern.compile(regEx);
+		Matcher matcher = pattern.matcher(str);
+		
+		if("null".equals(str) || str == null || "".equals(str)){
+			//空
+			return PROJECT_NAME_IS_EMPTY;
+		}else{
+	        if(!(matcher.matches())) {
+	        	//全角です
+	        	return FULL_ANGLE;
+	        }else if(str.length() <= i){
+	        	//要求にかなう
+				return MEET_THE_REQUIREMENT;
+			}else {
+				//桁が正しくない
+				return NUMBER_OF_BITS_IS_INCORRECT;
+			}
+		}
+	}
+	
+	/**
+	 * チェックstring型、半角でなければなりません(契約No:半角英数字、”-”)
+	 * @param str　検査の内容を準備する
+	 * @return NUMBER_OF_ITEMS_IN_CSV_FILE_IS_INCORRECT:空;　NUMBER_OF_BITS_IS_INCORRECT:桁が正しくない; 
+	 * @return MEET_THE_REQUIREMENT:要求にかなう; FULL_ANGLE:全角
+	 */
+	private String stringCheckIsHalfAngleOther(String str, int i) {
+		String regEx = "^[A-Za-z0-9-]+$";
 		Pattern pattern = Pattern.compile(regEx);
 		Matcher matcher = pattern.matcher(str);
 		

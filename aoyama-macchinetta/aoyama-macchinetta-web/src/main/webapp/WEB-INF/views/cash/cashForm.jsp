@@ -423,12 +423,7 @@ if(error == "error"){
 }
 
 $(document).ready(function() {
-	for(var i = 0;i<=obj.length-1;i++){
-		if(""==$("#cash_discount_price_"+i).val() && obj[i].custType=="02"){
-			$("#cash_discount_price_"+i).val(obj[i].wsPrice);
-			$("#cash_discount_price_"+i).attr("readonly","readonly")	
-		}		
-	}
+	
 var backFlag = "${cashForm.backFlag}";
 if(backFlag == "orderFrom" || backFlag == "cashInit"){
 	if($("#cash_except_tax_price").val() == null || $("#cash_except_tax_price").val() == undefined 
@@ -469,8 +464,82 @@ if(backFlag == "orderFrom" || backFlag == "cashInit"){
 				}
 			}
 	} 
-		
-
+	if(obj[0].custType==02){
+		for(var i = 0;i<=obj.length-1;i++){
+			if(""==$("#cash_discount_price_"+i).val() || 0==$("#cash_discount_price_"+i).val()){
+				$("#cash_discount_price_"+i).val(obj[i].wsPrice);
+				$("#cash_discount_price_"+i).attr("readonly","readonly")	
+			}		
+		}
+		$("#cash_total_price").val(${cashTotalPrice});
+		var total = jQuery("#cash_total_price").val();
+		var tax = Math.floor(total-(total/(1+Number(taxRate)/100)));
+		var fomartTax = tax.toString();
+		for(var i = 1; i < fomartTax.length / 3; i++){
+			var temp = fomartTax.slice(0, -4 * i + 1);
+			fomartTax = fomartTax.replace(temp, temp + ',');
+			if(fomartTax.startsWith(',')){
+				fomartTax = fomartTax.substr(1, fomartTax.length-1);
+				}
+			}
+		if(total != null && total != ''){
+			jQuery("#cash_tax_amount").val(fomartTax);
+			jQuery("#tax_amount").val(fomartTax);
+			}else{
+				jQuery("#cash_tax_amount").val('0');
+				jQuery("#tax_amount").val('0');
+				}
+		/* jQuery("#cash_tax_amount").val(fomartTax);
+		jQuery("#tax_amount").val(fomartTax); */
+		var tax1 = jQuery("#cash_tax_amount").val().replace(/\,/g, "");
+		var format = total - tax1;
+		var val = format.toString();
+		for(var i = 1; i < val.length / 3; i++){
+			var temp = val.slice(0, -4 * i + 1);
+			val = val.replace(temp, temp + ',');
+			if(val.startsWith(',')){
+					val = val.substr(1, val.length-1);
+				}
+			}
+		if(total != null && total != ''){
+			jQuery("#cash_except_tax_price").val(val);
+			jQuery("#except_tax_price").val(val);
+			}else{
+				jQuery("#cash_except_tax_price").val('0');
+				jQuery("#except_tax_price").val('0');
+				}
+		/* jQuery("#cash_except_tax_price").val(format);
+		jQuery("#except_tax_price").val(format); */
+		var count = 0;
+		var discount = 0;
+		var except_tax = jQuery("#cash_except_tax_price").val().replace(/\,/g, "");
+		var sum = 0; 
+		var zero = 0;
+		var totalDiscount = 0;
+		var lastDiscount = 0;
+		for(var i = 0;i<=obj.length-1;i++){
+			zero = jQuery("#cash_discount_price_"+i).val();
+			count += Number(zero);
+			}
+		for(var i = 0;i<=obj.length-1;i++){
+			discount = jQuery("#cash_discount_price_"+i).val();
+			if(total != null && total != '' && discount != null && discount != '' && count != 0){
+				if(i == obj.length-1){
+					lastDiscount = Number(except_tax) - totalDiscount;
+					jQuery("#cash_product_price_"+i).val(formatMoney(lastDiscount, 0, ""));
+					jQuery("#cash_productPrice_"+i).val(lastDiscount);
+				}else{
+					sum = Math.round(Number(discount)*Number(except_tax)/(Number(count)));
+					totalDiscount += sum;
+					jQuery("#cash_product_price_"+i).val(formatMoney(sum, 0, ""));
+					jQuery("#cash_productPrice_"+i).val(sum);
+					}
+				}else{
+					jQuery("#cash_product_price_"+i).val('0');
+					jQuery("#cash_productPrice_"+i).val('0');
+					}
+		}
+	}
 		
 });
 

@@ -251,15 +251,6 @@ function initProduct() {
 	});
 
 	// 納期短縮
-	jQuery('#expediteDelivery').change(function() {
-		var sValue = jQuery(this).val();
-		// 有の場合は金額表示
-		if (sValue == "有") {
-			jQuery('#expediteDeliveryMsg').show();
-		} else {
-			jQuery('#expediteDeliveryMsg').hide();
-		}
-	});
 	jQuery('#expediteDelivery').change();
 
 	jQuery('input[id^="gadget_"]').change(function(){

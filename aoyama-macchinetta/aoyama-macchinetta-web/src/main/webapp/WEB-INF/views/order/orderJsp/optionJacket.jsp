@@ -1548,6 +1548,10 @@
 			<input type="hidden" id="opStitch" name="coOptionPantsStandardInfo.opStitch" value="${orderCoForm.coOptionPantsStandardInfo.opStitch}" />
 			<input type="hidden" id="op2Stitch" name="coOptionPants2StandardInfo.op2Stitch" value="${orderCoForm.coOptionPants2StandardInfo.op2Stitch}" />
 			
+			<input type="hidden" id="tgStitch" name="coOptionGiletTuxedoInfo.tgStitch" value="${orderCoForm.coOptionGiletTuxedoInfo.tgStitch}" />
+			<input type="hidden" id="tpStitch" name="coOptionPantsTuxedoInfo.tpStitch" value="${orderCoForm.coOptionPantsTuxedoInfo.tpStitch}" />
+			<input type="hidden" id="tp2Stitch" name="coOptionPants2TuxedoInfo.tp2Stitch" value="${orderCoForm.coOptionPants2TuxedoInfo.tp2Stitch}" />
+			
 			<input type="hidden" id="wgStitch" name="coOptionGiletWashableInfo.wgStitch" value="${orderCoForm.coOptionGiletWashableInfo.wgStitch}" />
 			<input type="hidden" id="wpStitch" name="coOptionPantsWashableInfo.wpStitch" value="${orderCoForm.coOptionPantsWashableInfo.wpStitch}" />
 			<input type="hidden" id="wp2Stitch" name="coOptionPants2WashableInfo.wp2Stitch" value="${orderCoForm.coOptionPants2WashableInfo.wp2Stitch}" />
@@ -3094,7 +3098,7 @@ function  glBtnMatecompareOtherBtnMate(jkBtnMate,otherBtnMateMap,otherBtnMate,su
 			i=ttt.length;
 		}else{
 			jQuery('#'+otherBtnMate).val("3000800");
-			jQuery('#'+otherBtnMateStkNo).val("300080001");	
+			jQuery('#'+otherBtnMateStkNo).val("300080001");
 		}
 	}
 }
@@ -3274,12 +3278,12 @@ function mateSelect2(itemCode,subItemCode,mateChecked,optionCode,type,orderPatte
 					 nums.push(key);	 
 				 }		
 				 jQuery("#"+otherBtnMateStkNo).val(mateChecked+"01"); 
-				  for(var j=0;j<nums.length;j++){ 	   
-						if(jkBtnMateStkNo==nums[j]){	
+				  for(var j=0;j<nums.length;j++){ 	
+						if(jkBtnMateStkNo==nums[j]){
 							jQuery('#'+otherBtnMateStkNo).val(jkBtnMateStkNo);
 							j=nums.length;
 						}
-				 }	 	
+				 }
 			 }
 		 }
 	});
@@ -3376,9 +3380,9 @@ function getPrice(){
 	    			var ogFrontBtnMateMap="${orderCoForm.coOptionGiletStandardInfo.ogFrontBtnMateMap }";
 	    			var ogFrontBtnMate="ogFrontBtnMate";
 	    			var subItemCodeGilet="04";
-	    			var optionCodeGilet="00021"; 
+	    			var optionCodeGiletFrontBtnMate="00021"; 
 	    			var ogFrontBtnMateStkNo ="ogFrontBtnMateStkNo";
-	    			glBtnMatecompareOtherBtnMate(jkBtnMate,ogFrontBtnMateMap,ogFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,ogFrontBtnMateStkNo,jkBtnMateStkNo);
+	    			glBtnMatecompareOtherBtnMate(jkBtnMate,ogFrontBtnMateMap,ogFrontBtnMate,subItemCodeGilet,optionCodeGiletFrontBtnMate,1,ogFrontBtnMateStkNo,jkBtnMateStkNo);
 
 	        	}else if(productCategory == "9000102"){
 	    			var jkBtnMate =jQuery("#tj_btnMate").val(); 
@@ -3401,7 +3405,7 @@ function getPrice(){
 	    			var subItemCodeGilet="04";
 	    			var optionCodeGilet="00021"; 
 	    			var tgFrontBtnMateStkNo ="tgFrontBtnMateStkNo";
-	    			glBtnMatecompareOtherBtnMate(jkBtnMate,tgFrontBtnMateMap,tgFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,tgFrontBtnMateStkNo,jkBtnMateStkNo);
+	    			glBtnMatecompareOtherBtnMate(jkBtnMate,tgFrontBtnMateMap,tgFrontBtnMate,subItemCodeGilet,optionCodeGilet,2,tgFrontBtnMateStkNo,jkBtnMateStkNo);
 	            
 	        	}else if(productCategory == "9000103"){
 	    			var jkBtnMate =jQuery("#wj_btnMate").val(); 
@@ -3424,7 +3428,7 @@ function getPrice(){
 	    			var subItemCodeGilet="04";
 	    			var optionCodeGilet="00021"; 
 	    			var wgFrontBtnMateStkNo ="wgFrontBtnMateStkNo";
-	    			glBtnMatecompareOtherBtnMate(jkBtnMate,wgFrontBtnMateMap,wgFrontBtnMate,subItemCodeGilet,optionCodeGilet,1,wgFrontBtnMateStkNo,jkBtnMateStkNo);
+	    			glBtnMatecompareOtherBtnMate(jkBtnMate,wgFrontBtnMateMap,wgFrontBtnMate,subItemCodeGilet,optionCodeGilet,3,wgFrontBtnMateStkNo,jkBtnMateStkNo);
 	            
 	        	}
 
@@ -3561,6 +3565,7 @@ function getPrice(){
 		   idValueName = idValueName.replace("StkNo","");
 		   thisVal = jQuery("#" + idValueName).val();
 	   }
+
 	   var price;
 	   if(isNotEmpty(jacketModel)){
 		   var code = itemCode + subItemCode + jacketModel;
@@ -3590,7 +3595,7 @@ function getPrice(){
 	//ラジオボタンの変更処理
 	//項目：ラペルデザイン、グレード、襟裏（ヒゲ）、襟吊、ラペル幅、胸ポケット、チェンジポケット、スランテッドポケット、袖仕様、マニカ、袖釦、内ポケット変更、ステッチ種類、ステッチ箇所変更、ダブルステッチ変更、AMF色指定、ボタンホール色指定、ボタン付け糸指定、ベント、形状記憶
 	jQuery('input[id^="lapelDesign_id"],[id^="grade_id"],[id^="dStitchModify_id"],[id^="backCollar_id"],[id^="chainHange_id"],[id^="lapelWidth_id"],[id^="breastPkt_id"],[id^="changePkt_id"],[id^="slantedPkt_id"],[id^="sleeveSpec_id"],[id^="manica_id"],[id^="sleeveBtnType_id"],[id^="insidePktChange_id"],[id^="cuffSpec_id"],[id^="breastInnerPkt_id"],[id^="ventSpec_id"],[id^="shapeMemory_id"],' + 
-		'[id^="tj_lapelDesign_id"],[id^="tj_grade_id"],[id^="tj_backCollar_id"],[id^="tj_chainHange_id"],[id^="tj_lapelWidth_id"],[id^="tj_breastPkt_id"],[id^="tj_changePkt_id"],[id^="tj_slantedPkt_id"],[id^="tj_sleeveSpec_id"],[id^="tj_manica_id"],[id^="tj_sleeveBtnType_id"],[id^="tj_cuffSpec_id"],[id^="tj_insidePktChange_id"],[id^="tj_breastInnerPkt_id"],[id^="tj_stitch_id"],[id^="tj_ventSpec_id"],[id^="tj_ventSpec_id"],[id^="tj_shapeMemory_id"],'+
+		'[id^="tj_lapelDesign_id"],[id^="tj_grade_id"],[id^="tj_backCollar_id"],[id^="tj_chainHange_id"],[id^="tj_lapelWidth_id"],[id^="tj_breastPkt_id"],[id^="tj_changePkt_id"],[id^="tj_slantedPkt_id"],[id^="tj_sleeveSpec_id"],[id^="tj_manica_id"],[id^="tj_sleeveBtnType_id"],[id^="tj_cuffSpec_id"],[id^="tj_insidePktChange_id"],[id^="tj_breastInnerPkt_id"],[id^="tj_ventSpec_id"],[id^="tj_ventSpec_id"],[id^="tj_shapeMemory_id"],'+
 		'[id^="wj_lapelDesign_id"],[id^="wj_grade_id"],[id^="wj_dStitchModify_id"],[id^="wj_backCollar_id"],[id^="wj_chainHange_id"],[id^="wj_lapelWidth_id"],[id^="wj_breastPkt_id"],[id^="wj_changePkt_id"],[id^="wj_slantedPkt_id"],[id^="wj_sleeveSpec_id"],[id^="wj_manica_id"],[id^="wj_sleeveBtnTypeKasane_id"],[id^="wj_cuffSpec_id"],[id^="wj_insidePktChange_id"],[id^="wj_breastInnerPkt_id"],[id^="wj_ventSpec_id"],[id^="wj_shapeMemory_id"]')
 	.change(function(){
 		var category = jQuery('input[name="productCategory"]:checked').val();
@@ -3636,15 +3641,15 @@ function getPrice(){
 	var priceUrl = "";
 	//ラジオボタンの変更処理
 	//項目：ラペルデザイン、グレード、襟裏（ヒゲ）、襟吊、ラペル幅、胸ポケット、チェンジポケット、スランテッドポケット、袖仕様、マニカ、袖釦、内ポケット変更、ステッチ種類、ステッチ箇所変更、ダブルステッチ変更、AMF色指定、ボタンホール色指定、ボタン付け糸指定、ベント、形状記憶
-	jQuery('input[id^="stitch_id"],[id^="wj_stitch_id"]').change(function(){
+	jQuery('input[id^="stitch_id"],[id^="tj_stitch_id"],[id^="wj_stitch_id"]').change(function(){
 		var category = jQuery('input[name="productCategory"]:checked').val();
-		   if(category == "9000101"){
-		    	jacketModel = jQuery("#jacketModel option:selected").val();
-		    	priceUrl = "getOrderPriceForJacketProject";
-		   }else if(category == "9000103"){
-				jacketModel = jQuery("#wj_jacketModel option:selected").val();
-				priceUrl = "getOrderPriceForJacketWashableProject";
-		   }
+		if(category == "9000101"){
+	    	priceUrl = "getOrderPriceForJacketProject";
+	    }else if(category == "9000102"){
+			priceUrl = "getOrderPriceForJacketTuxedoProject";
+	    }else if(category == "9000103"){
+			priceUrl = "getOrderPriceForJacketWashableProject";
+	    }
 		var thisVal = "";  
 		var itemCode = jQuery("#item").val();
 	    var subItemCode = "02";
@@ -3654,6 +3659,10 @@ function getPrice(){
 	    	jQuery("#ogStitch").val(thisVal);
 	    	jQuery("#opStitch").val(thisVal);
 	    	jQuery("#op2Stitch").val(thisVal);
+		}else if(category == "9000102"){
+			jQuery("#tgStitch").val(thisVal);
+	    	jQuery("#tpStitch").val(thisVal);
+	    	jQuery("#tp2Stitch").val(thisVal);
 		}else if(category == "9000103"){
 			jQuery("#wgStitch").val(thisVal);
 	    	jQuery("#wpStitch").val(thisVal);
@@ -4549,6 +4558,11 @@ function ojSession(){
 
 
 function tjSession(){
+
+	//ステッチ種類
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjStitch"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjStitch}"]);
+	jQuery('input[name="coOptionJacketTuxedoInfo.tjStitch"]:checked').change();
+	
 	//ボタンホール色指定
 	jQuery('input[name="coOptionJacketTuxedoInfo.tjBhColorPlace1"]').val(["${orderCoForm.coOptionJacketTuxedoInfo.tjBhColorPlace1}"]);
 
@@ -5106,14 +5120,17 @@ function mateStkNoReInit(productCategory){
 		var jkInnerBodyClothCd = "${orderCoForm.coOptionJacketWashableInfo.wjBodyBackMateStkNo}";
 		if(isNotEmpty(jkInnerBodyClothCd)){
 			jQuery("#wj_bodyBackMateStkNo option[value='"+jkInnerBodyClothCd+"']").attr("selected", true);
+			jQuery("#wj_bodyBackMateStkNo").change();
 		}
 		var jkInnerSleeveClothCd = "${orderCoForm.coOptionJacketWashableInfo.wjCuffBackMateStkNo}";
 		if(isNotEmpty(jkInnerSleeveClothCd)){
 			jQuery("#wj_cuffBackMateStkNo option[value='"+jkInnerSleeveClothCd+"']").attr("selected", true);
+			jQuery("#wj_cuffBackMateStkNo").change();
 		}
 		var jkBtnMaterialCd = "${orderCoForm.coOptionJacketWashableInfo.wjBtnMateStkNo}";
 		if(isNotEmpty(jkBtnMaterialCd)){
 			jQuery("#wj_btnMateStkNo option[value='"+jkBtnMaterialCd+"']").attr("selected", true);
+			jQuery("#wj_btnMateStkNo").change();
 		}
 	}
 }
@@ -5168,19 +5185,21 @@ function optionJacketChangeModel(productCategory){
 
 			var gradeValue = jQuery('input[name="coOptionJacketStandardInfo.ojGrade"]:checked').val();
 			var backSpecValue = jQuery('#backSpec').val();
-			
-			// 台場の要素取得
-			var fortElem = jQuery('#fort');
-			var beforeValue = fortElem.val();
 
-			// 台場の選択肢変更
-			fortElem.empty();
-			var tmpFortValue = null;
-			for (var i = 0; i < fortList[gradeValue].activeList[backSpecValue].activeList.length; i++) {
-				fortElem.append(jQuery('<option />').val(fortList[gradeValue].activeList[backSpecValue].activeList[i].val).text(fortList[gradeValue].activeList[backSpecValue].activeList[i].text));
+			if(isNotEmpty(gradeValue)&&isNotEmpty(backSpecValue)){
+				// 台場の要素取得
+				var fortElem = jQuery('#fort');
+				var beforeValue = fortElem.val();
+
+				// 台場の選択肢変更
+				fortElem.empty();
+				var tmpFortValue = null;
+				for (var i = 0; i < fortList[gradeValue].activeList[backSpecValue].activeList.length; i++) {
+					fortElem.append(jQuery('<option />').val(fortList[gradeValue].activeList[backSpecValue].activeList[i].val).text(fortList[gradeValue].activeList[backSpecValue].activeList[i].text));
+				}
+				jQuery('#fort').val("${orderCoForm.coOptionJacketStandardInfo.ojFort}");
+				jQuery('#fort').change();
 			}
-			jQuery('#fort').val("${orderCoForm.coOptionJacketStandardInfo.ojFort}");
-			jQuery('#fort').change();
 
 			var ojBackCollarSession = "${orderCoForm.coOptionJacketStandardInfo.ojBackCollar}";
 			var ojBackCollar = jQuery('input[name="coOptionJacketStandardInfo.ojBackCollar"]').val();
@@ -5218,7 +5237,7 @@ function optionJacketChangeModel(productCategory){
 			var ojSleeveBtnTypeSession = "${orderCoForm.coOptionJacketStandardInfo.ojSleeveBtnType}";
 			var ojSleeveBtnType = jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val();
 			if(ojSleeveBtnTypeSession != ojSleeveBtnType){
-				jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val(ojSleeveBtnTypeSession);
+				jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]').val([ojSleeveBtnTypeSession]);
 				jQuery('input[name="coOptionJacketStandardInfo.ojSleeveBtnType"]:checked').change();
 			}
 			
@@ -5426,6 +5445,31 @@ jQuery("#jacketModel,#tj_jacketModel,#wj_jacketModel").change(function(){
 		}
 	}
 })
+
+jQuery("#backSpec").change(function(){
+	if(jQuery(this).val() == "0000404"){
+		jQuery("#idInfoForm").prepend('<input type="hidden" id="corShoulderPadCd" name="coAdjustJacketStandardInfo.corJkShoulderPadCd" value="0004501"/>');
+		//jQuery("#corShoulderPadCd").val("0004501");
+	}else{
+		var jacketModel = jQuery("#jacketModel").val();
+		if(jacketModel == "TR02"){
+			jQuery("#corShoulderPadCd").remove();
+		}else if( jacketModel == "CH14" || isEmpty(jacketModel)){
+			jQuery("#idInfoForm").prepend('<input type="hidden" id="corShoulderPadCd" name="coAdjustJacketStandardInfo.corJkShoulderPadCd" value="0004501"/>');
+			//jQuery("#corShoulderPadCd").val("0004501");
+		}else if(jacketModel == "NR05"){
+			jQuery("#idInfoForm").prepend('<input type="hidden" id="corShoulderPadCd" name="coAdjustJacketStandardInfo.corJkShoulderPadCd" value="0004502"/>');
+			//jQuery("#corShoulderPadCd").val("0004502");
+		}else if(jacketModel == "NZ01"){
+			jQuery("#idInfoForm").prepend('<input type="hidden" id="corShoulderPadCd" name="coAdjustJacketStandardInfo.corJkShoulderPadCd" value="0004503"/>');
+			//jQuery("#corShoulderPadCd").val("0004503");
+		}else if(jacketModel == "BS05"){
+			jQuery("#idInfoForm").prepend('<input type="hidden" id="corShoulderPadCd" name="coAdjustJacketStandardInfo.corJkShoulderPadCd" value="0004502"/>');
+			//jQuery("#corShoulderPadCd").val("0004502");
+		}
+	}
+})
+
 if (document.readyState=="complete"){  
     $.unblockUI();
 }else{  

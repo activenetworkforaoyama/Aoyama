@@ -131,6 +131,7 @@
     	FROM 
     		mtb_fabric, mtb_stock
     	WHERE
+    		mtb_fabric.order_pattern = #{orderPattern,jdbcType=VARCHAR} AND 
     		mtb_fabric.order_pattern = mtb_stock.order_pattern AND
     		mtb_fabric.fabric_no = mtb_stock.fabric_no
     	ORDER BY

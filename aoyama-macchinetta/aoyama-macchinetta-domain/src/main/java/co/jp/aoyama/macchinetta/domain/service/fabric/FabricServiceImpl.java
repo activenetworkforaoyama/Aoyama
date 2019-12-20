@@ -30,8 +30,8 @@ public class FabricServiceImpl  implements FabricService {
 	 * すべての生地を調べる
 	 */
 	@Override
-	public List<Fabric> fabricQueryByCoOrPo(String category) {
-		List<Fabric> fabricList = fabricRepository.fabricQueryByCoOrPo(category);
+	public List<Fabric> fabricQueryByCoOrPo(String orderPattern) {
+		List<Fabric> fabricList = fabricRepository.fabricQueryByCoOrPo(orderPattern);
 		//予約在庫の取得
 		for (int i = 0; i < fabricList.size(); i++) {
 			if(fabricList.get(i).getReservationStock() == null) {
@@ -109,10 +109,14 @@ public class FabricServiceImpl  implements FabricService {
 			}
 			
 			//データベースのfabric表にデータを追加する
-			fabricRepository.fabricInsertByPrimaryKey(fabricInsertList);
-			//データベースのstock表にデータを追加する
-			fabricRepository.stockInsertByPrimaryKey(fabricInsertList);
 			
+			List<List<Fabric>> splitInsertList = split(fabricInsertList,100);
+			
+			for (List<Fabric> list : splitInsertList) {
+				fabricRepository.fabricInsertByPrimaryKey(list);
+				//データベースのstock表にデータを追加する
+				fabricRepository.stockInsertByPrimaryKey(list);
+			}
 		}
 		
 		if(fabricUpdateList.size() != 0) {
@@ -138,10 +142,14 @@ public class FabricServiceImpl  implements FabricService {
 				fabricUpdateList.get(i).setTheoreticalStock(theoreticalStock.add(reservationStock));
 			}
 			
-			//データベースのfabric表にデータを修正する
-			fabricRepository.fabricUpdateByPrimaryKey(fabricUpdateList);
-			//データベースのstock表にデータを修正する
-			fabricRepository.stockUpdateByPrimaryKey(fabricUpdateList);
+			List<List<Fabric>> splitUpdateList = split(fabricUpdateList,100);
+			
+			for (List<Fabric> list : splitUpdateList) {
+				//データベースのfabric表にデータを修正する
+				fabricRepository.fabricUpdateByPrimaryKey(list);
+				//データベースのstock表にデータを修正する
+				fabricRepository.stockUpdateByPrimaryKey(list);
+			}
 		}
 		
 		if(fabricDeleteList.size() != 0) {
@@ -189,4 +197,34 @@ public class FabricServiceImpl  implements FabricService {
 			return true;
 		}
 	}
+	
+    public static  <T> List<List<T>> split(List<T> resList,int count){
+        
+        if(resList==null ||count<1)
+            return  null ;
+        List<List<T>> ret=new ArrayList<List<T>>();
+        int size=resList.size();
+        if(size<=count){ 
+            ret.add(resList);
+        }else{
+            int pre=size/count;
+            int last=size%count;
+            for(int i=0;i<pre;i++){
+                List<T> itemList=new ArrayList<T>();
+                for(int j=0;j<count;j++){
+                    itemList.add(resList.get(i*count+j));
+                }
+                ret.add(itemList);
+            }
+            if(last>0){
+                List<T> itemList=new ArrayList<T>();
+                for(int i=0;i<last;i++){
+                    itemList.add(resList.get(pre*count+i));
+                }
+                ret.add(itemList);
+            }
+        }
+        return ret;
+        
+    }
 }

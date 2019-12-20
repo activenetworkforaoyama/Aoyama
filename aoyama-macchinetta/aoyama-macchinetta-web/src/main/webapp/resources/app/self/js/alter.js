@@ -25,6 +25,10 @@ function initAlter() {
 			
 			jQuery("#"+idRe+"_html").html(val+"cm");
 			jQuery('#'+idRe+'_Gross').val(val);
+			if("corCtVenthight_div"==idRe || "corCtPktpos_div"==idRe  || "corStBackdartsPack_div"==idRe){
+				jQuery('#'+idRe+'_Gross').val("");
+				jQuery("#"+idRe+"_Size").val("");
+			}
 			setFont(id);
 		});
 		jQuery('#'+id+'_p').click(function(){
@@ -46,6 +50,10 @@ function initAlter() {
 				//if(val<=maxVal){
 					jQuery("#"+idRe+"_html").html(val+"cm");
 					jQuery('#'+idRe+'_Gross').val(val);	
+					if("corCtVenthight_div"==idRe || "corCtPktpos_div"==idRe  || "corStBackdartsPack_div"==idRe){
+						jQuery('#'+idRe+'_Gross').val("");
+						jQuery("#"+idRe+"_Size").val("");
+					}
 				//}else{
 					//return false;
 				//}
@@ -71,6 +79,10 @@ function initAlter() {
 				//if(val>=minVal){			
 					jQuery("#"+idRe+"_html").html(val+"cm");
 					jQuery('#'+idRe+'_Gross').val(val);
+					if("corCtVenthight_div"==idRe || "corCtPktpos_div"==idRe  || "corStBackdartsPack_div"==idRe){
+						jQuery('#'+idRe+'_Gross').val("");
+						jQuery("#"+idRe+"_Size").val("");
+					}
 				//}else{
 					//return false;
 				//}

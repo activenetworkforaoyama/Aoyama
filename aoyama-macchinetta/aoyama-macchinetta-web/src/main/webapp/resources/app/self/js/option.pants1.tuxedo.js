@@ -64,7 +64,7 @@ function initOptionPants1Tuxedo() {
 				//2はモデルチェク失敗の場合
 				jQuery("#tp_pantsModelCheck").show();
 				jQuery("#ptModelFlag").val("1"+"*"+getMsgByOneArg('msg065','PANTS'));
-				appendAlertPo('tp_pantsModelCheck',getMsgByOneArg('msg065','PANTS'));
+				setAlert('tp_pantsModelCheck',getMsgByOneArg('msg065','PANTS'));
 			}
 		}
 
@@ -306,7 +306,7 @@ function initOptionPants1Tuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var tp_bhColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpBhColor"]:checked').val();
 
-			if (tp_bhColor == '0002701') {
+			if (tp_bhColor != '0002702') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tp_bhColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -398,7 +398,7 @@ function initOptionPants1Tuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var tp_byColor = jQuery('input[name="coOptionPantsTuxedoInfo.tpByColor"]:checked').val();
 
-			if (tp_byColor == '0003001') {
+			if (tp_byColor != '0003002') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tp_byColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -548,6 +548,16 @@ function initOptionPants1Tuxedo() {
 		jQuery('#tp_btnMateStkNo').val(jacketBtnMateStkNo);
 	});
 
+	// 選択中の側章
+	var sideStripe = jQuery('input[name="coOptionPantsTuxedoInfo.tpSideStripe"]:checked').val();
+	if (sideStripe == '0003902') {
+		// 側章が有りの場合は側章幅を表示する
+		jQuery('#tp_sideStripe_yes_area').show();
+	} else {
+		// 側章が無しの場合は側章幅を非表示にする
+		jQuery('#tp_sideStripe_yes_area').hide();
+	}
+	
 	// 側章
 	jQuery('input[id^="tp_sideStripe_"]').each(function() {
 		jQuery(this).change(function(){
@@ -840,19 +850,19 @@ jQuery('input[name="coOptionPantsTuxedoInfo.tpAdjuster"]').change(function(index
 		default:oPLoopElemN.prop("checked", true);
 		}
 		
-		if(selectedPantsModel == 'NZ01'){
-			if(selected == '0000604'){
-				jQuery('#tp_sidePkt_id1').prop('disabled',true);
-				jQuery('#tp_sidePkt_id2').prop('checked',true);
-				jQuery('#tp_sidePkt_id2').change();
-			}
-			else {
-				jQuery('#tp_sidePkt_id1').prop('disabled',false);
-			}
+	}
+	if(selectedPantsModel == 'NZ01'){
+		if(selected == '0000604'){
+			jQuery('#tp_sidePkt_id1').prop('disabled',true);
+			jQuery('#tp_sidePkt_id2').prop('checked',true);
+			jQuery('#tp_sidePkt_id2').change();
 		}
 		else {
 			jQuery('#tp_sidePkt_id1').prop('disabled',false);
 		}
+	}
+	else {
+		jQuery('#tp_sidePkt_id1').prop('disabled',false);
 	}
 	
 	jQuery('input[id^="tp_beltLoop_id"]:checked').change();

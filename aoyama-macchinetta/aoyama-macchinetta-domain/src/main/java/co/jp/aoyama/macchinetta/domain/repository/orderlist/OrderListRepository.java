@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import co.jp.aoyama.macchinetta.domain.model.FactoryOrder;
 import co.jp.aoyama.macchinetta.domain.model.Order;
 import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
 
@@ -64,4 +65,42 @@ public interface OrderListRepository {
 	Order findOrderProductByPk(String orderId);
 	
 	Order findOrderByPkChinese(String orderId);
+
+	Order findDnpOrderByPk(String orderId);
+
+	Order findDnpOrderProductByPk(String orderId);
+
+	Order findDnpOrderJkOptionByOrderId(String orderId);
+
+	Order findDnpOrderJkByPk(String orderId);
+
+	Order findDnpOrderPtOptionByOrderId(String orderId);
+
+	Order findDnpOrderPtByPk(String orderId);
+
+	Order findDnpOrderGlOptionByOrderId(String orderId);
+
+	Order findDnpOrderGlByPk(String orderId);
+
+	Order findDnpOrderPt2OptionByOrderId(String orderId);
+
+	Order findDnpOrderPt2ByPk(String orderId);
+
+	Order findDnpOrderStOptionByOrderId(String orderId);
+
+	Order findDnpOrderStByPk(String orderId);
+
+	Order findDnpOrderCtOptionByOrderId(String orderId);
+
+	Order findDnpOrderCtByPk(String orderId);
+
+	List<Order> fuzzyQueryDnp(@Param("condition") OrderCondition condition, @Param("memberList")List<String> memberList);
+
+	List<Order> findDnpOrderByCondition(@Param("condition") OrderCondition condition, @Param("memberList")List<String> memberList);
+	
+	void updateDtbPdfManageStatus(List<String> updatePrintList);
+	
+	List<FactoryOrder> fuzzyFactoryQuery(@Param(value = "condition") OrderCondition condition);
+	
+	List<FactoryOrder> findPrintStatus(List<FactoryOrder> orderIdList);
 }

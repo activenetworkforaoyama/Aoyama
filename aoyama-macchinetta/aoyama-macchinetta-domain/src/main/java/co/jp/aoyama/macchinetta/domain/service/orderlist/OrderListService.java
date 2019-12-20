@@ -3,9 +3,11 @@ package co.jp.aoyama.macchinetta.domain.service.orderlist;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
+import co.jp.aoyama.macchinetta.domain.model.FactoryOrder;
 import co.jp.aoyama.macchinetta.domain.model.Order;
+import co.jp.aoyama.macchinetta.domain.model.OrderCondition;
 
 public interface OrderListService {
 
@@ -62,5 +64,45 @@ public interface OrderListService {
 	Order findOrderStOptionByOrderId(String orderId);
 
 	Order findOrderProductByPk(String orderId);
+
+	Order findDnpOrderByPk(String orderId);
+
+	Order findDnpOrderProductByPk(String orderId);
+
+	Order findDnpOrderJkOptionByOrderId(String orderId);
+
+	Order findDnpOrderJkByPk(String orderId);
+
+	Order findDnpOrderPtOptionByOrderId(String orderId);
+
+	Order findDnpOrderPtByPk(String orderId);
+
+	Order findDnpOrderGlOptionByOrderId(String orderId);
+
+	Order findDnpOrderGlByPk(String orderId);
+
+	Order findDnpOrderPt2OptionByOrderId(String orderId);
+
+	Order findDnpOrderPt2ByPk(String orderId);
+
+	Order findDnpOrderStOptionByOrderId(String orderId);
+
+	Order findDnpOrderStByPk(String orderId);
+
+	Order findDnpOrderCtOptionByOrderId(String orderId);
+
+	Order findDnpOrderCtByPk(String orderId);
+
+	List<Order> fuzzyQueryDnp(OrderCondition orderCondition, List<String> memberList);
+
+	Map<String, String> findShopTel(String category);
+
+	List<Order> findDnpOrderByCondition(OrderCondition orderCondition, List<String> memberList);
+	
+	void updateDtbPdfManageStatus(List<String> updatePrintList);
+	
+	List<FactoryOrder> fuzzyFactoryQuery(OrderCondition condition);
+	
+	List<FactoryOrder> findPrintStatus(List<FactoryOrder> orderList);
 
 }

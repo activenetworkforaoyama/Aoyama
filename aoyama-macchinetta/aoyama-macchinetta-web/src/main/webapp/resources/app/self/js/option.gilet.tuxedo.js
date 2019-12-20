@@ -142,7 +142,7 @@ function initOptionGiletTuxedo() {
 	// 選択中のボタンホール色指定を取得
 	var bhColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]:checked').val();
 
-	if (bhColor == '0001101') {
+	if (bhColor != '0001102') {
 		// 無しの場合は操作不可
 		jQuery('input[id^="tg_bhColorPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -177,7 +177,7 @@ function initOptionGiletTuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var bhColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgBhColor"]:checked').val();
 
-			if (bhColor == '0001101') {
+			if (bhColor != '0001102') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tg_bhColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);
@@ -252,7 +252,7 @@ function initOptionGiletTuxedo() {
 	// 選択中のボタンホール色指定を取得
 	var byColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]:checked').val();
 
-	if (byColor == '0001401') {
+	if (byColor != '0001402') {
 		// 無しの場合は操作不可
 		jQuery('input[id^="tg_byColorPlace_"]').each(function() {
 			jQuery(this).prop("disabled", true);
@@ -286,7 +286,7 @@ function initOptionGiletTuxedo() {
 			// 選択中のボタンホール色指定を取得
 			var byColor = jQuery('input[name="coOptionGiletTuxedoInfo.tgByColor"]:checked').val();
 
-			if (byColor == '0001401') {
+			if (byColor != '0001402') {
 				// 無しの場合は操作不可
 				jQuery('input[id^="tg_byColorPlace_"]').each(function() {
 					jQuery(this).prop("disabled", true);

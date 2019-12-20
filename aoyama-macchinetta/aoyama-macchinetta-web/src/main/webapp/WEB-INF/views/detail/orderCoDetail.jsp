@@ -39,11 +39,13 @@
 		<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 			<div class="col col-md-7">
 			</div>
-			<div class="col col-md-5">
+			<c:if test="${isDnpFlag != '1'}">
+				<div class="col col-md-5">
 				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
 					お客様注文内容確認書
 				</button>
 			</div>
+			</c:if>
 		</c:if>
 	</c:if>
 	
@@ -51,28 +53,31 @@
 		<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4'}">
 		
 		    <c:if test="${order.makerFactoryStatus == 'F0'}">
-				<div class="col col-md-7">
-				</div>
-				<div class="col col-md-5">
-					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
-						お客様注文内容確認書
-					</button>
-				</div>
+		    	<c:if test="${isDnpFlag != '1'}">
+		    		<div class="col col-md-7"></div>
+					<div class="col col-md-5">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
+							お客様注文内容確認書
+						</button>
+					</div>
+		    	</c:if>
 			</c:if>
 			
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-			<div class="col col-md-4">
-			</div>
-			<div class="col col-md-5">
-				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
-					お客様注文内容確認書
-				</button>
-			</div>
-			<div class="col col-md-3">
-				<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
-					工場指示書
-				</button>
-			</div>
+				<c:if test="${isDnpFlag != '1'}">
+					<div class="col col-md-4">
+					</div>
+					<div class="col col-md-5">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
+							お客様注文内容確認書
+						</button>
+					</div>
+					<div class="col col-md-3">
+						<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
+							工場指示書
+						</button>
+					</div>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -80,7 +85,8 @@
 	<c:if test="${authority == '02'}">
 		<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<c:choose>
+				<c:if test="${isDnpFlag != '1'}">
+					<c:choose>
 					<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 						<div class="col col-md-5">
 							<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.orderKakuninKyakSign})">
@@ -116,6 +122,7 @@
 						</div>
 					</c:otherwise>
 				</c:choose>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -123,7 +130,8 @@
 	<c:if test="${authority == '02'}">
 		<c:if test="${order.tscStatus == 'T5'}">
 			<c:if test="${order.makerFactoryStatus == 'F0'}">
-				<c:choose>
+				<c:if test="${isDnpFlag != '1'}">
+					<c:choose>
 					<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 					
 						<div class="col col-md-3">
@@ -154,6 +162,7 @@
 						</div>
 					</c:otherwise>
 				</c:choose>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -161,13 +170,14 @@
 	<c:if test="${authority == '03'}">
 		<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<div class="col col-md-9">
-				</div>
-				<div class="col col-md-3">
+				<c:if test="${isDnpFlag != '1'}">
+					<div class="col col-md-9"></div>
+					<div class="col col-md-3">
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
 						工場指示書
 					</button>
 				</div>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -175,7 +185,8 @@
 	<c:if test="${authority == '03'}">
 		<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<c:choose>
+				<c:if test="${isDnpFlag != '1'}">
+					<c:choose>
 					<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 						<div class="col col-md-5">
 						</div>
@@ -206,6 +217,7 @@
 						</div>
 					</c:otherwise>
 				</c:choose>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -213,7 +225,8 @@
 	<c:if test="${authority == '03'}">
 		<c:if test="${order.tscStatus == 'T5'}">
 			<c:if test="${order.makerFactoryStatus == 'F0'}">
-				<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+				<c:if test="${isDnpFlag != '1'}">
+					<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 					<div class="col col-md-5">
 					</div>
 					
@@ -227,6 +240,7 @@
 					</div>
 					
 				</c:if>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -234,7 +248,8 @@
 	<c:if test="${authority == '04'}">
 		<c:if test="${order.tscStatus == 'T3' || order.tscStatus == 'T4'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<div class="col col-md-7">
+				<c:if test="${isDnpFlag != '1'}">
+					<div class="col col-md-7">
 				</div>
 				<div class="col col-md-5">
 					<button  type="button" class="btn btn-warning btn-block" onclick="pdfDownload(${orderFm.factorySijiSign})">
@@ -246,6 +261,7 @@
 					</button>
 					</c:if>
 				</div>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -253,7 +269,8 @@
 	<c:if test="${authority == '04'}">
 		<c:if test="${order.tscStatus == 'T5' || order.tscStatus == 'T6' || order.tscStatus == 'T7'}">
 			<c:if test="${order.makerFactoryStatus == 'F1' || order.makerFactoryStatus == 'F2'}">
-				<c:choose>
+				<c:if test="${isDnpFlag != '1'}">
+					<c:choose>
 				<c:when test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 					<div class="col col-md-2">
 					</div>
@@ -292,6 +309,7 @@
 					</div>
 				</c:otherwise>
 				</c:choose>
+				</c:if>
 			</c:if>
 		</c:if>
 	</c:if>
@@ -299,7 +317,8 @@
 	<c:if test="${authority == '04'}">
 		<c:if test="${order.tscStatus == 'T5'}">
 			<c:if test="${order.makerFactoryStatus == 'F0'}">
-				<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
+				<c:if test="${isDnpFlag != '1'}">
+					<c:if test="${order.hostTransmitARow != null && order.hostTransmitARow != '' && order.shippingNumber != null && order.shippingNumber != ''}">
 					<div class="col col-md-4">
 					</div>
 					
@@ -312,6 +331,7 @@
 						</button>
 					</div>
 					
+				</c:if>
 				</c:if>
 			</c:if>
 		</c:if>
@@ -2329,7 +2349,17 @@
 						<div class="col-md-12">
 							<div class="card-body">
 								<div class="row">
-									<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
+									<c:if test="${isDnpFlag == '1'}">
+										<div class="col col-md-4"></div>
+											<div class="col col-md-4">
+												<button type="button" class="btn btn-success btn-block" id="backButton" >
+													一覧へ戻る
+												</button>
+											</div>
+										<div class="col col-md-4"></div>
+									</c:if>
+									<c:if test="${isDnpFlag != '1'}">
+										<c:if test="${order.makerFactoryStatus == 'F0' && (order.tscStatus == 'T2' || order.tscStatus == 'T3' || order.tscStatus == 'T4' || order.tscStatus == 'T5') && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
 										<div class="col col-md-2"></div>
 										<div class="col col-md-4">
 											<button type="button" class="btn btn-success btn-block"
@@ -2406,6 +2436,7 @@
 										</div>
 										<div class="col col-md-4"></div>
 									</c:if>
+									</c:if>
 								</div>
 							</div>
 						</div>
@@ -2414,10 +2445,31 @@
 			</div>
 		</c:if>
 	</c:if>
+	<c:if test="${userId != order.createdUserId}">
+		<c:if test="${isDnpFlag == '1'}">
+			<div class="col-md-12">
+		<div class="card">
+			<div class="col-md-12">
+				<div class="card-body">
+					<div class="row">
+						<div class="col col-md-4"></div>
+						<div class="col col-md-4">
+							<button type="button" class="btn btn-success btn-block"
+								id="backButton">一覧へ戻る</button>
+						</div>
+						<div class="col col-md-4"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		</c:if>
+	</c:if>
 </c:if>
 
 <c:if test="${authority == '01'}">
-	<c:if test="${userId != order.createdUserId}">
+	<c:if test="${isDnpFlag != '1'}">
+		<c:if test="${userId != order.createdUserId}">
 		<div class="col-md-12">
 			<div class="card">
 				<div class="col-md-12">
@@ -2435,6 +2487,7 @@
 			</div>
 		</div>
 	</c:if>
+	</c:if>
 </c:if>
 
 
@@ -2442,7 +2495,23 @@
 	<c:if test="${order.isCancelled != '1'}">
 		<div class="col-md-12">
 			<div class="card" id="nav2_alter_div">
-				<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
+				<c:if test="${isDnpFlag == '1'}">
+						<div class="row">
+						<div class="col-md-12">
+							<div class="card-body">
+								<div class="row">
+									<div class="col col-md-4"></div>
+										<div class="col col-md-4">
+											<button type="button" class="btn btn-success btn-block" id="backButton">一覧へ戻る</button>
+										</div>
+									<div class="col col-md-4"></div>
+								</div>
+							</div>
+						</div>
+						</div>
+				</c:if>
+				<c:if test="${isDnpFlag != '1'}">
+					<c:if test="${order.makerFactoryStatus == 'F0' && order.tscStatus == 'T2' && (order.send2factoryStatus == '0' || order.send2factoryStatus == '2' || order.send2factoryStatus == '3' || order.send2factoryStatus == '4')}">
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card-body">
@@ -2538,6 +2607,7 @@
 							</div>
 						</div>
 					</div>
+				</c:if>
 				</c:if>
 			</div>
 		</div>
@@ -2644,6 +2714,7 @@
 	</c:if>
 </c:if>
 <c:if test="${order.isCancelled == '1'}">
+<c:if test="${isDnpFlag != '1'}">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="col-md-12">
@@ -2660,6 +2731,7 @@
 			</div>
 		</div>
 	</div>
+</c:if>
 </c:if>
 <!-- ボタン類 End -->
 
@@ -3239,12 +3311,12 @@ jQuery("#saveOrChangeValue").click(function(){
 	}
 
 	var productOrderdDate = "${order.productOrderdDate}";
-	if (productOrderdDate != null) {
+	if (isNotEmpty(productOrderdDate)) {
 		jQuery("#product_orderd_date").html(dateFormat(productOrderdDate))
 	}
 
 	var custDeliverDate = "${order.custDeliverDate}";
-	if (custDeliverDate != null) {
+	if (isNotEmpty(custDeliverDate)) {
 		jQuery("#cust_deliver_date").html(dateFormat(custDeliverDate))
 	}
 
@@ -3289,7 +3361,7 @@ jQuery("#saveOrChangeValue").click(function(){
 	}
 
 	var custShopDeliveryDate = "${order.custShopDeliveryDate}";
-	if (custShopDeliveryDate != null) {
+	if (isNotEmpty(custShopDeliveryDate)) {
 		jQuery("#cust_shop_delivery_date").html(
 				dateFormat(custShopDeliveryDate))
 	}

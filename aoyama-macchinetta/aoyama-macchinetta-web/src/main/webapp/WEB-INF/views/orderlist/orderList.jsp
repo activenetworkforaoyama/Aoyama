@@ -91,13 +91,121 @@
 <div class="content mt-3">
     <!-- エラーメッセージのdiv -->
 	<div class="alert alert-error" id="errorMessage" style="display:none"></div>
+						<c:if test="${sessionContent.category == 'CO'}">
+							<c:if test="${sessionContent.authority == '01' || sessionContent.authority == '02'}">
+								<ul class="nav nav-tabs nav-justified">
+                            		<li class="nav-item">
+                                		<a class="nav-link active" href="#nav3_search" id="nav3_search">注文検索</a>
+                            		</li>
+                            		<li class="nav-item">
+                                		<a class="nav-link" href="#nav3_DnpSearch" id="nav3_DnpSearch">DNP注文検索</a>
+                            		</li>
+                       			</ul>
+							</c:if>
+						</c:if>
+                        <div class="card" id="nav3_DnpSearch_div" style="display:none">
+                            <div class="card-body">
+                            <form:form id ="conditionDnpForm" method="post" modelAttribute="orderListForm" enctype="multipart/form-data" class="form-horizontal">
+                                <!-- 検索条件部分 Start -->
+                                <div class="row">
+                                    <!-- 左側項目 -->
+                                    <div class="col col-lg-6">
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">電話番号</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <!-- <input type="text" id="searchTelNo" name="searchTelNo" placeholder="" class="input-sm form-control-sm form-control"> -->
+                                                <%-- <form:input id="searchTelNo" path="searchTelNo" placeholder="" class="input-sm form-control-sm form-control"/> --%>
+                                                <form:select id="searchTelNo" path="searchTelNo" class="form-control-sm form-control">
+                                    				<form:options items="${orderListForm.shopTelMap}"/>
+                                				</form:select>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">姓名（カナ）</label><span class="text-danger">*</span></div>
+                                            <div class="col-12 col-md-8">
+                                                <!-- <input type="text" id="searchSei" name="searchSei" placeholder="" class="input-sm form-control-sm form-control"> -->
+                                                <form:input id="searchSei" path="searchSei" placeholder="" class="input-sm form-control-sm form-control"/>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                        	<div class="col col-md-4">
+												<label class=" form-control-label">ITEM(CO)</label>
+											</div>
+											<div class="col-12 col-md-8">
+												<form:select path="productDnpItem" id="productDnpItem" class="form-control-sm form-control">
+													<form:option value=""></form:option>
+													<form:option value="01">SUIT(ALL)</form:option>
+													<form:option value="21">SUIT(2P)</form:option>
+													<form:option value="22">SUIT(2PP)</form:option>
+													<form:option value="31">SUIT(3P)</form:option>
+													<form:option value="32">SUIT(3P2PP)</form:option>
+													<form:option value="02">JACKET</form:option>
+													<form:option value="03">PANTS</form:option>
+													<form:option value="04">GILET</form:option>
+													<form:option value="06">COAT</form:option>
+													<form:option value="05">SHIRT</form:option>
+												</form:select>
+											</div>
+                                        </div>
+                                    </div>
+                                    <!-- 右側項目 -->
+                                    <div class="col col-lg-6">
+                                    	<!-- 承り日 -->
+										<div class="row form-group">
+											<div class="col col-md-4">
+												<label class=" form-control-label">承り日</label>
+											</div>
+											<div class="col-12 col-md-8">
+												<div class="form-check-inline form-check">
+													<form:input path="productOrderDnpDateFrom"
+														id="productOrderDnpDateFrom" type="text" placeholder="年/月/日"
+														class="input-sm form-control-sm form-control col-md-5" autocomplete="off"/>
+													&nbsp;〜&nbsp;
+													<form:input path="productOrderDnpDateTo"
+														id="productOrderDnpDateTo" type="text" placeholder="年/月/日"
+														class="input-sm form-control-sm form-control col-md-5" autocomplete="off"/>
+												</div>
+											</div>
+										</div>
+                                        <%-- <div class="row form-group">
+                                            <div class="col col-md-4"><label class=" form-control-label">名（カナ）</label></div>
+                                            <div class="col-12 col-md-8">
+                                                <!-- <input type="text" id="searchMei" name="searchMei" placeholder="" class="input-sm form-control-sm form-control"> -->
+                                                <form:input id="searchMei" path="searchMei" placeholder="" class="input-sm form-control-sm form-control"/>
+                                            </div>
+                                        </div> --%>
+                                        <div class="row form-group">
+											<div class="col col-md-4">
+												<label class=" form-control-label">営業担当者</label>
+											</div>
+											<div class="col-12 col-md-8">
+											<form:input id="storeDnpStaffNm" path="storeDnpStaffNm" type="text" class="input-sm form-control-sm form-control"/>
+										</div>
+										</div>
+                                    </div>
+                                </div>
+                                <!-- 制御ボタン部分 Start -->
+                                <div class="row">
+                                    <div class="col">　</div>
+                                    <div class="col col-md-4">
+                                    	<button type="button" onclick="dnpReset();" id="dnp_clear_button" class="btn btn-danger btn-block"><i class="fa fa-trash-alt"></i>&nbsp;クリア</button>
+                                    </div>
+                                    <div class="col col-md-4">
+                                        <button type="button" id="search2Button" onclick="searchDnpOrder();" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i> 検索</button>
+                                    </div>
+                                    <div class="col">　</div>
+                                </div>
+                                <!-- 制御ボタン部分 End -->
+                                </form:form>
+                            </div><!-- card body -->
+                        </div><!-- card -->
 	<!-- 検索条件のdiv -->
 	<div id = "conditionDiv">
 		<div class="animated fadeIn">
 		<div class="card" id="nav1_custom_div">
         <div class="card-body">
+        <form:form id ="conditionForm" method="post" modelAttribute="orderListForm" enctype="multipart/form-data" class="form-horizontal">
 			<!-- 検索条件部分 start -->
-			<form:form id ="conditionForm" method="post" modelAttribute="orderListForm" enctype="multipart/form-data" class="form-horizontal">
 				<div class="row">
 					<!-- 左側項目start -->
 					<div class="col col-lg-6">
@@ -570,12 +678,24 @@
 		</div>
 	
 		<div class="row form-group"></div>
-		<div class="row form-group">
+		<div class="row form-group" id="csvDownLoad_div">
 		    <c:choose>
 		       <c:when test="${sessionContent.authority == '02' or sessionContent.authority == '03'}">
 		   	 	<!-- 商品部、メーカー　登録の場合　 　　「注文情報ダウンロード」を表示する-->
 			<div class="col col-md-3">
 		              <button id="orderExport" onclick="csvDownload();" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i>&nbsp;注文情報ダウンロード</button>
+		    </div>
+		       </c:when>
+			</c:choose>
+		
+		</div>
+		
+		<div class="row form-group" id="dnpCsvDownLoad_div">
+		    <c:choose>
+		       <c:when test="${sessionContent.authority == '02'}">
+		   	 	<!-- 商品部、メーカー　登録の場合　 　　「注文情報ダウンロード」を表示する-->
+			<div class="col col-md-3">
+		              <button id="dnpOrderExport" onclick="dnpCsvDownload();" class="btn btn-primary btn-block"><i class="fa fa-check-circle"></i>&nbsp;DNP注文情報ダウンロード</button>
 		    </div>
 		       </c:when>
 			</c:choose>
@@ -611,6 +731,54 @@
     <script src="${pageContext.request.contextPath}/resources/app/js/jquery.blockUI.js"></script>
 
 <script>
+jQuery('a[id^="nav3_"]').each(function() {
+	jQuery(this).click(function(){
+		if (jQuery(this).hasClass('active')) {
+			return false;
+		}
+		var id = this.id;
+		jQuery('a[id^="nav3_"]').each(function(index, element) {
+			if (element.id == id) {
+				jQuery(element).addClass("active");
+			} else {
+				jQuery(element).removeClass("active");
+				jQuery('#'+element.id+'_div').hide();
+			}
+		});
+		jQuery('#'+id+'_div').fadeIn(200);
+		return false;
+	});
+
+	if (!jQuery(this).hasClass('active')) {
+		jQuery('#'+this.id+'_div').hide();
+	}
+});
+
+
+jQuery('a[href="#nav3_DnpSearch"]').click(function(){
+	closeAlert('errorMessage', 'msg_oneShop');
+	closeAlert('errorMessage', 'msg_noAccount');
+	closeAlert('errorMessage', 'msg_download');
+	closeAlert('errorMessage', 'msg_noResult');
+	closeAlert('errorMessage', 'msg_noConfirm');
+	closeAlert('errorMessage', 'msg_dataError');
+	jQuery("#conditionDiv").hide();
+	jQuery("#orderListDiv").hide();
+	jQuery("#toggleButton").html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');
+})
+
+jQuery('a[href="#nav3_search"]').click(function(){
+	closeAlert('errorMessage', 'msg_oneShop');
+	closeAlert('errorMessage', 'msg_noAccount');
+	closeAlert('errorMessage', 'msg_download');
+	closeAlert('errorMessage', 'msg_noResult');
+	closeAlert('errorMessage', 'msg_noConfirm');
+	closeAlert('errorMessage', 'msg_dataError');
+	jQuery("#conditionDiv").show();
+	jQuery("#orderListDiv").hide();
+	jQuery("#toggleButton").html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');
+})
+
 var dataView;
 var grid;
 var sortcol = "title";
@@ -673,7 +841,7 @@ var DATAGRID_MIN_WIDTH = 200;
 var DATAGRID_BOTTOM_PADDING = 20;
 
 //カレンダー表示の設定
-jQuery('#productOrderdDateTo,#productOrderdDateFrom,#custDeliverDateFrom,#custDeliverDateTo,#custShopDeliveryDateFrom,#custShopDeliveryDateTo,#updatedAtFrom,#updatedAtTo').datepicker({
+jQuery('#productOrderDnpDateFrom,#productOrderDnpDateTo,#productOrderdDateTo,#productOrderdDateFrom,#custDeliverDateFrom,#custDeliverDateTo,#custShopDeliveryDateFrom,#custShopDeliveryDateTo,#updatedAtFrom,#updatedAtTo').datepicker({
 	   format: 'yyyy/mm/dd',
 	    clearBtn: true,
 	    language: 'ja',
@@ -735,19 +903,30 @@ $(document).ready(function () {
 	closeAlert('errorMessage', 'msg_noConfirm');
 	closeAlert('errorMessage', 'msg_dataError');
 	var initFlag = "${initFlag}";
+	var isDnpFlag = "${isDnpFlag}";
 
-	if (initFlag == "1"){
-		searchOrder();
+	if(isDnpFlag != "1"){
+		if (initFlag == "1"){
+			searchOrder();
+		}
+		if (initFlag == "0"){
+			//初期化のとき、検索結果Divを表示しない
+			$("#orderListDiv").hide();
+		}
+		if (initFlag == "2"){
+			searchOrder();
+			//addAlert('errorMessage', 'msg_dataError', "data_error");
+		}
+	}else {
+		document.getElementById("nav3_DnpSearch").click();
+		if (initFlag == "0"){
+			//初期化のとき、検索結果Divを表示しない
+			$("#orderListDiv").hide();
+		}else{
+			searchDnpOrder();
+		}
+		
 	}
-	if (initFlag == "0"){
-		//初期化のとき、検索結果Divを表示しない
-		$("#orderListDiv").hide();
-	}
-	if (initFlag == "2"){
-		searchOrder();
-		//addAlert('errorMessage', 'msg_dataError', "data_error");
-	}
-	
 }); 
 
 function comparer(a, b) {
@@ -759,6 +938,23 @@ function mineFormatter ( row, cell, value, columnDef, dataContext ) {
   return value;
 }
 
+//DNP検索条件をリアルする
+function dnpReset(){
+	jQuery("#searchTelNo").val("");
+	jQuery("#searchSei").val("");
+	//jQuery("#searchMei").val("");
+	jQuery("#productOrderDnpDateFrom").val("");
+	jQuery("#productOrderDnpDateTo").val("");
+	jQuery("#storeDnpStaffNm").val("");
+	jQuery("#productDnpItem").val("");
+	closeAlert('errorMessage', 'msg_oneShop');
+	closeAlert('errorMessage', 'msg_noAccount');
+	closeAlert('errorMessage', 'msg_download');
+	closeAlert('errorMessage', 'msg_noResult');
+	closeAlert('errorMessage', 'msg_noConfirm');
+	closeAlert('errorMessage', 'msg_dataError');
+}
+  
 //検索条件をリアルする
 function reset(){
     $("#orderId").val("");
@@ -795,7 +991,251 @@ function reset(){
   }
 
 //検索
+function searchDnpOrder(){
+	$('#orderListDiv').hide();
+	jQuery("#csvDownLoad_div").hide();
+	var searchSei = jQuery("#searchSei").val();
+	var searchTelNo = jQuery("#searchTelNo").val();
+	if(isEmpty(searchTelNo)){
+		addAlert('errorMessage', 'msg_noResult', getMsgByOneArg('msg001','電話番号'));
+		return;
+	}else{
+		closeAlert('errorMessage', 'msg_noResult');
+	}
+	if(isEmpty(searchSei)){
+		addAlert('errorMessage', 'msg_noResult', getMsgByOneArg('msg001','姓名（カナ）'));
+		return;
+	}else{
+		closeAlert('errorMessage', 'msg_noResult');
+	}
+	$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
+	var winWidth = 0;
+	if (window.innerWidth){
+		winWidth = window.innerWidth;
+	}
+	$("#orderListDiv").width(winWidth - 290);
+	
+		closeAlert('errorMessage', 'msg_oneShop');
+		closeAlert('errorMessage', 'msg_noAccount');
+		closeAlert('errorMessage', 'msg_download');
+		closeAlert('errorMessage', 'msg_noResult');
+		closeAlert('errorMessage', 'msg_noConfirm');
+		closeAlert('errorMessage', 'msg_dataError');
+		//authority      店舗 : 1       商品部 : 2      メーカー : 3      工場 : 4      倉庫 : 5
+		switch(authority){
+			//店舗
+			case "01":
+			        var columns = [
+						{id: "sel", name: "No", field: "num", behavior: "select", cssClass: "cell-selection cell-money",minWidth: 50, maxWidth: 50, resizable: false, selectable: false },
+					    {id: 'order_id', name: '注文ID', field: 'order_id', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
+					    {id: 'product_item', name: 'ITEM', field: 'product_item', formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
+					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'cust_cd', name: '会員番号', field: "cust_cd", formatter: mineFormatter, sortable: true,minWidth: 160, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", formatter: mineFormatter, sortable: true,minWidth: 150, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", formatter: mineFormatter, sortable: true, minWidth: 200},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', sortable: true, minWidth: 120, cssClass: "cell-other"},
+					    {id: 'goto_order', name: 'オーダー', field: 'goto_order', minWidth: 80, formatter: mineFormatter}
+				    ];
+			break;
+			//商品部
+			case "02":
+			        var columns = [
+						{id: "sel", name: "No", field: "num",minWidth: 50, maxWidth: 50, behavior: "select", cssClass: "cell-selection cell-money", resizable: false, selectable: false},
+						{id: 'order_id', name: '注文ID', field: 'order_id', minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other "},
+					    {id: 'product_item', name: 'ITEM', field: 'product_item', minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'product_fabric_no', name: '生地品番', field: "product_fabric_no", minWidth: 150, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'ws_price', name: '下代', field: "ws_price", minWidth: 110, cssClass: "cell-money", formatter: mineFormatter, sortable: true, cssClass: "cell-money"},
+					    {id: 'cust_cd', name: '店舗名', field: "cust_cd", minWidth: 160, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'store_staff_nm', name: '営業担当者', field: "store_staff_nm", minWidth: 150, formatter: mineFormatter, sortable: true, cssClass: "cell-other"},
+					    {id: 'tsc_status', name: 'ステータス', field: "tsc_status", minWidth: 200, formatter: mineFormatter, sortable: true},
+					    {id: 'product_orderd_date', name: '承り日', field: 'product_orderd_date', minWidth: 120, sortable: true, cssClass: "cell-other"},
+					    {id: 'cust_shop_delivery_date', name: 'お渡し日', field: 'cust_shop_delivery_date', minWidth: 120, sortable: true, cssClass: "cell-other"},
+					    {id: 'cust_deliver_date', name: '名簿納期', field: 'cust_deliver_date', minWidth: 120, sortable: true, cssClass: "cell-other"}
+				    ];
+			break;
+		}
+
+	  // (2) SlickGridの動作オプション
+		var options = {
+		  columnPicker: {
+		    columnTitle: "Columns",
+		    hideForceFitButton: false,
+		    hideSyncResizeButton: false, 
+		    forceFitTitle: "Force fit columns",
+		    syncResizeTitle: "Synchronous resize", 
+		  },
+		  editable: true,
+		  enableAddRow: false,
+		  enableCellNavigation: true,
+		  asyncEditorLoading: true,
+		  forceFitColumns: true,
+		  topPanelHeight: 25,
+		  rowHeight: 45,
+		  frozenColumn: 1
+		};
+
+	  var contextPath = $("meta[name='contextPath']").attr("content");
+	  var data = [];
+	  $.ajax({url : contextPath + "/orderlist/FindAllOrderDnpByCondition",
+		      type: "get",
+		      dataType: "json",
+		      data: $('#conditionDnpForm').serialize(),
+			      }).
+		      then(function(result) {
+		    	 $.unblockUI(); 
+			    if($('#orderListDiv').is(":hidden")){
+
+				}else{
+				    grid.gotoCell(0, 0,true);
+				}
+				if (result.length == 0){
+					searchNum = 0;
+					addAlert('errorMessage', 'msg_noResult', getMsg('msg031'));
+					$("#orderListDiv").hide();
+				} else{
+					searchNum = result.length;
+					closeAlert('errorMessage', 'msg_oneShop');
+					closeAlert('errorMessage', 'msg_noAccount');
+					closeAlert('errorMessage', 'msg_download');
+					closeAlert('errorMessage', 'msg_noResult');
+					closeAlert('errorMessage', 'msg_noConfirm');
+					closeAlert('errorMessage', 'msg_dataError');
+					$("#orderListDiv").show();
+					$("#dnpCsvDownLoad_div").show();
+				}
+				//authority      店舗 : 1       商品部 : 2      メーカー : 3      工場 : 4      倉庫 : 5
+				switch(authority){
+				  //店舗
+			      case "01": 
+					  //「未会計のみ」を選択しない
+						  for (var i = 0; i < result.length; i++) {
+							  var d = (data[i] = {});
+							    d["id"] = "id_" + i;
+								d["num"] = i + 1;
+							    d["order_id"] = "<a href='javascript:void(0);' onclick='gotoDnpOrderLink(\"" + result[i].orderId + "\")' ><font size='3'>" + result[i].orderId + "</font></a>";
+							    if (result[i].productItem == "01"){
+									d["product_item"] = itemMap.get(result[i].productItemDisplaycode);
+								}else{
+									d["product_item"] = itemMap.get(result[i].productItem);
+								}
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
+							    d["cust_cd"] = result[i].custCd;
+							    d["store_staff_nm"] = result[i].custStaff;
+							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
+							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
+							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
+							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
+							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
+								d["goto_order"] = "<button id='goto_order' class='btn_off btn_brown' onclick='gotoDnpOrderDivert(\"" + result[i].orderId + "\")' ><font size='3'>流用</font> </button>";	    
+								d["send2factory_status"] = result[i].send2factoryStatus;
+								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
+					      }
+						   //「会計を纏める」ボタンを表示しない
+						  document.getElementById("AccountOrConfirm").style.visibility="hidden";
+						  $("#AccountDiv").hide();
+                  break;
+                  //商品部
+		          case "02":
+					  //選択しない
+				    	  for (var i = 0; i < result.length; i++) {
+							  var d = (data[i] = {});
+							    d["id"] = "id_" + i;
+								d["num"] = i + 1;
+							    d["order_id"] = "<a href='javascript:void(0);' onclick='gotoDnpOrderLink(\"" + result[i].orderId + "\")' ><font size='3'>" + result[i].orderId + "</font></a>";
+							    if (result[i].productItem == "01"){
+									d["product_item"] = itemMap.get(result[i].productItemDisplaycode);
+								}else{
+									d["product_item"] = itemMap.get(result[i].productItem);
+								}
+							    var productFabricNo = result[i].productFabricNo == "" || result[i].productFabricNo == null ? "" : result[i].productFabricNo + "-";
+							    var fabricColor = result[i].fabricColor == null ? "" : result[i].fabricColor;
+							    var fabricPattern = result[i].fabricPattern == null ? "" : result[i].fabricPattern;
+							    d["product_fabric_no"] = productFabricNo + "" + fabricColor + "" + fabricPattern;
+							    if (result[i].wsPrice == null){
+							    	d["ws_price"] = "￥0";
+								}else{
+									d["ws_price"] = formatMoney(result[i].wsPrice, 0, "￥");
+								}
+							    d["cust_cd"] = result[i].storeNm;
+							    d["store_staff_nm"] = result[i].custStaff;
+							    var tscStatus = tscStatusMap.get(result[i].tscStatus) == null ? "" : tscStatusMap.get(result[i].tscStatus);
+							    var makerFactoryStatus = makerFactoryStatusMap.get(result[i].makerFactoryStatus) == null ? "" : makerFactoryStatusMap.get(result[i].makerFactoryStatus);
+							    var send2factoryStatus = send2factoryStatusMap.get(result[i].send2factoryStatus) == null ? "" : send2factoryStatusMap.get(result[i].send2factoryStatus);
+							    if(result[i].makerFactoryStatus == "F0"){
+							    	d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus + "("+ send2factoryStatus +")";
+								 }else{
+									d["tsc_status"] = tscStatus + "</br>" + makerFactoryStatus;
+								}
+							    d["product_orderd_date"] = result[i].productOrderdDate == null || tscStatus == "取り置き" || tscStatus == "" || tscStatus == "一時保存" ? "" : ChangeTimeFormatYMD(result[i].productOrderdDate);
+							    d["cust_shop_delivery_date"] = result[i].custShopDeliveryDate == null ? "" : ChangeTimeFormatYMD(result[i].custShopDeliveryDate);
+							    d["cust_deliver_date"] = result[i].custDeliverDate == null ? "" : ChangeTimeFormatYMD(result[i].custDeliverDate);
+								d["send2factory_status"] = result[i].send2factoryStatus;	    
+								d["is_cancelled"] = result[i].isCancelled;   
+								d["shop_code"] = result[i].shopCode;    
+				          }
+				    	    //「会計を纏める」ボタン、「一括承認」ボタンを表示しない
+						    document.getElementById("AccountOrConfirm").style.visibility="hidden";
+					        $("#AccountDiv").hide();
+					        $("#ConfirmDiv").hide();
+                  break;
+		    }
+    		  
+		    // (4) SlickGridテーブルを作成
+		    dataView = new Slick.Data.DataView();
+		    grid = new Slick.Grid("#myGrid", dataView, columns, options);
+		    grid.setSelectionModel(new Slick.RowSelectionModel());
+		    grid.init();
+		    
+		    var pager = new Slick.Controls.Pager(dataView, grid, $("#pager"));
+
+			grid.onCellChange.subscribe(function (e, args) {
+			  if(args.length === undefined){
+				  
+			  }else{
+				 dataView.updateItem(args.item.id, args.item);
+			  }
+			});
+			
+		    grid.onSort.subscribe(function (e, args) {
+		        sortdir = args.sortAsc ? 1 : -1;
+		        sortcol = args.sortCol.field;  
+		        dataView.sort(comparer, args.sortAsc);
+		      });
+
+		    dataView.onRowCountChanged.subscribe(function (e, args) {
+		        grid.updateRowCount();
+		        grid.render();
+		      });
+
+		    dataView.onRowsChanged.subscribe(function (e, args) {
+		        grid.invalidateRows(args.rows);
+		        grid.render();
+		      });
+
+		    // initialize the model after all the events have been hooked up
+		    dataView.beginUpdate();
+		    dataView.setItems(data);
+			dataView.endUpdate();
+			attachAutoResizeDataGrid(grid, "myGrid", "gridContainer");
+		    });
+
+}
+
+//検索
 function searchOrder(){
+	$('#dnpCsvDownLoad_div').hide();
 	$('#orderListDiv').hide();
 	$.blockUI({ message: '<div class="content mt-3"><img src="${pageContext.request.contextPath}/resources/app/images/loading.gif" .></div>' });
 	var winWidth = 0;
@@ -1002,6 +1442,7 @@ function searchOrder(){
 					closeAlert('errorMessage', 'msg_noConfirm');
 					closeAlert('errorMessage', 'msg_dataError');
 					$("#orderListDiv").show();
+					jQuery("#csvDownLoad_div").show();
 				}
 				//authority      店舗 : 1       商品部 : 2      メーカー : 3      工場 : 4      倉庫 : 5
 				switch(authority){
@@ -1473,6 +1914,14 @@ function gotoOrderLink(orderId){
 		window.location.href= contextPath + "/orderlist/gotoOrderPoLink/" + orderId;
 	}
 }
+
+//Dnp通用  Link
+function gotoDnpOrderLink(orderId){
+	if (orderPattern == "CO"){
+		window.location.href= contextPath + "/orderlist/gotoDnpOrderCoLink/" + orderId;
+	}
+}
+
 //流用 Divert
 function gotoOrderDivert(orderId){
 	if(orderPattern == "PO"){
@@ -1482,6 +1931,13 @@ function gotoOrderDivert(orderId){
 	   window.location.href= contextPath + "/orderlist/goToOrderCoDivert/"+orderId;
 	}
 	
+}
+
+//Dnp流用  Divert
+function gotoDnpOrderDivert(orderId){
+	if(orderPattern == "CO"){
+	   window.location.href= contextPath + "/orderlist/goToDnpOrderCoDivert/"+orderId;
+	}
 }
 
 /* //チェック
@@ -1561,6 +2017,34 @@ function csvDownload(){
 		addAlert('errorMessage', 'msg_download', getMsg('msg091'));
 	}
 }
+
+function dnpCsvDownload(){
+
+	closeAlert('errorMessage', 'msg_oneShop');
+	closeAlert('errorMessage', 'msg_noAccount');
+	closeAlert('errorMessage', 'msg_download');
+	closeAlert('errorMessage', 'msg_noResult');
+	closeAlert('errorMessage', 'msg_noConfirm');
+	closeAlert('errorMessage', 'msg_dataError');
+	// 確認メッセージ
+	if (searchNum != 0){
+
+		swal({
+			  text: getMsg('msg032'),
+			  icon: "info",
+			  buttons: ["キャンセル", true],
+			})
+			.then((isConfirm) => {
+			  if (isConfirm) {
+				  window.location.href= contextPath + "/orderlist/dnpOrderDataCSVOut";
+			  }
+			});
+	}else{
+
+		addAlert('errorMessage', 'msg_download', getMsg('msg091'));
+	}
+}
+
 //会計チェック
 function gotoAccountCheck(){
 
@@ -1706,14 +2190,23 @@ function gotoConfirm(){
 //検索メニューを閉じる
 $(function() {
 	$('#toggleButton').click(function() {
-		if ($('#conditionDiv').is(':hidden')) {
-			$('#conditionDiv').slideDown('slow');
-			$(this).html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');
-		} else {
-			$('#conditionDiv').slideUp('slow');
-			$(this).html('検索メニューを開く<i class="fa fa-caret-down"></i>');
+		if (jQuery("#nav3_search").hasClass('active')) {
+			if ($('#conditionDiv').is(':hidden')) {
+				$('#conditionDiv').slideDown('slow');
+				$(this).html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');
+			} else {
+				$('#conditionDiv').slideUp('slow');
+				$(this).html('検索メニューを開く<i class="fa fa-caret-down"></i>');
+			}
+		}else if(jQuery("#nav3_DnpSearch").hasClass('active')){
+			if ($('#nav3_DnpSearch_div').is(':hidden')) {
+				$('#nav3_DnpSearch_div').slideDown('slow');
+				$(this).html('検索メニューを閉じる <i class="fa fa-caret-up"></i>');
+			} else {
+				$('#nav3_DnpSearch_div').slideUp('slow');
+				$(this).html('検索メニューを開く<i class="fa fa-caret-down"></i>');
+			}
 		}
-
 	});
 });
 

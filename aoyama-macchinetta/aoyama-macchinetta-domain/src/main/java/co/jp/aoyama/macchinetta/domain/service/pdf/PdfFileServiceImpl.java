@@ -142,7 +142,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}else if("3".equals(sign)) {
     				//工場指示書
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertOrderDataPo(form, order);
     				
@@ -344,7 +344,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}else if("3".equals(sign)) {
     				//工場指示書(SUIT)
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertSuitDataCo(form, order);
     				
@@ -385,7 +385,7 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}else if("6".equals(sign)) {
     				//工場指示書(COAT)
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertCoatDataCo(form, order);
     				
@@ -406,14 +406,14 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}else if("9".equals(sign)) {
     				//工場指示書(SHIRT)
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertShirtDataCo(form, order);
     				
     			}else if("10".equals(sign)) {
     				//工場指示書(SUIT)中国語
     				insertCommonProjectChinese(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertSuitDataCoChinese(form, order);
     				
@@ -440,14 +440,14 @@ public class PdfFileServiceImpl implements PdfFileService{
     			}else if("11".equals(sign)) {
     				//工場指示書(SHIRT)中国語
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertShirtDataCoChinese(form, order);
     				
     			}else if("12".equals(sign)) {
     				//工場指示書(COAT)中国語
     				insertCommonProject(form, order, productItem);
-    				insertfactoryInstructionsSpecial(form, order);
+    				insertFactoryInstructionsSpecial(form, order);
     				insertMeasuringData(form, measuring, "1");
     				insertCoatDataCo(form, order);
     				
@@ -837,6 +837,8 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @param order
 	 */
 	private void insertConfirmationBookFactorySpecial(CrForm form, Order order) {
+		//注文ID-title
+		form.getField("Order_id_title_data").setData("（"+stringChange(order.getOrderId())+"）");
 		//名前
 		form.getField("Name_data").setData(stringChange(getNameByMemberUrl(order)));
 		//名簿納期
@@ -871,7 +873,9 @@ public class PdfFileServiceImpl implements PdfFileService{
 	 * @param form
 	 * @param order
 	 */
-	private void insertfactoryInstructionsSpecial(CrForm form, Order order) {
+	private void insertFactoryInstructionsSpecial(CrForm form, Order order) {
+		//注文ID-title
+		form.getField("Order_id_title_data").setData("（"+stringChange(order.getOrderId())+"）");
 		//工場
 		Factory factory = factoryRepository.findOne(order.getProductFactoryCd());
 		if(factory != null) {
