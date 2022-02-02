@@ -690,7 +690,7 @@
         <!-- == Dependency Versions == -->
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
         <thymeleaf.extras.springsecurity4.version>3.0.2.RELEASE</thymeleaf.extras.springsecurity4.version>
-        <postgresql.version>9.4.1212</postgresql.version>
+        <postgresql.version>42.2.25</postgresql.version>
         <ojdbc.version>12.1.0.2</ojdbc.version>
         <dbunit.version>2.5.4</dbunit.version>
         <spring.test.dbunit.version>1.3.0</spring.test.dbunit.version>
